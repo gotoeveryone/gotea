@@ -1,0 +1,668 @@
+@CHARSET "UTF-8";
+
+html, body {
+	font-size: 14px;
+	height: 98%;
+}
+
+/* -------------------------------------------
+   ボタン
+ ------------------------------------------- */
+button {
+    min-width: 70px;
+    min-height: 25px;
+    font-size: 14px;
+    text-shadow: 0 1px 0 #ffffff;
+    background-color: #cccccc;
+}
+
+button:hover:enabled, a.button:hover {
+    background-color: #999999;
+}
+
+a.button {
+	display: block;
+	text-align: center;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border: 2px solid;
+	color: black;
+	border-color: #aaaaaa #444444 #444444 #aaaaaa;
+	background-color: #bbb;
+}
+
+.back {
+	margin-left: auto;
+	margin-right: auto;
+	width: 60px;
+	height: 18px;
+}
+
+.menu {
+	width: 200px;
+	height: 18px;
+}
+
+th, tr, td {
+	/*border: 1px solid #000000;*/
+	border-collapse: collapse;
+}
+
+/* -------------------------------------------
+   共通レイアウト
+ ------------------------------------------- */
+section#container {
+	margin: auto;
+	width: 99%;
+	position: relative;
+	min-height: 100%;
+	height: 100%;
+}
+
+section#header {
+	font-size: 13px;
+	height: 20px;
+	vertical-align: top;
+	font-style: italic;
+	clear: both;
+	width: 100%;
+}
+
+section#header .username {
+	float: left;
+	text-decoration: underline;
+}
+
+section#header .time {
+	float: right;
+	text-align: right;
+}
+
+section#title {
+	height: 60px;
+}
+
+section#title h1 {
+	margin: 0px;
+	font-size: 35px;
+	font-style: italic;
+}
+
+section#content {
+	height: calc(100% - 120px);
+}
+
+section#content .sideMenu {
+	height: 100%;
+	float: left;
+	width: 220px;
+}
+
+section#content .child {
+	display: block;
+	height: 100%;
+}
+
+section#content .main {
+	display: block;
+	height: 100%;
+	margin-left: 220px;
+	margin-right: auto;
+}
+
+section#footer {
+	font-size: 13px;
+	position: absolute;
+	height: 40px;
+	width: 100%;
+	bottom: 0px;
+}
+
+/* -------------------------------------------
+   ダイアログ用
+ ------------------------------------------- */
+#dialog, #confirm {
+	display: none;
+}
+
+/* -------------------------------------------
+   共通
+ ------------------------------------------- */
+input.year {
+	width: 40px;
+}
+
+input.playerName {
+	width: 150px;
+}
+
+input.datapicker {
+	width: 100px;
+}
+
+.clear {
+	clear: both;
+}
+
+div.spacer {
+    height: 5px;
+}
+
+form#mainForm {
+	height: 100%;
+}
+
+/* -------------------------------------------
+   マスタプルダウン
+ ------------------------------------------- */
+select.country {
+	width: 80px;
+}
+
+select.year, select.sex, select.rank {
+	width: 70px;
+}
+
+select.retired {
+	width: 100px;
+}
+
+/* -------------------------------------------
+   検索エリア
+ ------------------------------------------- */
+td.searchColumn1 {
+    width: 70px;
+}
+
+td.searchColumn2 {
+    width: 140px;
+}
+
+th.space, td.space {
+    width: 15px;
+}
+
+/* -------------------------------------------
+   検索エリア（一覧）
+ ------------------------------------------- */
+table.searchView {
+	height: 100%;
+	display: block;
+}
+
+table.searchView thead {
+	background-color: #ffffcc;
+	display: block;
+	border: 1px #000000 solid;
+}
+
+table.searchView tbody {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -ms-overflow-x: hidden;
+    -ms-overflow-y: scroll;
+    background-color: #ffffff;
+    display: block;
+	border-left: 1px #000000 solid;
+	border-right: 1px #000000 solid;
+	border-bottom: 2px #000000 solid;
+}
+
+table.searchView td,
+table.searchView th {
+	border: 1px solid #000000;
+	table-layout: fixed;
+}
+
+/* -------------------------------------------
+   詳細表示エリア
+ ------------------------------------------- */
+section#detail {
+	width: 100%;
+	overflow-y: scroll;
+	height: calc(100% - 25px);
+	margin-bottom: 3px;
+	border: 1px solid #000000;
+}
+
+table.detail {
+	width: 100%;
+	padding: 2px;
+	background-color: #ffffff;
+}
+
+tr.headerRow1 {
+	height: 30px;
+	text-indent: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	text-decoration: underline;
+	background-color: #ddeeff;
+}
+
+tr.headerRow2 {
+	height: 22px;
+	text-indent: 10px;
+	border: #000000 2px solid;
+	background-color: #ffeedd;
+}
+
+tr.headerRow3 {
+	height: 15px;
+	text-indent: 20px;
+	background-color: #eeffdd;
+}
+
+td.detailColumn1 {
+    width: 15%;
+}
+
+td.detailColumn2 {
+    width: 35%;
+}
+
+/* -------------------------------------------
+   ログイン画面
+ ------------------------------------------- */
+section.login {
+	width: 220px;
+	height: 100px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+section.loginRow {
+	height: 30px;
+	clear: both;
+}
+
+section.loginColumnLeft {
+	float: left;
+	width: 30%;
+	height: 30px;
+	text-align: right;
+}
+
+section.loginColumnRight {
+	float: right;
+	width: 70%;
+	height: 30px;
+	text-align: right;
+}
+
+section.submit {
+	text-align: center;
+	width: 100%;
+}
+
+span.label {
+	vertical-align: middle;
+	padding-right: 3px;
+}
+
+/* -------------------------------------------
+   勝敗ランキング画面
+ ------------------------------------------- */
+table.rankingHeader {
+	border: 2px solid #dddddd;
+	padding: 5px 5px 0px 5px;
+	width: 387px;
+	height: 80px;
+	text-align: left;
+	background-color: #ffffff;
+}
+
+table.rankingHeader select.ranking {
+	width: 85px;
+}
+
+td.rankingColumn1 {
+    width: 90px;
+}
+
+table.ranking {
+	height: calc(100% - 90px);
+	max-height: calc(100% - 90px);
+	min-width: 387px;
+	max-width: 387px;
+	border-collapse: collapse;
+}
+
+table.ranking thead {
+	height: 22px;
+}
+
+table.ranking tbody {
+	max-height: calc(100% - 23px);
+	border-right: 2px #000000 solid;
+}
+
+table.ranking .no {
+	width: 30px;
+}
+
+table.ranking .playerName {
+	width: 196px;
+}
+
+table.ranking .winPoint,
+table.ranking .losePoint {
+	width: 40px;
+}
+
+table.ranking .winPercent {
+	width: 45px;
+}
+
+/* -------------------------------------------
+   棋士情報検索
+ ------------------------------------------- */
+table.playersHeader {
+	border: 2px solid #999999;
+	padding: 5px 5px 0px 5px;
+	width: 100%;
+	height: 90px;
+	text-align: left;
+	background-color: #ffffff;
+	margin-bottom: 5px;
+}
+
+table.playersHeader input.from,
+table.playersHeader input.to {
+    text-align: right;
+	width: 40px;
+}
+
+table.players {
+	height: calc(100% - 100px);
+	max-height: calc(100% - 100px);
+	min-width: 800px;
+	max-width: 910px;
+	border-collapse: collapse;
+}
+
+table.players thead {
+	height: 42px;
+}
+
+table.players tbody {
+	max-height: calc(100% - 43px);
+	border-right: 2px #000000 solid;
+}
+
+table.players tr.retired {
+	background-color: #dddddd;
+}
+
+table.players .playerId {
+	width: 50px;
+}
+
+table.players .playerName,
+table.players .playerNameEn {
+	width: 176px;
+}
+
+table.players .enrollment {
+	width: 75px;
+}
+
+table.players .country {
+	width: 60px;
+}
+
+table.players .rank,
+table.players .sex {
+	width: 50px;
+}
+
+table.players .score {
+	/*width: 100px;*/
+}
+
+table.players .scorePoint {
+	width: 36px;
+}
+
+/* -------------------------------------------
+   棋士情報照会・修正画面
+ ------------------------------------------- */
+table.detail input.affiliation {
+	width: 120px;
+}
+
+table.detail input.playerPoint {
+	width: 25px;
+}
+
+/* -------------------------------------------
+   タイトル情報検索
+ ------------------------------------------- */
+table.titlesHeader {
+	height: 50px;
+	width: 95%;
+	border: 2px solid #dddddd;
+	padding: 5px 5px 0px 5px;
+	text-align: left;
+	background-color: #ffffff;
+	margin-bottom: 5px;
+}
+
+table.titles {
+	height: calc(100% - 60px);
+	max-height: calc(100% - 60px);
+	min-width: 800px;
+	max-width: 886px;
+	border-collapse: collapse;
+}
+
+table.titles thead {
+	height: 40px;
+}
+
+table.titles thead th {
+	height: 100%;
+}
+
+table.titles tbody {
+	max-height: calc(100% - 41px);
+	border-right: 2px #000000 solid;
+}
+
+table.titles tbody tr {
+	height: 30px;
+}
+
+table.titles tr.retired {
+	background-color: #dddddd;
+}
+
+table.titles .titleName,
+table.titles .titleNameEn {
+	width: 170px;
+}
+
+table.titles .holding {
+	width: 35px;
+}
+
+table.titles .winner {
+	width: 150px;
+}
+
+table.titles .order {
+	width: 35px;
+	text-align: center;
+}
+
+table.titles .groupFlag,
+table.titles .deleteFlag {
+	width: 35px;
+	text-align: center;
+}
+
+table.titles .htmlFileName {
+	width: 70px;
+}
+
+table.titles .htmlModifyDate {
+	width: 85px;
+}
+
+table.titles .openRetain {
+	width: 50px;
+}
+
+table.titles input[type=text] {
+	width: calc(100% - 7px);
+}
+
+table.titles .holding input[type=text],
+table.titles .order input[type=text],
+table.titles .htmlModifyDate input[type=text] {
+	text-align: center;
+}
+
+/* -------------------------------------------
+   タイトル情報照会・修正画面
+ ------------------------------------------- */
+table.detail input.targetYear {
+	width: 40px;
+}
+
+table.detail input.targetHolding {
+	width: 30px;
+}
+
+/* -------------------------------------------
+   成績更新日編集
+ ------------------------------------------- */
+table.scoreUpdatesHeader {
+	width: 100%;
+	height: 40px;
+	border: 2px solid #dddddd;
+	background-color: #ffffff;
+	margin-bottom: 5px;
+}
+
+section#scoreUpdates {
+	width: 100%;
+	overflow-y: auto;
+	height: calc(100% - 45px);
+	margin-bottom: 3px;
+}
+
+table.scoreUpdates {
+	width: 100%;
+	border: 1px solid #000000;
+	background-color: #ffffff;
+}
+
+/* -------------------------------------------
+   各種情報クエリ更新
+ ------------------------------------------- */
+section.updateScore {
+	height: 100%;
+	width: 98%;
+	text-align: center;
+	margin: auto;
+}
+
+section.updateScore textarea {
+	height: calc(100% - 40px);
+	width: 100%;
+    font-size: 12px;
+	overflow-y: auto;
+	border: 1px solid #000000;
+	margin-bottom: 5px;
+}
+
+/* -------------------------------------------
+   アクセス情報集計結果参照
+ ------------------------------------------- */
+div.referenceSummary {
+	height: 150px;
+	width: 542px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: scroll;
+    float: left;
+}
+
+div.space {
+	height: 150px;
+	width: 16px;
+    float: left;
+}
+
+table.referenceSummary {
+	padding: 5px;
+	border: 2px solid #dddddd;
+	background-color: #ffffff;
+	height: 50px;
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.referenceSummaryHeaderParent {
+	width: 1102px;
+    border: 0px;
+	margin-left: auto;
+	margin-right: auto;
+    margin-bottom: -1px;
+}
+
+.referenceSummaryHeaderChild {
+	width: 542px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #ffffcc;
+}
+
+.referenceSummaryHeader {
+	width: 1100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.referenceSummaryBody {
+	width: 524px;
+    padding-top: -2px;
+	margin-top: -1px;
+	margin-left: 0px;
+	margin-right: auto;
+	background-color: #ffffff;
+}
+
+.searchLabel {
+	width: 100px;
+}
+
+.searchSelect {
+	width: 120px;
+}
+
+.category {
+	width: 420px;
+	max-width: 420px;
+    line-height: 1.0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.count {
+	width: 89px;
+}
+
+.headerSpace {
+	width: 12px;
+	background-color: #ffeedd;
+}
+
+.rowSpace {
+	height: 13px;
+}
