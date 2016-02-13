@@ -256,7 +256,7 @@ return [
             'password' => 'secret',
             'database' => 'test_myapp',
             'encoding' => 'utf8',
-            'timezone' => 'Asia/Tokyo',
+            'timezone' => 'UTC',
             'cacheMetadata' => true,
             'quoteIdentifiers' => false,
             'log' => false,

@@ -15,7 +15,7 @@
     <script type="text/javascript" src="/js/jquery-ui.custom.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
-    <?=$this->Html->script('common')?>
+    <?=$this->Html->script('app')?>
     <!--<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />-->
     <link rel="stylesheet" type="text/css" href="/css/common.css" />
     <?=$this->Html->css('app')?>
@@ -85,7 +85,7 @@
                     );
                     echo $this->Html->link('各種情報クエリ更新',
                         array(
-                            'controller' => 'ExecuteQuery',
+                            'controller' => 'NativeQuery',
                             'action' => 'index'
                         ),
                         array(

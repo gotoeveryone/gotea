@@ -12,7 +12,7 @@ use Cake\Event\Event;
  * @author		Kazuki Kamizuru
  * @since		2015/07/26
  */
-class ExecuteQueryController extends AppController
+class NativeQueryController extends AppController
 {
 	/**
 	 * 描画前処理
