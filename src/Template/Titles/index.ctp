@@ -95,7 +95,7 @@
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-titleName]', [
                             'id' => 'bean-titleName-'.$key,
-                            'value' => h($title->TITLE_NAME)
+                            'value' => $title->TITLE_NAME
                         ]);
                     ?>
                 </td>
@@ -103,7 +103,7 @@
                     <?=
                         $this->Form->text('titles['.$key.'][titleNameEn]', [
                             'id' => 'titleNameEn-'.$key,
-                            'value' => h($title->TITLE_NAME_EN),
+                            'value' => $title->TITLE_NAME_EN,
                             'class' => 'checkChange'
                         ]);
                     ?>
