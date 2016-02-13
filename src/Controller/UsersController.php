@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use PDOException;
 use Cake\Event\Event;
+use Cake\I18n\Time;
 use Cake\Validation\Validator;
 use Psr\Log\LogLevel;
 
@@ -81,7 +82,7 @@ class UsersController extends AppController {
 
         try {
             // 最終ログイン日時を更新してデータを保存
-            $user->LAST_LOGIN_DATETIME = date('Y-m-d H:i:s');
+            $user->LAST_LOGIN_DATETIME = Time::now();
             $this->Users->save($user);
         } catch (PDOException $e) {
             $this->isRollback = true;

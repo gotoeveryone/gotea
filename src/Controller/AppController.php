@@ -85,6 +85,9 @@ class AppController extends Controller
     //     }
     // }
 
+    /**
+     * 初期処理
+     */
 	public function initialize()
     {
         $this->loadComponent('Flash');
@@ -156,7 +159,22 @@ class AppController extends Controller
         }
     }
 
-	/**
+    /**
+     * リダイレクト処理
+     * 
+     * @param type $url
+     * @param type $status
+     */
+    public function redirect($url, $status = 302)
+    {
+        // トランザクションをコミットしておく
+        if (!empty($this->conn)) {
+            $this->conn->commit();
+        }
+        parent::redirect($url, $status);
+    }
+
+    /**
 	 * ビュー描画後処理
      * 
      * @param Event $event
