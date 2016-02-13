@@ -53,9 +53,7 @@ class TitlesController extends AppController
         $searchDelete = $this->_getParam('searchDelete');
 
         // タイトル情報の取得
-        $query = $this->Titles->find()->matching('TitleRetains', function ($q) {
-            return $q->where(['Titles.HOLDING = TitleRetains.HOLDING']);
-        })->contain([
+        $query = $this->Titles->find()->contain([
             'TitleRetains',
             'TitleRetains.Titles' => function ($q) {
                 return $q->where(['TitleRetains.HOLDING = Titles.HOLDING']);

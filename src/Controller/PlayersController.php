@@ -98,7 +98,7 @@ class PlayersController extends AppController
             'Players.ID'
         ])->contain([
             'PlayerScores' => function ($q) {
-                return $q->where(['PlayerScores.TARGET_YEAR' => intval(date('Y'))]);
+                return $q->where(['PlayerScores.TARGET_YEAR' => intval(Time::now()->year)]);
             },
             'Ranks',
             'Countries'
