@@ -18,56 +18,56 @@ class AppEntity extends Entity
 	// ID
 	public function getId()
 	{
-		return $this->get('ID');
+		return $this->ID;
 	}
 
 	// 削除フラグ
 	public function getDeleteFlag()
 	{
-		return $this->get('DELETE_FLAG');
+		return $this->DELETE_FLAG;
 	}
 	public function setDeleteFlag($deleteFlag)
 	{
-		$this->set('DELETE_FLAG', $deleteFlag);
+		return $this->DELETE_FLAG = $deleteFlag;
 	}
 
 	// 初回登録日時
 	public function getCreated()
 	{
-		return $this->get('CREATED');
+		return $this->CREATED;
 	}
 	public function setCreated($created)
 	{
-		$this->set('CREATED', $created);
+		return $this->CREATED = $created;
 	}
 
 	// 初回登録者
 	public function getCreatedBy()
 	{
-		return $this->get('CREATED_BY');
+		return $this->CREATED_BY;
 	}
 	public function setCreatedBy($createdBy)
 	{
-		$this->set('CREATED_BY', $createdBy);
+		return $this->CREATED_BY = $createdBy;
 	}
 
 	// 最終更新日時
-	protected function _getModified()
+	public function getModified()
 	{
-		return $this->get('MODIFIED');
+		return $this->MODIFIED;
 	}
-	protected function _setModified($modified)
+	public function setModified($modified)
 	{
-		$this->set('MODIFIED', $modified);
+		return $this->MODIFIED = $modified;
 	}
 
 	// 最終更新者
-	protected function _getModifiedBy()
+	public function getModifiedBy()
 	{
-		return $this->get('MODIFIED_BY');
+		return $this->MODIFIED_BY;
 	}
-	protected function _setModifiedBy($modifiedBy)
+	public function setModifiedBy($modifiedBy)
 	{
-		$this->set('MODIFIED_BY', $modifiedBy);
+		return $this->MODIFIED_BY = $modifiedBy;
 	}
 }

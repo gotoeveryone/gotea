@@ -23,12 +23,7 @@ class TitlesController extends AppController
 
 		// 所属国プルダウン
         $countries = TableRegistry::get('Countries');
-		$this->set('countries', $countries->find('list', [
-            'keyField' => 'COUNTRY_CD',
-            'valueField' => 'COUNTRY_NAME'
-        ])->where([
-            'Countries.OUTPUT_FILE_NAME IS NOT' => null
-        ])->toArray());
+		$this->set('countries', $countries->findCountryHasFileToArray());
    	}
 
 	/**
@@ -168,18 +163,8 @@ class TitlesController extends AppController
     {
 		$this->set('cakeDescription', 'タイトル情報照会・修正');
 
-		// タイトル情報一式を取得
-		$title = $this->Titles->find()->contain([
-            'Countries',
-            'TitleRetains' => function ($q) {
-                return $q->order(['TitleRetains.TARGET_YEAR' => 'DESC']);
-            },
-            'TitleRetains.Ranks',
-            'TitleRetains.Titles.Countries',
-            'TitleRetains.Players'
-        ])->where(['Titles.ID' => $id])->first();
-
-        $this->set('title', $title);
+		// タイトル情報一式を設定
+        $this->set('title', $this->Titles->findTitleAllRelations($id));
 
         return $this->render('detail');
     }

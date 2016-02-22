@@ -39,4 +39,37 @@ class ScoreUpdatesTable extends AppTable
                 ]
             ]);
     }
+
+    /**
+     * 成績更新日情報の取り扱い念を取得します。
+     * 
+     * @param type $targetYear
+     * @return type
+     */
+    public function findScoreUpdateHasYear($targetYear)
+    {
+        return $this->find()->where([
+            'ScoreUpdates.TARGET_YEAR' => $targetYear
+        ])->order([
+            'ScoreUpdates.COUNTRY_CD',
+            'ScoreUpdates.TARGET_YEAR' => 'DESC'
+        ])->contain(['Countries'])->all();
+    }
+
+    /**
+     * 成績更新日情報の取り扱い念を取得します。
+     * 
+     * @param type $targetYear
+     * @return type
+     */
+    public function findScoreUpdateToArray()
+    {
+        return $this->find('list', [
+            'keyField' => 'keyField',
+            'valueField' => 'valueField'
+        ])->group(['ScoreUpdates.TARGET_YEAR'])->order(['ScoreUpdates.TARGET_YEAR' => 'DESC'])->select([
+            'keyField' => 'ScoreUpdates.TARGET_YEAR',
+            'valueField' => 'ScoreUpdates.TARGET_YEAR'
+        ])->toArray();
+    }
 }

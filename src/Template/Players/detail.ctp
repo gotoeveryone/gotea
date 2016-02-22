@@ -8,6 +8,9 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
+    <!-- 連続作成フラグ -->
+    <?=$this->Form->hidden('isContinue', ['id' => 'isContinue', 'value' => false])?>
+
     <!-- 検索フラグ -->
     <?=$this->Form->hidden('searchFlag', ['value' => $this->request->data('searchFlag')])?>
 
@@ -33,8 +36,8 @@
             <tr>
                 <td class="right detailColumn1">所属国：</td>
                 <td class="detailColumn2">
-                    <?=h($countryName)?>
-                    <?=$this->Form->hidden('selectCountry', ['value' => $countryCd])?>
+                    <?=h($player->country->COUNTRY_NAME)?>
+                    <?=$this->Form->hidden('selectCountry', ['value' => $player->country->COUNTRY_CD])?>
                 </td>
                 <td class="right detailColumn1">所属組織：</td>
                 <td class="detailColumn2">
@@ -159,16 +162,16 @@
                 </td>
                 <td class="right">
                     <?php
-                        $status = '登録';
-                        $buttonId = 'regist';
-                        if ($player->ID) {
-                            $status = '更新';
-                            $buttonId = 'update';
-                        }
-                        echo $this->Form->button($status, [
-                            'id' => $buttonId,
+                        echo $this->Form->button(($player->ID ? '更新' : '登録'), [
+                            'id' => 'save',
                             'type' => 'button'
                         ]);
+                        if (!$player->ID) {
+                            echo $this->Form->button('連続作成', [
+                                'id' => 'saveWithContinue',
+                                'type' => 'button'
+                            ]);
+                        }
                     ?>
                 </td>
             </tr>
@@ -316,7 +319,6 @@
 <?=$this->Form->end()?>
 <script type="text/javascript">
     $(function() {
-
         // 国内棋戦、国際棋戦の勝率を設定
         $('.winPercent').each(function () {
             var index = $(this).attr('id').split('_')[1];
@@ -338,8 +340,11 @@
         });
 
         // 登録・更新ボタン押下時
-        $('#regist, #update').click(function() {
+        $('#save, #saveWithContinue').click(function() {
             $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'save'])?>');
+            if ($(this).attr('id') === 'saveWithContinue') {
+                $('#isContinue').val(true);
+            }
             var confirm = $("#confirm");
             confirm.html('棋士マスタを' + $(this).text() + 'します。よろしいですか？');
             confirm.click();

@@ -16,24 +16,27 @@ class User extends AppEntity
     public function setUserId($userId) {
         $this->set('USER_ID', $userId);
     }
+
     // パスワード
     public function getPassword() {
         return $this->get('PASSWORD');
     }
     public function setPassword($password) {
-        $this->set('PASSWORD', $password);
+        $this->PASSWORD = $password;
         // $this->set('PASSWORD', (new DefaultPasswordHasher)->hash($password));
     }
+
     // ユーザ名
     public function getUserName() {
-        return $this->get('USER_NAME');
+        return $this->USER_NAME;
     }
+
     // 最終ログイン日時
-    protected function _getLastLoginDatetime() {
-        return $this->get('LAST_LOGIN_DATETIME');
+    public function getLastLoginDatetime() {
+        return $this->LAST_LOGIN_DATETIME;
     }
-    protected function _setLastLoginDatetime($lastLoginDatetime) {
-        $this->set('LAST_LOGIN_DATETIME', $lastLoginDatetime);
+    public function setLastLoginDatetime($lastLoginDatetime) {
+        $this->LAST_LOGIN_DATETIME = $lastLoginDatetime;
     }
     // protected function _setPassword($password)
     // {

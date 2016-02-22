@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use PDOException;
+use App\Model\Entity\User;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\Validation\Validator;
@@ -91,13 +92,8 @@ class UsersController extends AppController {
             return $this->index();
         }
 
-        // ログイン情報を設定
-        $this->Auth->setUser([
-            'userid' => $user->USER_ID,
-            'username' => $user->USER_NAME,
-            'created' => $user->CREATED,
-            'modified' => $user->MODIFIED
-        ]);
+        // ユーザ情報を設定
+        $this->__setUser($user);
 
         // リダイレクト
         return $this->redirect($this->Auth->redirectUrl());
@@ -107,8 +103,25 @@ class UsersController extends AppController {
      * ログアウト
      * @return bool
      */
-    public function logout() {
+    public function logout()
+    {
         return $this->redirect($this->Auth->logout());
+    }
+
+    /**
+     * ユーザ情報をセッションに格納します。
+     * 
+     * @param User $user
+     */
+    private function __setUser(User $user)
+    {
+        // ログイン情報を設定
+        $this->Auth->setUser([
+            'userid' => $user->USER_ID,
+            'username' => $user->USER_NAME,
+            'created' => $user->CREATED,
+            'modified' => $user->MODIFIED
+        ]);
     }
 
     /**

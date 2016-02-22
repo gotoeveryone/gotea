@@ -23,13 +23,7 @@ class ScoreUpdatesController extends AppController
 
         $this->set('cakeDescription', '成績更新日編集');
 		// 所属国プルダウン
-		$this->set('years', $this->ScoreUpdates->find('list', [
-            'keyField' => 'keyField',
-            'valueField' => 'valueField'
-        ])->group(['ScoreUpdates.TARGET_YEAR'])->order(['ScoreUpdates.TARGET_YEAR' => 'DESC'])->select([
-            'keyField' => 'ScoreUpdates.TARGET_YEAR',
-            'valueField' => 'ScoreUpdates.TARGET_YEAR'
-        ])->toArray());
+		$this->set('years', $this->ScoreUpdates->findScoreUpdateToArray());
     }
 
 	/**
@@ -50,12 +44,7 @@ class ScoreUpdatesController extends AppController
 //        var_dump($this->request->session()->read('Auth'));
 
         // 成績更新日情報の取得
-        $scoreUpdates = $this->ScoreUpdates->find()->where([
-            'ScoreUpdates.TARGET_YEAR' => $searchYear
-        ])->order([
-            'ScoreUpdates.COUNTRY_CD',
-            'ScoreUpdates.TARGET_YEAR' => 'DESC'
-        ])->contain(['Countries'])->all();
+        $scoreUpdates = $this->ScoreUpdates->findScoreUpdateHasYear($searchYear);
 
         $this->set('scoreUpdates', $scoreUpdates);
 
@@ -75,9 +64,6 @@ class ScoreUpdatesController extends AppController
 	public function save() {
         // POSTされたタイトル情報を取得
         $rows = $this->request->data('scoreUpdates');
-
-        // 更新件数
-        $count = 0;
 
         // 登録 or 更新対象の一覧を生成
         $targets = [];
@@ -107,6 +93,9 @@ class ScoreUpdatesController extends AppController
         }
 
         try {
+            // 更新件数
+            $count = 0;
+
 			// 件数分処理
 			foreach ($targets as $target) {
                 // タイトル情報を更新

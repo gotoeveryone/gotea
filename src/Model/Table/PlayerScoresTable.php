@@ -25,4 +25,44 @@ class PlayerScoresTable extends AppTable
             'joinType' => 'INNER'
         ]);
     }
+
+    /**
+     * 棋士IDと対象年で棋士成績情報を1件取得します。
+     * 
+     * @param type $playerId
+     * @param type $targetYear
+     * @return type
+     */
+    public function findByPlayerAndYear($playerId, $targetYear)
+    {
+        $score = $this->find()->where([
+            'PLAYER_ID' => $playerId,
+            'TARGET_YEAR' => $targetYear
+        ])->first();
+
+        if (!$score) {
+            $score = $this->newEntity();
+            $score->set('PLAYER_ID', $playerId);
+            $score->set('TARGET_YEAR', $targetYear);
+        }
+
+        return $score;
+    }
+
+    /**
+     * 成績更新日情報の取り扱い念を取得します。
+     * 
+     * @param type $targetYear
+     * @return type
+     */
+    public function findScoreUpdateToArrayWithSuffix()
+    {
+        return $this->find('list', [
+            'keyField' => 'keyField',
+            'valueField' => 'valueField'
+        ])->group(['PlayerScores.TARGET_YEAR'])->order(['PlayerScores.TARGET_YEAR' => 'DESC'])->select([
+            'keyField' => 'PlayerScores.TARGET_YEAR',
+            'valueField' => 'CONCAT(PlayerScores.TARGET_YEAR, \'年度\')'
+        ])->toArray();
+    }
 }

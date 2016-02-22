@@ -66,4 +66,31 @@ class PlayersTable extends AppTable
                 ]
             ]);
     }
+
+    /**
+     * 棋士情報に関する一式を取得します。
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function findPlayerAllRelations($id)
+    {
+		return $this->find()->contain([
+            'Countries',
+            'Ranks',
+            'PlayerScores' => function ($q) {
+                return $q->order(['PlayerScores.TARGET_YEAR' => 'DESC']);
+            },
+            'PlayerScores.Ranks',
+            'TitleRetains.Titles',
+            'TitleRetains' => function ($q) {
+                return $q->order([
+                    'TitleRetains.TARGET_YEAR' => 'DESC',
+                    'Titles.COUNTRY_CD' => 'ASC',
+                    'Titles.SORT_ORDER' => 'ASC'
+                ]);
+            },
+            'TitleRetains.Titles.Countries'
+        ])->where(['Players.ID' => $id])->first();
+    }
 }

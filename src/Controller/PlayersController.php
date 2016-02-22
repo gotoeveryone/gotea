@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use PDOException;
-use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
@@ -26,12 +25,7 @@ class PlayersController extends AppController
 
 		// 段位プルダウン
         $ranks = TableRegistry::get('Ranks');
-		$this->set('ranks', $ranks->find('list', [
-            'keyField' => 'RANK',
-            'valueField' => 'RANK_NAME'
-        ])->where([
-            'RANK !=' => '0'
-        ])->order('RANK DESC')->toArray());
+		$this->set('ranks', $ranks->getRanksToArray());
    	}
 
 	/**
@@ -143,12 +137,12 @@ class PlayersController extends AppController
         // 棋士IDが取得出来なければ新規登録画面を表示
 		if (!$id) {
             $countries = TableRegistry::get('Countries');
+            $player = $this->Players->newEntity();
+
             // 所属国を取得
 			$country = $countries->get($this->_getParam('searchCountry'));
-			$this->set('countryCd', $country->COUNTRY_CD);
-			$this->set('countryName', $country->COUNTRY_NAME);
+            $player->set('country', $country);
 
-            $player = $this->Players->newEntity();
             $affiliation = $this->request->data('affiliation');
             $player->set('AFFILIATION', ($affiliation ? $affiliation : $country->COUNTRY_NAME.'棋院'));
 			$this->set('player', $player);
@@ -157,40 +151,23 @@ class PlayersController extends AppController
 		}
 
 		// 棋士情報一式を取得
-		$player = $this->Players->find()->contain([
-            'Countries',
-            'Ranks',
-            'PlayerScores' => function ($q) {
-                return $q->order(['PlayerScores.TARGET_YEAR' => 'DESC']);
-            },
-            'PlayerScores.Ranks',
-            'TitleRetains.Titles',
-            'TitleRetains' => function ($q) {
-                return $q->order([
-                    'TitleRetains.TARGET_YEAR' => 'DESC',
-                    'Titles.COUNTRY_CD' => 'ASC',
-                    'Titles.SORT_ORDER' => 'ASC'
-                ]);
-            },
-            'TitleRetains.Titles.Countries'
-        ])->where(['Players.ID' => $id])->first();
-
-//        $this->log($player, LogLevel::INFO);
-
-        // 棋士の所属国を設定
-		$this->set('countryCd', $player->country->COUNTRY_CD);
-		$this->set('countryName', $player->country->COUNTRY_NAME);
-
-		$this->set('player', $player);
+		$this->set('player', $this->Players->findPlayerAllRelations($id));
 
         return $this->render('detail');
 	}
 
 	/**
 	 * 棋士マスタの更新
+     * 
+     * @param boolean $continue 連続作成するか
 	 */
 	public function save()
     {
+        // 連続作成かどうか
+		$continue = $this->request->data('isContinue');
+        $this->log($this->request->data, LogLevel::INFO);
+        $this->log(($continue), LogLevel::INFO);
+
         // 必須カラムのフィールド
 		$playerId = $this->request->data('selectPlayerId');
 		$countryCd = $this->request->data('selectCountry');
@@ -228,56 +205,38 @@ class PlayersController extends AppController
             $error = $this->_getErrorMessage($res);
             $this->Flash->error($error);
             // 詳細情報表示処理へ
-//            return $this->render('detail');
             return $this->detail($playerId);
         }
 
         try {
             // 棋士マスタの保存
-//            $this->log($player, LogLevel::INFO);
             $this->Players->save($player);
 
 			// 状態によって棋士成績情報の登録・更新を制御
-			$update = false;
 			$thisYear = Time::now()->year;
 
             // 棋士成績情報
             $playerScores = TableRegistry::get('PlayerScores');
 
-			if ($playerId) {
-                // 当年の棋士成績情報を取得
-				$updateScore = $playerScores->find()->where([
-                    'PLAYER_ID' => $playerId,
-                    'TARGET_YEAR' => $thisYear
-				])->first();
+            // 当年の棋士成績情報を取得
+            $updateScore = $playerScores->findByPlayerAndYear($player->ID, $thisYear);
 
-                if (!$updateScore) {
-                    $updateScore = $playerScores->newEntity();
-                    $updateScore->set('PLAYER_ID', $playerId);
-                    $updateScore->set('TARGET_YEAR', $thisYear);
-                }
-
-                // 棋士マスタの段位と異なる場合は更新対象
-                $update = ($player->RANK !== $updateScore->PLAYER_RANK);
-			}
-
-			if ($update || !$playerId) {
+            // 棋士マスタの段位と異なる場合は更新対象
+			if ($player->RANK !== $updateScore->PLAYER_RANK) {
 				$updateScore->set('PLAYER_RANK', $rank);
-				$updateScore->set('PROCESSED_FLAG', 0);
-				$updateScore->set('DELETE_FLAG', 0);
 				$playerScores->save($updateScore);
 			}
 
             // メッセージ出力
-            $this->Flash->info((!$playerId) ? '棋士ID：'.$playerId.'の棋士情報を登録しました。' : '棋士マスタを更新しました。');
+            $this->Flash->info(__('棋士ID：'.$player->ID.'の棋士情報を'.($playerId ? '更新' : '登録').'しました。'));
 
 		} catch (PDOException $e) {
 			$this->log('棋士情報登録・更新エラー：'.$e->getMessage(), LogLevel::ERROR);
 			$this->isRollback = true;
 			$this->Flash->error('棋士情報の'.($playerId ? '更新' : '登録').'に失敗しました…。');
 		} finally {
-            // 詳細情報表示処理へ
-			return $this->detail($playerId);
+            // 連続作成の場合は新規登録、それ以外は登録した棋士情報を表示
+            return (!$continue) ? $this->detail($player->ID) : $this->detail();
 		}
 	}
 
@@ -298,20 +257,15 @@ class PlayersController extends AppController
 		$updateScore->set('LOSE_POINT_WR', $this->request->data('selectLosePointWr'));
 		$updateScore->set('DRAW_POINT_WR', $this->request->data('selectDrawPointWr'));
 
-		// トランザクションの開始
-		$conn = ConnectionManager::get('default');
-        $conn->begin();
-
         $selectYear = $this->request->data('selectYear');
 		try {
 			// 棋士成績情報の更新
 			$updateScore->set('PROCESSED_FLAG', 0);
 			$playerScores->save($updateScore);
-			$conn->commit();
 			$this->Flash->info($selectYear.'年度の棋士成績情報を更新しました。');
 		} catch (PDOException $e) {
 			$this->log('棋士成績情報登録・更新エラー：'.$e->getMessage());
-			$conn->rollback();
+			$this->isRollback = true;
 			$this->Flash->error($selectYear.'年度の棋士成績情報の更新に失敗しました…。');
 		} finally {
             // 詳細情報表示処理へ
@@ -326,12 +280,7 @@ class PlayersController extends AppController
     {
 		// 所属国プルダウン
         $countries = TableRegistry::get('Countries');
-		$this->set('countries', $countries->find('list', [
-            'keyField' => 'COUNTRY_CD',
-            'valueField' => 'COUNTRY_NAME'
-        ])->where([
-            'BELONG_FLAG ' => 1
-        ])->toArray());
+		$this->set('countries', $countries->findCountryBelongToArray());
 
         $this->set('cakeDescription', '棋士情報検索');
     }

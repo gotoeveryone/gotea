@@ -45,15 +45,17 @@ class NativeQueryController extends AppController
 
         try {
             foreach ($queryArray as $query) {
-                if (!empty($query)) {
-                    // 更新
-                    $stmt = ConnectionManager::get('default')->execute($query);
-//                    $this->log('クエリ：'.$query.' 件数：'.count($stmt), LogLevel::INFO);
-                    if (count($stmt) !== 1) {
-                        throw new PDOException('レコードの更新エラー');
-                    }
-                    $counter++;
+                if (empty($query)) {
+                    continue;
                 }
+
+                // 更新
+                $stmt = ConnectionManager::get('default')->execute($query);
+//                    $this->log('クエリ：'.$query.' 件数：'.count($stmt), LogLevel::INFO);
+                if (count($stmt) !== 1) {
+                    throw new PDOException('レコードの更新エラー');
+                }
+                $counter++;
             }
             $this->Flash->info($counter.'件のレコードを更新しました。');
         } catch (PDOException $e) {

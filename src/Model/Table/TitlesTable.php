@@ -55,4 +55,23 @@ class TitlesTable extends AppTable {
                 ]
             ]);
     }
+
+    /**
+     * タイトル情報一式を取得
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function findTitleAllRelations($id)
+    {
+		return $this->find()->contain([
+            'Countries',
+            'TitleRetains' => function ($q) {
+                return $q->order(['TitleRetains.TARGET_YEAR' => 'DESC']);
+            },
+            'TitleRetains.Ranks',
+            'TitleRetains.Titles.Countries',
+            'TitleRetains.Players'
+        ])->where(['Titles.ID' => $id])->first();
+    }
 }

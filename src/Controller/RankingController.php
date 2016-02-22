@@ -25,27 +25,14 @@ class RankingController extends AppController
     /**
      * メイン処理
      */
-    public function index() {
+    public function index()
+    {
 		// 所属国プルダウン
-        $countries = TableRegistry::get('Countries')->find('list', [
-            'keyField' => 'keyField',
-            'valueField' => 'valueField'
-        ])->where(function ($exp, $q) {
-            return $exp->isNotNull('OUTPUT_FILE_NAME');
-        })->order(['Countries.COUNTRY_CD' => 'ASC'])->select([
-            'keyField' => 'Countries.COUNTRY_CD',
-            'valueField' => 'CASE Countries.COUNTRY_CD WHEN \'99\' THEN CONCAT(Countries.COUNTRY_NAME, \'棋戦\') ELSE CONCAT(Countries.COUNTRY_NAME, \'棋士\') END'
-        ])->toArray();
-		$this->set('countries', $countries);
+        $countries = TableRegistry::get('Countries');
+		$this->set('countries', $countries->findCountryHasFileToArrayWithSuffix());
 
         // 年度プルダウン
-        $years = TableRegistry::get('PlayerScores')->find('list', [
-            'keyField' => 'keyField',
-            'valueField' => 'valueField'
-        ])->group(['PlayerScores.TARGET_YEAR'])->order(['PlayerScores.TARGET_YEAR' => 'DESC'])->select([
-            'keyField' => 'PlayerScores.TARGET_YEAR',
-            'valueField' => 'CONCAT(PlayerScores.TARGET_YEAR, \'年度\')'
-        ])->toArray();
-        $this->set('years', $years);
+        $scores = TableRegistry::get('PlayerScores');
+        $this->set('years', $scores->findScoreUpdateToArrayWithSuffix());
     }
 }

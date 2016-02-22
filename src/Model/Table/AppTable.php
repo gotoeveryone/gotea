@@ -2,6 +2,8 @@
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Event\Event;
 use Cake\ORM\Table;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
@@ -13,36 +15,28 @@ use Cake\Network\Session;
 class AppTable extends Table
 {
 	/**
-	 * エンティティに管理項目を保存します。
-	 */
-	public function save(EntityInterface $entity, $options = []) {
+	 * 保存前処理
+     * エンティティに管理項目を設定します。
+     * 
+     * @param Event $event
+     * @param EntityInterface $entity
+     * @param ArrayObject $options
+     * @param type $operation
+     */
+	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+        // 削除フラグの設定が無い場合はデフォルト値(0)を設定
+        if (!$entity->getDeleteFlag()) {
+            $entity->setDeleteFlag(false);
+        }
 		// 新規登録時は登録日時を設定
 		$nowDate = Time::now();
 		$userId = $this->__getLoginUserId();
-		//$userId = $this->_getLoginUserId();
 		if (!$entity->isNew() === false) {
-			$entity->CREATED = $nowDate;
-			$entity->CREATED_BY = $userId;
+			$entity->setCreated($nowDate);
+			$entity->setCreatedBy($userId);
 		}
-		$entity->MODIFIED = $nowDate;
-		$entity->MODIFIED_BY = $userId;
-
-		return parent::save($entity, $options);
-	}
-
-	public function updateModel($exist = false, $data = null, $conditions = null) {
-
-		// 新規登録時は登録日時を設定
-		$nowDate = date('Y-m-d H:i:s');
-		$userId = $this->__getLoginUserId();
-		if (!$exist) {
-			$data += array('CREATED' => "'".$nowDate."'");
-			$data += array('CREATED_BY' => "'".$userId."'");
-		}
-		$data += array('MODIFIED' => "'".$nowDate."'");
-		$data += array('MODIFIED_BY' => "'".$userId."'");
-
-		return $this->updateAll($data, $conditions);
+		$entity->setModified($nowDate);
+		$entity->setModifiedBy($userId);
 	}
 
     /**
