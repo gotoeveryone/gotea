@@ -165,8 +165,6 @@ class PlayersController extends AppController
     {
         // 連続作成かどうか
 		$continue = $this->request->data('isContinue');
-        $this->log($this->request->data, LogLevel::INFO);
-        $this->log(($continue), LogLevel::INFO);
 
         // 必須カラムのフィールド
 		$playerId = $this->request->data('selectPlayerId');
