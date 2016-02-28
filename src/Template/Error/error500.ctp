@@ -28,10 +28,10 @@ if (Configure::read('debug')):
     endif;
 
     $this->end();
+else:
+    $this->layout = 'error';
 endif;
+$this->assign('title', '内部サーバーエラー発生');
 ?>
-<h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= h($message) ?>
-</p>
+<p><strong><?= __d('cake', 'ステータスコード：'.$code) ?></strong></p>
+<p><strong><?= __d('cake', '対象URL：'.$url) ?></strong></p>

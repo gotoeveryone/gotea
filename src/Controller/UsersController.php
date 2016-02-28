@@ -23,19 +23,29 @@ class UsersController extends AppController {
 	public function initialize()
 	{
 		parent::initialize();
-        $this->Auth->allow(['login']);
 	}
 
 	/**
-	 * 描画前処理
+	 * アクション実行前処理
+     * 
+     * @param $event
 	 */
-    public function beforeRender(Event $event)
+    public function beforeFilter(Event $event)
     {
-        parent::beforeRender($event);
+        parent::beforeFilter($event);
 		// すでにログイン済みならリダイレクト
         if ($this->Auth->user()) {
 			return $this->redirect($this->Auth->redirectUrl());
         }
+    }
+
+	/**
+	 * 描画前処理
+     * 
+     * @param $event
+	 */
+    public function beforeRender(Event $event)
+    {
         $this->set('cakeDescription', 'ログイン');
     }
 

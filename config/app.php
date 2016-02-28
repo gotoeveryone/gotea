@@ -9,7 +9,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => false,
+    'debug' => (filter_input(INPUT_SERVER, 'CAKE_ENV') !== 'production'),
 
     /**
      * Configure basic information about the application.

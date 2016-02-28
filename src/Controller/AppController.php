@@ -5,7 +5,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
-use Cake\NetWork\Exception\ForbiddenException;
+use Cake\NetWork\Exception\MethodNotAllowedException;
 use Psr\Log\LogLevel;
 
 /**
@@ -18,72 +18,6 @@ class AppController extends Controller
 
     // ロールバックフラグ
     var $isRollback = false;
-
-    //
-	// /**
-	//  * 初期処理
-	//  */
-    // public function initialize()
-    // {
-    //     parent::initialize();
-	//
-    //     $this->loadComponent('RequestHandler');
-    //     $this->loadComponent('Flash');
-	//
-    //     $this->Session = $this->request->session();
-	//
-    //     $this->loadComponent('Auth', [
-    //         'authenticate' => [
-    //             'Form' => [ // 認証の種類を指定。Form,Basic,Digestが使える。デフォルトはForm
-    //                 // 'userModel' => 'Users',
-    //                 'fields' => [ // ユーザー名とパスワードに使うカラムの指定。省略した場合はusernameとpasswordになる
-    //                     'username' => 'USER_ID', // ユーザー名のカラムを指定
-    //                     'password' => 'PASSWORD' //パスワードに使うカラムを指定
-    //                 ]
-    //             ]
-    //         ],
-    //         // 'loginAction' => [
-    //         //     'controller' => 'Login',
-    //         //     'action' => 'index'
-    //         // ],
-    //         'loginRedirect' => [
-    //             'controller' => 'Menu',
-    //             'action' => 'index'
-    //         ],
-    //         // 'logoutRedirect' => [
-    //         //     'controller' => 'Login',
-    //         //     'action' => 'index'
-    //         // ],
-    //         'authError' => __('You need Logged In.')
-    //     ]);
-    // }
-	//
-	// public function isAuthorized($user) /* add */
-    // {
-    //     return false;
-    // }
-	//
-	// /**
-	//  * 各アクションの事前に実行する処理
-	//  */
-    // public function beforeRender(Event $event) {
-	//
-    //     // if ($this->Auth->user() !== null) {
-    //     //     $this->set('username', $this->Auth->user('User.USER_NAME'));
-    //     // }
-	//
-	// 	// 初期表示以外のアクションの場合、POSTされたデータが存在しなければエラー
-	// 	// if ($this->action !== 'index' && !$this->request->data) {
-	// 	// 	throw new ForbiddenException('このページへのアクセスは許可されていません。');
-	// 	// }
-	//
-    //     $dialogFlag = $this->request->data('dialogFlag');
-    //     if ($dialogFlag == true) {
-    //         $this->set('dialogFlag', true);
-    //     } else {
-    //         $this->set('dialogFlag', false);
-    //     }
-    // }
 
     /**
      * 初期処理
@@ -103,17 +37,21 @@ class AppController extends Controller
 	            //     ]
 	            // ],
                 'loginAction' => [
-                    'controller' => 'Users',
+                    'controller' => 'users',
                     'action' => 'index'
                 ],
                 'loginRedirect' => [
-                    'controller' => 'Menu',
+                    'controller' => 'menu',
                     'action' => 'index'
                 ],
                 'logoutRedirect' => [
-                    'controller' => 'Users',
+                    'controller' => 'users',
                     'action' => 'index'
                 ]
+        ]);
+        $this->loadComponent('Security', [
+                'csrfCheck' => false,
+                'validatePost' => false
         ]);
     }
 
@@ -125,13 +63,22 @@ class AppController extends Controller
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
+
+        // 初期表示以外のアクションの場合、POSTされたデータが存在しなければエラー
+        if ($this->request->action !== 'index' && $this->request->action !== 'login' && !$this->request->is('post')) {
+        	throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
+        }
+
+        // ユーザ名を表示
+        if ($this->Auth->user() !== null) {
+            $this->set('username', $this->Auth->user('username'));
+        }
+
+        // トランザクションを開始
         if (empty($this->conn)) {
             $this->conn = ConnectionManager::get('default');
         }
         $this->conn->begin();
-        if ($this->Auth->user() !== null) {
-            $this->set('username', $this->Auth->user('username'));
-        }
 
         // ダイアログ表示判定
         $dialogFlag = $this->request->data('dialogFlag');
@@ -150,12 +97,16 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
-        if ($this->isRollback) {
-			$this->log('例外が発生したので、トランザクションをロールバックしました。', LogLevel::ERROR);
-            $this->conn->rollback();
-        } else {
-//			$this->log('トランザクションをコミットしました。', LogLevel::DEBUG);
-            $this->conn->commit();
+
+        // コミットまたはロールバック
+        if (!empty($this->conn)) {
+            if ($this->isRollback) {
+                $this->log('例外が発生したので、トランザクションをロールバックしました。', LogLevel::ERROR);
+                $this->conn->rollback();
+            } else {
+                $this->log('トランザクションをコミットしました。', LogLevel::DEBUG);
+                $this->conn->commit();
+            }
         }
     }
 
@@ -173,21 +124,6 @@ class AppController extends Controller
         }
         parent::redirect($url, $status);
     }
-
-    /**
-	 * ビュー描画後処理
-     * 
-     * @param Event $event
-	 */
-    public function afterFilter(Event $event)
-    {
-        parent::afterFilter($event);
-    }
-
-    // public function isAuthorized($user) /* add */
-    // {
-    //     return false;
-    // }
 
     /**
      * エラーメッセージを取得

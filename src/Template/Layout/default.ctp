@@ -38,7 +38,7 @@
 
         <!-- 見出し -->
         <section id="title" class="center">
-            <h1><?php if (!empty($cakeDescription)) { echo $cakeDescription.'画面'; } ?></h1>
+            <h1><?php if (!empty($cakeDescription)) { echo '棋士情報管理システム - '.$cakeDescription.'画面'; } ?></h1>
             <hr />
         </section>
 
@@ -46,51 +46,59 @@
         <section id="content">
             <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) { ?>
             <section class="sideMenu">
-                <?php
-                    echo $this->Html->link('棋士勝敗ランキング出力',
-                        array(
-                            'controller' => 'Ranking',
+                <?=
+                    $this->Html->link('棋士勝敗ランキング出力',
+                        [
+                            'controller' => 'ranking',
                             'action' => 'index'
-                        ),
-                        array(
+                        ],
+                        [
                             'class' => 'button menu'
-                        )
+                        ]
                     );
-                    echo $this->Html->link('棋士情報検索',
-                        array(
-                            'controller' => 'Players',
+                ?>
+                <?=
+                    $this->Html->link('棋士情報検索',
+                        [
+                            'controller' => 'players',
                             'action' => 'index'
-                        ),
-                        array(
+                        ],
+                        [
                             'class' => 'button menu'
-                        )
+                        ]
                     );
-                    echo $this->Html->link('タイトル情報検索',
-                        array(
-                            'controller' => 'Titles',
+                ?>
+                <?=
+                    $this->Html->link('タイトル情報検索',
+                        [
+                            'controller' => 'titles',
                             'action' => 'index'
-                        ),
-                        array(
+                        ],
+                        [
                             'class' => 'button menu'
-                        )
+                        ]
                     );
-                    echo $this->Html->link('成績更新日編集',
-                        array(
-                            'controller' => 'ScoreUpdates',
+                ?>
+                <?=
+                    $this->Html->link('成績更新日編集',
+                        [
+                            'controller' => 'scoreUpdates',
                             'action' => 'index'
-                        ),
-                        array(
+                        ],
+                        [
                             'class' => 'button menu'
-                        )
+                        ]
                     );
-                    echo $this->Html->link('各種情報クエリ更新',
-                        array(
-                            'controller' => 'NativeQuery',
+                ?>
+                <?=
+                    $this->Html->link('各種情報クエリ更新',
+                        [
+                            'controller' => 'nativeQuery',
                             'action' => 'index'
-                        ),
-                        array(
+                        ],
+                        [
                             'class' => 'button menu'
-                        )
+                        ]
                     );
                 ?>
             </section>

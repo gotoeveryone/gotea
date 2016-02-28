@@ -1,5 +1,6 @@
 <?php
 use Cake\Core\Configure;
+use Cake\Error\Debugger;
 
 if (Configure::read('debug')):
     $this->layout = 'dev_error';
@@ -26,13 +27,10 @@ if (Configure::read('debug')):
     endif;
 
     $this->end();
+else:
+    $this->layout = 'error';
 endif;
+$this->assign('title', 'クライアント側エラー発生');
 ?>
-<h2><?= h($message) ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= sprintf(
-        __d('cake', 'The requested address %s was not found on this server.'),
-        "<strong>'{$url}'</strong>"
-    ) ?>
-</p>
+<p><strong><?= __d('cake', 'ステータスコード：'.$code) ?></strong></p>
+<p><strong><?= __d('cake', '対象URL：'.$url) ?></strong></p>
