@@ -46,6 +46,12 @@ class PlayersController extends AppController
     {
         $this->__initSearch();
 
+        // 初期検索でなく検索状態に無い場合は初期処理へ
+        if ($this->_getParam('searchFlag') === 'false') {
+            $this->set('searchFlag', '');
+            return $this->render('index');
+        }
+
         // リクエストから値を取得（なければセッションから取得）
         $searchCountry = $this->_getParam('searchCountry');
         $sex = $this->_getParam('searchSex');

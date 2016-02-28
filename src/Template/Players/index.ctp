@@ -10,7 +10,7 @@
     ]
 ])?>
     <?=$this->Form->hidden('affiliation', ['id' => 'affiliation']);?>
-    <?=$this->Form->hidden('searchFlag', ['value' => (empty($searchFlag) ? 'false' : var_export($searchFlag, TRUE))])?>
+    <?=$this->Form->hidden('searchFlag', ['value' => (empty($searchFlag) ? '' : var_export($searchFlag, TRUE))])?>
     <?=$this->Form->hidden('dialogFlag', ['value' => (empty($dialogFlag) ? 'false' : var_export($dialogFlag, TRUE))])?>
     <table class="playersHeader">
         <tr>

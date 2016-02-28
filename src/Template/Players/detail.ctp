@@ -12,7 +12,7 @@
     <?=$this->Form->hidden('isContinue', ['id' => 'isContinue', 'value' => false])?>
 
     <!-- 検索フラグ -->
-    <?=$this->Form->hidden('searchFlag', ['value' => $this->request->data('searchFlag')])?>
+    <?=$this->Form->hidden('searchFlag', ['value' => (!$this->request->data('searchFlag') ? 'false' : $this->request->data('searchFlag'))])?>
 
     <!-- 選択した成績情報の年度 -->
     <?=$this->Form->hidden('selectScoreId', ['id' => 'selectScoreId'])?>
