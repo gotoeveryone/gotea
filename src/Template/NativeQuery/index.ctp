@@ -48,7 +48,7 @@
         });
         // クリアボタン押下時
         $('#clear').click(function() {
-            $('#updateText').val('');
+            $('#executeTargets').val('');
         });
     });
 </script>
