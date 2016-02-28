@@ -136,6 +136,11 @@ class PlayersController extends AppController
 
         // 棋士IDが取得出来なければ新規登録画面を表示
 		if (!$id) {
+            // 所属国が取得できなければエラー
+            if (!$this->_getParam('searchCountry')) {
+                throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
+            }
+
             $countries = TableRegistry::get('Countries');
             $player = $this->Players->newEntity();
 

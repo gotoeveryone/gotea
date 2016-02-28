@@ -286,7 +286,6 @@
                 var confirm = $('#playerConfirm');
                 confirm.html('どちらの棋院に所属する棋士を作成しますか？');
                 confirm.dialog('open');
-                event.preventDefault();
             } else {
                 $('#affiliation').val('');
                 var postForm = $('#mainForm');

@@ -4,13 +4,8 @@ $(document).ready(function() {
     setDatepicker();
     setTooltip();
 
-    $('#confirm').click(function (event) {
-        $('#confirm').dialog('open');
-        event.preventDefault();
-    });
-
-    $('#dialog').click(function (event) {
-        $('#dialog').dialog('open');
+    $('#confirm, #dialog').click(function (event) {
+        $(this).dialog('open');
         event.preventDefault();
     });
 
