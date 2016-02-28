@@ -146,6 +146,7 @@
                 <td class="left order">
                     <?=
                         $this->Form->text('titles['.$key.'][order]', [
+                            'id' => 'order-'.$key,
                             'maxlength' => 2,
                             'value' => h($title->SORT_ORDER),
                             'class' => 'checkChange'
