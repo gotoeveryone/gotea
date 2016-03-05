@@ -65,8 +65,8 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         // 初期表示以外のアクションの場合、POSTされたデータが存在しなければエラー
-        if ($this->request->action !== 'index' && $this->request->action !== 'login'
-                && $this->request->action !== 'detail' && !$this->request->is('post')) {
+        $target_actions = ['index', 'login', 'detail', 'logout'];
+        if (!in_array($this->request->action, $target_actions) && !$this->request->is('post')) {
         	throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
         }
 
