@@ -162,6 +162,7 @@ class TitlesController extends AppController
 	public function detail($id = null)
     {
 		$this->set('cakeDescription', 'タイトル情報照会・修正');
+        $this->set('dialogFlag', true);
 
 		// タイトル情報一式を設定
         $this->set('title', $this->Titles->findTitleAllRelations($id));

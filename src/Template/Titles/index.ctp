@@ -223,7 +223,7 @@
                     ?>
                 </td>
                 <td class="center openRetain">
-                    <?=$this->Html->link('開く', ['action' => 'detail/'.h($title->ID)])?>
+                    <?=$this->Html->link('開く', ['action' => 'detail/'.h($title->ID)], ['class' => 'colorbox'])?>
                 </td>
             </tr>
             <?php endforeach ?>
@@ -233,6 +233,8 @@
 <?=$this->Form->end()?>
 <script type="text/javascript">
 $(function() {
+    $('.colorbox').colorbox({iframe: true, width: "90%", height: "90%"});
+
     if ($('#searchFlag').val() === 'false') {
         $('#addRow').attr('disabled', true);
         $('#save').attr('disabled', true);

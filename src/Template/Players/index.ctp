@@ -185,7 +185,7 @@
                             echo $this->Html->link($player->PLAYER_NAME, [
                                 'action' => 'detail/'.h($player->ID)
                             ], [
-                                'class' => $setClass
+                                'class' => $setClass.' colorbox'
                             ]);
                         }
                     ?>
@@ -231,6 +231,7 @@
 <?=$this->Form->end()?>
 <script type="text/javascript">
     $(function () {
+        $('.colorbox').colorbox({iframe: true, width: "90%", height: "90%"});
         $('#addNew').attr('disabled', !$('#searchCountry').val());
         // 国プルダウン変更時
         $('select[name=searchCountry]').change(function () {

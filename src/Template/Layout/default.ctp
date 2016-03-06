@@ -14,12 +14,14 @@
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/jquery-ui.custom.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="/js/jquery.colorbox-min.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
     <?=$this->Html->script('app')?>
     <!--<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />-->
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/css/colorbox.css" />
     <link rel="stylesheet" type="text/css" href="/css/common.css" />
     <?=$this->Html->css('app')?>
-    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.custom.css" />
 </head>
 <body>
     <section id="container">

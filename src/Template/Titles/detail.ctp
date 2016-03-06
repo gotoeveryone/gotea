@@ -181,15 +181,6 @@
             <?php }?>
         </table>
     </section>
-
-    <section class="center">
-        <?=
-            $this->Form->button('戻る', [
-                'id' => 'back',
-                'type' => 'button'
-            ]);
-        ?>
-    </section>
 <?=$this->Form->end()?>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -229,12 +220,6 @@
             confirm.html('タイトル保持情報を登録します。よろしいですか？');
             $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'regist'])?>');
             confirm.click();
-        });
-        // 戻るボタン押下時
-        $('#back').click(function() {
-            var postForm = $('#mainForm');
-            postForm.attr('action', '<?=$this->Url->build(['action' => 'search'])?>');
-            submitForm(postForm);
         });
         // 新規登録ボタンの制御
         function controlDisabled() {

@@ -139,6 +139,7 @@ class PlayersController extends AppController
 	public function detail($id = null)
     {
 		$this->set('cakeDescription', '棋士情報照会');
+        $this->set('dialogFlag', true);
 
         // 棋士IDが取得出来なければ新規登録画面を表示
 		if (!$id) {

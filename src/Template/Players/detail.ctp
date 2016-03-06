@@ -307,15 +307,6 @@
             <?php }?>
         </table>
     </section>
-
-    <section class="center">
-        <?=
-            $this->Form->button('戻る', [
-                'id' => 'back',
-                'type' => 'button'
-            ]);
-        ?>
-    </section>
 <?=$this->Form->end()?>
 <script type="text/javascript">
     $(function() {
@@ -368,13 +359,6 @@
             var confirm = $("#confirm");
             confirm.html('棋士成績情報を更新します。よろしいですか？');
             confirm.click();
-        });
-
-        // 戻るボタン押下時
-        $('#back').click(function() {
-            var postForm = $('#mainForm');
-            postForm.attr('action', '<?=$this->Url->build(['action' => 'search'])?>');
-            submitForm(postForm);
         });
     });
 
