@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use PDOException;
 use Cake\Event\Event;
+use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
 use Psr\Log\LogLevel;
@@ -143,19 +144,22 @@ class PlayersController extends AppController
 
         // 棋士IDが取得出来なければ新規登録画面を表示
 		if (!$id) {
-            // 所属国が取得できなければエラー
-            if (!$this->_getParam('searchCountry')) {
-                throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
+            // 所属国、組織を取得
+            $countryCode = $this->request->query('countryCode');
+            $affiliation = $this->request->query('affiliation');
+
+            // 所属国が取得出来なければエラー
+            if (!$countryCode) {
+                throw new BadRequestException("所属国を指定してください。");
             }
 
-            $countries = TableRegistry::get('Countries');
             $player = $this->Players->newEntity();
 
             // 所属国を取得
-			$country = $countries->get($this->_getParam('searchCountry'));
+            $countries = TableRegistry::get('Countries');
+			$country = $countries->get($countryCode);
             $player->set('country', $country);
 
-            $affiliation = $this->request->data('affiliation');
             $player->set('AFFILIATION', ($affiliation ? $affiliation : $country->COUNTRY_NAME.'棋院'));
 			$this->set('player', $player);
 

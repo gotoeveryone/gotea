@@ -2,6 +2,7 @@
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
+$this->assign('title', 'クライアント側エラー発生');
 if (Configure::read('debug')):
     $this->layout = 'dev_error';
 
@@ -30,7 +31,7 @@ if (Configure::read('debug')):
 else:
     $this->layout = 'error';
 endif;
-$this->assign('title', 'クライアント側エラー発生');
 ?>
 <p><strong><?= __d('cake', 'ステータスコード：'.$code) ?></strong></p>
 <p><strong><?= __d('cake', '対象URL：'.$url) ?></strong></p>
+<p><strong><?= __d('cake', '詳細：'.$message) ?></strong></p>

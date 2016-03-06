@@ -251,25 +251,25 @@
                 {
                     text: '日本棋院',
                     click: function () {
-                        $('#affiliation').val('日本棋院');
-                        var postForm = $('#mainForm');
-                        postForm.attr('action', '<?=$this->Url->build(['action' => 'detail'])?>');
-                        postForm.submit();
-                        var button = $('.ui-dialog-buttonpane').find('button:contains("日本棋院")');
-                        button.attr('disabled', true);
-                        button.addClass('ui-state-disabled');
+                        $.colorbox({
+                            iframe: true,
+                            width: "90%",
+                            height: "90%",
+                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryCode=' + $('#searchCountry').val() + '&affiliation=日本棋院'
+                        });
+                        $(this).dialog('close');
                     }
                 },
                 {
                     text: '関西棋院',
                     click: function () {
-                        $('#affiliation').val('関西棋院');
-                        var postForm = $('#mainForm');
-                        postForm.attr('action', '<?=$this->Url->build(['action' => 'detail'])?>');
-                        postForm.submit();
-                        var button = $('.ui-dialog-buttonpane').find('button:contains("関西棋院")');
-                        button.attr('disabled', true);
-                        button.addClass('ui-state-disabled');
+                        $.colorbox({
+                            iframe: true,
+                            width: "90%",
+                            height: "90%",
+                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryCode=' + $('#searchCountry').val() + '&affiliation=関西棋院'
+                        });
+                        $(this).dialog('close');
                     }
                 },
                 {
@@ -288,10 +288,12 @@
                 confirm.html('どちらの棋院に所属する棋士を作成しますか？');
                 confirm.dialog('open');
             } else {
-                $('#affiliation').val('');
-                var postForm = $('#mainForm');
-                postForm.attr('action', '<?=$this->Url->build(['action' => 'detail'])?>');
-                submitForm(postForm);
+                $.colorbox({
+                    iframe: true,
+                    width: "90%",
+                    height: "90%",
+                    href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryCode=' + $('#searchCountry').val()
+                });
             }
         });
     });
