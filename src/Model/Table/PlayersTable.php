@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use Cake\I18n\Time;
 use Cake\Validation\Validator;
 
 /**
@@ -71,7 +72,7 @@ class PlayersTable extends AppTable
      * 棋士情報に関する一式を取得します。
      * 
      * @param type $id
-     * @return type
+     * @return Player 棋士情報
      */
     public function findPlayerAllRelations($id)
     {
@@ -92,5 +93,64 @@ class PlayersTable extends AppTable
             },
             'TitleRetains.Titles.Countries'
         ])->where(['Players.ID' => $id])->first();
+    }
+
+    /**
+     * 指定条件に合致した棋士情報を取得します。
+     * 
+     * @param type $countryCode
+     * @param type $sex
+     * @param type $rank
+     * @param type $playerName
+     * @param type $playerNameEn
+     * @param type $enrollmentFrom
+     * @param type $enrollmentTo
+     * @param type $retire
+     * @return Player 棋士情報一覧
+     */
+    public function findPlayers($countryCode = null, $sex = null, $rank = null, $playerName = null, $playerNameEn = null,
+            $enrollmentFrom = null, $enrollmentTo = null, $retire = null)
+    {
+        // 棋士情報の取得
+        $query = $this->find();
+
+        // 入力されたパラメータが空でなければ、WHERE句へ追加
+        if (!empty($countryCode)) {
+            $query->where(['Players.COUNTRY_CD' => $countryCode]);
+        }
+        if (!empty($sex)) {
+            $query->where(['Players.SEX' => $sex]);
+        }
+        if (!empty($rank)) {
+            $query->where(['Players.RANK' => $rank]);
+        }
+        if (!empty($playerName)) {
+            $query->where(['Players.PLAYER_NAME LIKE' => '%'.$playerName.'%']);
+        }
+        if (!empty($playerNameEn)) {
+            $query->where(['Players.PLAYER_NAME_EN LIKE' => '%'.$playerNameEn.'%']);
+        }
+        if (!empty($enrollmentFrom)) {
+            $query->where(['Players.ENROLLMENT >=' => $enrollmentFrom]);
+        }
+        if (!empty($enrollmentTo)) {
+            $query->where(['Players.ENROLLMENT <=' => $enrollmentTo]);
+        }
+        if (!empty($retire) && $retire === 'false') {
+            $query->where(['Players.DELETE_FLAG' => 0]);
+        }
+
+        // データを取得
+        return $query->order([
+            'Players.RANK DESC',
+            'Players.ENROLLMENT',
+            'Players.ID'
+        ])->contain([
+            'PlayerScores' => function ($q) {
+                return $q->where(['PlayerScores.TARGET_YEAR' => intval(Time::now()->year)]);
+            },
+            'Ranks',
+            'Countries'
+        ])->all();
     }
 }

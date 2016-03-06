@@ -35,8 +35,6 @@ class PlayersController extends AppController
 	public function index()
     {
         $this->__initSearch();
-		$this->set('searchFlag', false);
-
         return $this->render('index');
     }
 
@@ -47,14 +45,8 @@ class PlayersController extends AppController
     {
         $this->__initSearch();
 
-        // 初期検索でなく検索状態に無い場合は初期処理へ
-        if ($this->_getParam('searchFlag') === 'false') {
-            $this->set('searchFlag', '');
-            return $this->render('index');
-        }
-
         // リクエストから値を取得（なければセッションから取得）
-        $searchCountry = $this->_getParam('searchCountry');
+        $countryCode = $this->_getParam('searchCountry');
         $sex = $this->_getParam('searchSex');
         $rank = $this->_getParam('searchRank');
         $playerName = $this->_getParam('searchPlayerName');
@@ -63,47 +55,9 @@ class PlayersController extends AppController
         $enrollmentTo = $this->_getParam('searchEnrollmentTo');
         $retire = $this->_getParam('searchRetire');
 
-        // 棋士情報の取得
-        $query = $this->Players->find();
-
-        // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (!empty($searchCountry)) {
-            $query->where(['Players.COUNTRY_CD' => $searchCountry]);
-        }
-        if (!empty($sex)) {
-            $query->where(['Players.SEX' => $sex]);
-        }
-        if (!empty($rank)) {
-            $query->where(['Players.RANK' => $rank]);
-        }
-        if (!empty($playerName)) {
-            $query->where(['Players.PLAYER_NAME LIKE' => '%'.$playerName.'%']);
-        }
-        if (!empty($playerNameEn)) {
-            $query->where(['Players.PLAYER_NAME_EN LIKE' => '%'.$playerNameEn.'%']);
-        }
-        if (!empty($enrollmentFrom)) {
-            $query->where(['Players.ENROLLMENT >=' => $enrollmentFrom]);
-        }
-        if (!empty($enrollmentTo)) {
-            $query->where(['Players.ENROLLMENT <=' => $enrollmentTo]);
-        }
-        if (!empty($retire) && $retire === 'false') {
-            $query->where(['Players.DELETE_FLAG' => 0]);
-        }
-
-        // データを取得
-        $players = $query->order([
-            'Players.RANK DESC',
-            'Players.ENROLLMENT',
-            'Players.ID'
-        ])->contain([
-            'PlayerScores' => function ($q) {
-                return $q->where(['PlayerScores.TARGET_YEAR' => intval(Time::now()->year)]);
-            },
-            'Ranks',
-            'Countries'
-        ])->all();
+        // 該当する棋士情報一覧を取得
+        $players = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
+                $enrollmentFrom, $enrollmentTo, $retire);
 //        $this->log($players, LogLevel::INFO);
 
         if (count($players) === 0) {
@@ -115,11 +69,8 @@ class PlayersController extends AppController
 
         $this->set('players', $players);
 
-        // 検索フラグを設定
-		$this->set('searchFlag', true);
-
         // 値を格納
-        $this->_setParam('searchCountry', $searchCountry);
+        $this->_setParam('searchCountry', $countryCode);
         $this->_setParam('searchRank', $rank);
         $this->_setParam('searchSex', $sex);
         $this->_setParam('searchPlayerName', $playerName);
