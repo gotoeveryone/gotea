@@ -51,7 +51,7 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->notEmpty('PLAYER_NAME', '棋士名は必須です。')
-            ->notEmpty('BIRTHDAY', '生年月日は必須です。')
+//            ->notEmpty('BIRTHDAY', '生年月日は必須です。')
 //            ->add('BIRTHDAY', [
 //                'valid' => [
 //                    'rule' => ['date', 'ymd'],
