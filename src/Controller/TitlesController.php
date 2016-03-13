@@ -105,7 +105,7 @@ class TitlesController extends AppController
             $title = null;
             if (!empty($row['insertFlag']) && $row['insertFlag'] === 'true') {
                 $title = $this->Titles->newEntity();
-                $title->set('COUNTRY_CD', $countryCd);
+                $title->set('COUNTRY_ID', $countryCd);
             } else if ($row['updateFlag'] === 'true') {
                 $title = $this->Titles->get($row['titleId']);
             } else {
