@@ -60,7 +60,7 @@ class CountriesTable extends AppTable
         ])->where(function ($exp, $q) {
             return $exp->isNotNull('OUTPUT_FILE_NAME');
         })->order(['Countries.ID' => 'ASC'])->select([
-            'keyField' => 'Countries.ID',
+            'keyField' => 'Countries.NAME',
             'valueField' => 'CASE Countries.WORLD_FLAG WHEN 1 THEN CONCAT(Countries.NAME, \'棋戦\') ELSE CONCAT(Countries.NAME, \'棋士\') END'
         ])->toArray();
     }
