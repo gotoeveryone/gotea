@@ -115,28 +115,28 @@ class PlayersTable extends AppTable
         $query = $this->find();
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (!empty($countryCode)) {
+        if ($countryCode) {
             $query->where(['Players.COUNTRY_CD' => $countryCode]);
         }
-        if (!empty($sex)) {
+        if ($sex) {
             $query->where(['Players.SEX' => $sex]);
         }
-        if (!empty($rank)) {
+        if ($rank) {
             $query->where(['Players.RANK' => $rank]);
         }
-        if (!empty($playerName)) {
+        if ($playerName) {
             $query->where(['Players.PLAYER_NAME LIKE' => '%'.$playerName.'%']);
         }
-        if (!empty($playerNameEn)) {
+        if ($playerNameEn) {
             $query->where(['Players.PLAYER_NAME_EN LIKE' => '%'.$playerNameEn.'%']);
         }
-        if (!empty($enrollmentFrom)) {
-            $query->where(['Players.ENROLLMENT >=' => $enrollmentFrom]);
+        if ($enrollmentFrom) {
+            $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) >=' => $enrollmentFrom]);
         }
-        if (!empty($enrollmentTo)) {
-            $query->where(['Players.ENROLLMENT <=' => $enrollmentTo]);
+        if ($enrollmentTo) {
+            $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) <=' => $enrollmentTo]);
         }
-        if (!empty($retire) && $retire === 'false') {
+        if ($retire && $retire === 'false') {
             $query->where(['Players.DELETE_FLAG' => 0]);
         }
 
