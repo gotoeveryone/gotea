@@ -22,12 +22,12 @@ class PlayersTable extends AppTable
 //        $this->entityClass('App\Model\Entity\Player');
         // 所属国マスタ
         $this->belongsTo('Countries', [
-            'foreignKey' => 'COUNTRY_CD',
+            'foreignKey' => 'COUNTRY_ID',
             'joinType' => 'INNER'
         ]);
         // 段位マスタ
         $this->belongsTo('Ranks', [
-            'foreignKey' => 'RANK',
+            'foreignKey' => 'RANK_ID',
             'joinType' => 'INNER'
         ]);
         // 棋士成績情報
@@ -51,7 +51,7 @@ class PlayersTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('PLAYER_NAME', '棋士名は必須です。')
+            ->notEmpty('NAME', '棋士名は必須です。')
 //            ->notEmpty('BIRTHDAY', '生年月日は必須です。')
 //            ->add('BIRTHDAY', [
 //                'valid' => [
@@ -87,7 +87,7 @@ class PlayersTable extends AppTable
             'TitleRetains' => function ($q) {
                 return $q->order([
                     'TitleRetains.TARGET_YEAR' => 'DESC',
-                    'Titles.COUNTRY_CD' => 'ASC',
+                    'Titles.COUNTRY_ID' => 'ASC',
                     'Titles.SORT_ORDER' => 'ASC'
                 ]);
             },
@@ -116,19 +116,19 @@ class PlayersTable extends AppTable
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
         if ($countryCode) {
-            $query->where(['Players.COUNTRY_CD' => $countryCode]);
+            $query->where(['Players.COUNTRY_ID' => $countryCode]);
         }
         if ($sex) {
             $query->where(['Players.SEX' => $sex]);
         }
         if ($rank) {
-            $query->where(['Players.RANK' => $rank]);
+            $query->where(['Players.RANK_ID' => $rank]);
         }
         if ($playerName) {
-            $query->where(['Players.PLAYER_NAME LIKE' => '%'.$playerName.'%']);
+            $query->where(['Players.NAME LIKE' => '%'.$playerName.'%']);
         }
         if ($playerNameEn) {
-            $query->where(['Players.PLAYER_NAME_EN LIKE' => '%'.$playerNameEn.'%']);
+            $query->where(['Players.NAME_ENGLISH LIKE' => '%'.$playerNameEn.'%']);
         }
         if ($enrollmentFrom) {
             $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) >=' => $enrollmentFrom]);
@@ -142,7 +142,7 @@ class PlayersTable extends AppTable
 
         // データを取得
         return $query->order([
-            'Players.RANK DESC',
+            'Players.RANK_ID DESC',
             'Players.ENROLLMENT',
             'Players.ID'
         ])->contain([

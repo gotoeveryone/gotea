@@ -14,10 +14,10 @@ class ScoreUpdatesTable extends AppTable
 	 */
     public function initialize(array $config)
     {
-        $this->table('T_SCORE_UPDATE');
+        $this->table('M_SCORE_UPDATE');
         $this->primaryKey('ID');
         $this->belongsTo('Countries', [
-            'foreignKey' => 'COUNTRY_CD',
+            'foreignKey' => 'COUNTRY_ID',
             'joinType' => 'INNER'
         ]);
     }
@@ -32,7 +32,7 @@ class ScoreUpdatesTable extends AppTable
     {
         return $validator
             ->notEmpty('SCORE_UPDATE_DATE', '成績更新日は必須です。')
-            ->add('SCORE_UPDATE_DATE', [
+            ->add('SCORE_MODIFIED', [
                 'valid' => [
                     'rule' => ['date', 'ymd'],
                     'message' => '成績更新日は「yyyy/MM/dd」形式で入力してください。'
@@ -51,7 +51,7 @@ class ScoreUpdatesTable extends AppTable
         return $this->find()->where([
             'ScoreUpdates.TARGET_YEAR' => $targetYear
         ])->order([
-            'ScoreUpdates.COUNTRY_CD',
+            'ScoreUpdates.COUNTRY_ID',
             'ScoreUpdates.TARGET_YEAR' => 'DESC'
         ])->contain(['Countries'])->all();
     }

@@ -13,7 +13,7 @@ class RanksTable extends AppTable
     public function initialize(array $config)
     {
         $this->table('M_RANK');
-        $this->primaryKey('RANK');
+        $this->primaryKey('ID');
     }
 
     public function getRanksToArray()
@@ -21,10 +21,10 @@ class RanksTable extends AppTable
 		// 段位プルダウン
 //        $ranks = TableRegistry::get('Ranks');
 		return $this->find('list', [
-            'keyField' => 'RANK',
-            'valueField' => 'RANK_NAME'
+            'keyField' => 'ID',
+            'valueField' => 'NAME'
         ])->where([
-            'RANK !=' => '0'
-        ])->order('RANK DESC')->toArray();
+            'PROFESSIONAL_FLAG !=' => 0
+        ])->order('ID DESC')->toArray();
     }
 }

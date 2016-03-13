@@ -75,7 +75,7 @@ class ScoreUpdatesController extends AppController
 
             // データを取得し、POSTされた値を設定
             $title = $this->ScoreUpdates->get($row['scoreId']);
-            $title->set('SCORE_UPDATE_DATE', $row['scoreUpdateDate']);
+            $title->set('SCORE_MODIFIED', $row['scoreUpdateDate']);
 
             // バリデーションエラーの場合はそのまま返す
             $validator = $this->ScoreUpdates->validator('default');

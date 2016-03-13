@@ -56,7 +56,7 @@ class TitlesController extends AppController
             'TitleRetains.Players',
             'TitleRetains.Ranks'
         ])->where([
-            'Titles.COUNTRY_CD' => $searchCountry
+            'Titles.COUNTRY_ID' => $searchCountry
         ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
@@ -113,14 +113,13 @@ class TitlesController extends AppController
             }
 
             // POSTされた値を設定
-            $title->set('TITLE_NAME', $row['titleName']);
-            $title->set('TITLE_NAME_EN', $row['titleNameEn']);
+            $title->set('NAME', $row['titleName']);
+            $title->set('NAME_ENGLISH', $row['titleNameEn']);
             $title->set('HOLDING', $row['holding']);
             $title->set('SORT_ORDER', $row['order']);
             $title->set('GROUP_FLAG', $row['groupFlag']);
             $title->set('HTML_FILE_NAME', $row['htmlFileName']);
-            $title->set('HTML_MODIFY_DATE', date($row['htmlModifyDate']));
-            $title->set('PROCESSED_FLAG', 0);
+            $title->set('HTML_FILE_MODIFIED', date($row['htmlModifyDate']));
             $title->set('DELETE_FLAG', $row['deleteFlag']);
 
             // バリデーションエラーの場合はそのまま返す
@@ -209,12 +208,11 @@ class TitlesController extends AppController
 			$titleRetain->set('PLAYER_ID', $playerId);
 		}
 		if (!empty($playerRank)) {
-			$titleRetain->set('PLAYER_RANK', $playerRank);
+			$titleRetain->set('RANK_ID', $playerRank);
 		}
 		if (!empty($winGroupName)) {
 			$titleRetain->set('WIN_GROUP_NAME', $winGroupName);
 		}
-        $titleRetain->set('PROCESSED_FLAG', 0);
         $titleRetain->set('DELETE_FLAG', 0);
 
         // バリデーションエラーの場合はそのまま返す

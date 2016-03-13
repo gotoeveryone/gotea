@@ -28,7 +28,7 @@ class TitleRetainsTable extends AppTable {
         ]);
         // 段位マスタ
         $this->belongsTo('Ranks', [
-            'foreignKey' => 'PLAYER_RANK',
+            'foreignKey' => 'RANK_ID',
             'joinType' => 'LEFT'
         ]);
     }

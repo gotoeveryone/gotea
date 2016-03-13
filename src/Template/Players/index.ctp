@@ -174,15 +174,15 @@
                     <?php
                         $setClass = ($player->SEX === '女性' ? 'red' : 'blue');
                         if (isset($dialogFlag) && $dialogFlag) {
-                            echo $this->Html->link($player->PLAYER_NAME, '#', [
+                            echo $this->Html->link($player->NAME, '#', [
                                 'onClick' => 'selectParent("'.h($player->ID).'",
-                                    "'.h($player->PLAYER_NAME).'",
-                                    "'.h($player->rank->RANK).'",
-                                    "'.h($player->rank->RANK_NAME).'")',
+                                    "'.h($player->NAME).'",
+                                    "'.h($player->rank->ID).'",
+                                    "'.h($player->rank->NAME).'")',
                                 'class' => $setClass
                             ]);
                         } else {
-                            echo $this->Html->link($player->PLAYER_NAME, [
+                            echo $this->Html->link($player->NAME, [
                                 'action' => 'detail/'.h($player->ID)
                             ], [
                                 'class' => $setClass.' colorbox'
@@ -191,16 +191,16 @@
                     ?>
                 </td>
                 <td class="left playerNameEn">
-                    <?=h($player->PLAYER_NAME_EN); ?>
+                    <?=h($player->NAME_ENGLISH); ?>
                 </td>
                 <td class="left enrollment">
                     <?=h($player->ENROLLMENT); ?>
                 </td>
                 <td class="center country">
-                    <?=h($player->country->COUNTRY_NAME); ?>
+                    <?=h($player->country->NAME); ?>
                 </td>
                 <td class="center rank">
-                    <?=h($player->rank->RANK_NAME); ?>
+                    <?=h($player->rank->NAME); ?>
                 </td>
                 <td class="center sex">
                     <?=h($player->SEX); ?>
@@ -215,13 +215,13 @@
                     <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->DRAW_POINT)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->WIN_POINT_WR)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->WIN_POINT_WORLD)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->LOSE_POINT_WR)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->LOSE_POINT_WORLD)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->DRAW_POINT_WR)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->DRAW_POINT_WORLD)); ?>
                 </td>
             </tr>
             <?php endforeach ?>

@@ -28,7 +28,7 @@ class TitlesTable extends AppTable {
         ]);
         // 所属国マスタ
         $this->belongsTo('Countries', [
-            'foreignKey' => 'COUNTRY_CD',
+            'foreignKey' => 'COUNTRY_ID',
             'joinType' => 'INNER'
         ]);
     }
@@ -42,13 +42,13 @@ class TitlesTable extends AppTable {
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('TITLE_NAME', 'タイトル名は必須です。')
-            ->notEmpty('TITLE_NAME_EN', 'タイトル名（英語）は必須です。')
+            ->notEmpty('NAME', 'タイトル名は必須です。')
+            ->notEmpty('NAME_ENGLISH', 'タイトル名（英語）は必須です。')
             ->notEmpty('HOLDING', '期は必須です。')
             ->notEmpty('SORT_ORDER', '並び順は必須です。')
             ->notEmpty('HTML_FILE_NAME', 'HTMLファイル名は必須です。')
-            ->notEmpty('HTML_MODIFY_DATE', '修正日は必須です。')
-            ->add('HTML_MODIFY_DATE', [
+            ->notEmpty('HTML_FILE_MODIFIED', '修正日は必須です。')
+            ->add('HTML_FILE_MODIFIED', [
                 'valid' => [
                     'rule' => ['date', 'ymd'],
                     'message' => '修正日は「yyyy/MM/dd」形式で入力してください。'

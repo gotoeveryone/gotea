@@ -13,7 +13,7 @@ class CountriesTable extends AppTable
     public function initialize(array $config)
     {
         $this->table('M_COUNTRY');
-        $this->primaryKey('COUNTRY_CD');
+        $this->primaryKey('ID');
 //        $this->entityClass('App\Model\Entity\Country');
     }
 
@@ -25,8 +25,8 @@ class CountriesTable extends AppTable
     public function findCountryHasFileToArray()
     {
 		return $this->find('list', [
-            'keyField' => 'COUNTRY_CD',
-            'valueField' => 'COUNTRY_NAME'
+            'keyField' => 'ID',
+            'valueField' => 'NAME'
         ])->where([
             'Countries.OUTPUT_FILE_NAME IS NOT' => null
         ])->toArray();
@@ -40,8 +40,8 @@ class CountriesTable extends AppTable
     public function findCountryBelongToArray()
     {
 		return $this->find('list', [
-            'keyField' => 'COUNTRY_CD',
-            'valueField' => 'COUNTRY_NAME'
+            'keyField' => 'ID',
+            'valueField' => 'NAME'
         ])->where([
             'BELONG_FLAG ' => 1
         ])->toArray();
@@ -59,9 +59,9 @@ class CountriesTable extends AppTable
             'valueField' => 'valueField'
         ])->where(function ($exp, $q) {
             return $exp->isNotNull('OUTPUT_FILE_NAME');
-        })->order(['Countries.COUNTRY_CD' => 'ASC'])->select([
-            'keyField' => 'Countries.COUNTRY_CD',
-            'valueField' => 'CASE Countries.COUNTRY_CD WHEN \'99\' THEN CONCAT(Countries.COUNTRY_NAME, \'棋戦\') ELSE CONCAT(Countries.COUNTRY_NAME, \'棋士\') END'
+        })->order(['Countries.ID' => 'ASC'])->select([
+            'keyField' => 'Countries.ID',
+            'valueField' => 'CASE Countries.WORLD_FLAG WHEN 1 THEN CONCAT(Countries.NAME, \'棋戦\') ELSE CONCAT(Countries.NAME, \'棋士\') END'
         ])->toArray();
     }
 }

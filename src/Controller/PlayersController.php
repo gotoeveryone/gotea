@@ -149,18 +149,17 @@ class PlayersController extends AppController
         $player = ($playerId) ? $this->Players->get($playerId) : $this->Players->newEntity();
 
         // 入力値を設定
-        $player->set('PLAYER_NAME', $this->request->data('playerName'));
-		$player->set('PLAYER_NAME_EN', (empty($playerNameEn) ? null : $playerNameEn));
-		$player->set('PLAYER_NAME_OTHER', (empty($playerNameOther) ? null : $playerNameOther));
-		$player->set('COUNTRY_CD', $countryCd);
-		$player->set('RANK', $rank);
+        $player->set('NAME', $this->request->data('playerName'));
+		$player->set('NAME_ENGLISH', (empty($playerNameEn) ? null : $playerNameEn));
+		$player->set('NAME_OTHER', (empty($playerNameOther) ? null : $playerNameOther));
+		$player->set('COUNTRY_ID', $countryCd);
+		$player->set('RANK_ID', $rank);
 		$player->set('SEX', $this->request->data('sex'));
         $player->set('ENROLLMENT', (empty($enrollment) ? '' : str_replace('/', '', $enrollment)));
         $time = new Time();
         $player->set('BIRTHDAY', (empty($birthday) ? '' : $time->parseDate($birthday, 'YYYY/MM/dd')));
 		$player->set('AFFILIATION', (empty($affiliation) ? null : $affiliation));
 		$player->set('DELETE_FLAG', $this->request->data('retireFlag'));
-        $player->set('PROCESSED_FLAG', 0);
 
         // バリデーションエラーの場合はそのまま返す
         $validator = $this->Players->validator('default');
@@ -188,7 +187,7 @@ class PlayersController extends AppController
 
             // 棋士マスタの段位と異なる場合は更新対象
 			if ($player->RANK !== $updateScore->PLAYER_RANK) {
-				$updateScore->set('PLAYER_RANK', $rank);
+				$updateScore->set('RANK_ID', $rank);
 				$playerScores->save($updateScore);
 			}
 
@@ -218,14 +217,13 @@ class PlayersController extends AppController
 		$updateScore->set('WIN_POINT', $this->request->data('selectWinPoint'));
 		$updateScore->set('LOSE_POINT', $this->request->data('selectLosePoint'));
 		$updateScore->set('DRAW_POINT', $this->request->data('selectDrawPoint'));
-		$updateScore->set('WIN_POINT_WR', $this->request->data('selectWinPointWr'));
-		$updateScore->set('LOSE_POINT_WR', $this->request->data('selectLosePointWr'));
-		$updateScore->set('DRAW_POINT_WR', $this->request->data('selectDrawPointWr'));
+		$updateScore->set('WIN_POINT_WORLD', $this->request->data('selectWinPointWr'));
+		$updateScore->set('LOSE_POINT_WORLD', $this->request->data('selectLosePointWr'));
+		$updateScore->set('DRAW_POINT_WORLD', $this->request->data('selectDrawPointWr'));
 
         $selectYear = $this->request->data('selectYear');
 		try {
 			// 棋士成績情報の更新
-			$updateScore->set('PROCESSED_FLAG', 0);
 			$playerScores->save($updateScore);
 			$this->Flash->info($selectYear.'年度の棋士成績情報を更新しました。');
 		} catch (PDOException $e) {

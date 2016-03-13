@@ -32,11 +32,11 @@
                 <td class="right detailColumn1">タイトル：</td>
                 <td class="detailColumn2">
                     <?=$this->Form->hidden('selectTitleId', ['value' => $title->ID])?>
-                    <?=h($title->TITLE_NAME)?>
+                    <?=h($title->NAME)?>
                 </td>
                 <td class="right detailColumn1">分類：</td>
                 <td class="detailColumn2">
-                    <?=($title->country->COUNTRY_NAME).'棋戦'?>
+                    <?=($title->country->NAME).'棋戦'?>
                 </td>
             </tr>
             <tr class="headerRow2">
@@ -166,7 +166,7 @@
                             if ($title->GROUP_FLAG) {
                                 echo h($titleRetain->WIN_GROUP_NAME);
                             } else {
-                                echo h($titleRetain->player->PLAYER_NAME).' '.h($titleRetain->rank->RANK_NAME);
+                                echo h($titleRetain->player->NAME).' '.h($titleRetain->rank->NAME);
                             }
                         ?>
                     </td>

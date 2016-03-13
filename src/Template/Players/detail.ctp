@@ -36,8 +36,8 @@
             <tr>
                 <td class="right detailColumn1">所属国：</td>
                 <td class="detailColumn2">
-                    <?=h($player->country->COUNTRY_NAME)?>
-                    <?=$this->Form->hidden('selectCountry', ['value' => $player->country->COUNTRY_CD])?>
+                    <?=h($player->country->NAME)?>
+                    <?=$this->Form->hidden('selectCountry', ['value' => $player->country->ID])?>
                 </td>
                 <td class="right detailColumn1">所属組織：</td>
                 <td class="detailColumn2">
@@ -55,7 +55,7 @@
                 <td class="detailColumn2">
                     <?=
                         $this->Form->text('playerName', [
-                            'value' => h($player->PLAYER_NAME),
+                            'value' => h($player->NAME),
                             'class' => 'playerName',
                             'maxlength' => 20
                         ]);
@@ -65,7 +65,7 @@
                 <td class="detailColumn2">
                     <?=
                         $this->Form->text('playerNameEn', [
-                            'value' => h($player->PLAYER_NAME_EN),
+                            'value' => h($player->NAME_ENGLISH),
                             'class' => 'imeDisabled playerName',
                             'maxlength' => 40
                         ]);
@@ -78,7 +78,7 @@
                 <td class="detailColumn2">
                     <?=
                         $this->Form->text('playerNameOther', [
-                            'value' => h($player->PLAYER_NAME_OTHER),
+                            'value' => h($player->NAME_OTHER),
                             'class' => 'playerName',
                             'maxlength' => 40
                         ]);
@@ -143,7 +143,7 @@
                         $this->Form->input('rank', [
                             'options' => $ranks,
                             'class' => 'rank',
-                            'value' => ($player->RANK ? $player->RANK : '1')
+                            'value' => ($player->RANK_ID ? $player->RANK_ID : '1')
                         ]);
                     ?>
                 </td>
@@ -193,7 +193,7 @@
                 <tr>
                     <td class="right detailColumn1">段位：</td>
                     <td colspan="3">
-                        <?=h($score->rank->RANK_NAME)?><br/>
+                        <?=h($score->rank->NAME)?><br/>
                     </td>
                 </tr>
                 <tr>
@@ -232,7 +232,7 @@
                             $this->Form->input('winPointWr_'.$key, [
                                 'id' => 'winPointWr_'.$key,
                                 'name' => 'winPointWr',
-                                'value' => h($score->WIN_POINT_WR),
+                                'value' => h($score->WIN_POINT_WORLD),
                                 'class' => 'playerPoint imeDisabled'
                             ]).'勝';
                         ?>
@@ -240,7 +240,7 @@
                             $this->Form->input('losePointWr_'.$key, [
                                 'id' => 'losePointWr_'.$key,
                                 'name' => 'losePointWr',
-                                'value' => h($score->LOSE_POINT_WR),
+                                'value' => h($score->LOSE_POINT_WORLD),
                                 'class' => 'playerPoint imeDisabled'
                             ]).'敗';
                         ?>
@@ -248,7 +248,7 @@
                             $this->Form->input('drawPointWr_'.$key, [
                                 'id' => 'drawPointWr_'.$key,
                                 'name' => 'drawPointWr',
-                                'value' => h($score->DRAW_POINT_WR),
+                                'value' => h($score->DRAW_POINT_WORLD),
                                 'class' => 'playerPoint imeDisabled'
                             ]).'分';
                         ?>
@@ -293,7 +293,7 @@
                 <?php } ?>
                 <tr>
                     <td class="detailColumn1 right">
-                        <?=h($titleRetain->title->TITLE_NAME).'<br/>（'.h($titleRetain->title->country->COUNTRY_NAME).'棋戦）'?>
+                        <?=h($titleRetain->title->NAME).'<br/>（'.h($titleRetain->title->country->NAME).'棋戦）'?>
                     </td>
                     <td class="detailColumn2">
                         <?=h($titleRetain->HOLDING).'期'?>

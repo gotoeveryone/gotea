@@ -45,8 +45,8 @@
             <?php foreach ($scoreUpdates as $key => $scoreUpdate) : ?>
                 <tr class="headerRow2">
                     <td colspan="4">
-                        <?=h($scoreUpdate->country->COUNTRY_NAME)?>
-                        <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($scoreUpdate->COUNTRY_CD)])?>
+                        <?=h($scoreUpdate->country->NAME)?>
+                        <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($scoreUpdate->ID)])?>
                     </td>
                 </tr>
                 <tr class="row">
@@ -64,7 +64,7 @@
                         <?=
                             $this->Form->text('scoreUpdates['.$key.'][scoreUpdateDate]', [
                                 'id' => 'scoreUpdateDate-'.$key,
-                                'value' => $this->Date->format($scoreUpdate->SCORE_UPDATE_DATE, 'YYYY/MM/dd'),
+                                'value' => $this->Date->format($scoreUpdate->SCORE_MODIFIED, 'YYYY/MM/dd'),
                                 'readonly' >= true,
                                 'class' => 'checkChange datepicker'
                             ]);
@@ -72,7 +72,7 @@
                         <?=
                             $this->Form->hidden('scoreUpdates['.$key.'][bean-scoreUpdateDate]', [
                                 'id' => 'bean-scoreUpdateDate-'.$key,
-                                'value' => $this->Date->format($scoreUpdate->SCORE_UPDATE_DATE, 'YYYY/MM/dd')
+                                'value' => $this->Date->format($scoreUpdate->SCORE_MODIFIED, 'YYYY/MM/dd')
                             ])
                         ?>
                     </td>

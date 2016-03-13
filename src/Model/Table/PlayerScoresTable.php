@@ -21,7 +21,7 @@ class PlayerScoresTable extends AppTable
 //            'type' => 'INNER'
 //        ]);
         $this->belongsTo('Ranks', [
-            'foreignKey' => 'PLAYER_RANK',
+            'foreignKey' => 'RANK_ID',
             'joinType' => 'INNER'
         ]);
     }

@@ -88,14 +88,14 @@
                     <?=
                         $this->Form->text('titles['.$key.'][titleName]', [
                             'id' => 'titleName-'.$key,
-                            'value' => $title->TITLE_NAME,
+                            'value' => $title->NAME,
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-titleName]', [
                             'id' => 'bean-titleName-'.$key,
-                            'value' => $title->TITLE_NAME
+                            'value' => $title->NAME
                         ]);
                     ?>
                 </td>
@@ -103,14 +103,14 @@
                     <?=
                         $this->Form->text('titles['.$key.'][titleNameEn]', [
                             'id' => 'titleNameEn-'.$key,
-                            'value' => $title->TITLE_NAME_EN,
+                            'value' => $title->NAME_ENGLISH,
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-titleNameEn]', [
                             'id' => 'bean-titleNameEn-'.$key,
-                            'value' => $title->TITLE_NAME_EN
+                            'value' => $title->NAME_ENGLISH
                         ]);
                     ?>
                 </td>
@@ -138,7 +138,7 @@
                             if ($title->GROUP_FLAG) {
                                 echo $title->title_retains[0]->WIN_GROUP_NAME;
                             } else {
-                                echo $title->title_retains[0]->player->PLAYER_NAME.$title->title_retains[0]->rank->RANK_NAME;
+                                echo $title->title_retains[0]->player->NAME.$title->title_retains[0]->rank->NAME;
                             }
                         }
                     ?>
@@ -191,7 +191,7 @@
                 </td>
                 <td class="left htmlModifyDate">
                     <?php
-                        $htmlModifyDate = $this->Date->format($title->HTML_MODIFY_DATE, 'YYYY/MM/dd');
+                        $htmlModifyDate = $this->Date->format($title->HTML_FILE_MODIFIED, 'YYYY/MM/dd');
                     ?>
                     <?=
                         $this->Form->text('titles['.$key.'][htmlModifyDate]', [
