@@ -94,7 +94,7 @@ class TitlesController extends AppController
         $rows = $this->request->data('titles');
 
         // パラメータを取得
-        $countryCd = $this->request->data('searchCountry');
+        $countryId = $this->request->data('searchCountry');
 
         // 更新件数
         $count = 0;
@@ -105,7 +105,7 @@ class TitlesController extends AppController
             $title = null;
             if (!empty($row['insertFlag']) && $row['insertFlag'] === 'true') {
                 $title = $this->Titles->newEntity();
-                $title->set('COUNTRY_ID', $countryCd);
+                $title->set('COUNTRY_ID', $countryId);
             } else if ($row['updateFlag'] === 'true') {
                 $title = $this->Titles->get($row['titleId']);
             } else {

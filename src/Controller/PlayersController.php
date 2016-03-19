@@ -96,11 +96,11 @@ class PlayersController extends AppController
         // 棋士IDが取得出来なければ新規登録画面を表示
 		if (!$id) {
             // 所属国、組織を取得
-            $countryCode = $this->request->query('countryCode');
+            $countryId = $this->request->query('countryId');
             $affiliation = $this->request->query('affiliation');
 
             // 所属国が取得出来なければエラー
-            if (!$countryCode) {
+            if (!$countryId) {
                 throw new BadRequestException("所属国を指定してください。");
             }
 
@@ -108,10 +108,10 @@ class PlayersController extends AppController
 
             // 所属国を取得
             $countries = TableRegistry::get('Countries');
-			$country = $countries->get($countryCode);
+			$country = $countries->get($countryId);
             $player->set('country', $country);
 
-            $player->set('AFFILIATION', ($affiliation ? $affiliation : $country->COUNTRY_NAME.'棋院'));
+            $player->set('AFFILIATION', ($affiliation ? $affiliation : $country->NAME.'棋院'));
 			$this->set('player', $player);
 
             return $this->render('detail');
@@ -135,8 +135,8 @@ class PlayersController extends AppController
 
         // 必須カラムのフィールド
 		$playerId = $this->request->data('selectPlayerId');
-		$countryCd = $this->request->data('selectCountry');
-		$rank = $this->request->data('rank');
+		$countryId = $this->request->data('selectCountry');
+		$rankId = $this->request->data('rank');
 
 		// NULL許可カラムのフィールド
 		$playerNameEn = $this->request->data('playerNameEn');
@@ -152,8 +152,8 @@ class PlayersController extends AppController
         $player->set('NAME', $this->request->data('playerName'));
 		$player->set('NAME_ENGLISH', (empty($playerNameEn) ? null : $playerNameEn));
 		$player->set('NAME_OTHER', (empty($playerNameOther) ? null : $playerNameOther));
-		$player->set('COUNTRY_ID', $countryCd);
-		$player->set('RANK_ID', $rank);
+		$player->set('COUNTRY_ID', $countryId);
+		$player->set('RANK_ID', $rankId);
 		$player->set('SEX', $this->request->data('sex'));
         $player->set('ENROLLMENT', (empty($enrollment) ? '' : str_replace('/', '', $enrollment)));
         $time = new Time();
@@ -169,6 +169,7 @@ class PlayersController extends AppController
             $error = $this->_getErrorMessage($res);
             $this->Flash->error($error);
             // 詳細情報表示処理へ
+			$this->request->query['countryId'] = $countryId;
             return $this->detail($playerId);
         }
 
@@ -186,8 +187,8 @@ class PlayersController extends AppController
             $updateScore = $playerScores->findByPlayerAndYear($player->ID, $thisYear);
 
             // 棋士マスタの段位と異なる場合は更新対象
-			if ($player->RANK !== $updateScore->PLAYER_RANK) {
-				$updateScore->set('RANK_ID', $rank);
+			if ($player->RANK_ID !== $updateScore->RANK_ID) {
+				$updateScore->set('RANK_ID', $rankId);
 				$playerScores->save($updateScore);
 			}
 
@@ -199,7 +200,9 @@ class PlayersController extends AppController
 			$this->isRollback = true;
 			$this->Flash->error('棋士情報の'.($playerId ? '更新' : '登録').'に失敗しました…。');
 		} finally {
-            // 連続作成の場合は新規登録、それ以外は登録した棋士情報を表示
+			// 所属国IDを設定
+			$this->request->query['countryId'] = $countryId;
+            // 詳細情報表示処理へ
             return (!$continue) ? $this->detail($player->ID) : $this->detail();
 		}
 	}

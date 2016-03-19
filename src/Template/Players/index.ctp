@@ -255,7 +255,7 @@
                             iframe: true,
                             width: "90%",
                             height: "90%",
-                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryCode=' + $('#searchCountry').val() + '&affiliation=日本棋院'
+                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&affiliation=日本棋院'
                         });
                         $(this).dialog('close');
                     }
@@ -267,7 +267,7 @@
                             iframe: true,
                             width: "90%",
                             height: "90%",
-                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryCode=' + $('#searchCountry').val() + '&affiliation=関西棋院'
+                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&affiliation=関西棋院'
                         });
                         $(this).dialog('close');
                     }
@@ -282,7 +282,7 @@
         });
         // 新規作成画面へ遷移
         $('#addNew').click(function () {
-            if ($('#searchCountry').val() === '01') {
+            if ($('#searchCountry').val() === '1') {
                 // ダイアログにメッセージを設定
                 var confirm = $('#playerConfirm');
                 confirm.html('どちらの棋院に所属する棋士を作成しますか？');
@@ -292,7 +292,7 @@
                     iframe: true,
                     width: "90%",
                     height: "90%",
-                    href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryCode=' + $('#searchCountry').val()
+                    href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val()
                 });
             }
         });
