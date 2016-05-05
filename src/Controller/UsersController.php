@@ -32,11 +32,11 @@ class UsersController extends AppController {
 	 */
     public function beforeFilter(Event $event)
     {
-        parent::beforeFilter($event);
 		// すでにログイン済みならリダイレクト
         if ($this->Auth->user()) {
 			return $this->redirect($this->Auth->redirectUrl());
         }
+        parent::beforeFilter($event);
     }
 
 	/**
@@ -46,7 +46,8 @@ class UsersController extends AppController {
 	 */
     public function beforeRender(Event $event)
     {
-        $this->set('cakeDescription', 'ログイン');
+        $this->_setTitle('ログイン');
+        parent::beforeRender($event);
     }
 
     /**

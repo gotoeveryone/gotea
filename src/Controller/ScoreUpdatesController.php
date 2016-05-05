@@ -19,9 +19,8 @@ class ScoreUpdatesController extends AppController
 	 */
     public function beforeRender(Event $event)
     {
+        $this->_setTitle('成績更新日編集');
         parent::beforeRender($event);
-
-        $this->set('cakeDescription', '成績更新日編集');
 		// 所属国プルダウン
 		$this->set('years', $this->ScoreUpdates->findScoreUpdateToArray());
     }

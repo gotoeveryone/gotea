@@ -87,7 +87,27 @@ $(document).ready(function() {
             $(this).removeClass('red');
         }
     });
+
+    selectTab($('section.details').eq(0).attr('id'));
+
+    // タブ押下時
+    $('section.tabs').click(function () {
+        selectTab($(this).attr('name'));
+    });
 });
+
+function selectTab(tabName) {
+    $.each($('section.details'), function() {
+        var id = $(this).attr('id');
+        if (id === tabName) {
+            $(this).removeClass('unVisible');
+            $('section#tabs section[name=' + id + ']').addClass('selectTab');
+        } else {
+            $(this).addClass('unVisible');
+            $('section#tabs section[name=' + id + ']').removeClass('selectTab');
+        }
+    });
+}
 
 function getDatepickerObject() {
     return {

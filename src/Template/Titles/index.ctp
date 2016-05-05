@@ -233,7 +233,7 @@
 <?=$this->Form->end()?>
 <script type="text/javascript">
 $(function() {
-    $('.colorbox').colorbox({iframe: true, width: "90%", height: "90%"});
+    $('.colorbox').colorbox({iframe: true, width: "50%", height: "95%"});
 
     if ($('#searchFlag').val() === 'false') {
         $('#addRow').attr('disabled', true);

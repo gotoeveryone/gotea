@@ -20,166 +20,162 @@
     <?=$this->Form->hidden('searchFlag', ['value' => $this->request->data('searchFlag')])?>
     <?=$this->Form->hidden('country', ['value' => $this->request->data('searchCountry')])?>
     <?=$this->Form->hidden('searchRetire', ['value' => $this->request->data('searchRetire')])?>
+    <?=$this->Form->hidden('registWithMapping', ['id' => 'registWithMapping', 'value' => false])?>
 
     <section id="detail">
-        <table class="detail">
-            <tr class="headerRow1">
-                <td colspan="4">
+        <section id="tabs">
+            <section class="tabs" name="title">タイトル情報</section>
+            <section class="tabs" name="titleRetains">タイトル保持情報</section>
+        </section>
+        <section id="scroll">
+            <section id="title" class="details">
+                <section class="categoryRow">
                     <?='タイトル情報（ID：'.h($title->ID).'）'?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">タイトル：</td>
-                <td class="detailColumn2">
-                    <?=$this->Form->hidden('selectTitleId', ['value' => $title->ID])?>
-                    <?=h($title->NAME)?>
-                </td>
-                <td class="right detailColumn1">分類：</td>
-                <td class="detailColumn2">
-                    <?=($title->country->NAME).'棋戦'?>
-                </td>
-            </tr>
-            <tr class="headerRow2">
-                <td colspan="4">
-                    新規登録
-                </td>
-            </tr>
-            <tr>
-                <td class="right detalColumn1">
-                    対象年：
-                </td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->text('registYear', [
-                            'id' => 'registYear',
-                            'value' => $this->request->data('registYear'),
-                            'maxlength' => 4,
-                            'class' => 'imeDisabled targetYear'
-                        ]);
-                    ?>
-                </td>
-                <td class="right detailColumn1">
-                    期：
-                </td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->text('registHolding', [
-                            'id' => 'registHolding',
-                            'value' => $this->request->data('registHolding'),
-                            'maxlength' => 3,
-                            'class' => 'imeDisabled targetHolding'
-                        ]);
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">
-                    <?=($title->GROUP_FLAG) ? '優勝団体名' : '棋士名：'?>
-                </td>
-                <td class="detailColumn2">
-                    <?php
-                        if ($title->GROUP_FLAG) {
-                            echo $this->Form->text('registGroupName', [
-                                'value' => $this->request->data('registGroupName'),
-                                'maxlength' => 30
-                            ]);
-                        } else {
-                            echo $this->Form->hidden('registPlayerId', ['id' => 'registPlayerId', 'value' => $this->request->data('registPlayerId')]);
-                            echo $this->Form->text('registPlayerName', [
-                                'id' => 'registPlayerName',
-                                'value' => $this->request->data('registPlayerName'),
-                                'tabindex' => -1,
-                                'readonly' => true,
-                                'style' => 'border-style: None; background-color: transparent; -moz-user-input: none; user-focus: none'
-                            ]);
-                            echo $this->Form->hidden('registPlayerName', ['id' => 'registPlayerName', 'value' => $this->request->data('registPlayerName')]);
-                            echo $this->Form->text('registRankText', [
-                                'id' => 'registRankText',
-                                'value' => $this->request->data('registRankText'),
-                                'tabindex' => -1,
-                                'readonly' => true,
-                                'style' => 'border-style: None; background-color: transparent; -moz-user-input: none; user-focus: none'
-                            ]);
-                            echo $this->Form->hidden('registRank', ['id' => 'registRank', 'value' => $this->request->data('registRank')]);
-                        }
-                    ?>
-                </td>
-                <td colspan="2" class="right">
-                    <?php
-                        if (!$title->GROUP_FLAG) {
-                            echo $this->Form->button('棋士検索', [
-                                'type' => 'button',
-                                'id' => 'searchPlayer'
-                            ]);
-                        }
-                        echo $this->Form->button('新規登録', [
-                            'type' => 'button',
-                            'id' => 'regist',
-                            'disabled' => true
-                        ]);
-                    ?>
-                </td>
-            </tr>
-            <tr class="headerRow1">
-                <td colspan="4">
-                    保持情報
-                </td>
-            </tr>
-            <?php if (!empty($title->title_retains)) { ?>
-            <?php $beforeYear = ''; ?>
-            <?php $header = false; ?>
-            <?php foreach ($title->title_retains as $key=>$titleRetain) : ?>
-                <?php if ($title->HOLDING === $titleRetain->HOLDING) { ?>
-                <tr class="headerRow2">
-                    <td colspan="4">
-                        現在の保持情報
-                    </td>
-                </tr>
-                <?php } else if (!$header) { ?>
-                <tr class="headerRow2">
-                    <td colspan="4">
-                        保持情報（履歴）
-                    </td>
-                </tr>
-                <?php $header = true; ?>
-                <?php } ?>
-                <?php if ($beforeYear !== $titleRetain->TARGET_YEAR) { ?>
-                <tr class="headerRow3">
-                    <td colspan="4">
-                        <?=h($titleRetain->TARGET_YEAR).'年度'?>
-                    </td>
-                </tr>
-                <?php $beforeTitle = $titleRetain->TARGET_YEAR; ?>
-                <?php } ?>
-                <tr>
-                    <td class="right detailColumn1">
-                        期：
-                    </td>
-                    <td class="detailColumn2">
-                        <?=h($titleRetain->HOLDING)?>
-                    </td>
-                    <td class="right detailColumn1">
-                        優勝者：
-                    </td>
-                    <td class="detailColumn2">
+                </section>
+                <section class="row">
+                    <section class="box">
+                        <section class="headerRow">タイトル名</section>
+                        <section class="valueRow">
+                            <?=$this->Form->hidden('selectTitleId', ['value' => $title->ID])?>
+                            <?=h($title->NAME)?>
+                        </section>
+                    </section>
+                    <section class="box">
+                        <section class="headerRow">分類</section>
+                        <section class="valueRow">
+                            <?=($title->country->NAME).'棋戦'?>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section id="titleRetains" class="details">
+                <section class="categoryRow">保持情報</section>
+                <section class="row">
+                    <section class="box">
+                        <section class="headerRow">新規登録</section>
+                    </section>
+                </section>
+                <section class="row">
+                    <section class="box2">
+                        <section class="valueRow">対象年：
+                            <?=
+                                $this->Form->text('registYear', [
+                                    'id' => 'registYear',
+                                    'value' => $this->request->data('registYear'),
+                                    'maxlength' => 4,
+                                    'class' => 'imeDisabled targetYear'
+                                ]);
+                            ?>
+                            期：
+                            <?=
+                                $this->Form->text('registHolding', [
+                                    'id' => 'registHolding',
+                                    'value' => $this->request->data('registHolding'),
+                                    'maxlength' => 3,
+                                    'class' => 'imeDisabled targetHolding'
+                                ]);
+                            ?>
+                        </section>
+                    </section>
+                    <section class="box2">
+                        <section class="valueRow">
+                            <?=($title->GROUP_FLAG) ? '優勝団体名' : '棋士名：'?>
+                            <?php
+                                if ($title->GROUP_FLAG) {
+                                    echo $this->Form->text('registGroupName', [
+                                        'value' => $this->request->data('registGroupName'),
+                                        'maxlength' => 30
+                                    ]);
+                                } else {
+                                    echo $this->Form->hidden('registPlayerId', ['id' => 'registPlayerId', 'value' => $this->request->data('registPlayerId')]);
+                                    echo $this->Form->text('registPlayerName', [
+                                        'id' => 'registPlayerName',
+                                        'value' => '',
+                                        'tabindex' => -1,
+                                        'readonly' => true,
+                                        'class' => 'readonly playerName'
+                                    ]);
+                                    echo $this->Form->hidden('registPlayerName', ['id' => 'registPlayerName', 'value' => $this->request->data('registPlayerName')]);
+                                    echo $this->Form->text('registRankText', [
+                                        'id' => 'registRankText',
+                                        'value' => '',
+                                        'tabindex' => -1,
+                                        'readonly' => true,
+                                        'class' => 'readonly rank'
+                                    ]);
+                                    echo $this->Form->hidden('registRank', ['id' => 'registRank', 'value' => $this->request->data('registRank')]);
+                                }
+                            ?>
+                        </section>
+                    </section>
+                </section>
+                <section class="row">
+                    <section class="box button">
                         <?php
-                            if ($title->GROUP_FLAG) {
-                                echo h($titleRetain->WIN_GROUP_NAME);
-                            } else {
-                                echo h($titleRetain->player->NAME).' '.h($titleRetain->rank->NAME);
+                            if (!$title->GROUP_FLAG) {
+                                echo $this->Form->button('棋士検索', [
+                                    'type' => 'button',
+                                    'id' => 'searchPlayer'
+                                ]);
                             }
+                            echo $this->Form->button('新規登録', [
+                                'type' => 'button',
+                                'id' => 'regist',
+                                'disabled' => true
+                            ]);
+                            echo $this->Form->button('最新を登録', [
+                                'type' => 'button',
+                                'id' => 'registNew',
+                                'disabled' => true
+                            ]);
                         ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="right detailColumn1">更新日時：</td>
-                    <td colspan="4">
-                        <?=$this->Date->formatToDateTime($titleRetain->MODIFIED)?>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-            <?php }?>
-        </table>
+                    </section>
+                </section>
+                <?php if (!empty($title->title_retains)) : ?>
+                    <?php foreach ($title->title_retains as $titleRetain) : ?>
+                        <?php if ($title->HOLDING === $titleRetain->HOLDING) : ?>
+                        <section class="row">
+                            <section class="box">
+                                <section class="headerRow">現在の保持情報</section>
+                            </section>
+                        </section>
+                        <section class="row">
+                            <section class="box">
+                                <section class="valueRow">
+                                    <?=h($titleRetain->TARGET_YEAR).'年 '?>
+                                    <?=h($titleRetain->HOLDING).'期 '?>
+                                    <?=h(($title->GROUP_FLAG) ? $titleRetain->WIN_GROUP_NAME : $titleRetain->player->NAME.' '.$titleRetain->rank->NAME)?>
+                                </section>
+                            </section>
+                        </section>
+                        <?php break ?>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                    <?php $header = false; ?>
+                    <?php foreach ($title->title_retains as $titleRetain) : ?>
+                        <?php if (!$header) : ?>
+                        <section class="row">
+                            <section class="box">
+                                <section class="headerRow">保持情報（履歴）</section>
+                            </section>
+                        </section>
+                        <?php $header = true; ?>
+                        <?php endif ?>
+                        <?php if ($title->HOLDING !== $titleRetain->HOLDING) : ?>
+                        <section class="row">
+                            <section class="box">
+                                <section class="valueRow">
+                                    <?=h($titleRetain->TARGET_YEAR).'年 '?>
+                                    <?=h($titleRetain->HOLDING).'期 '?>
+                                    <?=h(($title->GROUP_FLAG) ? $titleRetain->WIN_GROUP_NAME : $titleRetain->player->NAME.' '.$titleRetain->rank->NAME)?>
+                                </section>
+                            </section>
+                        </section>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                <?php endif ?>
+            </section>
+        </section>
     </section>
 <?=$this->Form->end()?>
 <script type="text/javascript">
@@ -199,6 +195,15 @@
         });
         // 新規登録ボタン押下時
         $('#regist').click(function() {
+            $('#registWithMapping').val(false);
+            regist();
+        });
+        // 最新を登録ボタン押下時
+        $('#registNew').click(function() {
+            $('#registWithMapping').val(true);
+            regist();
+        });
+        function regist() {
             <?php
                 if ($title->GROUP_FLAG) {
                     echo 'if ($("#registGroupName").val() === "") {';
@@ -220,10 +225,10 @@
             confirm.html('タイトル保持情報を登録します。よろしいですか？');
             $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'regist'])?>');
             confirm.click();
-        });
+        }
         // 新規登録ボタンの制御
         function controlDisabled() {
-            $('#regist').attr('disabled', !($('#registYear').val() !== '' && $('#registHolding').val() !== ''));
+            $('#regist, #registNew').attr('disabled', !($('#registYear').val() !== '' && $('#registHolding').val() !== ''));
         }
     });
 </script>

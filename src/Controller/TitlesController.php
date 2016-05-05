@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cake\Event\Event;
+use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Psr\Log\LogLevel;
 
@@ -160,11 +161,14 @@ class TitlesController extends AppController
 	 */
 	public function detail($id = null)
     {
-		$this->set('cakeDescription', 'タイトル情報照会・修正');
         $this->set('dialogFlag', true);
 
 		// タイトル情報一式を設定
-        $this->set('title', $this->Titles->findTitleAllRelations($id));
+        $title = $this->Titles->findTitleAllRelations($id);
+        if (!$title) {
+            throw new NotFoundException('タイトル情報が取得できませんでした。ID：'.$id);
+        }
+        $this->set('title', $title);
 
         return $this->render('detail');
     }
@@ -177,7 +181,7 @@ class TitlesController extends AppController
 		// 必須カラムのフィールド
 		$titleId = $this->request->data('selectTitleId');
 		$holding = $this->request->data('registHolding');
-        $this->log('期：'.$holding, LogLevel::INFO);
+        //$this->log('期：'.$holding, LogLevel::INFO);
 
         $titleRetains = TableRegistry::get('TitleRetains');
 
@@ -201,7 +205,7 @@ class TitlesController extends AppController
         // エンティティを新規作成
         $titleRetain = $titleRetains->newEntity();
 
-		$titleRetain->set('TITLE_ID', $this->request->data('selectTitleId'));
+		$titleRetain->set('TITLE_ID', $titleId);
 		$titleRetain->set('HOLDING', $holding);
 		$titleRetain->set('TARGET_YEAR', $this->request->data('registYear'));
 		if (!empty($playerId)) {
@@ -227,6 +231,14 @@ class TitlesController extends AppController
 		try {
 			// タイトル保持情報の保存
 			$titleRetains->save($titleRetain);
+            // 最新を登録する場合はタイトルマスタも書き換え
+            $this->log($titleRetain, LogLevel::INFO);
+            $withMapping = $this->request->data('registWithMapping');
+            if ($withMapping === 'true') {
+                $title = $this->Titles->get($titleId);
+                $title->set('HOLDING', $holding);
+                $this->Titles->save($title);
+            }
 			$this->Flash->info('タイトル保持情報を登録しました。');
 		} catch (PDOException $e) {
 			$this->log('タイトル保持情報登録・更新エラー：'.$e->getMessage());
@@ -243,6 +255,6 @@ class TitlesController extends AppController
      */
     private function __initSearch()
     {
-        $this->set('cakeDescription', 'タイトル情報検索');
+        $this->_setTitle('タイトル情報検索');
     }
 }

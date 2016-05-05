@@ -19,8 +19,8 @@ class NativeQueryController extends AppController
 	 */
     public function beforeRender(Event $event)
     {
+        $this->_setTitle('各種情報クエリ更新');
         parent::beforeRender($event);
-        $this->set('cakeDescription', '各種情報クエリ更新');
     }
 
 	/**

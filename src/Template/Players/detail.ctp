@@ -1,166 +1,211 @@
-<?=$this->Form->create(null, [
-    'id' => 'mainForm',
-    'method' => 'post',
-    'action' => 'detail',
-    'templates' => [
-        'inputContainer' => '{{content}}',
-        'textFormGroup' => '{{input}}',
-        'selectFormGroup' => '{{input}}'
-    ]
-])?>
-    <!-- 連続作成フラグ -->
-    <?=$this->Form->hidden('isContinue', ['id' => 'isContinue', 'value' => false])?>
+<section id="detail">
+    <section id="tabs">
+        <section class="tabs" name="player">棋士情報</section>
+        <?php if ($player->ID) : ?>
+            <section class="tabs" name="scores">成績情報</section>
+            <section class="tabs" name="titleRetains">タイトル情報</section>
+        <?php endif ?>
+            <section style="clear: both"></section>
+    </section>
+    <?=$this->Form->create(null, [
+        'id' => 'mainForm',
+        'method' => 'post',
+        'action' => 'detail',
+        'templates' => [
+            'inputContainer' => '{{content}}',
+            'textFormGroup' => '{{input}}',
+            'selectFormGroup' => '{{input}}'
+        ]
+    ])?>
+        <!-- 連続作成フラグ -->
+        <?=$this->Form->hidden('isContinue', ['id' => 'isContinue', 'value' => false])?>
 
-    <!-- 検索フラグ -->
-    <?=$this->Form->hidden('searchFlag', ['value' => (!$this->request->data('searchFlag') ? 'false' : $this->request->data('searchFlag'))])?>
+        <!-- 検索フラグ -->
+        <?=
+            $this->Form->hidden('searchFlag', [
+                'value' => (!$this->request->data('searchFlag') ? 'false' : $this->request->data('searchFlag'))
+            ])
+        ?>
 
-    <!-- 選択した成績情報の年度 -->
-    <?=$this->Form->hidden('selectScoreId', ['id' => 'selectScoreId'])?>
-    <?=$this->Form->hidden('selectYear', ['id' => 'selectYear'])?>
-    <?=$this->Form->hidden('selectWinPoint', ['id' => 'selectWinPoint'])?>
-    <?=$this->Form->hidden('selectLosePoint', ['id' => 'selectLosePoint'])?>
-    <?=$this->Form->hidden('selectDrawPoint', ['id' => 'selectDrawPoint'])?>
-    <?=$this->Form->hidden('selectWinPointWr', ['id' => 'selectWinPointWr'])?>
-    <?=$this->Form->hidden('selectLosePointWr', ['id' => 'selectLosePointWr'])?>
-    <?=$this->Form->hidden('selectDrawPointWr', ['id' => 'selectDrawPointWr'])?>
-
-    <section id="detail">
-        <!-- 棋士マスタ情報 -->
-        <table class="detail">
-            <tr class="headerRow1">
-                <td colspan="4">
-                    棋士情報<?=($player->ID ? '（ID：'.h($player->ID).'）' : '')?>
-                    <?=$this->Form->hidden('selectPlayerId', ['value' => h($player->ID)])?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">所属国：</td>
-                <td class="detailColumn2">
-                    <?=h($player->country->NAME)?>
-                    <?=$this->Form->hidden('selectCountry', ['value' => $player->country->ID])?>
-                </td>
-                <td class="right detailColumn1">所属組織：</td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->text('affiliation', [
-                            'value' => h($player->AFFILIATION),
-                            'class' => 'affiliation',
-                            'maxlength' => 10
-                        ]);
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">棋士名：</td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->text('playerName', [
-                            'value' => h($player->NAME),
-                            'class' => 'playerName',
-                            'maxlength' => 20
-                        ]);
-                    ?>
-                </td>
-                <td class="right detailColumn1">（英語）：</td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->text('playerNameEn', [
-                            'value' => h($player->NAME_ENGLISH),
-                            'class' => 'imeDisabled playerName',
-                            'maxlength' => 40
-                        ]);
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">&nbsp;</td>
-                <td class="right detailColumn1">（その他）：</td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->text('playerNameOther', [
-                            'value' => h($player->NAME_OTHER),
-                            'class' => 'playerName',
-                            'maxlength' => 40
-                        ]);
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">生年月日：</td>
-                <td class="detailColumn2">
-                    <?php
-                        $birthday = '';
-                        $age = '不明';
-                        if ($player->BIRTHDAY) {
-                            $birthday = $this->Date->format($player->BIRTHDAY, 'YYYY/MM/dd');
-                            $age = intval(((date('Ymd') - $this->Date->format($player->BIRTHDAY, 'YYYYMMdd')) / 10000)).'歳';
-                        }
-                        echo $this->Form->text('birthday', [
-                            'value' => $birthday,
-                            'class' => 'imeDisabled datepicker birthday',
-                            'readonly' => true
-                        ]);
-                    ?>
-                    <span class="age">（<?=$age?>）</span>
-                </td>
-                <td class="right detailColumn1">性別：</td>
-                <td class="detailColumn2">
-                    <?php
-                        if (!$player->ID) {
-                            echo $this->Form->input('sexes', [
-                                'options' => array(
-                                    '男性' => '男性',
-                                    '女性' => '女性'
-                                ),
-                                'name' => 'sex',
-                                'class' => 'sex'
+        <!-- 選択した成績情報の年度 -->
+        <?=$this->Form->hidden('selectScoreId', ['id' => 'selectScoreId'])?>
+        <?=$this->Form->hidden('selectYear', ['id' => 'selectYear'])?>
+        <?=$this->Form->hidden('selectWinPoint', ['id' => 'selectWinPoint'])?>
+        <?=$this->Form->hidden('selectLosePoint', ['id' => 'selectLosePoint'])?>
+        <?=$this->Form->hidden('selectDrawPoint', ['id' => 'selectDrawPoint'])?>
+        <?=$this->Form->hidden('selectWinPointWr', ['id' => 'selectWinPointWr'])?>
+        <?=$this->Form->hidden('selectLosePointWr', ['id' => 'selectLosePointWr'])?>
+        <?=$this->Form->hidden('selectDrawPointWr', ['id' => 'selectDrawPointWr'])?>
+    <section id="scroll">
+        <section id="player" class="details">
+            <!-- 棋士マスタ情報 -->
+            <section class="categoryRow">
+                棋士情報<?=($player->ID ? '（ID：'.h($player->ID).'）' : '')?>
+                <?=$this->Form->hidden('selectPlayerId', ['value' => h($player->ID)])?>
+            </section>
+            <section class="row">
+                <section class="box3">
+                    <section class="headerRow">所属国</section>
+                    <section class="valueRow">
+                        <?=h($player->country->NAME)?>
+                        <?=$this->Form->hidden('selectCountry', ['value' => $player->country->ID])?>
+                    </section>
+                </section>
+                <section class="box3">
+                    <section class="headerRow">所属組織</section>
+                    <section class="valueRow">
+                        <?=
+                            $this->Form->text('affiliation', [
+                                'value' => h($player->AFFILIATION),
+                                'class' => 'affiliation',
+                                'maxlength' => 10
                             ]);
-                        } else {
-                            echo h($player->SEX);
-                            echo $this->Form->hidden('sex', ['value' => h($player->SEX)]);
-                        }
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">入段日：</td>
-                <td class="detailColumn2">
-                    <?php
-                        if (!$player->ID) {
-                            echo $this->Form->text('enrollment', [
-                                'value' => '',
-                                'class' => 'imeDisabled'
+                        ?>
+                    </section>
+                </section>
+                <section class="box3">
+                    <section class="headerRow">引退フラグ</section>
+                    <section class="valueRow">
+                        <?=$this->Form->checkbox('retireFlag', ['checked' => ($player->DELETE_FLAG)])?>
+                    </section>
+                </section>
+            </section>
+            <section class="row">
+                <section class="box">
+                    <section class="headerRow">棋士名</section>
+                </section>
+                <section class="box2">
+                    <section class="valueRow">
+                        <?=
+                            $this->Form->text('playerName', [
+                                'value' => h($player->NAME),
+                                'class' => 'playerName',
+                                'maxlength' => 20
                             ]);
-                        } else {
-                            echo $this->Date->formatJpValue($player->ENROLLMENT);
-                            echo $this->Form->hidden('enrollment', ['value' => h($player->ENROLLMENT)]);
-                        }
-                    ?>
-                </td>
-                <td class="right detailColumn1">段位：</td>
-                <td class="detailColumn2">
-                    <?=
-                        $this->Form->input('rank', [
-                            'options' => $ranks,
-                            'class' => 'rank',
-                            'value' => ($player->RANK_ID ? $player->RANK_ID : '1')
-                        ]);
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">引退フラグ：</td>
-                <td colspan="3">
-                    <?=$this->Form->checkbox('retireFlag', ['checked' => ($player->DELETE_FLAG)])?>
-                </td>
-            </tr>
-            <tr>
-                <td class="right detailColumn1">更新日時：</td>
-                <td colspan="2">
-                    <?=$this->Date->formatToDateTime($player->MODIFIED)?>
-                    <?=$this->Form->hidden('lastUpdatePlayer', ['value' => $this->Date->format($player->MODIFIED, 'yyyyMMddHHmmss')])?>
-                </td>
-                <td class="right">
+                        ?>
+                    </section>
+                </section>
+                <section class="box2">
+                    <section class="valueRow">
+                        英語
+                        <?=
+                            $this->Form->text('playerNameEn', [
+                                'value' => h($player->NAME_ENGLISH),
+                                'class' => 'imeDisabled playerName',
+                                'maxlength' => 40
+                            ]);
+                        ?>
+                    </section>
+                    <section class="valueRow">
+                        その他
+                        <?=
+                            $this->Form->text('playerNameOther', [
+                                'value' => h($player->NAME_OTHER),
+                                'class' => 'playerName',
+                                'maxlength' => 40
+                            ]);
+                        ?>
+                    </section>
+                </section>
+            </section>
+            <section class="row">
+                <section class="box2">
+                    <section class="headerRow">生年月日</section>
+                    <section class="valueRow">
+                        <?php
+                            $birthday = $player->getBirthday();
+                            $age = '不明';
+                            if ($birthday) {
+                                $age = intval(((date('Ymd') - $player->getBirthday('Ymd')) / 10000)).'歳';
+                            }
+                            echo $this->Form->text('birthday', [
+                                'value' => $birthday,
+                                'class' => 'imeDisabled datepicker birthday',
+                                'readonly' => true
+                            ]);
+                        ?>
+                        <span class="age">（<?=$age?>）</span>
+                    </section>
+                </section>
+                <section class="box2">
+                    <section class="headerRow">入段日</section>
+                    <section class="valueRow">
+                        <?php
+                            if (!$player->ID) {
+                                echo $this->Form->text('enrollment', [
+                                    'value' => '',
+                                    'class' => 'imeDisabled'
+                                ]);
+                            } else {
+                                echo $this->Date->formatJpValue($player->ENROLLMENT);
+                                echo $this->Form->hidden('enrollment', ['value' => h($player->ENROLLMENT)]);
+                            }
+                        ?>
+                    </section>
+                </section>
+            </section>
+            <section class="row">
+                <section class="box4">
+                    <section class="headerRow">性別</section>
+                    <section class="valueRow">
+                        <?php
+                            if (!$player->ID) {
+                                echo $this->Form->input('sexes', [
+                                    'options' => array(
+                                        '男性' => '男性',
+                                        '女性' => '女性'
+                                    ),
+                                    'name' => 'sex',
+                                    'class' => 'sex'
+                                ]);
+                            } else {
+                                echo h($player->SEX);
+                                echo $this->Form->hidden('sex', ['value' => h($player->SEX)]);
+                            }
+                        ?>
+                    </section>
+                </section>
+                <section class="box4">
+                    <section class="headerRow">段位</section>
+                    <section class="valueRow">
+                        <?=
+                            $this->Form->input('rank', [
+                                'options' => $ranks,
+                                'class' => 'rank',
+                                'value' => ($player->RANK_ID ? $player->RANK_ID : '1')
+                            ]);
+                        ?>
+                    </section>
+                </section>
+                <section class="box2">
+                    <section class="headerRow">更新日時</section>
+                    <section class="valueRow">
+                        <?=$this->Date->formatToDateTime($player->MODIFIED)?>
+                        <?=
+                            $this->Form->hidden('lastUpdatePlayer', [
+                                'value' => $this->Date->format($player->MODIFIED, 'yyyyMMddHHmmss')
+                            ])
+                        ?>
+                    </section>
+                </section>
+            </section>
+            <section class="row">
+                <section class="box">
+                    <section class="headerRow">その他備考</section>
+                    <section class="valueRow">
+                        <?=
+                            $this->Form->textarea('remarks', [
+                                'cols' => 30,
+                                'rows' => 3,
+                                'class' => 'remarks',
+                                'value' => h($player->REMARKS)
+                            ])
+                        ?>
+                    </section>
+                </section>
+            </section>
+            <section class="row">
+                <section class="detailRow">
                     <?php
                         echo $this->Form->button(($player->ID ? '更新' : '登録'), [
                             'id' => 'save',
@@ -173,95 +218,111 @@
                             ]);
                         }
                     ?>
-                </td>
-            </tr>
-        </table>
+                </section>
+            </section>
+        </section>
 
-        <!-- 棋士成績情報 -->
-        <table class="detail">
-            <tr class="headerRow1">
-                <td colspan="4">成績情報</td>
-            </tr>
-            <?php if (!empty($player->player_scores)) { ?>
+        <section id="scores" class="details">
+            <!-- 棋士成績情報 -->
+            <section class="categoryRow">成績情報</section>
+            <?php if (!empty($player->player_scores)) : ?>
             <?php foreach ($player->player_scores as $key=>$score) :?>
-                <tr class="headerRow2">
-                    <td colspan="4">
-                        <?=h($score->TARGET_YEAR).'年度'?>
-                        <input type="hidden" name="year" value="<?=h($score->TARGET_YEAR)?>" id="year_<?=$key?>">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="right detailColumn1">段位：</td>
-                    <td colspan="3">
-                        <?=h($score->rank->NAME)?><br/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="right detailColumn1">勝敗（国内）：</td>
-                    <td class="detailColumn2">
-                        <?=$this->Form->hidden('scoreId_'.$key, ['id' => 'scoreId_'.$key, 'value' => h($score->ID)])?>
-                        <?=
-                            $this->Form->input('winPoint_'.$key, [
-                                'id' => 'winPoint_'.$key,
-                                'name' => 'winPoint',
-                                'value' => h($score->WIN_POINT),
-                                'class' => 'playerPoint imeDisabled'
-                            ]).'勝';
-                        ?>
-                        <?=
-                            $this->Form->input('losePoint_'.$key, [
-                                'id' => 'losePoint_'.$key,
-                                'name' => 'losePoint',
-                                'value' => h($score->LOSE_POINT),
-                                'class' => 'playerPoint imeDisabled'
-                            ]).'敗';
-                        ?>
-                        <?=
-                            $this->Form->input('drawPoint_'.$key, [
-                                'id' => 'drawPoint_'.$key,
-                                'name' => 'drawPoint',
-                                'value' => h($score->DRAW_POINT),
-                                'class' => 'playerPoint imeDisabled'
-                            ]).'分';
-                        ?>
-                        （勝率<span class="winPercent" id="winPercent_<?=$key?>">65</span>%）
-                    </td>
-                    <td class="right detailColumn1">（国際）：</td>
-                    <td class="detailColumn2">
-                        <?=
-                            $this->Form->input('winPointWr_'.$key, [
-                                'id' => 'winPointWr_'.$key,
-                                'name' => 'winPointWr',
-                                'value' => h($score->WIN_POINT_WORLD),
-                                'class' => 'playerPoint imeDisabled'
-                            ]).'勝';
-                        ?>
-                        <?=
-                            $this->Form->input('losePointWr_'.$key, [
-                                'id' => 'losePointWr_'.$key,
-                                'name' => 'losePointWr',
-                                'value' => h($score->LOSE_POINT_WORLD),
-                                'class' => 'playerPoint imeDisabled'
-                            ]).'敗';
-                        ?>
-                        <?=
-                            $this->Form->input('drawPointWr_'.$key, [
-                                'id' => 'drawPointWr_'.$key,
-                                'name' => 'drawPointWr',
-                                'value' => h($score->DRAW_POINT_WORLD),
-                                'class' => 'playerPoint imeDisabled'
-                            ]).'分';
-                        ?>
-                        （勝率<span class="winPercentWr" id="winPercentWr_<?=$key?>">0</span>%）
-                    </td>
-                </tr>
-                <tr>
-                    <td class="right detailColumn1">更新日時：</td>
-                    <td colspan="2">
-                        <?=$this->Date->formatToDateTime($score->MODIFIED)?>
-                        <?=$this->Form->hidden('lastUpdate_'.$key, ['id' => 'lastUpdate_'.$key, 'value' => $this->Date->format($score->MODIFIED, 'YmdHis')])?>
-                    </td>
-                    <td class="right">
+            <section class="category">
+                <section class="row">
+                    <section class="box">
+                        <section class="genreRow">
+                            <?=h($score->TARGET_YEAR).'年度'?>
+                            <input type="hidden" name="year" value="<?=h($score->TARGET_YEAR)?>" id="year_<?=$key?>">
+                        </section>
+                    </section>
+                </section>
+                <section class="row">
+                    <section class="box">
+                        <section class="headerRow">段位</section>
+                        <section class="valueRow">
+                            <?=h($score->rank->NAME)?><br/>
+                        </section>
+                    </section>
+                </section>
+                <section class="row">
+                    <section class="box2">
+                        <section class="headerRow">勝敗（国内）</section>
+                        <section class="valueRow">
+                            <?=$this->Form->hidden('scoreId_'.$key, ['id' => 'scoreId_'.$key, 'value' => h($score->ID)])?>
+                            <?=
+                                $this->Form->input('winPoint_'.$key, [
+                                    'id' => 'winPoint_'.$key,
+                                    'name' => 'winPoint',
+                                    'value' => h($score->WIN_POINT),
+                                    'class' => 'playerPoint imeDisabled'
+                                ]).'勝';
+                            ?>
+                            <?=
+                                $this->Form->input('losePoint_'.$key, [
+                                    'id' => 'losePoint_'.$key,
+                                    'name' => 'losePoint',
+                                    'value' => h($score->LOSE_POINT),
+                                    'class' => 'playerPoint imeDisabled'
+                                ]).'敗';
+                            ?>
+                            <?=
+                                $this->Form->input('drawPoint_'.$key, [
+                                    'id' => 'drawPoint_'.$key,
+                                    'name' => 'drawPoint',
+                                    'value' => h($score->DRAW_POINT),
+                                    'class' => 'playerPoint imeDisabled'
+                                ]).'分';
+                            ?>
+                            （勝率<span class="winPercent" id="winPercent_<?=$key?>">&nbsp;</span>%）
+                        </section>
+                    </section>
+                    <section class="box2">
+                        <section class="headerRow">勝敗（国際）</section>
+                        <section class="valueRow">
+                            <?=
+                                $this->Form->input('winPointWr_'.$key, [
+                                    'id' => 'winPointWr_'.$key,
+                                    'name' => 'winPointWr',
+                                    'value' => h($score->WIN_POINT_WORLD),
+                                    'class' => 'playerPoint imeDisabled'
+                                ]).'勝';
+                            ?>
+                            <?=
+                                $this->Form->input('losePointWr_'.$key, [
+                                    'id' => 'losePointWr_'.$key,
+                                    'name' => 'losePointWr',
+                                    'value' => h($score->LOSE_POINT_WORLD),
+                                    'class' => 'playerPoint imeDisabled'
+                                ]).'敗';
+                            ?>
+                            <?=
+                                $this->Form->input('drawPointWr_'.$key, [
+                                    'id' => 'drawPointWr_'.$key,
+                                    'name' => 'drawPointWr',
+                                    'value' => h($score->DRAW_POINT_WORLD),
+                                    'class' => 'playerPoint imeDisabled'
+                                ]).'分';
+                            ?>
+                            （勝率<span class="winPercentWr" id="winPercentWr_<?=$key?>">&nbsp;</span>%）
+                        </section>
+                    </section>
+                </section>
+                <section class="row">
+                    <section class="box">
+                        <section class="headerRow">更新日時</section>
+                    </section>
+                    <section class="box2">
+                        <section class="valueRow">
+                            <?=$this->Date->formatToDateTime($score->MODIFIED)?>
+                            <?=
+                                $this->Form->hidden('lastUpdate_'.$key, [
+                                    'id' => 'lastUpdate_'.$key,
+                                    'value' => $this->Date->format($score->MODIFIED, 'YmdHis')
+                                ])
+                            ?>
+                        </section>
+                    </section>
+                    <section class="box2 button">
                         <?=
                             $this->Form->button('更新', [
                                 'id' => 'updateScore_'.$key,
@@ -269,45 +330,46 @@
                                 'type' => 'button'
                             ]);
                         ?>
-                    </td>
-                </tr>
+                    </section>
+                </section>
+            </section>
             <?php endforeach ?>
-            <?php }?>
-        </table>
+            <?php endif ?>
+        </section>
+        <?=$this->Form->end()?>
 
-        <!-- タイトル保持情報 -->
-        <table class="detail">
-            <tr class="headerRow1">
-                <td colspan="6">タイトル保持情報</td>
-            </tr>
-            <?php if (!empty($player->title_retains)) { ?>
-            <?php $beforeYear = ''; ?>
-            <?php foreach ($player->title_retains as $key=>$titleRetain) : ?>
-                <?php if ($beforeYear != $titleRetain->TARGET_YEAR) { ?>
-                <tr class="headerRow2">
-                    <td colspan="6">
-                        <?=h($titleRetain->TARGET_YEAR).'年度'?>
-                    </td>
-                </tr>
+        <section id="titleRetains" class="details">
+            <!-- タイトル保持情報 -->
+            <section class="categoryRow">タイトル保持情報</section>
+            <?php if (!empty($player->title_retains)) : ?>
+            <?php $beforeYear = 0; ?>
+            <?php foreach ($player->title_retains as $titleRetain) : ?>
+                <?php if ($beforeYear !== $titleRetain->TARGET_YEAR) : ?>
+                <section class="category">
+                    <section class="row">
+                        <section class="genreRow">
+                            <?=h($titleRetain->TARGET_YEAR).'年度'?>
+                        </section>
+                    </section>
+                <?php endif ?>
+                    <section class="row">
+                        <section class="box">
+                            <section class="valueRow">
+                                <?=h($titleRetain->HOLDING).'期'.h($titleRetain->title->NAME)?>
+                                <?='（'.h($titleRetain->title->country->NAME).'棋戦）'?>
+                            </section>
+                        </section>
+                    </section>
+                <?php if ($beforeYear !== $titleRetain->TARGET_YEAR) : ?>
+                </section>
+                <?php endif ?>
                 <?php $beforeYear = $titleRetain->TARGET_YEAR; ?>
-                <?php } ?>
-                <tr>
-                    <td class="detailColumn1 right">
-                        <?=h($titleRetain->title->NAME).'<br/>（'.h($titleRetain->title->country->NAME).'棋戦）'?>
-                    </td>
-                    <td class="detailColumn2">
-                        <?=h($titleRetain->HOLDING).'期'?>
-                    </td>
-                    <td colspan="3" class="right detailColumn1">更新日時：</td>
-                    <td>
-                        <?=$this->Date->formatToDateTime($titleRetain->MODIFIED)?><br/>
-                    </td>
-                </tr>
             <?php endforeach ?>
-            <?php }?>
-        </table>
+            <?php endif ?>
+            </table>
+        </section>
     </section>
-<?=$this->Form->end()?>
+</section>
 <script type="text/javascript">
     $(function() {
         // 国内棋戦、国際棋戦の勝率を設定

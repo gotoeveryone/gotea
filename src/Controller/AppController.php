@@ -14,10 +14,13 @@ use Psr\Log\LogLevel;
 class AppController extends Controller
 {
     // コネクション
-    var $conn = null;
+    private $conn = null;
 
     // ロールバックフラグ
-    var $isRollback = false;
+    private $isRollback = false;
+
+    // タイトル
+    private $title = '';
 
     /**
      * 初期処理
@@ -70,11 +73,6 @@ class AppController extends Controller
         	throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
         }
 
-        // ユーザ名を表示
-        if ($this->Auth->user() !== null) {
-            $this->set('username', $this->Auth->user('username'));
-        }
-
         // トランザクションを開始
         if (empty($this->conn)) {
             $this->conn = ConnectionManager::get('default');
@@ -83,7 +81,7 @@ class AppController extends Controller
 
         // ダイアログ表示判定
         $dialogFlag = $this->request->data('dialogFlag');
-        if (!empty($dialogFlag) && $dialogFlag === 'true') {
+        if ($dialogFlag === 'true') {
             $this->set('dialogFlag', true);
         } else {
             $this->set('dialogFlag', false);
@@ -109,6 +107,14 @@ class AppController extends Controller
                 $this->conn->commit();
             }
         }
+
+        // ユーザ名を表示
+        if ($this->Auth->user()) {
+            $this->set('username', $this->Auth->user('username'));
+        }
+
+        // タイトルを設定
+        $this->set('cakeDescription', $this->title);
     }
 
     /**
@@ -172,4 +178,14 @@ class AppController extends Controller
         $this->request->session()->write($name, $value);
         return $this->set($name, $value);
     }
+
+    /**
+     * タイトルタグに表示する値を設定します。
+     *
+     * @param type $title
+     */
+     protected function _setTitle($title = null)
+     {
+         $this->title = $title;
+     }
 }

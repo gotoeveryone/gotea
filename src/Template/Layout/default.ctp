@@ -27,7 +27,7 @@
     <section id="container">
 
         <!-- ヘッダー -->
-        <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) { ?>
+        <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) : ?>
         <section id="header">
             <section class="username">
                 ユーザ：<?=h($username)?>
@@ -36,17 +36,23 @@
                 <span><?=date('Y年m月d日 H時i分s秒')?></span><br/>
             </section>
         </section>
-        <?php } ?>
+        <?php endif ?>
 
         <!-- 見出し -->
-        <section id="title" class="center">
-            <h1><?php if (!empty($cakeDescription)) { echo '棋士情報管理システム - '.$cakeDescription.'画面'; } ?></h1>
-            <hr />
-        </section>
+        <?php if (!empty($cakeDescription)) : ?>
+            <section id="title" class="center">
+                <h1><?='棋士情報管理システム - '.$cakeDescription.'画面'?></h1>
+                <hr />
+            </section>
+        <?php endif ?>
 
         <!-- 本体 -->
-        <section id="content">
-            <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) { ?>
+        <?php if (!empty($cakeDescription)) : ?>
+            <section id="content">
+        <?php else : ?>
+            <section id="contentModal">
+        <?php endif ?>
+            <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) : ?>
             <section class="sideMenu">
                 <?=
                     $this->Html->link('棋士勝敗ランキング出力',
@@ -105,22 +111,24 @@
                 ?>
             </section>
             <section class="main">
-            <?php } else { ?>
+            <?php else : ?>
             <section class="child">
-            <?php } ?>
+            <?php endif ?>
                 <?=$this->fetch('content')?>
             </section>
         </section>
 
         <!-- フッター -->
-        <section id="footer" class="center">
-            <hr />
-            <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) { ?>
-            <a href="<?=$this->Url->build(['controller' => 'users', 'action' => 'logout']); ?>">
-                ログアウト
-            </a>
-            <?php } ?>
-        </section>
+        <?php if (!empty($cakeDescription)) : ?>
+            <section id="footer" class="center">
+                <hr />
+                <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) { ?>
+                <a href="<?=$this->Url->build(['controller' => 'users', 'action' => 'logout']); ?>">
+                    ログアウト
+                </a>
+                <?php } ?>
+            </section>
+        <?php endif ?>
     </section>
 
     <section id="dialog" title="メッセージ">

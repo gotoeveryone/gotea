@@ -55,18 +55,24 @@ class PlayersController extends AppController
         $enrollmentTo = $this->_getParam('searchEnrollmentTo');
         $retire = $this->_getParam('searchRetire');
 
-        // 該当する棋士情報一覧を取得
-        $players = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
-                $enrollmentFrom, $enrollmentTo, $retire);
-//        $this->log($players, LogLevel::INFO);
+        // 該当する棋士情報一覧の件数を取得
+        $count = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
+                $enrollmentFrom, $enrollmentTo, $retire, true);
 
-        if (count($players) === 0) {
-            $this->Flash->warn(__('検索結果が0件でした。'));
-        } else if (count($players) > 1000) {
-            $this->Flash->warn(__('検索結果が1000件を超えています。条件を絞って再検索してください。'));
+        // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
+        if (!$count) {
+            $this->Flash->warn(__("検索結果が0件でした。"));
             $players = [];
+        } else if ($count > 1000) {
+            $this->Flash->warn(__("検索結果が1000件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
+            $players = [];
+        } else {
+            // 該当する棋士情報一覧を取得
+            $players = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
+                    $enrollmentFrom, $enrollmentTo, $retire);
         }
 
+        // 結果をセット
         $this->set('players', $players);
 
         // 値を格納
@@ -90,7 +96,6 @@ class PlayersController extends AppController
 	 */
 	public function detail($id = null)
     {
-		$this->set('cakeDescription', '棋士情報照会');
         $this->set('dialogFlag', true);
 
         // 棋士IDが取得出来なければ新規登録画面を表示
@@ -101,17 +106,15 @@ class PlayersController extends AppController
 
             // 所属国が取得出来なければエラー
             if (!$countryId) {
-                throw new BadRequestException("所属国を指定してください。");
+                throw new BadRequestException(__("所属国を指定してください。"));
             }
 
             $player = $this->Players->newEntity();
 
-            // 所属国を取得
-            $countries = TableRegistry::get('Countries');
-			$country = $countries->get($countryId);
-            $player->set('country', $country);
+            // 所属国を設定
+            $player->setCountry($countryId);
 
-            $player->set('AFFILIATION', ($affiliation ? $affiliation : $country->NAME.'棋院'));
+            $player->set('AFFILIATION', ($affiliation ? $affiliation : $player->country->NAME.'棋院'));
 			$this->set('player', $player);
 
             return $this->render('detail');
@@ -130,36 +133,14 @@ class PlayersController extends AppController
 	 */
 	public function save()
     {
-        // 連続作成かどうか
-		$continue = $this->request->data('isContinue');
-
-        // 必須カラムのフィールド
+        // IDからデータを取得
 		$playerId = $this->request->data('selectPlayerId');
-		$countryId = $this->request->data('selectCountry');
-		$rankId = $this->request->data('rank');
+        $exist = ($playerId) ? true : false;
+        $player = ($exist) ? $this->Players->get($playerId) : $this->Players->newEntity();
+        $message = ($exist) ? '更新' : '登録';
 
-		// NULL許可カラムのフィールド
-		$playerNameEn = $this->request->data('playerNameEn');
-		$playerNameOther = $this->request->data('playerNameOther');
-		$enrollment = $this->request->data('enrollment');
-		$birthday = $this->request->data('birthday');
-		$affiliation = $this->request->data('affiliation');
-
-		// データを取得
-        $player = ($playerId) ? $this->Players->get($playerId) : $this->Players->newEntity();
-
-        // 入力値を設定
-        $player->set('NAME', $this->request->data('playerName'));
-		$player->set('NAME_ENGLISH', (empty($playerNameEn) ? null : $playerNameEn));
-		$player->set('NAME_OTHER', (empty($playerNameOther) ? null : $playerNameOther));
-		$player->set('COUNTRY_ID', $countryId);
-		$player->set('RANK_ID', $rankId);
-		$player->set('SEX', $this->request->data('sex'));
-        $player->set('ENROLLMENT', (empty($enrollment) ? '' : str_replace('/', '', $enrollment)));
-        $time = new Time();
-        $player->set('BIRTHDAY', (empty($birthday) ? '' : $time->parseDate($birthday, 'YYYY/MM/dd')));
-		$player->set('AFFILIATION', (empty($affiliation) ? null : $affiliation));
-		$player->set('DELETE_FLAG', $this->request->data('retireFlag'));
+        // 入力値をエンティティに設定
+        $player->patchEntity($this->request);
 
         // バリデーションエラーの場合はそのまま返す
         $validator = $this->Players->validator('default');
@@ -169,39 +150,37 @@ class PlayersController extends AppController
             $error = $this->_getErrorMessage($res);
             $this->Flash->error($error);
             // 詳細情報表示処理へ
-			$this->request->query['countryId'] = $countryId;
-            return $this->detail($playerId);
+			$this->request->query['countryId'] = $player->country->ID;
+            return $this->detail($player->ID);
         }
 
         try {
             // 棋士マスタの保存
             $this->Players->save($player);
-
-			// 状態によって棋士成績情報の登録・更新を制御
-			$thisYear = Time::now()->year;
-
-            // 棋士成績情報
-            $playerScores = TableRegistry::get('PlayerScores');
+            $saveId = $player->ID;
 
             // 当年の棋士成績情報を取得
-            $updateScore = $playerScores->findByPlayerAndYear($player->ID, $thisYear);
+            $playerScores = TableRegistry::get('PlayerScores');
+            $updateScore = $playerScores->findByPlayerAndYear($saveId, Time::now()->year);
 
             // 棋士マスタの段位と異なる場合は更新対象
-			if ($player->RANK_ID !== $updateScore->RANK_ID) {
-				$updateScore->set('RANK_ID', $rankId);
+			if ($player->rank->ID !== $updateScore->rank->ID) {
+                $updateScore->setRank($player->rank->ID);
 				$playerScores->save($updateScore);
 			}
 
             // メッセージ出力
-            $this->Flash->info(__('棋士ID：'.$player->ID.'の棋士情報を'.($playerId ? '更新' : '登録').'しました。'));
+            $this->Flash->info(__("棋士ID：{$saveId}の棋士情報を{$message}しました。"));
 
 		} catch (PDOException $e) {
-			$this->log('棋士情報登録・更新エラー：'.$e->getMessage(), LogLevel::ERROR);
+            $this->log(__("棋士情報登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
 			$this->isRollback = true;
-			$this->Flash->error('棋士情報の'.($playerId ? '更新' : '登録').'に失敗しました…。');
+			$this->Flash->error(__("棋士情報の{$message}に失敗しました…。"));
 		} finally {
 			// 所属国IDを設定
-			$this->request->query['countryId'] = $countryId;
+			$this->request->query['countryId'] = $player->country->ID;
+            // 連続作成かどうか
+            $continue = $this->request->data('isContinue');
             // 詳細情報表示処理へ
             return (!$continue) ? $this->detail($player->ID) : $this->detail();
 		}
@@ -216,23 +195,18 @@ class PlayersController extends AppController
         $playerScores = TableRegistry::get('PlayerScores');
         $updateScore = $playerScores->get($this->request->data('selectScoreId'));
 
-		// パラメータの設定
-		$updateScore->set('WIN_POINT', $this->request->data('selectWinPoint'));
-		$updateScore->set('LOSE_POINT', $this->request->data('selectLosePoint'));
-		$updateScore->set('DRAW_POINT', $this->request->data('selectDrawPoint'));
-		$updateScore->set('WIN_POINT_WORLD', $this->request->data('selectWinPointWr'));
-		$updateScore->set('LOSE_POINT_WORLD', $this->request->data('selectLosePointWr'));
-		$updateScore->set('DRAW_POINT_WORLD', $this->request->data('selectDrawPointWr'));
+		// 入力値をエンティティに設定
+        $updateScore->patchEntity($this->request);
+        $targetYear = $updateScore->TARGET_YEAR;
 
-        $selectYear = $this->request->data('selectYear');
-		try {
+        try {
 			// 棋士成績情報の更新
 			$playerScores->save($updateScore);
-			$this->Flash->info($selectYear.'年度の棋士成績情報を更新しました。');
+			$this->Flash->info(__("{$targetYear}年度の棋士成績情報を更新しました。"));
 		} catch (PDOException $e) {
-			$this->log('棋士成績情報登録・更新エラー：'.$e->getMessage());
+			$this->log(__("棋士成績情報登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
 			$this->isRollback = true;
-			$this->Flash->error($selectYear.'年度の棋士成績情報の更新に失敗しました…。');
+			$this->Flash->error(__("{$targetYear}年度の棋士成績情報の更新に失敗しました…。"));
 		} finally {
             // 詳細情報表示処理へ
 			return $this->detail($this->request->data('selectPlayerId'));
@@ -247,7 +221,6 @@ class PlayersController extends AppController
 		// 所属国プルダウン
         $countries = TableRegistry::get('Countries');
 		$this->set('countries', $countries->findCountryBelongToArray());
-
-        $this->set('cakeDescription', '棋士情報検索');
+        $this->_setTitle('棋士情報検索');
     }
 }

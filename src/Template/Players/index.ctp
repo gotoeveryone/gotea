@@ -231,7 +231,7 @@
 <?=$this->Form->end()?>
 <script type="text/javascript">
     $(function () {
-        $('.colorbox').colorbox({iframe: true, width: "90%", height: "90%"});
+        $('.colorbox').colorbox({iframe: true, width: "50%", height: "95%"});
         $('#addNew').attr('disabled', !$('#searchCountry').val());
         // 国プルダウン変更時
         $('select[name=searchCountry]').change(function () {
@@ -253,8 +253,8 @@
                     click: function () {
                         $.colorbox({
                             iframe: true,
-                            width: "90%",
-                            height: "90%",
+                            width: "50%",
+                            height: "95%",
                             href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&affiliation=日本棋院'
                         });
                         $(this).dialog('close');
@@ -265,8 +265,8 @@
                     click: function () {
                         $.colorbox({
                             iframe: true,
-                            width: "90%",
-                            height: "90%",
+                            width: "50%",
+                            height: "95%",
                             href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&affiliation=関西棋院'
                         });
                         $(this).dialog('close');

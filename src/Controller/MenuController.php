@@ -15,11 +15,13 @@ class MenuController extends AppController
 {
 	/**
 	 * 描画前処理
+     *
+     * @param Event $event
 	 */
     public function beforeRender(Event $event)
     {
+        $this->_setTitle('メニュー');
         parent::beforeRender($event);
-        $this->set('cakeDescription', 'メニュー');
     }
 
     public function index() {

@@ -106,10 +106,11 @@ class PlayersTable extends AppTable
      * @param type $enrollmentFrom
      * @param type $enrollmentTo
      * @param type $retire
+     * @param type $count
      * @return Player 棋士情報一覧
      */
     public function findPlayers($countryCode = null, $sex = null, $rank = null, $playerName = null, $playerNameEn = null,
-            $enrollmentFrom = null, $enrollmentTo = null, $retire = null)
+            $enrollmentFrom = null, $enrollmentTo = null, $retire = null, $count = false)
     {
         // 棋士情報の取得
         $query = $this->find();
@@ -141,7 +142,7 @@ class PlayersTable extends AppTable
         }
 
         // データを取得
-        return $query->order([
+        $res = $query->order([
             'Players.RANK_ID DESC',
             'Players.ENROLLMENT',
             'Players.ID'
@@ -151,6 +152,10 @@ class PlayersTable extends AppTable
             },
             'Ranks',
             'Countries'
-        ])->all();
+        ]);
+        if ($count) {
+            return $res->count();
+        }
+        return $res->all();
     }
 }

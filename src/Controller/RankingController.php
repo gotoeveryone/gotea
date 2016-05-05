@@ -18,8 +18,8 @@ class RankingController extends AppController
 	 */
     public function beforeRender(Event $event)
     {
+        $this->_setTitle('棋士勝敗ランキング出力');
         parent::beforeRender($event);
-		$this->set('cakeDescription', '棋士勝敗ランキング出力');
     }
 
     /**
