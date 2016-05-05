@@ -109,6 +109,19 @@
                         ]
                     );
                 ?>
+                <?php if ($admin) : ?>
+                <?=
+                    $this->Html->link('キャッシュクリア',
+                        [
+                            'controller' => 'menu',
+                            'action' => 'clear'
+                        ],
+                        [
+                            'class' => 'button menu'
+                        ]
+                    );
+                ?>
+                <?php endif ?>
             </section>
             <section class="main">
             <?php else : ?>

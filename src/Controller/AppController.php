@@ -69,7 +69,7 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         // 初期表示以外のアクションの場合、POSTされたデータが存在しなければエラー
-        $target_actions = ['index', 'login', 'detail', 'logout'];
+        $target_actions = ['index', 'login', 'detail', 'clear', 'logout'];
         if (!in_array($this->request->action, $target_actions) && !$this->request->is('post')) {
         	throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
         }
@@ -112,6 +112,7 @@ class AppController extends Controller
         // ユーザ名を表示
         if ($this->Auth->user()) {
             $this->set('username', $this->Auth->user('username'));
+            $this->set('admin', $this->Auth->user('admin'));
         }
 
         // タイトルを設定

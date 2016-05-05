@@ -121,6 +121,7 @@ class UsersController extends AppController {
         $this->Auth->setUser([
             'userid' => $user->USER_ID,
             'username' => $user->USER_NAME,
+            'admin' => $user->ADMIN_FLAG,
             'created' => $user->CREATED,
             'modified' => $user->MODIFIED
         ]);
