@@ -57,12 +57,41 @@ class TitlesTable extends AppTable {
     }
 
     /**
+     * 所属国をもとにタイトルの一覧を取得します。
+     * 
+     * @param type $countryId
+     * @param type $notSearchEndTitles
+     * @return type
+     */
+    public function findTitlesByCountry($countryId, $notSearchEndTitles = null)
+    {
+        $query = $this->find()->contain([
+            'TitleRetains',
+            'TitleRetains.Titles' => function ($q) {
+                return $q->where(['TitleRetains.HOLDING = Titles.HOLDING']);
+            },
+            'TitleRetains.Players',
+            'TitleRetains.Ranks'
+        ])->where([
+            'Titles.COUNTRY_ID' => $countryId
+        ]);
+
+        // 有効なタイトルのみ検索
+        if ($notSearchEndTitles === 'false') {
+            $query->where(['Titles.DELETE_FLAG' => 0]);
+        }
+
+        // データを取得
+        return $query->order(['Titles.SORT_ORDER' => 'ASC'])->all();
+    }
+
+    /**
      * タイトル情報一式を取得
      * 
      * @param type $id
      * @return type
      */
-    public function findTitleAllRelations($id)
+    public function findTitleWithRelations($id)
     {
 		return $this->find()->contain([
             'Countries',

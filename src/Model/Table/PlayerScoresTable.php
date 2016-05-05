@@ -2,6 +2,8 @@
 
 namespace App\Model\Table;
 
+use Cake\Validation\Validator;
+
 /**
  * 棋士成績情報
  */
@@ -24,6 +26,53 @@ class PlayerScoresTable extends AppTable
             'foreignKey' => 'RANK_ID',
             'joinType' => 'INNER'
         ]);
+    }
+
+    /**
+     * バリデーションルール
+     * 
+     * @param \App\Model\Table\Validator $validator
+     * @return type
+     */
+    public function validationDefault(Validator $validator)
+    {
+        return $validator
+            ->notEmpty('WIN_POINT', '勝数は必須です。')
+            ->add('WIN_POINT', [
+                'valid' => [
+                    'rule' => 'numeric', 'message' => '勝数は数字で入力してください。'
+                ]
+            ])
+            ->notEmpty('LOSE_POINT', '敗数は必須です。')
+            ->add('LOSE_POINT', [
+                'valid' => [
+                    'rule' => 'numeric', 'message' => '敗数は数字で入力してください。'
+                ]
+            ])
+            ->notEmpty('DRAW_POINT', '引分数は必須です。')
+            ->add('DRAW_POINT', [
+                'valid' => [
+                    'rule' => 'numeric', 'message' => '引分数は数字で入力してください。'
+                ]
+            ])
+            ->notEmpty('WIN_POINT_WORLD', '勝数（国際棋戦）は必須です。')
+            ->add('WIN_POINT_WORLD', [
+                'valid' => [
+                    'rule' => 'numeric', 'message' => '勝数（国際棋戦）は数字で入力してください。'
+                ]
+            ])
+            ->notEmpty('LOSE_POINT_WORLD', '敗数（国際棋戦）は必須です。')
+            ->add('LOSE_POINT_WORLD', [
+                'valid' => [
+                    'rule' => 'numeric', 'message' => '敗数（国際棋戦）は数字で入力してください。'
+                ]
+            ])
+            ->notEmpty('DRAW_POINT_WORLD', '引分数（国際棋戦）は必須です。')
+            ->add('DRAW_POINT_WORLD', [
+                'valid' => [
+                    'rule' => 'numeric', 'message' => '引分数（国際棋戦）は数字で入力してください。'
+                ]
+            ]);
     }
 
     /**

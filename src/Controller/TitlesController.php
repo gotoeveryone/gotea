@@ -15,7 +15,23 @@ use Psr\Log\LogLevel;
  */
 class TitlesController extends AppController
 {
-	/**
+    // タイトル保持情報テーブル
+    private $TitleRetains = null;
+
+    // 所属国マスタテーブル
+    private $Countries = null;
+
+    /**
+     * 初期処理
+     */
+	public function initialize()
+    {
+        parent::initialize();
+        $this->TitleRetains = TableRegistry::get('TitleRetains');
+        $this->Countries = TableRegistry::get('Countries');
+    }
+
+    /**
 	 * 描画前処理
 	 */
     public function beforeRender(Event $event)
@@ -23,8 +39,7 @@ class TitlesController extends AppController
         parent::beforeRender($event);
 
 		// 所属国プルダウン
-        $countries = TableRegistry::get('Countries');
-		$this->set('countries', $countries->findCountryHasFileToArray());
+		$this->set('countries', $this->Countries->findCountryHasFileToArray());
    	}
 
 	/**
@@ -48,26 +63,8 @@ class TitlesController extends AppController
         $searchCountry = $this->_getParam('searchCountry');
         $searchDelete = $this->_getParam('searchDelete');
 
-        // タイトル情報の取得
-        $query = $this->Titles->find()->contain([
-            'TitleRetains',
-            'TitleRetains.Titles' => function ($q) {
-                return $q->where(['TitleRetains.HOLDING = Titles.HOLDING']);
-            },
-            'TitleRetains.Players',
-            'TitleRetains.Ranks'
-        ])->where([
-            'Titles.COUNTRY_ID' => $searchCountry
-        ]);
-
-        // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (!empty($searchDelete) && $searchDelete === 'false') {
-            $query->where(['Titles.DELETE_FLAG' => 0]);
-        }
-
-        // データを取得
-        $titles = $query->order(['Titles.SORT_ORDER' => 'ASC'])->all();
-//        $this->log($titles, LogLevel::INFO);
+        // タイトル一覧を取得
+        $titles = $this->Titles->findTitlesByCountry($searchCountry, $searchDelete);
 
         if (count($titles) === 0) {
             $this->Flash->info('検索結果が0件でした。');
@@ -114,22 +111,13 @@ class TitlesController extends AppController
             }
 
             // POSTされた値を設定
-            $title->set('NAME', $row['titleName']);
-            $title->set('NAME_ENGLISH', $row['titleNameEn']);
-            $title->set('HOLDING', $row['holding']);
-            $title->set('SORT_ORDER', $row['order']);
-            $title->set('GROUP_FLAG', $row['groupFlag']);
-            $title->set('HTML_FILE_NAME', $row['htmlFileName']);
-            $title->set('HTML_FILE_MODIFIED', date($row['htmlModifyDate']));
-            $title->set('DELETE_FLAG', $row['deleteFlag']);
+            $title->patchEntityWithArray($row);
 
             // バリデーションエラーの場合はそのまま返す
-            $validator = $this->Titles->validator('default');
-            $res = $validator->errors($title->toArray());
+            $res = $this->Titles->validator()->errors($title->toArray());
             if ($res) {
                 // エラーメッセージを書き込み
-                $error = $this->_getErrorMessage($res);
-                $this->Flash->error($error);
+                $this->Flash->error(__($this->_getErrorMessage($res)));
                 // 検索結果表示処理へ
                 // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
                 return $this->search();
@@ -145,11 +133,11 @@ class TitlesController extends AppController
                 $this->Titles->save($target);
                 $count++;
 			}
-			$this->Flash->info($count.'件のタイトルマスタを更新しました。');
+            $this->Flash->info(__("{$count}件のタイトルマスタを更新しました。"));
 		} catch (PDOException $e) {
-			$this->log('タイトルマスタ登録・更新エラー：'.$e->getMessage(), LogLevel::ERROR);
+            $this->log(__("タイトルマスタ登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
 			$this->isrollback = true;
-			$this->Flash->error('タイトルマスタの更新に失敗しました…。');
+			$this->Flash->error(__("タイトルマスタの更新に失敗しました…。"));
 		} finally {
 			// indexの処理を行う
 			return $this->search();
@@ -164,9 +152,9 @@ class TitlesController extends AppController
         $this->set('dialogFlag', true);
 
 		// タイトル情報一式を設定
-        $title = $this->Titles->findTitleAllRelations($id);
+        $title = $this->Titles->findTitleWithRelations($id);
         if (!$title) {
-            throw new NotFoundException('タイトル情報が取得できませんでした。ID：'.$id);
+            throw new NotFoundException(__("タイトル情報が取得できませんでした。ID：{$id}"));
         }
         $this->set('title', $title);
 
@@ -181,56 +169,28 @@ class TitlesController extends AppController
 		// 必須カラムのフィールド
 		$titleId = $this->request->data('selectTitleId');
 		$holding = $this->request->data('registHolding');
-        //$this->log('期：'.$holding, LogLevel::INFO);
-
-        $titleRetains = TableRegistry::get('TitleRetains');
 
         // すでに存在するかどうかを確認
-		$exist = $titleRetains->find()->where([
-            'TitleRetains.TITLE_ID' => $titleId,
-            'TitleRetains.HOLDING' => $holding
-		])->count();
-        $this->log('件数：'.$exist, LogLevel::INFO);
-
-		if ($exist) {
-			$this->Flash->error('タイトル保持情報がすでに存在します。');
+		if ($this->TitleRetains->findByKey($titleId, $holding, true)) {
+            $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
 			return $this->detail($titleId);
 		}
 
-		// NULL許可カラムのフィールド
-		$playerId = $this->request->data('registPlayerId');
-		$playerRank = $this->request->data('registRank');
-		$winGroupName = $this->request->data('registGroupName');
-
-        // エンティティを新規作成
-        $titleRetain = $titleRetains->newEntity();
-
-		$titleRetain->set('TITLE_ID', $titleId);
-		$titleRetain->set('HOLDING', $holding);
-		$titleRetain->set('TARGET_YEAR', $this->request->data('registYear'));
-		if (!empty($playerId)) {
-			$titleRetain->set('PLAYER_ID', $playerId);
-		}
-		if (!empty($playerRank)) {
-			$titleRetain->set('RANK_ID', $playerRank);
-		}
-		if (!empty($winGroupName)) {
-			$titleRetain->set('WIN_GROUP_NAME', $winGroupName);
-		}
-        $titleRetain->set('DELETE_FLAG', 0);
+        // エンティティを新規作成し、値を設定
+        $titleRetain = $this->TitleRetains->newEntity();
+        $titleRetain->patchEntity($this->request, $titleId, $holding);
 
         // バリデーションエラーの場合はそのまま返す
-        $validator = $titleRetains->validator('default');
-        $res = $validator->errors($titleRetain->toArray());
+        $res = $this->TitleRetains->validator()->errors($titleRetain->toArray());
         if ($res) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
-            $this->Flash->error($this->_getErrorMessage($res));
+            $this->Flash->error(__($this->_getErrorMessage($res)));
             return $this->detail($titleId);
         }
 
 		try {
 			// タイトル保持情報の保存
-			$titleRetains->save($titleRetain);
+			$this->TitleRetains->save($titleRetain);
             // 最新を登録する場合はタイトルマスタも書き換え
             $this->log($titleRetain, LogLevel::INFO);
             $withMapping = $this->request->data('registWithMapping');
@@ -239,11 +199,11 @@ class TitlesController extends AppController
                 $title->set('HOLDING', $holding);
                 $this->Titles->save($title);
             }
-			$this->Flash->info('タイトル保持情報を登録しました。');
+			$this->Flash->info(__("タイトル保持情報を登録しました。"));
 		} catch (PDOException $e) {
-			$this->log('タイトル保持情報登録・更新エラー：'.$e->getMessage());
+            $this->log(__("タイトル保持情報登録エラー：{$e->getMessage()}"), LogLevel::ERROR);
 			$this->isRollback = true;
-			$this->Flash->error('タイトル保持情報の登録に失敗しました…。');
+			$this->Flash->error(__("タイトル保持情報の登録に失敗しました…。"));
 		} finally {
 			// indexの処理を行う
 			$this->detail($titleId);

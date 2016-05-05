@@ -6,6 +6,7 @@ use Cake\Controller\Controller;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\NetWork\Exception\MethodNotAllowedException;
+use Cake\ORM\TableRegistry;
 use Psr\Log\LogLevel;
 
 /**
@@ -21,6 +22,9 @@ class AppController extends Controller
 
     // タイトル
     private $title = '';
+
+    // 所属国テーブル
+    private $Country = null;
 
     /**
      * 初期処理
@@ -174,7 +178,6 @@ class AppController extends Controller
      */
     protected function _setParam($name = null, $value = null)
     {
-//        $this->log('書き込む値->'.$name.'に'.$value, LogLevel::INFO);
         $this->request->session()->write($name, $value);
         return $this->set($name, $value);
     }

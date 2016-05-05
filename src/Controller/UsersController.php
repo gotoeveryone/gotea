@@ -18,14 +18,6 @@ use Psr\Log\LogLevel;
 class UsersController extends AppController {
 
 	/**
-	 * 初期処理
-	 */
-	public function initialize()
-	{
-		parent::initialize();
-	}
-
-	/**
 	 * アクション実行前処理
      * 
      * @param $event
@@ -85,12 +77,10 @@ class UsersController extends AppController {
 
         // ユーザが取得出来なければログインエラー
         if (!$user) {
-            $this->log('ログイン失敗！', LogLevel::WARNING);
-            $this->Flash->error(__('ユーザまたはパスワードが異なります。'));
+            $this->log(__("ログイン失敗！"), LogLevel::WARNING);
+            $this->Flash->error(__("ユーザまたはパスワードが異なります。"));
             return $this->index();
         }
-
-        $this->log('ログイン成功！【ユーザ：'.$user->USER_NAME.'】', LogLevel::INFO);
 
         try {
             // 最終ログイン日時を更新してデータを保存
@@ -98,13 +88,14 @@ class UsersController extends AppController {
             $this->Users->save($user);
         } catch (PDOException $e) {
             $this->isRollback = true;
-            $this->log($e->getMessage(), LogLevel::ERROR);
-            $this->Flash->error(__('データの更新エラーが発生しました。'));
+            $this->log(__("最終ログイン日時更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
+            $this->Flash->error(__("データの更新エラーが発生しました。"));
             return $this->index();
         }
 
         // ユーザ情報を設定
         $this->__setUser($user);
+        $this->log("ユーザ：{$user->USER_NAME}がログインしました。", LogLevel::INFO);
 
         // リダイレクト
         return $this->redirect($this->Auth->redirectUrl());

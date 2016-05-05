@@ -25,7 +25,7 @@
     <section id="detail">
         <section id="tabs">
             <section class="tabs" name="title">タイトル情報</section>
-            <section class="tabs" name="titleRetains">タイトル保持情報</section>
+            <section class="tabs" name="titleRetains">保持情報</section>
         </section>
         <section id="scroll">
             <section id="title" class="details">
@@ -33,17 +33,65 @@
                     <?='タイトル情報（ID：'.h($title->ID).'）'?>
                 </section>
                 <section class="row">
-                    <section class="box">
+                    <section class="box2">
                         <section class="headerRow">タイトル名</section>
                         <section class="valueRow">
                             <?=$this->Form->hidden('selectTitleId', ['value' => $title->ID])?>
                             <?=h($title->NAME)?>
                         </section>
                     </section>
-                    <section class="box">
+                    <section class="box2">
+                        <section class="headerRow">タイトル名（英語）</section>
+                        <section class="valueRow">
+                            <?=h($title->NAME_ENGLISH)?>
+                        </section>
+                    </section>
+                    <section class="box2">
                         <section class="headerRow">分類</section>
                         <section class="valueRow">
                             <?=($title->country->NAME).'棋戦'?>
+                        </section>
+                    </section>
+                    <section class="box2">
+                        <section class="headerRow">更新日時</section>
+                        <section class="valueRow">
+                            <?=$this->Date->formatToDateTime($title->MODIFIED)?>
+                            <?=
+                                $this->Form->hidden('lastUpdateTitle', [
+                                    'value' => $this->Date->format($title->MODIFIED, 'yyyyMMddHHmmss')
+                                ])
+                            ?>
+                        </section>
+                    </section>
+                    <section class="box">
+                        <section class="headerRow">現在の保持者</section>
+                        <section class="valueRow">
+                            <?php
+                                if (!empty($title->title_retains)) :
+                                    foreach ($title->title_retains as $retain) :
+                                        if ($retain->HOLDING === $title->HOLDING) :
+                                            echo h(__("{$title->HOLDING}期 "));
+                                            echo h($retain->getWinnerName($title->GROUP_FLAG));
+                                            break;
+                                        endif;
+                                    endforeach;
+                                endif;
+                            ?>
+                        </section>
+                    </section>
+                    <section class="row">
+                        <section class="box">
+                            <section class="headerRow">その他備考</section>
+                            <section class="valueRow">
+                                <?=
+                                    $this->Form->textarea('remarks', [
+                                        'cols' => 30,
+                                        'rows' => 3,
+                                        'class' => 'remarks',
+                                        'value' => h($title->REMARKS)
+                                    ])
+                                ?>
+                            </section>
                         </section>
                     </section>
                 </section>
@@ -79,7 +127,7 @@
                     </section>
                     <section class="box2">
                         <section class="valueRow">
-                            <?=($title->GROUP_FLAG) ? '優勝団体名' : '棋士名：'?>
+                            <?=h($title->GROUP_FLAG ? '優勝団体名' : '棋士名：')?>
                             <?php
                                 if ($title->GROUP_FLAG) {
                                     echo $this->Form->text('registGroupName', [
@@ -87,7 +135,10 @@
                                         'maxlength' => 30
                                     ]);
                                 } else {
-                                    echo $this->Form->hidden('registPlayerId', ['id' => 'registPlayerId', 'value' => $this->request->data('registPlayerId')]);
+                                    echo $this->Form->hidden('registPlayerId', [
+                                        'id' => 'registPlayerId',
+                                        'value' => $this->request->data('registPlayerId')
+                                    ]);
                                     echo $this->Form->text('registPlayerName', [
                                         'id' => 'registPlayerName',
                                         'value' => '',
@@ -95,7 +146,10 @@
                                         'readonly' => true,
                                         'class' => 'readonly playerName'
                                     ]);
-                                    echo $this->Form->hidden('registPlayerName', ['id' => 'registPlayerName', 'value' => $this->request->data('registPlayerName')]);
+                                    echo $this->Form->hidden('registPlayerName', [
+                                        'id' => 'registPlayerName',
+                                        'value' => $this->request->data('registPlayerName')
+                                    ]);
                                     echo $this->Form->text('registRankText', [
                                         'id' => 'registRankText',
                                         'value' => '',
@@ -103,7 +157,10 @@
                                         'readonly' => true,
                                         'class' => 'readonly rank'
                                     ]);
-                                    echo $this->Form->hidden('registRank', ['id' => 'registRank', 'value' => $this->request->data('registRank')]);
+                                    echo $this->Form->hidden('registRank', [
+                                        'id' => 'registRank',
+                                        'value' => $this->request->data('registRank')
+                                    ]);
                                 }
                             ?>
                         </section>
@@ -142,9 +199,8 @@
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h($titleRetain->TARGET_YEAR).'年 '?>
-                                    <?=h($titleRetain->HOLDING).'期 '?>
-                                    <?=h(($title->GROUP_FLAG) ? $titleRetain->WIN_GROUP_NAME : $titleRetain->player->NAME.' '.$titleRetain->rank->NAME)?>
+                                    <?=h(__("{$titleRetain->TARGET_YEAR}年 {$titleRetain->HOLDING}期 "))?>
+                                    <?=h($titleRetain->getWinnerName($title->GROUP_FLAG))?>
                                 </section>
                             </section>
                         </section>
@@ -165,9 +221,8 @@
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h($titleRetain->TARGET_YEAR).'年 '?>
-                                    <?=h($titleRetain->HOLDING).'期 '?>
-                                    <?=h(($title->GROUP_FLAG) ? $titleRetain->WIN_GROUP_NAME : $titleRetain->player->NAME.' '.$titleRetain->rank->NAME)?>
+                                    <?=h(__("{$titleRetain->TARGET_YEAR}年 {$titleRetain->HOLDING}期 "))?>
+                                    <?=h($titleRetain->getWinnerName($title->GROUP_FLAG))?>
                                 </section>
                             </section>
                         </section>

@@ -34,6 +34,22 @@ class TitleRetainsTable extends AppTable {
     }
 
     /**
+     * タイトル情報を1件取得します。
+     * 
+     * @param type $titleId
+     * @param type $holding
+     * @param type $isCount
+     */
+    public function findByKey($titleId, $holding, $isCount = false)
+    {
+		$query = $this->find()->where([
+            'TitleRetains.TITLE_ID' => $titleId,
+            'TitleRetains.HOLDING' => $holding
+		]);
+        return $isCount ? $query->count() : $query->all();
+    }
+
+    /**
      * バリデーションルール
      * 
      * @param \App\Model\Table\Validator $validator
@@ -45,21 +61,19 @@ class TitleRetainsTable extends AppTable {
             ->notEmpty('TARGET_YEAR', '対象年は必須です。')
             ->add('TARGET_YEAR', [
                 'valid' => [
-                    'rule' => 'numeric',
-                    'message' => '対象年は数字で入力してください。'
+                    'rule' => 'numeric', 'message' => '対象年は数字で入力してください。'
                 ]
             ])
             ->notEmpty('HOLDING', '期は必須です。')
             ->add('HOLDING', [
                 'valid' => [
-                    'rule' => 'numeric',
-                    'message' => '期は数字で入力してください。'
+                    'rule' => 'numeric', 'message' => '期は数字で入力してください。'
                 ]
             ])
+            ->allowEmpty('WIN_GROUP_NAME')
             ->add('WIN_GROUP_NAME', [
                 'length' => [
-                    'rule' => ['maxLength', 30],
-                    'message' => 'グループ名は30文字以下で入力してください。'
+                    'rule' => ['maxLength', 30], 'message' => 'グループ名は30文字以下で入力してください。'
                 ]
             ]);
     }
