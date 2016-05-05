@@ -251,7 +251,7 @@ $(function() {
 
         $.ajax({
             type: 'GET',
-            url: '/WebResource/api/igokisen/news/?makeFile=true',
+            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'news'])?>?make=true',
             contentType: 'application/' + type,
             dataType: type,
             crossDomain: true,

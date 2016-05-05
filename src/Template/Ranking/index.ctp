@@ -90,12 +90,13 @@ $(function() {
 
         $.ajax({
             type: 'GET',
-            url: '/WebResource/api/igokisen/ranking/' + country + '/' + year + '/' + rank + '/',
+            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/',
             crossDomain: true,
             contentType: 'application/' + type,
             dataType: type,
             accepts: "application/json; charset=utf-8",
             success: function (data) {
+                data = data.response;
                 // TBODY要素を削除
                 $('.ranking tbody').remove();
 
@@ -158,7 +159,7 @@ $(function() {
 
         $.ajax({
             type: 'GET',
-            url: '/WebResource/api/igokisen/ranking/' + country + '/' + year + '/' + rank + '/?makeFile=true',
+            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/?make=true',
             contentType: 'application/' + type,
             dataType: type,
             success: function (data) {

@@ -77,12 +77,10 @@ class ScoreUpdatesController extends AppController
             $title->set('SCORE_MODIFIED', $row['scoreUpdateDate']);
 
             // バリデーションエラーの場合はそのまま返す
-            $validator = $this->ScoreUpdates->validator('default');
-            $res = $validator->errors($title->toArray());
+            $res = $this->ScoreUpdates->validator()->errors($title->toArray());
             if ($res) {
                 // エラーメッセージを書き込み
-                $error = $this->_getErrorMessage($res);
-                $this->Flash->error($error);
+                $this->Flash->error(__($this->_getErrorMessage($res)));
                 // 検索結果表示処理へ
                 // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
                 return $this->search();

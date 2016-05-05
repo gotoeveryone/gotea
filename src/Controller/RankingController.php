@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Psr\Log\LogLevel;
 
 /**
  * ランキング検索用コントローラ
@@ -13,6 +14,23 @@ use Cake\ORM\TableRegistry;
  */
 class RankingController extends AppController
 {
+    // タイトル保持情報テーブル
+    private $PlayerScores = null;
+
+    // 所属国マスタテーブル
+    private $Countries = null;
+
+    /**
+     * 初期処理
+     */
+	public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Json');
+        $this->PlayerScores = TableRegistry::get('PlayerScores');
+        $this->Countries = TableRegistry::get('Countries');
+    }
+
 	/**
 	 * 描画前処理
 	 */
@@ -28,11 +46,49 @@ class RankingController extends AppController
     public function index()
     {
 		// 所属国プルダウン
-        $countries = TableRegistry::get('Countries');
-		$this->set('countries', $countries->findCountryHasFileToArrayWithSuffix());
+		$this->set('countries', $this->Countries->findCountryHasFileToArrayWithSuffix());
 
         // 年度プルダウン
-        $scores = TableRegistry::get('PlayerScores');
-        $this->set('years', $scores->findScoreUpdateToArrayWithSuffix());
+        $this->set('years', $this->PlayerScores->findScoreUpdateToArrayWithSuffix());
+
+        return $this->render('index');
+    }
+
+    /**
+     * 検索処理
+     */
+    public function search()
+    {
+        // パラメータ
+        $country = $this->request->data('selectCountry');
+        $year = $this->request->data('selectYear');
+        $rank = $this->request->data('selectRank');
+        $json = $this->Json->getRankingJson($country, $year, $rank);
+        $this->set('json', $json);
+        return $this->index();
+    }
+
+    /**
+     * JSON出力処理
+     */
+    public function output()
+    {
+        // パラメータ
+        $country = $this->request->data('selectCountry');
+        $year = $this->request->data('selectYear');
+        $rank = $this->request->data('selectRank');
+        $this->log(__("country:{$country} - year:{$year} - rank:{$rank}"), LogLevel::INFO);
+
+        // 取得したJSONをファイル出力
+        $json = $this->Json->getRankingJson($country, $year, $rank);
+        $dir = $json["countryAbbreviation"];
+        $fileName = strtolower($json["countryName"]);
+        if (file_put_contents("/share/Homepage/{$dir}/{$fileName}.json", json_encode($json))) {
+            $this->Flash->info(__("JSON出力に成功しました。"));
+        } else {
+            $this->Flash->error(__("JSON出力に失敗しました…。"));
+        }
+
+        return $this->index();
     }
 }

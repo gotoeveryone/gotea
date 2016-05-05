@@ -52,7 +52,8 @@ Router::scope('/', function ($routes) {
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    $routes->extensions(['json', 'xml']);
+    $routes->resources('Api');
 
     /**
      * Connect catchall routes for all controllers.

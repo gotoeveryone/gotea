@@ -23,9 +23,6 @@ class AppController extends Controller
     // タイトル
     private $title = '';
 
-    // 所属国テーブル
-    private $Country = null;
-
     /**
      * 初期処理
      */
