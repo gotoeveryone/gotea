@@ -57,7 +57,7 @@ class ApiController extends Controller
         $json = $this->Json->getNewsJson();
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
-            if (!file_put_contents("/share/Homepage/news.json", json_encode($json))) {
+            if (!file_put_contents("/share/windows/Kazuki/Homepage/news.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
@@ -81,7 +81,7 @@ class ApiController extends Controller
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryAbbreviation"];
             $fileName = strtolower($json["countryName"]);
-            if (!file_put_contents("/share/Homepage/{$dir}/{$fileName}.json", json_encode($json))) {
+            if (!file_put_contents("/share/windows/Kazuki/Homepage/{$dir}/{$fileName}.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
