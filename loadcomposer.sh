@@ -4,7 +4,7 @@ CURRENT=$(cd $(dirname $0); pwd)
 cd "${CURRENT}"
 
 # composer実行ファイルのダウンロード
-if [ -e "${CURRENT}/composer.phar" ]; then
+if [ ! -e "${CURRENT}/composer.phar" ]; then
     php -r "readfile('https://getcomposer.org/installer');" | php
 fi
 
