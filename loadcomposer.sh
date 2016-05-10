@@ -3,14 +3,14 @@
 CURRENT=$(cd $(dirname $0); pwd)
 cd "${CURRENT}"
 
-# composerŽÀsƒtƒ@ƒCƒ‹‚Ìƒ_ƒEƒ“ƒ[ƒh
+# composerå®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
 if [ -e "${CURRENT}/composer.phar" ]; then
     php -r "readfile('https://getcomposer.org/installer');" | php
 fi
 
-# •K—v‚Èƒ‰ƒCƒuƒ‰ƒŠ‚ðŽæ“¾
+# å¿…è¦ãªãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’å–å¾—
 php composer.phar install
 
-echo "ƒ‰ƒCƒuƒ‰ƒŠ‚ÌŽæ“¾‚ªI—¹‚µ‚Ü‚µ‚½B"
+echo "ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®å–å¾—ãŒçµ‚äº†ã—ã¾ã—ãŸã€‚"
 
 exit
