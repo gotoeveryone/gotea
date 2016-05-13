@@ -84,20 +84,12 @@ class PlayerScoresTable extends AppTable
      */
     public function findByPlayerAndYear($playerId, $targetYear)
     {
-        $score = $this->find()->contain([
+        return $this->find()->contain([
             'Ranks',
         ])->where([
             'PLAYER_ID' => $playerId,
             'TARGET_YEAR' => $targetYear
         ])->first();
-
-        if (!$score) {
-            $score = $this->newEntity();
-            $score->set('PLAYER_ID', $playerId);
-            $score->set('TARGET_YEAR', $targetYear);
-        }
-
-        return $score;
     }
 
     /**

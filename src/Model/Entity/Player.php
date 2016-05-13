@@ -96,7 +96,7 @@ class Player extends AppEntity
     public function setBirthday($birthday)
     {
         $time = new Time();
-        $this->set('BIRTHDAY', (empty($birthday) ? '' : $time->parseDate($birthday, 'YYYY/MM/dd')));
+        $this->set('BIRTHDAY', (empty($birthday) ? null : $time->parseDate($birthday, 'YYYY/MM/dd')));
     }
 
     /**
@@ -106,7 +106,7 @@ class Player extends AppEntity
      */
     public function setEnrollment($enrollment)
     {
-        $this->set('BIRTHDAY', (empty($enrollment) ? '' : str_replace('/', '', $enrollment)));
+        $this->set('ENROLLMENT', (empty($enrollment) ? null : str_replace('/', '', $enrollment)));
     }
 
     /**

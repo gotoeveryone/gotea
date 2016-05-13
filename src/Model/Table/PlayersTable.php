@@ -52,13 +52,13 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->notEmpty('NAME', '棋士名は必須です。')
-//            ->notEmpty('BIRTHDAY', '生年月日は必須です。')
-//            ->add('BIRTHDAY', [
-//                'valid' => [
-//                    'rule' => ['date', 'ymd'],
-//                    'message' => '生年月日は「yyyy/MM/dd」形式で入力してください。'
-//                ]
-//            ])
+            ->allowEmpty('BIRTHDAY')
+            ->add('BIRTHDAY', [
+                'valid' => [
+                    'rule' => ['date', 'ymd'],
+                    'message' => '生年月日は「yyyy/MM/dd」形式で入力してください。'
+                ]
+            ])
             ->notEmpty('ENROLLMENT', '入段日は必須です。')
             ->add('ENROLLMENT', [
                 'alphaNumeric' => [

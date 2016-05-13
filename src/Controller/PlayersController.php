@@ -175,10 +175,17 @@ class PlayersController extends AppController
             $saveId = $player->ID;
 
             // 当年の棋士成績情報を取得
-            $updateScore = $this->PlayerScores->findByPlayerAndYear($saveId, Time::now()->year);
+            $nowYear = Time::now()->year;
+            $updateScore = $this->PlayerScores->findByPlayerAndYear($saveId, $nowYear);
 
-            // 棋士マスタの段位と異なる場合は更新対象
-			if ($player->rank->ID !== $updateScore->rank->ID) {
+            // 成績情報が存在しない、もしくは棋士マスタの段位と異なる場合は更新対象
+            if (!$updateScore) {
+                $updateScore = $this->PlayerScores->newEntity();
+                $updateScore->set('PLAYER_ID', $saveId);
+                $updateScore->set('TARGET_YEAR', $nowYear);
+                $updateScore->setRank($player->rank->ID);
+				$this->PlayerScores->save($updateScore);
+            } else if ($player->rank->ID !== $updateScore->rank->ID) {
                 $updateScore->setRank($player->rank->ID);
 				$this->PlayerScores->save($updateScore);
 			}
