@@ -72,7 +72,7 @@ class JsonComponent extends Component {
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
         }
-        $this->response->statusCode($response);
+        $this->response->statusCode($response->statusCode());
         return $json;
     }
 }
