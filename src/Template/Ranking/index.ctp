@@ -132,7 +132,7 @@ $(function() {
                         .append($('<td>', {class: 'left playerName'}).html(record.playerNameJp))
                         .append($('<td>', {class: 'center winPoint'}).html(record.winPoint))
                         .append($('<td>', {class: 'center losePoint'}).html(record.losePoint))
-                        .append($('<td>', {class: 'center winPercent'}).html(record.winPercent));
+                        .append($('<td>', {class: 'center winPercent'}).html(record.winPercentage * 100));
 
                     // TBODY要素にTR要素を追加
                     tbody.append(tr);
