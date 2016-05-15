@@ -90,7 +90,7 @@ $(function() {
 
         $.ajax({
             type: 'GET',
-            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/',
+            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/?jp=true',
             crossDomain: true,
             contentType: 'application/' + type,
             dataType: type,

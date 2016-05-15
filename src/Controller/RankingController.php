@@ -63,7 +63,7 @@ class RankingController extends AppController
         $country = $this->request->data('selectCountry');
         $year = $this->request->data('selectYear');
         $rank = $this->request->data('selectRank');
-        $json = $this->Json->getRankingJson($country, $year, $rank);
+        $json = $this->Json->getRanking($country, $year, $rank, true);
         $this->set('json', $json);
         return $this->index();
     }
@@ -80,7 +80,7 @@ class RankingController extends AppController
         $this->log(__("country:{$country} - year:{$year} - rank:{$rank}"), LogLevel::INFO);
 
         // 取得したJSONをファイル出力
-        $json = $this->Json->getRankingJson($country, $year, $rank);
+        $json = $this->Json->getRanking($country, $year, $rank);
         $dir = $json["countryAbbreviation"];
         $fileName = strtolower($json["countryName"]);
         if (file_put_contents("/share/Homepage/{$dir}/{$fileName}.json", json_encode($json))) {

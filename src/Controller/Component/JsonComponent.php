@@ -9,6 +9,8 @@ class JsonComponent extends Component {
 
     public $controller = null;
     public $session = null;
+    // WebAPIのURL
+    private $apiUrl = "http://localhost/web-resource/";
 
     public function initialize(array $config)
     {
@@ -21,14 +23,24 @@ class JsonComponent extends Component {
     }
 
     /**
+     * 名前をもとに棋士情報JSONを取得します。
+     * 
+     * @param $name
+     * @return type
+     */
+    public function getPlayer($name)
+    {
+        return $this->getJson($this->apiUrl."players.json?name={$name}");
+    }
+
+    /**
      * Go NewsのJSONを取得します。
      * 
      * @return type
      */
-    public function getNewsJson()
+    public function getNews()
     {
-        $url = "http://localhost/WebResource/api/igokisen/news/";
-        return $this->getJson($url);
+        return $this->getJson($this->apiUrl."titles/news.json");
     }
 
     /**
@@ -36,13 +48,15 @@ class JsonComponent extends Component {
      * 
      * @param type $country
      * @param type $year
-     * @param type $rank
+     * @param type $limit
      * @return type
      */
-    public function getRankingJson($country, $year, $rank)
+    public function getRanking($country, $year, $limit, $isJp = false)
     {
-        $url = "http://localhost/WebResource/api/igokisen/ranking/{$country}/{$year}/{$rank}";
-        return $this->getJson($url);
+        $this->log($isJp ? "true" : "false", \Psr\Log\LogLevel::INFO);
+        $encode = urlencode($country);
+        $get = $this->apiUrl."players/ranking.json?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
+        return $this->getJson($get);
     }
 
     /**

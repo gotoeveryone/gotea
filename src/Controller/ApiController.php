@@ -11,6 +11,9 @@ use Cake\Event\Event;
  */
 class ApiController extends Controller
 {
+    // ホームページコンテンツのディレクトリ
+    private $homepage = "/share/windows/Kazuki/Homepage/";
+
     /**
      * 初期処理
      */
@@ -40,9 +43,7 @@ class ApiController extends Controller
      */
     public function players($name)
     {
-        // TODO：タイトル保持情報の棋士検索で利用する
-        $url = "http://localhost/WebResource/api/igokisen/players/?name={$name}";
-        $json = $this->Json->getJson($url);
+        $json = $this->Json->getPlayer($name);
         $this->set([
             'response' => $json,
             '_serialize' => ['response']
@@ -54,10 +55,10 @@ class ApiController extends Controller
      */
     public function news()
     {
-        $json = $this->Json->getNewsJson();
+        $json = $this->Json->getNews();
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
-            if (!file_put_contents("/share/windows/Kazuki/Homepage/news.json", json_encode($json))) {
+            if (!file_put_contents($this->homepage."news.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
@@ -76,12 +77,12 @@ class ApiController extends Controller
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
-        $json = $this->Json->getRankingJson($country, $year, $rank);
+        $json = $this->Json->getRanking($country, $year, $rank, ($this->request->query('jp') === 'true'));
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryAbbreviation"];
             $fileName = strtolower($json["countryName"]);
-            if (!file_put_contents("/share/windows/Kazuki/Homepage/{$dir}/{$fileName}.json", json_encode($json))) {
+            if (!file_put_contents($this->homepage."{$dir}/{$fileName}.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
