@@ -4,3 +4,4 @@
 /logs/*
 /vendor
 /composer.phar
+/nbproject
