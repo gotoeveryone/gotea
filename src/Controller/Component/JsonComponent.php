@@ -53,7 +53,6 @@ class JsonComponent extends Component {
      */
     public function getRanking($country, $year, $limit, $isJp = false)
     {
-        $this->log($isJp ? "true" : "false", \Psr\Log\LogLevel::INFO);
         $encode = urlencode($country);
         $get = $this->apiUrl."players/ranking.json?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
         return $this->getJson($get);
@@ -73,6 +72,7 @@ class JsonComponent extends Component {
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
         }
+        $this->response->statusCode($response);
         return $json;
     }
 }

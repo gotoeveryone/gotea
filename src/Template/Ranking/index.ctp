@@ -95,58 +95,57 @@ $(function() {
             contentType: 'application/' + type,
             dataType: type,
             accepts: "application/json; charset=utf-8",
-            success: function (data) {
-                data = data.response;
-                // TBODY要素を削除
-                $('.ranking tbody').remove();
+        }).done(function (data, status, xhr) {
+            alert(xhr.status);
+            data = data.response;
+            // TBODY要素を削除
+            $('.ranking tbody').remove();
 
-                // JSON出力ボタンを活性状態に変更
-                $('#outputJson').removeAttr('disabled');
+            // JSON出力ボタンを活性状態に変更
+            $('#outputJson').removeAttr('disabled');
 
-                // JSONから最終更新日を取得
-                var lastUpdate = new Date(data.lastUpdate);
-                $('.lastUpdate').html(lastUpdate.getFullYear() + '年'
-                        + (lastUpdate.getMonth() + 1) + '月' + lastUpdate.getDate() + '日');
+            // JSONから最終更新日を取得
+            var lastUpdate = new Date(data.lastUpdate);
+            $('.lastUpdate').html(lastUpdate.getFullYear() + '年'
+                    + (lastUpdate.getMonth() + 1) + '月' + lastUpdate.getDate() + '日');
 
-                var tbody = $('<tbody>');
-                var beforeRank = 0;
-                for (var i = 0; i < Object.keys(data.ranking).length; i++) {
+            var tbody = $('<tbody>');
+            var beforeRank = 0;
+            for (var i = 0; i < Object.keys(data.ranking).length; i++) {
 
-                    var record = data.ranking[i];
+                var record = data.ranking[i];
 
-                    // ランクが前順位と同じなら"&nbsp;"を設定（IE用）
-                    var rank = record.rank;
-                    if (beforeRank === rank) {
-                        rank = '&nbsp;';
-                    } else {
-                        beforeRank = rank;
-                    }
-
-                    if (record.sex === '女性') {
-                        record.playerNameJp = '<span class="red">' + record.playerNameJp + '</span>';
-                    }
-
-                    // TR要素を作成
-                    var tr = $('<tr>')
-                        .append($('<td>', {class: 'right no'}).html('<span class="rank">' + rank + '</span>'))
-                        .append($('<td>', {class: 'left playerName'}).html(record.playerNameJp))
-                        .append($('<td>', {class: 'center winPoint'}).html(record.winPoint))
-                        .append($('<td>', {class: 'center losePoint'}).html(record.losePoint))
-                        .append($('<td>', {class: 'center winPercent'}).html(record.winPercentage * 100));
-
-                    // TBODY要素にTR要素を追加
-                    tbody.append(tr);
+                // ランクが前順位と同じなら"&nbsp;"を設定（IE用）
+                var rank = record.rank;
+                if (beforeRank === rank) {
+                    rank = '&nbsp;';
+                } else {
+                    beforeRank = rank;
                 }
-                // TBODY要素を追加
-                $('.ranking thead').after(tbody);
-            },
-            error: function (data) {
-                // JSON出力ボタンを非活性状態に変更し、エラーメッセージを出力
-                $('#outputJson').attr('disabled', true);
-                var dialog = $("#dialog");
-                dialog.html('<span class="red">ランキングの生成に失敗しました。</span>');
-                dialog.click();
+
+                if (record.sex === '女性') {
+                    record.playerNameJp = '<span class="red">' + record.playerNameJp + '</span>';
+                }
+
+                // TR要素を作成
+                var tr = $('<tr>')
+                    .append($('<td>', {class: 'right no'}).html('<span class="rank">' + rank + '</span>'))
+                    .append($('<td>', {class: 'left playerName'}).html(record.playerNameJp))
+                    .append($('<td>', {class: 'center winPoint'}).html(record.winPoint))
+                    .append($('<td>', {class: 'center losePoint'}).html(record.losePoint))
+                    .append($('<td>', {class: 'center winPercent'}).html(record.winPercentage * 100));
+
+                // TBODY要素にTR要素を追加
+                tbody.append(tr);
             }
+            // TBODY要素を追加
+            $('.ranking thead').after(tbody);
+        }).fail(function (data) {
+            // JSON出力ボタンを非活性状態に変更し、エラーメッセージを出力
+            $('#outputJson').attr('disabled', true);
+            var dialog = $("#dialog");
+            dialog.html('<span class="red">ランキングの生成に失敗しました。</span>');
+            dialog.click();
         });
     });
 
