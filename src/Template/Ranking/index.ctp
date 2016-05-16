@@ -95,8 +95,7 @@ $(function() {
             contentType: 'application/' + type,
             dataType: type,
             accepts: "application/json; charset=utf-8",
-        }).done(function (data, status, xhr) {
-            alert(xhr.status);
+        }).done(function (data) {
             data = data.response;
             // TBODY要素を削除
             $('.ranking tbody').remove();

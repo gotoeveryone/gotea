@@ -80,7 +80,7 @@ class ApiController extends Controller
         $json = $this->Json->getRanking($country, $year, $rank, ($this->request->query('jp') === 'true'));
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
-            $dir = $json["countryAbbreviation"];
+            $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]);
             if (!file_put_contents($this->homepage."{$dir}/{$fileName}.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
