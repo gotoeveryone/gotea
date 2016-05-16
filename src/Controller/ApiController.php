@@ -81,7 +81,7 @@ class ApiController extends Controller
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
-            $fileName = strtolower($json["countryName"]);
+            $fileName = strtolower($json["countryName"]).$json["targetYear"];
             if (!file_put_contents($this->homepage."{$dir}/{$fileName}.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
