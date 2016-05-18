@@ -6,7 +6,6 @@ use Cake\Controller\Controller;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\NetWork\Exception\MethodNotAllowedException;
-use Cake\ORM\TableRegistry;
 use Psr\Log\LogLevel;
 
 /**
@@ -144,11 +143,10 @@ class AppController extends Controller
     {
         $message = [];
         foreach ($errors as $error) {
-            foreach ($error as $key => $val) {
+            foreach ($error as $val) {
                 array_push($message, $val);
             }
         }
-//        $this->log('　表示する文言'.implode('<br/>', $message), LogLevel::INFO);
         return implode('<br/>', $message);
     }
 
@@ -185,8 +183,8 @@ class AppController extends Controller
      *
      * @param type $title
      */
-     protected function _setTitle($title = null)
-     {
-         $this->title = $title;
-     }
+    protected function _setTitle($title = null)
+    {
+        $this->title = $title;
+    }
 }

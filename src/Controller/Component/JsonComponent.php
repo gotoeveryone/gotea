@@ -30,7 +30,7 @@ class JsonComponent extends Component {
      */
     public function getPlayer($name)
     {
-        return $this->getJson($this->apiUrl."players.json?name={$name}");
+        return $this->getJson($this->apiUrl."players?name={$name}");
     }
 
     /**
@@ -40,7 +40,7 @@ class JsonComponent extends Component {
      */
     public function getNews()
     {
-        return $this->getJson($this->apiUrl."titles/news.json");
+        return $this->getJson($this->apiUrl."titles/news");
     }
 
     /**
@@ -54,7 +54,7 @@ class JsonComponent extends Component {
     public function getRanking($country, $year, $limit, $isJp = false)
     {
         $encode = urlencode($country);
-        $get = $this->apiUrl."players/ranking.json?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
+        $get = $this->apiUrl."players/ranking?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
         return $this->getJson($get);
     }
 
