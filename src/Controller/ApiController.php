@@ -12,7 +12,7 @@ use Cake\Event\Event;
 class ApiController extends Controller
 {
     // ホームページコンテンツのディレクトリ
-    private $homepage = "/share/windows/Kazuki/Homepage/";
+    private $homepage = "/share/windows/Homepage/";
 
     /**
      * 初期処理
