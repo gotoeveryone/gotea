@@ -11,14 +11,13 @@
         <?='棋士情報管理システム - '.$cakeDescription ?>
     </title>
     <?=$this->Html->meta('icon')?>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui.custom.js"></script>
+    <script type="text/javascript" src="/js/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/jquery.colorbox-min.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
     <?=$this->Html->script('app')?>
-    <!--<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />-->
-    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/colorbox.css" />
     <link rel="stylesheet" type="text/css" href="/css/common.css" />
     <?=$this->Html->css('app')?>
