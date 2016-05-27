@@ -93,6 +93,7 @@ $(function() {
             url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/?jp=true',
             contentType: 'application/' + type,
             dataType: type,
+            crossDomain: true,
             accepts: "application/json; charset=utf-8"
         }).done(function (data) {
             data = data.response;
@@ -159,6 +160,7 @@ $(function() {
             url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/?make=true',
             contentType: 'application/' + type,
             dataType: type,
+            crossDomain: true,
             accepts: "application/json; charset=utf-8"
         }).done(function (data) {
             var dialog = $("#dialog");
