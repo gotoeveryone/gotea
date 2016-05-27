@@ -10,7 +10,7 @@ class JsonComponent extends Component {
     public $controller = null;
     public $session = null;
     // WebAPIのURL
-    private $apiUrl = "http://localhost/web-resource/";
+    private $apiUrl = "https://www.kazukisv.com/web-resource/";
 
     public function initialize(array $config)
     {
@@ -67,7 +67,9 @@ class JsonComponent extends Component {
     public function getJson($url)
     {
         $http = new Client();
-        $response = $http->get($url);
+        $response = $http->get($url, [], [
+            'ssl_cafile' => '/etc/apache2/openssl/server.crt'
+        ]);
         $json = (object) null;
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);

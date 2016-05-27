@@ -91,10 +91,9 @@ $(function() {
         $.ajax({
             type: 'GET',
             url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/?jp=true',
-            crossDomain: true,
             contentType: 'application/' + type,
             dataType: type,
-            accepts: "application/json; charset=utf-8",
+            accepts: "application/json; charset=utf-8"
         }).done(function (data) {
             data = data.response;
             // TBODY要素を削除
@@ -160,16 +159,15 @@ $(function() {
             url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'rankings'])?>/' + country + '/' + year + '/' + rank + '/?make=true',
             contentType: 'application/' + type,
             dataType: type,
-            success: function (data) {
-                var dialog = $("#dialog");
-                dialog.html('JSON出力に成功しました。');
-                dialog.click();
-            },
-            error: function (data) {
-                var dialog = $("#dialog");
-                dialog.html('<span class="red">JSON出力に失敗しました。</span>');
-                dialog.click();
-            }
+            accepts: "application/json; charset=utf-8"
+        }).done(function (data) {
+            var dialog = $("#dialog");
+            dialog.html('JSON出力に成功しました。');
+            dialog.click();
+        }).fail(function (data) {
+            var dialog = $("#dialog");
+            dialog.html('<span class="red">JSON出力に失敗しました。</span>');
+            dialog.click();
         });
     });
 });
