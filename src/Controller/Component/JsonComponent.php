@@ -68,7 +68,7 @@ class JsonComponent extends Component {
     {
         $http = new Client();
         $response = $http->get($url, [], [
-            'ssl_cafile' => '/etc/apache2/openssl/server.crt'
+            'ssl_cafile' => getenv('SSL_CA_CRT')
         ]);
         $json = (object) null;
         if ($response->isOk()) {
