@@ -168,22 +168,22 @@
             ?>
             <tr<?php echo $class ?>>
                 <td class="center playerId">
-                    <?=h($player->ID)?>
+                    <?=h($player->id)?>
                 </td>
                 <td class="left playerName">
                     <?php
-                        $setClass = ($player->SEX === '女性' ? 'red' : 'blue');
+                        $setClass = ($player->sex === '女性' ? 'red' : 'blue');
                         if (isset($dialogFlag) && $dialogFlag) {
-                            echo $this->Html->link($player->NAME, '#', [
-                                'onClick' => 'selectParent("'.h($player->ID).'",
-                                    "'.h($player->NAME).'",
-                                    "'.h($player->rank->ID).'",
-                                    "'.h($player->rank->NAME).'")',
+                            echo $this->Html->link($player->name, '#', [
+                                'onClick' => 'selectParent("'.h($player->id).'",
+                                    "'.h($player->name).'",
+                                    "'.h($player->rank->id).'",
+                                    "'.h($player->rank->name).'")',
                                 'class' => $setClass
                             ]);
                         } else {
-                            echo $this->Html->link($player->NAME, [
-                                'action' => 'detail/'.h($player->ID)
+                            echo $this->Html->link($player->name, [
+                                'action' => 'detail/'.h($player->id)
                             ], [
                                 'class' => $setClass.' colorbox'
                             ]);
@@ -191,37 +191,37 @@
                     ?>
                 </td>
                 <td class="left playerNameEn">
-                    <?=h($player->NAME_ENGLISH); ?>
+                    <?=h($player->name_english); ?>
                 </td>
                 <td class="left enrollment">
-                    <?=h($player->ENROLLMENT); ?>
+                    <?=h($player->joined); ?>
                 </td>
                 <td class="center country">
-                    <?=h($player->country->NAME); ?>
+                    <?=h($player->country->name); ?>
                 </td>
                 <td class="center rank">
-                    <?=h($player->rank->NAME); ?>
+                    <?=h($player->rank->name); ?>
                 </td>
                 <td class="center sex">
-                    <?=h($player->SEX); ?>
+                    <?=h($player->sex); ?>
                 </td>
                 <td class="center center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->WIN_POINT)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->LOSE_POINT)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->DRAW_POINT)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->WIN_POINT_WORLD)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point_world)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->LOSE_POINT_WORLD)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point_world)); ?>
                 </td>
                 <td class="center scorePoint">
-                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->DRAW_POINT_WORLD)); ?>
+                    <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point_world)); ?>
                 </td>
             </tr>
             <?php endforeach ?>
@@ -255,7 +255,7 @@
                             iframe: true,
                             width: "50%",
                             height: "95%",
-                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&affiliation=日本棋院'
+                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&organization=日本棋院'
                         });
                         $(this).dialog('close');
                     }
@@ -267,7 +267,7 @@
                             iframe: true,
                             width: "50%",
                             height: "95%",
-                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&affiliation=関西棋院'
+                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&organization=関西棋院'
                         });
                         $(this).dialog('close');
                     }

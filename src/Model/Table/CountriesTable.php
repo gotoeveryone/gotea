@@ -45,11 +45,9 @@ class CountriesTable extends AppTable
         return $this->find('list', [
             'keyField' => 'keyField',
             'valueField' => 'valueField'
-//        ])->where(function ($exp, $q) {
-//            return $exp->isNotNull('OUTPUT_FILE_NAME');
-        ])->order(['Countries.id' => 'ASC'])->select([
-            'keyField' => 'Countries.name',
-            'valueField' => 'CASE Countries.code_alpha_2 WHEN null THEN CONCAT(Countries.name, \'棋戦\') ELSE CONCAT(Countries.name, \'棋士\') END'
+        ])->order(['id' => 'ASC'])->select([
+            'keyField' => 'name',
+            'valueField' => 'CASE code_alpha_2 WHEN null THEN CONCAT(name, \'棋戦\') ELSE CONCAT(name, \'棋士\') END'
         ])->toArray();
     }
 }

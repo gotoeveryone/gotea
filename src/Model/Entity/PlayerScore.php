@@ -26,21 +26,21 @@ class PlayerScore extends AppEntity
      * 
      * @param Request $request
      */
-    public function patchEntity(Request $request)
+    public function setRequestTo(Request $request)
     {
         // 対象年
-        $this->set('TARGET_YEAR', $request->data('selectYear'));
+        $this->target_year = $request->data('selectYear');
         // 勝数
-		$this->set('WIN_POINT', $request->data('selectWinPoint'));
+		$this->win_point = $request->data('selectWinPoint');
         // 敗数
-		$this->set('LOSE_POINT', $request->data('selectLosePoint'));
+		$this->lose_point = $request->data('selectlosepoint');
         // 引分数
-		$this->set('DRAW_POINT', $request->data('selectDrawPoint'));
+		$this->draw_point = $request->data('selectdrawpoint');
         // 勝数（国際棋戦）
-		$this->set('WIN_POINT_WORLD', $request->data('selectWinPointWr'));
+		$this->win_point_world = $request->data('selectwinpointwr');
         // 敗数（国際棋戦）
-		$this->set('LOSE_POINT_WORLD', $request->data('selectLosePointWr'));
+		$this->lose_point_world = $request->data('selectlosepointwr');
         // 引分数（国際棋戦）
-		$this->set('DRAW_POINT_WORLD', $request->data('selectDrawPointWr'));
+		$this->draw_point_world = $request->data('selectdrawpointwr');
     }
 }

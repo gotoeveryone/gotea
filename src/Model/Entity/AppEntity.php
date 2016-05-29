@@ -12,62 +12,52 @@ class AppEntity extends Entity
     // アクセス許可
 	protected $_accessible = [
         '*' => true,
-        'ID' => false,
+        'id' => false,
     ];
 
 	// ID
 	public function getId()
 	{
-		return $this->ID;
-	}
-
-	// 削除フラグ
-	public function getDeleteFlag()
-	{
-		return $this->DELETE_FLAG;
-	}
-	public function setDeleteFlag($deleteFlag)
-	{
-		return $this->DELETE_FLAG = $deleteFlag;
+		return $this->id;
 	}
 
 	// 初回登録日時
 	public function getCreated()
 	{
-		return $this->CREATED;
+		return $this->created;
 	}
 	public function setCreated($created)
 	{
-		return $this->CREATED = $created;
+		return $this->created = $created;
 	}
 
 	// 初回登録者
 	public function getCreatedBy()
 	{
-		return $this->CREATED_BY;
+		return $this->created_by;
 	}
 	public function setCreatedBy($createdBy)
 	{
-		return $this->CREATED_BY = $createdBy;
+		return $this->created_by = $createdBy;
 	}
 
 	// 最終更新日時
 	public function getModified()
 	{
-		return $this->MODIFIED;
+		return $this->modified;
 	}
 	public function setModified($modified)
 	{
-		return $this->MODIFIED = $modified;
+		return $this->modified = $modified;
 	}
 
 	// 最終更新者
 	public function getModifiedBy()
 	{
-		return $this->MODIFIED_BY;
+		return $this->modified_by;
 	}
 	public function setModifiedBy($modifiedBy)
 	{
-		return $this->MODIFIED_BY = $modifiedBy;
+		return $this->modified_by = $modifiedBy;
 	}
 }

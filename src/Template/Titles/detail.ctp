@@ -189,8 +189,8 @@
                     </section>
                 </section>
                 <?php if (!empty($title->title_retains)) : ?>
-                    <?php foreach ($title->title_retains as $titleRetain) : ?>
-                        <?php if ($title->HOLDING === $titleRetain->HOLDING) : ?>
+                    <?php foreach ($title->title_retains as $arquisition_histories) : ?>
+                        <?php if ($title->HOLDING === $arquisition_histories->HOLDING) : ?>
                         <section class="row">
                             <section class="box">
                                 <section class="headerRow">現在の保持情報</section>
@@ -199,8 +199,8 @@
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h(__("{$titleRetain->TARGET_YEAR}年 {$titleRetain->HOLDING}期 "))?>
-                                    <?=h($titleRetain->getWinnerName($title->GROUP_FLAG))?>
+                                    <?=h(__("{$arquisition_histories->TARGET_YEAR}年 {$arquisition_histories->HOLDING}期 "))?>
+                                    <?=h($arquisition_histories->getWinnerName($title->GROUP_FLAG))?>
                                 </section>
                             </section>
                         </section>
@@ -208,7 +208,7 @@
                         <?php endif ?>
                     <?php endforeach ?>
                     <?php $header = false; ?>
-                    <?php foreach ($title->title_retains as $titleRetain) : ?>
+                    <?php foreach ($title->title_retains as $arquisition_histories) : ?>
                         <?php if (!$header) : ?>
                         <section class="row">
                             <section class="box">
@@ -217,12 +217,12 @@
                         </section>
                         <?php $header = true; ?>
                         <?php endif ?>
-                        <?php if ($title->HOLDING !== $titleRetain->HOLDING) : ?>
+                        <?php if ($title->HOLDING !== $arquisition_histories->HOLDING) : ?>
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h(__("{$titleRetain->TARGET_YEAR}年 {$titleRetain->HOLDING}期 "))?>
-                                    <?=h($titleRetain->getWinnerName($title->GROUP_FLAG))?>
+                                    <?=h(__("{$arquisition_histories->TARGET_YEAR}年 {$arquisition_histories->HOLDING}期 "))?>
+                                    <?=h($arquisition_histories->getWinnerName($title->GROUP_FLAG))?>
                                 </section>
                             </section>
                         </section>

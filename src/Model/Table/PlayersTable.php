@@ -6,7 +6,7 @@ use Cake\I18n\Time;
 use Cake\Validation\Validator;
 
 /**
- * 棋士マスタ
+ * 棋士
  */
 class PlayersTable extends AppTable
 {
@@ -17,28 +17,18 @@ class PlayersTable extends AppTable
 	 */
     public function initialize(array $config)
     {
-        $this->table('M_PLAYER');
-        $this->primaryKey('ID');
-//        $this->entityClass('App\Model\Entity\Player');
         // 所属国マスタ
-        $this->belongsTo('Countries', [
-            'foreignKey' => 'COUNTRY_ID',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Countries');
         // 段位マスタ
-        $this->belongsTo('Ranks', [
-            'foreignKey' => 'RANK_ID',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Ranks');
         // 棋士成績情報
         $this->hasMany('PlayerScores', [
-            'foreignKey' => 'PLAYER_ID',
-            'order' => array('PlayerScores.TARGET_YEAR' => 'DESC')
+            'order' => array('PlayerScores.target_year' => 'DESC')
         ]);
         // タイトル保持情報
-        $this->hasMany('TitleRetains', [
-            'foreignKey' => 'PLAYER_ID',
-            'order' => array('TitleRetains.TARGET_YEAR' => 'DESC')
+        $this->hasMany('ArquisitionHistories', [
+            'joinType' => 'LEFT',
+            'order' => array('ArquisitionHistories.target_year' => 'DESC')
         ]);
     }
 
@@ -51,19 +41,19 @@ class PlayersTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('NAME', '棋士名は必須です。')
-            ->allowEmpty('BIRTHDAY')
-            ->add('BIRTHDAY', [
+            ->notEmpty('name', '棋士名は必須です。')
+            ->allowEmpty('birthday')
+            ->add('birthday', [
                 'valid' => [
                     'rule' => ['date', 'ymd'],
                     'message' => '生年月日は「yyyy/MM/dd」形式で入力してください。'
                 ]
             ])
-            ->notEmpty('ENROLLMENT', '入段日は必須です。')
-            ->add('ENROLLMENT', [
-                'alphaNumeric' => [
-                    'rule' => 'alphaNumeric',
-                    'message' => '入段日は数字で入力してください。'
+            ->notEmpty('joined', '入段日は「yyyy/MM/dd」形式で入力してください。')
+            ->add('joined', [
+                'valid' => [
+                    'rule' => ['date', 'ymd'],
+                    'message' => '入段日は「yyyy/MM/dd」形式で入力してください。'
                 ]
             ]);
     }
@@ -80,19 +70,19 @@ class PlayersTable extends AppTable
             'Countries',
             'Ranks',
             'PlayerScores' => function ($q) {
-                return $q->order(['PlayerScores.TARGET_YEAR' => 'DESC']);
+                return $q->order(['PlayerScores.target_year' => 'DESC']);
             },
             'PlayerScores.Ranks',
-            'TitleRetains.Titles',
-            'TitleRetains' => function ($q) {
+            'ArquisitionHistories.Titles',
+            'ArquisitionHistories' => function ($q) {
                 return $q->order([
-                    'TitleRetains.TARGET_YEAR' => 'DESC',
-                    'Titles.COUNTRY_ID' => 'ASC',
-                    'Titles.SORT_ORDER' => 'ASC'
+                    'ArquisitionHistories.target_year' => 'DESC',
+                    'Titles.country_id' => 'ASC',
+                    'Titles.sort_order' => 'ASC'
                 ]);
             },
-            'TitleRetains.Titles.Countries'
-        ])->where(['Players.ID' => $id])->first();
+            'ArquisitionHistories.Titles.Countries'
+        ])->where(['Players.id' => $id])->first();
     }
 
     /**
@@ -103,52 +93,52 @@ class PlayersTable extends AppTable
      * @param type $rank
      * @param type $playerName
      * @param type $playerNameEn
-     * @param type $enrollmentFrom
+     * @param type $joined
      * @param type $enrollmentTo
      * @param type $retire
      * @param type $count
      * @return Player 棋士情報一覧
      */
     public function findPlayers($countryCode = null, $sex = null, $rank = null, $playerName = null, $playerNameEn = null,
-            $enrollmentFrom = null, $enrollmentTo = null, $retire = null, $count = false)
+            $joined = null, $enrollmentTo = null, $retire = null, $count = false)
     {
         // 棋士情報の取得
         $query = $this->find();
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
         if ($countryCode) {
-            $query->where(['Players.COUNTRY_ID' => $countryCode]);
+            $query->where(['Countries.id' => $countryCode]);
         }
         if ($sex) {
-            $query->where(['Players.SEX' => $sex]);
+            $query->where(['Players.sex' => $sex]);
         }
         if ($rank) {
-            $query->where(['Players.RANK_ID' => $rank]);
+            $query->where(['Players.rank_id' => $rank]);
         }
         if ($playerName) {
-            $query->where(['Players.NAME LIKE' => '%'.$playerName.'%']);
+            $query->where(['Players.name LIKE' => '%'.$playerName.'%']);
         }
         if ($playerNameEn) {
-            $query->where(['Players.NAME_ENGLISH LIKE' => '%'.$playerNameEn.'%']);
+            $query->where(['Players.name_english LIKE' => '%'.$playerNameEn.'%']);
         }
-        if (is_numeric($enrollmentFrom)) {
-            $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) >=' => $enrollmentFrom]);
+        if (is_numeric($joined)) {
+            $query->where(["DATE_FORMAT(Players.joined, '%Y') >=" => $joined]);
         }
         if (is_numeric($enrollmentTo)) {
-            $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) <=' => $enrollmentTo]);
+            $query->where(["DATE_FORMAT(Players.joined, '%Y') <=" => $enrollmentTo]);
         }
         if ($retire && $retire === 'false') {
-            $query->where(['Players.DELETE_FLAG' => 0]);
+            $query->where(['Players.is_retired' => 0]);
         }
 
         // データを取得
         $res = $query->order([
-            'Players.RANK_ID DESC',
-            'Players.ENROLLMENT',
-            'Players.ID'
+            'Ranks.rank_numeric DESC',
+            'Players.joined',
+            'Players.id'
         ])->contain([
             'PlayerScores' => function ($q) {
-                return $q->where(['PlayerScores.TARGET_YEAR' => intval(Time::now()->year)]);
+                return $q->where(['PlayerScores.target_year' => intval(Time::now()->year)]);
             },
             'Ranks',
             'Countries'

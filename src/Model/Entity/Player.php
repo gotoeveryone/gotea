@@ -19,51 +19,26 @@ class Player extends AppEntity
      */
     public function getBirthday($format = null)
     {
-        if (!$this->BIRTHDAY) {
+        if (!$this->birthday) {
             return null;
         }
-        $time = new Time($this->BIRTHDAY);
+        $time = new Time($this->birthday);
         return $time->format(($format) ? $format : 'Y/m/d');
     }
 
     /**
-     * 棋士名を設定します。
+     * 入段日を取得します。
      * 
-     * @param $name
+     * @param type $format
+     * @return type
      */
-    public function setName($name)
+    public function getJoined($format = null)
     {
-        $this->set('NAME', $name);
-    }
-
-    /**
-     * 棋士名（英語）を設定します。
-     * 
-     * @param $nameEnglish
-     */
-    public function setNameEnglish($nameEnglish)
-    {
-        $this->set('NAME_ENGLISH', (empty($nameEnglish) ? null : $nameEnglish));
-    }
-
-    /**
-     * 棋士名（その他）を設定します。
-     * 
-     * @param $nameOther
-     */
-    public function setNameOther($nameOther)
-    {
-        $this->set('NAME_OTHER', (empty($nameOther) ? null : $nameOther));
-    }
-
-    /**
-     * 性別を設定します。
-     * 
-     * @param $sex
-     */
-    public function setSex($sex)
-    {
-        $this->set('SEX', $sex);
+        if (!$this->joined) {
+            return null;
+        }
+        $time = new Time($this->joined);
+        return $time->format(($format) ? $format : 'Y/m/d');
     }
 
     /**
@@ -93,20 +68,21 @@ class Player extends AppEntity
      * 
      * @param type $birthday
      */
-    public function setBirthday($birthday)
+    protected function _setBirthday($birthday)
     {
         $time = new Time();
-        $this->set('BIRTHDAY', (empty($birthday) ? null : $time->parseDate($birthday, 'YYYY/MM/dd')));
+        return (empty($birthday) ? null : $time->parseDate($birthday, 'YYYY/MM/dd'));
     }
 
     /**
      * 入段日を設定します。
      * 
-     * @param type $enrollment
+     * @param type $joined
      */
-    public function setEnrollment($enrollment)
+    protected function _setJoined($joined)
     {
-        $this->set('ENROLLMENT', (empty($enrollment) ? null : str_replace('/', '', $enrollment)));
+        $time = new Time();
+        return (empty($joined) ? null : $time->parseDate($joined, 'YYYY/MM/dd'));
     }
 
     /**
@@ -114,30 +90,32 @@ class Player extends AppEntity
      * 
      * @param Request $request
      */
-    public function patchEntity(Request $request)
+    public function setFromRequest(Request $request)
     {
         // 棋士名
-        $this->set('NAME', $request->data('playerName'));
+        $this->name = $request->data('playerName');
         // 棋士名（英語）
-		$nameEnglish = $request->data('playerNameEn');
-		$this->set('NAME_ENGLISH', (empty($nameEnglish) ? null : $nameEnglish));
+		$nameEnglish = $request->data('playerNameEnglish');
+		$this->name_english = (empty($nameEnglish) ? null : $nameEnglish);
         // 棋士名（その他）
 		$nameOther = $request->data('playerNameOther');
-		$this->set('NAME_OTHER', (empty($nameOther) ? null : $nameOther));
+		$this->name_other = (empty($nameOther) ? null : $nameOther);
         // 所属国
         $this->setCountry($request->data('selectCountry'));
         // 段位
 		$this->setRank($request->data('rank'));
         // 性別
-		$this->set('SEX', $request->data('sex'));
+		$this->sex = $request->data('sex');
         // 入段日
-        $this->setEnrollment($request->data('enrollment'));
+        $this->joined = $request->data('joined');
         // 誕生日
-        $this->setBirthday($request->data('birthday'));
+        $this->birthday = $request->data('birthday');
         // 所属組織
-		$affiliation = $request->data('affiliation');
-		$this->set('AFFILIATION', (empty($affiliation) ? null : $affiliation));
+		$organization = $request->data('organization');
+		$this->organization = (empty($organization) ? null : $organization);
         // 引退フラグ
-		$this->set('DELETE_FLAG', $request->data('retireFlag'));
+		$this->is_retired = $request->data('retired');
+        // その他備考
+		$this->remarks = $request->data('remarks');
     }
 }

@@ -1,7 +1,7 @@
 <section id="detail">
     <section id="tabs">
         <section class="tabs" name="player">棋士情報</section>
-        <?php if ($player->ID) : ?>
+        <?php if ($player->id) : ?>
             <section class="tabs" name="scores">成績情報</section>
             <section class="tabs" name="titleRetains">タイトル情報</section>
         <?php endif ?>
@@ -38,26 +38,26 @@
         <?=$this->Form->hidden('selectDrawPointWr', ['id' => 'selectDrawPointWr'])?>
     <section id="scroll">
         <section id="player" class="details">
-            <!-- 棋士マスタ情報 -->
+            <!-- マスタ -->
             <section class="categoryRow">
-                棋士情報<?=($player->ID ? '（ID：'.h($player->ID).'）' : '')?>
-                <?=$this->Form->hidden('selectPlayerId', ['value' => h($player->ID)])?>
+                棋士情報<?=($player->id ? '（ID：'.h($player->id).'）' : '')?>
+                <?=$this->Form->hidden('selectId', ['value' => h($player->id)])?>
             </section>
             <section class="row">
                 <section class="box3">
                     <section class="headerRow">所属国</section>
                     <section class="valueRow">
-                        <?=h($player->country->NAME)?>
-                        <?=$this->Form->hidden('selectCountry', ['value' => $player->country->ID])?>
+                        <?=h($player->country->name)?>
+                        <?=$this->Form->hidden('selectCountry', ['value' => $player->country->id])?>
                     </section>
                 </section>
                 <section class="box3">
                     <section class="headerRow">所属組織</section>
                     <section class="valueRow">
                         <?=
-                            $this->Form->text('affiliation', [
-                                'value' => h($player->AFFILIATION),
-                                'class' => 'affiliation',
+                            $this->Form->text('organization', [
+                                'value' => h($player->organization),
+                                'class' => 'organization',
                                 'maxlength' => 10
                             ]);
                         ?>
@@ -66,7 +66,7 @@
                 <section class="box3">
                     <section class="headerRow">引退フラグ</section>
                     <section class="valueRow">
-                        <?=$this->Form->checkbox('retireFlag', ['checked' => ($player->DELETE_FLAG)])?>
+                        <?=$this->Form->checkbox('retired', ['checked' => ($player->is_retired)])?>
                     </section>
                 </section>
             </section>
@@ -78,7 +78,7 @@
                     <section class="valueRow">
                         <?=
                             $this->Form->text('playerName', [
-                                'value' => h($player->NAME),
+                                'value' => h($player->name),
                                 'class' => 'playerName',
                                 'maxlength' => 20
                             ]);
@@ -89,8 +89,8 @@
                     <section class="valueRow">
                         英語
                         <?=
-                            $this->Form->text('playerNameEn', [
-                                'value' => h($player->NAME_ENGLISH),
+                            $this->Form->text('playerNameEnglish', [
+                                'value' => h($player->name_english),
                                 'class' => 'imeDisabled playerName',
                                 'maxlength' => 40
                             ]);
@@ -100,7 +100,7 @@
                         その他
                         <?=
                             $this->Form->text('playerNameOther', [
-                                'value' => h($player->NAME_OTHER),
+                                'value' => h($player->name_other),
                                 'class' => 'playerName',
                                 'maxlength' => 40
                             ]);
@@ -131,14 +131,15 @@
                     <section class="headerRow">入段日</section>
                     <section class="valueRow">
                         <?php
-                            if (!$player->ID) {
-                                echo $this->Form->text('enrollment', [
-                                    'value' => '',
+                            $joined = $player->getJoined();
+                            if (!$player->id) {
+                                echo $this->Form->text('joined', [
+                                    'value' => $joined,
                                     'class' => 'imeDisabled'
                                 ]);
                             } else {
-                                echo $this->Date->formatJpValue($player->ENROLLMENT);
-                                echo $this->Form->hidden('enrollment', ['value' => h($player->ENROLLMENT)]);
+                                echo $joined;
+                                echo $this->Form->hidden('joined', ['value' => h($player->joined)]);
                             }
                         ?>
                     </section>
@@ -149,7 +150,7 @@
                     <section class="headerRow">性別</section>
                     <section class="valueRow">
                         <?php
-                            if (!$player->ID) {
+                            if (!$player->id) {
                                 echo $this->Form->input('sexes', [
                                     'options' => array(
                                         '男性' => '男性',
@@ -159,8 +160,8 @@
                                     'class' => 'sex'
                                 ]);
                             } else {
-                                echo h($player->SEX);
-                                echo $this->Form->hidden('sex', ['value' => h($player->SEX)]);
+                                echo h($player->sex);
+                                echo $this->Form->hidden('sex', ['value' => h($player->sex)]);
                             }
                         ?>
                     </section>
@@ -172,7 +173,7 @@
                             $this->Form->input('rank', [
                                 'options' => $ranks,
                                 'class' => 'rank',
-                                'value' => ($player->RANK_ID ? $player->RANK_ID : '1')
+                                'value' => ($player->rank ? $player->rank->rank_numeric : '1')
                             ]);
                         ?>
                     </section>
@@ -180,10 +181,10 @@
                 <section class="box2">
                     <section class="headerRow">更新日時</section>
                     <section class="valueRow">
-                        <?=$this->Date->formatToDateTime($player->MODIFIED)?>
+                        <?=$this->Date->formatToDateTime($player->modified)?>
                         <?=
                             $this->Form->hidden('lastUpdatePlayer', [
-                                'value' => $this->Date->format($player->MODIFIED, 'yyyyMMddHHmmss')
+                                'value' => $this->Date->format($player->modified, 'yyyyMMddHHmmss')
                             ])
                         ?>
                     </section>
@@ -198,7 +199,7 @@
                                 'cols' => 30,
                                 'rows' => 3,
                                 'class' => 'remarks',
-                                'value' => h($player->REMARKS)
+                                'value' => h($player->remarks)
                             ])
                         ?>
                     </section>
@@ -207,11 +208,11 @@
             <section class="row">
                 <section class="detailRow">
                     <?php
-                        echo $this->Form->button(($player->ID ? '更新' : '登録'), [
+                        echo $this->Form->button(($player->id ? '更新' : '登録'), [
                             'id' => 'save',
                             'type' => 'button'
                         ]);
-                        if (!$player->ID) {
+                        if (!$player->id) {
                             echo $this->Form->button('連続作成', [
                                 'id' => 'saveWithContinue',
                                 'type' => 'button'
@@ -223,7 +224,7 @@
         </section>
 
         <section id="scores" class="details">
-            <!-- 棋士成績情報 -->
+            <!-- 棋士成績 -->
             <section class="categoryRow">成績情報</section>
             <?php if (!empty($player->player_scores)) : ?>
             <?php foreach ($player->player_scores as $key=>$score) :?>
@@ -231,8 +232,8 @@
                 <section class="row">
                     <section class="box">
                         <section class="genreRow">
-                            <?=h($score->TARGET_YEAR).'年度'?>
-                            <input type="hidden" name="year" value="<?=h($score->TARGET_YEAR)?>" id="year_<?=$key?>">
+                            <?=h($score->target_year).'年度'?>
+                            <input type="hidden" name="year" value="<?=h($score->target_year)?>" id="year_<?=$key?>">
                         </section>
                     </section>
                 </section>
@@ -240,7 +241,7 @@
                     <section class="box">
                         <section class="headerRow">段位</section>
                         <section class="valueRow">
-                            <?=h($score->rank->NAME)?><br/>
+                            <?=h($score->rank->name)?><br/>
                         </section>
                     </section>
                 </section>
@@ -253,7 +254,7 @@
                                 $this->Form->input('winPoint_'.$key, [
                                     'id' => 'winPoint_'.$key,
                                     'name' => 'winPoint',
-                                    'value' => h($score->WIN_POINT),
+                                    'value' => h($score->win_point),
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'勝';
                             ?>
@@ -261,7 +262,7 @@
                                 $this->Form->input('losePoint_'.$key, [
                                     'id' => 'losePoint_'.$key,
                                     'name' => 'losePoint',
-                                    'value' => h($score->LOSE_POINT),
+                                    'value' => h($score->lose_point),
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'敗';
                             ?>
@@ -269,7 +270,7 @@
                                 $this->Form->input('drawPoint_'.$key, [
                                     'id' => 'drawPoint_'.$key,
                                     'name' => 'drawPoint',
-                                    'value' => h($score->DRAW_POINT),
+                                    'value' => h($score->draw_point),
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'分';
                             ?>
@@ -283,7 +284,7 @@
                                 $this->Form->input('winPointWr_'.$key, [
                                     'id' => 'winPointWr_'.$key,
                                     'name' => 'winPointWr',
-                                    'value' => h($score->WIN_POINT_WORLD),
+                                    'value' => h($score->win_point_world),
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'勝';
                             ?>
@@ -291,7 +292,7 @@
                                 $this->Form->input('losePointWr_'.$key, [
                                     'id' => 'losePointWr_'.$key,
                                     'name' => 'losePointWr',
-                                    'value' => h($score->LOSE_POINT_WORLD),
+                                    'value' => h($score->lose_point_world),
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'敗';
                             ?>
@@ -299,7 +300,7 @@
                                 $this->Form->input('drawPointWr_'.$key, [
                                     'id' => 'drawPointWr_'.$key,
                                     'name' => 'drawPointWr',
-                                    'value' => h($score->DRAW_POINT_WORLD),
+                                    'value' => h($score->draw_point_world),
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'分';
                             ?>
@@ -313,11 +314,11 @@
                     </section>
                     <section class="box2">
                         <section class="valueRow">
-                            <?=$this->Date->formatToDateTime($score->MODIFIED)?>
+                            <?=$this->Date->formatToDateTime($score->modified)?>
                             <?=
                                 $this->Form->hidden('lastUpdate_'.$key, [
                                     'id' => 'lastUpdate_'.$key,
-                                    'value' => $this->Date->format($score->MODIFIED, 'YmdHis')
+                                    'value' => $this->Date->format($score->modified, 'YmdHis')
                                 ])
                             ?>
                         </section>
@@ -339,31 +340,31 @@
         <?=$this->Form->end()?>
 
         <section id="titleRetains" class="details">
-            <!-- タイトル保持情報 -->
+            <!-- タイトル取得履歴 -->
             <section class="categoryRow">タイトル保持情報</section>
-            <?php if (!empty($player->title_retains)) : ?>
+            <?php if (!empty($player->arquisition_histories)) : ?>
             <?php $beforeYear = 0; ?>
-            <?php foreach ($player->title_retains as $titleRetain) : ?>
-                <?php if ($beforeYear !== $titleRetain->TARGET_YEAR) : ?>
+            <?php foreach ($player->arquisition_histories as $arquisition_histories) : ?>
+                <?php if ($beforeYear !== $arquisition_histories->target_year) : ?>
                 <section class="category">
                     <section class="row">
                         <section class="genreRow">
-                            <?=h($titleRetain->TARGET_YEAR).'年度'?>
+                            <?=h($arquisition_histories->target_year).'年度'?>
                         </section>
                     </section>
                 <?php endif ?>
                     <section class="row">
                         <section class="box">
                             <section class="valueRow">
-                                <?=h($titleRetain->HOLDING).'期'.h($titleRetain->title->NAME)?>
-                                <?='（'.h($titleRetain->title->country->NAME).'棋戦）'?>
+                                <?=h($arquisition_histories->holding).'期'.h($arquisition_histories->title->name)?>
+                                <?='（'.h($arquisition_histories->title->country->name).'棋戦）'?>
                             </section>
                         </section>
                     </section>
-                <?php if ($beforeYear !== $titleRetain->TARGET_YEAR) : ?>
+                <?php if ($beforeYear !== $arquisition_histories->target_year) : ?>
                 </section>
                 <?php endif ?>
-                <?php $beforeYear = $titleRetain->TARGET_YEAR; ?>
+                <?php $beforeYear = $arquisition_histories->target_year; ?>
             <?php endforeach ?>
             <?php endif ?>
             </table>

@@ -5,9 +5,9 @@ namespace App\Model\Entity;
 use Cake\Network\Request;
 
 /**
- * タイトル保持情報エンティティ
+ * 取得履歴エンティティ
  */
-class TitleRetain extends AppEntity
+class ArquisitionHistory extends AppEntity
 {
     /**
      * タイトル保持者を取得します。

@@ -24,10 +24,6 @@ class AppTable extends Table
      * @param type $operation
      */
 	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
-        // 削除フラグの設定が無い場合はデフォルト値(0)を設定
-        if (!$entity->getDeleteFlag()) {
-            $entity->setDeleteFlag(false);
-        }
 		// 新規登録時は登録日時を設定
 		$nowDate = Time::now();
 		$userId = $this->__getLoginUserId();
