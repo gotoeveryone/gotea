@@ -65,7 +65,7 @@ class PlayersController extends AppController
     {
         $this->__initSearch();
 
-        // リクエストから値を取得（なければセッションから取得）
+        // リクエストから値を取得
         $countryCode = $this->request->data('searchCountry');
         $sex = $this->request->data('searchSex');
         $rank = $this->request->data('searchRank');

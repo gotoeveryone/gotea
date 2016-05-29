@@ -17,7 +17,7 @@ class CountriesTable extends AppTable
 		return $this->find('list', [
             'keyField' => 'id',
             'valueField' => 'name'
-        ])->toArray();
+        ])->order(['id'])->toArray();
     }
 
     /**
@@ -32,7 +32,7 @@ class CountriesTable extends AppTable
             'valueField' => 'name'
         ])->where([
             'has_title' => true
-        ])->toArray();
+        ])->order(['id'])->toArray();
     }
 
     /**

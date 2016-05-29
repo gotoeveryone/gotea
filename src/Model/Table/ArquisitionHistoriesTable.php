@@ -36,7 +36,7 @@ class ArquisitionHistoriesTable extends AppTable {
     public function findByKey($titleId, $holding, $isCount = false)
     {
 		$query = $this->find()->where([
-            'title.id' => $titleId,
+            'title_id' => $titleId,
             'holding' => $holding
 		]);
         return $isCount ? $query->count() : $query->all();

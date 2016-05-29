@@ -60,14 +60,15 @@ class TitlesTable extends AppTable {
     public function findTitlesByCountry($countryId, $notSearchEndTitles = null)
     {
         $query = $this->find()->contain([
-            'ArquisitionHistoriesTable',
-            'ArquisitionHistoriesTable.Titles' => function ($q) {
-                return $q->where(['ArquisitionHistoriesTable.holding = Titles.holding']);
+            'Countries',
+            'ArquisitionHistories',
+            'ArquisitionHistories.Titles' => function ($q) {
+                return $q->where(['ArquisitionHistories.holding = Titles.holding']);
             },
-            'ArquisitionHistoriesTable.Players',
-            'ArquisitionHistoriesTable.Ranks'
+            'ArquisitionHistories.Players',
+            'ArquisitionHistories.Ranks'
         ])->where([
-            'Titles.Countries.id' => $countryId
+            'Countries.id' => $countryId
         ]);
 
         // 有効なタイトルのみ検索
@@ -89,12 +90,12 @@ class TitlesTable extends AppTable {
     {
 		return $this->find()->contain([
             'Countries',
-            'TitleRetains' => function ($q) {
-                return $q->order(['TitleRetains.target_year' => 'DESC']);
+            'ArquisitionHistories' => function ($q) {
+                return $q->order(['ArquisitionHistories.target_year' => 'DESC']);
             },
-            'TitleRetains.Ranks',
-            'TitleRetains.Titles.Countries',
-            'TitleRetains.Players'
+            'ArquisitionHistories.Ranks',
+            'ArquisitionHistories.Titles.Countries',
+            'ArquisitionHistories.Players'
         ])->where(['Titles.id' => $id])->first();
     }
 }

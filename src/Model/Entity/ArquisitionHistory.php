@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use Cake\Network\Request;
+use Cake\ORM\TableRegistry;
 
 /**
  * 取得履歴エンティティ
@@ -12,12 +13,34 @@ class ArquisitionHistory extends AppEntity
     /**
      * タイトル保持者を取得します。
      * 
-     * @param type $groupFlag
+     * @param type $is_team
      * @return type
      */
-    public function getWinnerName($groupFlag = false)
+    public function getWinnerName($is_team = false)
     {
-        return $groupFlag ? $this->WIN_GROUP_NAME : __("{$this->player->NAME} {$this->rank->NAME}");
+        return $is_team ? $this->win_group_name : __("{$this->player->name} {$this->rank->name}");
+    }
+
+    /**
+     * 棋士を設定します。
+     * 
+     * @param $playerId
+     */
+    public function setPlayer($playerId)
+    {
+        $players = TableRegistry::get('Players');
+        $this->player = $players->get($playerId);
+    }
+
+    /**
+     * 段位を設定します。
+     * 
+     * @param $rankId
+     */
+    public function setRank($rankId)
+    {
+        $ranks = TableRegistry::get('Ranks');
+        $this->rank = $ranks->get($rankId);
     }
 
     /**
@@ -27,24 +50,26 @@ class ArquisitionHistory extends AppEntity
      * @param type $titleId
      * @param type $holding
      */
-    public function patchEntity(Request $request, $titleId, $holding)
+    public function setFromRequest(Request $request, $titleId, $holding)
     {
         // タイトルID
-        $this->set('TITLE_ID', $titleId);
+        $this->title_id = $titleId;
         // 期
-        $this->set('HOLDING', $holding);
+        $this->holding = $holding;
         // 対象年
-        $this->set('TARGET_YEAR', $request->data('registYear'));
+        $this->target_year = $request->data('registYear');
         // 優勝棋士ID
 		$playerId = $request->data('registPlayerId');
-        $this->set('PLAYER_ID', (empty($playerId) ? null : $playerId));
+        if ($playerId) {
+            $this->setPlayer($playerId);
+        }
         // 優勝棋士段位
 		$rankId = $request->data('registRank');
-        $this->set('RANK_ID', (empty($rankId) ? null : $rankId));
+        if ($rankId) {
+            $this->setRank($rankId);
+        }
         // 優勝団体名
         $winGroupName = $request->data('registGroupName');
-        $this->set('WIN_GROUP_NAME', (empty($winGroupName) ? null : $winGroupName));
-        // 終了フラグ
-        $this->set('DELETE_FLAG', 0);
+        $this->win_group_name = (empty($winGroupName) ? null : $winGroupName);
     }
 }

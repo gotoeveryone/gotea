@@ -49,7 +49,7 @@ class Player extends AppEntity
     public function setCountry($countryId)
     {        
         $countries = TableRegistry::get('Countries');
-        $this->set('country', $countries->get($countryId));
+        $this->country = $countries->get($countryId);
     }
 
     /**
@@ -60,7 +60,7 @@ class Player extends AppEntity
     public function setRank($rankId)
     {
         $ranks = TableRegistry::get('Ranks');
-        $this->set('rank', $ranks->get($rankId));
+        $this->rank = $ranks->get($rankId);
     }
 
     /**

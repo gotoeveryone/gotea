@@ -30,35 +30,35 @@
         <section id="scroll">
             <section id="title" class="details">
                 <section class="categoryRow">
-                    <?='タイトル情報（ID：'.h($title->ID).'）'?>
+                    <?='タイトル情報（ID：'.h($title->id).'）'?>
                 </section>
                 <section class="row">
                     <section class="box2">
                         <section class="headerRow">タイトル名</section>
                         <section class="valueRow">
-                            <?=$this->Form->hidden('selectTitleId', ['value' => $title->ID])?>
-                            <?=h($title->NAME)?>
+                            <?=$this->Form->hidden('selectTitleId', ['value' => $title->id])?>
+                            <?=h($title->name)?>
                         </section>
                     </section>
                     <section class="box2">
                         <section class="headerRow">タイトル名（英語）</section>
                         <section class="valueRow">
-                            <?=h($title->NAME_ENGLISH)?>
+                            <?=h($title->name_english)?>
                         </section>
                     </section>
                     <section class="box2">
                         <section class="headerRow">分類</section>
                         <section class="valueRow">
-                            <?=($title->country->NAME).'棋戦'?>
+                            <?=($title->country->name).'棋戦'?>
                         </section>
                     </section>
                     <section class="box2">
                         <section class="headerRow">更新日時</section>
                         <section class="valueRow">
-                            <?=$this->Date->formatToDateTime($title->MODIFIED)?>
+                            <?=$this->Date->formatToDateTime($title->modified)?>
                             <?=
                                 $this->Form->hidden('lastUpdateTitle', [
-                                    'value' => $this->Date->format($title->MODIFIED, 'yyyyMMddHHmmss')
+                                    'value' => $this->Date->format($title->modified, 'yyyyMMddHHmmss')
                                 ])
                             ?>
                         </section>
@@ -67,11 +67,11 @@
                         <section class="headerRow">現在の保持者</section>
                         <section class="valueRow">
                             <?php
-                                if (!empty($title->title_retains)) :
-                                    foreach ($title->title_retains as $retain) :
-                                        if ($retain->HOLDING === $title->HOLDING) :
-                                            echo h(__("{$title->HOLDING}期 "));
-                                            echo h($retain->getWinnerName($title->GROUP_FLAG));
+                                if (!empty($title->arquisition_histories)) :
+                                    foreach ($title->arquisition_histories as $arquisition) :
+                                        if ($arquisition->holding === $title->holding) :
+                                            echo h(__("{$title->holding}期 "));
+                                            echo h($arquisition->getWinnerName($title->is_team));
                                             break;
                                         endif;
                                     endforeach;
@@ -88,7 +88,7 @@
                                         'cols' => 30,
                                         'rows' => 3,
                                         'class' => 'remarks',
-                                        'value' => h($title->REMARKS)
+                                        'value' => h($title->remarks)
                                     ])
                                 ?>
                             </section>
@@ -127,9 +127,9 @@
                     </section>
                     <section class="box2">
                         <section class="valueRow">
-                            <?=h($title->GROUP_FLAG ? '優勝団体名' : '棋士名：')?>
+                            <?=h($title->is_team ? '優勝団体名' : '棋士名：')?>
                             <?php
-                                if ($title->GROUP_FLAG) {
+                                if ($title->is_team) {
                                     echo $this->Form->text('registGroupName', [
                                         'value' => $this->request->data('registGroupName'),
                                         'maxlength' => 30
@@ -169,7 +169,7 @@
                 <section class="row">
                     <section class="box button">
                         <?php
-                            if (!$title->GROUP_FLAG) {
+                            if (!$title->is_team) {
                                 echo $this->Form->button('棋士検索', [
                                     'type' => 'button',
                                     'id' => 'searchPlayer'
@@ -188,9 +188,9 @@
                         ?>
                     </section>
                 </section>
-                <?php if (!empty($title->title_retains)) : ?>
-                    <?php foreach ($title->title_retains as $arquisition_histories) : ?>
-                        <?php if ($title->HOLDING === $arquisition_histories->HOLDING) : ?>
+                <?php if (!empty($title->arquisition_histories)) : ?>
+                    <?php foreach ($title->arquisition_histories as $arquisition) : ?>
+                        <?php if ($title->holding === $arquisition->holding) : ?>
                         <section class="row">
                             <section class="box">
                                 <section class="headerRow">現在の保持情報</section>
@@ -199,8 +199,8 @@
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h(__("{$arquisition_histories->TARGET_YEAR}年 {$arquisition_histories->HOLDING}期 "))?>
-                                    <?=h($arquisition_histories->getWinnerName($title->GROUP_FLAG))?>
+                                    <?=h(__("{$arquisition->target_year}年 {$arquisition->holding}期 "))?>
+                                    <?=h($arquisition->getWinnerName($title->is_team))?>
                                 </section>
                             </section>
                         </section>
@@ -208,7 +208,7 @@
                         <?php endif ?>
                     <?php endforeach ?>
                     <?php $header = false; ?>
-                    <?php foreach ($title->title_retains as $arquisition_histories) : ?>
+                    <?php foreach ($title->arquisition_histories as $arquisition) : ?>
                         <?php if (!$header) : ?>
                         <section class="row">
                             <section class="box">
@@ -217,12 +217,12 @@
                         </section>
                         <?php $header = true; ?>
                         <?php endif ?>
-                        <?php if ($title->HOLDING !== $arquisition_histories->HOLDING) : ?>
+                        <?php if ($title->holding !== $arquisition->holding) : ?>
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h(__("{$arquisition_histories->TARGET_YEAR}年 {$arquisition_histories->HOLDING}期 "))?>
-                                    <?=h($arquisition_histories->getWinnerName($title->GROUP_FLAG))?>
+                                    <?=h(__("{$arquisition->target_year}年 {$arquisition->holding}期 "))?>
+                                    <?=h($arquisition->getWinnerName($title->is_team))?>
                                 </section>
                             </section>
                         </section>
@@ -260,7 +260,7 @@
         });
         function regist() {
             <?php
-                if ($title->GROUP_FLAG) {
+                if ($title->is_team) {
                     echo 'if ($("#registGroupName").val() === "") {';
                     echo '    var dialog = $("#dialog");';
                     echo '    dialog.html("優勝団体名を入力してください。");';

@@ -73,7 +73,7 @@
             <?php foreach ($titles as $key => $title) : ?>
             <?php
                 $class = '';
-                if ($title->DELETE_FLAG) {
+                if ($title->is_closed) {
                     $class = $class.'retired';
                 }
                 if ($class !== '') {
@@ -82,20 +82,20 @@
             ?>
             <tr <?=$class?>>
                 <?=$this->Form->hidden('titles['.$key.'][updateFlag]', ['id' => 'updateFlag-'.$key, 'value' => 'false'])?>
-                <?=$this->Form->hidden('titles['.$key.'][titleId]', ['value' => h($title->ID)])?>
-                <?=$this->Form->hidden('titles['.$key.'][lastUpdate]', ['value' => $this->Date->format($title->MODIFIED, 'YYYYMMddHHmmss')])?>
+                <?=$this->Form->hidden('titles['.$key.'][titleId]', ['value' => h($title->id)])?>
+                <?=$this->Form->hidden('titles['.$key.'][lastUpdate]', ['value' => $this->Date->format($title->modified, 'YYYYMMddHHmmss')])?>
                 <td class="left titleName">
                     <?=
                         $this->Form->text('titles['.$key.'][titleName]', [
                             'id' => 'titleName-'.$key,
-                            'value' => $title->NAME,
+                            'value' => $title->name,
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-titleName]', [
                             'id' => 'bean-titleName-'.$key,
-                            'value' => $title->NAME
+                            'value' => $title->name
                         ]);
                     ?>
                 </td>
@@ -103,14 +103,14 @@
                     <?=
                         $this->Form->text('titles['.$key.'][titleNameEn]', [
                             'id' => 'titleNameEn-'.$key,
-                            'value' => $title->NAME_ENGLISH,
+                            'value' => $title->name_english,
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-titleNameEn]', [
                             'id' => 'bean-titleNameEn-'.$key,
-                            'value' => $title->NAME_ENGLISH
+                            'value' => $title->name_english
                         ]);
                     ?>
                 </td>
@@ -119,26 +119,27 @@
                         $this->Form->text('titles['.$key.'][holding]', [
                             'id' => 'holding-'.$key,
                             'maxlength' => 3,
-                            'value' => h($title->HOLDING),
+                            'value' => h($title->holding),
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-holding]', [
                             'id' => 'bean-holding-'.$key,
-                            'value' => h($title->HOLDING)]
+                            'value' => h($title->holding)]
                         );
                     ?>
                 </td>
                 <td class="left winner">
                     <?php
-                        if (empty($title->title_retains)) {
+                        if (empty($title->arquisition_histories)) {
                             echo '';
                         } else {
-                            if ($title->GROUP_FLAG) {
-                                echo $title->title_retains[0]->WIN_GROUP_NAME;
+                            $arquision = $title->arquisition_histories[0];
+                            if ($title->is_team) {
+                                echo $arquision->win_group_name;
                             } else {
-                                echo $title->title_retains[0]->player->NAME.$title->title_retains[0]->rank->NAME;
+                                echo $arquision->player->name.$arquision->rank->name;
                             }
                         }
                     ?>
@@ -148,14 +149,14 @@
                         $this->Form->text('titles['.$key.'][order]', [
                             'id' => 'order-'.$key,
                             'maxlength' => 2,
-                            'value' => h($title->SORT_ORDER),
+                            'value' => h($title->sort_order),
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-order]', [
                             'id' => 'bean-order-'.$key,
-                            'value' => h($title->SORT_ORDER)]
+                            'value' => h($title->sort_order)]
                         );
                     ?>
                 </td>
@@ -163,14 +164,14 @@
                     <?=
                         $this->Form->checkbox('titles['.$key.'][groupFlag]', [
                             'id' => 'groupFlag-'.$key,
-                            'checked' => $title->GROUP_FLAG,
+                            'checked' => $title->is_team,
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-groupFlag]', [
                             'id' => 'bean-groupFlag-'.$key,
-                            'value' => var_export($title->GROUP_FLAG, TRUE)
+                            'value' => var_export($title->is_team, TRUE)
                         ]);
                     ?>
                 </td>
@@ -178,20 +179,20 @@
                     <?=
                         $this->Form->text('titles['.$key.'][htmlFileName]', [
                             'id' => 'htmlFileName-'.$key,
-                            'value' => h($title->HTML_FILE_NAME),
+                            'value' => h($title->html_file_name),
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-htmlFileName]', [
                             'id' => 'bean-htmlFileName-'.$key,
-                            'value' => h($title->HTML_FILE_NAME)
+                            'value' => h($title->html_file_name)
                         ]);
                     ?>
                 </td>
                 <td class="left htmlModifyDate">
                     <?php
-                        $htmlModifyDate = $this->Date->format($title->HTML_FILE_MODIFIED, 'YYYY/MM/dd');
+                        $htmlModifyDate = $this->Date->format($title->html_file_modified, 'YYYY/MM/dd');
                     ?>
                     <?=
                         $this->Form->text('titles['.$key.'][htmlModifyDate]', [
@@ -211,19 +212,19 @@
                     <?=
                         $this->Form->checkbox('titles['.$key.'][deleteFlag]', [
                             'id' => 'deleteFlag-'.$key,
-                            'checked' => $title->DELETE_FLAG,
+                            'checked' => $title->is_closed,
                             'class' => 'checkChange'
                         ]);
                     ?>
                     <?=
                         $this->Form->hidden('titles['.$key.'][bean-deleteFlag]', [
                             'id' => 'deleteFlag-'.$key,
-                            'value' => var_export($title->DELETE_FLAG, TRUE)
+                            'value' => var_export($title->is_closed, TRUE)
                         ]);
                     ?>
                 </td>
                 <td class="center openRetain">
-                    <?=$this->Html->link('開く', ['action' => 'detail/'.h($title->ID)], ['class' => 'colorbox'])?>
+                    <?=$this->Html->link('開く', ['action' => 'detail/'.h($title->id)], ['class' => 'colorbox'])?>
                 </td>
             </tr>
             <?php endforeach ?>

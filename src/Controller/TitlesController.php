@@ -16,7 +16,7 @@ use Psr\Log\LogLevel;
 class TitlesController extends AppController
 {
     // タイトル保持情報テーブル
-    private $TitleRetains = null;
+    private $ArquisitionHistories = null;
 
     // 所属国マスタテーブル
     private $Countries = null;
@@ -27,7 +27,7 @@ class TitlesController extends AppController
 	public function initialize()
     {
         parent::initialize();
-        $this->TitleRetains = TableRegistry::get('TitleRetains');
+        $this->ArquisitionHistories = TableRegistry::get('ArquisitionHistories');
         $this->Countries = TableRegistry::get('Countries');
     }
 
@@ -59,7 +59,7 @@ class TitlesController extends AppController
     {
         $this->__initSearch();
 
-        // リクエストから値を取得（なければセッションから取得）
+        // リクエストから値を取得
         $searchCountry = $this->request->data('searchCountry');
         $searchDelete = $this->request->data('searchDelete');
 
@@ -99,7 +99,7 @@ class TitlesController extends AppController
             $title = null;
             if (!empty($row['insertFlag']) && $row['insertFlag'] === 'true') {
                 $title = $this->Titles->newEntity();
-                $title->set('COUNTRY_ID', $countryId);
+                $title->setCountry($countryId);
             } else if ($row['updateFlag'] === 'true') {
                 $title = $this->Titles->get($row['titleId']);
             } else {
@@ -107,7 +107,7 @@ class TitlesController extends AppController
             }
 
             // POSTされた値を設定
-            $title->patchEntityWithArray($row);
+            $title->setFromArray($row);
 
             // バリデーションエラーの場合はそのまま返す
             $res = $this->Titles->validator()->errors($title->toArray());
@@ -167,17 +167,17 @@ class TitlesController extends AppController
 		$holding = $this->request->data('registHolding');
 
         // すでに存在するかどうかを確認
-		if ($this->TitleRetains->findByKey($titleId, $holding, true)) {
+		if ($this->ArquisitionHistories->findByKey($titleId, $holding, true)) {
             $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
 			return $this->detail($titleId);
 		}
 
         // エンティティを新規作成し、値を設定
-        $titleRetain = $this->TitleRetains->newEntity();
-        $titleRetain->patchEntity($this->request, $titleId, $holding);
+        $titleRetain = $this->ArquisitionHistories->newEntity();
+        $titleRetain->setFromRequest($this->request, $titleId, $holding);
 
         // バリデーションエラーの場合はそのまま返す
-        $res = $this->TitleRetains->validator()->errors($titleRetain->toArray());
+        $res = $this->ArquisitionHistories->validator()->errors($titleRetain->toArray());
         if ($res) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
             $this->Flash->error(__($this->_getErrorMessage($res)));
@@ -186,13 +186,12 @@ class TitlesController extends AppController
 
 		try {
 			// タイトル保持情報の保存
-			$this->TitleRetains->save($titleRetain);
+			$this->ArquisitionHistories->save($titleRetain);
             // 最新を登録する場合はタイトルマスタも書き換え
-            $this->log($titleRetain, LogLevel::INFO);
             $withMapping = $this->request->data('registWithMapping');
             if ($withMapping === 'true') {
                 $title = $this->Titles->get($titleId);
-                $title->set('HOLDING', $holding);
+                $title->holding = $holding;
                 $this->Titles->save($title);
             }
 			$this->Flash->info(__("タイトル保持情報を登録しました。"));
