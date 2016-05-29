@@ -9,7 +9,7 @@
 <?=$this->Form->create(null, [
     'id' => 'mainForm',
     'method' => 'post',
-    'action' => 'detail',
+    'url' => ['action' => 'detail'],
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',

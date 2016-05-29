@@ -1,7 +1,7 @@
 <?=$this->Form->create(null, [
     'id' => 'mainForm',
     'method' => 'post',
-    'action' => 'search',
+    'url' => ['action' => 'search'],
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',
@@ -16,7 +16,7 @@
                 <?=
                     $this->Form->input('searchCountry', [
                         'options' => $countries,
-                        'value' => h(empty($searchCountry) ? '' : $searchCountry),
+                        'value' => h($this->request->data('searchCountry')),
                         'class' => 'country'
                     ]);
                 ?>
@@ -29,7 +29,7 @@
                             'false' => '検索しない',
                             'true' => '検索する'
                         ],
-                        'value' => h(empty($searchDelete) ? 'false' : $searchDelete),
+                        'value' => h($this->request->data('searchDelete')),
                         'class' => 'retired'
                     ]);
                 ?>

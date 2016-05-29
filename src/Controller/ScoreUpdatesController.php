@@ -102,7 +102,7 @@ class ScoreUpdatesController extends AppController
 			$this->Flash->info($count.'件の成績更新日情報を更新しました。');
 		} catch (PDOException $e) {
 			$this->log('成績更新日情報更新エラー：'.$e->getMessage(), LogLevel::ERROR);
-			$this->isrollback = true;
+            $this->_markToRollback();
 			$this->Flash->error('成績更新日情報の更新に失敗しました…。');
 		} finally {
 			// indexの処理を行う

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Cake\Datasource\ConnectionManager;
 use PDOException;
 use Cake\Event\Event;
 use Psr\Log\LogLevel;
@@ -56,6 +55,7 @@ class NativeQueryController extends AppController
         $queryArray = explode(';', $updateText);
         $counter = 0;
 
+        $conn = $this->_getConnection();
         try {
             foreach ($queryArray as $query) {
                 if (empty($query)) {
@@ -63,8 +63,7 @@ class NativeQueryController extends AppController
                 }
 
                 // 更新
-                $stmt = ConnectionManager::get('default')->execute($query);
-//                    $this->log('クエリ：'.$query.' 件数：'.count($stmt), LogLevel::INFO);
+                $stmt = $conn->execute($query);
                 if (count($stmt) !== 1) {
                     throw new PDOException('レコードの更新エラー');
                 }

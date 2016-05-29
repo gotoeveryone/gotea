@@ -60,13 +60,13 @@ class TitlesController extends AppController
         $this->__initSearch();
 
         // リクエストから値を取得（なければセッションから取得）
-        $searchCountry = $this->_getParam('searchCountry');
-        $searchDelete = $this->_getParam('searchDelete');
+        $searchCountry = $this->request->data('searchCountry');
+        $searchDelete = $this->request->data('searchDelete');
 
         // タイトル一覧を取得
         $titles = $this->Titles->findTitlesByCountry($searchCountry, $searchDelete);
 
-        if (count($titles) === 0) {
+        if (!count($titles)) {
             $this->Flash->info('検索結果が0件でした。');
         }
 
@@ -74,10 +74,6 @@ class TitlesController extends AppController
 
         // 検索フラグを設定
 		$this->set('searchFlag', true);
-
-        // 値を格納
-        $this->_setParam('searchCountry', $searchCountry);
-        $this->_setParam('searchDelete', $searchDelete);
 
         // indexページへ描画
         return $this->render('index');
@@ -136,7 +132,7 @@ class TitlesController extends AppController
             $this->Flash->info(__("{$count}件のタイトルマスタを更新しました。"));
 		} catch (PDOException $e) {
             $this->log(__("タイトルマスタ登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isrollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("タイトルマスタの更新に失敗しました…。"));
 		} finally {
 			// indexの処理を行う
@@ -202,7 +198,7 @@ class TitlesController extends AppController
 			$this->Flash->info(__("タイトル保持情報を登録しました。"));
 		} catch (PDOException $e) {
             $this->log(__("タイトル保持情報登録エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isRollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("タイトル保持情報の登録に失敗しました…。"));
 		} finally {
 			// indexの処理を行う

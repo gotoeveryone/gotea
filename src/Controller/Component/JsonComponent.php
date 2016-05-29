@@ -9,8 +9,6 @@ class JsonComponent extends Component {
 
     public $controller = null;
     public $session = null;
-    // WebAPIのURL
-    private $apiUrl = "https://www.kazukisv.com/web-resource/";
 
     public function initialize(array $config)
     {
@@ -30,7 +28,7 @@ class JsonComponent extends Component {
      */
     public function getPlayer($name)
     {
-        return $this->getJson($this->apiUrl."players?name={$name}");
+        return $this->getJson($this->__getApiUrl()."players?name={$name}");
     }
 
     /**
@@ -40,7 +38,7 @@ class JsonComponent extends Component {
      */
     public function getNews()
     {
-        return $this->getJson($this->apiUrl."titles/news");
+        return $this->getJson($this->__getApiUrl()."titles/news");
     }
 
     /**
@@ -54,7 +52,7 @@ class JsonComponent extends Component {
     public function getRanking($country, $year, $limit, $isJp = false)
     {
         $encode = urlencode($country);
-        $get = $this->apiUrl."players/ranking?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
+        $get = $this->__getApiUrl()."players/ranking?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
         return $this->getJson($get);
     }
 
@@ -76,5 +74,15 @@ class JsonComponent extends Component {
         }
         $this->response->statusCode($response->statusCode());
         return $json;
+    }
+
+    /**
+     * APIサーバのURLを取得します。
+     * 
+     * @return type
+     */
+    private function __getApiUrl()
+    {
+        return 'https://'.getenv('SERVER_NAME')."/web-resource/";
     }
 }

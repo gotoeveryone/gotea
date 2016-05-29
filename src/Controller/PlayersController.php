@@ -65,14 +65,14 @@ class PlayersController extends AppController
         $this->__initSearch();
 
         // リクエストから値を取得（なければセッションから取得）
-        $countryCode = $this->_getParam('searchCountry');
-        $sex = $this->_getParam('searchSex');
-        $rank = $this->_getParam('searchRank');
-        $playerName = $this->_getParam('searchPlayerName');
-        $playerNameEn = $this->_getParam('searchPlayerNameEn');
-        $enrollmentFrom = $this->_getParam('searchEnrollmentFrom');
-        $enrollmentTo = $this->_getParam('searchEnrollmentTo');
-        $retire = $this->_getParam('searchRetire');
+        $countryCode = $this->request->data('searchCountry');
+        $sex = $this->request->data('searchSex');
+        $rank = $this->request->data('searchRank');
+        $playerName = $this->request->data('searchPlayerName');
+        $playerNameEn = $this->request->data('searchPlayerNameEn');
+        $enrollmentFrom = $this->request->data('searchEnrollmentFrom');
+        $enrollmentTo = $this->request->data('searchEnrollmentTo');
+        $retire = $this->request->data('searchRetire');
 
         // 該当する棋士情報一覧の件数を取得
         $count = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
@@ -81,10 +81,8 @@ class PlayersController extends AppController
         // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
         if (!$count) {
             $this->Flash->warn(__("検索結果が0件でした。"));
-            $players = [];
         } else if ($count > 1000) {
             $this->Flash->warn(__("検索結果が1000件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
-            $players = [];
         } else {
             // 該当する棋士情報一覧を取得
             $players = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
@@ -92,17 +90,7 @@ class PlayersController extends AppController
         }
 
         // 結果をセット
-        $this->set('players', $players);
-
-        // 値を格納
-        $this->_setParam('searchCountry', $countryCode);
-        $this->_setParam('searchRank', $rank);
-        $this->_setParam('searchSex', $sex);
-        $this->_setParam('searchPlayerName', $playerName);
-        $this->_setParam('searchPlayerNameEn', $playerNameEn);
-        $this->_setParam('searchEnrollmentFrom', $enrollmentFrom);
-        $this->_setParam('searchEnrollmentTo', $enrollmentTo);
-        $this->_setParam('searchRetire', $retire);
+        $this->set('players', (isset($players) ? $players : []));
 
         // 初期表示処理へ
         return $this->render('index');
@@ -195,7 +183,7 @@ class PlayersController extends AppController
 
 		} catch (PDOException $e) {
             $this->log(__("棋士情報登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isRollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("棋士情報の{$message}に失敗しました…。"));
 		} finally {
 			// 所属国IDを設定
@@ -234,7 +222,7 @@ class PlayersController extends AppController
 			$this->Flash->info(__("{$playerScore->TARGET_YEAR}年度の棋士成績情報を更新しました。"));
 		} catch (PDOException $e) {
 			$this->log(__("棋士成績情報更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isRollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("{$playerScore->TARGET_YEAR}年度の棋士成績情報の更新に失敗しました…。"));
 		} finally {
             // 詳細情報表示処理へ

@@ -1,7 +1,7 @@
 <section class="center">
 	<?= $this->Form->create(null, [
         'method' => 'post',
-        'action' => 'login',
+        'url' => ['action' => 'login'],
         'templates' => [
             'inputContainer' => '{{content}}',
             'textFormGroup' => '{{input}}',
