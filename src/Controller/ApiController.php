@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Controller\Exception\MissingActionException;
-use Cake\Event\Event;
 
 /**
  * アプリの共通コントローラ
@@ -22,18 +21,10 @@ class ApiController extends Controller
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Json');
-    }
 
-    /**
-     * 描画前処理
-     * 
-     * @param Event $event
-     */
-    public function beforeRender(Event $event)
-    {
+        // 当アクションのレスポンスはすべてJSON形式
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('application/json');
-        $this->set('_serialize', true);
     }
 
     /**
@@ -43,11 +34,7 @@ class ApiController extends Controller
      */
     public function players($name)
     {
-        $json = $this->Json->getPlayer($name);
-        $this->set([
-            'response' => $json,
-            '_serialize' => ['response']
-        ]);
+        $this->__renderJson($this->Json->getPlayer($name));
     }
 
     /**
@@ -62,10 +49,7 @@ class ApiController extends Controller
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
-        $this->set([
-            'response' => $json,
-            '_serialize' => ['response']
-        ]);
+        $this->__renderJson($json);
     }
 
     /**
@@ -86,9 +70,19 @@ class ApiController extends Controller
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
+        $this->__renderJson($json);
+    }
+
+    /**
+     * レスポンスにJSONを設定します。
+     * 
+     * @param type $json
+     */
+    private function __renderJson($json)
+    {
         $this->set([
             'response' => $json,
-            '_serialize' => ['response']
+            '_serialize' => true
         ]);
     }
 }

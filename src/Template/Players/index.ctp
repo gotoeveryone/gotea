@@ -2,7 +2,7 @@
 <?=$this->Form->create(null, [
     'id' => 'mainForm',
     'method' => 'post',
-    'action' => 'search',
+    'url' => ['action' => 'search'],
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',
@@ -20,7 +20,7 @@
                     $this->Form->input('searchCountry', [
                         'id' => 'searchCountry',
                         'options' => $countries,
-                        'value' => h(empty($searchCountry) ? '' : $searchCountry),
+                        'value' => h($this->request->data('searchCountry')),
                         'class' => 'country',
                         'empty' => true
                     ]);
@@ -32,7 +32,7 @@
                     $this->Form->input('searchRank', [
                         'id' => 'searchRank',
                         'options' => $ranks,
-                        'value' => h(empty($searchRank) ? '' : $searchRank),
+                        'value' => h($this->request->data('searchRank')),
                         'class' => 'rank',
                         'empty' => true
                     ]);
@@ -46,7 +46,7 @@
                             '男性' => '男性',
                             '女性' => '女性'
                         ],
-                        'value' => h(empty($searchSex) ? '' : $searchSex),
+                        'value' => h($this->request->data('searchSex')),
                         'class' => 'sex',
                         'empty' => true
                     ]);
@@ -60,7 +60,7 @@
                             'false' => '検索しない',
                             'true' => '検索する'
                         ],
-                        'value' => h(empty($searchRetire) ? 'false' : $searchRetire),
+                        'value' => h($this->request->data('searchRetire')),
                         'class' => 'retired'
                     ]);
                 ?>
@@ -71,7 +71,7 @@
             <td colspan="2">
                 <?=
                     $this->Form->text('searchPlayerName', [
-                        'value' => h(empty($searchPlayerName) ? '' : $searchPlayerName),
+                        'value' => h($this->request->data('searchPlayerName')),
                         'class' => 'playerName'
                     ]);
                 ?>
@@ -80,7 +80,7 @@
             <td colspan="2">
                 <?=
                     $this->Form->text('searchPlayerNameEn', [
-                        'value' => h(empty($searchPlayerNameEn) ? '' : $searchPlayerNameEn),
+                        'value' => h($this->request->data('searchPlayerNameEn')),
                         'class' => 'playerName'
                     ]);
                 ?>
@@ -89,7 +89,7 @@
             <td>
                 <?=
                     $this->Form->text('searchEnrollmentFrom', [
-                        'value' => h(empty($searchEnrollmentFrom) ? '' : $searchEnrollmentFrom),
+                        'value' => h($this->request->data('searchEnrollmentFrom')),
                         'class' => 'from imeDisabled',
                         'maxlength' => 4
                     ]);
@@ -97,7 +97,7 @@
                 ～
                 <?=
                     $this->Form->text('searchEnrollmentTo', [
-                        'value' => h(empty($searchEnrollmentTo) ? '' : $searchEnrollmentTo),
+                        'value' => h($this->request->data('searchEnrollmentTo')),
                         'class' => 'to imeDisabled',
                         'maxlength' => 4
                     ]);
