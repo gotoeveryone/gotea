@@ -131,10 +131,10 @@ class PlayersTable extends AppTable
         if ($playerNameEn) {
             $query->where(['Players.NAME_ENGLISH LIKE' => '%'.$playerNameEn.'%']);
         }
-        if ($enrollmentFrom) {
+        if (is_numeric($enrollmentFrom)) {
             $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) >=' => $enrollmentFrom]);
         }
-        if ($enrollmentTo) {
+        if (is_numeric($enrollmentTo)) {
             $query->where(['SUBSTRING(Players.ENROLLMENT, 1, 4) <=' => $enrollmentTo]);
         }
         if ($retire && $retire === 'false') {
