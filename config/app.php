@@ -9,7 +9,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => (filter_input(INPUT_SERVER, 'CAKE_ENV') !== 'production'),
+    'debug' => (getenv('CAKE_ENV') !== 'production'),
 
     /**
      * Configure basic information about the application.
@@ -217,7 +217,7 @@ return [
             //'port' => 'nonstandard_port_number',
             'username' => 'goute',
             'password' => 'kazuki11',
-            'database' => 'IGOKISEN',
+            'database' => 'igo',
             'encoding' => 'utf8',
             'timezone' => 'Asia/Tokyo',
             'cacheMetadata' => true,

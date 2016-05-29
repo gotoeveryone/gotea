@@ -3,20 +3,10 @@
 namespace App\Model\Table;
 
 /**
- * 所属国マスタ
+ * 国
  */
 class CountriesTable extends AppTable
 {
-    /**
-	 * 初期設定
-	 */
-    public function initialize(array $config)
-    {
-        $this->table('M_COUNTRY');
-        $this->primaryKey('ID');
-//        $this->entityClass('App\Model\Entity\Country');
-    }
-
     /**
      * 所属国情報を取得します。
      * 
@@ -25,10 +15,8 @@ class CountriesTable extends AppTable
     public function findCountryHasFileToArray()
     {
 		return $this->find('list', [
-            'keyField' => 'ID',
-            'valueField' => 'NAME'
-        ])->where([
-            'Countries.OUTPUT_FILE_NAME IS NOT' => null
+            'keyField' => 'id',
+            'valueField' => 'name'
         ])->toArray();
     }
 
@@ -40,10 +28,10 @@ class CountriesTable extends AppTable
     public function findCountryBelongToArray()
     {
 		return $this->find('list', [
-            'keyField' => 'ID',
-            'valueField' => 'NAME'
+            'keyField' => 'id',
+            'valueField' => 'name'
         ])->where([
-            'BELONG_FLAG ' => 1
+            'has_title' => true
         ])->toArray();
     }
 
@@ -57,11 +45,11 @@ class CountriesTable extends AppTable
         return $this->find('list', [
             'keyField' => 'keyField',
             'valueField' => 'valueField'
-        ])->where(function ($exp, $q) {
-            return $exp->isNotNull('OUTPUT_FILE_NAME');
-        })->order(['Countries.ID' => 'ASC'])->select([
-            'keyField' => 'Countries.NAME',
-            'valueField' => 'CASE Countries.WORLD_FLAG WHEN 1 THEN CONCAT(Countries.NAME, \'棋戦\') ELSE CONCAT(Countries.NAME, \'棋士\') END'
+//        ])->where(function ($exp, $q) {
+//            return $exp->isNotNull('OUTPUT_FILE_NAME');
+        ])->order(['Countries.id' => 'ASC'])->select([
+            'keyField' => 'Countries.name',
+            'valueField' => 'CASE Countries.code_alpha_2 WHEN null THEN CONCAT(Countries.name, \'棋戦\') ELSE CONCAT(Countries.name, \'棋士\') END'
         ])->toArray();
     }
 }

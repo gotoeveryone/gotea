@@ -2,44 +2,12 @@
 
 namespace App\Model\Entity;
 
-use Cake\Auth\DefaultPasswordHasher;
-
 /**
- * ユーザ情報
+ * ユーザエンティティ
  */
 class User extends AppEntity
 {
-    // ユーザID
-    public function getUserId() {
-        return $this->get('USER_ID');
-    }
-    public function setUserId($userId) {
-        $this->set('USER_ID', $userId);
-    }
-
-    // パスワード
-    public function getPassword() {
-        return $this->get('PASSWORD');
-    }
     public function setPassword($password) {
-        $this->PASSWORD = $password;
-        // $this->set('PASSWORD', (new DefaultPasswordHasher)->hash($password));
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
-
-    // ユーザ名
-    public function getUserName() {
-        return $this->USER_NAME;
-    }
-
-    // 最終ログイン日時
-    public function getLastLoginDatetime() {
-        return $this->LAST_LOGIN_DATETIME;
-    }
-    public function setLastLoginDatetime($lastLoginDatetime) {
-        $this->LAST_LOGIN_DATETIME = $lastLoginDatetime;
-    }
-    // protected function _setPassword($password)
-    // {
-    //     return (new DefaultPasswordHasher)->hash($password);
-    // }
 }

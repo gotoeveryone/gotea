@@ -6,7 +6,7 @@ use Cake\Network\Request;
 use Cake\ORM\TableRegistry;
 
 /**
- * 棋士成績情報エンティティ
+ * 棋士成績エンティティ
  */
 class PlayerScore extends AppEntity
 {

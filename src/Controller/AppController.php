@@ -17,7 +17,7 @@ class AppController extends Controller
     private $conn = null;
 
     // ロールバックフラグ
-    private $isRollback = false;
+    protected $isRollback = false;
 
     // タイトル
     private $title = '';
@@ -53,8 +53,8 @@ class AppController extends Controller
                 ]
         ]);
         $this->loadComponent('Security', [
-                'csrfCheck' => false,
-                'validatePost' => false
+            'csrfCheck' => false,
+            'validatePost' => false
         ]);
     }
 
@@ -88,11 +88,11 @@ class AppController extends Controller
         }
     }
 
-	/**
-	 * ビュー描画前処理
+    /**
+     * ビュー描画前処理
      * 
      * @param Event $event
-	 */
+     */
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);

@@ -3,7 +3,7 @@
 namespace App\Model\Entity;
 
 /**
- * タイトルマスタエンティティ
+ * タイトルエンティティ
  */
 class Title extends AppEntity
 {

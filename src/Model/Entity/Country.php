@@ -3,7 +3,7 @@
 namespace App\Model\Entity;
 
 /**
- * 所属国マスタエンティティ
+ * 国エンティティ
  */
 class Country extends AppEntity
 {

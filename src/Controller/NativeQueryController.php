@@ -5,6 +5,7 @@ namespace App\Controller;
 use Cake\Datasource\ConnectionManager;
 use PDOException;
 use Cake\Event\Event;
+use Psr\Log\LogLevel;
 
 /**
  * 各種情報クエリ更新用コントローラ
@@ -19,8 +20,19 @@ class NativeQueryController extends AppController
 	 */
     public function beforeRender(Event $event)
     {
+        $this->log('beforeRender', LogLevel::DEBUG);
         $this->_setTitle('各種情報クエリ更新');
         parent::beforeRender($event);
+    }
+
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->log('beforeFilter', LogLevel::DEBUG);
+    }
+
+    public function afterFilter(Event $event) {
+        parent::afterFilter($event);
+        $this->log('afterFilter', LogLevel::DEBUG);
     }
 
 	/**
@@ -28,6 +40,7 @@ class NativeQueryController extends AppController
 	 */
     public function index()
     {
+        $this->log("rollback -> {$this->isRollback}", LogLevel::DEBUG);
         return $this->render('index');
     }
 
@@ -60,7 +73,7 @@ class NativeQueryController extends AppController
             $this->Flash->info($counter.'件のレコードを更新しました。');
         } catch (PDOException $e) {
             $this->log('クエリ実行エラー：'.$e->getMessage());
-            $this->isRollback = true;
+            $this->_markToRollback();
             $this->Flash->error('レコードの更新に失敗しました…。');
         } finally {
             return $this->index();

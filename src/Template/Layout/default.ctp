@@ -89,7 +89,7 @@
                 <?=
                     $this->Html->link('成績更新日編集',
                         [
-                            'controller' => 'scoreUpdates',
+                            'controller' => 'updatedPoints',
                             'action' => 'index'
                         ],
                         [

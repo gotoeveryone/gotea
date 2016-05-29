@@ -5,7 +5,7 @@ namespace App\Model\Table;
 use Cake\Validation\Validator;
 
 /**
- * タイトルマスタ
+ * タイトル
  */
 class TitlesTable extends AppTable {
 
@@ -16,11 +16,8 @@ class TitlesTable extends AppTable {
 	 */
     public function initialize(array $config)
     {
-        $this->table('M_TITLE');
-        $this->primaryKey('ID');
         // タイトル保持情報
         $this->hasMany('TitleRetains', [
-            'foreignKey' => 'TITLE_ID',
             'order' => [
                 'TitleRetains.TITLE_ID' => 'ASC',
                 'TitleRetains.HOLDING' => 'DESC'

@@ -7,7 +7,7 @@ use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
 
 /**
- * 棋士マスタエンティティ
+ * 棋士エンティティ
  */
 class Player extends AppEntity
 {

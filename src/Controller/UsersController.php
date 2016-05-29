@@ -71,12 +71,11 @@ class UsersController extends AppController {
 
         // ユーザを1件取得
         $user = $this->Users->find()->where([
-            'Users.USER_ID' => $this->request->data('username'),
-            'Users.PASSWORD' => $this->request->data('password')
+            'account' => $this->request->data('username')
         ])->all()->first();
 
         // ユーザが取得出来なければログインエラー
-        if (!$user) {
+        if (!$user || !password_verify($this->request->data('password'), $user->password)) {
             $this->log(__("ログイン失敗！"), LogLevel::WARNING);
             $this->Flash->error(__("ユーザまたはパスワードが異なります。"));
             return $this->index();
@@ -84,7 +83,7 @@ class UsersController extends AppController {
 
         try {
             // 最終ログイン日時を更新してデータを保存
-            $user->LAST_LOGIN_DATETIME = Time::now();
+            $user->last_logged = Time::now();
             $this->Users->save($user);
         } catch (PDOException $e) {
             $this->isRollback = true;
@@ -95,7 +94,7 @@ class UsersController extends AppController {
 
         // ユーザ情報を設定
         $this->__setUser($user);
-        $this->log("ユーザ：{$user->USER_NAME}がログインしました。", LogLevel::INFO);
+        $this->log("ユーザ：{$user->name}がログインしました。", LogLevel::INFO);
 
         // リダイレクト
         return $this->redirect($this->Auth->redirectUrl());
@@ -119,11 +118,11 @@ class UsersController extends AppController {
     {
         // ログイン情報を設定
         $this->Auth->setUser([
-            'userid' => $user->USER_ID,
-            'username' => $user->USER_NAME,
-            'admin' => $user->ADMIN_FLAG,
-            'created' => $user->CREATED,
-            'modified' => $user->MODIFIED
+            'userid' => $user->account,
+            'username' => $user->name,
+            'role' => $user->role,
+            'created' => $user->created,
+            'modified' => $user->modified
         ]);
     }
 
