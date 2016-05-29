@@ -633,15 +633,17 @@ table.scoreUpdatesHeader {
 
 section#scoreUpdates {
 	width: 100%;
-	overflow-y: auto;
-	height: calc(100% - 45px);
 	margin-bottom: 3px;
-}
-
-table.scoreUpdates {
-	width: 100%;
 	border: 1px solid #000000;
 	background-color: #ffffff;
+}
+
+section#scoreUpdates section.detail {
+    padding: 0px 0px 5px 0px;
+}
+
+section#scoreUpdates section.detail span {
+    margin: 0px 20px;
 }
 
 /* -------------------------------------------

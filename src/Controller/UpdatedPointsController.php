@@ -40,12 +40,11 @@ class UpdatedPointsController extends AppController
     {
         // リクエストから値を取得（なければセッションから取得）
         $searchYear = $this->_getParam('searchYear');
-//        var_dump($this->request->session()->read('Auth'));
 
         // 成績更新日情報の取得
-        $scoreUpdates = $this->UpdatedPoints->findScoreUpdateHasYear($searchYear);
+        $updatedPoints = $this->UpdatedPoints->findScoreUpdateHasYear($searchYear);
 
-        $this->set('scoreUpdates', $scoreUpdates);
+        $this->set('updatedPoints', $updatedPoints);
 
         // 検索フラグを設定
 		$this->set('searchFlag', true);
@@ -74,7 +73,7 @@ class UpdatedPointsController extends AppController
 
             // データを取得し、POSTされた値を設定
             $title = $this->UpdatedPoints->get($row['scoreId']);
-            $title->set('SCORE_MODIFIED', $row['scoreUpdateDate']);
+            $title->score_updated = $row['scoreUpdateDate'];
 
             // バリデーションエラーの場合はそのまま返す
             $res = $this->UpdatedPoints->validator()->errors($title->toArray());

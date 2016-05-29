@@ -1,7 +1,7 @@
 <?=$this->Form->create(null, [
     'id' => 'mainForm',
     'method' => 'post',
-    'action' => 'search',
+    'url' => ['action' => 'search'],
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',
@@ -38,60 +38,51 @@
         </tr>
     </table>
 
+    <?php if (!empty($updatedPoints)) : ?>
     <section id="scoreUpdates">
-        <table class="scoreUpdates">
-            <?php if (!empty($scoreUpdates) && count($scoreUpdates) > 0) { ?>
-            <tbody>
-            <?php foreach ($scoreUpdates as $key => $scoreUpdate) : ?>
-                <tr class="headerRow2">
-                    <td colspan="4">
-                        <?=h($scoreUpdate->country->NAME)?>
-                        <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($scoreUpdate->ID)])?>
-                    </td>
-                </tr>
-                <tr class="row">
-                    <?=
-                        $this->Form->hidden('scoreUpdates['.$key.'][updateFlag]', [
-                            'id' => 'updateFlag-'.$key,
-                            'value' => 'false'
-                        ])
-                    ?>
-                    <?=$this->Form->hidden('scoreUpdates['.$key.'][scoreId]', ['value' => h($scoreUpdate->ID)])?>
-                    <td class="right detailColumn1">
-                        成績更新日：
-                    </td>
-                    <td class="detailColumn2">
-                        <?=
-                            $this->Form->text('scoreUpdates['.$key.'][scoreUpdateDate]', [
-                                'id' => 'scoreUpdateDate-'.$key,
-                                'value' => $this->Date->format($scoreUpdate->SCORE_MODIFIED, 'YYYY/MM/dd'),
-                                'readonly' >= true,
-                                'class' => 'checkChange datepicker'
-                            ]);
-                        ?>
-                        <?=
-                            $this->Form->hidden('scoreUpdates['.$key.'][bean-scoreUpdateDate]', [
-                                'id' => 'bean-scoreUpdateDate-'.$key,
-                                'value' => $this->Date->format($scoreUpdate->SCORE_MODIFIED, 'YYYY/MM/dd')
-                            ])
-                        ?>
-                    </td>
-                    <td class="right detailColumn1">
-                        更新日時：
-                    </td>
-                    <td class="detailColumn2">
-                        <?=$this->Date->formatToDateTime($scoreUpdate->MODIFIED)?>
-                        <?=
-                            $this->Form->hidden('scoreUpdates['.$key.'][modified]', [
-                                'value' => $this->Date->format($scoreUpdate->MODIFIED, 'YYYYMMddHHiiss')
-                            ])
-                        ?>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-            </tbody>
-            <?php } ?>
-        </table>
+        <?php foreach ($updatedPoints as $key => $point) : ?>
+            <section class="headerRow">
+                <?=h($point->country->name)?>
+            </section>
+            <section class="detail">
+                <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($point->id)])?>
+                <?=
+                    $this->Form->hidden('scoreUpdates['.$key.'][updateFlag]', [
+                        'id' => 'updateFlag-'.$key,
+                        'value' => 'false'
+                    ])
+                ?>
+                <span>
+                <?=$this->Form->hidden('scoreUpdates['.$key.'][scoreId]', ['value' => h($point->id)])?>
+                成績更新日：
+                <?=
+                    $this->Form->text('scoreUpdates['.$key.'][scoreUpdateDate]', [
+                        'id' => 'scoreUpdateDate-'.$key,
+                        'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd'),
+                        'readonly' >= true,
+                        'class' => 'checkChange datepicker'
+                    ]);
+                ?>
+                </span>
+                <span>
+                <?=
+                    $this->Form->hidden('scoreUpdates['.$key.'][bean-scoreUpdateDate]', [
+                        'id' => 'bean-scoreUpdateDate-'.$key,
+                        'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
+                    ])
+                ?>
+                更新日時：
+                <?=$this->Date->formatToDateTime($point->modified)?>
+                <?=
+                    $this->Form->hidden('scoreUpdates['.$key.'][modified]', [
+                        'value' => $this->Date->format($point->modified, 'YYYYMMddHHiiss')
+                    ])
+                ?>
+                </span>
+            </section>
+        <?php endforeach ?>
+    </section>
+    <?php endif ?>
     </section>
 <?=$this->Form->end()?>
 <script type="text/javascript">
@@ -100,14 +91,14 @@
 
         // 登録・更新ボタン押下時
         $('#save').click(function() {
-            var tbody = $('table.scoreUpdates tbody');
-            if (!tbody.find('input[type=text]').hasClass('red')) {
+            var section = $('section#scoreUpdates');
+            if (!section.find('input[type=text]').hasClass('red')) {
                 // 変更対象がないので更新しない
                 var dialog = $("#dialog");
                 dialog.html('変更された項目がありません！');
                 dialog.click();
             } else {
-                var rows = tbody.find('tr.row');
+                var rows = section.find('section.detail');
                 var resultSize = rows.length;
                 for (var i = 0; i < resultSize; i++) {
                     if (rows.eq(i).find('input').hasClass('red')) {
