@@ -136,7 +136,7 @@ class TitlesController extends AppController
             $this->Flash->info(__("{$count}件のタイトルマスタを更新しました。"));
 		} catch (PDOException $e) {
             $this->log(__("タイトルマスタ登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isrollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("タイトルマスタの更新に失敗しました…。"));
 		} finally {
 			// indexの処理を行う
@@ -202,7 +202,7 @@ class TitlesController extends AppController
 			$this->Flash->info(__("タイトル保持情報を登録しました。"));
 		} catch (PDOException $e) {
             $this->log(__("タイトル保持情報登録エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isRollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("タイトル保持情報の登録に失敗しました…。"));
 		} finally {
 			// indexの処理を行う

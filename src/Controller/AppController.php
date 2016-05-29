@@ -29,16 +29,6 @@ class AppController extends Controller
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
-                // 'authorize' => ['Controller'],
-	            // 'authenticate' => [
-	            //     'Form' => [ // 認証の種類を指定。Form,Basic,Digestが使える。デフォルトはForm
-	            //         // 'userModel' => 'Users',
-	            //         'fields' => [ // ユーザー名とパスワードに使うカラムの指定。省略した場合はusernameとpasswordになる
-	            //             'username' => 'email', // ユーザー名のカラムを指定
-	            //             'password' => 'password' //パスワードに使うカラムを指定
-	            //         ]
-	            //     ]
-	            // ],
                 'loginAction' => [
                     'controller' => 'users',
                     'action' => 'index'
@@ -51,10 +41,6 @@ class AppController extends Controller
                     'controller' => 'users',
                     'action' => 'index'
                 ]
-        ]);
-        $this->loadComponent('Security', [
-                'csrfCheck' => false,
-                'validatePost' => false
         ]);
     }
 
@@ -81,11 +67,7 @@ class AppController extends Controller
 
         // ダイアログ表示判定
         $dialogFlag = $this->request->data('dialogFlag');
-        if ($dialogFlag === 'true') {
-            $this->set('dialogFlag', true);
-        } else {
-            $this->set('dialogFlag', false);
-        }
+        $this->set('dialogFlag', ($dialogFlag === 'true'));
     }
 
 	/**
@@ -134,7 +116,25 @@ class AppController extends Controller
     }
 
     /**
-     * エラーメッセージを取得
+     * ロールバックをマークします。
+     */
+    protected function _markToRollback()
+    {
+        $this->isRollback = true;
+    }
+
+    /**
+     * コネクションを取得します。
+     * 
+     * @return \Cake\Datasource\ConnectionInterface A connection object.
+     */
+    protected function _getConnection()
+    {
+        return $this->conn;
+    }
+
+    /**
+     * エラーメッセージを取得します。
      * 
      * @param array $errors
      * @return string エラーメッセージ
@@ -183,7 +183,7 @@ class AppController extends Controller
      *
      * @param type $title
      */
-    protected function _setTitle($title = null)
+    protected function _setTitle($title)
     {
         $this->title = $title;
     }

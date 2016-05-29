@@ -87,8 +87,8 @@ class UsersController extends AppController {
             $user->LAST_LOGIN_DATETIME = Time::now();
             $this->Users->save($user);
         } catch (PDOException $e) {
-            $this->isRollback = true;
             $this->log(__("最終ログイン日時更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
+            $this->_markToRollback();
             $this->Flash->error(__("データの更新エラーが発生しました。"));
             return $this->index();
         }

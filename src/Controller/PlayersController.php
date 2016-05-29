@@ -195,7 +195,7 @@ class PlayersController extends AppController
 
 		} catch (PDOException $e) {
             $this->log(__("棋士情報登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isRollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("棋士情報の{$message}に失敗しました…。"));
 		} finally {
 			// 所属国IDを設定
@@ -234,7 +234,7 @@ class PlayersController extends AppController
 			$this->Flash->info(__("{$playerScore->TARGET_YEAR}年度の棋士成績情報を更新しました。"));
 		} catch (PDOException $e) {
 			$this->log(__("棋士成績情報更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->isRollback = true;
+            $this->_markToRollback();
 			$this->Flash->error(__("{$playerScore->TARGET_YEAR}年度の棋士成績情報の更新に失敗しました…。"));
 		} finally {
             // 詳細情報表示処理へ
