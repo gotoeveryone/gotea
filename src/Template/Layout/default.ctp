@@ -40,7 +40,7 @@
         <!-- 見出し -->
         <?php if (!empty($cakeDescription)) : ?>
             <section id="title" class="center">
-                <h1><?='棋士情報管理システム - '.$cakeDescription.'画面'?></h1>
+                <h1><?="棋士情報管理システム - {$cakeDescription}画面"?></h1>
                 <hr />
             </section>
         <?php endif ?>
@@ -97,23 +97,12 @@
                         ]
                     );
                 ?>
+                <?php if ($admin) : ?>
                 <?=
                     $this->Html->link('各種情報クエリ更新',
                         [
                             'controller' => 'nativeQuery',
                             'action' => 'index'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
-                ?>
-                <?php if ($admin) : ?>
-                <?=
-                    $this->Html->link('キャッシュクリア',
-                        [
-                            'controller' => 'menu',
-                            'action' => 'clear'
                         ],
                         [
                             'class' => 'button menu'

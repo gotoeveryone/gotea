@@ -160,7 +160,6 @@ class AppController extends Controller
     protected function _getParam($name = null)
     {
         $session = $this->request->session();
-//        $this->log($session->read($name), LogLevel::INFO);
         $request_param = $this->request->data($name);
         return $request_param !== null ? $request_param : $session->read($name);
     }
