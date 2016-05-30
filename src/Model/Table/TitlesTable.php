@@ -17,10 +17,10 @@ class TitlesTable extends AppTable {
     public function initialize(array $config)
     {
         // タイトル保持情報
-        $this->hasMany('ArquisitionHistories', [
+        $this->hasMany('RetentionHistories', [
             'order' => [
                 'id' => 'ASC',
-                'ArquisitionHistories.holding' => 'DESC'
+                'RetentionHistories.holding' => 'DESC'
             ]
         ]);
         // 所属国マスタ
@@ -61,12 +61,12 @@ class TitlesTable extends AppTable {
     {
         $query = $this->find()->contain([
             'Countries',
-            'ArquisitionHistories',
-            'ArquisitionHistories.Titles' => function ($q) {
-                return $q->where(['ArquisitionHistories.holding = Titles.holding']);
+            'RetentionHistories',
+            'RetentionHistories.Titles' => function ($q) {
+                return $q->where(['RetentionHistories.holding = Titles.holding']);
             },
-            'ArquisitionHistories.Players',
-            'ArquisitionHistories.Ranks'
+            'RetentionHistories.Players',
+            'RetentionHistories.Ranks'
         ])->where([
             'Countries.id' => $countryId
         ]);
@@ -90,12 +90,12 @@ class TitlesTable extends AppTable {
     {
 		return $this->find()->contain([
             'Countries',
-            'ArquisitionHistories' => function ($q) {
-                return $q->order(['ArquisitionHistories.target_year' => 'DESC']);
+            'RetentionHistories' => function ($q) {
+                return $q->order(['RetentionHistories.target_year' => 'DESC']);
             },
-            'ArquisitionHistories.Ranks',
-            'ArquisitionHistories.Titles.Countries',
-            'ArquisitionHistories.Players'
+            'RetentionHistories.Ranks',
+            'RetentionHistories.Titles.Countries',
+            'RetentionHistories.Players'
         ])->where(['Titles.id' => $id])->first();
     }
 }

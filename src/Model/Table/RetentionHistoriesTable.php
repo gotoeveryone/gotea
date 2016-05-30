@@ -5,9 +5,9 @@ namespace App\Model\Table;
 use Cake\Validation\Validator;
 
 /**
- * タイトル保持情報
+ * 保持履歴
  */
-class ArquisitionHistoriesTable extends AppTable {
+class RetentionHistoriesTable extends AppTable {
 
     /**
 	 * 初期設定

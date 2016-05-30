@@ -6,9 +6,9 @@ use Cake\Network\Request;
 use Cake\ORM\TableRegistry;
 
 /**
- * 取得履歴エンティティ
+ * 保持履歴エンティティ
  */
-class ArquisitionHistory extends AppEntity
+class RetentionHistory extends AppEntity
 {
     /**
      * タイトル保持者を取得します。
@@ -54,6 +54,8 @@ class ArquisitionHistory extends AppEntity
     {
         // タイトルID
         $this->title_id = $titleId;
+        // タイトル名
+        $this->name = $request->data('selectTitleName');
         // 期
         $this->holding = $holding;
         // 対象年

@@ -29,6 +29,7 @@ class UsersController extends AppController {
 			return $this->redirect($this->Auth->redirectUrl());
         }
         parent::beforeFilter($event);
+        $this->Auth->allow(['index', 'login']);
     }
 
 	/**
@@ -55,16 +56,13 @@ class UsersController extends AppController {
      */
     public function login()
     {
-        if (!$this->request->is('post')) {
-            return $this->index();
-        }
-
         // 入力チェック
         $res = $this->__createValidator()->errors([
             'username' => $this->request->data('username'),
             'password' => $this->request->data('password')
         ]);
         if ($res) {
+            $this->log(__("ログイン失敗！"), LogLevel::WARNING);
             $this->Flash->error($this->_getErrorMessage($res));
             return $this->index();
         }

@@ -255,7 +255,7 @@
                             iframe: true,
                             width: "50%",
                             height: "95%",
-                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&organization=日本棋院'
+                            href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val() + '&organization=日本棋院'
                         });
                         $(this).dialog('close');
                     }
@@ -267,7 +267,7 @@
                             iframe: true,
                             width: "50%",
                             height: "95%",
-                            href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val() + '&organization=関西棋院'
+                            href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val() + '&organization=関西棋院'
                         });
                         $(this).dialog('close');
                     }
@@ -292,7 +292,7 @@
                     iframe: true,
                     width: "90%",
                     height: "90%",
-                    href: '<?=$this->Url->build(['action' => 'detail'])?>' + '?countryId=' + $('#searchCountry').val()
+                    href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val()
                 });
             }
         });

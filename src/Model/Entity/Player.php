@@ -75,17 +75,6 @@ class Player extends AppEntity
     }
 
     /**
-     * 入段日を設定します。
-     * 
-     * @param type $joined
-     */
-    protected function _setJoined($joined)
-    {
-        $time = new Time();
-        return (empty($joined) ? null : $time->parseDate($joined, 'YYYY/MM/dd'));
-    }
-
-    /**
      * リクエストの値をエンティティに保存します。
      * 
      * @param Request $request
@@ -107,7 +96,8 @@ class Player extends AppEntity
         // 性別
 		$this->sex = $request->data('sex');
         // 入段日
-        $this->joined = $request->data('joined');
+        $joined = $request->data('joined');
+        $this->joined = (empty($joined) ? null : str_replace('/', '', $joined));
         // 誕生日
         $this->birthday = $request->data('birthday');
         // 所属組織

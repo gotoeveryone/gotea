@@ -26,9 +26,9 @@ class PlayersTable extends AppTable
             'order' => array('PlayerScores.target_year' => 'DESC')
         ]);
         // タイトル保持情報
-        $this->hasMany('ArquisitionHistories', [
+        $this->hasMany('RetentionHistories', [
             'joinType' => 'LEFT',
-            'order' => array('ArquisitionHistories.target_year' => 'DESC')
+            'order' => array('RetentionHistories.target_year' => 'DESC')
         ]);
     }
 
@@ -49,13 +49,7 @@ class PlayersTable extends AppTable
                     'message' => '生年月日は「yyyy/MM/dd」形式で入力してください。'
                 ]
             ])
-            ->notEmpty('joined', '入段日は「yyyy/MM/dd」形式で入力してください。')
-            ->add('joined', [
-                'valid' => [
-                    'rule' => ['date', 'ymd'],
-                    'message' => '入段日は「yyyy/MM/dd」形式で入力してください。'
-                ]
-            ]);
+            ->notEmpty('joined', '入段日は必須です。');
     }
 
     /**
@@ -73,15 +67,15 @@ class PlayersTable extends AppTable
                 return $q->order(['PlayerScores.target_year' => 'DESC']);
             },
             'PlayerScores.Ranks',
-            'ArquisitionHistories.Titles',
-            'ArquisitionHistories' => function ($q) {
+            'RetentionHistories.Titles',
+            'RetentionHistories' => function ($q) {
                 return $q->order([
-                    'ArquisitionHistories.target_year' => 'DESC',
+                    'RetentionHistories.target_year' => 'DESC',
                     'Titles.country_id' => 'ASC',
                     'Titles.sort_order' => 'ASC'
                 ]);
             },
-            'ArquisitionHistories.Titles.Countries'
+            'RetentionHistories.Titles.Countries'
         ])->where(['Players.id' => $id])->first();
     }
 

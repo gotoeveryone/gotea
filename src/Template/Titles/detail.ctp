@@ -25,7 +25,7 @@
     <section id="detail">
         <section id="tabs">
             <section class="tabs" name="title">タイトル情報</section>
-            <section class="tabs" name="titleRetains">保持情報</section>
+            <section class="tabs" name="titleRetains">保持履歴</section>
         </section>
         <section id="scroll">
             <section id="title" class="details">
@@ -37,6 +37,7 @@
                         <section class="headerRow">タイトル名</section>
                         <section class="valueRow">
                             <?=$this->Form->hidden('selectTitleId', ['value' => $title->id])?>
+                            <?=$this->Form->hidden('selectTitleName', ['value' => $title->name])?>
                             <?=h($title->name)?>
                         </section>
                     </section>
@@ -67,11 +68,11 @@
                         <section class="headerRow">現在の保持者</section>
                         <section class="valueRow">
                             <?php
-                                if (!empty($title->arquisition_histories)) :
-                                    foreach ($title->arquisition_histories as $arquisition) :
-                                        if ($arquisition->holding === $title->holding) :
+                                if (!empty($title->retention_histories)) :
+                                    foreach ($title->retention_histories as $retention) :
+                                        if ($retention->holding === $title->holding) :
                                             echo h(__("{$title->holding}期 "));
-                                            echo h($arquisition->getWinnerName($title->is_team));
+                                            echo h($retention->getWinnerName($title->is_team));
                                             break;
                                         endif;
                                     endforeach;
@@ -180,7 +181,7 @@
                                 'id' => 'regist',
                                 'disabled' => true
                             ]);
-                            echo $this->Form->button('最新を登録', [
+                            echo $this->Form->button('現在の保持者として登録', [
                                 'type' => 'button',
                                 'id' => 'registNew',
                                 'disabled' => true
@@ -188,9 +189,9 @@
                         ?>
                     </section>
                 </section>
-                <?php if (!empty($title->arquisition_histories)) : ?>
-                    <?php foreach ($title->arquisition_histories as $arquisition) : ?>
-                        <?php if ($title->holding === $arquisition->holding) : ?>
+                <?php if (!empty($title->retention_histories)) : ?>
+                    <?php foreach ($title->retention_histories as $retention) : ?>
+                        <?php if ($title->holding === $retention->holding) : ?>
                         <section class="row">
                             <section class="box">
                                 <section class="headerRow">現在の保持情報</section>
@@ -199,8 +200,8 @@
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h(__("{$arquisition->target_year}年 {$arquisition->holding}期 "))?>
-                                    <?=h($arquisition->getWinnerName($title->is_team))?>
+                                    <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
+                                    <?=h($retention->getWinnerName($title->is_team))?>
                                 </section>
                             </section>
                         </section>
@@ -208,7 +209,7 @@
                         <?php endif ?>
                     <?php endforeach ?>
                     <?php $header = false; ?>
-                    <?php foreach ($title->arquisition_histories as $arquisition) : ?>
+                    <?php foreach ($title->retention_histories as $retention) : ?>
                         <?php if (!$header) : ?>
                         <section class="row">
                             <section class="box">
@@ -217,12 +218,12 @@
                         </section>
                         <?php $header = true; ?>
                         <?php endif ?>
-                        <?php if ($title->holding !== $arquisition->holding) : ?>
+                        <?php if ($title->holding !== $retention->holding) : ?>
                         <section class="row">
                             <section class="box">
                                 <section class="valueRow">
-                                    <?=h(__("{$arquisition->target_year}年 {$arquisition->holding}期 "))?>
-                                    <?=h($arquisition->getWinnerName($title->is_team))?>
+                                    <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
+                                    <?=h($retention->getWinnerName($title->is_team))?>
                                 </section>
                             </section>
                         </section>

@@ -132,14 +132,14 @@
                 </td>
                 <td class="left winner">
                     <?php
-                        if (empty($title->arquisition_histories)) {
+                        if (empty($title->retention_histories)) {
                             echo '';
                         } else {
-                            $arquision = $title->arquisition_histories[0];
+                            $retention = $title->retention_histories[0];
                             if ($title->is_team) {
-                                echo $arquision->win_group_name;
+                                echo $retention->win_group_name;
                             } else {
-                                echo $arquision->player->name.$arquision->rank->name;
+                                echo "{$retention->player->name} {$retention->rank->name}";
                             }
                         }
                     ?>
@@ -224,7 +224,7 @@
                     ?>
                 </td>
                 <td class="center openRetain">
-                    <?=$this->Html->link('開く', ['action' => 'detail/'.h($title->id)], ['class' => 'colorbox'])?>
+                    <?=$this->Html->link('開く', ['action' => "detail/{$title->id}"], ['class' => 'colorbox'])?>
                 </td>
             </tr>
             <?php endforeach ?>

@@ -131,14 +131,13 @@
                     <section class="headerRow">入段日</section>
                     <section class="valueRow">
                         <?php
-                            $joined = $player->getJoined();
                             if (!$player->id) {
                                 echo $this->Form->text('joined', [
-                                    'value' => $joined,
+                                    'value' => $player->joined,
                                     'class' => 'imeDisabled'
                                 ]);
                             } else {
-                                echo $joined;
+                                echo $this->Date->formatJpValue($player->joined);
                                 echo $this->Form->hidden('joined', ['value' => h($player->joined)]);
                             }
                         ?>
@@ -400,7 +399,7 @@
                 $('#isContinue').val(true);
             }
             var confirm = $("#confirm");
-            confirm.html('棋士マスタを' + $(this).text() + 'します。よろしいですか？');
+            confirm.html('棋士情報を' + $(this).text() + 'します。よろしいですか？');
             confirm.click();
         });
 
