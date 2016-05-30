@@ -271,7 +271,7 @@ return [
         'debug' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
-            'file' => 'debug',
+            'file' => 'access',
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [

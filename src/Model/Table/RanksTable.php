@@ -14,8 +14,7 @@ class RanksTable extends AppTable
             'keyField' => 'id',
             'valueField' => 'name'
         ])->where([
-            'rank_numeric IS NOT' => null,
-            'professional' => true
+            'rank_numeric IS NOT' => null
         ])->order('rank_numeric DESC')->toArray();
     }
 }
