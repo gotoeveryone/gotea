@@ -47,7 +47,7 @@ class CountriesTable extends AppTable
             'valueField' => 'valueField'
         ])->order(['id' => 'ASC'])->select([
             'keyField' => 'name',
-            'valueField' => "CASE code_alpha_2 WHEN 'wr' THEN CONCAT(name, '棋戦') ELSE CONCAT(name, '棋士') END"
+            'valueField' => "CASE code WHEN 'wr' THEN CONCAT(name, '棋戦') ELSE CONCAT(name, '棋士') END"
         ])->toArray();
     }
 }
