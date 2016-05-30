@@ -70,7 +70,7 @@ class UsersController extends AppController {
         // ユーザを1件取得
         $user = $this->Users->find()->where([
             'account' => $this->request->data('username')
-        ])->all()->first();
+        ])->first();
 
         // ユーザが取得出来なければログインエラー
         if (!$user || !password_verify($this->request->data('password'), $user->password)) {
