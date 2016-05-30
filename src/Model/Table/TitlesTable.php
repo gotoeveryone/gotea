@@ -61,10 +61,10 @@ class TitlesTable extends AppTable {
     {
         $query = $this->find()->contain([
             'Countries',
-            'RetentionHistories',
-            'RetentionHistories.Titles' => function ($q) {
+            'RetentionHistories' => function ($q) {
                 return $q->where(['RetentionHistories.holding = Titles.holding']);
             },
+            'RetentionHistories.Titles',
             'RetentionHistories.Players',
             'RetentionHistories.Ranks'
         ])->where([
