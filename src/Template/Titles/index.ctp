@@ -11,7 +11,7 @@
     <?=$this->Form->hidden('searchFlag', ['id' => 'searchFlag', 'value' => (empty($searchFlag) ? 'false' : var_export($searchFlag, TRUE))])?>
     <table class="titlesHeader">
         <tr>
-            <td class="searchColumn1">所属国：</td>
+            <td class="searchColumn1">対象国：</td>
             <td>
                 <?=
                     $this->Form->input('searchCountry', [

@@ -248,7 +248,7 @@
                     <section class="box2">
                         <section class="headerRow">勝敗（国内）</section>
                         <section class="valueRow">
-                            <?=$this->Form->hidden('scoreId_'.$key, ['id' => 'scoreId_'.$key, 'value' => h($score->ID)])?>
+                            <?=$this->Form->hidden('scoreId_'.$key, ['id' => 'scoreId_'.$key, 'value' => h($score->id)])?>
                             <?=
                                 $this->Form->input('winPoint_'.$key, [
                                     'id' => 'winPoint_'.$key,

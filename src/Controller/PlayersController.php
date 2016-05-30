@@ -214,13 +214,13 @@ class PlayersController extends AppController
 	 */
 	public function updateScore()
     {
-        $playerId = $this->request->data('selectPlayerId');
+        $playerId = $this->request->data('selectId');
 
         // 棋士成績情報を取得
         $playerScore = $this->PlayerScores->get($this->request->data('selectScoreId'));
 
 		// 入力値をエンティティに設定
-        $playerScore->patchEntity($this->request);
+        $playerScore->setFromRequest($this->request);
 
         // バリデーションエラーの場合はそのまま返す
         $res = $this->PlayerScores->validator()->errors($playerScore->toArray());
