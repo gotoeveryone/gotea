@@ -15,7 +15,16 @@ use Psr\Log\LogLevel;
  * @author		Kazuki Kamizuru
  * @since		2015/07/26
  */
-class UsersController extends AppController {
+class UsersController extends AppController
+{
+    /**
+     * 初期処理
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Json');
+    }
 
 	/**
 	 * アクション実行前処理
@@ -67,15 +76,24 @@ class UsersController extends AppController {
             return $this->index();
         }
 
+        $account = $this->request->data('username');
+        $password = $this->request->data('password');
+
         // ユーザを1件取得
         $user = $this->Users->find()->where([
-            'account' => $this->request->data('username')
+            'account' => $account
         ])->first();
 
         // ユーザが取得出来なければログインエラー
-        if (!$user || !password_verify($this->request->data('password'), $user->password)) {
+        if (!$user || !password_verify($password, $user->password)) {
             $this->log(__("ログイン失敗！"), LogLevel::WARNING);
             $this->Flash->error(__("ユーザまたはパスワードが異なります。"));
+            return $this->index();
+        }
+
+        if (!$this->Json->saveAccessToken($account, $password)) {
+            $this->log(__("ログイン失敗！"), LogLevel::WARNING);
+            $this->Flash->error(__("API利用エラーです。"));
             return $this->index();
         }
 
@@ -104,6 +122,7 @@ class UsersController extends AppController {
      */
     public function logout()
     {
+        $this->Json->removeAccessToken();
         return $this->redirect($this->Auth->logout());
     }
 
