@@ -109,7 +109,7 @@ class UsersController extends AppController
         }
 
         // ユーザ情報を設定
-        $this->__setUser($user);
+        $this->__setUser($user, $password);
         $this->log("ユーザ：{$user->name}がログインしました。", LogLevel::INFO);
 
         // リダイレクト
@@ -130,13 +130,15 @@ class UsersController extends AppController
      * ユーザ情報をセッションに格納します。
      * 
      * @param User $user
+     * @param $password
      */
-    private function __setUser(User $user)
+    private function __setUser(User $user, $password)
     {
         // ログイン情報を設定
         $this->Auth->setUser([
             'userid' => $user->account,
             'username' => $user->name,
+            'password' => $password,
             'role' => $user->role,
             'created' => $user->created,
             'modified' => $user->modified

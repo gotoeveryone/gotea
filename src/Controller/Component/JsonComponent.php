@@ -9,6 +9,7 @@ class JsonComponent extends Component {
 
     public $controller = null;
     public $session = null;
+    public $components = ['Auth'];
 
     public function initialize(array $config)
     {
@@ -105,6 +106,17 @@ class JsonComponent extends Component {
             'ssl_cafile' => getenv('SSL_CA_CRT')
         ]);
         $json = (object) null;
+        // 401なら再認証
+        if ($response->statusCode() == 401) {
+            $userId = $this->Auth->user('userid');
+            $password = $this->Auth->user('password');
+            $this->saveAccessToken($userId, $password);
+            $response = $http->get($url, [
+                "access_token" => $this->request->session()->read('access_token'),
+            ], [
+                'ssl_cafile' => getenv('SSL_CA_CRT')
+            ]);
+        }
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
         }
@@ -141,9 +153,7 @@ class JsonComponent extends Component {
     public function deleteJson($url, $data = [])
     {
         $http = new Client();
-        $response = $http->delete($url, $data, [
-            'ssl_cafile' => getenv('SSL_CA_CRT')
-        ]);
+        $response = $http->delete($url, $data, $this->__getCaArray());
         $json = (object) null;
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
@@ -160,5 +170,16 @@ class JsonComponent extends Component {
     private function __getApiUrl()
     {
         return 'https://'.getenv('SERVER_NAME')."/web-resource/";
+    }
+
+    /**
+     * CA証明書の配列を生成して取得します。
+     * 
+     * @return type
+     */
+    private function __getCaArray() {
+        return [
+            'ssl_cafile' => getenv('SSL_CA_CRT')
+        ];
     }
 }
