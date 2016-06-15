@@ -109,11 +109,11 @@ class PlayersTable extends AppTable
         if ($rank) {
             $query->where(['Players.rank_id' => $rank]);
         }
-        if ($playerName) {
-            $query->where(['Players.name LIKE' => '%'.$playerName.'%']);
+        if (($playerName = trim($playerName))) {
+            $query->where(['OR' => $this->__createLikeParams('name', $playerName)]);
         }
-        if ($playerNameEn) {
-            $query->where(['Players.name_english LIKE' => '%'.$playerNameEn.'%']);
+        if (($playerNameEn = trim($playerNameEn))) {
+            $query->where(['OR' => $this->__createLikeParams('name_english', $playerNameEn)]);
         }
         if (is_numeric($joined)) {
             $query->where(["DATE_FORMAT(Players.joined, '%Y') >=" => $joined]);
@@ -141,5 +141,22 @@ class PlayersTable extends AppTable
             return $res->count();
         }
         return $res->all();
+    }
+
+    /**
+     * LIKE検索用のWHERE句を生成します。
+     * 
+     * @param type $fieldName
+     * @param type $input
+     * @return \App\Model\Table\Player
+     */
+    private function __createLikeParams($fieldName, $input)
+    {
+        $whereClause = [];
+        $params = explode(" ", $input);
+        foreach ($params as $param) {
+            array_push($whereClause, ["Players.{$fieldName} LIKE" => "%{$param}%"]);
+        }
+        return $whereClause;
     }
 }
