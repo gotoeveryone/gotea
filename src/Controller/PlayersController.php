@@ -185,6 +185,7 @@ class PlayersController extends AppController
                     break;
                 }
             }
+            $player->set('player_scores', $player->player_scores);
         }
 
         try {
