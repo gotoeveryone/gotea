@@ -1,4 +1,3 @@
-<div id="playerConfirm" title="確認" class="unVisible"></div>
 <?=$this->Form->create(null, [
     'id' => 'mainForm',
     'method' => 'post',
@@ -9,7 +8,6 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
-    <?=$this->Form->hidden('affiliation', ['id' => 'affiliation']);?>
     <?=$this->Form->hidden('searchFlag', ['value' => (empty($searchFlag) ? '' : var_export($searchFlag, TRUE))])?>
     <?=$this->Form->hidden('dialogFlag', ['value' => (empty($dialogFlag) ? 'false' : var_export($dialogFlag, TRUE))])?>
     <table class="playersHeader">
@@ -237,64 +235,14 @@
         $('select[name=searchCountry]').change(function () {
             $('#addNew').attr('disabled', !$(this).val());
         });
-        // 確認ダイアログ
-        $('#playerConfirm').dialog({
-            autoOpen: false,
-            modal: true,
-            top: 0,
-            left: 0,
-            width: 400,
-            open: function (event, ui) {
-                $('.ui-dialog-titlebar-close').hide();
-            },
-            buttons: [
-                {
-                    text: '日本棋院',
-                    click: function () {
-                        $.colorbox({
-                            iframe: true,
-                            width: "50%",
-                            height: "95%",
-                            href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val() + '&organization=日本棋院'
-                        });
-                        $(this).dialog('close');
-                    }
-                },
-                {
-                    text: '関西棋院',
-                    click: function () {
-                        $.colorbox({
-                            iframe: true,
-                            width: "50%",
-                            height: "95%",
-                            href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val() + '&organization=関西棋院'
-                        });
-                        $(this).dialog('close');
-                    }
-                },
-                {
-                    text: 'キャンセル',
-                    click: function () {
-                        $(this).dialog('close');
-                    }
-                }
-            ]
-        });
         // 新規作成画面へ遷移
         $('#addNew').click(function () {
-            if ($('#searchCountry').val() === '1') {
-                // ダイアログにメッセージを設定
-                var confirm = $('#playerConfirm');
-                confirm.html('どちらの棋院に所属する棋士を作成しますか？');
-                confirm.dialog('open');
-            } else {
-                $.colorbox({
-                    iframe: true,
-                    width: "90%",
-                    height: "90%",
-                    href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val()
-                });
-            }
+            $.colorbox({
+                iframe: true,
+                width: "90%",
+                height: "90%",
+                href: "<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val()
+            });
         });
     });
 

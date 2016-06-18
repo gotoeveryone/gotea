@@ -44,7 +44,7 @@ class Player extends AppEntity
     /**
      * 所属国を設定します。
      * 
-     * @param $countryId
+     * @param type $countryId
      */
     public function setCountry($countryId)
     {        
@@ -55,12 +55,23 @@ class Player extends AppEntity
     /**
      * 段位を設定します。
      * 
-     * @param $rankId
+     * @param type $rankId
      */
     public function setRank($rankId)
     {
         $ranks = TableRegistry::get('Ranks');
         $this->rank = $ranks->get($rankId);
+    }
+
+    /**
+     * 所属を設定します。
+     * 
+     * @param type $organizationId
+     */
+    public function setOrganization($organizationId)
+    {
+        $organizations = TableRegistry::get('Organizations');
+        $this->organization = $organizations->get($organizationId);
     }
 
     /**
@@ -93,6 +104,8 @@ class Player extends AppEntity
         $this->setCountry($request->data('selectCountry'));
         // 段位
 		$this->setRank($request->data('rank'));
+        // 組織
+        $this->setOrganization($request->data('organization'));
         // 性別
 		$this->sex = $request->data('sex');
         // 入段日
@@ -100,9 +113,6 @@ class Player extends AppEntity
         $this->joined = (empty($joined) ? null : str_replace('/', '', $joined));
         // 誕生日
         $this->birthday = $request->data('birthday');
-        // 所属組織
-		$organization = $request->data('organization');
-		$this->organization = (empty($organization) ? null : $organization);
         // 引退フラグ
 		$this->is_retired = $request->data('retired');
         // その他備考

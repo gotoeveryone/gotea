@@ -18,14 +18,11 @@ use Psr\Log\LogLevel;
  */
 class PlayersController extends AppController
 {
-    // タイトル保持情報テーブル
+    // アソシエーション先のモデル群
     private $PlayerScores = null;
-
-    // 所属国マスタテーブル
     private $Countries = null;
-
-    // 段位マスタテーブル
     private $Ranks = null;
+    private $Organizations = null;
 
     /**
      * 初期処理
@@ -36,6 +33,7 @@ class PlayersController extends AppController
         $this->PlayerScores = TableRegistry::get('PlayerScores');
         $this->Countries = TableRegistry::get('Countries');
         $this->Ranks = TableRegistry::get('Ranks');
+        $this->Organizations = TableRegistry::get('Organizations');
     }
 
 	/**
@@ -47,6 +45,8 @@ class PlayersController extends AppController
 
 		// 段位プルダウン
 		$this->set('ranks', $this->Ranks->getRanksToArray());
+		// 所属プルダウン
+		$this->set('organizations', $this->Organizations->findToKeyValue());
    	}
 
 	/**
@@ -116,29 +116,22 @@ class PlayersController extends AppController
 
         // 棋士情報があればそれをセットして描画
         if ($existPlayer) {
-            // 棋士情報一式を取得
             $this->set('player', $existPlayer);
             return $this->render('detail');
         }
 
         // 棋士IDが取得出来なければ新規登録画面を表示
-        // 所属国、組織を取得
-        $countryId = $this->request->query('countryId');
-        $organization = $this->request->query('organization');
-
         // 所属国が取得出来なければエラー
-        if (!$countryId) {
+        if (!($countryId = $this->request->query('countryId'))) {
             throw new BadRequestException(__("所属国を指定してください。"));
         }
 
+        // モデルを生成し、国と組織を設定
         $player = $this->Players->newEntity();
-
-        // 所属国を設定
         $player->setCountry($countryId);
+        $player->organization = $this->Organizations->findByCountry($countryId)->first();
 
-        $player->organization = ($organization ? $organization : $player->country->name.'棋院');
         $this->set('player', $player);
-
         return $this->render('detail');
 	}
 
@@ -158,8 +151,7 @@ class PlayersController extends AppController
         $player->setFromRequest($this->request);
 
         // バリデーションエラーの場合はそのまま返す
-        $res = $this->Players->validator()->errors($player->toArray());
-        if ($res) {
+        if (($res = $this->Players->validator()->errors($player->toArray()))) {
             // エラーメッセージを書き込み
             $message = $this->_getErrorMessage($res);
             $this->log(__("棋士情報入力エラー：{$message}"), LogLevel::DEBUG);
@@ -224,8 +216,7 @@ class PlayersController extends AppController
         $playerScore->setFromRequest($this->request);
 
         // バリデーションエラーの場合はそのまま返す
-        $res = $this->PlayerScores->validator()->errors($playerScore->toArray());
-        if ($res) {
+        if (($res = $this->PlayerScores->validator()->errors($playerScore->toArray()))) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
             $this->Flash->error(__($this->_getErrorMessage($res)));
             return $this->detail($playerId);

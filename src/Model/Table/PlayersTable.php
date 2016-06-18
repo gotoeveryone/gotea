@@ -17,15 +17,17 @@ class PlayersTable extends AppTable
 	 */
     public function initialize(array $config)
     {
-        // 所属国マスタ
+        // 国
         $this->belongsTo('Countries');
-        // 段位マスタ
+        // 段位
         $this->belongsTo('Ranks');
-        // 棋士成績情報
+        // 組織
+        $this->belongsTo('Organizations');
+        // 棋士成績
         $this->hasMany('PlayerScores', [
             'order' => array('PlayerScores.target_year' => 'DESC')
         ]);
-        // タイトル保持情報
+        // 保持履歴
         $this->hasMany('RetentionHistories', [
             'joinType' => 'LEFT',
             'order' => array('RetentionHistories.target_year' => 'DESC')
@@ -63,6 +65,7 @@ class PlayersTable extends AppTable
 		return $this->find()->contain([
             'Countries',
             'Ranks',
+            'Organizations',
             'PlayerScores' => function ($q) {
                 return $q->order(['PlayerScores.target_year' => 'DESC']);
             },
@@ -135,7 +138,8 @@ class PlayersTable extends AppTable
                 return $q->where(['PlayerScores.target_year' => intval(Time::now()->year)]);
             },
             'Ranks',
-            'Countries'
+            'Countries',
+            'Organizations'
         ]);
         if ($count) {
             return $res->count();

@@ -166,6 +166,10 @@ select.year, select.sex, select.rank {
 	width: 70px;
 }
 
+select.organization {
+	width: 140px;
+}
+
 select.retired {
 	width: 100px;
 }
@@ -330,10 +334,6 @@ section.headerRow {
 section.valueRow {
     min-height: 28px;
 	text-indent: 10px;
-}
-
-section.details input.affiliation {
-	width: 120px;
 }
 
 section.details input.playerPoint {

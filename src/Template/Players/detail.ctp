@@ -55,10 +55,10 @@
                     <section class="headerRow">所属組織</section>
                     <section class="valueRow">
                         <?=
-                            $this->Form->text('organization', [
-                                'value' => h($player->organization),
+                            $this->Form->input('organization', [
+                                'options' => $organizations,
                                 'class' => 'organization',
-                                'maxlength' => 10
+                                'value' => ($player->organization ? $player->organization->id : '1')
                             ]);
                         ?>
                     </section>
@@ -172,7 +172,7 @@
                             $this->Form->input('rank', [
                                 'options' => $ranks,
                                 'class' => 'rank',
-                                'value' => ($player->rank ? $player->rank->rank_numeric : '1')
+                                'value' => ($player->rank ? $player->rank->id : '1')
                             ]);
                         ?>
                     </section>
