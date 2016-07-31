@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Player;
 use Cake\I18n\Time;
 use Cake\Validation\Validator;
 
@@ -55,6 +56,18 @@ class PlayersTable extends AppTable
     }
 
     /**
+     * 棋士とそれに紐づく棋士成績を取得します。
+     * 
+     * @param type $id
+     * @return Player 棋士とそれに紐づく棋士成績
+     */
+    public function findPlayerWithScores($id)
+    {
+        return $this->find()->contain(['PlayerScores'])
+                ->where(['id' => $id])->first();
+    }
+
+    /**
      * 棋士情報に関する一式を取得します。
      * 
      * @param type $id
@@ -85,32 +98,31 @@ class PlayersTable extends AppTable
     /**
      * 指定条件に合致した棋士情報を取得します。
      * 
-     * @param type $countryCode
+     * @param type $countryId
      * @param type $sex
-     * @param type $rank
+     * @param type $rankId
      * @param type $playerName
      * @param type $playerNameEn
      * @param type $joined
      * @param type $enrollmentTo
      * @param type $retire
-     * @param type $count
      * @return Player 棋士情報一覧
      */
-    public function findPlayers($countryCode = null, $sex = null, $rank = null, $playerName = null, $playerNameEn = null,
-            $joined = null, $enrollmentTo = null, $retire = null, $count = false)
+    public function findPlayers($countryId = null, $sex = null, $rankId = null, $playerName = null, $playerNameEn = null,
+            $joined = null, $enrollmentTo = null, $retire = null)
     {
         // 棋士情報の取得
         $query = $this->find();
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if ($countryCode) {
-            $query->where(['Countries.id' => $countryCode]);
+        if ($countryId) {
+            $query->where(['Countries.id' => $countryId]);
         }
         if ($sex) {
             $query->where(['Players.sex' => $sex]);
         }
-        if ($rank) {
-            $query->where(['Players.rank_id' => $rank]);
+        if ($rankId) {
+            $query->where(['Players.rank_id' => $rankId]);
         }
         if (($playerName = trim($playerName))) {
             $query->where(['OR' => $this->__createLikeParams('name', $playerName)]);
@@ -129,7 +141,7 @@ class PlayersTable extends AppTable
         }
 
         // データを取得
-        $res = $query->order([
+        return $query->order([
             'Ranks.rank_numeric DESC',
             'Players.joined',
             'Players.id'
@@ -140,11 +152,7 @@ class PlayersTable extends AppTable
             'Ranks',
             'Countries',
             'Organizations'
-        ]);
-        if ($count) {
-            return $res->count();
-        }
-        return $res->all();
+        ])->all();
     }
 
     /**

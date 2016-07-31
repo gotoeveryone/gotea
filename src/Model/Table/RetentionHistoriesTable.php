@@ -31,15 +31,14 @@ class RetentionHistoriesTable extends AppTable {
      * 
      * @param type $titleId
      * @param type $holding
-     * @param type $isCount
      */
-    public function findByKey($titleId, $holding, $isCount = false)
+    public function findByKey($titleId, $holding)
     {
 		$query = $this->find()->where([
             'title_id' => $titleId,
             'holding' => $holding
 		]);
-        return $isCount ? $query->count() : $query->all();
+        return $query->first();
     }
 
     /**

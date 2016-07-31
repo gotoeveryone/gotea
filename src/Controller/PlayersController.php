@@ -66,9 +66,9 @@ class PlayersController extends AppController
         $this->__initSearch();
 
         // リクエストから値を取得
-        $countryCode = $this->request->data('searchCountry');
+        $countryId = $this->request->data('searchCountry');
+        $rankId = $this->request->data('searchRank');
         $sex = $this->request->data('searchSex');
-        $rank = $this->request->data('searchRank');
         $playerName = $this->request->data('searchPlayerName');
         $playerNameEn = $this->request->data('searchPlayerNameEn');
         $joinedFrom = $this->request->data('searchEnrollmentFrom');
@@ -76,22 +76,18 @@ class PlayersController extends AppController
         $retire = $this->request->data('searchRetire');
 
         // 該当する棋士情報一覧の件数を取得
-        $count = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
-                $joinedFrom, $joinedTo, $retire, true);
+        $players = $this->Players->findPlayers($countryId, $sex, $rankId, $playerName, $playerNameEn,
+                $joinedFrom, $joinedTo, $retire);
 
         // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
-        if (!$count) {
+        if (!($count = count($players))) {
             $this->Flash->warn(__("検索結果が0件でした。"));
         } else if ($count > 1000) {
             $this->Flash->warn(__("検索結果が1000件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
-        } else {
-            // 該当する棋士情報一覧を取得
-            $players = $this->Players->findPlayers($countryCode, $sex, $rank, $playerName, $playerNameEn,
-                    $joinedFrom, $joinedTo, $retire);
         }
 
         // 結果をセット
-        $this->set('players', (isset($players) ? $players : []));
+        $this->set('players', $players);
 
         // 初期表示処理へ
         return $this->render('index');
@@ -141,64 +137,41 @@ class PlayersController extends AppController
 	public function save()
     {
         // IDからデータを取得
-		$playerId = $this->request->data('selectId');
-        $exist = ($playerId) ? true : false;
-        $player = ($exist) ? $this->Players->find()->contain(['PlayerScores'])
-                ->where(['id' => $playerId])->first() : $this->Players->newEntity();
-        $message = ($exist) ? '更新' : '登録';
+		$id = $this->request->data('selectId');
+        $exist = ($id) ? true : false;
+        $player = ($exist) ? $this->Players->findPlayerWithScores($id) : $this->Players->newEntity();
+        $status = ($exist) ? '更新' : '登録';
 
         // 入力値をエンティティに設定
         $player->setFromRequest($this->request);
 
         // バリデーションエラーの場合はそのまま返す
         if (($res = $this->Players->validator()->errors($player->toArray()))) {
-            // エラーメッセージを書き込み
-            $message = $this->_getErrorMessage($res);
-            $this->log(__("棋士情報入力エラー：{$message}"), LogLevel::DEBUG);
-            $this->Flash->error(__($message));
-            // 詳細情報表示処理へ
+            // エラーメッセージを書き込み、詳細情報表示処理へ
+            $this->Flash->error(__($this->_getErrorMessage($res)));
 			$this->request->query['countryId'] = $player->country->id;
             return $this->detail(null, $player);
         }
 
-        // 新規登録時は棋士成績を設定
-        $now_year = Time::now()->year;
-        if (!$exist) {
-            $score = $this->PlayerScores->newEntity();
-            $score->target_year = $now_year;
-            $score->setRank($player->rank->id);
-            $player->set('player_scores', [$score]);
-        } else {
-            // 当年のデータで段位が異なる場合は更新
-            foreach ($player->player_scores as $score) {
-                if ($score->target_year === $now_year
-                        && $player->rank->id !== $score->rank_id) {
-                    $score->rank_id = $player->rank->id;
-                    break;
-                }
-            }
-            $player->set('player_scores', $player->player_scores);
-        }
+        // 棋士成績を設定
+        $this->__setPlayerScores($player);
 
         try {
             // 保存処理
             $this->Players->save($player);
             $saveId = $player->id;
-
             // メッセージ出力
-            $this->Flash->info(__("棋士ID：{$saveId}の棋士情報を{$message}しました。"));
+            $this->Flash->info(__("棋士ID：{$saveId}の棋士情報を{$status}しました。"));
 
 		} catch (PDOException $e) {
-            $this->log(__("棋士情報登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
+            $this->log(__("棋士情報{$status}エラー：{$e->getMessage()}"), LogLevel::ERROR);
             $this->_markToRollback();
-			$this->Flash->error(__("棋士情報の{$message}に失敗しました…。"));
+			$this->Flash->error(__("棋士情報の{$status}に失敗しました…。"));
 		} finally {
 			// 所属国IDを設定
 			$this->request->query['countryId'] = $player->country->id;
-            // 連続作成かどうか
-            $continue = $this->request->data('isContinue');
             // 詳細情報表示処理へ
-            return (!$continue) ? $this->detail($player->id, $player) : $this->detail();
+            return ($this->request->data('isContinue') === "true") ? $this->detail() : $this->detail($player->id, $player);
 		}
 	}
 
@@ -244,5 +217,32 @@ class PlayersController extends AppController
 		// 所属国プルダウン
 		$this->set('countries', $this->Countries->findCountryBelongToArray());
         $this->_setTitle('棋士情報検索');
+    }
+
+    /**
+     * 棋士成績データを設定します。
+     * 
+     * @param type $player
+     */
+    private function __setPlayerScores(&$player)
+    {
+        // 新規登録時は棋士成績を設定
+        $now_year = Time::now()->year;
+        if (!$player->id) {
+            $score = $this->PlayerScores->newEntity();
+            $score->target_year = $now_year;
+            $score->setRank($player->rank->id);
+            $player->set('player_scores', [$score]);
+        } else {
+            // 当年のデータで段位が異なる場合は更新
+            foreach ($player->player_scores as $score) {
+                if ($score->target_year === $now_year
+                        && $player->rank->id !== $score->rank_id) {
+                    $score->rank_id = $player->rank->id;
+                    break;
+                }
+            }
+            $player->set('player_scores', $player->player_scores);
+        }
     }
 }

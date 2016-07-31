@@ -14,13 +14,13 @@ use Psr\Log\LogLevel;
 class AppController extends Controller
 {
     // コネクション
-    private $conn = null;
+    private $__conn = null;
 
     // ロールバックフラグ
-    private $isRollback = false;
+    private $__isRollback = false;
 
     // タイトル
-    private $title = '';
+    private $__title = '';
 
     /**
      * 初期処理
@@ -56,37 +56,37 @@ class AppController extends Controller
         // 初期表示以外のアクションの場合、POSTされたデータが存在しなければエラー
         $target_actions = ['index', 'detail', 'clear', 'logout'];
         if (!in_array($this->request->action, $target_actions) && !$this->request->is('post')) {
-        	throw new MethodNotAllowedException('不正なリクエストです。リクエストタイプ：'.$this->request->method());
+        	throw new MethodNotAllowedException(__("不正なリクエストです。リクエストタイプ：{$this->request->method()}"));
         }
 
         // トランザクションを開始
-        if (empty($this->conn)) {
-            $this->conn = ConnectionManager::get('default');
+        if (empty($this->__conn)) {
+            $this->__conn = ConnectionManager::get('default');
         }
-        $this->conn->begin();
+        $this->__conn->begin();
 
         // ダイアログ表示判定
         $dialogFlag = $this->request->data('dialogFlag');
         $this->set('dialogFlag', ($dialogFlag === 'true'));
     }
 
-	/**
-	 * ビュー描画前処理
+    /**
+     * ビュー描画前処理
      * 
      * @param Event $event
-	 */
+     */
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
 
         // コミットまたはロールバック
-        if (!empty($this->conn)) {
-            if ($this->isRollback) {
-                $this->log('例外が発生したので、トランザクションをロールバックしました。', LogLevel::ERROR);
-                $this->conn->rollback();
+        if (!empty($this->__conn)) {
+            if ($this->__isRollback) {
+                $this->log(__("例外が発生したので、トランザクションをロールバックしました。"), LogLevel::ERROR);
+                $this->__conn->rollback();
             } else {
-                $this->log('トランザクションをコミットしました。', LogLevel::DEBUG);
-                $this->conn->commit();
+                $this->log(__("トランザクションをコミットしました。"), LogLevel::DEBUG);
+                $this->__conn->commit();
             }
         }
 
@@ -97,7 +97,7 @@ class AppController extends Controller
         }
 
         // タイトルを設定
-        $this->set('cakeDescription', $this->title);
+        $this->set('cakeDescription', $this->__title);
     }
 
     /**
@@ -109,8 +109,8 @@ class AppController extends Controller
     public function redirect($url, $status = 302)
     {
         // トランザクションをコミットしておく
-        if (!empty($this->conn)) {
-            $this->conn->commit();
+        if (!empty($this->__conn)) {
+            $this->__conn->commit();
         }
         parent::redirect($url, $status);
     }
@@ -120,7 +120,7 @@ class AppController extends Controller
      */
     protected function _markToRollback()
     {
-        $this->isRollback = true;
+        $this->__isRollback = true;
     }
 
     /**
@@ -130,7 +130,7 @@ class AppController extends Controller
      */
     protected function _getConnection()
     {
-        return $this->conn;
+        return $this->__conn;
     }
 
     /**
@@ -184,6 +184,6 @@ class AppController extends Controller
      */
     protected function _setTitle($title)
     {
-        $this->title = $title;
+        $this->__title = $title;
     }
 }

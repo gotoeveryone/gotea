@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use PDOException;
+use Cake\Datasource\ConnectionInterface;
 use Cake\Event\Event;
-use Psr\Log\LogLevel;
 
 /**
  * 各種情報クエリ更新用コントローラ
@@ -19,19 +19,8 @@ class NativeQueryController extends AppController
 	 */
     public function beforeRender(Event $event)
     {
-        $this->log('beforeRender', LogLevel::DEBUG);
         $this->_setTitle('各種情報クエリ更新');
         parent::beforeRender($event);
-    }
-
-    public function beforeFilter(Event $event) {
-        parent::beforeFilter($event);
-        $this->log('beforeFilter', LogLevel::DEBUG);
-    }
-
-    public function afterFilter(Event $event) {
-        parent::afterFilter($event);
-        $this->log('afterFilter', LogLevel::DEBUG);
     }
 
 	/**
@@ -39,7 +28,6 @@ class NativeQueryController extends AppController
 	 */
     public function index()
     {
-        $this->log("rollback -> {$this->isRollback}", LogLevel::DEBUG);
         return $this->render('index');
     }
 
@@ -50,32 +38,44 @@ class NativeQueryController extends AppController
     {
         // トリムし、改行・タブ・全角スペースがあれば除去
         $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->request->data('executeTargets')));
-        // $this->log($updateText, LOG_DEBUG);
         // 「;」で分割
-        $queryArray = explode(';', $updateText);
-        $counter = 0;
-
+        $queries = explode(';', $updateText);
         $conn = $this->_getConnection();
         try {
-            foreach ($queryArray as $query) {
-                if (empty($query)) {
-                    continue;
-                }
-
-                // 更新
-                $stmt = $conn->execute($query);
-                if (count($stmt) !== 1) {
-                    throw new PDOException('レコードの更新エラー');
-                }
-                $counter++;
-            }
-            $this->Flash->info($counter.'件のレコードを更新しました。');
+            // クエリの実行
+            $count = $this->__executeQueries($conn, $queries);
+            $this->Flash->info(__("{$count}件のクエリを実行しました。"));
         } catch (PDOException $e) {
-            $this->log('クエリ実行エラー：'.$e->getMessage());
+            $this->log(__("クエリ実行エラー：{$e->getMessage()}"));
             $this->_markToRollback();
-            $this->Flash->error('レコードの更新に失敗しました…。');
+            $this->Flash->error(__("レコードの更新に失敗しました…。"));
         } finally {
             return $this->index();
         }
+    }
+
+    /**
+     * クエリを実行し、件数を返します。
+     * 
+     * @param ConnectionInterface $conn
+     * @param array $queries
+     * @return int
+     * @throws PDOException
+     */
+    private function __executeQueries(ConnectionInterface $conn, $queries)
+    {
+        $counter = 0;
+        foreach ($queries as $query) {
+            if (empty($query)) {
+                continue;
+            }
+
+            // 更新
+            if (count($stmt = $conn->execute($query)) !== 1) {
+                throw new PDOException(__("レコードの更新エラー"));
+            }
+            $counter++;
+        }
+        return $counter;
     }
 }

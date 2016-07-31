@@ -80,9 +80,7 @@ class UsersController extends AppController
         $password = $this->request->data('password');
 
         // ユーザを1件取得
-        $user = $this->Users->find()->where([
-            'account' => $account
-        ])->first();
+        $user = $this->Users->find()->where(['account' => $account])->first();
 
         // ユーザが取得出来なければログインエラー
         if (!$user || !password_verify($password, $user->password)) {
@@ -91,6 +89,7 @@ class UsersController extends AppController
             return $this->index();
         }
 
+        // トークンが保存できなければログインエラー
         if (!$this->Json->saveAccessToken($account, $password)) {
             $this->log(__("ログイン失敗！"), LogLevel::WARNING);
             $this->Flash->error(__("API利用エラーです。"));
@@ -110,7 +109,7 @@ class UsersController extends AppController
 
         // ユーザ情報を設定
         $this->__setUser($user, $password);
-        $this->log("ユーザ：{$user->name}がログインしました。", LogLevel::INFO);
+        $this->log(__("ユーザ：{$user->name}がログインしました。", LogLevel::INFO));
 
         // リダイレクト
         return $this->redirect($this->Auth->redirectUrl());

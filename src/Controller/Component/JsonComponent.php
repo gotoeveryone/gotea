@@ -30,7 +30,7 @@ class JsonComponent extends Component {
      */
     public function saveAccessToken($account, $password)
     {
-        $token = $this->postJson($this->__getApiUrl()."users/login", [
+        $token = $this->postJson("{$this->__getApiUrl()}users/login", [
             "account" => $account,
             "password" => $password
         ]);
@@ -49,9 +49,8 @@ class JsonComponent extends Component {
      */
     public function removeAccessToken()
     {
-        $token = $this->request->session()->read('access_token');
-        return $this->deleteJson($this->__getApiUrl()."users/logout", [
-            "access_token" => $token
+        return $this->deleteJson("{$this->__getApiUrl()}users/logout", [
+            "access_token" => $this->request->session()->read('access_token')
         ]);
     }
 
@@ -63,7 +62,7 @@ class JsonComponent extends Component {
      */
     public function getPlayer($name)
     {
-        return $this->getJson($this->__getApiUrl()."players?name={$name}");
+        return $this->getJson("{$this->__getApiUrl()}players?name={$name}");
     }
 
     /**
@@ -73,7 +72,7 @@ class JsonComponent extends Component {
      */
     public function getNews()
     {
-        return $this->getJson($this->__getApiUrl()."titles/news");
+        return $this->getJson("{$this->__getApiUrl()}titles/news");
     }
 
     /**
@@ -87,7 +86,7 @@ class JsonComponent extends Component {
     public function getRanking($country, $year, $limit, $isJp = false)
     {
         $encode = urlencode($country);
-        $get = $this->__getApiUrl()."players/ranking?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
+        $get = "{$this->__getApiUrl()}players/ranking?country={$encode}&year={$year}&limit={$limit}".($isJp ? "&with=jp" : "");
         return $this->getJson($get);
     }
 
@@ -99,23 +98,18 @@ class JsonComponent extends Component {
      */
     public function getJson($url)
     {
-        $http = new Client();
-        $response = $http->get($url, [
+        $tokenArray = [
             "access_token" => $this->request->session()->read('access_token'),
-        ], [
-            'ssl_cafile' => getenv('SSL_CA_CRT')
-        ]);
+        ];
+        $http = new Client();
+        $response = $http->get($url, $tokenArray, $this->__getCaArray());
         $json = (object) null;
         // 401なら再認証
         if ($response->statusCode() == 401) {
             $userId = $this->Auth->user('userid');
             $password = $this->Auth->user('password');
             $this->saveAccessToken($userId, $password);
-            $response = $http->get($url, [
-                "access_token" => $this->request->session()->read('access_token'),
-            ], [
-                'ssl_cafile' => getenv('SSL_CA_CRT')
-            ]);
+            $response = $http->get($url, $tokenArray, $this->__getCaArray());
         }
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
@@ -133,9 +127,7 @@ class JsonComponent extends Component {
     public function postJson($url, $data = [])
     {
         $http = new Client();
-        $response = $http->post($url, $data, [
-            'ssl_cafile' => getenv('SSL_CA_CRT')
-        ]);
+        $response = $http->post($url, $data, $this->__getCaArray());
         $json = (object) null;
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
@@ -169,7 +161,8 @@ class JsonComponent extends Component {
      */
     private function __getApiUrl()
     {
-        return 'https://'.getenv('SERVER_NAME')."/web-resource/";
+        $serverName = getenv('SERVER_NAME');
+        return "https://{$serverName}/web-resource/";
     }
 
     /**
