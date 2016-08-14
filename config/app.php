@@ -9,7 +9,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => (getenv('CAKE_ENV') !== 'production'),
+    'debug' => (getenv('ENVIRONMENT') !== 'production'),
 
     /**
      * Configure basic information about the application.
@@ -271,13 +271,13 @@ return [
         'debug' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
-            'file' => 'access',
+            'file' => 'igoapp-access',
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
-            'file' => 'error',
+            'file' => 'igoapp-error',
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
     ],
