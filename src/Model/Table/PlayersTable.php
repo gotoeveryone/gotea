@@ -103,13 +103,13 @@ class PlayersTable extends AppTable
      * @param type $rankId
      * @param type $playerName
      * @param type $playerNameEn
-     * @param type $joined
-     * @param type $enrollmentTo
+     * @param type $joinedFrom
+     * @param type $joinedTo
      * @param type $retire
      * @return Player 棋士情報一覧
      */
     public function findPlayers($countryId = null, $sex = null, $rankId = null, $playerName = null, $playerNameEn = null,
-            $joined = null, $enrollmentTo = null, $retire = null)
+            $joinedFrom = null, $joinedTo = null, $retire = null)
     {
         // 棋士情報の取得
         $query = $this->find();
@@ -130,11 +130,11 @@ class PlayersTable extends AppTable
         if (($playerNameEn = trim($playerNameEn))) {
             $query->where(['OR' => $this->__createLikeParams('name_english', $playerNameEn)]);
         }
-        if (is_numeric($joined)) {
-            $query->where(["DATE_FORMAT(Players.joined, '%Y') >=" => $joined]);
+        if (is_numeric($joinedFrom)) {
+            $query->where(["SUBSTR(Players.joined, 1, 4) >=" => $joinedFrom]);
         }
-        if (is_numeric($enrollmentTo)) {
-            $query->where(["DATE_FORMAT(Players.joined, '%Y') <=" => $enrollmentTo]);
+        if (is_numeric($joinedTo)) {
+            $query->where(["SUBSTR(Players.joined, 1, 4) <=" => $joinedTo]);
         }
         if ($retire && $retire === 'false') {
             $query->where(['Players.is_retired' => 0]);

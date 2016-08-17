@@ -71,8 +71,8 @@ class PlayersController extends AppController
         $sex = $this->request->data('searchSex');
         $playerName = $this->request->data('searchPlayerName');
         $playerNameEn = $this->request->data('searchPlayerNameEn');
-        $joinedFrom = $this->request->data('searchEnrollmentFrom');
-        $joinedTo = $this->request->data('searchEnrollmentTo');
+        $joinedFrom = $this->request->data('searchJoinedFrom');
+        $joinedTo = $this->request->data('searchJoinedTo');
         $retire = $this->request->data('searchRetire');
 
         // 該当する棋士情報一覧の件数を取得

@@ -38,6 +38,26 @@ class DateHelper extends Helper {
     }
 
     /**
+     * 「YYYYMMdd」文字列を指定した区切り文字を付与して表示します。
+     * 文字列が5桁以下の場合は年まで、文字列が7桁以下の場合は月まで表示します。
+     *
+     * @param string 変換対象文字列
+     * @param string デリミタ
+     * @return string 整形した日付表記
+     */
+    public function formatJoinDelimiterValue($value, $delimiter) {
+        $len = strlen($value);
+        if (empty($value) || $len > 8) {
+            return '';
+        }
+        $year = $len < 4 ? '' : substr($value, 0, 4);
+        $month = $len < 6 ? '' : $delimiter.substr($value, 4, 2);
+        $day = $len < 8 ? '' : $delimiter.substr($value, 6, 2);
+
+        return $year.$month.$day;
+    }
+
+    /**
      * 日付型オブジェクトを特定フォーマットの表記に変換して表示します。
      *
      * @param Time $timeObj 変換するTime型オブジェクト

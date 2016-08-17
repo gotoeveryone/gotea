@@ -86,16 +86,16 @@
             <td class="searchColumn1">入段年：</td>
             <td>
                 <?=
-                    $this->Form->text('searchEnrollmentFrom', [
-                        'value' => h($this->request->data('searchEnrollmentFrom')),
+                    $this->Form->text('searchJoinedFrom', [
+                        'value' => h($this->request->data('searchJoinedFrom')),
                         'class' => 'from imeDisabled',
                         'maxlength' => 4
                     ]);
                 ?>
                 ～
                 <?=
-                    $this->Form->text('searchEnrollmentTo', [
-                        'value' => h($this->request->data('searchEnrollmentTo')),
+                    $this->Form->text('searchJoinedTo', [
+                        'value' => h($this->request->data('searchJoinedTo')),
                         'class' => 'to imeDisabled',
                         'maxlength' => 4
                     ]);
@@ -192,7 +192,7 @@
                     <?=h($player->name_english); ?>
                 </td>
                 <td class="left enrollment">
-                    <?=h($player->joined); ?>
+                    <?=$this->Date->formatJoinDelimiterValue($player->joined, '/'); ?>
                 </td>
                 <td class="center country">
                     <?=h($player->country->name); ?>
