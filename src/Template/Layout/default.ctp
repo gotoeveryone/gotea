@@ -58,8 +58,8 @@
                 <?=
                     $this->Html->link('棋士勝敗ランキング出力',
                         [
-                            'controller' => 'ranking',
-                            'action' => 'index'
+                            'controller' => 'players',
+                            'action' => 'ranking'
                         ],
                         [
                             'class' => 'button menu'
@@ -89,7 +89,7 @@
                     );
                 ?>
                 <?=
-                    $this->Html->link('段位別人数検索',
+                    $this->Html->link('段位別棋士数検索',
                         [
                             'controller' => 'players',
                             'action' => 'categorize'

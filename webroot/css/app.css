@@ -32,6 +32,9 @@ section#container a.button {
 	background-color: #bbb;
 }
 
+/* -------------------------------------------
+   共通レイアウト
+ ------------------------------------------- */
 section#container .menu {
 	width: 200px;
 	height: 18px;
@@ -40,13 +43,9 @@ section#container .menu {
 section#container th,
 section#container tr,
 section#container td {
-	/*border: 1px solid #000000;*/
 	border-collapse: collapse;
 }
 
-/* -------------------------------------------
-   共通レイアウト
- ------------------------------------------- */
 section#container {
 	margin: auto;
 	width: 99%;
@@ -144,6 +143,14 @@ section#footer {
 	height: 40px;
 	width: 100%;
 	bottom: 0px;
+}
+
+section.row:after {
+    content: "";
+	clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
 }
 
 /* -------------------------------------------
@@ -266,37 +273,44 @@ table.searchView tr:nth-last-of-type(1) td {
    詳細表示エリア
  ------------------------------------------- */
 section#tabs {
-    height: 25px;
+    height: 30px;
     margin-bottom: 2px;
 }
 
 section#tabs:after {
-    clear: both;
+    content: "";
+	clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
 }
 
-section.tabs {
+section#tabs .tab {
     float: left;
-    background-color: #ddffff;
+    color: #ffffff;
+    background-color: #000000;
 	border: 1px solid #000000;
     height: 100%;
     padding: 0px 5px;
+    border-radius: 6px 6px 0px 0px;
 }
 
-section.selectTab {
+section#tabs .selectTab {
     font-weight: bold;
+    color: #000000;
     background-color: #99ffff;
 }
 
 section#detail {
 	max-width: 500px;
 	margin-bottom: 3px;
-	height: calc(100% - 28px);
+	height: calc(100% - 30px);
     margin: auto;
 }
 
 section#scroll {
 	overflow-y: scroll;
-	height: 98%;
+	height: calc(100% - 30px);
 	border: 1px solid #000000;
 	background-color: #ffffff;
 }
@@ -306,10 +320,6 @@ section.retains {
 	width: 100%;
 	padding: 2px;
 	background-color: #ffffff;
-}
-
-section.row:after {
-    clear: both;
 }
 
 section[class^=box] {
@@ -338,12 +348,6 @@ section.box3 {
 
 section.box4 {
     width: calc(100% / 4);
-}
-
-section.category {
-	border: 1px solid #000000;
-    height: 100%;
-    clear: both;
 }
 
 section.categoryRow {
@@ -375,6 +379,15 @@ section.headerRow {
 section.valueRow {
     min-height: 28px;
 	text-indent: 10px;
+}
+
+section.buttonRow {
+    margin: 5px auto;
+    text-align: center;
+}
+
+section.details hr {
+    margin: 0px;
 }
 
 section.details input.playerPoint {

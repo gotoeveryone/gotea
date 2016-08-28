@@ -1,8 +1,9 @@
 // 初期処理
 $(document).ready(function() {
-    // 日付入力欄が存在すればクラスを設定
+    // 各種初期設定
     setDatepicker();
     setTooltip();
+    setColorbox();
 
     $('#confirm, #dialog').click(function (event) {
         $(this).dialog('open');
@@ -91,19 +92,21 @@ $(document).ready(function() {
     selectTab($('section.details').eq(0).attr('id'));
 
     // タブ押下時
-    $('section.tabs').click(function () {
+    $('section#tabs .tab').click(function () {
         selectTab($(this).attr('name'));
     });
 });
 
 function selectTab(tabName) {
-    $.each($('section.details'), function() {
-        var id = $(this).attr('id');
+    var details = $('section.details');
+    details.hide();
+    $.each(details, function() {
+        var obj = $(this);
+        var id = obj.attr('id');
         if (id === tabName) {
-            $(this).removeClass('unVisible');
             $('section#tabs section[name=' + id + ']').addClass('selectTab');
+            obj.fadeIn();
         } else {
-            $(this).addClass('unVisible');
             $('section#tabs section[name=' + id + ']').removeClass('selectTab');
         }
     });
@@ -170,83 +173,20 @@ function setTooltip() {
     });
 }
 
-// キーの入力制御
-function kdown(event) {
-	var msg = "";
-	var flg = 1;
-    var obj = event.target;
-    switch (obj.tagName) {
-        case "INPUT":
-            // typeがテキストもしくはパスワードの場合、押下を許可
-            if (obj.type !== "text"
-                    && obj.type !== "password" && event.keyCode !== 9
-                    && event.keyCode !== 16 && event.keyCode !== 32) {
-                return false;
-            } else {
-                flg = 0;
-            }
-            break;
-        case "TEXTAREA":
-            flg = 0;
-            break;
-        case "SELECT":
-            flg = 0;
-            break;
-        case "A":
-            flg = 2;
-            break;
-	}
-	// キーコードの取得・判定
-	switch (event.keyCode) {
-	case 8:
-		msg = "BS";
-		break;
-	case 13:
-		msg = "Enter";
-		break;
-	case 27:
-		msg = "Esc";
-		break;
-	case 78:
-		if (event.ctrlKey) {
-			msg = "Ctrl+N";
-		}
-		break;
-	case 82:
-		if (event.ctrlKey) {
-			msg = "Ctrl+R";
-		}
-		break;
-	case 116:
-		msg = "F5";
-		break;
-	case 122:
-		msg = "F11";
-		break;
-	}
-	if (event.altKey) {
-		msg = "Alt";
-	}
-	if (flg === 0) {
-		switch (event.keyCode) {
-		case 8:
-			msg = "";
-			break;
-		case 13:
-			msg = "";
-			break;
-		}
-	} else if (flg === 2 && event.keyCode === 13) {
-		msg = "";
-	}
-	if (msg !== "") {
-		event.keyCode = 0;
-		return false;
-	} else {
-		return true;
-	}
+// カラーボックスの設定
+function setColorbox(href) {
+    var options = {
+        iframe: true,
+        width: "50%",
+        height: "90%"
+    };
+    if (href) {
+        options["href"] = href;
+        $.colorbox(options);
+    } else {
+        $('.colorbox').colorbox(options);
+    }
 }
-document.onkeydown = kdown;
 
 // Hiddenに選択した値を設定
 function setHidden(obj, setId) {

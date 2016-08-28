@@ -9,7 +9,8 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => (getenv('ENVIRONMENT') !== 'production'),
+//    'debug' => (getenv('ENVIRONMENT') !== 'production'),
+    'debug' => false,
 
     /**
      * Configure basic information about the application.

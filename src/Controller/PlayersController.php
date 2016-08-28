@@ -34,6 +34,9 @@ class PlayersController extends AppController
         $this->Countries = TableRegistry::get('Countries');
         $this->Ranks = TableRegistry::get('Ranks');
         $this->Organizations = TableRegistry::get('Organizations');
+
+        // GETアクセスを許可するアクションを定義
+        $this->_addOkActions(["categorize", "ranking"]);
     }
 
 	/**
@@ -208,6 +211,22 @@ class PlayersController extends AppController
 			return $this->detail($playerId);
 		}
 	}
+
+    /**
+     * ランキング出力処理
+     */
+    public function ranking()
+    {
+        $this->loadComponent('Json');
+
+        $this->_setTitle('棋士勝敗ランキング出力');
+
+        // 所属国プルダウン
+		$this->set('countries', $this->Countries->findCountryHasFileToArrayWithSuffix());
+
+        // 年度プルダウン
+        $this->set('years', $this->PlayerScores->findScoreUpdateToArrayWithSuffix());
+    }
 
     /**
      * カテゴリ処理

@@ -22,7 +22,7 @@ class AppController extends Controller
     private $__title = '';
 
     // 許可するアクション
-    protected $_okActions = [];
+    private $__okActions = ["index", "detail", "login", "logout"];
 
     // リダイレクト先アクション
     protected $_redirectAction = "index";
@@ -58,9 +58,8 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
 
-        // 指定アクション以外の場合、POSTは許可しない
-        $target_actions = ['index', 'detail', 'logout'];
-        if (!in_array($this->request->action, $target_actions) && !$this->request->is('post')) {
+        // 指定アクション以外の場合、POST以外許可しない
+        if (!in_array($this->request->action, $this->__okActions) && !$this->request->is('post')) {
             $this->setAction($this->_redirectAction);
             return;
         }
@@ -186,10 +185,21 @@ class AppController extends Controller
     /**
      * タイトルタグに表示する値を設定します。
      *
-     * @param type $title
+     * @param string $title
      */
-    protected function _setTitle($title)
+    protected function _setTitle(string $title)
     {
         $this->__title = $title;
+    }
+
+    /**
+     * GETアクセスを許可するアクションを追加します。
+     *
+     * @param Array $actions
+     */
+    protected function _addOkActions(Array $actions)
+    {
+        $detaultActions = $this->__okActions;
+        $this->__okActions = array_merge($detaultActions, $actions);
     }
 }

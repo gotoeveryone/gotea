@@ -48,7 +48,6 @@ class TitlesController extends AppController
 	public function index()
     {
         $this->__initSearch();
-		$this->set('searchFlag', false);
         return $this->render('index');
     }
 
@@ -69,9 +68,6 @@ class TitlesController extends AppController
         }
 
         $this->set('titles', $titles);
-
-        // 検索フラグを設定
-		$this->set('searchFlag', true);
 
         // indexページへ描画
         return $this->render('index');
