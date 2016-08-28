@@ -113,10 +113,10 @@ class PlayersTable extends AppTable
             $query->where(["Countries.id" => $countryId]);
         }
         if (($organizationId = $searchParams->organization_id)) {
-            $query->where(["Players.organization_id" => $organizationId]);
+            $query->where(["Organizations.id" => $organizationId]);
         }
         if (($rankId = $searchParams->rank_id)) {
-            $query->where(["Players.rank_id" => $rankId]);
+            $query->where(["Ranks.id" => $rankId]);
         }
         if (($sex = $searchParams->sex)) {
             $query->where(["Players.sex" => $sex]);
@@ -133,7 +133,7 @@ class PlayersTable extends AppTable
         if (is_numeric($joinedTo)) {
             $query->where(["SUBSTR(Players.joined, 1, 4) <=" => $joinedTo]);
         }
-        if (($retire = $searchParams->is_retired) && $retire === "false") {
+        if (!isset($searchParams->is_retired) || !$searchParams->is_retired) {
             $query->where(["Players.is_retired" => 0]);
         }
 
@@ -143,7 +143,8 @@ class PlayersTable extends AppTable
         ])->contain([
             "PlayerScores" => function ($q) {
                 return $q->where(["PlayerScores.target_year" => intval(Time::now()->year)]);
-            }, "Ranks", "Countries", "Organizations"
+            },
+            "Ranks", "Countries", "Organizations"
         ])->all();
     }
 
