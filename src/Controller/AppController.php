@@ -22,7 +22,7 @@ class AppController extends Controller
     private $__title = '';
 
     // 許可するアクション
-    private $__okActions = ["index", "detail", "login", "logout"];
+    private $__allowActions = ["index", "detail", "login", "logout"];
 
     // リダイレクト先アクション
     protected $_redirectAction = "index";
@@ -58,8 +58,8 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
 
-        // 指定アクション以外の場合、POST以外許可しない
-        if (!in_array($this->request->action, $this->__okActions) && !$this->request->is('post')) {
+        // 許可したアクション以外でPOSTではないアクセスの場合、デフォルトアクションへ遷移させる
+        if (!in_array($this->request->action, $this->__allowActions) && !$this->request->is('post')) {
             $this->setAction($this->_redirectAction);
             return;
         }
@@ -118,6 +118,19 @@ class AppController extends Controller
             $this->__conn->commit();
         }
         parent::redirect($url, $status);
+    }
+
+    /**
+     * 指定したリクエスト以外でアクセスがあった場合、デフォルトアクションへ遷移させます。
+     * 
+     * @param string $method
+     * @param string $action
+     */
+    protected function _checkAllowRequest(string $method, string $action)
+    {
+        if (!$this->request->is($method)) {
+            $this->setAction($action);
+        }
     }
 
     /**
@@ -197,9 +210,9 @@ class AppController extends Controller
      *
      * @param Array $actions
      */
-    protected function _addOkActions(Array $actions)
+    protected function _addAllowGetActions(Array $actions)
     {
-        $detaultActions = $this->__okActions;
-        $this->__okActions = array_merge($detaultActions, $actions);
+        $detaultActions = $this->__allowActions;
+        $this->__allowActions = array_merge($detaultActions, $actions);
     }
 }

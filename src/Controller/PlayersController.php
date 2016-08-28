@@ -36,7 +36,7 @@ class PlayersController extends AppController
         $this->Organizations = TableRegistry::get('Organizations');
 
         // GETアクセスを許可するアクションを定義
-        $this->_addOkActions(["categorize", "ranking"]);
+        $this->_addAllowGetActions(["categorize", "ranking"]);
     }
 
 	/**
