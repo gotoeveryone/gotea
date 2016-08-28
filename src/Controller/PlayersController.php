@@ -210,6 +210,16 @@ class PlayersController extends AppController
 	}
 
     /**
+     * カテゴリ処理
+     */
+    public function categorize()
+    {
+		// 所属国プルダウン
+		$this->set("countries", $this->Countries->findCountryHasFileToArrayWithSuffix());
+        $this->_setTitle("段位別棋士数検索");
+    }
+
+    /**
      * 検索画面初期処理
      */
     private function __initSearch()

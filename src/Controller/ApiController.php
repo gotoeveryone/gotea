@@ -34,7 +34,7 @@ class ApiController extends Controller
      */
     public function players($name)
     {
-        $this->__renderJson($this->Json->getPlayer($name));
+        $this->__renderJson($this->Json->getJson("players?name={$name}"));
     }
 
     /**
@@ -42,7 +42,7 @@ class ApiController extends Controller
      */
     public function news()
     {
-        $json = $this->Json->getNews();
+        $json = $this->Json->getJson("titles/news");
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             if (!file_put_contents($this->homepage."news.json", json_encode($json))) {
@@ -61,7 +61,9 @@ class ApiController extends Controller
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
-        $json = $this->Json->getRanking($country, $year, $rank, ($this->request->query('jp') === 'true'));
+        $encodeCountry = urlencode($country);
+        $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($this->request->query('jp') === 'true' ? "&with=jp" : "");
+        $json = $this->Json->getJson($path);
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
@@ -70,6 +72,21 @@ class ApiController extends Controller
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
+        $this->__renderJson($json);
+    }
+
+    /**
+     * ランキングを取得します。
+     * 
+     * @param type $country
+     * @param type $year
+     * @param type $rank
+     */
+    public function categorize($country = null)
+    {
+        $encodeCountry = urlencode($country);
+        $json = $this->Json->getJson("players/categorize?country={$encodeCountry}".
+                (($this->request->query('all') === 'true') ? "&all=true" : ""));
         $this->__renderJson($json);
     }
 

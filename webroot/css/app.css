@@ -57,31 +57,56 @@ section#container {
 
 section#header {
 	font-size: 13px;
-	height: 20px;
+	height: 40px;
 	vertical-align: top;
 	font-style: italic;
-	clear: both;
 	width: 100%;
+    font-family: "ヒラギノ明朝 ProN W6", "HiraMinProN-W6", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
+    /*font-family: 'Hannari';*/
+}
+
+section#header:after {
+    content: "";
+	clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
+}
+
+section#header .system-name {
+	float: left;
+    width: 15%;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+@font-face {
+	font-family: 'Hannari';
+	src: url('../fonts/Hannari.otf');
+}
+
+section#header .page-title {
+    float: left;
+	margin: auto;
+    width: 70%;
+}
+
+section#header .page-title h1 {
+	margin: 0px;
+    text-align: center;
+	font-size: 2.5rem;
 }
 
 section#header .username {
-	float: left;
-	text-decoration: underline;
-}
-
-section#header .time {
 	float: right;
+    width: 15%;
 	text-align: right;
+    line-height: 18px;
 }
 
-section#title {
-	height: 60px;
-}
-
-section#title h1 {
-	margin: 0px;
-	font-size: 35px;
-	font-style: italic;
+section#header .username span {
+    font-weight: bold;
+	text-decoration: underline;
 }
 
 section#content {
@@ -195,12 +220,13 @@ th.space, td.space {
 table.searchView {
 	height: 100%;
 	display: block;
-}
+} 
 
 table.searchView thead {
 	background-color: #ffffcc;
-	display: block;
+	display: table-cell;
 	border: 1px #000000 solid;
+    max-height: 50px;
 }
 
 table.searchView tbody {
@@ -209,16 +235,31 @@ table.searchView tbody {
     -ms-overflow-x: hidden;
     -ms-overflow-y: scroll;
     background-color: #ffffff;
-    display: block;
+    display: inline-block;
+	border-top: 2px #000000 solid;
 	border-left: 1px #000000 solid;
-	border-right: 1px #000000 solid;
+	border-right: 2px #000000 solid;
 	border-bottom: 2px #000000 solid;
+    margin-top: -2px;
 }
 
 table.searchView td,
 table.searchView th {
+    display: table-cell;
 	border: 1px solid #000000;
 	table-layout: fixed;
+}
+
+table.searchView tr td:nth-last-of-type(1) {
+	border-right: 2px solid #000000;
+}
+
+table.searchView tr:first-of-type td {
+	border-top: none;
+}
+
+table.searchView tr:nth-last-of-type(1) td {
+	border-bottom: none;
 }
 
 /* -------------------------------------------
@@ -431,13 +472,9 @@ td.rankingColumn1 {
 table.ranking {
 	height: calc(100% - 90px);
 	max-height: calc(100% - 90px);
-	min-width: 387px;
-	max-width: 387px;
+	/*min-width: 387px;*/
+	/*max-width: 387px;*/
 	border-collapse: collapse;
-}
-
-table.ranking thead {
-	height: 22px;
 }
 
 table.ranking tbody {
@@ -484,18 +521,11 @@ table.playersHeader input.to {
 table.players {
 	height: calc(100% - 100px);
 	max-height: calc(100% - 100px);
-	min-width: 800px;
-	max-width: 910px;
 	border-collapse: collapse;
 }
 
-table.players thead {
-	height: 42px;
-}
-
 table.players tbody {
-	max-height: calc(100% - 43px);
-	border-right: 2px #000000 solid;
+	max-height: calc(100% - 30px);
 }
 
 table.players tr.retired {
@@ -548,13 +578,7 @@ table.titlesHeader {
 table.titles {
 	height: calc(100% - 60px);
 	max-height: calc(100% - 60px);
-	min-width: 800px;
-	max-width: 886px;
 	border-collapse: collapse;
-}
-
-table.titles thead {
-	height: 40px;
 }
 
 table.titles thead th {
@@ -562,7 +586,7 @@ table.titles thead th {
 }
 
 table.titles tbody {
-	max-height: calc(100% - 41px);
+	max-height: calc(100% - 28px);
 	border-right: 2px #000000 solid;
 }
 
@@ -621,6 +645,38 @@ table.titles .htmlModifyDate input[type=text] {
 }
 
 /* -------------------------------------------
+   段位別棋士数検索
+ ------------------------------------------- */
+table.categorizeHeader {
+	height: 50px;
+	width: 300px;
+	border: 2px solid #dddddd;
+	padding: 5px 5px 0px 5px;
+	text-align: left;
+	background-color: #ffffff;
+	margin-bottom: 5px;
+}
+
+table.ranks {
+	height: calc(100% - 50px);
+	max-height: calc(100% - 50px);
+	border-collapse: collapse;
+}
+
+table.ranks tbody {
+	max-height: calc(100% - 33px);
+	border-collapse: collapse;
+}
+
+table.ranks .rank {
+    width: 60px;
+}
+
+table.ranks .count {
+    width: 80px;
+}
+
+/* -------------------------------------------
    成績更新日編集
  ------------------------------------------- */
 table.scoreUpdatesHeader {
@@ -657,7 +713,7 @@ section.updateScore {
 }
 
 section.updateScore textarea {
-	height: calc(100% - 40px);
+	height: calc(100% - 27px);
 	width: 100%;
     font-size: 12px;
 	overflow-y: auto;

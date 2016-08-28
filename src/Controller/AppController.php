@@ -5,7 +5,6 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
-use Cake\NetWork\Exception\MethodNotAllowedException;
 use Psr\Log\LogLevel;
 
 /**
@@ -21,6 +20,12 @@ class AppController extends Controller
 
     // タイトル
     private $__title = '';
+
+    // 許可するアクション
+    protected $_okActions = [];
+
+    // リダイレクト先アクション
+    protected $_redirectAction = "index";
 
     /**
      * 初期処理
@@ -53,10 +58,11 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
 
-        // 初期表示以外のアクションの場合、POSTされたデータが存在しなければエラー
-        $target_actions = ['index', 'detail', 'clear', 'logout'];
+        // 指定アクション以外の場合、POSTは許可しない
+        $target_actions = ['index', 'detail', 'logout'];
         if (!in_array($this->request->action, $target_actions) && !$this->request->is('post')) {
-        	throw new MethodNotAllowedException(__("不正なリクエストです。リクエストタイプ：{$this->request->method()}"));
+            $this->setAction($this->_redirectAction);
+            return;
         }
 
         // トランザクションを開始
@@ -144,7 +150,7 @@ class AppController extends Controller
         $message = [];
         foreach ($errors as $error) {
             foreach ($error as $val) {
-                array_push($message, $val);
+                $message[] = $val;
             }
         }
         return implode('<br/>', $message);
