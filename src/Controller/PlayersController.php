@@ -69,18 +69,21 @@ class PlayersController extends AppController
         $this->__initSearch();
 
         // リクエストから値を取得
-        $countryId = $this->request->data('searchCountry');
-        $rankId = $this->request->data('searchRank');
-        $sex = $this->request->data('searchSex');
-        $playerName = $this->request->data('searchPlayerName');
-        $playerNameEn = $this->request->data('searchPlayerNameEn');
+        $searchPlayer = $this->Players->newEntity([
+            "country_id" => $this->request->data('searchCountry'),
+            "organization_id" => $this->request->data('searchOrganization'),
+            "rank_id" => $this->request->data('searchRank'),
+            "sex" => $this->request->data('searchSex'),
+            "name" => $this->request->data('searchPlayerName'),
+            "name_english" => $this->request->data('searchPlayerNameEn'),
+            "is_retired" => $this->request->data('searchRetire')
+        ]);
+
         $joinedFrom = $this->request->data('searchJoinedFrom');
         $joinedTo = $this->request->data('searchJoinedTo');
-        $retire = $this->request->data('searchRetire');
 
         // 該当する棋士情報一覧の件数を取得
-        $players = $this->Players->findPlayers($countryId, $sex, $rankId, $playerName, $playerNameEn,
-                $joinedFrom, $joinedTo, $retire);
+        $players = $this->Players->findPlayers($searchPlayer, $joinedFrom, $joinedTo);
 
         // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
         if (!($count = count($players))) {

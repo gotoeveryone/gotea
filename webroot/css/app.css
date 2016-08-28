@@ -187,6 +187,10 @@ form#mainForm {
 	height: 100%;
 }
 
+.female {
+	color: #ff4577;
+}
+
 /* -------------------------------------------
    マスタプルダウン
  ------------------------------------------- */
@@ -560,6 +564,10 @@ table.players .enrollment {
 
 table.players .country {
 	width: 60px;
+}
+
+table.players .organization {
+	width: 100px;
 }
 
 table.players .rank,

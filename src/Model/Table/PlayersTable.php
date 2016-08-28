@@ -59,9 +59,9 @@ class PlayersTable extends AppTable
      * 棋士とそれに紐づく棋士成績を取得します。
      * 
      * @param type $id
-     * @return Player 棋士とそれに紐づく棋士成績
+     * @return App\Model\Entity\Player 棋士とそれに紐づく棋士成績
      */
-    public function findPlayerWithScores($id)
+    public function findPlayerWithScores($id) : App\Model\Entity\Player
     {
         return $this->find()->contain(['PlayerScores'])
                 ->where(['id' => $id])->first();
@@ -73,7 +73,7 @@ class PlayersTable extends AppTable
      * @param type $id
      * @return Player 棋士情報
      */
-    public function findPlayerAllRelations($id)
+    public function findPlayerAllRelations($id) : Player
     {
 		return $this->find()->contain([
             'Countries',
@@ -98,37 +98,34 @@ class PlayersTable extends AppTable
     /**
      * 指定条件に合致した棋士情報を取得します。
      * 
-     * @param type $countryId
-     * @param type $sex
-     * @param type $rankId
-     * @param type $playerName
-     * @param type $playerNameEn
-     * @param type $joinedFrom
-     * @param type $joinedTo
-     * @param type $retire
+     * @param Player $searchParams
+     * @param string $joinedFrom
+     * @param string $joinedTo
      * @return Player 棋士情報一覧
      */
-    public function findPlayers($countryId = null, $sex = null, $rankId = null, $playerName = null, $playerNameEn = null,
-            $joinedFrom = null, $joinedTo = null, $retire = null)
+    public function findPlayers(Player $searchParams, string $joinedFrom = null, string $joinedTo = null)
     {
         // 棋士情報の取得
         $query = $this->find();
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if ($countryId) {
-            $query->where(['Countries.id' => $countryId]);
+        if (($countryId = $searchParams->country_id)) {
+            $query->where(["Countries.id" => $countryId]);
         }
-        if ($sex) {
-            $query->where(['Players.sex' => $sex]);
+        if (($organizationId = $searchParams->organization_id)) {
+            $query->where(["Players.organization_id" => $organizationId]);
         }
-        if ($rankId) {
-            $query->where(['Players.rank_id' => $rankId]);
+        if (($rankId = $searchParams->rank_id)) {
+            $query->where(["Players.rank_id" => $rankId]);
         }
-        if (($playerName = trim($playerName))) {
-            $query->where(['OR' => $this->__createLikeParams('name', $playerName)]);
+        if (($sex = $searchParams->sex)) {
+            $query->where(["Players.sex" => $sex]);
         }
-        if (($playerNameEn = trim($playerNameEn))) {
-            $query->where(['OR' => $this->__createLikeParams('name_english', $playerNameEn)]);
+        if (($playerName = trim($searchParams->name))) {
+            $query->where(["OR" => $this->__createLikeParams("name", $playerName)]);
+        }
+        if (($playerNameEn = trim($searchParams->name_english))) {
+            $query->where(["OR" => $this->__createLikeParams("name_english", $playerNameEn)]);
         }
         if (is_numeric($joinedFrom)) {
             $query->where(["SUBSTR(Players.joined, 1, 4) >=" => $joinedFrom]);
@@ -136,33 +133,28 @@ class PlayersTable extends AppTable
         if (is_numeric($joinedTo)) {
             $query->where(["SUBSTR(Players.joined, 1, 4) <=" => $joinedTo]);
         }
-        if ($retire && $retire === 'false') {
-            $query->where(['Players.is_retired' => 0]);
+        if (($retire = $searchParams->is_retired) && $retire === "false") {
+            $query->where(["Players.is_retired" => 0]);
         }
 
         // データを取得
         return $query->order([
-            'Ranks.rank_numeric DESC',
-            'Players.joined',
-            'Players.id'
+            "Ranks.rank_numeric DESC", "Players.joined", "Players.id"
         ])->contain([
-            'PlayerScores' => function ($q) {
-                return $q->where(['PlayerScores.target_year' => intval(Time::now()->year)]);
-            },
-            'Ranks',
-            'Countries',
-            'Organizations'
+            "PlayerScores" => function ($q) {
+                return $q->where(["PlayerScores.target_year" => intval(Time::now()->year)]);
+            }, "Ranks", "Countries", "Organizations"
         ])->all();
     }
 
     /**
      * LIKE検索用のWHERE句を生成します。
      * 
-     * @param type $fieldName
-     * @param type $input
-     * @return \App\Model\Table\Player
+     * @param string $fieldName
+     * @param string $input
+     * @return Array
      */
-    private function __createLikeParams($fieldName, $input)
+    private function __createLikeParams($fieldName, $input) : Array
     {
         $whereClause = [];
         $params = explode(" ", $input);

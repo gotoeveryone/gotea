@@ -23,6 +23,18 @@
                 ]);
             ?>
         </td>
+        <td class="center">所属組織：</td>
+        <td>
+            <?=
+                $this->Form->input('searchOrganization', [
+                    'id' => 'searchOrganization',
+                    'options' => $organizations,
+                    'value' => h($this->request->data('searchOrganization')),
+                    'class' => 'organization',
+                    'empty' => true
+                ]);
+            ?>
+        </td>
         <td class="center">段位：</td>
         <td>
             <?=
@@ -130,6 +142,7 @@
             <th rowspan="2" class="playerNameEn">棋士名（英語）</th>
             <th rowspan="2" class="enrollment">入段日</th>
             <th rowspan="2" class="country">所属国</th>
+            <th rowspan="2" class="organization">所属組織</th>
             <th rowspan="2" class="rank">段位</th>
             <th rowspan="2" class="sex">性別</th>
             <th colspan="3" class="score"><?php echo date('Y')?>年国内成績</th>
@@ -149,14 +162,14 @@
         <?php foreach ($players as $player) : ?>
         <?php
             $class = '';
-            if ($player->DELETE_FLAG) {
+            if ($player->is_retired) {
                 $class .= 'retired';
             }
-            if ($player->SEX === '女性') {
+            if ($player->sex === '女性') {
                 if ($class !== '') {
                     $class .= ' ';
                 }
-                $class .= 'red';
+                $class .= 'female';
             }
             if ($class !== '') {
                 $class = ' class="'.$class.'"';
@@ -168,7 +181,7 @@
             </td>
             <td class="left playerName">
                 <?php
-                    $setClass = ($player->sex === '女性' ? 'red' : 'blue');
+                    $setClass = ($player->sex === '女性' ? 'female' : 'blue');
                     if (isset($dialogFlag) && $dialogFlag) {
                         echo $this->Html->link($player->name, '#', [
                             'onClick' => 'selectParent("'.h($player->id).'",
@@ -195,13 +208,16 @@
             <td class="center country">
                 <?=h($player->country->name); ?>
             </td>
+            <td class="center organization">
+                <?=h($player->organization->name); ?>
+            </td>
             <td class="center rank">
                 <?=h($player->rank->name); ?>
             </td>
             <td class="center sex">
                 <?=h($player->sex); ?>
             </td>
-            <td class="center center scorePoint">
+            <td class="center scorePoint">
                 <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point)); ?>
             </td>
             <td class="center scorePoint">
