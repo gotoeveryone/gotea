@@ -28,7 +28,6 @@
         </td>
     </tr>
 </table>
-<div class="spacer"></div>
 
 <table class="searchView ranks">
     <thead>
