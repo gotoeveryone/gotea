@@ -11,10 +11,10 @@
 <table class="categorizeHeader">
     <tr class="left">
         <td class="rankingColumn1">対象国：</td>
-        <td colspan="2">
+        <td>
             <?=
                 $this->Form->input("selectCountry", [
-                    "id" => "selectCountry", "options" => $countries, "class" => "ranking"
+                    "id" => "selectCountry", "options" => $countries, "class" => "country"
                 ]);
             ?>
         </td>
@@ -44,8 +44,8 @@ $(function() {
     $('#search').click(function() {
         var target = $(this).attr("data-categories");
         $.ajax({
-            type: 'GET',
-            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'categorize'])?>/' + $('#selectCountry').val() + '/',
+            type: "GET",
+            url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'categorize'])?>/" + $('#selectCountry option:selected').text() + "/",
             contentType: "application/json",
             accepts: "application/json; charset=utf-8"
         }).done(function (data) {

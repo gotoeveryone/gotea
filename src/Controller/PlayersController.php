@@ -237,7 +237,7 @@ class PlayersController extends AppController
     public function categorize()
     {
 		// 所属国プルダウン
-		$this->set("countries", $this->Countries->findCountryHasFileToArrayWithSuffix());
+		$this->set("countries", $this->Countries->findCountryBelongToArray());
         $this->_setTitle("段位別棋士数検索");
     }
 
