@@ -7,3 +7,7 @@
 /nbproject
 /composer.lock
 /webroot/visual
+/.buildpath
+/.project
+/.settings/org.eclipse.php.server.core.phpServersPrefs.prefs
+/.settings/org.eclipse.wst.validation.prefs
