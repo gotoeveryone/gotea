@@ -135,7 +135,6 @@
                 <th rowspan="2" class="sex">性別</th>
                 <th colspan="3" class="score"><?php echo date('Y')?>年国内成績</th>
                 <th colspan="3" class="score"><?php echo date('Y')?>年国際成績</th>
-                <th rowspan="2" class="space">&nbsp;</th>
             </tr>
             <tr>
                 <th class="scorePoint">勝</th>

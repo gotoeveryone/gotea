@@ -74,7 +74,6 @@
 				<th class="winPoint">勝</th>
 				<th class="losePoint">敗</th>
 				<th class="winPercent">勝率</th>
-				<th class="space">&nbsp;</th>
 			</tr>
 		</thead>
 	</table>

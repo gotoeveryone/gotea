@@ -65,7 +65,6 @@
                 <th class="htmlModifyDate">修正日</th>
                 <th class="deleteFlag">終了<br>棋戦</th>
                 <th class="openRetain">詳細</th>
-                <th class="space">&nbsp;</th>
             </tr>
         </thead>
         <?php if (!empty($titles) && count($titles) > 0) : ?>

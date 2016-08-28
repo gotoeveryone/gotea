@@ -26,23 +26,25 @@
     <section id="container">
 
         <!-- ヘッダー -->
-        <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) : ?>
+        <?php if (!isset($dialogFlag) || !$dialogFlag) : ?>
         <section id="header">
-            <section class="username">
-                ユーザ：<?=h($username)?>
+            <section class="system-name">
+                棋士情報管理システム
             </section>
-            <section class="time">
-                <span><?=date('Y年m月d日 H時i分s秒')?></span><br/>
+            <!-- 見出し -->
+            <section class="page-title">
+            <?php if (!empty($cakeDescription)) : ?>
+                <h1><?=h($cakeDescription)?></h1>
+            <?php endif ?>
+            </section>
+            <section class="username">
+                <?php if (isset($username)) : ?>
+                    <span>ユーザ：<?=h($username)?></span><br>
+                <?php endif ?>
+                <?=date('Y年m月d日 H時i分s秒')?>
             </section>
         </section>
-        <?php endif ?>
-
-        <!-- 見出し -->
-        <?php if (!empty($cakeDescription)) : ?>
-            <section id="title" class="center">
-                <h1><?="棋士情報管理システム - {$cakeDescription}画面"?></h1>
-                <hr />
-            </section>
+        <hr />
         <?php endif ?>
 
         <!-- 本体 -->
@@ -80,6 +82,17 @@
                         [
                             'controller' => 'titles',
                             'action' => 'index'
+                        ],
+                        [
+                            'class' => 'button menu'
+                        ]
+                    );
+                ?>
+                <?=
+                    $this->Html->link('段位別人数検索',
+                        [
+                            'controller' => 'players',
+                            'action' => 'categorize'
                         ],
                         [
                             'class' => 'button menu'
