@@ -30,9 +30,9 @@ class ApiController extends Controller
     /**
      * 名前をもとに棋士情報を取得する
      * 
-     * @param type $name
+     * @param string $name
      */
-    public function players($name)
+    public function players(string $name)
     {
         $this->__renderJson($this->Json->getJson("players?name={$name}"));
     }
@@ -55,9 +55,9 @@ class ApiController extends Controller
     /**
      * ランキングを取得します。
      * 
-     * @param type $country
-     * @param type $year
-     * @param type $rank
+     * @param string $country
+     * @param string $year
+     * @param string $rank
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
@@ -76,11 +76,9 @@ class ApiController extends Controller
     }
 
     /**
-     * ランキングを取得します。
+     * カテゴリを取得します。
      * 
-     * @param type $country
-     * @param type $year
-     * @param type $rank
+     * @param string $country
      */
     public function categorize($country = null)
     {
