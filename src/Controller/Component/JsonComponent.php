@@ -33,7 +33,7 @@ class JsonComponent extends Component
      */
     public function saveAccessToken($account, $password)
     {
-        $token = $this->postJson("{$this->__getApiUrl()}users/login", [
+        $token = $this->postJson("users/login", [
             "account" => $account,
             "password" => $password
         ]);
@@ -52,7 +52,7 @@ class JsonComponent extends Component
      */
     public function removeAccessToken()
     {
-        return $this->deleteJson("{$this->__getApiUrl()}users/logout", [
+        return $this->deleteJson("users/logout", [
             "access_token" => $this->request->session()->read('access_token')
         ]);
     }
@@ -61,16 +61,13 @@ class JsonComponent extends Component
      * 指定URLよりJSONを取得します。
      * 
      * @param string $url
-     * @return Array or Object
+     * @return Array
      */
     public function getJson(string $url)
     {
-        $tokenArray = [
-            "access_token" => $this->request->session()->read('access_token'),
-        ];
         $http = new Client();
+        $tokenArray = ["access_token" => $this->request->session()->read('access_token')];
         $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
-        $json = (object) null;
         // 401なら再認証
         if ($response->statusCode() == 401) {
             $userId = $this->Auth->user('userid');
@@ -78,29 +75,40 @@ class JsonComponent extends Component
             $this->saveAccessToken($userId, $password);
             $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
         }
-        if ($response->isOk()) {
-            $json = json_decode($response->body(), true);
-        }
         $this->response->statusCode($response->statusCode());
-        return $json;
+        if ($response->isOk()) {
+            return json_decode($response->body(), true);
+        } else {
+            return ["status" => $response->statusCode(), "message" => "GETエラー発生"];
+        }
     }
 
     /**
      * 指定URLへデータをPOSTします。
      * 
-     * @param type $url
-     * @return type
+     * @param string $url
+     * @return Array
      */
-    public function postJson($url, $data = [])
+    public function postJson(string $url, $data = [])
     {
+        if (($token = $this->request->session()->read('access_token'))) {
+            $data["access_token"] = $token;
+        }
         $http = new Client();
-        $response = $http->post($url, $data, $this->__getCaArray());
-        $json = (object) null;
-        if ($response->isOk()) {
-            $json = json_decode($response->body(), true);
+        $response = $http->post($this->__getApiUrl().$url, $data, $this->__getCaArray());
+        // 401なら再認証
+        if ($response->statusCode() == 401) {
+            $userId = $this->Auth->user('userid');
+            $password = $this->Auth->user('password');
+            $this->saveAccessToken($userId, $password);
+            $response = $http->post($this->__getApiUrl().$url, $data, $this->__getCaArray());
         }
         $this->response->statusCode($response->statusCode());
-        return $json;
+        if ($response->isOk()) {
+            return json_decode($response->body(), true);
+        } else {
+            return ["status" => $response->statusCode(), "message" => "POSTエラー発生"];
+        }
     }
 
     /**

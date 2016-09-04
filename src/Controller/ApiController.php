@@ -28,13 +28,14 @@ class ApiController extends Controller
     }
 
     /**
-     * 名前をもとに棋士情報を取得する
-     * 
-     * @param string $name
+     * 名前をもとに棋士情報を取得します。
      */
-    public function players(string $name)
+    public function players()
     {
-        $this->__renderJson($this->Json->getJson("players?name={$name}"));
+        $this->__renderJson($this->Json->postJson(
+            "players/search",
+            ["name" => $this->request->data('name')]
+        ));
     }
 
     /**

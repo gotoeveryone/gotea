@@ -292,9 +292,11 @@
                 return false;
             }
             $.ajax({
-                type: 'GET',
-                url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'players'])?>/" + searchValue,
-                contentType: "application/json"
+                type: 'POST',
+                url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'players'])?>",
+                contentType: "application/json",
+                dataType: 'json',
+                data: JSON.stringify({name: searchValue})
             }).done(function (data) {
                 data = data.response;
                 // 該当者1件の場合はそのまま設定
@@ -302,7 +304,12 @@
                     var obj = data.results[0];
                     $('#registPlayerId').val(obj.id);
                     $('#registRank').val(obj.rankNumber);
-                    $('#registPlayerName').css("color", "#000000").text(obj.name + " " + obj.rankName);
+                    var playerName = obj.name + " " + obj.rankName;
+                    $('#registPlayerName').css("color", "#000000").html("<strong>" + playerName + "</strong>");
+                    $("#searchPlayerName").val('');
+                    var dialog = $("#dialog");
+                    dialog.html('【' + playerName + '】がセットされました。');
+                    dialog.click();
                     return false;
                 }
                 var resultArea = $("#searchResult table");
