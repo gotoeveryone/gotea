@@ -120,7 +120,7 @@ class JsonComponent extends Component
     public function deleteJson($url, $data = [])
     {
         $http = new Client();
-        $response = $http->delete($url, $data, $this->__getCaArray());
+        $response = $http->delete($this->__getApiUrl().$url, $data, $this->__getCaArray());
         $json = (object) null;
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);
