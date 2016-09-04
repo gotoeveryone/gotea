@@ -76,7 +76,7 @@ class JsonComponent extends Component
             $userId = $this->Auth->user('userid');
             $password = $this->Auth->user('password');
             $this->saveAccessToken($userId, $password);
-            $response = $http->get($url, $tokenArray, $this->__getCaArray());
+            $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
         }
         if ($response->isOk()) {
             $json = json_decode($response->body(), true);

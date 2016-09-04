@@ -69,10 +69,6 @@ class AppController extends Controller
             $this->__conn = ConnectionManager::get('default');
         }
         $this->__conn->begin();
-
-        // ダイアログ表示判定
-        $dialogFlag = $this->request->data('dialogFlag');
-        $this->set('dialogFlag', ($dialogFlag === 'true'));
     }
 
     /**

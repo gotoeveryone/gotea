@@ -1,11 +1,3 @@
-<!-- 棋士検索用フォーム -->
-<form id="searchPlayerForm" method="post" action="<?=$this->Url->build(['controller' => 'players', 'action' => 'index'])?>">
-    <input type="hidden" name="searchCountry" value="<?=$this->request->data('searchCountry')?>">
-    <input type="hidden" name="searchFlag" value="false">
-    <input type="hidden" name="searchRetire" value="<?=$this->request->data('searchRetire')?>">
-    <input type="hidden" name="dialogFlag" value="true">
-</form>
-
 <?=$this->Form->create(null, [
     'id' => 'mainForm',
     'method' => 'post',
@@ -126,69 +118,79 @@
                         ?>
                     </section>
                 </section>
-                <section class="box2">
+                <section class="box2 button">
+                    <?=
+                        $this->Form->button('新規登録', [
+                            'type' => 'button',
+                            'id' => 'regist',
+                            'disabled' => true,
+                            'with-mapping' => false
+                        ]);
+                    ?>
+                    <?=
+                        $this->Form->button('最新として登録', [
+                            'type' => 'button',
+                            'id' => 'registNew',
+                            'disabled' => true,
+                            'with-mapping' => true
+                        ]);
+                    ?>
+                </section>
+                <section class="box">
                     <section class="valueRow">
-                        <?=h($title->is_team ? '優勝団体名' : '棋士名：')?>
                         <?php
                             if ($title->is_team) {
+                                echo '優勝団体名：';
                                 echo $this->Form->text('registGroupName', [
                                     'value' => $this->request->data('registGroupName'),
                                     'maxlength' => 30
                                 ]);
                             } else {
+                                echo '設定棋士名：';
                                 echo $this->Form->hidden('registPlayerId', [
                                     'id' => 'registPlayerId',
                                     'value' => $this->request->data('registPlayerId')
-                                ]);
-                                echo $this->Form->text('registPlayerName', [
-                                    'id' => 'registPlayerName',
-                                    'value' => '',
-                                    'tabindex' => -1,
-                                    'readonly' => true,
-                                    'class' => 'readonly playerName'
-                                ]);
-                                echo $this->Form->hidden('registPlayerName', [
-                                    'id' => 'registPlayerName',
-                                    'value' => $this->request->data('registPlayerName')
-                                ]);
-                                echo $this->Form->text('registRankText', [
-                                    'id' => 'registRankText',
-                                    'value' => '',
-                                    'tabindex' => -1,
-                                    'readonly' => true,
-                                    'class' => 'readonly rank'
                                 ]);
                                 echo $this->Form->hidden('registRank', [
                                     'id' => 'registRank',
                                     'value' => $this->request->data('registRank')
                                 ]);
+                                echo '<span id="registPlayerName">（検索エリアから棋士を検索してください。）</span>';
                             }
                         ?>
                     </section>
                 </section>
             </section>
+            <?php if (!$title->is_team) : ?>
             <section class="row">
-                <section class="box button">
-                    <?php
-                        if (!$title->is_team) {
-                            echo $this->Form->button('棋士検索', [
-                                'type' => 'button',
-                                'id' => 'searchPlayer'
+                <section class="box">
+                    <section class="headerRow">検索エリア</section>
+                </section>
+                <section class="box2">
+                    <section class="valueRow">
+                        棋士名：
+                        <?=
+                            $this->Form->text('searchPlayerName', [
+                                'id' => 'searchPlayerName',
+                                'value' => '',
+                                'class' => 'playerName'
                             ]);
-                        }
-                        echo $this->Form->button('新規登録', [
+                        ?>
+                    </section>
+                </section>
+                <section class="box2 button">
+                    <?=
+                        $this->Form->button('棋士検索', [
                             'type' => 'button',
-                            'id' => 'regist',
-                            'disabled' => true
-                        ]);
-                        echo $this->Form->button('現在の保持者として登録', [
-                            'type' => 'button',
-                            'id' => 'registNew',
-                            'disabled' => true
+                            'id' => 'searchPlayer'
                         ]);
                     ?>
                 </section>
             </section>
+            <section class="row" id="searchResult">
+                <table></table>
+            </section>
+            <?php endif ?>
             <?php if (!empty($title->retention_histories)) : ?>
                 <?php foreach ($title->retention_histories as $retention) : ?>
                     <?php if ($title->holding === $retention->holding) : ?>
@@ -237,29 +239,15 @@
 <script type="text/javascript">
     $(document).ready(function() {
         controlDisabled();
-        // 棋士検索ボタン押下時
-        $('#searchPlayer').click(function() {
-            w = window.open('<?=$this->Url->build(['controller' => 'player'])?>', 'Search', 'width=900, height=700, menubar=no, toolbar=no, status=no,location=no, scrollbars=no, resizable=no');
-            var playerForm = $('#searchPlayerForm');
-            playerForm.attr('target', 'Search');
-            playerForm.submit();
-            w.focus();
-        });
         // 登録エリアの対象年、期フォーカスアウト時
         $('#registYear, #registHolding').blur(function() {
             controlDisabled();
         });
-        // 新規登録ボタン押下時
-        $('#regist').click(function() {
-            $('#registWithMapping').val(false);
-            regist();
+        // 新規登録、最新として登録ボタン押下時
+        $('#regist, #registNew').click(function() {
+            regist($(this).attr('with-mapping'));
         });
-        // 最新を登録ボタン押下時
-        $('#registNew').click(function() {
-            $('#registWithMapping').val(true);
-            regist();
-        });
-        function regist() {
+        function regist(withMapping) {
             <?php
                 if ($title->is_team) {
                     echo 'if ($("#registGroupName").val() === "") {';
@@ -277,6 +265,7 @@
                     echo '}';
                 }
             ?>
+            $('#registWithMapping').val(withMapping);
             var confirm = $("#confirm");
             confirm.html('タイトル保持情報を登録します。よろしいですか？');
             $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'regist'])?>');
@@ -286,5 +275,70 @@
         function controlDisabled() {
             $('#regist, #registNew').attr('disabled', !($('#registYear').val() !== '' && $('#registHolding').val() !== ''));
         }
+        <?php if (!$title->is_team) : ?>
+        // 棋士検索ボタンの活性・非活性
+        $('#searchPlayer').attr('disabled', 'disabled');
+        $('#searchPlayerName').change(function() {
+            if (!$(this).val()) {
+                $('#searchPlayer').attr('disabled', 'disabled');
+            } else {
+                $('#searchPlayer').removeAttr('disabled');
+            }
+        });
+        // 棋士検索ボタン押下時
+        $('#searchPlayer').click(function() {
+            var searchValue = $("#searchPlayerName").val();
+            if (!searchValue) {
+                return false;
+            }
+            $.ajax({
+                type: 'GET',
+                url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'players'])?>/" + searchValue,
+                contentType: "application/json"
+            }).done(function (data) {
+                data = data.response;
+                // 該当者1件の場合はそのまま設定
+                if (data.size === 1) {
+                    var obj = data.results[0];
+                    $('#registPlayerId').val(obj.id);
+                    $('#registRank').val(obj.rankNumber);
+                    $('#registPlayerName').css("color", "#000000").text(obj.name + " " + obj.rankName);
+                    return false;
+                }
+                var resultArea = $("#searchResult table");
+                resultArea.html('');
+                var tbody = $("<tbody>");
+                $.each(data.results, function(idx, obj) {
+                    var tr = $("<tr>")
+                            .append($("<input>", {type: "hidden", name: "id", value: obj.id}))
+                            .append($("<input>", {type: "hidden", name: "rank", value: obj.rankNumber}))
+                            .append($("<td>", {name: "playerName"}).text(obj.name))
+                            .append($("<td>").text(obj.nameEnglish))
+                            .append($("<td>").text(obj.countryName))
+                            .append($("<td>", {name: "rankName"}).text(obj.rankName))
+                            .append($("<td>").text(obj.sex))
+                            .append($("<td>").append($("<button>", {type: "button", name: "select", style: "font-size: 12px"}).text("選択")));
+                    tbody.append(tr);
+                });
+                resultArea.append(tbody);
+                $("#searchResult").css("display", "block");
+            }).fail(function (data) {
+                var dialog = $("#dialog");
+                dialog.html('<span class="red">棋士検索に失敗しました。</span>');
+                dialog.click();
+            });
+        });
+        // 選択ボタン押下時
+        $('#searchResult').on('click', '[name=select]', function() {
+            var parent = $(this).parents("tr");
+            var playerId = parent.find("[name=id]").val();
+            var playerName = parent.find("[name=playerName]").text();
+            var playerRank = parent.find("[name=rank]").val();
+            var playerRankText = parent.find("[name=rankName]").text();
+            $('#registPlayerId').val(playerId);
+            $('#registRank').val(playerRank);
+            $('#registPlayerName').css("color", "#000000").text(playerName + " " + playerRankText);
+        });
+        <?php endif ?>
     });
 </script>

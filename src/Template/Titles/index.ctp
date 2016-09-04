@@ -231,110 +231,104 @@
 </table>
 <?=$this->Form->end()?>
 <script type="text/javascript">
-$(function() {
-    if ($('#searchFlag').val() === 'false') {
-        $('#addRow').attr('disabled', true);
-        $('#save').attr('disabled', true);
-        $('#outputJson').attr('disabled', true);
-    } else {
-        $('#addRow').removeAttr('disabled');
-        $('#save').removeAttr('disabled');
-        $('#outputJson').removeAttr('disabled');
-    }
+    $(function() {
+        if ($('#searchFlag').val() === 'false') {
+            $('#addRow').attr('disabled', true);
+            $('#save').attr('disabled', true);
+            $('#outputJson').attr('disabled', true);
+        } else {
+            $('#addRow').removeAttr('disabled');
+            $('#save').removeAttr('disabled');
+            $('#outputJson').removeAttr('disabled');
+        }
 
-    // JSON出力ボタン押下時
-    $('#outputJson').click(function() {
-        var type = 'json';
-
-        $.ajax({
-            type: 'GET',
-            url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'news'])?>?make=true',
-            contentType: 'application/' + type,
-            dataType: type,
-            crossDomain: true,
-            success: function (data) {
+        // JSON出力ボタン押下時
+        $('#outputJson').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'news'])?>?make=true',
+                contentType: 'application/json'
+            }).done(function (data) {
                 var dialog = $("#dialog");
                 dialog.html('JSON出力に成功しました。');
                 dialog.click();
-            },
-            error: function (data) {
+            }).fail(function (data) {
                 var dialog = $("#dialog");
                 dialog.html('<span class="red">JSON出力に失敗しました。</span>');
                 dialog.click();
+            });
+        });
+
+        var counter = <?=(empty($titles) ? 0 : count($titles))?>;
+        // 行追加ボタン押下時
+        $('#addRow').click(function() {
+            counter++;
+
+            // TR要素を作成
+            var tr = $('<tr>', {class: 'newRow'})
+                    .append($('<input>', {type: 'hidden', id: 'insertFlag-' + counter, name: 'titles[' + counter + '][insertFlag]', value: true}))
+                    .append($('<input>', {type: 'hidden', id: 'updateFlag-' + counter, name: 'titles[' + counter + '][updateFlag]', value: false}))
+                    .append($('<td>', {class: 'left titleName'})
+                        .append($('<input>', {type: 'text', id: 'titleName-' + counter, name: 'titles[' + counter + '][titleName]', class: 'red checkChange'}))
+                    )
+                    .append($('<td>', {class: 'left titleNameEn'})
+                        .append($('<input>', {type: 'text', id: 'titleNameEn-' + counter, name: 'titles[' + counter + '][titleNameEn]', class: 'red checkChange imeDisabled'}))
+                    )
+                    .append($('<td>', {class: 'left holding'})
+                        .append($('<input>', {type: 'text', id: 'holding-' + counter, name: 'titles[' + counter + '][holding]', class: 'red checkChange imeDisabled', maxlength: 3}))
+                    )
+                    .append($('<td>', {class: 'left winner'})
+                        .html('&nbsp;')
+                    )
+                    .append($('<td>', {class: 'left order'})
+                        .append($('<input>', {type: 'text', id: 'order-' + counter, name: 'titles[' + counter + '][order]', class: 'red checkChange imeDisabled', maxlength: 2}))
+                    )
+                    .append($('<td>', {class: 'left groupFlag'})
+                        .append($('<input>', {type: 'hidden', id: 'groupFlag-' + counter + '_', name: 'titles[' + counter + '][groupFlag]', value: 0}))
+                        .append($('<input>', {type: 'checkbox', id: 'groupFlag-' + counter, name: 'titles[' + counter + '][groupFlag]', class: 'red checkChange'}))
+                    )
+                    .append($('<td>', {class: 'left htmlFileName'})
+                        .append($('<input>', {type: 'text', id: 'htmlFileName-' + counter, name: 'titles[' + counter + '][htmlFileName]', class: 'red checkChange imeDisabled'}))
+                    )
+                    .append($('<td>', {class: 'left htmlModifyDate'})
+                        .append($('<input>', {type: 'text', id: 'htmlModifyDate-' + counter, name: 'titles[' + counter + '][htmlModifyDate]', class: 'red checkChange datepicker'}))
+                    )
+                    .append($('<td>', {class: 'left deleteFlag'})
+                        .append($('<input>', {type: 'hidden', id: 'deleteFlag-' + counter + '_', name: 'titles[' + counter + '][deleteFlag]', value: 0}))
+                        .append($('<input>', {type: 'checkbox', id: 'deleteFlag-' + counter, name: 'titles[' + counter + '][deleteFlag]', class: 'red checkChange'}))
+                    )
+                    .append($('<td>', {class: 'center openRetain'})
+                        .html('新規')
+                    );
+
+            // 日付ダイアログの設定
+            tr.find('input.datepicker').datepicker(getDatepickerObject());
+
+            // 一覧に要素を追加
+            $('table.titles').append(tr);
+        });
+
+        // 一括更新ボタン押下時
+        $('#save').click(function() {
+            var tbody = $('table.titles tbody');
+            if (!tbody.find('input[type=text]').hasClass('red')
+                    && !tbody.find('input[type=checkbox]').hasClass('red')) {
+                // 変更対象がないので更新しない
+                var dialog = $("#dialog");
+                dialog.html('変更された項目がありません！');
+                dialog.click();
+            } else {
+                var rows = tbody.find('tr');
+                var resultSize = rows.length;
+                for (var i = 0; i < resultSize; i++) {
+                    if (rows.eq(i).find('input').hasClass('red')) {
+                        rows.find('#updateFlag-' + i).val(true);
+                    }
+                }
+                var form = $('#mainForm');
+                form.attr('action', '<?=$this->Url->build(['action' => 'save'])?>');
+                submitForm(form);
             }
         });
     });
-
-    var counter = <?=(empty($titles) ? 0 : count($titles))?>;
-    // 行追加ボタン押下時
-    $('#addRow').click(function() {
-        counter++;
-
-        // TR要素を作成
-        var tr = $('<tr>', {class: 'newRow'})
-                .append($('<input>', {type: 'hidden', id: 'insertFlag-' + counter, name: 'titles[' + counter + '][insertFlag]', value: true}))
-                .append($('<input>', {type: 'hidden', id: 'updateFlag-' + counter, name: 'titles[' + counter + '][updateFlag]', value: false}))
-                .append($('<td>', {class: 'left titleName'})
-                    .append($('<input>', {type: 'text', id: 'titleName-' + counter, name: 'titles[' + counter + '][titleName]', class: 'red checkChange'}))
-                )
-                .append($('<td>', {class: 'left titleNameEn'})
-                    .append($('<input>', {type: 'text', id: 'titleNameEn-' + counter, name: 'titles[' + counter + '][titleNameEn]', class: 'red checkChange imeDisabled'}))
-                )
-                .append($('<td>', {class: 'left holding'})
-                    .append($('<input>', {type: 'text', id: 'holding-' + counter, name: 'titles[' + counter + '][holding]', class: 'red checkChange imeDisabled', maxlength: 3}))
-                )
-                .append($('<td>', {class: 'left winner'})
-                    .html('&nbsp;')
-                )
-                .append($('<td>', {class: 'left order'})
-                    .append($('<input>', {type: 'text', id: 'order-' + counter, name: 'titles[' + counter + '][order]', class: 'red checkChange imeDisabled', maxlength: 2}))
-                )
-                .append($('<td>', {class: 'left groupFlag'})
-                    .append($('<input>', {type: 'hidden', id: 'groupFlag-' + counter + '_', name: 'titles[' + counter + '][groupFlag]', value: 0}))
-                    .append($('<input>', {type: 'checkbox', id: 'groupFlag-' + counter, name: 'titles[' + counter + '][groupFlag]', class: 'red checkChange'}))
-                )
-                .append($('<td>', {class: 'left htmlFileName'})
-                    .append($('<input>', {type: 'text', id: 'htmlFileName-' + counter, name: 'titles[' + counter + '][htmlFileName]', class: 'red checkChange imeDisabled'}))
-                )
-                .append($('<td>', {class: 'left htmlModifyDate'})
-                    .append($('<input>', {type: 'text', id: 'htmlModifyDate-' + counter, name: 'titles[' + counter + '][htmlModifyDate]', class: 'red checkChange datepicker'}))
-                )
-                .append($('<td>', {class: 'left deleteFlag'})
-                    .append($('<input>', {type: 'hidden', id: 'deleteFlag-' + counter + '_', name: 'titles[' + counter + '][deleteFlag]', value: 0}))
-                    .append($('<input>', {type: 'checkbox', id: 'deleteFlag-' + counter, name: 'titles[' + counter + '][deleteFlag]', class: 'red checkChange'}))
-                )
-                .append($('<td>', {class: 'center openRetain'})
-                    .html('新規')
-                );
-
-        // 日付ダイアログの設定
-        tr.find('input.datepicker').datepicker(getDatepickerObject());
-
-        // 一覧に要素を追加
-        $('table.titles').append(tr);
-    });
-
-    // 一括更新ボタン押下時
-    $('#save').click(function() {
-        var tbody = $('table.titles tbody');
-        if (!tbody.find('input[type=text]').hasClass('red')
-                && !tbody.find('input[type=checkbox]').hasClass('red')) {
-            // 変更対象がないので更新しない
-            var dialog = $("#dialog");
-            dialog.html('変更された項目がありません！');
-            dialog.click();
-        } else {
-            var rows = tbody.find('tr');
-            var resultSize = rows.length;
-            for (var i = 0; i < resultSize; i++) {
-                if (rows.eq(i).find('input').hasClass('red')) {
-                    rows.find('#updateFlag-' + i).val(true);
-                }
-            }
-            var form = $('#mainForm');
-            form.attr('action', '<?=$this->Url->build(['action' => 'save'])?>');
-            submitForm(form);
-        }
-    });
-});
 </script>

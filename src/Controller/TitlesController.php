@@ -148,7 +148,7 @@ class TitlesController extends AppController
 			// タイトル保持情報の保存
 			$this->RetentionHistories->save($titleRetain);
             // 最新を登録する場合はタイトルマスタも書き換え
-            if ($this->request->data('registWithMapping') === 'true') {
+            if ($this->request->data('registWithMapping') === '1') {
                 $title = $this->Titles->get($titleId);
                 $title->holding = $holding;
                 $this->Titles->save($title);

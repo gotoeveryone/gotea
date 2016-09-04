@@ -8,7 +8,6 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
-<?=$this->Form->hidden('dialogFlag', ['value' => (empty($dialogFlag) ? 'false' : var_export($dialogFlag, TRUE))])?>
 <table class="playersHeader">
     <tr>
         <td class="searchColumn1">所属国：</td>
@@ -182,21 +181,11 @@
             <td class="left playerName">
                 <?php
                     $setClass = ($player->sex === '女性' ? 'female' : 'blue');
-                    if (isset($dialogFlag) && $dialogFlag) {
-                        echo $this->Html->link($player->name, '#', [
-                            'onClick' => 'selectParent("'.h($player->id).'",
-                                "'.h($player->name).'",
-                                "'.h($player->rank->id).'",
-                                "'.h($player->rank->name).'")',
-                            'class' => $setClass
-                        ]);
-                    } else {
-                        echo $this->Html->link($player->name, [
-                            'action' => 'detail/'.h($player->id)
-                        ], [
-                            'class' => $setClass.' colorbox'
-                        ]);
-                    }
+                    echo $this->Html->link($player->name, [
+                        'action' => 'detail/'.h($player->id)
+                    ], [
+                        'class' => $setClass.' colorbox'
+                    ]);
                 ?>
             </td>
             <td class="left playerNameEn">
@@ -253,23 +242,4 @@
             setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val());
         });
     });
-
-    /**
-     * 選択された棋士IDをパラメータに設定して、親画面にパラメータを渡す
-     * @param playerId
-     * @param playerName
-     * @param rank
-     * @param rankText
-     */
-    function selectParent(playerId, playerName, rank, rankText) {
-        // 親ウィンドウの項目に値を設定
-        window.opener.$('#registPlayerId').val(playerId);
-        window.opener.$('#registPlayerName').val(playerName);
-        window.opener.$('#registRank').val(rank);
-        window.opener.$('#registRankText').val(rankText);
-        window.opener.$('.registPlayerName').html(playerName);
-        window.opener.$('.registRankText').html(rankText);
-        window.close();
-        window.opener.focus();
-    }
 </script>

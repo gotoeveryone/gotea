@@ -14,7 +14,7 @@ section#container button {
     font-size: 14px;
     text-shadow: 0 1px 0 #ffffff;
     background-color: #cccccc;
-    margin: 0px 2px;
+    margin: 0px 5px;
 }
 
 section#container button:hover:enabled, a.button:hover {
@@ -489,8 +489,6 @@ td.rankingColumn1 {
 table.ranking {
 	height: calc(100% - 90px);
 	max-height: calc(100% - 90px);
-	/*min-width: 387px;*/
-	/*max-width: 387px;*/
 	border-collapse: collapse;
 }
 
@@ -663,6 +661,41 @@ table.titles .holding input[type=text],
 table.titles .order input[type=text],
 table.titles .htmlModifyDate input[type=text] {
 	text-align: center;
+}
+
+/* -------------------------------------------
+   タイトル情報詳細
+ ------------------------------------------- */
+#searchResult {
+    display: none;
+    width: 85%;
+    margin: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #000000;
+}
+
+#searchResult *,
+#searchResult button {
+    font-size: 12px;
+}
+
+#searchResult table {
+    width: 100%;
+    margin: auto;
+	border: 1px #000000 solid;
+	border-collapse: collapse;
+}
+
+#searchResult table tbody,
+#searchResult table tr,
+#searchResult table td {
+	border: 1px #000000 solid;
+	border-collapse: collapse;
+}
+
+#registPlayerName {
+    color: #ff0000;
 }
 
 /* -------------------------------------------
