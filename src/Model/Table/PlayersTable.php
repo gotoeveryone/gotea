@@ -59,9 +59,9 @@ class PlayersTable extends AppTable
      * 棋士とそれに紐づく棋士成績を取得します。
      * 
      * @param type $id
-     * @return App\Model\Entity\Player 棋士とそれに紐づく棋士成績
+     * @return Player 棋士とそれに紐づく棋士成績
      */
-    public function findPlayerWithScores($id) : App\Model\Entity\Player
+    public function findPlayerWithScores($id) : Player
     {
         return $this->find()->contain(['PlayerScores'])
                 ->where(['id' => $id])->first();
