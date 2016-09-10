@@ -102,8 +102,7 @@
                             }
                             echo $this->Form->text('birthday', [
                                 'value' => $birthday,
-                                'class' => 'imeDisabled datepicker birthday',
-                                'readonly' => true
+                                'class' => 'imeDisabled datepicker birthday'
                             ]);
                         ?>
                         <span class="age">（<?=$age?>）</span>
@@ -116,7 +115,7 @@
                             if (!$player->id) {
                                 echo $this->Form->text('joined', [
                                     'value' => $player->joined,
-                                    'class' => 'imeDisabled'
+                                    'class' => 'imeDisabled datepicker'
                                 ]);
                             } else {
                                 echo $this->Date->formatJpValue($player->joined);
