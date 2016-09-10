@@ -142,6 +142,7 @@
                             if ($title->is_team) {
                                 echo '優勝団体名：';
                                 echo $this->Form->text('registGroupName', [
+                                    'id' => 'registGroupName',
                                     'value' => $this->request->data('registGroupName'),
                                     'maxlength' => 30
                                 ]);
