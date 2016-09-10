@@ -191,7 +191,7 @@
             <td class="left playerNameEn">
                 <?=h($player->name_english); ?>
             </td>
-            <td class="left enrollment">
+            <td class="center enrollment">
                 <?=$this->Date->formatJoinDelimiterValue($player->joined, '/'); ?>
             </td>
             <td class="center country">
