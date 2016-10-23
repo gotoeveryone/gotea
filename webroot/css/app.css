@@ -14,7 +14,7 @@ section#container button {
     font-size: 14px;
     text-shadow: 0 1px 0 #ffffff;
     background-color: #cccccc;
-    margin: 0px 5px;
+    margin: 0px 2px;
 }
 
 section#container button:hover:enabled, a.button:hover {
@@ -483,7 +483,7 @@ table.rankingHeader select.ranking {
 }
 
 td.rankingColumn1 {
-    width: 90px;
+    width: 85px;
 }
 
 table.ranking {
