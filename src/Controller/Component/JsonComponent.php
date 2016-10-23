@@ -68,11 +68,11 @@ class JsonComponent extends Component
         $http = new Client();
         $tokenArray = ["access_token" => $this->request->session()->read('access_token')];
         $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
-        // 401なら再認証
-        if ($response->statusCode() == 401) {
+        // アプリログイン済みだが、APIが401なら再認証
+        if ($response->statusCode() == 401 && $this->Auth) {
             $userId = $this->Auth->user('userid');
             $password = $this->Auth->user('password');
-            $this->saveAccessToken($userId, $password);
+            $tokenArray = ["access_token" => $this->saveAccessToken($userId, $password)];
             $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
         }
         $this->response->statusCode($response->statusCode());
@@ -96,11 +96,11 @@ class JsonComponent extends Component
         }
         $http = new Client();
         $response = $http->post($this->__getApiUrl().$url, $data, $this->__getCaArray());
-        // 401なら再認証
-        if ($response->statusCode() == 401) {
+        // アプリログイン済みだが、APIが401なら再認証
+        if ($response->statusCode() == 401 && $this->Auth) {
             $userId = $this->Auth->user('userid');
             $password = $this->Auth->user('password');
-            $this->saveAccessToken($userId, $password);
+            $data["access_token"] = $this->saveAccessToken($userId, $password);
             $response = $http->post($this->__getApiUrl().$url, $data, $this->__getCaArray());
         }
         $this->response->statusCode($response->statusCode());
@@ -145,7 +145,8 @@ class JsonComponent extends Component
      * 
      * @return type
      */
-    private function __getCaArray() {
+    private function __getCaArray()
+    {
         return [
             'ssl_cafile' => getenv('SSL_CA_CRT')
         ];
