@@ -8,10 +8,10 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
-<table class="rankingHeader">
-		<tr class="left">
-			<td class="rankingColumn1">対象年度：</td>
-			<td colspan="2">
+    <section class="searchHeader ranking">
+		<section class="searchRow">
+			<section class="label">対象年度：</section>
+			<section>
 				<?=
 					$this->Form->input('selectYear', [
                         'id' => 'selectYear',
@@ -38,14 +38,14 @@
 						'class' => 'ranking'
 					]);
 				?>
-			</td>
-		</tr>
-		<tr>
-			<td class="rankingColumn1">最終更新日：</td>
-			<td>
-				<span class="lastUpdate"></span>
-			</td>
-			<td class="right">
+			</section>
+		</section>
+		<section class="searchRow">
+			<section class="label">最終更新日：</section>
+            <section>
+                <span class="lastUpdate"></span>
+            </section>
+			<section class="right">
 				<!-- 検索ボタン -->
 				<?=
 					$this->Form->button('検索', [
@@ -61,10 +61,9 @@
 						'disabled' => true
 					]);
 				?>
-			</td>
-		</tr>
-	</table>
-	<div class="spacer"></div>
+			</section>
+		</section>
+	</section>
 
 	<table class="searchView ranking">
 		<thead>

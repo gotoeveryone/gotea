@@ -90,10 +90,10 @@ class PlayersController extends AppController
             $this->Flash->warn(__("検索結果が0件でした。"));
         } else if ($count > 1000) {
             $this->Flash->warn(__("検索結果が1000件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
+        } else {
+            // 結果をセット
+            $this->set('players', $players);
         }
-
-        // 結果をセット
-        $this->set('players', $players);
 
         // 初期表示処理へ
         return $this->render('index');

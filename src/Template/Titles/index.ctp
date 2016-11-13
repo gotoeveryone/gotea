@@ -8,10 +8,10 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
-<table class="titlesHeader">
-    <tr>
-        <td class="searchColumn1">対象国：</td>
-        <td>
+<section class="searchHeader titles">
+    <section class="searchRow">
+        <section class="label">対象国：</section>
+        <section>
             <?=
                 $this->Form->input('searchCountry', [
                     'options' => $countries,
@@ -19,9 +19,9 @@
                     'class' => 'country'
                 ]);
             ?>
-        </td>
-        <td class="searchColumn1">終了棋戦：</td>
-        <td>
+        </section>
+        <section class="label">終了棋戦：</section>
+        <section>
             <?=
                 $this->Form->input('searchDelete', [
                     'options' => [
@@ -32,8 +32,8 @@
                     'class' => 'retired'
                 ]);
             ?>
-        </td>
-        <td class="right">
+        </section>
+        <section class="right">
             <?=$this->Form->button('検索', ['type' => 'submit'])?>
             <?=$this->Form->button('行追加', [
                 'type' => 'button',
@@ -47,9 +47,9 @@
                 'type' => 'button',
                 'id' => 'outputJson'
             ])?>
-        </td>
-    </tr>
-</table>
+        </section>
+    </section>
+</section>
 
 <table class="searchView titles">
     <thead>

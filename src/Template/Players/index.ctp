@@ -8,10 +8,10 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
-<table class="playersHeader">
-    <tr>
-        <td class="searchColumn1">所属国：</td>
-        <td>
+<section class="searchHeader players">
+    <section class="searchRow">
+        <section class="label">所属国：</section>
+        <section>
             <?=
                 $this->Form->input('searchCountry', [
                     'id' => 'searchCountry',
@@ -21,9 +21,9 @@
                     'empty' => true
                 ]);
             ?>
-        </td>
-        <td class="center">所属組織：</td>
-        <td>
+        </section>
+        <section class="label">所属組織：</section>
+        <section>
             <?=
                 $this->Form->input('searchOrganization', [
                     'id' => 'searchOrganization',
@@ -33,9 +33,9 @@
                     'empty' => true
                 ]);
             ?>
-        </td>
-        <td class="center">段位：</td>
-        <td>
+        </section>
+        <section class="label">段位：</section>
+        <section>
             <?=
                 $this->Form->input('searchRank', [
                     'id' => 'searchRank',
@@ -45,9 +45,9 @@
                     'empty' => true
                 ]);
             ?>
-        </td>
-        <td class="center">性別：</td>
-        <td>
+        </section>
+        <section class="label">性別：</section>
+        <section>
             <?=
                 $this->Form->input('searchSex', [
                     'options' => [
@@ -59,9 +59,9 @@
                     'empty' => true
                 ]);
             ?>
-        </td>
-        <td class="searchColumn1">引退者：</td>
-        <td>
+        </section>
+        <section class="label">引退者：</section>
+        <section>
             <?=
                 $this->Form->input('searchRetire', [
                     'options' => [
@@ -72,29 +72,29 @@
                     'class' => 'retired'
                 ]);
             ?>
-        </td>
-    </tr>
-    <tr>
-        <td class="searchColumn1">棋士名：</td>
-        <td colspan="2">
+        </section>
+    </section>
+    <section class="searchRow">
+        <section class="label">棋士名：</section>
+        <section colspan="2">
             <?=
                 $this->Form->text('searchPlayerName', [
                     'value' => h($this->request->data('searchPlayerName')),
                     'class' => 'playerName'
                 ]);
             ?>
-        </td>
-        <td class="searchColumn1">（英語）：</td>
-        <td colspan="2">
+        </section>
+        <section class="label">（英語）：</section>
+        <section colspan="2">
             <?=
                 $this->Form->text('searchPlayerNameEn', [
                     'value' => h($this->request->data('searchPlayerNameEn')),
                     'class' => 'playerName'
                 ]);
             ?>
-        </td>
-        <td class="searchColumn1">入段年：</td>
-        <td>
+        </section>
+        <section class="label">入段年：</section>
+        <section>
             <?=
                 $this->Form->text('searchJoinedFrom', [
                     'value' => h($this->request->data('searchJoinedFrom')),
@@ -110,8 +110,8 @@
                     'maxlength' => 4
                 ]);
             ?>
-        </td>
-        <td colspan="4" class="right">
+        </section>
+        <section class="right">
             <?=
                 $this->Form->button('新規作成', [
                     'id' => 'addNew',
@@ -120,18 +120,18 @@
                 ]);
             ?>
             <?=$this->Form->button('検索', ['type' => 'submit'])?>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="8">
+        </section>
+    </section>
+    <section>
+        <section>
             <?php if (!empty($players) && count($players) > 0) { ?>
                 <span class="left red">
                     <?=count($players).'件のレコードが該当しました。'?>
                 </span>
             <?php } ?>
-        </td>
-    </tr>
-</table>
+        </section>
+    </section>
+</section>
 
 <table class="searchView players">
     <thead>

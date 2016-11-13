@@ -14,19 +14,19 @@
             'value' => (empty($searchFlag) ? 'false' : var_export($searchFlag, TRUE))
         ]);
     ?>
-    <table class="scoreUpdatesHeader">
-        <tr>
-            <td class="searchColumn1">対象年：</td>
-            <td>
+    <section class="searchHeader scoreUpdatesHeader">
+        <section class="searchRow">
+            <section class="label">対象年：</section>
+            <section>
                 <?=
                     $this->Form->input('searchYear', [
                         'options' => $years,
-                        'value' => h(empty($searchYear) ? '' : $searchYear),
+                        'value' => (isset($searchYear) ? $searchYear : ''),
                         'class' => 'year'
                     ]);
                 ?>
-            </td>
-            <td class="right">
+            </section>
+            <section class="right">
                 <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 <?=
                     $this->Form->button('一括更新', [
@@ -34,9 +34,9 @@
                         'type' => 'button'
                     ]);
                 ?>
-            </td>
-        </tr>
-    </table>
+            </section>
+        </section>
+    </section>
 
     <?php if (!empty($updatedPoints)) : ?>
     <section id="scoreUpdates">

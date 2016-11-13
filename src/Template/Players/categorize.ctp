@@ -8,26 +8,26 @@
         'selectFormGroup' => '{{input}}'
     ]
 ])?>
-<table class="categorizeHeader">
-    <tr class="left">
-        <td class="rankingColumn1">対象国：</td>
-        <td>
+<section class="searchHeader categories">
+    <section class="searchRow">
+        <section class="label">対象国：</section>
+        <section>
             <?=
                 $this->Form->input("selectCountry", [
                     "id" => "selectCountry", "options" => $countries, "class" => "country"
                 ]);
             ?>
-        </td>
-        <td class="right">
+        </section>
+        <section class="right">
             <!-- 検索ボタン -->
             <?=
                 $this->Form->button("検索", [
                     "type" => "button", "id" => "search", "data-categories" => "ranks"
                 ]);
             ?>
-        </td>
-    </tr>
-</table>
+        </section>
+    </section>
+</section>
 
 <table class="searchView ranks">
     <thead>

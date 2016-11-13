@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 html, body {
-	font-size: 14px;
+	font-size: 13px;
 	height: 98%;
 }
 
@@ -24,8 +24,8 @@ section#container button:hover:enabled, a.button:hover {
 section#container a.button {
 	display: block;
 	text-align: center;
-	padding-top: 3px;
-	padding-bottom: 3px;
+    margin: 2px 0px;
+	padding: 5px 0px;
 	border: 2px solid;
 	color: black;
 	border-color: #aaaaaa #444444 #444444 #aaaaaa;
@@ -213,16 +213,35 @@ select.retired {
 /* -------------------------------------------
    検索エリア
  ------------------------------------------- */
-td.searchColumn1 {
-    width: 70px;
+section.searchHeader {
+    margin-bottom: 5px;
+	padding: 5px;
+    background-color: #ffffff;
+	border: 2px solid #dddddd;
+    border-radius: 5px;
+} 
+
+section.searchHeader .searchRow {
+    display: table;
+    height: 35px;
+    width: 100%;
 }
 
-td.searchColumn2 {
-    width: 140px;
+section.searchHeader .searchRow:after {
+    content: "";
+    display: block;
+    clear: both;
 }
 
-th.space, td.space {
-    width: 15px;
+section.searchHeader .searchRow section {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 3px;
+} 
+
+section.searchHeader .searchRow section.label {
+    width: 80px;
+    font-weight: bold;
 }
 
 /* -------------------------------------------
@@ -232,6 +251,10 @@ table.searchView {
 	height: 100%;
 	display: block;
 } 
+
+table.searchView * {
+    font-size: 0.9rem;
+}
 
 table.searchView thead {
 	background-color: #ffffcc;
@@ -257,6 +280,7 @@ table.searchView tbody {
 table.searchView td,
 table.searchView th {
     display: table-cell;
+    padding: 3px;
 	border: 1px solid #000000;
 	table-layout: fixed;
 }
@@ -328,6 +352,8 @@ section.retains {
 
 section[class^=box] {
     float: left;
+    margin-left: 1px;
+    margin-right: 1px;
 }
 
 section[class^=box].button {
@@ -343,18 +369,33 @@ section.box {
 }
 
 section.box2 {
-    width: calc(100% / 2);
+    width: calc(100% / 2 - 2px);
 }
 
 section.box3 {
-    width: calc(100% / 3);
+    width: calc(100% / 3 - 2px);
 }
 
 section.box4 {
-    width: calc(100% / 4);
+    width: calc(100% / 4 - 2px);
 }
 
-section.categoryRow {
+section.row {
+    display: table;
+    width: 100%;
+    margin: 0px auto;
+}
+
+section.row span {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+section.row.group {
+    margin-bottom: 5px;
+}
+
+section.row.category {
 	height: 30px;
 	text-indent: 5px;
 	font-size: 16px;
@@ -363,7 +404,7 @@ section.categoryRow {
 	background-color: #ddeeff;
 }
 
-section.genreRow {
+section.row.genre {
 	height: 25px;
 	text-indent: 5px;
 	font-size: 14px;
@@ -371,23 +412,27 @@ section.genreRow {
 	background-color: #eeffdd;
 }
 
-section.headerRow {
+section.row.key {
 	height: 22px;
-    width: 99%;
-    margin-left: 1px;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 	text-indent: 5px;
 	background-color: #ffeedd;
 }
 
-section.valueRow {
+section.row.value {
     min-height: 28px;
+    margin-bottom: 3px;
+    padding: 3px 0px;
 	text-indent: 10px;
 }
 
-section.buttonRow {
+section.row.button {
     margin: 5px auto;
     text-align: center;
+}
+
+section.details {
+    overflow-x: hidden;
 }
 
 section.details hr {
@@ -437,23 +482,20 @@ section.login {
 	margin-right: auto;
 }
 
-section.loginRow {
+section.login .row {
 	height: 30px;
-	clear: both;
+    margin-bottom: 5px;
 }
 
-section.loginColumnLeft {
-	float: left;
+section.login .row .label {
 	width: 30%;
-	height: 30px;
 	text-align: right;
 }
 
-section.loginColumnRight {
-	float: right;
-	width: 70%;
-	height: 30px;
-	text-align: right;
+section.login .row input {
+	height: 25px;
+    width: 100%;
+    margin-left: 5px;
 }
 
 section.submit {
@@ -469,21 +511,8 @@ span.label {
 /* -------------------------------------------
    勝敗ランキング画面
  ------------------------------------------- */
-table.rankingHeader {
-	border: 2px solid #dddddd;
-	padding: 5px 5px 0px 5px;
-	width: 387px;
-	height: 80px;
-	text-align: left;
-	background-color: #ffffff;
-}
-
-table.rankingHeader select.ranking {
-	width: 85px;
-}
-
-td.rankingColumn1 {
-    width: 85px;
+section.ranking {
+	width: 395px;
 }
 
 table.ranking {
@@ -517,18 +546,8 @@ table.ranking .winPercent {
 /* -------------------------------------------
    棋士情報検索
  ------------------------------------------- */
-table.playersHeader {
-	border: 2px solid #999999;
-	padding: 5px 5px 0px 5px;
-	width: 100%;
-	height: 90px;
-	text-align: left;
-	background-color: #ffffff;
-	margin-bottom: 5px;
-}
-
-table.playersHeader input.from,
-table.playersHeader input.to {
+section.players input.from,
+section.players input.to {
     text-align: right;
 	width: 40px;
 }
@@ -584,16 +603,6 @@ table.players .scorePoint {
 /* -------------------------------------------
    タイトル情報検索
  ------------------------------------------- */
-table.titlesHeader {
-	height: 50px;
-	width: 95%;
-	border: 2px solid #dddddd;
-	padding: 5px 5px 0px 5px;
-	text-align: left;
-	background-color: #ffffff;
-	margin-bottom: 5px;
-}
-
 table.titles {
 	height: calc(100% - 60px);
 	max-height: calc(100% - 60px);
@@ -701,14 +710,8 @@ table.titles .htmlModifyDate input[type=text] {
 /* -------------------------------------------
    段位別棋士数検索
  ------------------------------------------- */
-table.categorizeHeader {
-	height: 50px;
+section.categories {
 	width: 300px;
-	border: 2px solid #dddddd;
-	padding: 3px;
-	text-align: left;
-	background-color: #ffffff;
-	margin-bottom: 5px;
 }
 
 table.ranks {
@@ -733,14 +736,6 @@ table.ranks .count {
 /* -------------------------------------------
    成績更新日編集
  ------------------------------------------- */
-table.scoreUpdatesHeader {
-	width: 100%;
-	height: 40px;
-	border: 2px solid #dddddd;
-	background-color: #ffffff;
-	margin-bottom: 5px;
-}
-
 section#scoreUpdates {
 	width: 100%;
 	margin-bottom: 3px;

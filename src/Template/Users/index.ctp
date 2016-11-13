@@ -9,37 +9,29 @@
         ]
     ]) ?>
         <section class="login">
-            <section class="loginRow">
-                <section class="loginColumnLeft">
-                    <span class="label">ID</span>
-                </section>
-                <section class="loginColumnRight">
-                    <?=
-						$this->Form->input('username',
-							[
-								'value' => $this->request->data('username'),
-	                            'maxlength' => 20,
-	                            'class' => 'imeDisabled'
-							]
-                        );
-                    ?>
-                </section>
+            <section class="row">
+                <span class="label">ID</span>
+                <?=
+                    $this->Form->input('username',
+                        [
+                            'value' => $this->request->data('username'),
+                            'maxlength' => 20,
+                            'class' => 'imeDisabled'
+                        ]
+                    );
+                ?>
             </section>
-            <section class="loginRow">
-                <section class="loginColumnLeft">
-                    <span class="label">Password</span>
-                </section>
-                <section class="loginColumnRight">
-                    <?=
-                        $this->Form->input('password',
-							[
-								'value' => $this->request->data('password'),
-	                            'maxlength' => 20,
-	                            'class' => 'imeDisabled'
-							]
-                        );
-                    ?>
-                </section>
+            <section class="row">
+                <span class="label">Password</span>
+                <?=
+                    $this->Form->input('password',
+                        [
+                            'value' => $this->request->data('password'),
+                            'maxlength' => 20,
+                            'class' => 'imeDisabled'
+                        ]
+                    );
+                ?>
             </section>
             <section class="loginRow">
                 <?=$this->Form->button('ログイン', ['type' => 'submit'])?>

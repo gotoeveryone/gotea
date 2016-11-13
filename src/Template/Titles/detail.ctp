@@ -16,33 +16,33 @@
     <section id="scroll">
         <!-- マスタ -->
         <section id="title" class="details">
-            <section class="categoryRow">
-                <?='タイトル情報（ID：'.h($title->id).'）'?>
+            <section class="row category">
+                <span><?='タイトル情報（ID：'.h($title->id).'）'?></span>
             </section>
             <section class="row">
                 <section class="box2">
-                    <section class="headerRow">タイトル名</section>
-                    <section class="valueRow">
+                    <section class="row key">タイトル名</section>
+                    <section class="row value">
                         <?=$this->Form->hidden('selectTitleId', ['value' => $title->id])?>
                         <?=$this->Form->hidden('selectTitleName', ['value' => $title->name])?>
                         <?=h($title->name)?>
                     </section>
                 </section>
                 <section class="box2">
-                    <section class="headerRow">タイトル名（英語）</section>
-                    <section class="valueRow">
+                    <section class="row key">タイトル名（英語）</section>
+                    <section class="row value">
                         <?=h($title->name_english)?>
                     </section>
                 </section>
                 <section class="box2">
-                    <section class="headerRow">分類</section>
-                    <section class="valueRow">
+                    <section class="row key">分類</section>
+                    <section class="row value">
                         <?=($title->country->name).'棋戦'?>
                     </section>
                 </section>
                 <section class="box2">
-                    <section class="headerRow">更新日時</section>
-                    <section class="valueRow">
+                    <section class="row key">更新日時</section>
+                    <section class="row value">
                         <?=$this->Date->formatToDateTime($title->modified)?>
                         <?=
                             $this->Form->hidden('lastUpdateTitle', [
@@ -52,8 +52,8 @@
                     </section>
                 </section>
                 <section class="box">
-                    <section class="headerRow">現在の保持者</section>
-                    <section class="valueRow">
+                    <section class="row key">現在の保持者</section>
+                    <section class="row value">
                         <?php
                             if (!empty($title->retention_histories)) :
                                 foreach ($title->retention_histories as $retention) :
@@ -70,8 +70,8 @@
                 <!-- 更新機能がないためコメント
                 <section class="row">
                     <section class="box">
-                        <section class="headerRow">その他備考</section>
-                        <section class="valueRow">
+                        <section class="row key">その他備考</section>
+                        <section class="row value">
                             <?=
                                 $this->Form->textarea('remarks', [
                                     'cols' => 30,
@@ -90,15 +90,15 @@
         <!-- タイトル取得履歴 -->
         <section id="titleRetains" class="details">
             <?=$this->Form->hidden('registWithMapping', ['id' => 'registWithMapping', 'value' => false])?>
-            <section class="categoryRow">保持情報</section>
+            <section class="row category"><span>保持情報</span></section>
             <section class="row">
                 <section class="box">
-                    <section class="headerRow">新規登録</section>
+                    <section class="row key">新規登録</section>
                 </section>
             </section>
             <section class="row">
                 <section class="box2">
-                    <section class="valueRow">対象年：
+                    <section class="row value">対象年：
                         <?=
                             $this->Form->text('registYear', [
                                 'id' => 'registYear',
@@ -137,7 +137,7 @@
                     ?>
                 </section>
                 <section class="box">
-                    <section class="valueRow">
+                    <section class="row value">
                         <?php
                             if ($title->is_team) {
                                 echo '優勝団体名：';
@@ -156,7 +156,7 @@
                                     'id' => 'registRank',
                                     'value' => $this->request->data('registRank')
                                 ]);
-                                echo '<span id="registPlayerName">（検索エリアから棋士を検索してください。）</span>';
+                                echo '<strong id="registPlayerName">（検索エリアから棋士を検索してください。）</strong>';
                             }
                         ?>
                     </section>
@@ -165,10 +165,10 @@
             <?php if (!$title->is_team) : ?>
             <section class="row">
                 <section class="box">
-                    <section class="headerRow">検索エリア</section>
+                    <section class="row key">棋士検索</section>
                 </section>
                 <section class="box2">
-                    <section class="valueRow">
+                    <section class="row value">
                         棋士名：
                         <?=
                             $this->Form->text('searchPlayerName', [
@@ -180,12 +180,7 @@
                     </section>
                 </section>
                 <section class="box2 button">
-                    <?=
-                        $this->Form->button('棋士検索', [
-                            'type' => 'button',
-                            'id' => 'searchPlayer'
-                        ]);
-                    ?>
+                    <?=$this->Form->button('検索', ['type' => 'button', 'id' => 'searchPlayer']);?>
                 </section>
             </section>
             <section class="row" id="searchResult">
@@ -197,12 +192,12 @@
                     <?php if ($title->holding === $retention->holding) : ?>
                     <section class="row">
                         <section class="box">
-                            <section class="headerRow">現在の保持情報</section>
+                            <section class="row key">現在の保持情報</section>
                         </section>
                     </section>
                     <section class="row">
                         <section class="box">
-                            <section class="valueRow">
+                            <section class="row value">
                                 <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
                                 <?=h($retention->getWinnerName($title->is_team))?>
                             </section>
@@ -216,7 +211,7 @@
                     <?php if (!$header) : ?>
                     <section class="row">
                         <section class="box">
-                            <section class="headerRow">保持情報（履歴）</section>
+                            <section class="row key">保持情報（履歴）</section>
                         </section>
                     </section>
                     <?php $header = true; ?>
@@ -224,7 +219,7 @@
                     <?php if ($title->holding !== $retention->holding) : ?>
                     <section class="row">
                         <section class="box">
-                            <section class="valueRow">
+                            <section class="row value">
                                 <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
                                 <?=h($retention->getWinnerName($title->is_team))?>
                             </section>
@@ -277,19 +272,13 @@
             $('#regist, #registNew').attr('disabled', !($('#registYear').val() !== '' && $('#registHolding').val() !== ''));
         }
         <?php if (!$title->is_team) : ?>
-        // 棋士検索ボタンの活性・非活性
-        $('#searchPlayer').attr('disabled', 'disabled');
-        $('#searchPlayerName').change(function() {
-            if (!$(this).val()) {
-                $('#searchPlayer').attr('disabled', 'disabled');
-            } else {
-                $('#searchPlayer').removeAttr('disabled');
-            }
-        });
         // 棋士検索ボタン押下時
         $('#searchPlayer').click(function() {
             var searchValue = $("#searchPlayerName").val();
             if (!searchValue) {
+                var dialog = $("#dialog");
+                dialog.html('<span class="red">棋士名を入力してください。</span>');
+                dialog.click();
                 return false;
             }
             $.ajax({
@@ -305,16 +294,12 @@
                     var obj = data.results[0];
                     $('#registPlayerId').val(obj.id);
                     $('#registRank').val(obj.rankNumber);
-                    var playerName = obj.name + " " + obj.rankName;
-                    $('#registPlayerName').css("color", "#000000").html("<strong>" + playerName + "</strong>");
+                    $('#registPlayerName').css("color", "#000000").html(obj.name + " " + obj.rankName);
                     $("#searchPlayerName").val('');
-                    var dialog = $("#dialog");
-                    dialog.html('【' + playerName + '】がセットされました。');
-                    dialog.click();
                     return false;
                 }
                 var resultArea = $("#searchResult table");
-                resultArea.html('');
+                resultArea.find("*").remove();
                 var tbody = $("<tbody>");
                 $.each(data.results, function(idx, obj) {
                     var tr = $("<tr>")
@@ -329,7 +314,7 @@
                     tbody.append(tr);
                 });
                 resultArea.append(tbody);
-                $("#searchResult").css("display", "block");
+                $("#searchResult").show();
             }).fail(function (data) {
                 var dialog = $("#dialog");
                 dialog.html('<span class="red">棋士検索に失敗しました。</span>');
@@ -343,9 +328,13 @@
             var playerName = parent.find("[name=playerName]").text();
             var playerRank = parent.find("[name=rank]").val();
             var playerRankText = parent.find("[name=rankName]").text();
-            $('#registPlayerId').val(playerId);
-            $('#registRank').val(playerRank);
-            $('#registPlayerName').css("color", "#000000").text(playerName + " " + playerRankText);
+            $("#registPlayerId").val(playerId);
+            $("#registRank").val(playerRank);
+            $("#registPlayerName").css("color", "#000000").text(playerName + " " + playerRankText);
+            $("#searchPlayerName").val('');
+            // 一覧を消す
+            $("#searchResult table *").remove();
+            $("#searchResult").hide();
         });
         <?php endif ?>
     });
