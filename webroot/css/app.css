@@ -601,6 +601,13 @@ table.players .scorePoint {
 }
 
 /* -------------------------------------------
+   棋士情報詳細
+ ------------------------------------------- */
+#scores strong {
+    margin: 0px 3px;
+}
+
+/* -------------------------------------------
    タイトル情報検索
  ------------------------------------------- */
 table.titles {
@@ -663,7 +670,7 @@ table.titles .openRetain {
 }
 
 table.titles input[type=text] {
-	width: calc(100% - 7px);
+	width: calc(100% - 10px);
 }
 
 table.titles .holding input[type=text],

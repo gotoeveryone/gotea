@@ -14,7 +14,7 @@
             'value' => (empty($searchFlag) ? 'false' : var_export($searchFlag, TRUE))
         ]);
     ?>
-    <section class="searchHeader scoreUpdatesHeader">
+    <section class="searchHeader updatePoints">
         <section class="searchRow">
             <section class="label">対象年：</section>
             <section>
@@ -41,8 +41,8 @@
     <?php if (!empty($updatedPoints)) : ?>
     <section id="scoreUpdates">
         <?php foreach ($updatedPoints as $key => $point) : ?>
-            <section class="headerRow">
-                <?=h($point->country->name)?>
+            <section class="row key">
+                <span><?=h($point->country->name)?></span>
             </section>
             <section class="detail">
                 <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($point->id)])?>

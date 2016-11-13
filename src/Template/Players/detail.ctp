@@ -265,7 +265,7 @@
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'分';
                             ?>
-                            （勝率<span class="winPercent" id="winPercent_<?=$key?>">&nbsp;</span>%）
+                            （勝率<strong class="winPercent" id="winPercent_<?=$key?>">&nbsp;</strong>%）
                         </section>
                     </section>
                     <section class="box2">
@@ -295,7 +295,7 @@
                                     'class' => 'playerPoint imeDisabled'
                                 ]).'分';
                             ?>
-                            （勝率<span class="winPercentWr" id="winPercentWr_<?=$key?>">&nbsp;</span>%）
+                            （勝率<strong class="winPercentWr" id="winPercentWr_<?=$key?>">&nbsp;</strong>%）
                         </section>
                     </section>
                 </section>
