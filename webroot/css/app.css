@@ -1,20 +1,143 @@
 @CHARSET "UTF-8";
 
-html, body {
-	font-size: 13px;
-	height: 98%;
+/* -------------------------------------------
+   タグ単位のレイアウト
+ ------------------------------------------- */
+* {
+	font-size: 0.8rem;
 }
 
-*, *::before, *::after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+html {
+    padding: 0.7rem 0.5rem;
+}
+
+header, footer {
+	font-size: 1.3rem;
+	height: 3rem;
+	width: 100%;
+    letter-spacing: -.4em;
+}
+
+header > *, footer > * {
+    display: inline-block;
+    letter-spacing: normal;
+    vertical-align: top;
+}
+
+header *, footer * {
+    height: 100%;
+	font-style: italic;
+}
+
+header * {
+    font-family: "ヒラギノ明朝 ProN W6", "HiraMinProN-W6", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
+}
+
+header .system-name {
+    padding-left: 1rem;
+    width: 15%;
+	text-align: left;
+}
+
+header .system-name > * {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+header .page-title {
+	margin: auto;
+    width: 70%;
+}
+
+header .page-title h1 {
+	margin: 0;
+    text-align: center;
+	font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 0.3rem;
+    -webkit-text-stroke: 0.1rem #000000;
+}
+
+header .other {
+    padding-right: 1rem;
+    width: 15%;
+	text-align: right;
+}
+
+header .other > * {
+    display: block;
+    height: 50%;
+    font-size: 1rem;
+}
+
+header .other .username {
+    padding-top: 0;
+    font-weight: bold;
+	text-decoration: underline;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+}
+
+footer > * {
+    padding-top: 0.5rem;
+}
+
+footer * {
+    letter-spacing: 0.1rem;
+	font-size: 0.9rem;
+    font-weight: normal;
+}
+
+hr {
+    margin: 0.5rem 0;
+}
+
+main, nav {
+    padding: 0 0.5rem;
+}
+
+main {
+    width: 100%;
+}
+
+nav + main {
+    width: 70%;
+    min-width: calc(100% - 220px);
+}
+
+nav {
+    width: 30%;
+	max-width: 220px;
+}
+
+article {
+    height: 100%;
+}
+
+th, tr td {
+	border-collapse: collapse;
+}
+
+strong {
+    color: #ff0000;
+    margin: 0 0.3rem;
 }
 
 /* -------------------------------------------
-   ボタン
+   共通レイアウト
  ------------------------------------------- */
-section#container button {
+.container {
+	margin: auto;
+	width: 100%;
+	position: relative;
+	min-height: 100%;
+	height: 100%;
+}
+
+.container button {
     min-width: 70px;
     min-height: 25px;
     font-size: 14px;
@@ -23,140 +146,37 @@ section#container button {
     margin: 0px 2px;
 }
 
-section#container button:hover:enabled, a.button:hover {
+.container button:enabled:hover,
+.container .button:hover {
     background-color: #999999;
 }
 
-section#container a.button {
+.container .button {
 	display: block;
 	text-align: center;
-    margin: 2px 0px;
-	padding: 5px 0px;
-	border: 2px solid;
-	color: black;
+    margin: 0.2rem 0;
+	padding: 0.3rem 0;
+	border: 0.2rem solid;
+	color: #000000;
 	border-color: #aaaaaa #444444 #444444 #aaaaaa;
-	background-color: #bbb;
+	background-color: #bbbbbb;
 }
 
-/* -------------------------------------------
-   共通レイアウト
- ------------------------------------------- */
-section#container .menu {
-	width: 200px;
-	height: 18px;
+.content {
+	height: calc(100% - 3rem - 1rem - 1rem - 3rem); /* header - hr - hr - footer */
 }
 
-section#container th,
-section#container tr,
-section#container td {
-	border-collapse: collapse;
+.row {
+    min-height: 2.6rem;
 }
 
-section#container {
-	margin: auto;
-	width: 99%;
-	position: relative;
-	min-height: 100%;
-	height: 100%;
-}
-
-section#header {
-	font-size: 13px;
-	height: 40px;
-	vertical-align: top;
-	font-style: italic;
-	width: 100%;
-    font-family: "ヒラギノ明朝 ProN W6", "HiraMinProN-W6", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
-    /*font-family: 'Hannari';*/
-}
-
-section#header:after {
-    content: "";
-	clear: both;
-    height: 0;
-    display: block;
-    visibility: hidden;
-}
-
-section#header .system-name {
-	float: left;
-    width: 15%;
+.label {
     font-weight: bold;
-    font-size: 1.3rem;
 }
 
-@font-face {
-	font-family: 'Hannari';
-	src: url('../fonts/Hannari.otf');
-}
-
-section#header .page-title {
-    float: left;
-	margin: auto;
-    width: 70%;
-}
-
-section#header .page-title h1 {
-	margin: 0px;
-    text-align: center;
-	font-size: 2.5rem;
-}
-
-section#header .username {
-	float: right;
-    width: 15%;
-	text-align: right;
-    line-height: 18px;
-}
-
-section#header .username span {
-    font-weight: bold;
-	text-decoration: underline;
-}
-
-section#content {
-	height: calc(100% - 120px);
-}
-
-section#contentModal {
-	height: 100%;
-}
-
-section#content .sideMenu,
-section#contentModal .sideMenu {
-	height: 100%;
-	float: left;
-	width: 220px;
-}
-
-section#content .child,
-section#contentModal .child {
-	display: block;
-	height: 100%;
-}
-
-section#content .main,
-section#contentModal .main {
-	display: block;
-	height: 100%;
-	margin-left: 220px;
-	margin-right: auto;
-}
-
-section#footer {
-	font-size: 13px;
-	position: absolute;
-	height: 40px;
-	width: 100%;
-	bottom: 0px;
-}
-
-section.row:after {
-    content: "";
-	clear: both;
-    height: 0;
-    display: block;
-    visibility: hidden;
+#mainForm {
+    height: 100%;
+    width: 100%;
 }
 
 /* -------------------------------------------
@@ -166,116 +186,85 @@ section.row:after {
 	display: none;
 }
 
-/* -------------------------------------------
-   共通
- ------------------------------------------- */
-input.year {
-	width: 40px;
-}
-
-input.playerName {
-	width: 150px;
-}
-
-input.datapicker {
-	width: 100px;
-}
-
-.clear {
-	clear: both;
-}
-
-div.spacer {
-    height: 5px;
-}
-
-form#mainForm {
-	height: 100%;
-}
-
-.female {
-	color: #ff4577;
-}
-
-/* -------------------------------------------
-   マスタプルダウン
- ------------------------------------------- */
-select.country {
-	width: 80px;
-}
-
-select.year, select.sex, select.rank {
-	width: 70px;
-}
-
-select.organization {
-	width: 140px;
-}
-
-select.retired {
-	width: 100px;
+.ui-dialog * {
+	font-size: 1rem;
 }
 
 /* -------------------------------------------
    検索エリア
  ------------------------------------------- */
-section.searchHeader {
-    margin-bottom: 5px;
-	padding: 5px;
+.search-header {
+    position: relative;
+    margin-bottom: 0.5rem;
+	padding: 0.3rem;
     background-color: #ffffff;
-	border: 2px solid #dddddd;
-    border-radius: 5px;
-} 
-
-section.searchHeader .searchRow {
-    display: table;
-    height: 35px;
-    width: 100%;
+	border: 0.2rem solid #bbbbbb;
+    border-radius: 0.4rem;
 }
 
-section.searchHeader .searchRow:after {
-    content: "";
-    display: block;
-    clear: both;
+.search-header .label {
+    margin: 0 0.5rem 0 0.2rem;
 }
 
-section.searchHeader .searchRow section {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 3px;
-} 
+.search-header .label + * {
+    margin-right: 1rem;
+}
 
-section.searchHeader .searchRow section.label {
-    width: 80px;
-    font-weight: bold;
+.search-header .button-column {
+    position: absolute;
+    right: 0.5rem;
+}
+
+.search-header .year,
+.search-header .country,
+.search-header .sex,
+.search-header .rank {
+	width: 6rem;
+}
+
+.search-header .organization,
+.search-header .retired {
+	width: 10rem;
+}
+
+.search-header .name {
+	width: 14rem;
+}
+
+.search-header .enrollment {
+    width: 3.8rem;
+    text-align: right;
 }
 
 /* -------------------------------------------
    検索エリア（一覧）
  ------------------------------------------- */
-table.searchView {
-	height: 100%;
-	display: block;
-} 
-
-table.searchView * {
-    font-size: 0.9rem;
+.search-results {
+    height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
 }
 
-table.searchView thead {
-	background-color: #ffffcc;
+.search-results table {
+	display: block;
+	height: 100%;
+	max-height: 100%;
+	border-collapse: collapse;
+}
+
+.search-results thead {
 	display: table-cell;
 	border: 1px #000000 solid;
-    max-height: 50px;
+    height: 3.2rem;
+    max-height: 3.2rem;
 }
 
-table.searchView tbody {
+.search-results tbody {
+    display: inline-block;
+    max-height: calc(100% - 3.2rem);
     overflow-x: hidden;
     overflow-y: scroll;
     -ms-overflow-x: hidden;
     -ms-overflow-y: scroll;
     background-color: #ffffff;
-    display: inline-block;
 	border-top: 2px #000000 solid;
 	border-left: 1px #000000 solid;
 	border-right: 2px #000000 solid;
@@ -283,94 +272,73 @@ table.searchView tbody {
     margin-top: -2px;
 }
 
-table.searchView td,
-table.searchView th {
+.search-results td,
+.search-results th {
     display: table-cell;
     padding: 3px;
 	border: 1px solid #000000;
 	table-layout: fixed;
 }
 
-table.searchView tr td:nth-last-of-type(1) {
+.search-results tr td:nth-last-of-type(1) {
 	border-right: 2px solid #000000;
 }
 
-table.searchView tr:first-of-type td {
+.search-results tr:first-of-type td {
 	border-top: none;
 }
 
-table.searchView tr:nth-last-of-type(1) td {
+.search-results tr:nth-last-of-type(1) td {
 	border-bottom: none;
 }
 
 /* -------------------------------------------
    詳細表示エリア
  ------------------------------------------- */
-section#tabs {
+.detail-dialog {
+    width: 100%;
+}
+
+.detail-dialog #tabs {
     height: 30px;
-    margin-bottom: 2px;
+    letter-spacing: -.4em;
+    font-size: 0;
 }
 
-section#tabs:after {
-    content: "";
-	clear: both;
-    height: 0;
-    display: block;
-    visibility: hidden;
-}
-
-section#tabs .tab {
-    float: left;
+.detail-dialog #tabs .tab {
+    display: inline-block;
+    vertical-align: middle;
+    letter-spacing: normal;
+    font-size: 1rem;
     color: #ffffff;
     background-color: #000000;
-	border: 1px solid #000000;
+	border: 0.1rem solid #000000;
+	border-bottom: none;
     height: 100%;
-    padding: 0px 5px;
-    border-radius: 6px 6px 0px 0px;
+    padding: 0.4rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
-section#tabs .selectTab {
+.detail-dialog #tabs .selectTab {
     font-weight: bold;
     color: #000000;
     background-color: #99ffff;
 }
 
-section#detail {
-	max-width: 500px;
-	margin-bottom: 3px;
-	height: calc(100% - 30px);
-    margin: auto;
-}
-
-section#scroll {
-	overflow-y: scroll;
-	height: calc(100% - 30px);
-	border: 1px solid #000000;
-	background-color: #ffffff;
-}
-
-section.title,
-section.retains {
-	width: 100%;
-	padding: 2px;
-	background-color: #ffffff;
+.detail-dialog .detail {
+	height: 100%;
+    border: 0.1rem solid #000000;
+    background-color: #ffffff;
 }
 
 [class^=box] {
-    margin-left: 1px;
-    margin-right: 1px;
-}
-
-[class^=box].button {
-    text-align: right;
-}
-
-[class^=box].button:after {
-    clear: both;
-}
-
-.box {
+    padding: 0.1rem;
+    vertical-align: top;
     width: 100%;
+}
+
+[class^=box] [class$=-row] {
+    vertical-align: middle;
 }
 
 .box2 {
@@ -385,194 +353,183 @@ section.retains {
     width: calc(100% / 4);
 }
 
-.row {
+[class$=-row] {
+    display: table;
     width: 100%;
-    font-size: 0;
 }
 
-.row > * {
-    display: inline-block;
+[class$=-row] + .row {
+    margin-top: 0;
 }
 
-.row * {
-    font-size: 1rem;
-}
-
-.row span {
+[class$=-row]:not(.input-row) > * {
     display: table-cell;
     vertical-align: middle;
 }
 
-.row.group {
-    margin-bottom: 5px;
+.row-group {
+    border-top: 0.1rem solid #000000;
 }
 
-.row.category {
-	height: 30px;
-	text-indent: 5px;
-	font-size: 16px;
+.category-row {
+	height: 2.5rem;
+	text-indent: 0.5rem;
 	font-weight: bold;
 	background-color: #ddeeff;
 }
 
-.row.genre {
-    border-top: 1px solid #000000;
-    padding-top: 0.5rem;
-	height: 25px;
-	text-indent: 5px;
-	font-size: 14px;
+.category-row * {
+	font-size: 1.2rem;
+}
+
+.genre-row {
+	height: 2.3rem;
+	text-indent: 0.6rem;
 	font-weight: bold;
 	background-color: #eeffdd;
 }
 
-.row.key {
-	height: 22px;
-    margin-bottom: 5px;
-	text-indent: 5px;
+.genre-row * {
+	font-size: 1.1rem;
+}
+
+.label-row {
+	height: 2.2rem;
+	text-indent: 0.7rem;
 	background-color: #ffeedd;
+    font-weight: bold;
 }
 
-.row.value {
-    min-height: 28px;
-    margin-bottom: 3px;
-    padding: 3px 0px;
-	text-indent: 10px;
+.label-row:first-child {
+    margin: 0 auto 0.2rem;
+    border-radius: 0.4rem;
 }
 
-.row.button {
-    margin: 5px auto;
+.input-row {
+    margin: 0.5rem 0;
+	padding: 0 0.7rem;
+}
+
+.input-row > * {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.input-row > * input {
+    margin-right: 0.2rem;
+}
+
+.input-row :not(.button-area) :not(:first-child) {
+    margin-left: 1rem;
+}
+
+.input-row .point,
+.input-row .holding {
+    width: 3rem;
+    text-align: right;
+}
+
+.input-row .datepicker {
+    width: 8rem;
+}
+
+.input-row .year {
+    width: 4rem;
+    text-align: right;
+}
+
+.input-row select,
+.input-row textarea {
+    width: 100%;
+}
+
+.input-row [class^=box].button-area {
+    display: table-cell;
+    text-align: right;
+}
+
+.button-row {
+    margin: 0.5rem auto;
+    height: 2.8rem;
     text-align: center;
-}
-
-.details {
-    overflow-x: hidden;
-}
-
-.details hr {
-    margin: 0px;
-}
-
-.details input.playerPoint {
-	width: 25px;
-}
-
-.details textarea.remarks {
-	width: 95%;
-	height: 95%;
-    resize: none;
-}
-
-.details input.targetYear {
-	width: 40px;
-}
-
-.details input.targetHolding {
-	width: 30px;
-}
-
-.details input[type=text].readonly {
-    border-style: none;
-    background-color: transparent;
-    -moz-user-input: none;
-}
-
-.details input[type=text].readonly.playerName {
-    width: 100px;
-}
-
-.details input[type=text].readonly.rank {
-    width: 60px;
 }
 
 /* -------------------------------------------
    ログイン画面
  ------------------------------------------- */
-section.login {
-	width: 250px;
-	height: 100px;
+.login {
+	width: 20%;
+    min-width: 250px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-section.login .row {
-	height: 30px;
-    margin-bottom: 5px;
+.login .row .label {
+	width: 30%;
 }
 
-section.login .row .label {
-	width: 30%;
+.login .row .label + * {
+	width: 70%;
+}
+
+.login .row .label > * {
+    display: block;
+    padding-right: 0.7rem;
+    width: 100%;
 	text-align: right;
 }
 
-section.login .row input {
-	height: 25px;
+.login .row input {
     width: 100%;
-    margin-left: 5px;
-}
-
-section.submit {
-	text-align: center;
-	width: 100%;
-}
-
-span.label {
-	vertical-align: middle;
-	padding-right: 3px;
 }
 
 /* -------------------------------------------
    勝敗ランキング画面
  ------------------------------------------- */
-section.ranking {
-	width: 395px;
+.ranking {
+    width: 30rem;
 }
 
-table.ranking {
-	height: calc(100% - 90px);
-	max-height: calc(100% - 90px);
-	border-collapse: collapse;
+.ranking .search-header select {
+	width: 7rem;
 }
 
-table.ranking tbody {
-	max-height: calc(100% - 23px);
-	border-right: 2px #000000 solid;
+.ranking .search-results {
+    height: calc(100% - 7rem - 0.5rem);
 }
 
-table.ranking .no {
+.ranking .search-results thead tr {
+    display: table;
+    height: 100%;
+}
+
+.ranking .search-results table .no {
 	width: 30px;
 }
 
-table.ranking .playerName {
+.ranking .search-results table .playerName {
 	width: 196px;
 }
 
-table.ranking .winPoint,
-table.ranking .losePoint {
+.ranking .search-results table .winPoint,
+.ranking .search-results table .losePoint {
 	width: 40px;
 }
 
-table.ranking .winPercent {
+.ranking .search-results table .winPercent {
 	width: 45px;
 }
 
 /* -------------------------------------------
    棋士情報検索
  ------------------------------------------- */
-section.players input.from,
-section.players input.to {
-    text-align: right;
-	width: 40px;
+.players .search-results {
+    height: calc(100% - 7rem - 0.5rem);
 }
 
-table.players {
-	height: calc(100% - 100px);
-	max-height: calc(100% - 100px);
-	border-collapse: collapse;
-}
-
-table.players tbody {
-	max-height: calc(100% - 30px);
+.players .search-results tbody {
+    max-height: calc(100% - 3.7rem);
 }
 
 table.players tr.retired {
@@ -614,34 +571,8 @@ table.players .scorePoint {
 }
 
 /* -------------------------------------------
-   棋士情報詳細
- ------------------------------------------- */
-#scores strong {
-    margin: 0px 3px;
-}
-
-/* -------------------------------------------
    タイトル情報検索
  ------------------------------------------- */
-table.titles {
-	height: calc(100% - 60px);
-	max-height: calc(100% - 60px);
-	border-collapse: collapse;
-}
-
-table.titles thead th {
-	height: 100%;
-}
-
-table.titles tbody {
-	max-height: calc(100% - 28px);
-	border-right: 2px #000000 solid;
-}
-
-table.titles tbody tr {
-	height: 30px;
-}
-
 table.titles tr.retired {
 	background-color: #dddddd;
 }
@@ -683,7 +614,7 @@ table.titles .openRetain {
 }
 
 table.titles input[type=text] {
-	width: calc(100% - 10px);
+	width: 100%;
 }
 
 table.titles .holding input[type=text],
@@ -706,7 +637,7 @@ table.titles .htmlModifyDate input[type=text] {
 
 #searchResult *,
 #searchResult button {
-    font-size: 12px;
+    font-size: 0.85rem;
 }
 
 #searchResult table {
@@ -721,68 +652,45 @@ table.titles .htmlModifyDate input[type=text] {
 #searchResult table td {
 	border: 1px #000000 solid;
 	border-collapse: collapse;
-}
-
-#registPlayerName {
-    color: #ff0000;
+    padding: 0.1rem 0.5rem;
 }
 
 /* -------------------------------------------
    段位別棋士数検索
  ------------------------------------------- */
-section.categories {
-	width: 300px;
+.categories {
+    width: 25rem;
 }
 
-table.ranks {
-	height: calc(100% - 50px);
-	max-height: calc(100% - 50px);
-	border-collapse: collapse;
+.categories .search-results thead tr {
+    display: table;
+    height: 100%;
 }
 
-table.ranks tbody {
-	max-height: calc(100% - 33px);
-	border-collapse: collapse;
-}
-
-table.ranks .rank {
+.categories .search-results table .rank {
     width: 60px;
 }
 
-table.ranks .count {
+.categories .search-results table .count {
     width: 80px;
 }
 
 /* -------------------------------------------
    成績更新日編集
  ------------------------------------------- */
-section#scoreUpdates {
-	width: 100%;
-	margin-bottom: 3px;
-	border: 1px solid #000000;
-	background-color: #ffffff;
-}
-
-section#scoreUpdates section.detail {
-    padding: 0px 0px 5px 0px;
-}
-
-section#scoreUpdates section.detail span {
-    margin: 0px 20px;
+.update-points .search-results {
+	border: 0.2rem solid #777777;
+    background-color: #ffffff;
+    border-radius: 0.4rem;
+    max-height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
+    height: auto;
 }
 
 /* -------------------------------------------
    各種情報クエリ更新
  ------------------------------------------- */
-section.updateScore {
-	height: 100%;
-	width: 98%;
-	text-align: center;
-	margin: auto;
-}
-
-section.updateScore textarea {
-	height: calc(100% - 27px);
+.update-score textarea {
+	height: calc(100% - 3.8rem);
 	width: 100%;
     font-size: 12px;
 	overflow-y: auto;

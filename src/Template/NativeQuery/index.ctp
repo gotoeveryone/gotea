@@ -1,29 +1,21 @@
-<?=$this->Form->create(null, [
-    'id' => 'mainForm',
-    'method' => 'post',
-    'url' => ['action' => 'execute'],
-    'templates' => [
-        'inputContainer' => '{{content}}',
-        'textFormGroup' => '{{input}}',
-        'selectFormGroup' => '{{input}}'
-    ]
-])?>
-    <section class="updateScore">
+<article class="update-score">
+    <?=$this->Form->create(null, [
+        'id' => 'mainForm',
+        'method' => 'post',
+        'url' => ['action' => 'execute'],
+        'templates' => [
+            'inputContainer' => '{{content}}',
+            'textFormGroup' => '{{input}}',
+            'selectFormGroup' => '{{input}}'
+        ]
+    ])?>
         <?=$this->Form->textarea('executeTargets', ['id' => 'executeTargets'])?>
-        <?=
-            $this->Form->button('更新', [
-                'type' => 'button',
-                'id' => 'update'
-            ])
-        ?>
-        <?=
-            $this->Form->button('クリア', [
-                'type' => 'button',
-                'id' => 'clear'
-            ])
-        ?>
-    </section>
-<?=$this->Form->end()?>
+        <section class="row button-row">
+            <?=$this->Form->button('更新', ['type' => 'button', 'id' => 'update'])?>
+            <?=$this->Form->button('クリア', ['type' => 'button', 'id' => 'clear'])?>
+        </section>
+    <?=$this->Form->end()?>
+</article>
 <script type="text/javascript">
     $(function() {
         // 更新ボタン押下時

@@ -23,131 +23,94 @@
     <?=$this->Html->css('app')?>
 </head>
 <body>
-    <section id="container">
-
+    <section class="container">
         <!-- ヘッダー -->
-        <?php if (!isset($dialogFlag) || !$dialogFlag) : ?>
-        <section id="header">
-            <section class="system-name">
-                棋士情報管理システム
-            </section>
+        <?php if (!isset($isDialog)) : ?>
+        <header>
+            <section class="system-name"><span>棋士情報管理システム</span></section>
             <!-- 見出し -->
             <section class="page-title">
-            <?php if (!empty($cakeDescription)) : ?>
                 <h1><?=h($cakeDescription)?></h1>
-            <?php endif ?>
             </section>
-            <section class="username">
+            <section class="other">
                 <?php if (isset($username)) : ?>
-                    <span>ユーザ：<?=h($username)?></span><br>
+                    <span class="username">ユーザ：<?=h($username)?></span>
                 <?php endif ?>
-                <?=date('Y年m月d日 H時i分s秒')?>
+                <span><?=date('Y年m月d日 H時i分s秒')?></span>
             </section>
-        </section>
-        <hr />
+        </header>
         <?php endif ?>
 
         <!-- 本体 -->
-        <?php if (!empty($cakeDescription)) : ?>
-            <section id="content">
-        <?php else : ?>
-            <section id="contentModal">
-        <?php endif ?>
-            <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) : ?>
-            <section class="sideMenu">
+        <section class="content row">
+            <?php if (isset($username) && !isset($isDialog)) : ?>
+            <!-- ナビゲーション -->
+            <nav>
                 <?=
-                    $this->Html->link('棋士勝敗ランキング出力',
-                        [
-                            'controller' => 'players',
-                            'action' => 'ranking'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
+                    $this->Html->link('棋士勝敗ランキング出力', [
+                        'controller' => 'players',
+                        'action' => 'ranking'
+                    ], ['class' => 'button']);
                 ?>
                 <?=
-                    $this->Html->link('棋士情報検索',
-                        [
-                            'controller' => 'players',
-                            'action' => 'index'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
+                    $this->Html->link('棋士情報検索', [
+                        'controller' => 'players',
+                        'action' => 'index'
+                    ], ['class' => 'button']);
                 ?>
                 <?=
-                    $this->Html->link('タイトル情報検索',
-                        [
-                            'controller' => 'titles',
-                            'action' => 'index'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
+                    $this->Html->link('タイトル情報検索', [
+                        'controller' => 'titles',
+                        'action' => 'index'
+                    ], ['class' => 'button']);
                 ?>
                 <?=
-                    $this->Html->link('段位別棋士数検索',
-                        [
-                            'controller' => 'players',
-                            'action' => 'categorize'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
+                    $this->Html->link('段位別棋士数検索', [
+                        'controller' => 'players',
+                        'action' => 'categorize'
+                    ], ['class' => 'button']);
                 ?>
                 <?=
-                    $this->Html->link('成績更新日編集',
-                        [
-                            'controller' => 'updatedPoints',
-                            'action' => 'index'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
+                    $this->Html->link('成績更新日編集', [
+                        'controller' => 'updatedPoints',
+                        'action' => 'index'
+                    ], ['class' => 'button']);
                 ?>
                 <?php if ($admin) : ?>
                 <?=
-                    $this->Html->link('各種情報クエリ更新',
-                        [
-                            'controller' => 'nativeQuery',
-                            'action' => 'index'
-                        ],
-                        [
-                            'class' => 'button menu'
-                        ]
-                    );
+                    $this->Html->link('各種情報クエリ更新', [
+                        'controller' => 'nativeQuery',
+                        'action' => 'index'
+                    ], ['class' => 'button']);
                 ?>
                 <?php endif ?>
-            </section>
-            <section class="main">
-            <?php else : ?>
-            <section class="child">
+            </nav>
             <?php endif ?>
+            <!-- メインコンテンツ -->
+            <main>
                 <?=$this->fetch('content')?>
-            </section>
+            </main>
         </section>
 
         <!-- フッター -->
-        <?php if (!empty($cakeDescription)) : ?>
-            <section id="footer" class="center">
-                <hr />
-                <?php if (isset($username) && (!isset($dialogFlag) || !$dialogFlag)) { ?>
-                <a href="<?=$this->Url->build(['controller' => 'users', 'action' => 'logout']); ?>">
-                    ログアウト
-                </a>
-                <?php } ?>
+        <?php if (!isset($isDialog)) : ?>
+        <footer>
+            <?php if (isset($username)) : ?>
+            <section>
+                <a href="<?=$this->Url->build(['controller' => 'users', 'action' => 'logout']); ?>">ログアウト</a>
             </section>
+            <?php endif ?>
+        </footer>
         <?php endif ?>
     </section>
 
-    <section id="dialog" title="メッセージ">
-        <?=$this->Flash->render()?>
-    </section>
+    <!-- ダイアログ -->
+    <section id="dialog" title="メッセージ"><?=$this->Flash->render()?></section>
     <section id="confirm" title="確認"></section>
+
+    <script>
+        // containerを非表示
+        document.getElementsByClassName("container")[0].style.display = "none";
+    </script>
 </body>
 </html>

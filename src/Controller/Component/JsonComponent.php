@@ -37,12 +37,12 @@ class JsonComponent extends Component
             "account" => $account,
             "password" => $password
         ]);
-        if ($token) {
+        if ($token && isset($token['access_token'])) {
             // セッションにトークンを書き込み
             $this->request->session()->write('access_token', $token['access_token']);
             return $token['access_token'];
         }
-        return $token;
+        return null;
     }
 
     /**
@@ -107,6 +107,7 @@ class JsonComponent extends Component
         if ($response->isOk()) {
             return json_decode($response->body(), true);
         } else {
+            $this->log('POSTエラー発生');
             return ["status" => $response->statusCode(), "message" => "POSTエラー発生"];
         }
     }

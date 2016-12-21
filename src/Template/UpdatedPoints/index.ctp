@@ -1,90 +1,86 @@
-<?=$this->Form->create(null, [
-    'id' => 'mainForm',
-    'method' => 'post',
-    'url' => ['action' => 'search'],
-    'templates' => [
-        'inputContainer' => '{{content}}',
-        'textFormGroup' => '{{input}}',
-        'selectFormGroup' => '{{input}}'
-    ]
-])?>
-    <?=
-        $this->Form->hidden('searchFlag', [
-            'id' => 'searchFlag',
-            'value' => (empty($searchFlag) ? 'false' : var_export($searchFlag, TRUE))
-        ]);
-    ?>
-    <section class="searchHeader updatePoints">
-        <section class="searchRow">
-            <section class="label">対象年：</section>
-            <section>
-                <?=
-                    $this->Form->input('searchYear', [
-                        'options' => $years,
-                        'value' => (isset($searchYear) ? $searchYear : ''),
-                        'class' => 'year'
-                    ]);
-                ?>
-            </section>
-            <section class="right">
-                <?=$this->Form->button('検索', ['type' => 'submit'])?>
-                <?=
-                    $this->Form->button('一括更新', [
-                        'id' => 'save',
-                        'type' => 'button'
-                    ]);
-                ?>
+<article class="update-points">
+    <?=$this->Form->create(null, [
+        'id' => 'mainForm',
+        'method' => 'post',
+        'url' => ['action' => 'search'],
+        'templates' => [
+            'inputContainer' => '{{content}}',
+            'textFormGroup' => '{{input}}',
+            'selectFormGroup' => '{{input}}'
+        ]
+    ])?>
+        <?=$this->Form->hidden('searchFlag', ['id' => 'searchFlag', 'value' => (empty($searchFlag) ? 'false' : var_export($searchFlag, TRUE))]);?>
+        <section class="search-header">
+            <section class="row">
+                <section class="label">対象年：</section>
+                <section>
+                    <?=
+                        $this->Form->input('searchYear', [
+                            'options' => $years,
+                            'value' => (isset($searchYear) ? $searchYear : ''),
+                            'class' => 'year'
+                        ]);
+                    ?>
+                </section>
+                <section class="button-column">
+                    <?=$this->Form->button('検索', ['type' => 'submit'])?>
+                    <?=
+                        $this->Form->button('一括更新', [
+                            'id' => 'save',
+                            'type' => 'button'
+                        ]);
+                    ?>
+                </section>
             </section>
         </section>
-    </section>
 
-    <?php if (!empty($updatedPoints)) : ?>
-    <section id="scoreUpdates">
-        <?php foreach ($updatedPoints as $key => $point) : ?>
-            <section class="row key">
-                <span><?=h($point->country->name)?></span>
-            </section>
-            <section class="detail">
-                <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($point->id)])?>
-                <?=
-                    $this->Form->hidden('scoreUpdates['.$key.'][updateFlag]', [
-                        'id' => 'updateFlag-'.$key,
-                        'value' => 'false'
-                    ])
-                ?>
-                <span>
-                <?=$this->Form->hidden('scoreUpdates['.$key.'][scoreId]', ['value' => h($point->id)])?>
-                成績更新日：
-                <?=
-                    $this->Form->text('scoreUpdates['.$key.'][scoreUpdateDate]', [
-                        'id' => 'scoreUpdateDate-'.$key,
-                        'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd'),
-                        'readonly' >= true,
-                        'class' => 'checkChange datepicker'
-                    ]);
-                ?>
-                </span>
-                <span>
-                <?=
-                    $this->Form->hidden('scoreUpdates['.$key.'][bean-scoreUpdateDate]', [
-                        'id' => 'bean-scoreUpdateDate-'.$key,
-                        'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
-                    ])
-                ?>
-                更新日時：
-                <?=$this->Date->formatToDateTime($point->modified)?>
-                <?=
-                    $this->Form->hidden('scoreUpdates['.$key.'][modified]', [
-                        'value' => $this->Date->format($point->modified, 'YYYYMMddHHiiss')
-                    ])
-                ?>
-                </span>
-            </section>
-        <?php endforeach ?>
-    </section>
-    <?php endif ?>
-    </section>
-<?=$this->Form->end()?>
+        <?php if (!empty($updatedPoints)) : ?>
+        <section class="search-results">
+            <?php foreach ($updatedPoints as $key => $point) : ?>
+                <section class="label-row">
+                    <span><?=h($point->country->name)?></span>
+                </section>
+                <section class="input-row">
+                    <?=$this->Form->hidden('scoreUpdates['.$key.'][countryCd]', ['value' => h($point->id)])?>
+                    <?=
+                        $this->Form->hidden('scoreUpdates['.$key.'][updateFlag]', [
+                            'id' => 'updateFlag-'.$key,
+                            'value' => 'false'
+                        ])
+                    ?>
+                    <span>
+                    <?=$this->Form->hidden('scoreUpdates['.$key.'][scoreId]', ['value' => h($point->id)])?>
+                    成績更新日：
+                    <?=
+                        $this->Form->text('scoreUpdates['.$key.'][scoreUpdateDate]', [
+                            'id' => 'scoreUpdateDate-'.$key,
+                            'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd'),
+                            'readonly' >= true,
+                            'class' => 'checkChange datepicker'
+                        ]);
+                    ?>
+                    </span>
+                    <span>
+                    <?=
+                        $this->Form->hidden('scoreUpdates['.$key.'][bean-scoreUpdateDate]', [
+                            'id' => 'bean-scoreUpdateDate-'.$key,
+                            'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
+                        ])
+                    ?>
+                    更新日時：
+                    <?=$this->Date->formatToDateTime($point->modified)?>
+                    <?=
+                        $this->Form->hidden('scoreUpdates['.$key.'][modified]', [
+                            'value' => $this->Date->format($point->modified, 'YYYYMMddHHiiss')
+                        ])
+                    ?>
+                    </span>
+                </section>
+            <?php endforeach ?>
+        </section>
+        <?php endif ?>
+    <?=$this->Form->end()?>
+</article>
 <script type="text/javascript">
     $(function() {
         $('#save').attr('disabled', ($('#searchFlag').val() === 'false'));

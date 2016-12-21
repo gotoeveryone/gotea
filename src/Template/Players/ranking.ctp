@@ -1,82 +1,86 @@
-<?=$this->Form->create(null, [
-    'id' => 'mainForm',
-    'method' => 'post',
-    'url' => ['action' => 'index'],
-    'templates' => [
-        'inputContainer' => '{{content}}',
-        'textFormGroup' => '{{input}}',
-        'selectFormGroup' => '{{input}}'
-    ]
-])?>
-    <section class="searchHeader ranking">
-		<section class="searchRow">
-			<section class="label">対象年度：</section>
-			<section>
-				<?=
-					$this->Form->input('selectYear', [
-                        'id' => 'selectYear',
-						'options' => $years,
-						'class' => 'ranking'
-					]);
-				?>
-				<?=
-					$this->Form->input('selectCountry', [
-                        'id' => 'selectCountry',
-						'options' => $countries,
-						'class' => 'ranking'
-					]);
-				?>
-				<?=
-					$this->Form->input('selectRank', [
-                        'id' => 'selectRank',
-						'options' => [
-							'20' => '～20位',
-							'30' => '～30位',
-							'40' => '～40位',
-							'50' => '～50位',
-						],
-						'class' => 'ranking'
-					]);
-				?>
-			</section>
-		</section>
-		<section class="searchRow">
-			<section class="label">最終更新日：</section>
-            <section>
-                <span class="lastUpdate"></span>
+<article class="ranking">
+    <?=$this->Form->create(null, [
+        'id' => 'mainForm',
+        'method' => 'post',
+        'url' => ['action' => 'index'],
+        'templates' => [
+            'inputContainer' => '{{content}}',
+            'textFormGroup' => '{{input}}',
+            'selectFormGroup' => '{{input}}'
+        ]
+    ])?>
+        <section class="search-header">
+            <section class="row">
+                <section class="label">対象年度：</section>
+                <section>
+                    <?=
+                        $this->Form->input('selectYear', [
+                            'id' => 'selectYear',
+                            'options' => $years,
+                            'class' => 'ranking'
+                        ]);
+                    ?>
+                    <?=
+                        $this->Form->input('selectCountry', [
+                            'id' => 'selectCountry',
+                            'options' => $countries,
+                            'class' => 'ranking'
+                        ]);
+                    ?>
+                    <?=
+                        $this->Form->input('selectRank', [
+                            'id' => 'selectRank',
+                            'options' => [
+                                '20' => '～20位',
+                                '30' => '～30位',
+                                '40' => '～40位',
+                                '50' => '～50位',
+                            ],
+                            'class' => 'ranking'
+                        ]);
+                    ?>
+                </section>
             </section>
-			<section class="right">
-				<!-- 検索ボタン -->
-				<?=
-					$this->Form->button('検索', [
-						'type' => 'button',
-						'id' => 'search'
-					]);
-				?>
-				<!-- JSON連携ボタン -->
-				<?=
-					$this->Form->button('JSON出力', [
-						'type' => 'button',
-						'id' => 'outputJson',
-						'disabled' => true
-					]);
-				?>
-			</section>
-		</section>
-	</section>
+            <section class="row">
+                <section class="label">最終更新日：</section>
+                <section>
+                    <span class="lastUpdate"></span>
+                </section>
+                <section class="button-column">
+                    <!-- 検索ボタン -->
+                    <?=
+                        $this->Form->button('検索', [
+                            'type' => 'button',
+                            'id' => 'search'
+                        ]);
+                    ?>
+                    <!-- JSON連携ボタン -->
+                    <?=
+                        $this->Form->button('JSON出力', [
+                            'type' => 'button',
+                            'id' => 'outputJson',
+                            'disabled' => true
+                        ]);
+                    ?>
+                </section>
+            </section>
+        </section>
 
-	<table class="searchView ranking">
-		<thead>
-			<tr>
-				<th class="no">No.</th>
-				<th class="playerName">棋士名</th>
-				<th class="winPoint">勝</th>
-				<th class="losePoint">敗</th>
-				<th class="winPercent">勝率</th>
-			</tr>
-		</thead>
-	</table>
-<?=$this->Form->end()?>
+        <section class="search-results">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="no">No.</th>
+                        <th class="playerName">棋士名</th>
+                        <th class="winPoint">勝</th>
+                        <th class="losePoint">敗</th>
+                        <th class="winPercent">勝率</th>
+                    </tr>
+                </thead>
+            </table>
+        </section>
+    <?=$this->Form->end()?>
+</article>
 <script type="text/javascript">
 $(function() {
     // 検索ボタン押下時
@@ -96,7 +100,7 @@ $(function() {
         }).done(function (data) {
             data = data.response;
             // TBODY要素を削除
-            $('.ranking tbody').remove();
+            $('.search-results tbody').remove();
 
             // JSON出力ボタンを活性状態に変更
             $('#outputJson').removeAttr('disabled');

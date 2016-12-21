@@ -18,9 +18,6 @@ class AppController extends Controller
     // ロールバックフラグ
     private $__isRollback = false;
 
-    // タイトル
-    private $__title = '';
-
     // 許可するアクション
     private $__allowActions = ["index", "detail", "login", "logout"];
 
@@ -96,9 +93,6 @@ class AppController extends Controller
             $this->set('username', $this->Auth->user('username'));
             $this->set('admin', ($this->Auth->user('role') === '管理者'));
         }
-
-        // タイトルを設定
-        $this->set('cakeDescription', $this->__title);
     }
 
     /**
@@ -198,7 +192,15 @@ class AppController extends Controller
      */
     protected function _setTitle(string $title)
     {
-        $this->__title = $title;
+        $this->set('cakeDescription', $title);
+    }
+
+    /**
+     * ダイアログ表示を設定します。
+     */
+    protected function _setDialogMode()
+    {
+        $this->set('isDialog', true);
     }
 
     /**

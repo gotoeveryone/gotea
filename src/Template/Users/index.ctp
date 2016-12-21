@@ -1,4 +1,4 @@
-<section class="center">
+<article class="login">
 	<?= $this->Form->create(null, [
         'method' => 'post',
         'url' => ['action' => 'login'],
@@ -8,39 +8,37 @@
             'passwordFormGroup' => '{{input}}'
         ]
     ]) ?>
-        <section class="login">
-            <section class="row">
-                <span class="label">ID</span>
+        <section class="row">
+            <section class="label"><span>ID</span></section>
+            <section>
                 <?=
-                    $this->Form->input('username',
-                        [
-                            'value' => $this->request->data('username'),
-                            'maxlength' => 20,
-                            'class' => 'imeDisabled'
-                        ]
-                    );
+                    $this->Form->input('username', [
+                        'value' => $this->request->data('username'),
+                        'maxlength' => 20,
+                        'class' => 'imeDisabled'
+                    ]);
                 ?>
-            </section>
-            <section class="row">
-                <span class="label">Password</span>
-                <?=
-                    $this->Form->input('password',
-                        [
-                            'value' => $this->request->data('password'),
-                            'maxlength' => 20,
-                            'class' => 'imeDisabled'
-                        ]
-                    );
-                ?>
-            </section>
-            <section class="loginRow">
-                <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
-                <?=$this->Form->button('クリア', ['type' => 'reset'])?>
-                <?=$this->Form->button('戻る', ['type' => 'button', 'id' => 'back'])?>
             </section>
         </section>
+        <section class="row">
+            <section class="label"><span>Password</span></section>
+            <section>
+                <?=
+                    $this->Form->input('password', [
+                        'value' => $this->request->data('password'),
+                        'maxlength' => 20,
+                        'class' => 'imeDisabled'
+                    ]);
+                ?>
+            </section>
+        </section>
+        <section class="row button-row">
+            <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
+            <?=$this->Form->button('クリア', ['type' => 'reset'])?>
+            <?=$this->Form->button('戻る', ['type' => 'button', 'id' => 'back'])?>
+        </section>
 	<?= $this->Form->end() ?>
-</section>
+</article>
 <script type="text/javascript">
 	$(document).ready(function() {
 		// 戻るボタン押下時

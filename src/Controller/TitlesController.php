@@ -107,7 +107,8 @@ class TitlesController extends AppController
 	 */
 	public function detail($id = null)
     {
-        $this->set('dialogFlag', true);
+        // ダイアログ表示
+        $this->_setDialogMode();
 
 		// タイトル情報一式を設定
         if (!($title = $this->Titles->findTitleWithRelations($id))) {

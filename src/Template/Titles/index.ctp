@@ -1,235 +1,239 @@
-<?=$this->Form->create(null, [
-    'id' => 'mainForm',
-    'method' => 'post',
-    'url' => ['action' => 'search'],
-    'templates' => [
-        'inputContainer' => '{{content}}',
-        'textFormGroup' => '{{input}}',
-        'selectFormGroup' => '{{input}}'
-    ]
-])?>
-<section class="searchHeader titles">
-    <section class="searchRow">
-        <section class="label">対象国：</section>
-        <section>
-            <?=
-                $this->Form->input('searchCountry', [
-                    'options' => $countries,
-                    'value' => h($this->request->data('searchCountry')),
-                    'class' => 'country'
-                ]);
-            ?>
+<article class="titles">
+    <?=$this->Form->create(null, [
+        'id' => 'mainForm',
+        'method' => 'post',
+        'url' => ['action' => 'search'],
+        'templates' => [
+            'inputContainer' => '{{content}}',
+            'textFormGroup' => '{{input}}',
+            'selectFormGroup' => '{{input}}'
+        ]
+    ])?>
+        <section class="search-header">
+            <section class="row">
+                <section class="label">対象国：</section>
+                <section>
+                    <?=
+                        $this->Form->input('searchCountry', [
+                            'options' => $countries,
+                            'value' => h($this->request->data('searchCountry')),
+                            'class' => 'country'
+                        ]);
+                    ?>
+                </section>
+                <section class="label">終了棋戦：</section>
+                <section>
+                    <?=
+                        $this->Form->input('searchDelete', [
+                            'options' => [
+                                'false' => '検索しない',
+                                'true' => '検索する'
+                            ],
+                            'value' => h($this->request->data('searchDelete')),
+                            'class' => 'retired'
+                        ]);
+                    ?>
+                </section>
+                <section class="button-column">
+                    <?=$this->Form->button('検索', ['type' => 'submit'])?>
+                    <?=$this->Form->button('行追加', [
+                        'type' => 'button',
+                        'id' => 'addRow'
+                    ])?>
+                    <?=$this->Form->button('一括更新', [
+                        'type' => 'button',
+                        'id' => 'save'
+                    ])?>
+                    <?=$this->Form->button('JSON出力', [
+                        'type' => 'button',
+                        'id' => 'outputJson'
+                    ])?>
+                </section>
+            </section>
         </section>
-        <section class="label">終了棋戦：</section>
-        <section>
-            <?=
-                $this->Form->input('searchDelete', [
-                    'options' => [
-                        'false' => '検索しない',
-                        'true' => '検索する'
-                    ],
-                    'value' => h($this->request->data('searchDelete')),
-                    'class' => 'retired'
-                ]);
-            ?>
-        </section>
-        <section class="right">
-            <?=$this->Form->button('検索', ['type' => 'submit'])?>
-            <?=$this->Form->button('行追加', [
-                'type' => 'button',
-                'id' => 'addRow'
-            ])?>
-            <?=$this->Form->button('一括更新', [
-                'type' => 'button',
-                'id' => 'save'
-            ])?>
-            <?=$this->Form->button('JSON出力', [
-                'type' => 'button',
-                'id' => 'outputJson'
-            ])?>
-        </section>
-    </section>
-</section>
 
-<table class="searchView titles">
-    <thead>
-        <tr>
-            <th class="titleName">タイトル名</th>
-            <th class="titleNameEn">タイトル名（英語）</th>
-            <th class="holding">期</th>
-            <th class="winner">優勝者</th>
-            <th class="order">並び<br>順</th>
-            <th class="groupFlag">団体<br>戦</th>
-            <th class="htmlFileName">HTML<br>ファイル名</th>
-            <th class="htmlModifyDate">修正日</th>
-            <th class="deleteFlag">終了<br>棋戦</th>
-            <th class="openRetain">詳細</th>
-        </tr>
-    </thead>
-    <?php if (!empty($titles) && count($titles) > 0) : ?>
-    <tbody>
-        <?php foreach ($titles as $key => $title) : ?>
-        <?php
-            $class = '';
-            if ($title->is_closed) {
-                $class = $class.'retired';
-            }
-            if ($class !== '') {
-                $class = ' class="'.$class.'"';
-            }
-        ?>
-        <tr <?=$class?>>
-            <?=$this->Form->hidden('titles['.$key.'][updateFlag]', ['id' => 'updateFlag-'.$key, 'value' => 'false'])?>
-            <?=$this->Form->hidden('titles['.$key.'][titleId]', ['value' => h($title->id)])?>
-            <?=$this->Form->hidden('titles['.$key.'][lastUpdate]', ['value' => $this->Date->format($title->modified, 'YYYYMMddHHmmss')])?>
-            <td class="left titleName">
-                <?=
-                    $this->Form->text('titles['.$key.'][titleName]', [
-                        'id' => 'titleName-'.$key,
-                        'value' => $title->name,
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-titleName]', [
-                        'id' => 'bean-titleName-'.$key,
-                        'value' => $title->name
-                    ]);
-                ?>
-            </td>
-            <td class="left titleNameEn">
-                <?=
-                    $this->Form->text('titles['.$key.'][titleNameEn]', [
-                        'id' => 'titleNameEn-'.$key,
-                        'value' => $title->name_english,
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-titleNameEn]', [
-                        'id' => 'bean-titleNameEn-'.$key,
-                        'value' => $title->name_english
-                    ]);
-                ?>
-            </td>
-            <td class="left holding">
-                <?=
-                    $this->Form->text('titles['.$key.'][holding]', [
-                        'id' => 'holding-'.$key,
-                        'maxlength' => 3,
-                        'value' => h($title->holding),
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-holding]', [
-                        'id' => 'bean-holding-'.$key,
-                        'value' => h($title->holding)]
-                    );
-                ?>
-            </td>
-            <td class="left winner">
-                <?php
-                    if (empty($title->retention_histories)) {
-                        echo '';
-                    } else {
-                        $retention = $title->retention_histories[0];
-                        if ($title->is_team) {
-                            echo $retention->win_group_name;
-                        } else {
-                            echo "{$retention->player->name} {$retention->rank->name}";
+        <section class="search-results">
+            <table class="titles">
+                <thead>
+                    <tr>
+                        <th class="titleName">タイトル名</th>
+                        <th class="titleNameEn">タイトル名（英語）</th>
+                        <th class="holding">期</th>
+                        <th class="winner">優勝者</th>
+                        <th class="order">並び<br>順</th>
+                        <th class="groupFlag">団体<br>戦</th>
+                        <th class="htmlFileName">HTML<br>ファイル名</th>
+                        <th class="htmlModifyDate">修正日</th>
+                        <th class="deleteFlag">終了<br>棋戦</th>
+                        <th class="openRetain">詳細</th>
+                    </tr>
+                </thead>
+                <?php if (!empty($titles) && count($titles) > 0) : ?>
+                <tbody>
+                    <?php foreach ($titles as $key => $title) : ?>
+                    <?php
+                        $class = '';
+                        if ($title->is_closed) {
+                            $class = $class.'retired';
                         }
-                    }
-                ?>
-            </td>
-            <td class="left order">
-                <?=
-                    $this->Form->text('titles['.$key.'][order]', [
-                        'id' => 'order-'.$key,
-                        'maxlength' => 2,
-                        'value' => h($title->sort_order),
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-order]', [
-                        'id' => 'bean-order-'.$key,
-                        'value' => h($title->sort_order)]
-                    );
-                ?>
-            </td>
-            <td class="left groupFlag">
-                <?=
-                    $this->Form->checkbox('titles['.$key.'][groupFlag]', [
-                        'id' => 'groupFlag-'.$key,
-                        'checked' => $title->is_team,
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-groupFlag]', [
-                        'id' => 'bean-groupFlag-'.$key,
-                        'value' => var_export($title->is_team, TRUE)
-                    ]);
-                ?>
-            </td>
-            <td class="left htmlFileName">
-                <?=
-                    $this->Form->text('titles['.$key.'][htmlFileName]', [
-                        'id' => 'htmlFileName-'.$key,
-                        'value' => h($title->html_file_name),
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-htmlFileName]', [
-                        'id' => 'bean-htmlFileName-'.$key,
-                        'value' => h($title->html_file_name)
-                    ]);
-                ?>
-            </td>
-            <td class="left htmlModifyDate">
-                <?php
-                    $htmlModifyDate = $this->Date->format($title->html_file_modified, 'YYYY/MM/dd');
-                ?>
-                <?=
-                    $this->Form->text('titles['.$key.'][htmlModifyDate]', [
-                        'id' => 'htmlModifyDate-'.$key,
-                        'value' => h($htmlModifyDate),
-                        'class' => 'checkChange datepicker'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-htmlModifyDate]', [
-                        'id' => 'bean-htmlModifyDate-'.$key,
-                        'value' => h($htmlModifyDate)
-                    ]);
-                ?>
-            </td>
-            <td class="left deleteFlag">
-                <?=
-                    $this->Form->checkbox('titles['.$key.'][deleteFlag]', [
-                        'id' => 'deleteFlag-'.$key,
-                        'checked' => $title->is_closed,
-                        'class' => 'checkChange'
-                    ]);
-                ?>
-                <?=
-                    $this->Form->hidden('titles['.$key.'][bean-deleteFlag]', [
-                        'id' => 'deleteFlag-'.$key,
-                        'value' => var_export($title->is_closed, TRUE)
-                    ]);
-                ?>
-            </td>
-            <td class="center openRetain">
-                <?=$this->Html->link('開く', ['action' => "detail/{$title->id}"], ['class' => 'colorbox'])?>
-            </td>
-        </tr>
-        <?php endforeach ?>
-    </tbody>
-    <?php endif ?>
-</table>
-<?=$this->Form->end()?>
+                        if ($class !== '') {
+                            $class = ' class="'.$class.'"';
+                        }
+                    ?>
+                    <tr <?=$class?>>
+                        <?=$this->Form->hidden('titles['.$key.'][updateFlag]', ['id' => 'updateFlag-'.$key, 'value' => 'false'])?>
+                        <?=$this->Form->hidden('titles['.$key.'][titleId]', ['value' => h($title->id)])?>
+                        <?=$this->Form->hidden('titles['.$key.'][lastUpdate]', ['value' => $this->Date->format($title->modified, 'YYYYMMddHHmmss')])?>
+                        <td class="left titleName">
+                            <?=
+                                $this->Form->text('titles['.$key.'][titleName]', [
+                                    'id' => 'titleName-'.$key,
+                                    'value' => $title->name,
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-titleName]', [
+                                    'id' => 'bean-titleName-'.$key,
+                                    'value' => $title->name
+                                ]);
+                            ?>
+                        </td>
+                        <td class="left titleNameEn">
+                            <?=
+                                $this->Form->text('titles['.$key.'][titleNameEn]', [
+                                    'id' => 'titleNameEn-'.$key,
+                                    'value' => $title->name_english,
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-titleNameEn]', [
+                                    'id' => 'bean-titleNameEn-'.$key,
+                                    'value' => $title->name_english
+                                ]);
+                            ?>
+                        </td>
+                        <td class="left holding">
+                            <?=
+                                $this->Form->text('titles['.$key.'][holding]', [
+                                    'id' => 'holding-'.$key,
+                                    'maxlength' => 3,
+                                    'value' => h($title->holding),
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-holding]', [
+                                    'id' => 'bean-holding-'.$key,
+                                    'value' => h($title->holding)]
+                                );
+                            ?>
+                        </td>
+                        <td class="left winner">
+                            <?php
+                                if (empty($title->retention_histories)) {
+                                    echo '';
+                                } else {
+                                    $retention = $title->retention_histories[0];
+                                    if ($title->is_team) {
+                                        echo $retention->win_group_name;
+                                    } else {
+                                        echo "{$retention->player->name} {$retention->rank->name}";
+                                    }
+                                }
+                            ?>
+                        </td>
+                        <td class="left order">
+                            <?=
+                                $this->Form->text('titles['.$key.'][order]', [
+                                    'id' => 'order-'.$key,
+                                    'maxlength' => 2,
+                                    'value' => h($title->sort_order),
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-order]', [
+                                    'id' => 'bean-order-'.$key,
+                                    'value' => h($title->sort_order)]
+                                );
+                            ?>
+                        </td>
+                        <td class="left groupFlag">
+                            <?=
+                                $this->Form->checkbox('titles['.$key.'][groupFlag]', [
+                                    'id' => 'groupFlag-'.$key,
+                                    'checked' => $title->is_team,
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-groupFlag]', [
+                                    'id' => 'bean-groupFlag-'.$key,
+                                    'value' => var_export($title->is_team, TRUE)
+                                ]);
+                            ?>
+                        </td>
+                        <td class="left htmlFileName">
+                            <?=
+                                $this->Form->text('titles['.$key.'][htmlFileName]', [
+                                    'id' => 'htmlFileName-'.$key,
+                                    'value' => h($title->html_file_name),
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-htmlFileName]', [
+                                    'id' => 'bean-htmlFileName-'.$key,
+                                    'value' => h($title->html_file_name)
+                                ]);
+                            ?>
+                        </td>
+                        <td class="left htmlModifyDate">
+                            <?php
+                                $htmlModifyDate = $this->Date->format($title->html_file_modified, 'YYYY/MM/dd');
+                            ?>
+                            <?=
+                                $this->Form->text('titles['.$key.'][htmlModifyDate]', [
+                                    'id' => 'htmlModifyDate-'.$key,
+                                    'value' => h($htmlModifyDate),
+                                    'class' => 'checkChange datepicker'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-htmlModifyDate]', [
+                                    'id' => 'bean-htmlModifyDate-'.$key,
+                                    'value' => h($htmlModifyDate)
+                                ]);
+                            ?>
+                        </td>
+                        <td class="left deleteFlag">
+                            <?=
+                                $this->Form->checkbox('titles['.$key.'][deleteFlag]', [
+                                    'id' => 'deleteFlag-'.$key,
+                                    'checked' => $title->is_closed,
+                                    'class' => 'checkChange'
+                                ]);
+                            ?>
+                            <?=
+                                $this->Form->hidden('titles['.$key.'][bean-deleteFlag]', [
+                                    'id' => 'deleteFlag-'.$key,
+                                    'value' => var_export($title->is_closed, TRUE)
+                                ]);
+                            ?>
+                        </td>
+                        <td class="center openRetain">
+                            <?=$this->Html->link('開く', ['action' => "detail/{$title->id}"], ['class' => 'colorbox'])?>
+                        </td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+                <?php endif ?>
+            </table>
+        </section>
+    <?=$this->Form->end()?>
+</article>
 <script type="text/javascript">
     $(function() {
         if ($('#searchFlag').val() === 'false') {

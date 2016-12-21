@@ -107,7 +107,8 @@ class PlayersController extends AppController
 	 */
 	public function detail($id = null, Player $existPlayer = null)
     {
-        $this->set('dialogFlag', true);
+        // ダイアログ表示
+        $this->_setDialogMode();
 
         // 棋士IDがあればデータを取得して表示
         if ($id) {

@@ -39,34 +39,6 @@ $(document).ready(function() {
         ]
     });
 
-    $('#dialog').dialog({
-        autoOpen: false,
-        modal: true,
-        top: 0,
-        left: 0,
-        width: 400,
-        open: function (event, ui) {
-            $('.ui-dialog-titlebar-close').hide();
-        },
-        buttons: [
-            {
-                text: 'OK',
-                click: function () {
-                    $(this).dialog('close');
-                }
-            }
-        ]
-    });
-
-    var dialog = $('#dialog');
-    var message = dialog.text();
-    // 空白文字をすべて置換（改行コードやタブなど）
-    message = message.replace(/\s/g, '');
-    // エラーメッセージが格納されていればダイアログに表示
-    if (message) {
-        dialog.click();
-    }
-
     // 値変更時（テキスト）
     $('input[type=text].checkChange').blur(function() {
         var id = $(this).attr('id');
@@ -89,17 +61,28 @@ $(document).ready(function() {
         }
     });
 
-    selectTab($('.details').eq(0).attr('id'));
+    // タブ選択
+    selectTab();
 
     // タブ押下時
-    $('#tabs .tab').click(function () {
-        selectTab($(this).attr('name'));
+    $("#tabs .tab").on("click", function () {
+        var obj = $(this);
+        if (obj.hasClass("selectTab")) {
+            return false;
+        }
+        selectTab(obj.attr('name'));
     });
 });
 
 function selectTab(tabName) {
-    var details = $('.details');
+    var details = $('.detail-dialog .detail > *');
     details.hide();
+    if (!tabName) {
+        var target = details.eq(0);
+        $('#tabs [name=' + target.attr("id") + ']').addClass('selectTab');
+        target.fadeIn();
+        return;
+    }
     $.each(details, function() {
         var obj = $(this);
         var id = obj.attr('id');
