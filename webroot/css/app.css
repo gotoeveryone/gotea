@@ -5,6 +5,12 @@ html, body {
 	height: 98%;
 }
 
+*, *::before, *::after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
 /* -------------------------------------------
    ボタン
  ------------------------------------------- */
@@ -350,61 +356,68 @@ section.retains {
 	background-color: #ffffff;
 }
 
-section[class^=box] {
-    float: left;
+[class^=box] {
     margin-left: 1px;
     margin-right: 1px;
 }
 
-section[class^=box].button {
+[class^=box].button {
     text-align: right;
 }
 
-section[class^=box].button:after {
+[class^=box].button:after {
     clear: both;
 }
 
-section.box {
+.box {
     width: 100%;
 }
 
-section.box2 {
-    width: calc(100% / 2 - 2px);
+.box2 {
+    width: calc(100% / 2);
 }
 
-section.box3 {
-    width: calc(100% / 3 - 2px);
+.box3 {
+    width: calc(100% / 3);
 }
 
-section.box4 {
-    width: calc(100% / 4 - 2px);
+.box4 {
+    width: calc(100% / 4);
 }
 
-section.row {
-    display: table;
+.row {
     width: 100%;
-    margin: 0px auto;
+    font-size: 0;
 }
 
-section.row span {
+.row > * {
+    display: inline-block;
+}
+
+.row * {
+    font-size: 1rem;
+}
+
+.row span {
     display: table-cell;
     vertical-align: middle;
 }
 
-section.row.group {
+.row.group {
     margin-bottom: 5px;
 }
 
-section.row.category {
+.row.category {
 	height: 30px;
 	text-indent: 5px;
 	font-size: 16px;
 	font-weight: bold;
-	text-decoration: underline;
 	background-color: #ddeeff;
 }
 
-section.row.genre {
+.row.genre {
+    border-top: 1px solid #000000;
+    padding-top: 0.5rem;
 	height: 25px;
 	text-indent: 5px;
 	font-size: 14px;
@@ -412,62 +425,62 @@ section.row.genre {
 	background-color: #eeffdd;
 }
 
-section.row.key {
+.row.key {
 	height: 22px;
     margin-bottom: 5px;
 	text-indent: 5px;
 	background-color: #ffeedd;
 }
 
-section.row.value {
+.row.value {
     min-height: 28px;
     margin-bottom: 3px;
     padding: 3px 0px;
 	text-indent: 10px;
 }
 
-section.row.button {
+.row.button {
     margin: 5px auto;
     text-align: center;
 }
 
-section.details {
+.details {
     overflow-x: hidden;
 }
 
-section.details hr {
+.details hr {
     margin: 0px;
 }
 
-section.details input.playerPoint {
+.details input.playerPoint {
 	width: 25px;
 }
 
-section.details textarea.remarks {
+.details textarea.remarks {
 	width: 95%;
 	height: 95%;
     resize: none;
 }
 
-section.details input.targetYear {
+.details input.targetYear {
 	width: 40px;
 }
 
-section.details input.targetHolding {
+.details input.targetHolding {
 	width: 30px;
 }
 
-section.details input[type=text].readonly {
+.details input[type=text].readonly {
     border-style: none;
     background-color: transparent;
     -moz-user-input: none;
 }
 
-section.details input[type=text].readonly.playerName {
+.details input[type=text].readonly.playerName {
     width: 100px;
 }
 
-section.details input[type=text].readonly.rank {
+.details input[type=text].readonly.rank {
     width: 60px;
 }
 

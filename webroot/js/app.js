@@ -89,25 +89,25 @@ $(document).ready(function() {
         }
     });
 
-    selectTab($('section.details').eq(0).attr('id'));
+    selectTab($('.details').eq(0).attr('id'));
 
     // タブ押下時
-    $('section#tabs .tab').click(function () {
+    $('#tabs .tab').click(function () {
         selectTab($(this).attr('name'));
     });
 });
 
 function selectTab(tabName) {
-    var details = $('section.details');
+    var details = $('.details');
     details.hide();
     $.each(details, function() {
         var obj = $(this);
         var id = obj.attr('id');
         if (id === tabName) {
-            $('section#tabs section[name=' + id + ']').addClass('selectTab');
+            $('#tabs [name=' + id + ']').addClass('selectTab');
             obj.fadeIn();
         } else {
-            $('section#tabs section[name=' + id + ']').removeClass('selectTab');
+            $('#tabs [name=' + id + ']').removeClass('selectTab');
         }
     });
 }

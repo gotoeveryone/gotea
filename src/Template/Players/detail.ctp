@@ -20,7 +20,7 @@
     </section>
     <section id="scroll">
         <!-- 棋士成績 -->
-        <section id="player" class="details">
+        <article id="player" class="details">
             <!-- 連続作成フラグ -->
             <?=$this->Form->hidden('isContinue', ['id' => 'isContinue', 'value' => false])?>
             <section class="row category">
@@ -202,10 +202,10 @@
                     }
                 ?>
             </section>
-        </section>
+        </article>
 
         <!-- 棋士成績 -->
-        <section id="scores" class="details">
+        <article id="scores" class="details">
             <!-- 選択した成績情報の年度 -->
             <?=$this->Form->hidden('selectScoreId', ['id' => 'selectScoreId'])?>
             <?=$this->Form->hidden('selectYear', ['id' => 'selectYear'])?>
@@ -218,7 +218,6 @@
             <section class="row category"><span>勝敗</span></section>
             <?php if (!empty($player->player_scores)) : ?>
             <?php foreach ($player->player_scores as $key=>$score) : ?>
-            <hr>
             <section class="row group">
                 <section class="row">
                     <section class="box">
@@ -327,34 +326,31 @@
             </section>
             <?php endforeach ?>
             <?php endif ?>
-        </section>
+        </article>
 
         <!-- タイトル取得履歴 -->
-        <section id="titleRetains" class="details">
+        <article id="titleRetains" class="details">
             <section class="row category"><span>タイトル取得履歴</span></section>
             <?php if (!empty($player->retention_histories)) : ?>
             <?php $beforeYear = 0; ?>
             <?php foreach ($player->retention_histories as $retention_history) : ?>
                 <?php if ($beforeYear !== $retention_history->target_year) : ?>
-                <hr>
-                <section class="row group">
-                    <section class="row genre">
-                        <?=h($retention_history->target_year).'年度'?>
-                    </section>
-                    <?php endif ?>
-                    <section class="row">
-                        <section class="box">
-                            <section class="row value">
-                                <?=h($retention_history->holding).'期'.h($retention_history->title->name)?>
-                                <?="（{$retention_history->title->country->name}棋戦）"?>
-                            </section>
+                <section class="row genre">
+                    <?=h($retention_history->target_year).'年度'?>
+                </section>
+                <?php endif ?>
+                <section class="row">
+                    <section class="box">
+                        <section class="row value">
+                            <?=h($retention_history->holding).'期'.h($retention_history->title->name)?>
+                            <?="（{$retention_history->title->country->name}棋戦）"?>
                         </section>
                     </section>
-                    <?php $beforeYear = $retention_history->target_year; ?>
                 </section>
+                <?php $beforeYear = $retention_history->target_year; ?>
             <?php endforeach ?>
             <?php endif ?>
-        </section>
+        </article>
     </section>
 </section>
 <?=$this->Form->end()?>
