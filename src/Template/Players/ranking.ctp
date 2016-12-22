@@ -140,7 +140,8 @@ $(function() {
                 tbody.append(tr);
             }
             // TBODY要素を追加
-            $('.ranking thead').after(tbody);
+            $('.search-results thead').after(tbody);
+            setColorbox();
         }).fail(function (data) {
             // JSON出力ボタンを非活性状態に変更し、エラーメッセージを出力
             $('#outputJson').attr('disabled', true);

@@ -235,7 +235,7 @@
             </table>
         </section>
     <?=$this->Form->end()?>
-<article>
+</article>
 <script type="text/javascript">
     $(function () {
         $('#addNew').attr('disabled', !$('#searchCountry').val());

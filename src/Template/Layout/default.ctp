@@ -42,7 +42,7 @@
         <?php endif ?>
 
         <!-- 本体 -->
-        <section class="content row">
+        <section class="content row<?=(isset($isDialog) ? ' modal' : '')?>">
             <?php if (isset($username) && !isset($isDialog)) : ?>
             <!-- ナビゲーション -->
             <nav>

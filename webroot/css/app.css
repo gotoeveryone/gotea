@@ -166,6 +166,10 @@ strong {
 	height: calc(100% - 3rem - 1rem - 1rem - 3rem); /* header - hr - hr - footer */
 }
 
+.content.modal {
+    height: 100%;
+}
+
 .row {
     min-height: 2.6rem;
 }
