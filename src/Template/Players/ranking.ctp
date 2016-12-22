@@ -125,13 +125,13 @@ $(function() {
                 }
 
                 if (record.sex === '女性') {
-                    record.playerNameJp = '<span class="red">' + record.playerNameJp + '</span>';
+                    record.playerNameJp = '<span class="female">' + record.playerNameJp + '</span>';
                 }
 
                 // TR要素を作成
                 var tr = $('<tr>')
                     .append($('<td>', {class: 'right no'}).html('<span class="rank">' + rank + '</span>'))
-                    .append($('<td>', {class: 'left playerName'}).html(record.playerNameJp))
+                    .append($('<td>', {class: 'left playerName'}).html($('<a>', {"class": "colorbox", "href": "/IgoApp/players/detail/" + record.playerId}).html(record.playerNameJp)))
                     .append($('<td>', {class: 'center winPoint'}).html(record.winPoint))
                     .append($('<td>', {class: 'center losePoint'}).html(record.losePoint))
                     .append($('<td>', {class: 'center winPercent'}).html(Math.round(record.winPercentage * 100) + '%'));
