@@ -23,15 +23,6 @@ header .page-title {
     width: 70%;
 }
 
-header .page-title h1 {
-	margin: 0;
-    text-align: center;
-	font-size: 2.5rem;
-    font-weight: bold;
-    letter-spacing: 0.3rem;
-    -webkit-text-stroke: 0.1rem #000000;
-}
-
 header .other {
     padding-right: 1rem;
     width: 15%;
