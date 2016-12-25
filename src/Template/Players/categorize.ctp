@@ -41,7 +41,8 @@
         </section>
     <?=$this->Form->end()?>
 </article>
-<script type="text/javascript">
+
+<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
 $(function() {
     // 検索ボタン押下時
     $('#search').click(function() {
@@ -74,4 +75,4 @@ $(function() {
         });
     });
 });
-</script>
+<?php $this->Html->scriptEnd(); ?>

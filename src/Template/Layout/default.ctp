@@ -11,15 +11,9 @@
         <?='棋士情報管理システム - '.$cakeDescription ?>
     </title>
     <?=$this->Html->meta('icon')?>
-    <script type="text/javascript" src="/js/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="/js/jquery.colorbox-min.js"></script>
-    <script type="text/javascript" src="/js/common.js"></script>
-    <?=$this->Html->script('app')?>
-    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="/css/colorbox.css" />
-    <link rel="stylesheet" type="text/css" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/css/colorbox.css" />
+    <link rel="stylesheet" href="/css/common.css" />
     <?=$this->Html->css('app')?>
 </head>
 <body>
@@ -108,9 +102,16 @@
     <section id="dialog" title="メッセージ"><?=$this->Flash->render()?></section>
     <section id="confirm" title="確認"></section>
 
+    <script src="/js/jquery-2.2.3.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/jquery.blockUI.js"></script>
+    <script src="/js/jquery.colorbox-min.js"></script>
+    <script src="/js/common.js"></script>
+    <?=$this->Html->script('app')?>
     <script>
         // containerを非表示
         document.getElementsByClassName("container")[0].style.display = "none";
     </script>
+    <?=$this->fetch('script')?>
 </body>
 </html>

@@ -351,7 +351,8 @@
         </section>
     <?=$this->Form->end()?>
 </article>
-<script type="text/javascript">
+
+<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
     $(function() {
         // 国内棋戦、国際棋戦の勝率を設定
         $('.winPercent').each(function () {
@@ -420,4 +421,4 @@
         var winPercentWr = totalPointWr === 0 ? 0 : Math.round(Number($('#winPointWr_' + index).val() / totalPointWr) * 100);
         $('#winPercentWr_' + index).html(winPercentWr);
     }
-</script>
+<?php $this->Html->scriptEnd(); ?>

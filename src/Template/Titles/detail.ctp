@@ -216,7 +216,8 @@
         </section>
     <?=$this->Form->end()?>
 </article>
-<script type="text/javascript">
+
+<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
     $(document).ready(function() {
         controlDisabled();
         // 登録エリアの対象年、期フォーカスアウト時
@@ -322,4 +323,4 @@
         });
         <?php endif ?>
     });
-</script>
+<?php $this->Html->scriptEnd(); ?>

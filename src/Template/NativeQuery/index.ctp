@@ -16,7 +16,8 @@
         </section>
     <?=$this->Form->end()?>
 </article>
-<script type="text/javascript">
+
+<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
     $(function() {
         // 更新ボタン押下時
         $('#update').click(function() {
@@ -43,4 +44,4 @@
             $('#executeTargets').val('');
         });
     });
-</script>
+<?php $this->Html->scriptEnd(); ?>

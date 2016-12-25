@@ -39,11 +39,12 @@
         </section>
 	<?= $this->Form->end() ?>
 </article>
-<script type="text/javascript">
-	$(document).ready(function() {
+
+<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
+	$(function() {
 		// 戻るボタン押下時
 		$('#back').click(function() {
 			location.href = '/';
 		});
 	});
-</script>
+<?php $this->Html->scriptEnd(); ?>

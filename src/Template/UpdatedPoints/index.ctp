@@ -83,7 +83,8 @@
         <?php endif ?>
     <?=$this->Form->end()?>
 </article>
-<script type="text/javascript">
+
+<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
     $(function() {
         $('#save').attr('disabled', ($('#searchFlag').val() === 'false'));
 
@@ -109,4 +110,4 @@
             }
         });
     });
-</script>
+<?php $this->Html->scriptEnd(); ?>

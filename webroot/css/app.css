@@ -316,12 +316,12 @@ strong {
     vertical-align: middle;
 }
 
-.input-row > * input {
-    margin-right: 0.2rem;
+.input-row > [class^=box] > * {
+    display: inline-block;
 }
 
-.input-row :not(.button-area) :not(:first-child) {
-    margin-left: 1rem;
+.input-row > * input {
+    margin-right: 0.2rem;
 }
 
 .input-row .point,
@@ -331,7 +331,7 @@ strong {
 }
 
 .input-row .datepicker {
-    width: 8rem;
+    width: 9rem;
 }
 
 .input-row .year {
