@@ -32,9 +32,9 @@ class ApiController extends Controller
      */
     public function players()
     {
-        $this->__renderJson($this->Json->postJson(
-            "players/search",
-            ["name" => $this->request->data('name')]
+        $this->__renderJson($this->Json->sendResource(
+            'players/search', 'post',
+            ['name' => $this->request->data('name')]
         ));
     }
 
@@ -43,7 +43,7 @@ class ApiController extends Controller
      */
     public function news()
     {
-        $json = $this->Json->getJson("titles/news");
+        $json = $this->Json->sendResource('titles/news', 'get');
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             if (!file_put_contents($this->homepage."news.json", json_encode($json))) {
@@ -64,7 +64,7 @@ class ApiController extends Controller
     {
         $encodeCountry = urlencode($country);
         $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($this->request->query('jp') === 'true' ? "&with=jp" : "");
-        $json = $this->Json->getJson($path);
+        $json = $this->Json->sendResource($path, 'get');
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
@@ -84,8 +84,8 @@ class ApiController extends Controller
     public function categorize($country = null)
     {
         $encodeCountry = urlencode($country);
-        $json = $this->Json->getJson("players/categorize?country={$encodeCountry}".
-                (($this->request->query('all') === 'true') ? "&all=true" : ""));
+        $json = $this->Json->sendResource("players/categorize?country={$encodeCountry}".
+                (($this->request->query('all') === 'true') ? "&all=true" : ""), 'get');
         $this->__renderJson($json);
     }
 

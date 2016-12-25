@@ -2,12 +2,8 @@
 
 namespace App\Controller;
 
-use PDOException;
-use App\Model\Entity\User;
 use Cake\Event\Event;
-use Cake\I18n\Time;
 use Cake\Validation\Validator;
-use Psr\Log\LogLevel;
 
 /**
  * ログイン用コントローラ
@@ -34,11 +30,11 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
 		// すでにログイン済みならリダイレクト
-        if ($this->Auth->user()) {
-			return $this->redirect($this->Auth->redirectUrl());
+        if ($this->MyAuth->user()) {
+			return $this->redirect($this->MyAuth->redirectUrl());
         }
         parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'login']);
+        $this->MyAuth->allow(['index', 'login']);
     }
 
 	/**
@@ -65,54 +61,16 @@ class UsersController extends AppController
      */
     public function login()
     {
-        // 入力チェック
-        $res = $this->__createValidator()->errors([
-            'username' => $this->request->data('username'),
-            'password' => $this->request->data('password')
-        ]);
-        if ($res) {
-            $this->log(__("ログイン失敗！"), LogLevel::WARNING);
-            $this->Flash->error($this->_getErrorMessage($res));
-            return $this->index();
-        }
-
         $account = $this->request->data('username');
         $password = $this->request->data('password');
 
-        // ユーザを1件取得
-        $user = $this->Users->find()->where(['account' => $account])->first();
-
-        // ユーザが取得出来なければログインエラー
-        if (!$user || !password_verify($password, $user->password)) {
-            $this->log(__("ログイン失敗！"), LogLevel::WARNING);
-            $this->Flash->error(__("ユーザまたはパスワードが異なります。"));
-            return $this->index();
+        // ログイン
+        if ($this->MyAuth->login($account, $password)) {
+            // リダイレクト
+            return $this->redirect($this->MyAuth->redirectUrl());
         }
 
-        // トークンが保存できなければログインエラー
-        if (!$this->Json->saveAccessToken($account, $password)) {
-            $this->log(__("ログイン失敗！"), LogLevel::WARNING);
-            $this->Flash->error(__("API利用エラーです。"));
-            return $this->index();
-        }
-
-        try {
-            // 最終ログイン日時を更新してデータを保存
-            $user->last_logged = Time::now();
-            $this->Users->save($user);
-        } catch (PDOException $e) {
-            $this->log(__("最終ログイン日時更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-            $this->_markToRollback();
-            $this->Flash->error(__("データの更新エラーが発生しました。"));
-            return $this->index();
-        }
-
-        // ユーザ情報を設定
-        $this->__setUser($user, $password);
-        $this->log(__("ユーザ：{$user->name}がログインしました。", LogLevel::INFO));
-
-        // リダイレクト
-        return $this->redirect($this->Auth->redirectUrl());
+        return $this->index();
     }
 
     /**
@@ -121,35 +79,17 @@ class UsersController extends AppController
      */
     public function logout()
     {
-        $this->Json->removeAccessToken();
-        return $this->redirect($this->Auth->logout());
+        return $this->redirect($this->MyAuth->logout());
     }
 
     /**
-     * ユーザ情報をセッションに格納します。
+     * ログイン時のバリデーションを行います。
      * 
-     * @param User $user
+     * @param $username
      * @param $password
+     * @return array Array of invalid fields
      */
-    private function __setUser(User $user, $password)
-    {
-        // ログイン情報を設定
-        $this->Auth->setUser([
-            'userid' => $user->account,
-            'username' => $user->name,
-            'password' => $password,
-            'role' => $user->role,
-            'created' => $user->created,
-            'modified' => $user->modified
-        ]);
-    }
-
-    /**
-     * ログイン時のバリデーションを生成します。
-     * 
-     * @return Validator
-     */
-    private function __createValidator()
+    private function __isValid($username, $password)
     {
         // 入力チェック
         $validator = new Validator();
@@ -169,6 +109,6 @@ class UsersController extends AppController
                 ]
             ]
         );
-        return $validator;
+        return $validator->errors(['username' => $username, 'password' => $password]);
     }
 }

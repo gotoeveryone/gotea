@@ -12,7 +12,7 @@ class JsonComponent extends Component
 {
     public $controller = null;
     public $session = null;
-    public $components = ['Auth'];
+    public $components = ['MyAuth'];
 
     public function initialize(array $config)
     {
@@ -33,7 +33,7 @@ class JsonComponent extends Component
      */
     public function saveAccessToken($account, $password)
     {
-        $token = $this->postJson("users/login", [
+        $token = $this->sendResource('users/login', 'post', [
             "account" => $account,
             "password" => $password
         ]);
@@ -52,82 +52,42 @@ class JsonComponent extends Component
      */
     public function removeAccessToken()
     {
-        return $this->deleteJson("users/logout", [
+        return $this->sendResource('users/logout', 'delete', [
             "access_token" => $this->request->session()->read('access_token')
         ]);
     }
 
     /**
-     * 指定URLよりJSONを取得します。
+     * APIをコールします。
      * 
      * @param string $url
-     * @return Array
+     * @param string $method
+     * @param bool $data
+     * @param bool $assoc
      */
-    public function getJson(string $url)
+    public function sendResource(string $url, string $method, $data = [], $assoc = true)
     {
-        $http = new Client();
-        $tokenArray = ["access_token" => $this->request->session()->read('access_token')];
-        $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
-        // アプリログイン済みだが、APIが401なら再認証
-        if ($response->statusCode() == 401 && $this->Auth) {
-            $userId = $this->Auth->user('userid');
-            $password = $this->Auth->user('password');
-            $tokenArray = ["access_token" => $this->saveAccessToken($userId, $password)];
-            $response = $http->get($this->__getApiUrl().$url, $tokenArray, $this->__getCaArray());
-        }
-        $this->response->statusCode($response->statusCode());
-        if ($response->isOk()) {
-            return json_decode($response->body(), true);
-        } else {
-            return ["status" => $response->statusCode(), "message" => "GETエラー発生"];
-        }
-    }
-
-    /**
-     * 指定URLへデータをPOSTします。
-     * 
-     * @param string $url
-     * @return Array
-     */
-    public function postJson(string $url, $data = [])
-    {
+        // トークンが読み込めた場合はデータに追加
         if (($token = $this->request->session()->read('access_token'))) {
             $data["access_token"] = $token;
         }
         $http = new Client();
-        $response = $http->post($this->__getApiUrl().$url, $data, $this->__getCaArray());
+        $callMethod = strtolower($method);
+        $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
         // アプリログイン済みだが、APIが401なら再認証
-        if ($response->statusCode() == 401 && $this->Auth) {
-            $userId = $this->Auth->user('userid');
-            $password = $this->Auth->user('password');
+        if ($response->statusCode() == 401 && $this->MyAuth->user()) {
+            $userId = $this->MyAuth->user('userId');
+            $password = $this->MyAuth->user('password');
+            // トークン再生成
             $data["access_token"] = $this->saveAccessToken($userId, $password);
-            $response = $http->post($this->__getApiUrl().$url, $data, $this->__getCaArray());
+            $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
         }
         $this->response->statusCode($response->statusCode());
         if ($response->isOk()) {
-            return json_decode($response->body(), true);
+            return json_decode($response->body(), $assoc);
         } else {
-            $this->log('POSTエラー発生');
-            return ["status" => $response->statusCode(), "message" => "POSTエラー発生"];
+            return ["status" => $response->statusCode(), "message" => "{$method}リクエストに失敗しました。"];
         }
-    }
-
-    /**
-     * 指定URLへデータのDELETEを行います。
-     * 
-     * @param type $url
-     * @return type
-     */
-    public function deleteJson($url, $data = [])
-    {
-        $http = new Client();
-        $response = $http->delete($this->__getApiUrl().$url, $data, $this->__getCaArray());
-        $json = (object) null;
-        if ($response->isOk()) {
-            $json = json_decode($response->body(), true);
-        }
-        $this->response->statusCode($response->statusCode());
-        return $json;
     }
 
     /**

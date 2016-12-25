@@ -30,7 +30,8 @@ class AppController extends Controller
 	public function initialize()
     {
         $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
+        $this->loadComponent('Log');
+        $this->loadComponent('MyAuth', [
             'loginAction' => [
                 'controller' => 'users',
                 'action' => 'index'
@@ -89,9 +90,9 @@ class AppController extends Controller
         }
 
         // ユーザ名を表示
-        if ($this->Auth->user()) {
-            $this->set('username', $this->Auth->user('username'));
-            $this->set('admin', ($this->Auth->user('role') === '管理者'));
+        if ($this->MyAuth->user()) {
+            $this->set('username', $this->MyAuth->user('userName'));
+            $this->set('admin', ($this->MyAuth->user('role') === '管理者'));
         }
     }
 
