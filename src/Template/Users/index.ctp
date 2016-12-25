@@ -40,11 +40,13 @@
 	<?= $this->Form->end() ?>
 </article>
 
-<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<script>
 	$(function() {
 		// 戻るボタン押下時
 		$('#back').click(function() {
 			location.href = '/';
 		});
 	});
-<?php $this->Html->scriptEnd(); ?>
+</script>
+<?php $this->MyHtml->scriptEnd(); ?>

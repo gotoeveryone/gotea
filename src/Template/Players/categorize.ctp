@@ -42,37 +42,39 @@
     <?=$this->Form->end()?>
 </article>
 
-<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
-$(function() {
-    // 検索ボタン押下時
-    $('#search').click(function() {
-        $.ajax({
-            type: "GET",
-            url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'categorize'])?>/" + $('#selectCountry option:selected').text() + "/",
-            contentType: "application/json",
-            accepts: "application/json; charset=utf-8"
-        }).done(function (data) {
-            data = data.response;
-            // TBODY要素を削除
-            $(".search-results tbody").remove();
+<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<script>
+    $(function() {
+        // 検索ボタン押下時
+        $('#search').click(function() {
+            $.ajax({
+                type: "GET",
+                url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'categorize'])?>/" + $('#selectCountry option:selected').text() + "/",
+                contentType: "application/json",
+                accepts: "application/json; charset=utf-8"
+            }).done(function (data) {
+                data = data.response;
+                // TBODY要素を削除
+                $(".search-results tbody").remove();
 
-            var tbody = $('<tbody>');
-            $.each(data.categories, function(idx, obj) {
-                // TR要素を作成
-                var tr = $('<tr>')
-                    .append($('<td>', {class: 'rank'}).html(obj.rank.name))
-                    .append($('<td>', {class: 'count'}).html(obj.count + "人"));
-                // TBODY要素にTR要素を追加
-                tbody.append(tr);
+                var tbody = $('<tbody>');
+                $.each(data.categories, function(idx, obj) {
+                    // TR要素を作成
+                    var tr = $('<tr>')
+                        .append($('<td>', {class: 'rank'}).html(obj.rank.name))
+                        .append($('<td>', {class: 'count'}).html(obj.count + "人"));
+                    // TBODY要素にTR要素を追加
+                    tbody.append(tr);
+                });
+
+                // TBODY要素を追加
+                $(".search-results thead").after(tbody);
+            }).fail(function (data) {
+                var dialog = $("#dialog");
+                dialog.html('<span class="red">データの取得に失敗しました。</span>');
+                dialog.click();
             });
-
-            // TBODY要素を追加
-            $(".search-results thead").after(tbody);
-        }).fail(function (data) {
-            var dialog = $("#dialog");
-            dialog.html('<span class="red">データの取得に失敗しました。</span>');
-            dialog.click();
         });
     });
-});
-<?php $this->Html->scriptEnd(); ?>
+</script>
+<?php $this->MyHtml->scriptEnd(); ?>

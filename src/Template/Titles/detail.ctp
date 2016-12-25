@@ -217,8 +217,9 @@
     <?=$this->Form->end()?>
 </article>
 
-<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
-    $(document).ready(function() {
+<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+    <script>
+    $(function() {
         controlDisabled();
         // 登録エリアの対象年、期フォーカスアウト時
         $('#registYear, #registHolding').blur(function() {
@@ -247,10 +248,8 @@
                 }
             ?>
             $('#registWithMapping').val(withMapping);
-            var confirm = $("#confirm");
-            confirm.html('タイトル保持情報を登録します。よろしいですか？');
             $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'regist'])?>');
-            confirm.click();
+            openConfirm('タイトル保持情報を登録します。よろしいですか？');
         }
         // 新規登録ボタンの制御
         function controlDisabled() {
@@ -323,4 +322,5 @@
         });
         <?php endif ?>
     });
-<?php $this->Html->scriptEnd(); ?>
+    </script>
+<?php $this->MyHtml->scriptEnd(); ?>

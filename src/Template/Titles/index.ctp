@@ -235,7 +235,8 @@
     <?=$this->Form->end()?>
 </article>
 
-<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<script>
     $(function() {
         if ($('#searchFlag').val() === 'false') {
             $('#addRow').attr('disabled', true);
@@ -336,4 +337,5 @@
             }
         });
     });
-<?php $this->Html->scriptEnd(); ?>
+</script>
+<?php $this->MyHtml->scriptEnd(); ?>

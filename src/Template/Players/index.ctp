@@ -237,7 +237,8 @@
     <?=$this->Form->end()?>
 </article>
 
-<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<script>
     $(function () {
         $('#addNew').attr('disabled', !$('#searchCountry').val());
         // 国プルダウン変更時
@@ -249,4 +250,5 @@
             setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val());
         });
     });
-<?php $this->Html->scriptEnd(); ?>
+</script>
+<?php $this->MyHtml->scriptEnd(); ?>

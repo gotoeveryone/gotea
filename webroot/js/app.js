@@ -1,17 +1,10 @@
-// 初期処理
-$(document).ready(function() {
-    // 各種初期設定
-    setDatepicker();
-    setTooltip();
-    setColorbox();
+// 確認ダイアログ
+var openConfirm = function(message, form) {
+    var confirm = $('#confirm');
+    confirm.text(message);
 
-    $('#confirm, #dialog').click(function (event) {
-        $(this).dialog('open');
-        event.preventDefault();
-    });
-
-    // 確認ダイアログ
-    $('#confirm').dialog({
+    // ダイアログの設定
+    confirm.dialog({
         autoOpen: false,
         modal: true,
         top: 0,
@@ -24,7 +17,10 @@ $(document).ready(function() {
             {
                 text: 'OK',
                 click: function (event) {
-                    $('#mainForm').submit();
+                    if (!form) {
+                        form = $("#mainForm");
+                    }
+                    form.submit();
                     var button = $('.ui-dialog-buttonpane').find('button:contains("OK")');
                     button.attr('disabled', true);
                     button.addClass('ui-state-disabled');
@@ -32,11 +28,28 @@ $(document).ready(function() {
             },
             {
                 text: 'キャンセル',
+                class: "cancel",
                 click: function () {
                     $(this).dialog('close');
                 }
             }
         ]
+    });
+
+    // ダイアログオープン
+    confirm.dialog("open");
+};
+
+// 初期処理
+$(document).ready(function() {
+    // 各種初期設定
+    setDatepicker();
+    setTooltip();
+    setColorbox();
+
+    $('#dialog').click(function (event) {
+        $(this).dialog('open');
+        event.preventDefault();
     });
 
     // 値変更時（テキスト）

@@ -17,7 +17,8 @@
     <?=$this->Form->end()?>
 </article>
 
-<?php $this->Html->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+<script>
     $(function() {
         // 更新ボタン押下時
         $('#update').click(function() {
@@ -30,9 +31,7 @@
 
             if ($('#executeTargets').val()) {
                 // 更新処理
-                var confirm = $("#confirm");
-                confirm.html('更新します。よろしいですか？');
-                confirm.click();
+                openConfirm('更新します。よろしいですか？');
             } else {
                 var dialog = $("#dialog");
                 dialog.html('更新対象が1件も存在しません。');
@@ -44,4 +43,5 @@
             $('#executeTargets').val('');
         });
     });
-<?php $this->Html->scriptEnd(); ?>
+</script>
+<?php $this->MyHtml->scriptEnd(); ?>
