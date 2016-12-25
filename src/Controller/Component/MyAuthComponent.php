@@ -10,11 +10,17 @@ use Cake\Validation\Validator;
  */
 class MyAuthComponent extends AuthComponent
 {
+    public $controller = null;
     public $components = ['Json', 'Log', 'Flash'];
 
     public function initialize(array $config)
     {
         parent::initialize($config);
+
+        /**
+         * Get current controller
+        */
+        $this->controller = $this->_registry->getController();
     }
 
     /**
@@ -26,13 +32,6 @@ class MyAuthComponent extends AuthComponent
      */
     public function login($account, $password)
     {
-        // 入力チェック
-        if (($errors = $this->__isValid($account, $password))) {
-            $this->Log->error(__('ログイン失敗（バリデーション）'));
-            $this->Flash->error($this->_getErrorMessage($errors));
-            return false;
-        }
-
         // トークンが保存できなければログインエラー
         if (!$this->Json->saveAccessToken($account, $password)) {
             $this->Log->error(__('ログイン失敗（認証）'));
@@ -59,35 +58,5 @@ class MyAuthComponent extends AuthComponent
         // トークンの削除
         $this->Json->removeAccessToken();
         return parent::logout();
-    }
-
-    /**
-     * ログイン時のバリデーションを行います。
-     * 
-     * @param $username
-     * @param $password
-     * @return array Array of invalid fields
-     */
-    private function __isValid($username, $password)
-    {
-        // 入力チェック
-        $validator = new Validator();
-        $validator
-            ->notEmpty('username', 'ユーザIDは必須です。')
-            ->notEmpty('password', 'パスワードは必須です。')
-            ->add('username', [
-                'length' => [
-                    'rule' => ['maxLength', 10],
-                    'message' => 'ユーザIDは10文字以下で入力してください。'
-                ]
-            ])
-            ->add('password', [
-                'length' => [
-                    'rule' => ['maxLength', 10],
-                    'message' => 'パスワードは10文字以下で入力してください。'
-                ]
-            ]
-        );
-        return $validator->errors(['username' => $username, 'password' => $password]);
     }
 }

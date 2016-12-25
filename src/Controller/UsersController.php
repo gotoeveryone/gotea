@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\LoginForm;
 use Cake\Event\Event;
 use Cake\Validation\Validator;
 
@@ -61,6 +62,12 @@ class UsersController extends AppController
      */
     public function login()
     {
+        $form = new LoginForm();
+        if (!$form->validate($this->request->data)) {
+            $this->Flash->error(__($this->_getErrorMessage($form->errors())));
+            return $this->index();
+        }
+
         $account = $this->request->data('username');
         $password = $this->request->data('password');
 
