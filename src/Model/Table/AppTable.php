@@ -42,7 +42,7 @@ class AppTable extends Table
      */
 	private function __getLoginUserId() {
 	    $session = new Session();
-        $userId = $session->read('Auth.User.userid');
+        $userId = $session->read('Auth.User.userId');
         return !$userId ? 'IgoApp' : $userId;
 	}
 }

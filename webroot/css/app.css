@@ -483,16 +483,13 @@ table.titles .titleNameEn {
 	width: 170px;
 }
 
-table.titles .holding {
-	width: 35px;
-}
-
 table.titles .winner {
 	width: 150px;
 }
 
+table.titles .holding,
 table.titles .order {
-	width: 35px;
+	width: 40px;
 	text-align: center;
 }
 
@@ -507,7 +504,7 @@ table.titles .htmlFileName {
 }
 
 table.titles .htmlModifyDate {
-	width: 85px;
+	width: 90px;
 }
 
 table.titles .openRetain {
