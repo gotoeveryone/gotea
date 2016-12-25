@@ -28,11 +28,11 @@ class AppTable extends Table
 		$nowDate = Time::now();
 		$userId = $this->__getLoginUserId();
 		if (!$entity->isNew() === false) {
-			$entity->setCreated($nowDate);
-			$entity->setCreatedBy($userId);
+			$entity->created = $nowDate;
+			$entity->created_by = $userId;
 		}
-		$entity->setModified($nowDate);
-		$entity->setModifiedBy($userId);
+		$entity->modified = $nowDate;
+		$entity->modified_by = $userId;
 	}
 
     /**

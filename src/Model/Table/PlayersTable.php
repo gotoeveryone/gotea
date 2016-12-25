@@ -3,6 +3,11 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Player;
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
+use Cake\ORM\Query;
 use Cake\I18n\Time;
 use Cake\Validation\Validator;
 
@@ -35,6 +40,30 @@ class PlayersTable extends AppTable
         ]);
     }
 
+	/**
+	 * 保存前処理
+     * 
+     * @param Event $event
+     * @param EntityInterface $entity
+     * @param ArrayObject $options
+     */
+	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+        // 所属国
+        $countries = TableRegistry::get('Countries');
+        $this->country = $countries->get($entity->country_id);
+
+        // 段位
+        $ranks = TableRegistry::get('Ranks');
+        $this->rank = $ranks->get($entity->rank_id);
+
+        // 所属組織
+        $organizations = TableRegistry::get('Organizations');
+        $this->organization = $organizations->get($entity->organization_id);
+
+        // 親クラスのメソッド呼び出し
+        parent::beforeSave($event, $entity, $options);
+    }
+
     /**
      * バリデーションルール
      * 
@@ -45,6 +74,11 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->notEmpty('name', '棋士名は必須です。')
+            ->lengthBetween('name', [0, 20], '棋士名は20文字以下で入力してください。')
+            ->notEmpty('name_english', '棋士名（英語）は必須です。')
+            ->lengthBetween('name_english', [0, 40], '棋士名（英語）は40文字以下で入力してください。')
+            ->allowEmpty('name_other')
+            ->lengthBetween('name_other', [0, 20], '棋士名（その他）は20文字以下で入力してください。')
             ->allowEmpty('birthday')
             ->add('birthday', [
                 'valid' => [
@@ -63,8 +97,9 @@ class PlayersTable extends AppTable
      */
     public function findPlayerWithScores($id) : Player
     {
-        return $this->find()->contain(['PlayerScores'])
-                ->where(['id' => $id])->first();
+        return $this->find()->contain(['PlayerScores' => function(Query $q) {
+            return $q->orderDesc('PlayerScores.target_year');
+        }])->where(['id' => $id])->first();
     }
 
     /**
@@ -79,12 +114,12 @@ class PlayersTable extends AppTable
             'Countries',
             'Ranks',
             'Organizations',
-            'PlayerScores' => function ($q) {
-                return $q->order(['PlayerScores.target_year' => 'DESC']);
+            'PlayerScores' => function (Query $q) {
+                return $q->orderDesc('PlayerScores.target_year');
             },
             'PlayerScores.Ranks',
             'RetentionHistories.Titles',
-            'RetentionHistories' => function ($q) {
+            'RetentionHistories' => function (Query $q) {
                 return $q->order([
                     'RetentionHistories.target_year' => 'DESC',
                     'Titles.country_id' => 'ASC',
