@@ -26,42 +26,18 @@ class PlayerScoresTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('win_point', '勝数は必須です。')
-            ->add('win_point', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '勝数は数字で入力してください。'
-                ]
-            ])
-            ->notEmpty('lose_point', '敗数は必須です。')
-            ->add('lose_point', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '敗数は数字で入力してください。'
-                ]
-            ])
-            ->notEmpty('draw_point', '引分数は必須です。')
-            ->add('draw_point', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '引分数は数字で入力してください。'
-                ]
-            ])
-            ->notEmpty('win_point_world', '勝数（国際棋戦）は必須です。')
-            ->add('win_point_world', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '勝数（国際棋戦）は数字で入力してください。'
-                ]
-            ])
-            ->notEmpty('lose_point_world', '敗数（国際棋戦）は必須です。')
-            ->add('lose_point_world', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '敗数（国際棋戦）は数字で入力してください。'
-                ]
-            ])
-            ->notEmpty('draw_point_world', '引分数（国際棋戦）は必須です。')
-            ->add('draw_point_world', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '引分数（国際棋戦）は数字で入力してください。'
-                ]
-            ]);
+            ->notEmpty('win_point', __d('default', 'field {0} is required', '勝数'))
+            ->numeric('win_point', __d('default', 'field {0} is numeric value only', '勝数'))
+            ->notEmpty('lose_point', __d('default', 'field {0} is required', '敗数'))
+            ->numeric('lose_point', __d('default', 'field {0} is numeric value only', '敗数'))
+            ->notEmpty('draw_point', __d('default', 'field {0} is required', '引分数'))
+            ->numeric('draw_point', __d('default', 'field {0} is numeric value only', '引分数'))
+            ->notEmpty('win_point_world', __d('default', 'field {0} is required', '勝数（国際棋戦）'))
+            ->numeric('win_point_world', __d('default', 'field {0} is numeric value only', '勝数（国際棋戦）'))
+            ->notEmpty('lose_point_world', __d('default', 'field {0} is required', '敗数（国際棋戦）'))
+            ->numeric('lose_point_world', __d('default', 'field {0} is numeric value only', '敗数（国際棋戦）'))
+            ->notEmpty('draw_point_world', __d('default', 'field {0} is required', '引分数（国際棋戦）'))
+            ->numeric('draw_point_world', __d('default', 'field {0} is numeric value only', '引分数（国際棋戦）'));
     }
 
     /**

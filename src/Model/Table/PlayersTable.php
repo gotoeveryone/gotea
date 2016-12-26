@@ -74,20 +74,14 @@ class PlayersTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('name', '棋士名は必須です。')
-            ->lengthBetween('name', [0, 20], '棋士名は20文字以下で入力してください。')
-            ->notEmpty('name_english', '棋士名（英語）は必須です。')
-            ->lengthBetween('name_english', [0, 40], '棋士名（英語）は40文字以下で入力してください。')
-            ->allowEmpty('name_other')
-            ->lengthBetween('name_other', [0, 20], '棋士名（その他）は20文字以下で入力してください。')
-            ->allowEmpty('birthday')
-            ->add('birthday', [
-                'valid' => [
-                    'rule' => ['date', 'ymd'],
-                    'message' => '生年月日は「yyyy/MM/dd」形式で入力してください。'
-                ]
-            ])
-            ->notEmpty('joined', '入段日は必須です。');
+            ->allowEmpty(['name_other', 'birthday'])
+            ->notEmpty('name', __d('default', 'field {0} is required', '棋士名'))
+            ->maxLength('name', [0, 20], __d('default', 'field {0} length is under the {1}', ['棋士名', 20]))
+            ->notEmpty('name_english', __d('default', 'field {0} is required', '棋士名（英語）'))
+            ->maxLength('name_english', 40, __d('default', 'field {0} length is under the {1}', ['棋士名（英語）', 40]))
+            ->maxLength('name_other', 20, __d('default', 'field {0} length is under the {1}', ['棋士名（その他）', 20]))
+            ->date('birthday', 'ymd', '生年月日は「yyyy/MM/dd」形式で入力してください。')
+            ->notEmpty('joined', __d('default', 'field {0} is required', '入段日'));
     }
 
     /**

@@ -37,19 +37,14 @@ class TitlesTable extends AppTable {
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('name', 'タイトル名は必須です。')
-            ->notEmpty('name_english', 'タイトル名（英語）は必須です。')
-            ->notEmpty('holding', '期は必須です。')
+            ->notEmpty('name', __d('default', 'field {0} is required', 'タイトル名'))
+            ->notEmpty('name_english', __d('default', 'field {0} is required', 'タイトル名（英語）'))
+            ->notEmpty('holding', __d('default', 'field {0} is required', '期'))
             ->numeric('sort_order', __d('default', 'field {0} is numeric value only', '並び順'))
             ->notEmpty('sort_order', __d('default', 'field {0} is required', '並び順'))
-            ->notEmpty('html_file_name', 'htmlファイル名は必須です。')
-            ->notEmpty('html_file_modified', '修正日は必須です。')
-            ->add('html_file_modified', [
-                'valid' => [
-                    'rule' => ['date', 'ymd'],
-                    'message' => '修正日は「yyyy/mm/dd」形式で入力してください。'
-                ]
-            ]);
+            ->notEmpty('html_file_name', __d('default', 'field {0} is required', 'HTMLファイル名'))
+            ->notEmpty('html_file_modified', __d('default', 'field {0} is required', 'HTMLファイル修正日'))
+            ->date('html_file_modified', 'ymd', '修正日は「yyyy/mm/dd」形式で入力してください。');
     }
 
     /**

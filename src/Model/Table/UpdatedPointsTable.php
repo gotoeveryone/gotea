@@ -26,13 +26,8 @@ class UpdatedPointsTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('score_updated', '成績更新日は必須です。')
-            ->add('score_updated', [
-                'valid' => [
-                    'rule' => ['date', 'ymd'],
-                    'message' => '成績更新日は「yyyy/MM/dd」形式で入力してください。'
-                ]
-            ]);
+            ->notEmpty('score_updated', __d('default', 'field {0} is required', '成績更新日'))
+            ->date('score_updated', 'ymd', '成績更新日は「yyyy/MM/dd」形式で入力してください。');
     }
 
     /**

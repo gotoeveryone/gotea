@@ -53,24 +53,12 @@ class RetentionHistoriesTable extends AppTable {
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('target_year', '対象年は必須です。')
-            ->add('target_year', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '対象年は数字で入力してください。'
-                ]
-            ])
-            ->notEmpty('name', 'タイトル名は必須です。')
-            ->notEmpty('holding', '期は必須です。')
-            ->add('holding', [
-                'valid' => [
-                    'rule' => 'numeric', 'message' => '期は数字で入力してください。'
-                ]
-            ])
+            ->notEmpty('target_year', __d('default', 'field {0} is required', '対象年'))
+            ->numeric('target_year', __d('default', 'field {0} is numeric value only', '対象年'))
+            ->notEmpty('name', __d('default', 'field {0} is required', 'タイトル名'))
+            ->notEmpty('holding', __d('default', 'field {0} is required', '期'))
+            ->numeric('holding', __d('default', 'field {0} is numeric value only', '期'))
             ->allowEmpty('win_group_name')
-            ->add('win_group_name', [
-                'length' => [
-                    'rule' => ['maxLength', 30], 'message' => 'グループ名は30文字以下で入力してください。'
-                ]
-            ]);
+            ->maxLength('win_group_name', 30, __d('default', 'field {0} length is under the {1}', 'グループ名'));
     }
 }
