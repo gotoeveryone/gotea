@@ -1,1 +1,1 @@
-<div><?php echo $message; ?></div>
+<ul><?php echo $this->MyFlash->getMessages($message) ?></ul>
