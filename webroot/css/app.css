@@ -56,8 +56,11 @@ nav {
 }
 
 strong {
-    color: #ff0000;
     margin: 0 0.3rem;
+}
+
+strong span {
+    color: #ff0000;
 }
 
 /* -------------------------------------------
@@ -79,7 +82,7 @@ strong {
     color: #ff0000;
 }
 
-#mainForm {
+form {
     height: 100%;
     width: 100%;
 }
@@ -530,7 +533,7 @@ table.titles .htmlModifyDate input[type=text] {
 /* -------------------------------------------
    タイトル情報詳細
  ------------------------------------------- */
-#searchResult {
+.retentions {
     display: none;
     width: 85%;
     margin: auto;
@@ -539,23 +542,27 @@ table.titles .htmlModifyDate input[type=text] {
     border: 1px solid #000000;
 }
 
-#searchResult *,
-#searchResult button {
+.retentions *,
+.retentions button {
     font-size: 0.85rem;
 }
 
-#searchResult table {
+.retentions table {
     width: 100%;
     margin: auto;
-	border: 1px #000000 solid;
+}
+
+.retentions table,
+.retentions table tbody,
+.retentions table tr,
+.retentions table td {
+	border: 0.1rem #000000 solid;
 	border-collapse: collapse;
 }
 
-#searchResult table tbody,
-#searchResult table tr,
-#searchResult table td {
-	border: 1px #000000 solid;
-	border-collapse: collapse;
+.retentions table tbody,
+.retentions table tr,
+.retentions table td {
     padding: 0.1rem 0.5rem;
 }
 

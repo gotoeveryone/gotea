@@ -52,25 +52,16 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
-    // 値変更時（テキスト）
-    $('input[type=text].checkChange').blur(function() {
-        var id = $(this).attr('id');
-        var beforeId = '#bean-' + id;
-        if ($(this).val() !== $(beforeId).val()) {
-            $(this).addClass('red');
+    // 値変更時
+    $('.checkChange').on('change', function() {
+        var self = $(this);
+        var parent = self.parent();
+        var bean = parent.find('input[type=hidden][name*=bean_]');
+        var compare = (self.attr('type') === 'checkbox' ? self.prop('checked') : self.val());
+        if (compare !== bean.val()) {
+            self.addClass('red');
         } else {
-            $(this).removeClass('red');
-        }
-    });
-
-    // 値変更時（チェックボックス）
-    $('input[type=checkbox].checkChange').blur(function() {
-        var id = $(this).attr('id');
-        var beforeId = '#bean-' + id;
-        if ($(this).prop('checked') !== $(beforeId).val()) {
-            $(this).addClass('red');
-        } else {
-            $(this).removeClass('red');
+            self.removeClass('red');
         }
     });
 
