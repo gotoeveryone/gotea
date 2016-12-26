@@ -2,13 +2,14 @@
 
 namespace App\Model\Table;
 
+use App\Form\PlayerForm;
 use App\Model\Entity\Player;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Query;
-use Cake\I18n\Time;
+use Cake\I18n\Date;
 use Cake\Validation\Validator;
 
 /**
@@ -133,53 +134,51 @@ class PlayersTable extends AppTable
     /**
      * 指定条件に合致した棋士情報を取得します。
      * 
-     * @param Player $searchParams
-     * @param string $joinedFrom
-     * @param string $joinedTo
+     * @param array $data
      * @return Player 棋士情報一覧
      */
-    public function findPlayers(Player $searchParams, string $joinedFrom = null, string $joinedTo = null)
+    public function findPlayers(array $data)
     {
         // 棋士情報の取得
         $query = $this->find();
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (($countryId = $searchParams->country_id)) {
-            $query->where(["Countries.id" => $countryId]);
+        if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
+            $query->where(['Countries.id' => $countryId]);
         }
-        if (($organizationId = $searchParams->organization_id)) {
-            $query->where(["Organizations.id" => $organizationId]);
+        if (isset($data['organization_id']) && ($organizationId = $data['organization_id'])) {
+            $query->where(['Organizations.id' => $organizationId]);
         }
-        if (($rankId = $searchParams->rank_id)) {
-            $query->where(["Ranks.id" => $rankId]);
+        if (isset($data['rank_id']) && ($rankId = $data['rank_id'])) {
+            $query->where(['Ranks.id' => $rankId]);
         }
-        if (($sex = $searchParams->sex)) {
-            $query->where(["Players.sex" => $sex]);
+        if (isset($data['sex']) && ($sex = $data['sex'])) {
+            $query->where(['Players.sex' => $sex]);
         }
-        if (($playerName = trim($searchParams->name))) {
-            $query->where(["OR" => $this->__createLikeParams("name", $playerName)]);
+        if (isset($data['name']) && ($playerName = trim($data['name']))) {
+            $query->where(['OR' => $this->__createLikeParams('name', $playerName)]);
         }
-        if (($playerNameEn = trim($searchParams->name_english))) {
-            $query->where(["OR" => $this->__createLikeParams("name_english", $playerNameEn)]);
+        if (isset($data['name_english']) && ($playerNameEn = trim($data['name_english']))) {
+            $query->where(['OR' => $this->__createLikeParams('name_english', $playerNameEn)]);
         }
-        if (is_numeric($joinedFrom)) {
-            $query->where(["SUBSTR(Players.joined, 1, 4) >=" => $joinedFrom]);
+        if (isset($data['joined_from']) && is_numeric(($joinedFrom = $data['joined_from']))) {
+            $query->where(['SUBSTR(Players.joined, 1, 4) >=' => $joinedFrom]);
         }
-        if (is_numeric($joinedTo)) {
-            $query->where(["SUBSTR(Players.joined, 1, 4) <=" => $joinedTo]);
+        if (isset($data['joined_to']) && is_numeric(($joinedTo = $data['joined_to']))) {
+            $query->where(['SUBSTR(Players.joined, 1, 4) <=' => $joinedTo]);
         }
-        if (!isset($searchParams->is_retired) || !$searchParams->is_retired) {
-            $query->where(["Players.is_retired" => 0]);
+        if (!isset($data['is_retired']) || !$data['is_retired']) {
+            $query->where(['Players.is_retired' => 0]);
         }
 
         // データを取得
         return $query->order([
-            "Ranks.rank_numeric DESC", "Players.joined", "Players.id"
+            'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id'
         ])->contain([
-            "PlayerScores" => function ($q) {
-                return $q->where(["PlayerScores.target_year" => intval(Time::now()->year)]);
+            'PlayerScores' => function (Query $q) {
+                return $q->where(['PlayerScores.target_year' => intval(Date::now()->year)]);
             },
-            "Ranks", "Countries", "Organizations"
+            'Ranks', 'Countries', 'Organizations'
         ])->all();
     }
 

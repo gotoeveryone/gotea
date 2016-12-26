@@ -7,7 +7,6 @@ use Cake\Event\Event;
 /**
  * メニュー用コントローラ
  *
- * @package		app.Controller
  * @author		Kazuki Kamizuru
  * @since		2015/07/26
  */
@@ -24,6 +23,9 @@ class MenuController extends AppController
         parent::beforeRender($event);
     }
 
+	/**
+	 * 初期処理
+	 */
     public function index() {
         return $this->render('index');
     }

@@ -3,37 +3,38 @@
 namespace App\Controller;
 
 use PDOException;
+use App\Form\PlayerForm;
 use App\Model\Entity\Player;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
-use Psr\Log\LogLevel;
 
 /**
  * 棋士マスタ用コントローラ
  *
  * @author		Kazuki Kamizuru
  * @since		2015/07/20
+ * 
+ * @property \App\Model\Table\PlayerScoresTable $PlayerScores
+ * @property \App\Model\Table\CountriesTable $Countries
+ * @property \App\Model\Table\RanksTable $Ranks
+ * @property \App\Model\Table\OrganizationsTable $Organizations
  */
 class PlayersController extends AppController
 {
-    // アソシエーション先のモデル群
-    private $PlayerScores = null;
-    private $Countries = null;
-    private $Ranks = null;
-    private $Organizations = null;
-
     /**
      * 初期処理
      */
 	public function initialize()
     {
         parent::initialize();
-        $this->PlayerScores = TableRegistry::get('PlayerScores');
-        $this->Countries = TableRegistry::get('Countries');
-        $this->Ranks = TableRegistry::get('Ranks');
-        $this->Organizations = TableRegistry::get('Organizations');
+
+        // モデルをロード
+        $this->loadModel('PlayerScores');
+        $this->loadModel('Countries');
+        $this->loadModel('Ranks');
+        $this->loadModel('Organizations');
 
         // GETアクセスを許可するアクションを定義
         $this->_addAllowGetActions(["categorize", "ranking"]);
@@ -55,9 +56,13 @@ class PlayersController extends AppController
 	/**
 	 * 初期処理
 	 */
-	public function index()
+	public function index(PlayerForm $form = null)
     {
-        $this->__initSearch();
+		// 所属国プルダウン
+		$this->set('countries', $this->Countries->findCountryBelongToArray());
+        $this->_setTitle('棋士情報検索');
+
+        $this->set('form', ($form ? $form : new PlayerForm));
         return $this->render('index');
     }
 
@@ -66,24 +71,16 @@ class PlayersController extends AppController
 	 */
 	public function search()
     {
-        $this->__initSearch();
-
         // リクエストから値を取得
-        $searchPlayer = $this->Players->newEntity([
-            "country_id" => $this->request->data('searchCountry'),
-            "organization_id" => $this->request->data('searchOrganization'),
-            "rank_id" => $this->request->data('searchRank'),
-            "sex" => $this->request->data('searchSex'),
-            "name" => $this->request->data('searchPlayerName'),
-            "name_english" => $this->request->data('searchPlayerNameEn'),
-            "is_retired" => $this->request->data('searchRetire')
-        ]);
-
-        $joinedFrom = $this->request->data('searchJoinedFrom');
-        $joinedTo = $this->request->data('searchJoinedTo');
+        $data = $this->request->data;
+        $form = new PlayerForm();
+        if (!$form->validate($data)) {
+            $this->Flash->error($form->errors());
+            return $this->setAction('index', $form);
+        }
 
         // 該当する棋士情報一覧の件数を取得
-        $players = $this->Players->findPlayers($searchPlayer, $joinedFrom, $joinedTo);
+        $players = $this->Players->findPlayers($data);
 
         // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
         if (!($count = count($players))) {
@@ -96,13 +93,13 @@ class PlayersController extends AppController
         }
 
         // 初期表示処理へ
-        return $this->render('index');
+        return $this->setAction('index', $form);
     }
 
 	/**
-	 * 棋士詳細表示処理
+	 * 詳細情報表示処理
      * 
-     * @param $id 棋士マスタのID
+     * @param $id 取得するデータのID
      * @param $existPlayer 棋士情報（エラー時の遷移用）
 	 */
 	public function detail($id = null, Player $existPlayer = null)
@@ -140,7 +137,7 @@ class PlayersController extends AppController
 	/**
 	 * 棋士マスタの登録・更新処理
      * 
-     * @param $id 棋士マスタのID
+     * @param $id 保存対象データのID
 	 */
 	public function save($id = null)
     {
@@ -151,11 +148,10 @@ class PlayersController extends AppController
         // 入力値をエンティティに設定
         $this->Players->patchEntity($player, $this->request->data, ['validate' => false]);
 
-        // バリデーションエラーの場合はそのまま返す
+        // バリデーションエラーの場合は詳細情報表示処理へ
         if (($errors = $this->Players->validator()->errors($player->toArray()))) {
-            // エラーメッセージを書き込み、詳細情報表示処理へ
-            $this->Flash->error(__($this->_getErrorMessage($errors)));
-            return $this->detail(null, $player);
+            $this->Flash->error($errors);
+            return $this->setAction('detail', null, $player);
         }
 
         // 棋士成績を設定
@@ -167,13 +163,16 @@ class PlayersController extends AppController
             $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
 		} catch (PDOException $e) {
             $this->Log->error(__("棋士情報{$status}エラー：{$e->getMessage()}"));
-            $this->_markToRollback();
 			$this->Flash->error(__("棋士情報の{$status}に失敗しました…。"));
+            $this->_markToRollback();
 		} finally {
 			// 所属国IDを設定
 			$this->request->query['countryId'] = $player->country_id;
             // 詳細情報表示処理へ
-            return ($this->request->data('isContinue') === "true") ? $this->detail() : $this->detail($player->id, $player);
+            if ($this->request->data('isContinue') === "true") {
+                return $this->setAction('detail');
+            }
+            return $this->setAction('detail', $player->id, $player);
 		}
 	}
 
@@ -193,8 +192,8 @@ class PlayersController extends AppController
         // バリデーションエラーの場合はそのまま返す
         if (($errors = $this->PlayerScores->validator()->errors($score->toArray()))) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
-            $this->Flash->error(__($this->_getErrorMessage($errors)));
-            return $this->detail($score->player_id);
+            $this->Flash->error($errors);
+            return $this->setAction('detail', $score->player_id);
         }
 
         try {
@@ -202,12 +201,12 @@ class PlayersController extends AppController
 			$this->PlayerScores->save($score);
 			$this->Flash->info(__("{$score->target_year}年度の棋士成績情報を更新しました。"));
 		} catch (PDOException $e) {
-			$this->log(__("棋士成績情報更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-            $this->_markToRollback();
+			$this->Log->error(__("棋士成績情報更新エラー：{$e->getMessage()}"));
 			$this->Flash->error(__("{$score->target_year}年度の棋士成績情報の更新に失敗しました…。"));
+            $this->_markToRollback();
 		} finally {
             // 詳細情報表示処理へ
-			return $this->detail($score->player_id);
+			return $this->setAction('detail', $score->player_id);
 		}
 	}
 
@@ -216,15 +215,11 @@ class PlayersController extends AppController
      */
     public function ranking()
     {
-        $this->loadComponent('Json');
-
-        $this->_setTitle('棋士勝敗ランキング出力');
-
         // 所属国プルダウン
 		$this->set('countries', $this->Countries->findCountryHasFileToArrayWithSuffix());
-
         // 年度プルダウン
         $this->set('years', $this->PlayerScores->findScoreUpdateToArrayWithSuffix());
+        $this->_setTitle('棋士勝敗ランキング出力');
     }
 
     /**
@@ -235,16 +230,6 @@ class PlayersController extends AppController
 		// 所属国プルダウン
 		$this->set("countries", $this->Countries->findCountryBelongToArray());
         $this->_setTitle("段位別棋士数検索");
-    }
-
-    /**
-     * 検索画面初期処理
-     */
-    private function __initSearch()
-    {
-		// 所属国プルダウン
-		$this->set('countries', $this->Countries->findCountryBelongToArray());
-        $this->_setTitle('棋士情報検索');
     }
 
     /**
@@ -260,7 +245,7 @@ class PlayersController extends AppController
             $score = $this->PlayerScores->newEntity([
                 'target_year' => $now_year,
                 'rank_id' => $player->rank_id
-            ]);
+            ], ['validate' => false]);
             $player->set('player_scores', [$score]);
         } else {
             // 当年のデータで段位が異なる場合は更新

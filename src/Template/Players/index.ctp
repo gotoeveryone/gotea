@@ -1,7 +1,7 @@
 <article class="players">
-    <?=$this->Form->create(null, [
+    <?=$this->Form->create($form, [
         'id' => 'mainForm',
-        'method' => 'post',
+        'type' => 'post',
         'url' => ['action' => 'search'],
         'templates' => [
             'inputContainer' => '{{content}}',
@@ -14,10 +14,9 @@
                 <section class="label">所属国：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchCountry', [
-                            'id' => 'searchCountry',
+                        $this->Form->input('country_id', [
+                            'data-id' => 'country',
                             'options' => $countries,
-                            'value' => h($this->request->data('searchCountry')),
                             'class' => 'country',
                             'empty' => true
                         ]);
@@ -26,10 +25,9 @@
                 <section class="label">所属組織：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchOrganization', [
-                            'id' => 'searchOrganization',
+                        $this->Form->input('organization_id', [
+                            'data-id' => 'organization',
                             'options' => $organizations,
-                            'value' => h($this->request->data('searchOrganization')),
                             'class' => 'organization',
                             'empty' => true
                         ]);
@@ -38,10 +36,9 @@
                 <section class="label">段位：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchRank', [
-                            'id' => 'searchRank',
+                        $this->Form->input('rank_id', [
+                            'data-id' => 'rank',
                             'options' => $ranks,
-                            'value' => h($this->request->data('searchRank')),
                             'class' => 'rank',
                             'empty' => true
                         ]);
@@ -50,12 +47,11 @@
                 <section class="label">性別：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchSex', [
+                        $this->Form->input('sex', [
                             'options' => [
                                 '男性' => '男性',
                                 '女性' => '女性'
                             ],
-                            'value' => h($this->request->data('searchSex')),
                             'class' => 'sex',
                             'empty' => true
                         ]);
@@ -64,12 +60,11 @@
                 <section class="label">引退者：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchRetire', [
+                        $this->Form->input('is_retired', [
                             'options' => [
-                                'false' => '検索しない',
-                                'true' => '検索する'
+                                '0' => '検索しない',
+                                '1' => '検索する'
                             ],
-                            'value' => h($this->request->data('searchRetire')),
                             'class' => 'retired'
                         ]);
                     ?>
@@ -85,27 +80,16 @@
             <section class="row">
                 <section class="label">棋士名：</section>
                 <section>
-                    <?=
-                        $this->Form->text('searchPlayerName', [
-                            'value' => h($this->request->data('searchPlayerName')),
-                            'class' => 'name'
-                        ]);
-                    ?>
+                    <?=$this->Form->text('name', ['class' => 'name'])?>
                 </section>
                 <section class="label">（英語）：</section>
                 <section>
-                    <?=
-                        $this->Form->text('searchPlayerNameEn', [
-                            'value' => h($this->request->data('searchPlayerNameEn')),
-                            'class' => 'name'
-                        ]);
-                    ?>
+                    <?=$this->Form->text('name_english', ['class' => 'name']);?>
                 </section>
                 <section class="label">入段年：</section>
                 <section>
                     <?=
-                        $this->Form->text('searchJoinedFrom', [
-                            'value' => h($this->request->data('searchJoinedFrom')),
+                        $this->Form->text('joined_from', [
                             'class' => 'enrollment imeDisabled',
                             'maxlength' => 4,
                             'min' => 1,
@@ -114,8 +98,7 @@
                     ?>
                     ～
                     <?=
-                        $this->Form->text('searchJoinedTo', [
-                            'value' => h($this->request->data('searchJoinedTo')),
+                        $this->Form->text('joined_to', [
                             'class' => 'enrollment imeDisabled',
                             'maxlength' => 4,
                             'min' => 1,
@@ -186,7 +169,7 @@
                             <?php
                                 $setClass = ($player->sex === '女性' ? 'female' : 'blue');
                                 echo $this->Html->link($player->name, [
-                                    'action' => 'detail/'.h($player->id)
+                                    'action' => 'detail/'.$player->id
                                 ], [
                                     'class' => $setClass.' colorbox'
                                 ]);

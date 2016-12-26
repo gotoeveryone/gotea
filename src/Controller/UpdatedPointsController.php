@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use PDOException;
 use Cake\Event\Event;
-use Psr\Log\LogLevel;
 
 /**
  * 成績更新日編集用コントローラ
@@ -38,22 +37,12 @@ class UpdatedPointsController extends AppController
 	 */
 	public function search()
     {
-        // リクエストから値を取得（なければセッションから取得）
-        $searchYear = $this->_getParam('searchYear');
-
         // 成績更新日情報の取得
-        $updatedPoints = $this->UpdatedPoints->findScoreUpdateHasYear($searchYear);
-
+        $updatedPoints = $this->UpdatedPoints->findScoreUpdateHasYear($this->request->data('year'));
         $this->set('updatedPoints', $updatedPoints);
 
-        // 検索フラグを設定
-		$this->set('searchFlag', true);
-
-        // 値を格納
-        $this->_setParam('searchYear', $searchYear);
-
         // 初期処理
-        return $this->index();
+        return $this->setAction('index');
     }
 
     /**
@@ -61,8 +50,24 @@ class UpdatedPointsController extends AppController
      */
 	public function save() {
         // POSTされたタイトル情報から、登録 or 更新対象の一覧を生成
-        $rows = $this->request->data('scoreUpdates');
-        $targets = $this->__createUpdateTargets($rows);
+        $rows = $this->request->data('results');
+
+        // バリデーションにひっかかった場合、一覧を復元
+        if (!($targets = $this->__createUpdateTargets($rows))) {
+//            $data = [];
+//            foreach ($rows as $key => $row) {
+//                $p = $this->UpdatedPoints->newEntity(['id' => $row['id']]);
+//                $dest = $this->UpdatedPoints->patchEntity($p, $row, ['validate' => false]);
+//                $a = $dest->modified->i18nFormat('YYYY/mm/dd HH:mm:ss');
+//                if ($row['update_flag']) {
+//                    $dest->update_flag = $row['update_flag'];
+//                }
+//                $data[] = $dest;
+//            }
+//			// indexの処理を行う
+//            $this->set('updatedPoints', $data);
+			return $this->setAction('search');
+        }
 
         try {
             // 更新件数
@@ -76,9 +81,9 @@ class UpdatedPointsController extends AppController
 			}
 			$this->Flash->info(__("{$count}件の成績更新日情報を更新しました。"));
 		} catch (PDOException $e) {
-			$this->log(__("成績更新日情報更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-			$this->_markToRollback();
+			$this->Log->error(__("成績更新日情報更新エラー：{$e->getMessage()}"));
 			$this->Flash->error(__("成績更新日情報の更新に失敗しました…。"));
+			$this->_markToRollback();
 		} finally {
 			// indexの処理を行う
 			return $this->search();
@@ -96,22 +101,19 @@ class UpdatedPointsController extends AppController
         $targets = [];
         foreach ($rows as $row) {
             // 更新対象でなければ処理しない
-            if ($row['updateFlag'] !== 'true') {
+            if (!$row['update_flag']) {
                 continue;
             }
 
             // データを取得し、POSTされた値を設定
-            $title = $this->UpdatedPoints->get($row['scoreId']);
-            $title->score_updated = $row['scoreUpdateDate'];
+            $title = $this->UpdatedPoints->get($row['id']);
+            $this->UpdatedPoints->patchEntity($title, $row, ['validate' => false]);
 
             // バリデーションエラーの場合はそのまま返す
-            $res = $this->UpdatedPoints->validator()->errors($title->toArray());
-            if ($res) {
+            if (($errors = $this->UpdatedPoints->validator()->errors($title->toArray()))) {
                 // エラーメッセージを書き込み
-                $this->Flash->error(__($this->_getErrorMessage($res)));
-                // 検索結果表示処理へ
-                // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
-                return $this->search();
+                $this->Flash->error($errors);
+                return null;
             }
             // 一覧に追加
             array_push($targets, $title);

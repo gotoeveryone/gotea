@@ -46,7 +46,7 @@ class NativeQueryController extends AppController
             $count = $this->__executeQueries($conn, $queries);
             $this->Flash->info(__("{$count}件のクエリを実行しました。"));
         } catch (PDOException $e) {
-            $this->log(__("クエリ実行エラー：{$e->getMessage()}"));
+            $this->Log->info(__("クエリ実行エラー：{$e->getMessage()}"));
             $this->_markToRollback();
             $this->Flash->error(__("レコードの更新に失敗しました…。"));
         } finally {

@@ -7,11 +7,13 @@ use Cake\Controller\Exception\MissingActionException;
 
 /**
  * アプリの共通コントローラ
+ * 
+ * @property \App\Controller\Component\JsonComponent $Json
  */
 class ApiController extends Controller
 {
     // ホームページコンテンツのディレクトリ
-    private $homepage = "/share/windows/Homepage/";
+    private $_homepage = "/share/windows/Homepage/";
 
     /**
      * 初期処理
@@ -39,6 +41,18 @@ class ApiController extends Controller
     }
 
     /**
+     * IDをもとに棋士情報を取得します。
+     * 
+     * @param $id
+     */
+    public function player(int $id)
+    {
+        $this->__renderJson($this->Json->sendResource(
+            'players/'.$id, 'get'
+        ));
+    }
+
+    /**
      * Go Newsを取得します。
      */
     public function news()
@@ -46,7 +60,7 @@ class ApiController extends Controller
         $json = $this->Json->sendResource('titles/news', 'get');
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
-            if (!file_put_contents($this->homepage."news.json", json_encode($json))) {
+            if (!file_put_contents($this->_homepage."news.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
@@ -69,7 +83,7 @@ class ApiController extends Controller
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]).$json["targetYear"];
-            if (!file_put_contents($this->homepage."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
+            if (!file_put_contents($this->_homepage."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }

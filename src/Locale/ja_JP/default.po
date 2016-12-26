@@ -10,6 +10,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "field {0} is required"
+msgstr "{0}は必須入力です。"
+
+msgid "field {0} is numeric value only"
+msgstr "{0}は数値のみで入力してください。"
+
 msgid "field {0} range is {1} - {2}"
 msgstr "{0}は{1}～{2}の範囲で入力してください。"
 

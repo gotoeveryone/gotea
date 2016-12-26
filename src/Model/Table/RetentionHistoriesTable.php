@@ -27,16 +27,19 @@ class RetentionHistoriesTable extends AppTable {
     }
 
     /**
-     * タイトル情報を1件取得します。
+     * キー情報をもとに、保持履歴を1件取得します。
      * 
-     * @param type $titleId
-     * @param type $holding
+     * @param array $data
+     * @return null|\App\Model\Entity\RetentionHistory
      */
-    public function findByKey($titleId, $holding)
+    public function findByKey($data)
     {
+        if (empty($data['title_id']) || empty($data['holding'])) {
+            return null;
+        }
 		$query = $this->find()->where([
-            'title_id' => $titleId,
-            'holding' => $holding
+            'title_id' => $data['title_id'],
+            'holding' => $data['holding']
 		]);
         return $query->first();
     }
@@ -56,6 +59,7 @@ class RetentionHistoriesTable extends AppTable {
                     'rule' => 'numeric', 'message' => '対象年は数字で入力してください。'
                 ]
             ])
+            ->notEmpty('name', 'タイトル名は必須です。')
             ->notEmpty('holding', '期は必須です。')
             ->add('holding', [
                 'valid' => [

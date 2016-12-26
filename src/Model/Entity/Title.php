@@ -10,31 +10,18 @@ use Cake\ORM\TableRegistry;
 class Title extends AppEntity
 {
     /**
-     * 所属国を設定します。
+     * 保持履歴を取得します。
      * 
-     * @param $countryId
+     * @param array $histories
+     * @return array
      */
-    public function setCountry($countryId)
+    protected function _getRetentionHistories($histories)
     {
-        $countries = TableRegistry::get('Countries');
-        $this->country = $countries->get($countryId);
-    }
-
-    /**
-     * 配列の値をエンティティに保存します。
-     * 
-     * @param array $array
-     */
-    public function setFromArray(array $array)
-    {
-        // POSTされた値を設定
-        $this->name = $array['titleName'];
-        $this->name_english = $array['titleNameEn'];
-        $this->holding = $array['holding'];
-        $this->sort_order = $array['order'];
-        $this->is_team = $array['groupFlag'];
-        $this->html_file_name = $array['htmlFileName'];
-        $this->html_file_modified = date($array['htmlModifyDate']);
-        $this->is_closed = $array['deleteFlag'];
+        if (!$histories) {
+            $tables = TableRegistry::get('RetentionHistories');
+            $histories = $tables->find()
+                    ->where(['title_id' => $this->id])->orderDesc('target_year')->all()->toArray();
+        }
+        return $histories;
     }
 }

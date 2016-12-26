@@ -2,19 +2,18 @@
 
 namespace App\Form;
 
-use Cake\Form\Form;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
 /**
  * ログイン用フォーム
  */
-class LoginForm extends Form
+class LoginForm extends AppForm
 {
     /**
      * {@inheritdoc}
      * 
-     * @param \App\Form\Schema $schema
+     * @param \Cake\Form\Schema $schema
      * @return type
      */
     protected function _buildSchema(Schema $schema)

@@ -37,7 +37,8 @@ return [
      */
     'App' => [
         'namespace' => 'App',
-        'encoding' => 'UTF-8',
+        'encoding' => env('APP_ENCODING', 'UTF-8'),
+        'defaultLocale' => env('APP_DEFAULT_LOCALE', 'ja_JP'),
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',

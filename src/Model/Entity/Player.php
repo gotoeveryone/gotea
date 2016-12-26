@@ -2,7 +2,6 @@
 
 namespace App\Model\Entity;
 
-use Cake\Network\Request;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 
@@ -16,14 +15,14 @@ class Player extends AppEntity
      * 
      * @return App\Model\Entity\PlayerScore
      */
-    protected function _getPlayerScores()
+    protected function _getPlayerScores($playerScores)
     {
-        if (!isset($this->_virtual['player_scores'])) {
+        if (!$playerScores) {
             $scores = TableRegistry::get('PlayerScores');
-            $this->_virtual['player_scores'] = $scores->find()
-                    ->where(['player_id' => $this->id])->orderDesc('target_year')->all();
+            $playerScores = $scores->find()
+                    ->where(['player_id' => $this->id])->orderDesc('target_year')->all()->toArray();
         }
-        return $this->_virtual['player_scores'];
+        return $playerScores;
     }
 
     /**

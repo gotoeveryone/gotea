@@ -88,34 +88,4 @@ class UsersController extends AppController
     {
         return $this->redirect($this->MyAuth->logout());
     }
-
-    /**
-     * ログイン時のバリデーションを行います。
-     * 
-     * @param $username
-     * @param $password
-     * @return array Array of invalid fields
-     */
-    private function __isValid($username, $password)
-    {
-        // 入力チェック
-        $validator = new Validator();
-        $validator
-            ->notEmpty('username', 'ユーザIDは必須です。')
-            ->notEmpty('password', 'パスワードは必須です。')
-            ->add('username', [
-                'length' => [
-                    'rule' => ['maxLength', 10],
-                    'message' => 'ユーザIDは10文字以下で入力してください。'
-                ]
-            ])
-            ->add('password', [
-                'length' => [
-                    'rule' => ['maxLength', 10],
-                    'message' => 'パスワードは10文字以下で入力してください。'
-                ]
-            ]
-        );
-        return $validator->errors(['username' => $username, 'password' => $password]);
-    }
 }

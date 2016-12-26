@@ -1,22 +1,22 @@
 <article class="titles">
-    <?=$this->Form->create(null, [
-        'id' => 'mainForm',
-        'method' => 'post',
-        'url' => ['action' => 'search'],
-        'templates' => [
-            'inputContainer' => '{{content}}',
-            'textFormGroup' => '{{input}}',
-            'selectFormGroup' => '{{input}}'
-        ]
-    ])?>
-        <section class="search-header">
+    <section class="search-header">
+        <?=$this->Form->create(null, [
+            'id' => 'searchForm',
+            'type' => 'post',
+            'url' => ['action' => 'search'],
+            'templates' => [
+                'inputContainer' => '{{content}}',
+                'textFormGroup' => '{{input}}',
+                'selectFormGroup' => '{{input}}'
+            ]
+        ])?>
+            <?=$this->Form->hidden('is_search', ['id' => 'isSearch'])?>
             <section class="row">
                 <section class="label">対象国：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchCountry', [
+                        $this->Form->input('country_id', [
                             'options' => $countries,
-                            'value' => h($this->request->data('searchCountry')),
                             'class' => 'country'
                         ]);
                     ?>
@@ -24,12 +24,11 @@
                 <section class="label">終了棋戦：</section>
                 <section>
                     <?=
-                        $this->Form->input('searchDelete', [
+                        $this->Form->input('is_closed', [
                             'options' => [
-                                'false' => '検索しない',
-                                'true' => '検索する'
+                                '0' => '検索しない',
+                                '1' => '検索する'
                             ],
-                            'value' => h($this->request->data('searchDelete')),
                             'class' => 'retired'
                         ]);
                     ?>
@@ -38,21 +37,36 @@
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                     <?=$this->Form->button('行追加', [
                         'type' => 'button',
-                        'id' => 'addRow'
+                        'id' => 'addRow',
+                        'data-button-type' => 'control'
                     ])?>
                     <?=$this->Form->button('一括更新', [
                         'type' => 'button',
-                        'id' => 'save'
+                        'form' => 'saveAllForm',
+                        'id' => 'save',
+                        'data-button-type' => 'control'
                     ])?>
                     <?=$this->Form->button('JSON出力', [
                         'type' => 'button',
-                        'id' => 'outputJson'
+                        'id' => 'outputJson',
+                        'data-button-type' => 'control'
                     ])?>
                 </section>
             </section>
-        </section>
+        <?=$this->Form->end()?>
+    </section>
 
-        <section class="search-results">
+    <section class="search-results">
+        <?=$this->Form->create(null, [
+            'id' => 'saveAllForm',
+            'type' => 'post',
+            'url' => ['action' => 'saveAll'],
+            'templates' => [
+                'inputContainer' => '{{content}}',
+                'textFormGroup' => '{{input}}',
+                'selectFormGroup' => '{{input}}'
+            ]
+        ])?>
             <table class="titles">
                 <thead>
                     <tr>
@@ -81,54 +95,36 @@
                         }
                     ?>
                     <tr <?=$class?>>
-                        <?=$this->Form->hidden('titles['.$key.'][updateFlag]', ['id' => 'updateFlag-'.$key, 'value' => 'false'])?>
-                        <?=$this->Form->hidden('titles['.$key.'][titleId]', ['value' => h($title->id)])?>
-                        <?=$this->Form->hidden('titles['.$key.'][lastUpdate]', ['value' => $this->Date->format($title->modified, 'YYYYMMddHHmmss')])?>
+                        <?=$this->Form->hidden('titles['.$key.'][is_save]', ['value' => false])?>
+                        <?=$this->Form->hidden('titles['.$key.'][id]', ['value' => $title->id])?>
+                        <?=$this->Form->hidden('titles['.$key.'][optimistic_key]', ['value' => $this->Date->format($title->modified, 'YYYYMMddHHmmss')])?>
                         <td class="left titleName">
                             <?=
-                                $this->Form->text('titles['.$key.'][titleName]', [
-                                    'id' => 'titleName-'.$key,
+                                $this->Form->text('titles['.$key.'][name]', [
                                     'value' => $title->name,
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-titleName]', [
-                                    'id' => 'bean-titleName-'.$key,
-                                    'value' => $title->name
-                                ]);
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_name]', ['value' => $title->name])?>
                         </td>
                         <td class="left titleNameEn">
                             <?=
-                                $this->Form->text('titles['.$key.'][titleNameEn]', [
-                                    'id' => 'titleNameEn-'.$key,
+                                $this->Form->text('titles['.$key.'][name_english]', [
                                     'value' => $title->name_english,
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-titleNameEn]', [
-                                    'id' => 'bean-titleNameEn-'.$key,
-                                    'value' => $title->name_english
-                                ]);
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_name_english]', ['value' => $title->name_english])?>
                         </td>
                         <td class="left holding">
                             <?=
                                 $this->Form->text('titles['.$key.'][holding]', [
-                                    'id' => 'holding-'.$key,
+                                    'value' => $title->holding,
                                     'maxlength' => 3,
-                                    'value' => h($title->holding),
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-holding]', [
-                                    'id' => 'bean-holding-'.$key,
-                                    'value' => h($title->holding)]
-                                );
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_holding]', ['value' => $title->holding])?>
                         </td>
                         <td class="left winner">
                             <?php
@@ -146,82 +142,52 @@
                         </td>
                         <td class="left order">
                             <?=
-                                $this->Form->text('titles['.$key.'][order]', [
-                                    'id' => 'order-'.$key,
+                                $this->Form->text('titles['.$key.'][sort_order]', [
+                                    'value' => $title->sort_order,
                                     'maxlength' => 2,
-                                    'value' => h($title->sort_order),
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-order]', [
-                                    'id' => 'bean-order-'.$key,
-                                    'value' => h($title->sort_order)]
-                                );
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_sort_order]', ['value' => $title->sort_order])?>
                         </td>
                         <td class="left groupFlag">
                             <?=
-                                $this->Form->checkbox('titles['.$key.'][groupFlag]', [
-                                    'id' => 'groupFlag-'.$key,
+                                $this->Form->checkbox('titles['.$key.'][is_team]', [
                                     'checked' => $title->is_team,
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-groupFlag]', [
-                                    'id' => 'bean-groupFlag-'.$key,
-                                    'value' => var_export($title->is_team, TRUE)
-                                ]);
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_is_team]', ['value' => var_export($title->is_team, TRUE)])?>
                         </td>
                         <td class="left htmlFileName">
                             <?=
-                                $this->Form->text('titles['.$key.'][htmlFileName]', [
-                                    'id' => 'htmlFileName-'.$key,
-                                    'value' => h($title->html_file_name),
+                                $this->Form->text('titles['.$key.'][html_file_name]', [
+                                    'value' => $title->html_file_name,
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-htmlFileName]', [
-                                    'id' => 'bean-htmlFileName-'.$key,
-                                    'value' => h($title->html_file_name)
-                                ]);
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_html_file_name]', ['value' => $title->html_file_name])?>
                         </td>
                         <td class="left htmlModifyDate">
                             <?php
-                                $htmlModifyDate = $this->Date->format($title->html_file_modified, 'YYYY/MM/dd');
+                                $htmlFileModified = $this->Date->format($title->html_file_modified, 'YYYY/MM/dd');
                             ?>
                             <?=
-                                $this->Form->text('titles['.$key.'][htmlModifyDate]', [
-                                    'id' => 'htmlModifyDate-'.$key,
-                                    'value' => h($htmlModifyDate),
+                                $this->Form->text('titles['.$key.'][html_file_modified]', [
+                                    'value' => $htmlFileModified,
                                     'class' => 'checkChange datepicker'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-htmlModifyDate]', [
-                                    'id' => 'bean-htmlModifyDate-'.$key,
-                                    'value' => h($htmlModifyDate)
-                                ]);
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_html_file_modified]', ['value' => $htmlFileModified])?>
                         </td>
                         <td class="left deleteFlag">
                             <?=
-                                $this->Form->checkbox('titles['.$key.'][deleteFlag]', [
-                                    'id' => 'deleteFlag-'.$key,
+                                $this->Form->checkbox('titles['.$key.'][is_closed]', [
                                     'checked' => $title->is_closed,
                                     'class' => 'checkChange'
                                 ]);
                             ?>
-                            <?=
-                                $this->Form->hidden('titles['.$key.'][bean-deleteFlag]', [
-                                    'id' => 'deleteFlag-'.$key,
-                                    'value' => var_export($title->is_closed, TRUE)
-                                ]);
-                            ?>
+                            <?=$this->Form->hidden('titles['.$key.'][bean_is_closed]', ['value' => var_export($title->is_closed, TRUE)])?>
                         </td>
                         <td class="center openRetain">
                             <?=$this->Html->link('開く', ['action' => "detail/{$title->id}"], ['class' => 'colorbox'])?>
@@ -231,25 +197,22 @@
                 </tbody>
                 <?php endif ?>
             </table>
-        </section>
-    <?=$this->Form->end()?>
+        <?=$this->Form->end()?>
+    </section>
 </article>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
     $(function() {
-        if ($('#searchFlag').val() === 'false') {
-            $('#addRow').attr('disabled', true);
-            $('#save').attr('disabled', true);
-            $('#outputJson').attr('disabled', true);
+        // ボタンの活性制御
+        if ($('#isSearch').val()) {
+            $('[data-button-type=control]').removeAttr('disabled');
         } else {
-            $('#addRow').removeAttr('disabled');
-            $('#save').removeAttr('disabled');
-            $('#outputJson').removeAttr('disabled');
+            $('[data-button-type=control').attr('disabled', true);
         }
 
         // JSON出力ボタン押下時
-        $('#outputJson').click(function() {
+        $('#outputJson').on('click', function() {
             $.ajax({
                 type: 'GET',
                 url: '<?=$this->Url->build(['controller' => 'api', 'action' => 'news'])?>?make=true',
@@ -267,73 +230,69 @@
 
         var counter = <?=(empty($titles) ? 0 : count($titles))?>;
         // 行追加ボタン押下時
-        $('#addRow').click(function() {
+        $('#addRow').on('click', function() {
             counter++;
 
             // TR要素を作成
-            var tr = $('<tr>', {class: 'newRow'})
-                    .append($('<input>', {type: 'hidden', id: 'insertFlag-' + counter, name: 'titles[' + counter + '][insertFlag]', value: true}))
-                    .append($('<input>', {type: 'hidden', id: 'updateFlag-' + counter, name: 'titles[' + counter + '][updateFlag]', value: false}))
+            var tr = $('<tr>')
+                    .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_save]', value: false}))
                     .append($('<td>', {class: 'left titleName'})
-                        .append($('<input>', {type: 'text', id: 'titleName-' + counter, name: 'titles[' + counter + '][titleName]', class: 'red checkChange'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name]', class: 'red'}))
                     )
                     .append($('<td>', {class: 'left titleNameEn'})
-                        .append($('<input>', {type: 'text', id: 'titleNameEn-' + counter, name: 'titles[' + counter + '][titleNameEn]', class: 'red checkChange imeDisabled'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name_english]', class: 'red'}))
                     )
                     .append($('<td>', {class: 'left holding'})
-                        .append($('<input>', {type: 'text', id: 'holding-' + counter, name: 'titles[' + counter + '][holding]', class: 'red checkChange imeDisabled', maxlength: 3}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][holding]', class: 'red', maxlength: 3}))
                     )
                     .append($('<td>', {class: 'left winner'})
                         .html('&nbsp;')
                     )
                     .append($('<td>', {class: 'left order'})
-                        .append($('<input>', {type: 'text', id: 'order-' + counter, name: 'titles[' + counter + '][order]', class: 'red checkChange imeDisabled', maxlength: 2}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][sort_order]', class: 'red', maxlength: 2}))
                     )
                     .append($('<td>', {class: 'left groupFlag'})
-                        .append($('<input>', {type: 'hidden', id: 'groupFlag-' + counter + '_', name: 'titles[' + counter + '][groupFlag]', value: 0}))
-                        .append($('<input>', {type: 'checkbox', id: 'groupFlag-' + counter, name: 'titles[' + counter + '][groupFlag]', class: 'red checkChange'}))
+                        .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_team]', value: 0}))
+                        .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_team]', class: 'red'}))
                     )
                     .append($('<td>', {class: 'left htmlFileName'})
-                        .append($('<input>', {type: 'text', id: 'htmlFileName-' + counter, name: 'titles[' + counter + '][htmlFileName]', class: 'red checkChange imeDisabled'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_name]', class: 'red'}))
                     )
                     .append($('<td>', {class: 'left htmlModifyDate'})
-                        .append($('<input>', {type: 'text', id: 'htmlModifyDate-' + counter, name: 'titles[' + counter + '][htmlModifyDate]', class: 'red checkChange datepicker'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_modified]', class: 'red datepicker'}))
                     )
                     .append($('<td>', {class: 'left deleteFlag'})
-                        .append($('<input>', {type: 'hidden', id: 'deleteFlag-' + counter + '_', name: 'titles[' + counter + '][deleteFlag]', value: 0}))
-                        .append($('<input>', {type: 'checkbox', id: 'deleteFlag-' + counter, name: 'titles[' + counter + '][deleteFlag]', class: 'red checkChange'}))
+                        .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_closed]', value: 0}))
+                        .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_closed]', class: 'red'}))
                     )
                     .append($('<td>', {class: 'center openRetain'})
                         .html('新規')
                     );
 
             // 日付ダイアログの設定
-            tr.find('input.datepicker').datepicker(getDatepickerObject());
+            tr.find('.datepicker').datepicker(getDatepickerObject());
 
             // 一覧に要素を追加
             $('table.titles').append(tr);
         });
 
         // 一括更新ボタン押下時
-        $('#save').click(function() {
+        $('#save').on('click', function() {
             var tbody = $('table.titles tbody');
-            if (!tbody.find('input[type=text]').hasClass('red')
-                    && !tbody.find('input[type=checkbox]').hasClass('red')) {
+            if (!tbody.find('input[type!=hidden]').hasClass('red')) {
                 // 変更対象がないので更新しない
                 var dialog = $("#dialog");
                 dialog.html('変更された項目がありません！');
                 dialog.click();
             } else {
                 var rows = tbody.find('tr');
-                var resultSize = rows.length;
-                for (var i = 0; i < resultSize; i++) {
-                    if (rows.eq(i).find('input').hasClass('red')) {
-                        rows.find('#updateFlag-' + i).val(true);
+                rows.each(function() {
+                    var obj = $(this);
+                    if (obj.find('input[type!=hidden]').hasClass('red')) {
+                        obj.find('[name*=is_save]').val(true);
                     }
-                }
-                var form = $('#mainForm');
-                form.attr('action', '<?=$this->Url->build(['action' => 'save'])?>');
-                submitForm(form);
+                });
+                submitForm($("#saveAllForm"));
             }
         });
     });

@@ -47,7 +47,7 @@ class TitlesController extends AppController
 	 */
 	public function index()
     {
-        $this->__initSearch();
+        $this->_setTitle('タイトル情報検索');
         return $this->render('index');
     }
 
@@ -56,54 +56,49 @@ class TitlesController extends AppController
 	 */
 	public function search()
     {
-        $this->__initSearch();
-
-        // リクエストから値を取得
-        $searchCountry = $this->request->data('searchCountry');
-        $searchDelete = $this->request->data('searchDelete');
-
         // タイトル一覧を取得
-        if (!count($titles = $this->Titles->findTitlesByCountry($searchCountry, $searchDelete))) {
+        $this->request->data['is_search'] = true;
+        if (!count($titles = $this->Titles->findTitlesByCountry($this->request->data))) {
             $this->Flash->info(__('検索結果が0件でした。'));
         }
-
         $this->set('titles', $titles);
 
-        // indexページへ描画
-        return $this->render('index');
+        // 初期表示処理へ
+        return $this->setAction('index');
 	}
 
     /**
      * 登録・更新処理
      */
-	public function save()
+	public function saveAll()
     {
-        // 更新対象を取得
-        $targets = $this->__getUpdateTargets($this->request->data('titles'), $this->request->data('searchCountry'));
-
-        // 更新件数
-        $count = 0;
+        // 更新対象が取得できなければ、検索結果表示処理へ
+        if (!($targets = $this->__getUpdateTargets($this->request->data))) {
+            // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
+            return $this->setAction('search');
+        }
 
         try {
 			// 件数分処理
 			foreach ($targets as $target) {
                 // タイトル情報を更新
                 $this->Titles->save($target);
-                $count++;
 			}
-            $this->Flash->info(__("{$count}件のタイトルマスタを更新しました。"));
+            $this->Flash->info(__(count($targets).'件のタイトルマスタを更新しました。'));
 		} catch (PDOException $e) {
-            $this->log(__("タイトルマスタ登録・更新エラー：{$e->getMessage()}"), LogLevel::ERROR);
-            $this->_markToRollback();
+            $this->Log->error(__("タイトルマスタ登録・更新エラー：{$e->getMessage()}"));
 			$this->Flash->error(__("タイトルマスタの更新に失敗しました…。"));
+            $this->_markToRollback();
 		} finally {
 			// indexの処理を行う
-			return $this->search();
+			return $this->setAction('search');
 		}
 	}
 
 	/**
 	 * 詳細情報表示処理
+     * 
+     * @param $id 取得するデータのID
 	 */
 	public function detail($id = null)
     {
@@ -120,91 +115,112 @@ class TitlesController extends AppController
     }
 
 	/**
+	 * タイトルマスタの更新処理
+     * 
+     * @param $id 保存対象データのID
+	 */
+	public function save($id)
+    {
+        // IDからデータを取得
+        $title = $this->Titles->get($id);
+
+        // 入力値をエンティティに設定
+        $this->Titles->patchEntity($title, $this->request->data, ['validate' => false]);
+
+        // バリデーションエラーの場合は詳細情報表示処理へ
+        if (($errors = $this->Titles->validator()->errors($title->toArray()))) {
+            $this->Flash->error($errors);
+            return $this->setAction('detail', $title->id);
+        }
+
+        try {
+            // 保存処理
+            $this->Titles->save($title);
+            $this->Flash->info(__("タイトル：{$title->name}を更新しました。"));
+		} catch (PDOException $e) {
+            $this->Log->error(__("タイトル更新エラー：{$e->getMessage()}"));
+			$this->Flash->error(__("タイトルの更新に失敗しました…。"));
+            $this->_markToRollback();
+		} finally {
+            // 詳細情報表示処理へ
+            return $this->setAction('detail', $title->id);
+		}
+	}
+
+	/**
 	 * タイトル保持情報の登録
 	 */
-	public function regist()
+	public function addHistory()
     {
-		// 必須カラムのフィールド
-		$titleId = $this->request->data('selectTitleId');
-		$holding = $this->request->data('registHolding');
+        $data = $this->request->data;
+        $titleId = $this->request->data('title_id');
 
         // すでに存在するかどうかを確認
-		if ($this->RetentionHistories->findByKey($titleId, $holding)) {
+		if ($this->RetentionHistories->findByKey($data)) {
             $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
-			return $this->detail($titleId);
+			return $this->setAction('detail', $titleId);
 		}
 
         // エンティティを新規作成し、値を設定
-        $titleRetain = $this->RetentionHistories->newEntity();
-        $titleRetain->setFromRequest($this->request, $titleId, $holding);
+        $history = $this->RetentionHistories->newEntity($data);
 
         // バリデーションエラーの場合はそのまま返す
-        if (($res = $this->RetentionHistories->validator()->errors($titleRetain->toArray()))) {
-            // エラーメッセージを書き込み、詳細情報表示処理へ
-            $this->Flash->error(__($this->_getErrorMessage($res)));
-            return $this->detail($titleId);
+        if (($errors = $history->errors())) {
+            $this->Flash->error($errors);
+            return $this->setAction('detail', $titleId);
         }
 
 		try {
 			// タイトル保持情報の保存
-			$this->RetentionHistories->save($titleRetain);
+			$this->RetentionHistories->save($history);
             // 最新を登録する場合はタイトルマスタも書き換え
-            if ($this->request->data('registWithMapping') === '1') {
+            if (!empty($data['is_latest'])) {
                 $title = $this->Titles->get($titleId);
-                $title->holding = $holding;
+                $title->holding = $history->holding;
                 $this->Titles->save($title);
             }
-			$this->Flash->info(__("タイトル保持情報を登録しました。"));
+            $this->Flash->info(__("保持履歴を登録しました。"));
 		} catch (PDOException $e) {
-            $this->log(__("タイトル保持情報登録エラー：{$e->getMessage()}"), LogLevel::ERROR);
+            $this->Log->error(__("保持履歴登録エラー：{$e->getMessage()}"));
+			$this->Flash->error(__("保持履歴の登録に失敗しました…。"));
             $this->_markToRollback();
-			$this->Flash->error(__("タイトル保持情報の登録に失敗しました…。"));
 		} finally {
-			// indexの処理を行う
-			$this->detail($titleId);
+            // 詳細情報表示処理へ
+			$this->setAction('detail', $titleId);
 		}
 	}
 
     /**
-     * 検索画面初期処理
-     */
-    private function __initSearch()
-    {
-        $this->_setTitle('タイトル情報検索');
-    }
-
-    /**
      * 更新対象のタイトル一覧を取得します。
      * 
-     * @param array $rows
-     * @param type $countryId
+     * @param array $data
      * @return array
      */
-    private function __getUpdateTargets(array $rows, $countryId)
+    private function __getUpdateTargets(array $data)
     {
         // 登録 or 更新対象の一覧を生成
+        $rows = $data['titles'];
         $targets = [];
         foreach ($rows as $row) {
-            $title = null;
-            if (!empty($row['insertFlag']) && $row['insertFlag'] === 'true') {
-                $title = $this->Titles->newEntity();
-                $title->setCountry($countryId);
-            } else if ($row['updateFlag'] === 'true') {
-                $title = $this->Titles->get($row['titleId']);
-            } else {
+            // 登録 or 更新対象外
+            if (empty($row['is_save'])) {
                 continue;
             }
 
-            // POSTされた値を設定
-            $title->setFromArray($row);
+            // IDがあれば更新、なければ登録
+            if (!empty($row['id'])) {
+                $title = $this->Titles->get($row['id']);
+            } else {
+                $title = $this->Titles->newEntity(['country_id' => $data['country_id']]);
+            }
 
-            // バリデーションエラーの場合はそのまま返す
-            if (($res = $this->Titles->validator()->errors($title->toArray()))) {
-                // エラーメッセージを書き込み
-                $this->Flash->error(__($this->_getErrorMessage($res)));
-                // 検索結果表示処理へ
-                // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
-                return $this->search();
+            // POSTされた値を設定
+            $this->Titles->patchEntity($title, $row, ['validate' => false]);
+
+            // バリデーションエラーの場合は終了
+            if (($errors = $this->Titles->validator()->errors($title->toArray()))) {
+                $this->Flash->error($errors);
+                return null;
             }
             // 一覧に追加
             array_push($targets, $title);

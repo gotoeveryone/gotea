@@ -3,6 +3,7 @@
 namespace App\Model\Table;
 
 use Cake\Validation\Validator;
+use Cake\ORM\Query;
 
 /**
  * タイトル
@@ -36,12 +37,13 @@ class TitlesTable extends AppTable {
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notempty('name', 'タイトル名は必須です。')
-            ->notempty('name_english', 'タイトル名（英語）は必須です。')
-            ->notempty('holding', '期は必須です。')
-            ->notempty('sort_order', '並び順は必須です。')
-            ->notempty('html_file_name', 'htmlファイル名は必須です。')
-            ->notempty('html_file_modified', '修正日は必須です。')
+            ->notEmpty('name', 'タイトル名は必須です。')
+            ->notEmpty('name_english', 'タイトル名（英語）は必須です。')
+            ->notEmpty('holding', '期は必須です。')
+            ->numeric('sort_order', __d('default', 'field {0} is numeric value only', '並び順'))
+            ->notEmpty('sort_order', __d('default', 'field {0} is required', '並び順'))
+            ->notEmpty('html_file_name', 'htmlファイル名は必須です。')
+            ->notEmpty('html_file_modified', '修正日は必須です。')
             ->add('html_file_modified', [
                 'valid' => [
                     'rule' => ['date', 'ymd'],
@@ -53,31 +55,33 @@ class TitlesTable extends AppTable {
     /**
      * 所属国をもとにタイトルの一覧を取得します。
      * 
-     * @param type $countryId
-     * @param type $notSearchEndTitles
+     * @param array $data
      * @return type
      */
-    public function findTitlesByCountry($countryId, $notSearchEndTitles = null)
+    public function findTitlesByCountry($data)
     {
         $query = $this->find()->contain([
             'Countries',
-            'RetentionHistories' => function ($q) {
+            'RetentionHistories' => function (Query $q) {
                 return $q->where(['RetentionHistories.holding = Titles.holding']);
             },
             'RetentionHistories.Titles',
             'RetentionHistories.Players',
             'RetentionHistories.Ranks'
-        ])->where([
-            'Countries.id' => $countryId
         ]);
 
+        // 所属国があれば条件追加
+        if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
+            $query->where(['Countries.id' => $countryId]);
+        }
+
         // 有効なタイトルのみ検索
-        if ($notSearchEndTitles === 'false') {
+        if (!isset($data['is_closed']) || !$data['is_closed']) {
             $query->where(['Titles.is_closed' => 0]);
         }
 
         // データを取得
-        return $query->order(['Titles.sort_order' => 'ASC'])->all();
+        return $query->orderAsc('Titles.sort_order')->all();
     }
 
     /**

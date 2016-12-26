@@ -9,6 +9,12 @@ use Psr\Log\LogLevel;
 
 /**
  * アプリの共通コントローラ
+ * 
+ * @author		Kazuki Kamizuru
+ * @since		2015/07/26
+ * 
+ * @property \App\Controller\Component\LogComponent $Log
+ * @property \App\Controller\Component\MyAuthComponent $MyAuth
  */
 class AppController extends Controller
 {
@@ -157,7 +163,7 @@ class AppController extends Controller
                 $message[] = $val;
             }
         }
-        return implode('<br/>', $message);
+        return '<li>'.implode('<br/><li>', $message);
     }
 
     /**
