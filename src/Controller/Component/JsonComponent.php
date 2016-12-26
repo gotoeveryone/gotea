@@ -7,6 +7,9 @@ use Cake\Network\Http\Client;
 
 /**
  * JSON連携用コンポーネント
+ * 
+ * @author		Kazuki Kamizuru
+ * @since		2016/05/05
  */
 class JsonComponent extends Component
 {

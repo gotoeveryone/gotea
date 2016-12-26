@@ -7,6 +7,9 @@ use Cake\Validation\Validator;
 
 /**
  * 独自認証用コンポーネント
+ * 
+ * @author		Kazuki Kamizuru
+ * @since		2016/12/25
  */
 class MyAuthComponent extends AuthComponent
 {

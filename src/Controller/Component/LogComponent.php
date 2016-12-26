@@ -6,6 +6,9 @@ use Cake\Controller\Component;
 
 /**
  * LOG出力用コンポーネント
+ * 
+ * @author		Kazuki Kamizuru
+ * @since		2016/12/25
  */
 class LogComponent extends Component
 {
