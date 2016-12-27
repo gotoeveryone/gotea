@@ -20,6 +20,10 @@ class LogComponent extends Component
      */
     public function __call($name, $arguments)
     {
-        $this->log($arguments[0], $name);
+        if (!isset($arguments[1])) {
+            $arguments[1] = [];
+        }
+        $arguments[1]['url'] = $this->request->here;
+        $this->log($arguments[0], $name, $arguments);
     }
 }

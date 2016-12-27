@@ -270,13 +270,13 @@ return [
      */
     'Log' => [
         'debug' => [
-            'className' => 'Cake\Log\Engine\FileLog',
+            'className' => 'App\Log\Engine\MyFileLog',
             'path' => LOGS,
             'file' => 'igoapp-access',
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [
-            'className' => 'Cake\Log\Engine\FileLog',
+            'className' => 'App\Log\Engine\MyFileLog',
             'path' => LOGS,
             'file' => 'igoapp-error',
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
