@@ -2,6 +2,8 @@
 
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -24,6 +26,24 @@ class RetentionHistoriesTable extends AppTable {
         $this->belongsTo('Ranks', [
             'joinType' => 'LEFT'
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save(EntityInterface $entity, $options = [])
+    {
+        $save = parent::save($entity, $options);
+
+        // 最新を登録する場合はタイトルマスタも更新
+        if ($entity->is_latest) {
+            $table = TableRegistry::get('Titles');
+            $title = $table->get($entity->title_id);
+            $title->holding = $entity->holding;
+            $table->save($title);
+        }
+
+        return $save;
     }
 
     /**

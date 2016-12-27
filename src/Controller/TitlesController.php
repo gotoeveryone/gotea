@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use PDOException;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -156,37 +157,32 @@ class TitlesController extends AppController
         $titleId = $this->request->data('title_id');
 
         // バリデーションエラーの場合はそのまま返す
-        if (($errors = $this->Titles->validator()->errors($data))) {
+        if (($errors = $this->RetentionHistories->validator()->errors($data))) {
             $this->Flash->error($errors);
-            return $this->setAction('detail', $titleId);
+            return $this->setTabAction('detail', 'histories', $titleId);
         }
 
         // すでに存在するかどうかを確認
 		if ($this->RetentionHistories->findByKey($data)) {
             $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
-			return $this->setAction('detail', $titleId);
+            return $this->setTabAction('detail', 'histories', $titleId);
 		}
 
-        // エンティティを新規作成し、値を設定
-        $history = $this->RetentionHistories->newEntity($data);
-
 		try {
-			// タイトル保持情報の保存
+			// タイトル保持情報の登録
+            $history = $this->RetentionHistories->newEntity($data);
 			$this->RetentionHistories->save($history);
-            // 最新を登録する場合はタイトルマスタも書き換え
-            if (!empty($data['is_latest'])) {
-                $title = $this->Titles->get($titleId);
-                $title->holding = $history->holding;
-                $this->Titles->save($title);
-            }
+
             $this->Flash->info(__("保持履歴を登録しました。"));
+            // POSTされたデータを初期化
+            $this->request->data = [];
 		} catch (PDOException $e) {
             $this->Log->error(__("保持履歴登録エラー：{$e->getMessage()}"));
 			$this->Flash->error(__("保持履歴の登録に失敗しました…。"));
             $this->_markToRollback();
 		} finally {
             // 詳細情報表示処理へ
-			$this->setAction('detail', $titleId);
+            return $this->setTabAction('detail', 'histories', $titleId);
 		}
 	}
 

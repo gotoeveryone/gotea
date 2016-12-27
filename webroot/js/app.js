@@ -65,9 +65,6 @@ $(document).ready(function() {
         }
     });
 
-    // タブ選択
-    selectTab();
-
     // タブ押下時
     $("#tabs .tab").on("click", function () {
         var obj = $(this);

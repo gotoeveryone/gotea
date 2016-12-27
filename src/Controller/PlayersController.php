@@ -188,7 +188,7 @@ class PlayersController extends AppController
         if (($errors = $this->PlayerScores->validator()->errors($data))) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
             $this->Flash->error($errors);
-            return $this->setAction('detail', $score->player_id);
+            return $this->setTabAction('detail', 'scores', $score->player_id);
         }
 
         // 入力値をエンティティに設定
@@ -204,7 +204,7 @@ class PlayersController extends AppController
             $this->_markToRollback();
 		} finally {
             // 詳細情報表示処理へ
-			return $this->setAction('detail', $score->player_id);
+            return $this->setTabAction('detail', 'scores', $score->player_id);
 		}
 	}
 

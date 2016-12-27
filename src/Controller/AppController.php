@@ -5,7 +5,6 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
-use Psr\Log\LogLevel;
 
 /**
  * アプリの共通コントローラ
@@ -88,10 +87,10 @@ class AppController extends Controller
         // コミットまたはロールバック
         if (!empty($this->__conn)) {
             if ($this->__isRollback) {
-                $this->log(__("例外が発生したので、トランザクションをロールバックしました。"), LogLevel::ERROR);
+                $this->Log->error(__("例外が発生したので、トランザクションをロールバックしました。"));
                 $this->__conn->rollback();
             } else {
-                $this->log(__("トランザクションをコミットしました。"), LogLevel::DEBUG);
+                $this->Log->debug(__("トランザクションをコミットしました。"));
                 $this->__conn->commit();
             }
         }
@@ -116,6 +115,21 @@ class AppController extends Controller
             $this->__conn->commit();
         }
         parent::redirect($url, $status);
+    }
+
+    /**
+     * 遷移先のアクションをセットします。
+     * 加えて、初期表示するタブを制御します。
+     * 
+     * @param string $action
+     * @param string $tabName
+     * @param mixed $args
+     * @return mixed Returns the return value of the called action
+     */
+    public function setTabAction(string $action, string $tabName, $args)
+    {
+        $this->request->data['tab'] = $tabName;
+        return $this->setAction($action, $args);
     }
 
     /**

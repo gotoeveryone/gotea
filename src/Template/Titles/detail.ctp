@@ -52,7 +52,7 @@
                             <section class="label-row"><span>期</span></section>
                             <section class="input-row">
                                 <span>
-                                    <?=$this->Form->text('holding', ['maxlength' => 3, 'class' => 'holding'])?>
+                                    <?=$this->Form->text('holding', ['value' => $title->holding, 'maxlength' => 3, 'class' => 'holding'])?>
                                 </span>
                             </section>
                         </section>
@@ -139,7 +139,7 @@
                         'selectFormGroup' => '{{input}}'
                     ]
                 ])?>
-                    <?=$this->Form->hidden('is_latest', ['id' => 'isLatest', 'value' => false])?>
+                    <?=$this->Form->hidden('is_latest', ['id' => 'isLatest', 'value' => ''])?>
                     <?=$this->Form->hidden('title_id', ['value' => $title->id])?>
                     <?=$this->Form->hidden('name', ['value' => $title->name])?>
                     <?=$this->Form->hidden('is_team', ['value' => $title->is_team])?>
@@ -179,7 +179,7 @@
                                 <span>
                                 <?php if ($title->is_team) : ?>
                                     優勝団体名：
-                                    <?=$this->Form->text('win_group_name', ['id' => 'winner', 'maxlength' => 30])?>
+                                    <?=$this->Form->text('win_group_name', ['value' => '', 'id' => 'winner', 'maxlength' => 30])?>
                                 <?php else : ?>
                                     設定棋士名：
                                     <strong id="winnerName"><span>（検索エリアから棋士を検索してください。）</span></strong>
@@ -245,128 +245,138 @@
                         </section>
                     <?php endif ?>
                 </section>
-                <?=$this->Form->end()?>
-                <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
-                <script>
-                    $(function() {
-                        // 新規登録関連ボタンの制御
-                        var controlAddCondition = function() {
-                            var disabled = false;
-                            $('.add-condition input[type!=hidden]').each(function() {
-                                if (!$(this).val()) {
-                                    $('.add-condition button').attr('disabled', true);
-                                    disabled = true;
-                                    return false;
-                                }
-                            });
-                            if (!disabled) {
-                                $('.add-condition button').removeAttr('disabled');
-                            }
-                        };
-                        controlAddCondition();
-
-                        // 登録エリアのテキスト変更時
-                        $('.add-condition input[type!=hidden]').on('change', function() {
-                            controlAddCondition();
-                        });
-
-                        // 新規登録、最新として登録ボタン押下時
-                        $('.add-condition button').on('click', function() {
-                            if (!$('#winner').val()) {
-                                var dialog = $("#dialog");
-                                dialog.html('<?=($title->is_team ? '優勝団体名を入力してください。' : '棋士を選択してください。')?>');
-                                dialog.click();
-                                return;
-                            }
-
-                            // 最新として登録するかどうか
-                            $('#isLatest').val(($(this).attr('data-button-type') === 'addLatest'));
-
-                            openConfirm('保持履歴を登録します。よろしいですか？', $('#addHistoryForm'));
-                        });
-
-                        <?php if (!$title->is_team) : ?>
-                        // 棋士名を抜き出す
-                        if ($('#winner').val()) {
-                            $.ajax({
-                                type: 'GET',
-                                url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'player'])?>/" + $('#winner').val(),
-                                contentType: "application/json",
-                                dataType: 'json'
-                            }).done(function (data) {
-                                data = data.response;
-                                $('#winnerName').text(data.name + ' ' + data.rank.name);
-                            });
-                        }
-
-                        // 棋士検索ボタン押下時
-                        $('#searchPlayer').click(function(event) {
-                            event.preventDefault();
-
-                            var searchValue = $("#playerName").val();
-                            if (!searchValue) {
-                                var dialog = $("#dialog");
-                                dialog.html('<span class="red">棋士名を入力してください。</span>');
-                                dialog.click();
+            <?=$this->Form->end()?>
+            <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+            <script>
+                $(function() {
+                    // 新規登録関連ボタンの制御
+                    var controlAddCondition = function() {
+                        var disabled = false;
+                        $('.add-condition input[type!=hidden]').each(function() {
+                            if (!$(this).val()) {
+                                $('.add-condition button').attr('disabled', true);
+                                disabled = true;
                                 return false;
                             }
-                            $.ajax({
-                                type: 'POST',
-                                url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'players'])?>",
-                                contentType: "application/json",
-                                dataType: 'json',
-                                data: JSON.stringify({name: searchValue})
-                            }).done(function (data) {
-                                data = data.response;
-                                // 該当者1件の場合はそのまま設定
-                                if (data.size === 1) {
-                                    var obj = data.results[0];
-                                    $('#winner').val(obj.id);
-                                    $("#winnerRank").val(obj.rankId);
-                                    $('#winnerName').css("color", "#000000").text(obj.name + " " + obj.rankName);
-                                    $("#playerName").val('');
-                                    return false;
-                                }
-                                var resultArea = $(".retentions table");
-                                resultArea.find("*").remove();
-                                var tbody = $("<tbody>");
-                                $.each(data.results, function(idx, obj) {
-                                    var tr = $("<tr>")
-                                            .append($("<input>", {type: "hidden", "data-name": "id", value: obj.id}))
-                                            .append($("<input>", {type: "hidden", "data-name": "rankId", value: obj.rankId}))
-                                            .append($("<td>", {"data-name": "playerName"}).text(obj.name))
-                                            .append($("<td>").text(obj.nameEnglish))
-                                            .append($("<td>", {"class": "center"}).text(obj.countryName))
-                                            .append($("<td>", {"data-name": "rankName", "class": "center"}).text(obj.rankName))
-                                            .append($("<td>", {"class": "center"}).text(obj.sex))
-                                            .append($("<td>", {"class": "center"}).append($("<button>", {type: "button", name: "select", style: "font-size: 12px"}).text("選択")));
-                                    tbody.append(tr);
-                                });
-                                resultArea.append(tbody);
-                                $(".retentions").show();
-                            }).fail(function (data) {
-                                var dialog = $("#dialog");
-                                dialog.html('<span class="red">棋士検索に失敗しました。</span>');
-                                dialog.click();
-                            });
                         });
-                        // 選択ボタン押下時
-                        $('#histories').on('click', '[name=select]', function() {
-                            var parent = $(this).parents("tr");
-                            $('#winner').val(parent.find("[data-name=id]").val());
-                            $("#winnerRank").val(parent.find("[data-name=rankId]").val());
-                            var playerName = parent.find("[data-name=playerName]").text();
-                            var rankName = parent.find("[data-name=rankName]").text();
-                            $("#winnerName").css("color", "#000000").text(playerName + " " + rankName);
-                            $("#playerName").val('');
-                            // 一覧を消す
-                            $(".retentions table *").remove();
-                            $(".retentions").hide();
-                        });
-                        <?php endif ?>
+                        if (!disabled) {
+                            $('.add-condition button').removeAttr('disabled');
+                        }
+                    };
+                    controlAddCondition();
+
+                    // 登録エリアのテキスト変更時
+                    $('.add-condition input[type!=hidden]').on('change', function() {
+                        controlAddCondition();
                     });
-                </script>
-                <?php $this->MyHtml->scriptEnd(); ?>
-            </section>
+
+                    // 新規登録、最新として登録ボタン押下時
+                    $('.add-condition button').on('click', function() {
+                        if (!$('#winner').val()) {
+                            var dialog = $("#dialog");
+                            dialog.html('<?=($title->is_team ? '優勝団体名を入力してください。' : '棋士を選択してください。')?>');
+                            dialog.click();
+                            return;
+                        }
+
+                        // 最新として登録するかどうか
+                        if ($(this).attr('data-button-type') === 'addLatest') {
+                            $('#isLatest').val(true);
+                        }
+
+                        openConfirm('保持履歴を登録します。よろしいですか？', $('#addHistoryForm'));
+                    });
+
+                    <?php if (!$title->is_team) : ?>
+                    // 棋士名を抜き出す
+                    if ($('#winner').val()) {
+                        $.ajax({
+                            type: 'GET',
+                            url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'player'])?>/" + $('#winner').val(),
+                            contentType: "application/json",
+                            dataType: 'json'
+                        }).done(function (data) {
+                            data = data.response;
+                            $('#winnerName').text(data.name + ' ' + data.rank.name);
+                        });
+                    }
+
+                    // 棋士検索ボタン押下時
+                    $('#searchPlayer').click(function(event) {
+                        event.preventDefault();
+
+                        var searchValue = $("#playerName").val();
+                        if (!searchValue) {
+                            var dialog = $("#dialog");
+                            dialog.html('<span class="red">棋士名を入力してください。</span>');
+                            dialog.click();
+                            return false;
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'players'])?>",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            data: JSON.stringify({name: searchValue})
+                        }).done(function (data) {
+                            data = data.response;
+                            // 該当者1件の場合はそのまま設定
+                            if (data.size === 1) {
+                                var obj = data.results[0];
+                                $('#winner').val(obj.id);
+                                $("#winnerRank").val(obj.rankId);
+                                $('#winnerName').css("color", "#000000").text(obj.name + " " + obj.rankName);
+                                $("#playerName").val('');
+                                return false;
+                            }
+                            var resultArea = $(".retentions table");
+                            resultArea.find("*").remove();
+                            var tbody = $("<tbody>");
+                            $.each(data.results, function(idx, obj) {
+                                var tr = $("<tr>")
+                                        .append($("<input>", {type: "hidden", "data-name": "id", value: obj.id}))
+                                        .append($("<input>", {type: "hidden", "data-name": "rankId", value: obj.rankId}))
+                                        .append($("<td>", {"data-name": "playerName"}).text(obj.name))
+                                        .append($("<td>").text(obj.nameEnglish))
+                                        .append($("<td>", {"class": "center"}).text(obj.countryName))
+                                        .append($("<td>", {"data-name": "rankName", "class": "center"}).text(obj.rankName))
+                                        .append($("<td>", {"class": "center"}).text(obj.sex))
+                                        .append($("<td>", {"class": "center"}).append($("<button>", {type: "button", name: "select", style: "font-size: 12px"}).text("選択")));
+                                tbody.append(tr);
+                            });
+                            resultArea.append(tbody);
+                            $(".retentions").show();
+                        }).fail(function (data) {
+                            var dialog = $("#dialog");
+                            dialog.html('<span class="red">棋士検索に失敗しました。</span>');
+                            dialog.click();
+                        });
+                    });
+                    // 選択ボタン押下時
+                    $('#histories').on('click', '[name=select]', function() {
+                        var parent = $(this).parents("tr");
+                        $('#winner').val(parent.find("[data-name=id]").val());
+                        $("#winnerRank").val(parent.find("[data-name=rankId]").val());
+                        var playerName = parent.find("[data-name=playerName]").text();
+                        var rankName = parent.find("[data-name=rankName]").text();
+                        $("#winnerName").css("color", "#000000").text(playerName + " " + rankName);
+                        $("#playerName").val('');
+                        // 一覧を消す
+                        $(".retentions table *").remove();
+                        $(".retentions").hide();
+                    });
+                    <?php endif ?>
+                });
+            </script>
+            <?php $this->MyHtml->scriptEnd(); ?>
         </section>
+    </section>
+    <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
+    <script>
+        $(function() {
+            // タブ選択
+            selectTab('<?=$this->request->data('tab')?>');
+        });
+    </script>
+    <?php $this->MyHtml->scriptEnd(); ?>
 </article>

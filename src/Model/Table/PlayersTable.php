@@ -3,10 +3,6 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Player;
-use ArrayObject;
-use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use Cake\ORM\Query;
 use Cake\I18n\Date;
 use Cake\Validation\Validator;
@@ -38,30 +34,6 @@ class PlayersTable extends AppTable
             'joinType' => 'LEFT',
             'order' => array('RetentionHistories.target_year' => 'DESC')
         ]);
-    }
-
-	/**
-	 * 保存前処理
-     * 
-     * @param Event $event
-     * @param EntityInterface $entity
-     * @param ArrayObject $options
-     */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
-        // 所属国
-        $countries = TableRegistry::get('Countries');
-        $this->country = $countries->get($entity->country_id);
-
-        // 段位
-        $ranks = TableRegistry::get('Ranks');
-        $this->rank = $ranks->get($entity->rank_id);
-
-        // 所属組織
-        $organizations = TableRegistry::get('Organizations');
-        $this->organization = $organizations->get($entity->organization_id);
-
-        // 親クラスのメソッド呼び出し
-        parent::beforeSave($event, $entity, $options);
     }
 
     /**
