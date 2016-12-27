@@ -7,7 +7,6 @@ use App\Form\PlayerForm;
 use App\Model\Entity\Player;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
-use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 
 /**
@@ -145,14 +144,15 @@ class PlayersController extends AppController
         $player = ($id) ? $this->Players->findPlayerWithScores($id) : $this->Players->newEntity();
         $status = ($id) ? '更新' : '登録';
 
-        // 入力値をエンティティに設定
-        $this->Players->patchEntity($player, $this->request->data, ['validate' => false]);
-
         // バリデーションエラーの場合は詳細情報表示処理へ
-        if (($errors = $this->Players->validator()->errors($player->toArray()))) {
+        $data = $this->request->data;
+        if (($errors = $this->Players->validator()->errors($this->request->data))) {
             $this->Flash->error($errors);
             return $this->setAction('detail', null, $player);
         }
+
+        // 入力値をエンティティに設定
+        $this->Players->patchEntity($player, $data);
 
         // 棋士成績を設定
         $this->__setPlayerScores($player);
@@ -169,10 +169,7 @@ class PlayersController extends AppController
 			// 所属国IDを設定
 			$this->request->query['countryId'] = $player->country_id;
             // 詳細情報表示処理へ
-            if ($this->request->data('isContinue') === "true") {
-                return $this->setAction('detail');
-            }
-            return $this->setAction('detail', $player->id, $player);
+            return ($this->request->data('is_continue')) ? $this->setAction('detail') : $this->setAction('detail', $player->id, $player);
 		}
 	}
 
@@ -186,15 +183,16 @@ class PlayersController extends AppController
         // IDからデータを取得
         $score = $this->PlayerScores->get($id);
 
-        // 入力値をエンティティに設定
-        $this->PlayerScores->patchEntity($score, $this->request->data, ['validate' => false]);
-
         // バリデーションエラーの場合はそのまま返す
-        if (($errors = $this->PlayerScores->validator()->errors($score->toArray()))) {
+        $data = $this->request->data;
+        if (($errors = $this->PlayerScores->validator()->errors($data))) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
             $this->Flash->error($errors);
             return $this->setAction('detail', $score->player_id);
         }
+
+        // 入力値をエンティティに設定
+        $this->PlayerScores->patchEntity($score, $data);
 
         try {
 			// 棋士成績情報の更新
@@ -245,7 +243,7 @@ class PlayersController extends AppController
             $score = $this->PlayerScores->newEntity([
                 'target_year' => $now_year,
                 'rank_id' => $player->rank_id
-            ], ['validate' => false]);
+            ]);
             $player->set('player_scores', [$score]);
         } else {
             // 当年のデータで段位が異なる場合は更新

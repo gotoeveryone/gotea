@@ -52,34 +52,19 @@ class UpdatedPointsController extends AppController
         // POSTされたタイトル情報から、登録 or 更新対象の一覧を生成
         $rows = $this->request->data('results');
 
-        // バリデーションにひっかかった場合、一覧を復元
+        // 更新対象が取得できなければ、検索結果表示処理へ
         if (!($targets = $this->__createUpdateTargets($rows))) {
-//            $data = [];
-//            foreach ($rows as $key => $row) {
-//                $p = $this->UpdatedPoints->newEntity(['id' => $row['id']]);
-//                $dest = $this->UpdatedPoints->patchEntity($p, $row, ['validate' => false]);
-//                $a = $dest->modified->i18nFormat('YYYY/mm/dd HH:mm:ss');
-//                if ($row['update_flag']) {
-//                    $dest->update_flag = $row['update_flag'];
-//                }
-//                $data[] = $dest;
-//            }
-//			// indexの処理を行う
-//            $this->set('updatedPoints', $data);
+            // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
 			return $this->setAction('search');
         }
 
         try {
-            // 更新件数
-            $count = 0;
-
 			// 件数分処理
 			foreach ($targets as $target) {
                 // タイトル情報を更新
                 $this->UpdatedPoints->save($target);
-                $count++;
 			}
-			$this->Flash->info(__("{$count}件の成績更新日情報を更新しました。"));
+			$this->Flash->info(__(count($targets).'件の成績更新日情報を更新しました。'));
 		} catch (PDOException $e) {
 			$this->Log->error(__("成績更新日情報更新エラー：{$e->getMessage()}"));
 			$this->Flash->error(__("成績更新日情報の更新に失敗しました…。"));
@@ -105,16 +90,17 @@ class UpdatedPointsController extends AppController
                 continue;
             }
 
-            // データを取得し、POSTされた値を設定
-            $title = $this->UpdatedPoints->get($row['id']);
-            $this->UpdatedPoints->patchEntity($title, $row, ['validate' => false]);
-
             // バリデーションエラーの場合はそのまま返す
-            if (($errors = $this->UpdatedPoints->validator()->errors($title->toArray()))) {
+            if (($errors = $this->UpdatedPoints->validator()->errors($row))) {
                 // エラーメッセージを書き込み
                 $this->Flash->error($errors);
                 return null;
             }
+
+            // データを取得し、POSTされた値を設定
+            $title = $this->UpdatedPoints->get($row['id']);
+            $this->UpdatedPoints->patchEntity($title, $row, ['validate' => false]);
+
             // 一覧に追加
             array_push($targets, $title);
         }

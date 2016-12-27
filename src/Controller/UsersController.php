@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\LoginForm;
 use Cake\Event\Event;
-use Cake\Validation\Validator;
 
 /**
  * ログイン用コントローラ
@@ -64,7 +63,7 @@ class UsersController extends AppController
     {
         $form = new LoginForm();
         if (!$form->validate($this->request->data)) {
-            $this->Flash->error(__($this->_getErrorMessage($form->errors())));
+            $this->Flash->error($form->errors());
             return $this->index();
         }
 

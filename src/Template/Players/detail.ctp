@@ -18,15 +18,16 @@
                 <?=$this->Form->create($player, [
                     'id' => 'mainForm',
                     'type' => 'post',
-                    'url' => ['action' => 'save'],
+                    'url' => ['action' => 'save', $player->id],
                     'templates' => [
                         'inputContainer' => '{{content}}',
                         'textFormGroup' => '{{input}}',
                         'selectFormGroup' => '{{input}}'
                     ]
                 ])?>
-                    <?=$this->Form->hidden('isContinue', ['id' => 'isContinue', 'value' => false])?>
-                    <?=$this->Form->hidden('id')?>
+                    <?=$this->Form->hidden('is_continue', ['id' => 'isContinue', 'value' => false])?>
+                    <?=$this->Form->hidden('id', ['value' => $player->id])?>
+                    <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($player->modified, 'YYYYMMddHHmmss')])?>
                     <?=$this->Form->hidden('country_id')?>
                     <section class="category-row"><span>棋士情報<?=($player->id ? '（ID：'.h($player->id).'）' : "")?></span></section>
                     <section class="row">
@@ -210,15 +211,15 @@
                 <?=$this->Form->create($score, [
                     'name' => 'scoreForm',
                     'type' => 'post',
-                    'url' => ['action' => 'save-score'],
+                    'url' => ['action' => 'saveScore', $score->id],
                     'templates' => [
                         'inputContainer' => '{{content}}',
                         'textFormGroup' => '{{input}}',
                         'selectFormGroup' => '{{input}}'
                     ]
                 ])?>
-                    <?=$this->Form->hidden('id')?>
-                    <?=$this->Form->hidden('target_year')?>
+                    <?=$this->Form->hidden('id', ['value' => $score->id])?>
+                    <?=$this->Form->hidden('target_year', ['value' => $score->target_year])?>
                     <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($score->modified, 'YYYYMMddHHmmss')])?>
                     <section class="row-group">
                         <section class="genre-row">
@@ -233,13 +234,13 @@
                                 <section class="label-row"><span>勝敗（国内）</span></section>
                                 <section class="input-row" data-row="win-loss">
                                     <span>
-                                        <?=$this->Form->text('win_point', ['class' => 'point imeDisabled']).'勝';?>
+                                        <?=$this->Form->text('win_point', ['value' => $score->win_point, 'class' => 'point imeDisabled']).'勝';?>
                                     </span>
                                     <span>
-                                        <?=$this->Form->text('lose_point', ['class' => 'point imeDisabled']).'敗';?>
+                                        <?=$this->Form->text('lose_point', ['value' => $score->lose_point, 'class' => 'point imeDisabled']).'敗';?>
                                     </span>
                                     <span>
-                                        <?=$this->Form->text('draw_point', ['class' => 'point imeDisabled']).'分';?>
+                                        <?=$this->Form->text('draw_point', ['value' => $score->draw_point, 'class' => 'point imeDisabled']).'分';?>
                                     </span>
                                     <span class="percent">（勝率<strong></strong>%）<span>
                                 </section>
@@ -248,13 +249,13 @@
                                 <section class="label-row"><span>勝敗（国際）</span></section>
                                 <section class="input-row" data-row="win-loss">
                                     </span>
-                                        <?=$this->Form->text('win_point_world', ['class' => 'point imeDisabled']).'勝';?>
+                                        <?=$this->Form->text('win_point_world', ['value' => $score->win_point_world, 'class' => 'point imeDisabled']).'勝';?>
                                     </span>
                                     <span>
-                                        <?=$this->Form->text('lose_point_world', ['class' => 'point imeDisabled']).'敗';?>
+                                        <?=$this->Form->text('lose_point_world', ['value' => $score->lose_point_world, 'class' => 'point imeDisabled']).'敗';?>
                                     </span>
                                     <span>
-                                        <?=$this->Form->text('draw_point_world', ['class' => 'point imeDisabled']).'分';?>
+                                        <?=$this->Form->text('draw_point_world', ['value' => $score->draw_point_world, 'class' => 'point imeDisabled']).'分';?>
                                     </span>
                                     <span class="percent">（勝率<strong></strong>%）</span>
                                 </section>

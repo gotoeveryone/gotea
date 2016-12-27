@@ -80,31 +80,21 @@
             <section class="row">
                 <section class="label">棋士名：</section>
                 <section>
-                    <?=$this->Form->text('name', ['class' => 'name'])?>
+                    <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20])?>
                 </section>
                 <section class="label">（英語）：</section>
                 <section>
-                    <?=$this->Form->text('name_english', ['class' => 'name']);?>
+                    <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
+                </section>
+                <section class="label">（その他）：</section>
+                <section>
+                    <?=$this->Form->text('name_other', ['class' => 'name-short', 'maxlength' => 20]);?>
                 </section>
                 <section class="label">入段年：</section>
                 <section>
-                    <?=
-                        $this->Form->text('joined_from', [
-                            'class' => 'enrollment imeDisabled',
-                            'maxlength' => 4,
-                            'min' => 1,
-                            'max' => 9999
-                        ]);
-                    ?>
+                    <?=$this->Form->text('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
                     ～
-                    <?=
-                        $this->Form->text('joined_to', [
-                            'class' => 'enrollment imeDisabled',
-                            'maxlength' => 4,
-                            'min' => 1,
-                            'max' => 9999
-                        ]);
-                    ?>
+                    <?=$this->Form->text('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
                 </section>
                 <section class="button-column">
                     <?=

@@ -13,14 +13,14 @@
                 <?=$this->Form->create($title, [
                     'id' => 'mainForm',
                     'type' => 'post',
-                    'url' => ['action' => 'save'],
+                    'url' => ['action' => 'save', $title->id],
                     'templates' => [
                         'inputContainer' => '{{content}}',
                         'textFormGroup' => '{{input}}',
                         'selectFormGroup' => '{{input}}'
                     ]
                 ])?>
-                    <?=$this->Form->hidden('id')?>
+                    <?=$this->Form->hidden('id', ['value' => $title->id])?>
                     <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($title->modified, 'yyyyMMddHHmmss')])?>
                     <section class="category-row"><span><?='タイトル情報（ID：'.h($title->id).'）'?></span></section>
                     <section class="row">

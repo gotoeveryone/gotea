@@ -5,7 +5,6 @@ namespace App\Controller;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
-use Psr\Log\LogLevel;
 
 /**
  * タイトルマスタ用コントローラ
@@ -124,14 +123,15 @@ class TitlesController extends AppController
         // IDからデータを取得
         $title = $this->Titles->get($id);
 
-        // 入力値をエンティティに設定
-        $this->Titles->patchEntity($title, $this->request->data, ['validate' => false]);
-
         // バリデーションエラーの場合は詳細情報表示処理へ
-        if (($errors = $this->Titles->validator()->errors($title->toArray()))) {
+        $data = $this->request->data;
+        if (($errors = $this->Titles->validator()->errors($data))) {
             $this->Flash->error($errors);
             return $this->setAction('detail', $title->id);
         }
+
+        // 入力値をエンティティに設定
+        $this->Titles->patchEntity($title, $data);
 
         try {
             // 保存処理
@@ -155,6 +155,12 @@ class TitlesController extends AppController
         $data = $this->request->data;
         $titleId = $this->request->data('title_id');
 
+        // バリデーションエラーの場合はそのまま返す
+        if (($errors = $this->Titles->validator()->errors($data))) {
+            $this->Flash->error($errors);
+            return $this->setAction('detail', $titleId);
+        }
+
         // すでに存在するかどうかを確認
 		if ($this->RetentionHistories->findByKey($data)) {
             $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
@@ -163,12 +169,6 @@ class TitlesController extends AppController
 
         // エンティティを新規作成し、値を設定
         $history = $this->RetentionHistories->newEntity($data);
-
-        // バリデーションエラーの場合はそのまま返す
-        if (($errors = $history->errors())) {
-            $this->Flash->error($errors);
-            return $this->setAction('detail', $titleId);
-        }
 
 		try {
 			// タイトル保持情報の保存
@@ -214,14 +214,15 @@ class TitlesController extends AppController
                 $title = $this->Titles->newEntity(['country_id' => $data['country_id']]);
             }
 
-            // POSTされた値を設定
-            $this->Titles->patchEntity($title, $row, ['validate' => false]);
-
             // バリデーションエラーの場合は終了
-            if (($errors = $this->Titles->validator()->errors($title->toArray()))) {
+            if (($errors = $this->Titles->validator()->errors($row))) {
                 $this->Flash->error($errors);
                 return null;
             }
+
+            // POSTされた値を設定
+            $this->Titles->patchEntity($title, $row);
+
             // 一覧に追加
             array_push($targets, $title);
         }

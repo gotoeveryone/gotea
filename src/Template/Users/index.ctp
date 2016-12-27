@@ -14,7 +14,7 @@
                 <?=
                     $this->Form->input('username', [
                         'value' => $this->request->data('username'),
-                        'maxlength' => 20,
+                        'maxlength' => 10,
                         'class' => 'imeDisabled'
                     ]);
                 ?>

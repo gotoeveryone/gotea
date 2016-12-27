@@ -139,7 +139,11 @@ form {
 	width: 14rem;
 }
 
-.search-header .enrollment {
+.search-header .name-short {
+	width: 10rem;
+}
+
+.search-header .joined {
     width: 3.8rem;
     text-align: right;
 }

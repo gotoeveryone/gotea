@@ -26,18 +26,18 @@ class PlayerScoresTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('win_point', __d('default', 'field {0} is required', '勝数'))
-            ->numeric('win_point', __d('default', 'field {0} is numeric value only', '勝数'))
-            ->notEmpty('lose_point', __d('default', 'field {0} is required', '敗数'))
-            ->numeric('lose_point', __d('default', 'field {0} is numeric value only', '敗数'))
-            ->notEmpty('draw_point', __d('default', 'field {0} is required', '引分数'))
-            ->numeric('draw_point', __d('default', 'field {0} is numeric value only', '引分数'))
-            ->notEmpty('win_point_world', __d('default', 'field {0} is required', '勝数（国際棋戦）'))
-            ->numeric('win_point_world', __d('default', 'field {0} is numeric value only', '勝数（国際棋戦）'))
-            ->notEmpty('lose_point_world', __d('default', 'field {0} is required', '敗数（国際棋戦）'))
-            ->numeric('lose_point_world', __d('default', 'field {0} is numeric value only', '敗数（国際棋戦）'))
-            ->notEmpty('draw_point_world', __d('default', 'field {0} is required', '引分数（国際棋戦）'))
-            ->numeric('draw_point_world', __d('default', 'field {0} is numeric value only', '引分数（国際棋戦）'));
+            ->notEmpty('win_point', $this->getMessage($this->REQUIRED, '勝数'))
+            ->numeric('win_point', $this->getMessage($this->NUMERIC, '勝数'))
+            ->notEmpty('lose_point',$this->getMessage($this->REQUIRED, '敗数'))
+            ->numeric('lose_point', $this->getMessage($this->NUMERIC, '敗数'))
+            ->notEmpty('draw_point', $this->getMessage($this->REQUIRED, '引分数'))
+            ->numeric('draw_point', $this->getMessage($this->NUMERIC, '引分数'))
+            ->notEmpty('win_point_world', $this->getMessage($this->REQUIRED, '勝数（国際棋戦）'))
+            ->numeric('win_point_world', $this->getMessage($this->NUMERIC, '勝数（国際棋戦）'))
+            ->notEmpty('lose_point_world', $this->getMessage($this->REQUIRED, '敗数（国際棋戦）'))
+            ->numeric('lose_point_world', $this->getMessage($this->NUMERIC, '敗数（国際棋戦）'))
+            ->notEmpty('draw_point_world', $this->getMessage($this->REQUIRED, '引分数（国際棋戦）'))
+            ->numeric('draw_point_world', $this->getMessage($this->NUMERIC, '引分数（国際棋戦）'));
     }
 
     /**

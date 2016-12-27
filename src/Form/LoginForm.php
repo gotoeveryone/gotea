@@ -31,19 +31,9 @@ class LoginForm extends AppForm
     protected function _buildValidator(Validator $validator)
     {
         return $validator
-            ->notEmpty('username', 'IDは必須です。')
-            ->notEmpty('password', 'Passwordは必須です。')
-            ->add('username', [
-                'length' => [
-                    'rule' => ['maxLength', 10],
-                    'message' => 'IDは10文字以下で入力してください。'
-                ]
-            ])
-            ->add('password', [
-                'length' => [
-                    'rule' => ['maxLength', 20],
-                    'message' => 'Passwordは20文字以下で入力してください。'
-                ]
-            ]);
+            ->notEmpty('username', $this->getMessage($this->REQUIRED, 'ID'))
+            ->maxLength('username', 10, $this->getMessage($this->MAX_LENGTH, ['ID', 10]))
+            ->notEmpty('password', $this->getMessage($this->REQUIRED, 'パスワード'))
+            ->maxLength('password', 20, $this->getMessage($this->MAX_LENGTH, ['パスワード', 20]));
     }
 }

@@ -83,6 +83,8 @@
                     </tr>
                 </thead>
                 <?php if (!empty($titles) && count($titles) > 0) : ?>
+                <?=$this->Form->hidden('is_closed')?>
+                <?=$this->Form->hidden('country_id')?>
                 <tbody>
                     <?php foreach ($titles as $key => $title) : ?>
                     <?php

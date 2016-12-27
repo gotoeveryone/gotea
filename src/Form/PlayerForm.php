@@ -40,12 +40,13 @@ class PlayerForm extends AppForm
     protected function _buildValidator(Validator $validator)
     {
         return $validator
-            ->allowEmpty(['name', 'name_english', 'joined_from', 'joined_to'])
-            ->maxLength('name', 20, __d('default', 'field {0} length is under the {1}', ['棋士名', 20]))
-            ->maxLength('name_english', 40, __d('default', 'field {0} length is under the {1}', ['棋士名（英語）', 40]))
-            ->numeric('joined_from', '入段年（開始）は数値で入力してください。')
-            ->range('joined_from', [1, 9999], __d('default', 'field {0} range is {1} - {2}', ['入段年（開始）', 1, 9999]))
-            ->numeric('joined_to', '入段年（終了）は数値で入力してください。')
-            ->range('joined_to', [1, 9999], __d('default', 'field {0} range is {1} - {2}', ['入段年（終了）', 1, 9999]));
+            ->allowEmpty(['name', 'name_english', 'name_other', 'joined_from', 'joined_to'])
+            ->maxLength('name', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名', 20]))
+            ->maxLength('name_english', 40, $this->getMessage($this->MAX_LENGTH, ['棋士名（英語）', 40]))
+            ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
+            ->numeric('joined_from', $this->getMessage($this->NUMERIC, '入段年（開始）'))
+            ->range('joined_from', [1, 9999], $this->getMessage($this->RANGE, ['入段年（開始）', 1, 9999]))
+            ->numeric('joined_to', $this->getMessage($this->NUMERIC, '入段年（終了）'))
+            ->range('joined_to', [1, 9999], $this->getMessage($this->RANGE, ['入段年（終了）', 1, 9999]));
     }
 }

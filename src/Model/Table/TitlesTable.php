@@ -37,14 +37,15 @@ class TitlesTable extends AppTable {
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('name', __d('default', 'field {0} is required', 'タイトル名'))
-            ->notEmpty('name_english', __d('default', 'field {0} is required', 'タイトル名（英語）'))
-            ->notEmpty('holding', __d('default', 'field {0} is required', '期'))
-            ->numeric('sort_order', __d('default', 'field {0} is numeric value only', '並び順'))
-            ->notEmpty('sort_order', __d('default', 'field {0} is required', '並び順'))
-            ->notEmpty('html_file_name', __d('default', 'field {0} is required', 'HTMLファイル名'))
-            ->notEmpty('html_file_modified', __d('default', 'field {0} is required', 'HTMLファイル修正日'))
-            ->date('html_file_modified', 'ymd', '修正日は「yyyy/mm/dd」形式で入力してください。');
+            ->notEmpty('name', $this->getMessage($this->REQUIRED, 'タイトル名'))
+            ->notEmpty('name_english', $this->getMessage($this->REQUIRED, 'タイトル名（英語）'))
+            ->notEmpty('holding', $this->getMessage($this->REQUIRED, '期'))
+            ->numeric('sort_order', $this->getMessage($this->NUMERIC, '並び順'))
+            ->notEmpty('sort_order',$this->getMessage($this->REQUIRED, '並び順'))
+            ->notEmpty('html_file_name', $this->getMessage($this->REQUIRED, 'HTMLファイル名'))
+            ->alphaNumeric('html_file_name', $this->getMessage($this->ALPHA_NUMERIC, 'HTMLファイル名'))
+            ->notEmpty('html_file_modified', $this->getMessage($this->REQUIRED, 'HTMLファイル修正日'))
+            ->date('html_file_modified', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['修正日', 'yyyy/mm/dd']));
     }
 
     /**

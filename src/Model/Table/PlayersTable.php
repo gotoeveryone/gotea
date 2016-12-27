@@ -2,7 +2,6 @@
 
 namespace App\Model\Table;
 
-use App\Form\PlayerForm;
 use App\Model\Entity\Player;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -75,22 +74,22 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
-            ->notEmpty('name', __d('default', 'field {0} is required', '棋士名'))
-            ->maxLength('name', [0, 20], __d('default', 'field {0} length is under the {1}', ['棋士名', 20]))
-            ->notEmpty('name_english', __d('default', 'field {0} is required', '棋士名（英語）'))
-            ->maxLength('name_english', 40, __d('default', 'field {0} length is under the {1}', ['棋士名（英語）', 40]))
-            ->maxLength('name_other', 20, __d('default', 'field {0} length is under the {1}', ['棋士名（その他）', 20]))
-            ->date('birthday', 'ymd', '生年月日は「yyyy/MM/dd」形式で入力してください。')
-            ->notEmpty('joined', __d('default', 'field {0} is required', '入段日'));
+            ->notEmpty('name', $this->getMessage($this->REQUIRED, '棋士名'))
+            ->maxLength('name', [0, 20], $this->getMessage($this->MAX_LENGTH, ['棋士名', 20]))
+            ->notEmpty('name_english', $this->getMessage($this->REQUIRED, '棋士名（英語）'))
+            ->maxLength('name_english', 40, $this->getMessage($this->MAX_LENGTH, ['棋士名（英語）', 40]))
+            ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
+            ->date('birthday', 'ymd', $this->getMessage($this->MAX_LENGTH, ['生年月日', 'yyyy/MM/dd']))
+            ->notEmpty('joined', $this->getMessage($this->REQUIRED, '入段日'));
     }
 
     /**
      * 棋士とそれに紐づく棋士成績を取得します。
      * 
      * @param type $id
-     * @return Player 棋士とそれに紐づく棋士成績
+     * @return type 棋士とそれに紐づく棋士成績
      */
-    public function findPlayerWithScores($id) : Player
+    public function findPlayerWithScores($id)
     {
         return $this->find()->contain(['PlayerScores' => function(Query $q) {
             return $q->orderDesc('PlayerScores.target_year');
@@ -101,9 +100,9 @@ class PlayersTable extends AppTable
      * 棋士情報に関する一式を取得します。
      * 
      * @param type $id
-     * @return Player 棋士情報
+     * @return type 棋士情報
      */
-    public function findPlayerAllRelations($id) : Player
+    public function findPlayerAllRelations($id)
     {
 		return $this->find()->contain([
             'Countries',
@@ -149,11 +148,14 @@ class PlayersTable extends AppTable
         if (isset($data['sex']) && ($sex = $data['sex'])) {
             $query->where(['Players.sex' => $sex]);
         }
-        if (isset($data['name']) && ($playerName = trim($data['name']))) {
-            $query->where(['OR' => $this->__createLikeParams('name', $playerName)]);
+        if (isset($data['name']) && ($name = trim($data['name']))) {
+            $query->where(['OR' => $this->__createLikeParams('name', $name)]);
         }
-        if (isset($data['name_english']) && ($playerNameEn = trim($data['name_english']))) {
-            $query->where(['OR' => $this->__createLikeParams('name_english', $playerNameEn)]);
+        if (isset($data['name_english']) && ($nameEnglish = trim($data['name_english']))) {
+            $query->where(['OR' => $this->__createLikeParams('name_english', $nameEnglish)]);
+        }
+        if (isset($data['name_other']) && ($nameOther = trim($data['name_other']))) {
+            $query->where(['OR' => $this->__createLikeParams('name_other', $nameOther)]);
         }
         if (isset($data['joined_from']) && is_numeric(($joinedFrom = $data['joined_from']))) {
             $query->where(['SUBSTR(Players.joined, 1, 4) >=' => $joinedFrom]);

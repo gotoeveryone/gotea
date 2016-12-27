@@ -53,12 +53,12 @@ class RetentionHistoriesTable extends AppTable {
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('target_year', __d('default', 'field {0} is required', '対象年'))
-            ->numeric('target_year', __d('default', 'field {0} is numeric value only', '対象年'))
-            ->notEmpty('name', __d('default', 'field {0} is required', 'タイトル名'))
-            ->notEmpty('holding', __d('default', 'field {0} is required', '期'))
-            ->numeric('holding', __d('default', 'field {0} is numeric value only', '期'))
+            ->notEmpty('target_year', $this->getMessage($this->REQUIRED, '対象年'))
+            ->numeric('target_year', $this->getMessage($this->NUMERIC, '対象年'))
+            ->notEmpty('name', $this->getMessage($this->REQUIRED, 'タイトル名'))
+            ->notEmpty('holding', $this->getMessage($this->REQUIRED, '期'))
+            ->numeric('holding', $this->getMessage($this->NUMERIC, '期'))
             ->allowEmpty('win_group_name')
-            ->maxLength('win_group_name', 30, __d('default', 'field {0} length is under the {1}', 'グループ名'));
+            ->maxLength('win_group_name', 30, $this->getMessage($this->MAX_LENGTH, ['グループ名', 30]));
     }
 }
