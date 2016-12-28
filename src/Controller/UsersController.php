@@ -29,7 +29,7 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
 		// すでにログイン済みならリダイレクト
-        if ($this->MyAuth->user()) {
+        if ($this->MyAuth->user() && ($this->request->action !== 'logout')) {
 			return $this->redirect($this->MyAuth->redirectUrl());
         }
         parent::beforeFilter($event);
