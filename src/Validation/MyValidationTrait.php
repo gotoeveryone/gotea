@@ -7,7 +7,7 @@ namespace App\Validation;
  * @author      Kazuki Kamizuru
  * @since		2015/07/26
  */
-trait ValidateTrait
+trait MyValidationTrait
 {
     public $REQUIRED = 'required';
     public $NUMERIC = 'numeric';
@@ -17,6 +17,14 @@ trait ValidateTrait
     public $MAX_LENGTH = 'maxLength';
     public $RANGE = 'range';
     public $INLALID_FORMAT = 'invalidFormat';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alphaNumeric($check)
+    {
+        return (bool) preg_match('/^[a-zA-Z0-9\'\-\s]+$/', $check);
+    }
 
     /**
      * 必須入力のメッセージを取得します。

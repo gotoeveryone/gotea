@@ -52,7 +52,7 @@
                             <section class="label-row"><span>期</span></section>
                             <section class="input-row">
                                 <span>
-                                    <?=$this->Form->text('holding', ['value' => $title->holding, 'maxlength' => 3, 'class' => 'holding'])?>
+                                    <?=$this->Form->text('holding', ['maxlength' => 3, 'class' => 'holding'])?>
                                 </span>
                             </section>
                         </section>
@@ -61,10 +61,10 @@
                             <section class="input-row">
                                 <span>
                                 <?php
-                                    if (!empty($title->retention_histories)) :
-                                        foreach ($title->retention_histories as $retention) :
-                                            if ($retention->holding === $title->holding) :
-                                                echo h($retention->getWinnerName($title->is_team));
+                                    if (!empty(($histories = $title->retention_histories))) :
+                                        foreach ($histories as $history) :
+                                            if ($history->holding === $title->holding) :
+                                                echo h($history->getWinnerName($title->is_team));
                                                 break;
                                             endif;
                                         endforeach;
@@ -96,7 +96,7 @@
                             <section class="label-row"><span>修正日</span></section>
                             <section class="input-row">
                                 <span>
-                                    <?=$this->Form->text('html_file_modified')?>
+                                    <?=$this->Form->text('html_file_modified', ['class' => 'datepicker'])?>
                                 </span>
                             </section>
                         </section>
@@ -150,11 +150,11 @@
                             <section class="box2">
                                 <span>
                                     対象年：
-                                    <?=$this->Form->text('target_year', ['maxlength' => 4, 'class' => 'year'])?>
+                                    <?=$this->Form->text('target_year', ['value' => '', 'maxlength' => 4, 'class' => 'year'])?>
                                 </span>
                                 <span>
                                     期：
-                                    <?=$this->Form->text('holding', ['maxlength' => 3, 'class' => 'holding'])?>
+                                    <?=$this->Form->text('holding', ['value' => '', 'maxlength' => 3, 'class' => 'holding'])?>
                                 </span>
                             </section>
                             <section class="box2 button-area">
@@ -207,17 +207,17 @@
                         <section class="retentions"><table></table></section>
                     </section>
                     <?php endif ?>
-                    <?php if (!empty($title->retention_histories)) : ?>
-                        <?php foreach ($title->retention_histories as $retention) : ?>
-                            <?php if ($title->holding === $retention->holding) : ?>
+                    <?php if (!empty(($histories))) : ?>
+                        <?php foreach ($histories as $history) : ?>
+                            <?php if ($title->holding === $history->holding) : ?>
                             <section class="row">
                                 <section class="label-row">
                                     <section class="box"><span>現在の保持情報</span></section>
                                 </section>
                                 <section class="input-row">
                                     <span>
-                                        <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
-                                        <?=h($retention->getWinnerName($title->is_team))?>
+                                        <?=h(__("{$history->target_year}年 {$history->holding}期 {$history->name} "))?>
+                                        <?=h($history->getWinnerName($title->is_team))?>
                                     </span>
                                 </section>
                             </section>
@@ -226,18 +226,18 @@
                         <?php endforeach ?>
                         <section class="row">
                         <?php $header = false; ?>
-                        <?php foreach ($title->retention_histories as $retention) : ?>
+                        <?php foreach ($histories as $history) : ?>
                             <?php if (!$header) : ?>
                             <section class="label-row">
                                 <span>保持情報（履歴）</span>
                             </section>
                             <?php $header = true; ?>
                             <?php endif ?>
-                            <?php if ($title->holding !== $retention->holding) : ?>
+                            <?php if ($title->holding !== $history->holding) : ?>
                             <section class="input-row">
                                 <span>
-                                    <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
-                                    <?=h($retention->getWinnerName($title->is_team))?>
+                                    <?=h(__("{$history->target_year}年 {$history->holding}期 {$history->name} "))?>
+                                    <?=h($history->getWinnerName($title->is_team))?>
                                 </span>
                             </section>
                             <?php endif ?>

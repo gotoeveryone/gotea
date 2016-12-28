@@ -2,7 +2,7 @@
 
 namespace App\Model\Table;
 
-use App\Validation\ValidateTrait;
+use App\Validation\MyValidationTrait;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Table;
@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  */
 class AppTable extends Table
 {
-    use ValidateTrait;
+    use MyValidationTrait;
 
     /**
      * {@inheritdoc}
@@ -36,23 +36,6 @@ class AppTable extends Table
         // 基本はバリデーションしない
         $options['validate'] = false;
         return parent::save($entity, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-//    public function validator($name = null, Validator $validator = null)
-//    {
-//        // カスタムプロバイダをデフォルトとして設定
-//        return parent::validator($name, $validator)->provider('default', 'App\Validation\MyValidation');
-//    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function alphaNumeric($check)
-    {
-        return (bool) preg_match('/^[a-zA-Z0-9]+$/', $check);
     }
 
     /**

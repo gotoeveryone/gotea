@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use PDOException;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -12,23 +11,21 @@ use Cake\ORM\TableRegistry;
  *
  * @author		Kazuki Kamizuru
  * @since		2015/07/25
+ * 
+ * @property \App\Model\Table\TitlesTable $Titles
+ * @property \App\Model\Table\RetentionHistoriesTable $RetentionHistories
+ * @property \App\Model\Table\CountriesTable $Countries
  */
 class TitlesController extends AppController
 {
-    // タイトル保持情報テーブル
-    private $RetentionHistories = null;
-
-    // 所属国マスタテーブル
-    private $Countries = null;
-
     /**
      * 初期処理
      */
 	public function initialize()
     {
         parent::initialize();
-        $this->RetentionHistories = TableRegistry::get('RetentionHistories');
-        $this->Countries = TableRegistry::get('Countries');
+        $this->loadModel('RetentionHistories');
+        $this->loadModel('Countries');
     }
 
     /**
@@ -78,21 +75,15 @@ class TitlesController extends AppController
             return $this->setAction('search');
         }
 
-        try {
-			// 件数分処理
-			foreach ($targets as $target) {
-                // タイトル情報を更新
-                $this->Titles->save($target);
-			}
-            $this->Flash->info(__(count($targets).'件のタイトルマスタを更新しました。'));
-		} catch (PDOException $e) {
-            $this->Log->error(__("タイトルマスタ登録・更新エラー：{$e->getMessage()}"));
-			$this->Flash->error(__("タイトルマスタの更新に失敗しました…。"));
-            $this->_markToRollback();
-		} finally {
-			// indexの処理を行う
-			return $this->setAction('search');
-		}
+        // 件数分処理
+        foreach ($targets as $target) {
+            // タイトル情報を更新
+            $this->Titles->save($target);
+        }
+        $this->Flash->info(__(count($targets).'件のタイトルマスタを更新しました。'));
+
+        // indexの処理を行う
+        return $this->setAction('search');
 	}
 
 	/**
@@ -106,7 +97,7 @@ class TitlesController extends AppController
         $this->_setDialogMode();
 
 		// タイトル情報一式を設定
-        if (!($title = $this->Titles->findTitleWithRelations($id))) {
+        if (!($title = $this->Titles->getInner($id))) {
             throw new NotFoundException(__("タイトル情報が取得できませんでした。ID：{$id}"));
         }
         $this->set('title', $title);
@@ -134,18 +125,12 @@ class TitlesController extends AppController
         // 入力値をエンティティに設定
         $this->Titles->patchEntity($title, $data);
 
-        try {
-            // 保存処理
-            $this->Titles->save($title);
-            $this->Flash->info(__("タイトル：{$title->name}を更新しました。"));
-		} catch (PDOException $e) {
-            $this->Log->error(__("タイトル更新エラー：{$e->getMessage()}"));
-			$this->Flash->error(__("タイトルの更新に失敗しました…。"));
-            $this->_markToRollback();
-		} finally {
-            // 詳細情報表示処理へ
-            return $this->setAction('detail', $title->id);
-		}
+        // 保存処理
+        $this->Titles->save($title);
+        $this->Flash->info(__("タイトル：{$title->name}を更新しました。"));
+
+        // 詳細情報表示処理へ
+        return $this->setAction('detail', $title->id);
 	}
 
 	/**
@@ -168,22 +153,16 @@ class TitlesController extends AppController
             return $this->setTabAction('detail', 'histories', $titleId);
 		}
 
-		try {
-			// タイトル保持情報の登録
-            $history = $this->RetentionHistories->newEntity($data);
-			$this->RetentionHistories->save($history);
+        // タイトル保持情報の登録
+        $history = $this->RetentionHistories->newEntity($data);
+        $this->RetentionHistories->save($history);
 
-            $this->Flash->info(__("保持履歴を登録しました。"));
-            // POSTされたデータを初期化
-            $this->request->data = [];
-		} catch (PDOException $e) {
-            $this->Log->error(__("保持履歴登録エラー：{$e->getMessage()}"));
-			$this->Flash->error(__("保持履歴の登録に失敗しました…。"));
-            $this->_markToRollback();
-		} finally {
-            // 詳細情報表示処理へ
-            return $this->setTabAction('detail', 'histories', $titleId);
-		}
+        $this->Flash->info(__("保持履歴を登録しました。"));
+        // POSTされたデータを初期化
+        $this->request->data = [];
+
+        // 詳細情報表示処理へ
+        return $this->setTabAction('detail', 'histories', $titleId);
 	}
 
     /**

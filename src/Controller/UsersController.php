@@ -19,7 +19,6 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->loadComponent('Json');
     }
 
 	/**
@@ -64,7 +63,7 @@ class UsersController extends AppController
         $form = new LoginForm();
         if (!$form->validate($this->request->data)) {
             $this->Flash->error($form->errors());
-            return $this->index();
+            return $this->setAction('index');
         }
 
         $account = $this->request->data('username');
@@ -76,7 +75,7 @@ class UsersController extends AppController
             return $this->redirect($this->MyAuth->redirectUrl());
         }
 
-        return $this->index();
+        return $this->setAction('index');
     }
 
     /**

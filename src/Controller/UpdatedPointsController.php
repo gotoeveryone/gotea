@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use PDOException;
 use Cake\Event\Event;
 
 /**
  * 成績更新日編集用コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2015/08/15
+ * @author  Kazuki Kamizuru
+ * @since   2015/08/15
+ * 
+ * @property \App\Model\Table\UpdatedPointsTable $UpdatedPoints
  */
 class UpdatedPointsController extends AppController
 {
@@ -58,21 +59,15 @@ class UpdatedPointsController extends AppController
 			return $this->setAction('search');
         }
 
-        try {
-			// 件数分処理
-			foreach ($targets as $target) {
-                // タイトル情報を更新
-                $this->UpdatedPoints->save($target);
-			}
-			$this->Flash->info(__(count($targets).'件の成績更新日情報を更新しました。'));
-		} catch (PDOException $e) {
-			$this->Log->error(__("成績更新日情報更新エラー：{$e->getMessage()}"));
-			$this->Flash->error(__("成績更新日情報の更新に失敗しました…。"));
-			$this->_markToRollback();
-		} finally {
-			// indexの処理を行う
-			return $this->search();
-		}
+        // 件数分処理
+        foreach ($targets as $target) {
+            // タイトル情報を更新
+            $this->UpdatedPoints->save($target);
+        }
+        $this->Flash->info(__(count($targets).'件の成績更新日情報を更新しました。'));
+
+        // indexの処理を行う
+        return $this->search();
 	}
 
     /**

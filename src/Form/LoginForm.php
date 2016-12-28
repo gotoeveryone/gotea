@@ -33,7 +33,15 @@ class LoginForm extends AppForm
         return $validator
             ->notEmpty('username', $this->getMessage($this->REQUIRED, 'ID'))
             ->maxLength('username', 10, $this->getMessage($this->MAX_LENGTH, ['ID', 10]))
+            ->add('username', 'default', [
+                'rule' => [$this, 'alphaNumeric'],
+                'message' => $this->getMessage($this->ALPHA_NUMERIC, 'ID')
+            ])
             ->notEmpty('password', $this->getMessage($this->REQUIRED, 'パスワード'))
-            ->maxLength('password', 20, $this->getMessage($this->MAX_LENGTH, ['パスワード', 20]));
+            ->maxLength('password', 20, $this->getMessage($this->MAX_LENGTH, ['パスワード', 20]))
+            ->add('password', 'default', [
+                'rule' => [$this, 'alphaNumeric'],
+                'message' => $this->getMessage($this->ALPHA_NUMERIC, 'パスワード')
+            ]);
     }
 }

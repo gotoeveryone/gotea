@@ -43,6 +43,10 @@ class PlayerForm extends AppForm
             ->allowEmpty(['name', 'name_english', 'name_other', 'joined_from', 'joined_to'])
             ->maxLength('name', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名', 20]))
             ->maxLength('name_english', 40, $this->getMessage($this->MAX_LENGTH, ['棋士名（英語）', 40]))
+            ->add('name_english', 'default', [
+                'rule' => [$this, 'alphaNumeric'],
+                'message' => $this->getMessage($this->ALPHA_NUMERIC, '棋士名（英語）')
+            ])
             ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
             ->numeric('joined_from', $this->getMessage($this->NUMERIC, '入段年（開始）'))
             ->range('joined_from', [1, 9999], $this->getMessage($this->RANGE, ['入段年（開始）', 1, 9999]))

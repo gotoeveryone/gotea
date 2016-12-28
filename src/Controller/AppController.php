@@ -5,24 +5,20 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
+use Cake\Network\Response;
 
 /**
  * アプリの共通コントローラ
  * 
- * @author		Kazuki Kamizuru
- * @since		2015/07/26
+ * @author  Kazuki Kamizuru
+ * @since   2015/07/26
  * 
  * @property \App\Controller\Component\LogComponent $Log
+ * @property \App\Controller\Component\TransactionComponent $Transaction
  * @property \App\Controller\Component\MyAuthComponent $MyAuth
  */
 class AppController extends Controller
 {
-    // コネクション
-    private $__conn = null;
-
-    // ロールバックフラグ
-    private $__isRollback = false;
-
     // 許可するアクション
     private $__allowActions = ["index", "detail", "login", "logout"];
 
@@ -37,6 +33,7 @@ class AppController extends Controller
         $this->loadComponent('Csrf');
         $this->loadComponent('Flash');
         $this->loadComponent('Log');
+        $this->loadComponent('Transaction');
         $this->loadComponent('MyAuth', [
             'loginAction' => [
                 'controller' => 'users',
@@ -63,16 +60,27 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         // 許可したアクション以外でPOSTではないアクセスの場合、デフォルトアクションへ遷移させる
-        if (!in_array($this->request->action, $this->__allowActions) && !$this->request->is('post')) {
+        if (!in_array($this->request->action, $this->__allowActions) && !$this->request->is('post')
+                && method_exists($this, $this->_redirectAction)) {
             $this->setAction($this->_redirectAction);
             return;
         }
 
-        // トランザクションを開始
-        if (empty($this->__conn)) {
-            $this->__conn = ConnectionManager::get('default');
-        }
-        $this->__conn->begin();
+        // トランザクションの開始
+        $this->Transaction->begin();
+    }
+
+    /**
+     * アクション遷移後処理
+     * 
+     * @param Event $event
+     */
+    public function afterFilter(Event $event)
+    {
+        parent::afterFilter($event);
+
+        // トランザクションのコミットまたはロールバック
+        $this->Transaction->commitOrRollback();
     }
 
     /**
@@ -84,17 +92,6 @@ class AppController extends Controller
     {
         parent::beforeRender($event);
 
-        // コミットまたはロールバック
-        if (!empty($this->__conn)) {
-            if ($this->__isRollback) {
-                $this->Log->error(__("例外が発生したので、トランザクションをロールバックしました。"));
-                $this->__conn->rollback();
-            } else {
-                $this->Log->debug(__("トランザクションをコミットしました。"));
-                $this->__conn->commit();
-            }
-        }
-
         // ユーザ名を表示
         if ($this->MyAuth->user()) {
             $this->set('username', $this->MyAuth->user('userName'));
@@ -103,18 +100,18 @@ class AppController extends Controller
     }
 
     /**
-     * リダイレクト処理
+     * リダイレクト前処理
      * 
+     * @param Event $event
      * @param type $url
-     * @param type $status
+     * @param Response $response
      */
-    public function redirect($url, $status = 302)
+    public function beforeRedirect(Event $event, $url, Response $response)
     {
-        // トランザクションをコミットしておく
-        if (!empty($this->__conn)) {
-            $this->__conn->commit();
-        }
-        parent::redirect($url, $status);
+        // トランザクションのコミットまたはロールバック
+        $this->Transaction->commitOrRollback();
+
+        return parent::beforeRedirect($event, $url, $response);
     }
 
     /**
@@ -143,51 +140,6 @@ class AppController extends Controller
         if (!$this->request->is($method)) {
             $this->setAction($action);
         }
-    }
-
-    /**
-     * ロールバックをマークします。
-     */
-    protected function _markToRollback()
-    {
-        $this->__isRollback = true;
-    }
-
-    /**
-     * コネクションを取得します。
-     * 
-     * @return \Cake\Datasource\ConnectionInterface A connection object.
-     */
-    protected function _getConnection()
-    {
-        return $this->__conn;
-    }
-
-    /**
-     * リクエストから値を取りだします。
-     * 存在しなければセッションから値を取り出します。
-     * 
-     * @param type $name
-     * @return type
-     */
-    protected function _getParam($name = null)
-    {
-        $session = $this->request->session();
-        $request_param = $this->request->data($name);
-        return $request_param !== null ? $request_param : $session->read($name);
-    }
-
-    /**
-     * セッションとビューに値を格納します。
-     * 
-     * @param type $name
-     * @param type $value
-     * @return type
-     */
-    protected function _setParam($name = null, $value = null)
-    {
-        $this->request->session()->write($name, $value);
-        return $this->set($name, $value);
     }
 
     /**

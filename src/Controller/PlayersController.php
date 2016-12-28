@@ -12,9 +12,10 @@ use Cake\I18n\Date;
 /**
  * 棋士マスタ用コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2015/07/20
+ * @author  Kazuki Kamizuru
+ * @since   2015/07/20
  * 
+ * @property \App\Model\Table\PlayersTable $Players
  * @property \App\Model\Table\PlayerScoresTable $PlayerScores
  * @property \App\Model\Table\CountriesTable $Countries
  * @property \App\Model\Table\RanksTable $Ranks
@@ -106,10 +107,12 @@ class PlayersController extends AppController
         // ダイアログ表示
         $this->_setDialogMode();
 
-        // 棋士IDがあればデータを取得して表示
+        // IDが指定されていれば、棋士情報一式を設定
         if ($id) {
-            // 棋士情報一式を取得
-            $this->set('player', $this->Players->get($id));
+            if (!($player = $this->Players->getInner($id))) {
+                throw new NotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
+            }
+            $this->set('player', $player);
             return $this->render('detail');
         }
 
@@ -157,20 +160,15 @@ class PlayersController extends AppController
         // 棋士成績を設定
         $this->__setPlayerScores($player);
 
-        try {
-            // 保存処理
-            $this->Players->save($player);
-            $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
-		} catch (PDOException $e) {
-            $this->Log->error(__("棋士情報{$status}エラー：{$e->getMessage()}"));
-			$this->Flash->error(__("棋士情報の{$status}に失敗しました…。"));
-            $this->_markToRollback();
-		} finally {
-			// 所属国IDを設定
-			$this->request->query['countryId'] = $player->country_id;
-            // 詳細情報表示処理へ
-            return ($this->request->data('is_continue')) ? $this->setAction('detail') : $this->setAction('detail', $player->id, $player);
-		}
+        // 保存処理
+        $this->Players->save($player);
+        $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
+
+        // 所属国IDを設定
+        $this->request->query['countryId'] = $player->country_id;
+
+        // 詳細情報表示処理へ
+        return ($this->request->data('is_continue')) ? $this->setAction('detail') : $this->setAction('detail', $player->id, $player);
 	}
 
 	/**
@@ -194,18 +192,12 @@ class PlayersController extends AppController
         // 入力値をエンティティに設定
         $this->PlayerScores->patchEntity($score, $data);
 
-        try {
-			// 棋士成績情報の更新
-			$this->PlayerScores->save($score);
-			$this->Flash->info(__("{$score->target_year}年度の棋士成績情報を更新しました。"));
-		} catch (PDOException $e) {
-			$this->Log->error(__("棋士成績情報更新エラー：{$e->getMessage()}"));
-			$this->Flash->error(__("{$score->target_year}年度の棋士成績情報の更新に失敗しました…。"));
-            $this->_markToRollback();
-		} finally {
-            // 詳細情報表示処理へ
-            return $this->setTabAction('detail', 'scores', $score->player_id);
-		}
+        // 棋士成績情報の更新
+        $this->PlayerScores->save($score);
+        $this->Flash->info(__("{$score->target_year}年度の棋士成績情報を更新しました。"));
+
+        // 詳細情報表示処理へ
+        return $this->setTabAction('detail', 'scores', $score->player_id);
 	}
 
     /**

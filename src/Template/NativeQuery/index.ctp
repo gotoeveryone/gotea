@@ -9,7 +9,7 @@
             'selectFormGroup' => '{{input}}'
         ]
     ])?>
-        <?=$this->Form->textarea('executeTargets', ['id' => 'executeTargets'])?>
+        <?=$this->Form->textarea('queries', ['id' => 'executeTargets'])?>
         <section class="row button-row">
             <?=$this->Form->button('更新', ['type' => 'button', 'id' => 'update'])?>
             <?=$this->Form->button('クリア', ['type' => 'button', 'id' => 'clear'])?>
@@ -22,14 +22,15 @@
     $(function() {
         // 更新ボタン押下時
         $('#update').click(function() {
+            var textarea = $('#executeTargets');
             // クエリを整形
             // 前後の空白をトリムして、空行を削除
-            var queries = $('#executeTargets').val();
+            var queries = textarea.val();
             var repText = $.trim(queries).replace(/;[\t]/g, ';\n').replace(/　/g, '')
                     .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
-            $('#executeTargets').val(repText);
+            textarea.val(repText);
 
-            if ($('#executeTargets').val()) {
+            if (textarea.val()) {
                 // 更新処理
                 openConfirm('更新します。よろしいですか？');
             } else {

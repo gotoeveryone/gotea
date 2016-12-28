@@ -39,11 +39,16 @@ class TitlesTable extends AppTable {
         return $validator
             ->notEmpty('name', $this->getMessage($this->REQUIRED, 'タイトル名'))
             ->notEmpty('name_english', $this->getMessage($this->REQUIRED, 'タイトル名（英語）'))
+            ->add('name_english', 'default', [
+                'rule' => [$this, 'alphaNumeric'],
+                'message' => $this->getMessage($this->ALPHA_NUMERIC, 'タイトル名（英語）')
+            ])
             ->notEmpty('holding', $this->getMessage($this->REQUIRED, '期'))
-            ->numeric('sort_order', $this->getMessage($this->NUMERIC, '並び順'))
+            ->numeric('holding', $this->getMessage($this->NUMERIC, '期'))
             ->notEmpty('sort_order',$this->getMessage($this->REQUIRED, '並び順'))
+            ->numeric('sort_order', $this->getMessage($this->NUMERIC, '並び順'))
             ->notEmpty('html_file_name', $this->getMessage($this->REQUIRED, 'HTMLファイル名'))
-            ->add('html_file_name', 'custom', [
+            ->add('html_file_name', 'default', [
                 'rule' => [$this, 'alphaNumeric'],
                 'message' => $this->getMessage($this->ALPHA_NUMERIC, 'HTMLファイル名')
             ])
@@ -89,12 +94,12 @@ class TitlesTable extends AppTable {
      * @param type $id
      * @return type
      */
-    public function findTitleWithRelations($id)
+    public function getInner($id)
     {
 		return $this->find()->contain([
             'Countries',
-            'RetentionHistories' => function ($q) {
-                return $q->order(['RetentionHistories.target_year' => 'DESC']);
+            'RetentionHistories' => function (Query $q) {
+                return $q->orderDesc('RetentionHistories.target_year');
             },
             'RetentionHistories.Ranks',
             'RetentionHistories.Titles.Countries',

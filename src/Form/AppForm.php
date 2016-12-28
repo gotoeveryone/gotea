@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Validation\ValidateTrait;
+use App\Validation\MyValidationTrait;
 use Cake\Form\Form;
 
 /**
@@ -10,5 +10,5 @@ use Cake\Form\Form;
  */
 class AppForm extends Form
 {
-    use ValidateTrait;
+    use MyValidationTrait;
 }

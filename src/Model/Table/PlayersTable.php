@@ -50,6 +50,10 @@ class PlayersTable extends AppTable
             ->maxLength('name', [0, 20], $this->getMessage($this->MAX_LENGTH, ['棋士名', 20]))
             ->notEmpty('name_english', $this->getMessage($this->REQUIRED, '棋士名（英語）'))
             ->maxLength('name_english', 40, $this->getMessage($this->MAX_LENGTH, ['棋士名（英語）', 40]))
+            ->add('name_english', 'default', [
+                'rule' => [$this, 'alphaNumeric'],
+                'message' => $this->getMessage($this->ALPHA_NUMERIC, '棋士名（英語）')
+            ])
             ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
             ->date('birthday', 'ymd', $this->getMessage($this->MAX_LENGTH, ['生年月日', 'yyyy/MM/dd']))
             ->notEmpty('joined', $this->getMessage($this->REQUIRED, '入段日'));
@@ -74,7 +78,7 @@ class PlayersTable extends AppTable
      * @param type $id
      * @return type 棋士情報
      */
-    public function findPlayerAllRelations($id)
+    public function getInner($id)
     {
 		return $this->find()->contain([
             'Countries',

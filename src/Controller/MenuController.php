@@ -7,8 +7,8 @@ use Cake\Event\Event;
 /**
  * メニュー用コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2015/07/26
+ * @author  Kazuki Kamizuru
+ * @since   2015/07/26
  */
 class MenuController extends AppController
 {
