@@ -99,7 +99,7 @@ class UpdatedPointsController extends AppController
 
             // データを取得し、POSTされた値を設定
             $title = $this->UpdatedPoints->get($row['id']);
-            $this->UpdatedPoints->patchEntity($title, $row, ['validate' => false]);
+            $this->UpdatedPoints->patchEntity($title, $row);
 
             // 一覧に追加
             array_push($targets, $title);

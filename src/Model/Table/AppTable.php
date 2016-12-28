@@ -9,6 +9,7 @@ use Cake\ORM\Table;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\Network\Session;
+use Cake\Validation\Validator;
 
 /**
  * アプリケーションの共通テーブル
@@ -35,6 +36,23 @@ class AppTable extends Table
         // 基本はバリデーションしない
         $options['validate'] = false;
         return parent::save($entity, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+//    public function validator($name = null, Validator $validator = null)
+//    {
+//        // カスタムプロバイダをデフォルトとして設定
+//        return parent::validator($name, $validator)->provider('default', 'App\Validation\MyValidation');
+//    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alphaNumeric($check)
+    {
+        return (bool) preg_match('/^[a-zA-Z0-9]+$/', $check);
     }
 
     /**
@@ -66,6 +84,6 @@ class AppTable extends Table
 	private function __getLoginUserId() {
 	    $session = new Session();
         $userId = $session->read('Auth.User.userId');
-        return !$userId ? 'IgoApp' : $userId;
+        return !$userId ? str_replace('/', '', ROOT) : $userId;
 	}
 }

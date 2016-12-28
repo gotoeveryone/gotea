@@ -164,23 +164,6 @@ class AppController extends Controller
     }
 
     /**
-     * エラーメッセージを取得します。
-     * 
-     * @param array $errors
-     * @return string エラーメッセージ
-     */
-    protected function _getErrorMessage(array $errors = [])
-    {
-        $message = [];
-        foreach ($errors as $error) {
-            foreach ($error as $val) {
-                $message[] = $val;
-            }
-        }
-        return '<li>'.implode('<br/><li>', $message);
-    }
-
-    /**
      * リクエストから値を取りだします。
      * 存在しなければセッションから値を取り出します。
      * 

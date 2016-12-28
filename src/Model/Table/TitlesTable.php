@@ -43,9 +43,12 @@ class TitlesTable extends AppTable {
             ->numeric('sort_order', $this->getMessage($this->NUMERIC, '並び順'))
             ->notEmpty('sort_order',$this->getMessage($this->REQUIRED, '並び順'))
             ->notEmpty('html_file_name', $this->getMessage($this->REQUIRED, 'HTMLファイル名'))
-            ->alphaNumeric('html_file_name', $this->getMessage($this->ALPHA_NUMERIC, 'HTMLファイル名'))
+            ->add('html_file_name', 'custom', [
+                'rule' => [$this, 'alphaNumeric'],
+                'message' => $this->getMessage($this->ALPHA_NUMERIC, 'HTMLファイル名')
+            ])
             ->notEmpty('html_file_modified', $this->getMessage($this->REQUIRED, 'HTMLファイル修正日'))
-            ->date('html_file_modified', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['修正日', 'yyyy/mm/dd']));
+            ->date('html_file_modified', ['ymd'], $this->getMessage($this->INLALID_FORMAT, ['修正日', 'yyyy/mm/dd']));
     }
 
     /**
