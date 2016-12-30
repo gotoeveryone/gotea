@@ -7,42 +7,8 @@
 	font-size: 0.8rem;
 }
 
-header .system-name {
-    padding-left: 1rem;
-    width: 15%;
-	text-align: left;
-}
-
-header .system-name > * {
-    font-size: 1.3rem;
-    font-weight: bold;
-}
-
-header .page-title {
-	margin: auto;
-    width: 70%;
-}
-
-header .other {
-    padding-right: 1rem;
-    width: 15%;
-	text-align: right;
-}
-
-header .other > * {
-    display: block;
-    height: 50%;
-    font-size: 1rem;
-}
-
-header .other .username {
-    padding-top: 0;
-    font-weight: bold;
-	text-decoration: underline;
-}
-
 main, nav {
-    padding: 0 0.5rem;
+    padding: 0.8rem 0.5rem;
 }
 
 nav + main {
@@ -68,6 +34,11 @@ strong span {
  ------------------------------------------- */
 .content.modal {
     height: 100%;
+    padding: 1rem;
+}
+
+.content.row {
+    margin: auto;
 }
 
 .row {
@@ -413,26 +384,17 @@ form {
     height: calc(100% - 7rem - 0.5rem);
 }
 
-.ranking .search-results thead tr {
-    display: table;
-    height: 100%;
+li.no,
+li.percent {
+    width: 15%;
 }
 
-.ranking .search-results table .no {
-	width: 30px;
+li.player {
+    width: 40%;
 }
 
-.ranking .search-results table .playerName {
-	width: 196px;
-}
-
-.ranking .search-results table .winPoint,
-.ranking .search-results table .losePoint {
-	width: 40px;
-}
-
-.ranking .search-results table .winPercent {
-	width: 45px;
+li.point {
+    width: 10%;
 }
 
 /* -------------------------------------------

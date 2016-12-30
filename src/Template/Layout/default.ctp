@@ -110,7 +110,7 @@
     <?=$this->Html->script('app')?>
     <script>
         // containerを非表示
-        document.getElementsByClassName("container")[0].style.display = "none";
+        document.getElementsByClassName("content")[0].style.display = "none";
     </script>
     <?=$this->fetch('script')?>
 </body>

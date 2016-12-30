@@ -67,17 +67,17 @@
         </section>
 
         <section class="search-results">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="no">No.</th>
-                        <th class="playerName">棋士名</th>
-                        <th class="winPoint">勝</th>
-                        <th class="losePoint">敗</th>
-                        <th class="winPercent">勝率</th>
-                    </tr>
-                </thead>
-            </table>
+            <section class="table-header">
+                <ul class="table-row">
+                    <li class="no">No.</li>
+                    <li class="player">棋士名</li>
+                    <li class="point">勝</li>
+                    <li class="point">敗</li>
+                    <li class="point">分</li>
+                    <li class="percent">勝率</li>
+                    <li></li>
+                </ul>
+            </section>
         </section>
     <?=$this->Form->end()?>
 </article>
@@ -102,7 +102,7 @@
             }).done(function (data) {
                 data = data.response;
                 // TBODY要素を削除
-                $('.search-results tbody').remove();
+                $('.search-results .table-body').remove();
 
                 // JSON出力ボタンを活性状態に変更
                 $('#outputJson').removeAttr('disabled');
@@ -112,7 +112,7 @@
                 $('.lastUpdate').html(lastUpdate.getFullYear() + '年'
                         + (lastUpdate.getMonth() + 1) + '月' + lastUpdate.getDate() + '日');
 
-                var tbody = $('<tbody>');
+                var body = $('<section>', {class: "table-body"});
                 var beforeRank = 0;
                 for (var i = 0; i < Object.keys(data.ranking).length; i++) {
 
@@ -131,18 +131,19 @@
                     }
 
                     // TR要素を作成
-                    var tr = $('<tr>')
-                        .append($('<td>', {class: 'right no'}).html('<span class="rank">' + rank + '</span>'))
-                        .append($('<td>', {class: 'left playerName'}).html($('<a>', {"class": "colorbox", "href": "/IgoApp/players/detail/" + record.playerId}).html(record.playerNameJp)))
-                        .append($('<td>', {class: 'center winPoint'}).html(record.winPoint))
-                        .append($('<td>', {class: 'center losePoint'}).html(record.losePoint))
-                        .append($('<td>', {class: 'center winPercent'}).html(Math.round(record.winPercentage * 100) + '%'));
+                    var tr = $('<ul>', {class: 'table-row'})
+                        .append($('<li>', {class: 'right no'}).html('<span class="rank">' + rank + '</span>'))
+                        .append($('<li>', {class: 'left player'}).html($('<a>', {"class": "colorbox", "href": "/IgoApp/players/detail/" + record.playerId}).html(record.playerNameJp)))
+                        .append($('<li>', {class: 'point'}).html(record.winPoint))
+                        .append($('<li>', {class: 'point'}).html(record.losePoint))
+                        .append($('<li>', {class: 'point'}).html(record.drawPoint))
+                        .append($('<li>', {class: 'percent'}).html(Math.round(record.winPercentage * 100) + '%'));
 
-                    // TBODY要素にTR要素を追加
-                    tbody.append(tr);
+                    // 一覧に行を追加
+                    body.append(tr);
                 }
                 // TBODY要素を追加
-                $('.search-results thead').after(tbody);
+                $('.search-results .table-header').after(body);
                 setColorbox();
             }).fail(function (data) {
                 // JSON出力ボタンを非活性状態に変更し、エラーメッセージを出力
