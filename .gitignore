@@ -1,12 +1,7 @@
-/vendor/*
-/config/app.php
+/vendor
 /tmp/*
 /logs/*
-/vendor
-/composer.phar
 /nbproject
-/composer.lock
-/webroot/visual
 /.buildpath
 /.project
 /.settings/org.eclipse.php.server.core.phpServersPrefs.prefs
