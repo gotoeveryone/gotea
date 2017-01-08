@@ -213,14 +213,14 @@
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
     $(function () {
-        $('#addNew').attr('disabled', !$('#searchCountry').val());
+        $('#addNew').attr('disabled', !$('[data-id=country]').val());
         // 国プルダウン変更時
-        $('select[name=searchCountry]').change(function () {
+        $('[data-id=country]').on('change', function () {
             $('#addNew').attr('disabled', !$(this).val());
         });
         // 新規作成画面へ遷移
         $('#addNew').click(function () {
-            setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('#searchCountry').val());
+            setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('[data-id=country]').val());
         });
     });
 </script>
