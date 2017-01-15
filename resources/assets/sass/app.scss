@@ -178,171 +178,117 @@ label {
 .detail-dialog {
     width: 100%;
     height: 100%;
-}
-
-.detail-dialog #tabs {
-    height: 30px;
-    letter-spacing: -.4em;
-    font-size: 0;
-}
-
-.detail-dialog #tabs .tab {
-    display: inline-block;
-    vertical-align: middle;
-    letter-spacing: normal;
-    font-size: 1rem;
-    color: #ffffff;
-    background-color: #000000;
-	border: 0.1rem solid #000000;
-	border-bottom: none;
-    height: 100%;
-    padding: 0.4rem 1rem;
-    border-radius: 0.5rem 0.5rem 0 0;
-}
-
-.detail-dialog #tabs .selectTab {
-    font-weight: bold;
-    color: #000000;
-    background-color: #99ffff;
-}
-
-.detail-dialog .detail {
-	height: calc(100% - 30px);
-    overflow-y: auto;
-    border: 0.1rem solid #000000;
-    background-color: #ffffff;
-}
-
-[class^=box] {
-    padding: 0.1rem;
-    vertical-align: top;
-    width: 100%;
-}
-
-[class^=box] [class$=-row] {
-    vertical-align: middle;
-}
-
-.box2 {
-    width: calc(100% / 2);
-}
-
-.box3 {
-    width: calc(100% / 3);
-}
-
-.box4 {
-    width: calc(100% / 4);
-}
-
-/*[class$=-row] {
-    display: table;
-    width: 100%;
-}
-
-[class$=-row] + .row {
-    margin-top: 0;
-}*/
-
-/*[class$=-row]:not(.input-row) > * {
-    display: table-cell;
-    vertical-align: middle;
-}*/
-
-.row-group {
-    border-top: 0.1rem solid #000000;
-}
-
-.category-row {
-	height: 2.5rem;
-	text-indent: 0.5rem;
-	font-weight: bold;
-	background-color: #ddeeff;
-}
-
-.category-row * {
-	font-size: 1.2rem;
-}
-
-.genre-row {
-    @extend .row;
-	height: 2.3rem;
-	text-indent: 0.6rem;
-	font-weight: bold;
-	background-color: #eeffdd;
-}
-
-.genre-row * {
-	font-size: 1.1rem;
-}
-
-.label-row {
-    @extend .row;
-    justify-content: flex-start;
-	height: 2.2rem;
-	text-indent: 0.7rem;
-	background-color: #ffeedd;
-    font-weight: bold;
-}
-
-.label-row:first-child {
-    margin: 0 auto 0.2rem;
-    border-radius: 0.4rem;
-}
-
-.input-row {
-    @extend .row;
-    justify-content: flex-start;
-    margin: 0.5rem 0;
-	padding: 0 0.7rem;
-
-    & > * {
-        margin-left: .5rem;
+    #tabs {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 30px;
+        .tab {
+            font-size: 1rem;
+            color: #ffffff;
+            background-color: #000000;
+            border: 0.1rem solid #000000;
+            border-bottom: none;
+            padding: 0.4rem 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            &.selectTab {
+                font-weight: bold;
+                color: #000000;
+                background-color: #99ffff;
+            }
+        }
     }
-}
-/*
-.input-row > * {
-    display: table-cell;
-    vertical-align: middle;
-}
+    .detail {
+        height: calc(100% - 30px);
+        overflow-y: auto;
+        border: 0.1rem solid #000000;
+        background-color: #ffffff;
 
-.input-row > [class^=box] > * {
-    display: inline-block;
-}
+        .boxes {
+            margin: 0;
+            padding: 0;
+            list-style: none;
 
-.input-row > * input {
-    margin-right: 0.2rem;
-}
+            [class^=box] {
+                padding: 0.1rem;
+            }
+            .box {
+                flex-grow: 1;
+            }
+            .box2 {
+                flex-grow: 2;
+            }
+        }
 
-.input-row .point,
-.input-row .holding {
-    width: 3rem;
-    text-align: right;
-}
+        .category-row {
+            @extend .row;
+            justify-content: flex-start;
+            height: 2.5rem;
+            margin: 0 auto .2rem;
+            text-indent: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: #ddeeff;
+        }
 
-.input-row .datepicker {
-    width: 9rem;
-}
+        .genre-row {
+            @extend .row;
+            justify-content: flex-start;
+            height: 2.3rem;
+            text-indent: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #eeffdd;
+        }
 
-.input-row .year {
-    width: 4rem;
-    text-align: right;
-}
+        .label-row {
+            @extend .row;
+            justify-content: flex-start;
+            height: 2.2rem;
+            text-indent: 0.7rem;
+            background-color: #ffeedd;
+            font-weight: bold;
+        }
 
-.input-row select,
-.input-row textarea {
-    width: 100%;
-}
+        .label-row:first-child {
+            margin: 0 auto 0.2rem;
+            border-radius: 0.4rem;
+        }
 
-.input-row [class^=box].button-area {
-    display: table-cell;
-    text-align: right;
-}*/
+        .input-row {
+            @extend .row;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0 .7rem;
 
-.button-row {
-    margin: 0.5rem auto;
-    height: 2.8rem;
-    text-align: center;
+            & > * {
+                margin-left: .5rem;
+            }
+
+            input {
+                margin-right: .5rem;
+            }
+
+            .point, .holding {
+                width: 3rem;
+                text-align: right;
+            }
+
+            .datepicker {
+                width: 9rem;
+            }
+
+            .year {
+                width: 4rem;
+                text-align: right;
+            }
+
+            select, textarea {
+                width: 100%;
+            }
+        }
+    }
 }
 
 /* -------------------------------------------
@@ -503,30 +449,23 @@ label {
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid #000000;
-}
 
-.retentions *,
-.retentions button {
-    font-size: 0.85rem;
-}
+    *, button {
+        font-size: 0.85rem;
+    }
 
-.retentions table {
-    width: 100%;
-    margin: auto;
-}
+    table {
+        width: 100%;
+        margin: auto;
+        &, tbody, tr, td {
+            border: 0.1rem #000000 solid;
+            border-collapse: collapse;
+        }
 
-.retentions table,
-.retentions table tbody,
-.retentions table tr,
-.retentions table td {
-	border: 0.1rem #000000 solid;
-	border-collapse: collapse;
-}
-
-.retentions table tbody,
-.retentions table tr,
-.retentions table td {
-    padding: 0.1rem 0.5rem;
+        tbody, tr, td {
+            padding: 0.1rem 0.5rem;
+        }
+    }
 }
 
 /* -------------------------------------------
