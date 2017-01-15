@@ -1,576 +1,540 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
+.login {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* -------------------------------------------
    タグ単位のレイアウト
  ------------------------------------------- */
-* {
-	font-size: 0.8rem;
-}
-
 main, nav {
-    padding: 0.8rem 0.5rem;
+  padding: 0 0.5rem;
 }
 
 nav + main {
-    width: 70%;
-    min-width: calc(100% - 220px);
+  width: 70%;
+  min-width: calc(100% - 220px);
 }
 
 nav {
-    width: 30%;
-	max-width: 220px;
+  width: 30%;
+  max-width: 220px;
+}
+
+form {
+  height: 100%;
+  width: 100%;
 }
 
 strong {
-    margin: 0 0.3rem;
+  margin: 0 0.3rem;
 }
 
 strong span {
-    color: #ff0000;
+  color: #ff0000;
 }
 
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
+.content {
+  display: -webkit-box;
+  display: flex;
+}
+
 .content.modal {
-    height: 100%;
-    padding: 1rem;
+  height: 100%;
+  padding: 1rem;
 }
 
-.content.row {
-    margin: auto;
+.content.row, .content.category-row, .content.genre-row, .content.label-row, .content.input-row {
+  margin: auto;
 }
 
-.row {
-    min-height: 2.6rem;
-}
-
-.label {
-    font-weight: bold;
+.row, .category-row, .genre-row, .label-row, .input-row {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  margin: 0.2rem auto;
+  padding: 0.2rem;
+  min-height: 2.6rem;
 }
 
 .female {
-    color: #ff0000;
+  color: #ff0000;
 }
 
-form {
-    height: 100%;
-    width: 100%;
+.category-row {
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  height: 2.5rem;
+  margin: 0 auto .2rem;
+  text-indent: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #ddeeff;
+}
+
+.genre-row {
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  height: 2.3rem;
+  text-indent: 0.6rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #eeffdd;
+}
+
+.label-row {
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  height: 2.2rem;
+  text-indent: 0.7rem;
+  background-color: #ffeedd;
+  font-weight: bold;
+}
+
+.label-row:first-child {
+  margin: 0 auto 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.input-row {
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0 .7rem;
+}
+
+.input-row > * {
+  margin-left: .5rem;
+}
+
+.input-row input {
+  margin-right: .5rem;
+}
+
+.input-row .point, .input-row .holding {
+  width: 3rem;
+  text-align: right;
+}
+
+.input-row .datepicker {
+  width: 9rem;
+}
+
+.input-row .year {
+  width: 4rem;
+  text-align: right;
+}
+
+.input-row select, .input-row textarea {
+  width: 100%;
 }
 
 /* -------------------------------------------
    ダイアログ用
  ------------------------------------------- */
 #dialog, #confirm {
-	display: none;
+  display: none;
 }
 
 #dialog ul {
-    padding-left: 1.5rem;
+  padding-left: 1.5rem;
 }
 
 /* -------------------------------------------
    検索エリア
  ------------------------------------------- */
 .search-header {
-    position: relative;
-    margin-bottom: 0.5rem;
-	padding: 0.3rem;
-    background-color: #ffffff;
-	border: 0.2rem solid #bbbbbb;
-    border-radius: 0.4rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding: 0.3rem;
+  background-color: #ffffff;
+  border: 0.2rem solid #bbbbbb;
+  border-radius: 0.4rem;
 }
 
-.search-header .label {
-    margin: 0 0.5rem 0 0.2rem;
+.search-header label {
+  margin: 0 0.5rem 0 0.2rem;
 }
 
-.search-header .label + * {
-    margin-right: 1rem;
+.search-header label + * {
+  margin-right: 1rem;
 }
 
-.search-header .button-column {
-    position: absolute;
-    right: 0.5rem;
+.search-header .year, .search-header .country, .search-header .sex, .search-header .rank {
+  width: 6em;
 }
 
-.search-header .year,
-.search-header .country,
-.search-header .sex,
-.search-header .rank {
-	width: 6rem;
-}
-
-.search-header .organization,
-.search-header .retired {
-	width: 10rem;
+.search-header .organization, .search-header .excluded {
+  width: 10em;
 }
 
 .search-header .name {
-	width: 14rem;
+  width: 12em;
 }
 
 .search-header .name-short {
-	width: 10rem;
+  width: 8rem;
 }
 
 .search-header .joined {
-    width: 3.8rem;
-    text-align: right;
+  width: 3.2em;
+  text-align: right;
 }
 
 /* -------------------------------------------
    検索エリア（一覧）
  ------------------------------------------- */
 .search-results {
-    height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
+  height: calc(100% - 3.2rem - 1rem);
+  /* content - .search-header and margin */
+}
+
+.search-results .table-body .excluded-row {
+  background-color: #dddddd;
 }
 
 .search-results table {
-	display: block;
-	height: 100%;
-	max-height: 100%;
-	border-collapse: collapse;
+  display: block;
+  height: 100%;
+  max-height: 100%;
+  border-collapse: collapse;
 }
 
-.search-results thead {
-	display: table-cell;
-	border: 1px #000000 solid;
-    height: 3.2rem;
-    max-height: 3.2rem;
+.search-results table thead {
+  display: table-cell;
+  border: 1px #000000 solid;
+  height: 3.2rem;
+  max-height: 3.2rem;
 }
 
-.search-results tbody {
-    display: inline-block;
-    max-height: calc(100% - 3.2rem);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -ms-overflow-x: hidden;
-    -ms-overflow-y: scroll;
-    background-color: #ffffff;
-	border-top: 2px #000000 solid;
-	border-left: 1px #000000 solid;
-	border-right: 2px #000000 solid;
-	border-bottom: 2px #000000 solid;
-    margin-top: -2px;
+.search-results table tbody {
+  display: inline-block;
+  max-height: calc(100% - 3.2rem);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -ms-overflow-x: hidden;
+  -ms-overflow-y: scroll;
+  background-color: #ffffff;
+  border-top: 2px #000000 solid;
+  border-left: 1px #000000 solid;
+  border-right: 2px #000000 solid;
+  border-bottom: 2px #000000 solid;
+  margin-top: -2px;
 }
 
-.search-results td,
-.search-results th {
-    display: table-cell;
-    padding: 3px;
-	border: 1px solid #000000;
-	table-layout: fixed;
+.search-results table td, .search-results table th {
+  display: table-cell;
+  padding: 3px;
+  border: 1px solid #000000;
+  table-layout: fixed;
 }
 
-.search-results tr td:nth-last-of-type(1) {
-	border-right: 2px solid #000000;
+.search-results table tr:first-of-type td {
+  border-top: none;
 }
 
-.search-results tr:first-of-type td {
-	border-top: none;
+.search-results table tr:last-of-type(1) td {
+  border-bottom: none;
 }
 
-.search-results tr:nth-last-of-type(1) td {
-	border-bottom: none;
+.search-results table tr td:nth-last-of-type(1) {
+  border-right: 2px solid #000000;
 }
 
 /* -------------------------------------------
    詳細表示エリア
  ------------------------------------------- */
 .detail-dialog {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .detail-dialog #tabs {
-    height: 30px;
-    letter-spacing: -.4em;
-    font-size: 0;
+  display: -webkit-box;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  height: 30px;
 }
 
 .detail-dialog #tabs .tab {
-    display: inline-block;
-    vertical-align: middle;
-    letter-spacing: normal;
-    font-size: 1rem;
-    color: #ffffff;
-    background-color: #000000;
-	border: 0.1rem solid #000000;
-	border-bottom: none;
-    height: 100%;
-    padding: 0.4rem 1rem;
-    border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #000000;
+  border: 0.1rem solid #000000;
+  border-bottom: none;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.detail-dialog #tabs .selectTab {
-    font-weight: bold;
-    color: #000000;
-    background-color: #99ffff;
+.detail-dialog #tabs .tab.selectTab {
+  font-weight: bold;
+  color: #000000;
+  background-color: #99ffff;
 }
 
 .detail-dialog .detail {
-	height: calc(100% - 30px);
-    overflow-y: auto;
-    border: 0.1rem solid #000000;
-    background-color: #ffffff;
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  border: 0.1rem solid #000000;
+  background-color: #ffffff;
 }
 
-[class^=box] {
-    padding: 0.1rem;
-    vertical-align: top;
-    width: 100%;
+.detail-dialog .detail .boxes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-[class^=box] [class$=-row] {
-    vertical-align: middle;
+.detail-dialog .detail .boxes [class^=box] {
+  padding: 0.1rem;
 }
 
-.box2 {
-    width: calc(100% / 2);
+.detail-dialog .detail .boxes .box {
+  -webkit-box-flex: 1;
+  flex-grow: 1;
 }
 
-.box3 {
-    width: calc(100% / 3);
-}
-
-.box4 {
-    width: calc(100% / 4);
-}
-
-[class$=-row] {
-    display: table;
-    width: 100%;
-}
-
-[class$=-row] + .row {
-    margin-top: 0;
-}
-
-[class$=-row]:not(.input-row) > * {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.row-group {
-    border-top: 0.1rem solid #000000;
-}
-
-.category-row {
-	height: 2.5rem;
-	text-indent: 0.5rem;
-	font-weight: bold;
-	background-color: #ddeeff;
-}
-
-.category-row * {
-	font-size: 1.2rem;
-}
-
-.genre-row {
-	height: 2.3rem;
-	text-indent: 0.6rem;
-	font-weight: bold;
-	background-color: #eeffdd;
-}
-
-.genre-row * {
-	font-size: 1.1rem;
-}
-
-.label-row {
-	height: 2.2rem;
-	text-indent: 0.7rem;
-	background-color: #ffeedd;
-    font-weight: bold;
-}
-
-.label-row:first-child {
-    margin: 0 auto 0.2rem;
-    border-radius: 0.4rem;
-}
-
-.input-row {
-    margin: 0.5rem 0;
-	padding: 0 0.7rem;
-}
-
-.input-row > * {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.input-row > [class^=box] > * {
-    display: inline-block;
-}
-
-.input-row > * input {
-    margin-right: 0.2rem;
-}
-
-.input-row .point,
-.input-row .holding {
-    width: 3rem;
-    text-align: right;
-}
-
-.input-row .datepicker {
-    width: 9rem;
-}
-
-.input-row .year {
-    width: 4rem;
-    text-align: right;
-}
-
-.input-row select,
-.input-row textarea {
-    width: 100%;
-}
-
-.input-row [class^=box].button-area {
-    display: table-cell;
-    text-align: right;
-}
-
-.button-row {
-    margin: 0.5rem auto;
-    height: 2.8rem;
-    text-align: center;
+.detail-dialog .detail .boxes .box2 {
+  -webkit-box-flex: 2;
+  flex-grow: 2;
 }
 
 /* -------------------------------------------
    ログイン画面
  ------------------------------------------- */
 .login {
-	width: 20%;
-    min-width: 250px;
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
+  width: 20%;
+  min-width: 250px;
 }
 
-.login .row .label {
-	width: 30%;
+.login .row label, .login .category-row label, .login .genre-row label, .login .label-row label, .login .input-row label {
+  padding: 0 .5em 0 0;
+  width: 30%;
+  text-align: right;
+  font-weight: bold;
 }
 
-.login .row .label + * {
-	width: 70%;
-}
-
-.login .row .label > * {
-    display: block;
-    padding-right: 0.7rem;
-    width: 100%;
-	text-align: right;
-}
-
-.login .row input {
-    width: 100%;
+.login .row input, .login .category-row input, .login .genre-row input, .login .label-row input, .login .input-row input {
+  width: 70%;
 }
 
 /* -------------------------------------------
    勝敗ランキング画面
  ------------------------------------------- */
 .ranking {
-    width: 30rem;
+  width: 30rem;
 }
 
-.ranking .search-header select {
-	width: 7rem;
+.ranking select {
+  width: 7rem;
+  margin-right: .4rem;
 }
 
 .ranking .search-results {
-    height: calc(100% - 7rem - 0.5rem);
+  height: calc(100% - 6.4rem - 0.5rem);
+  /* content - .search-header and margin */
 }
 
-li.no,
-li.percent {
-    width: 15%;
+.ranking .search-results .no, .ranking .search-results .percent {
+  width: 15%;
 }
 
-li.player {
-    width: 40%;
+.ranking .search-results .player {
+  width: 40%;
 }
 
-li.point {
-    width: 10%;
+.ranking .search-results .point {
+  width: 10%;
 }
 
 /* -------------------------------------------
    棋士情報検索
  ------------------------------------------- */
+.players .search-header .resule-count {
+  margin-left: auto;
+  color: red;
+}
+
+.players .search-header .joined {
+  margin-left: .3rem;
+  margin-right: .3rem;
+}
+
 .players .search-results {
-    height: calc(100% - 7rem - 0.5rem);
+  height: calc(100% - 6.4rem - 0.5rem);
+  /* content - .search-header and margin */
 }
 
-.players .search-results tbody {
-    max-height: calc(100% - 3.7rem);
+.players .search-results .table-row > :last-child {
+  padding-right: .7rem;
 }
 
-table.players tr.retired {
-	background-color: #dddddd;
+.players .search-results .score {
+  width: 9%;
 }
 
-table.players .playerId {
-	width: 50px;
+.players .search-results .score .point {
+  width: 3%;
+  padding: 0 .5rem;
 }
 
-table.players .playerName,
-table.players .playerNameEn {
-	width: 176px;
+.players .search-results .score .point:first-of-type {
+  padding: 0 .5rem 0 0;
 }
 
-table.players .enrollment {
-	width: 75px;
+.players .search-results .score .point:last-of-type {
+  padding: 0 0 0 .5rem;
 }
 
-table.players .country {
-	width: 60px;
+.players .search-results .id {
+  width: 6%;
 }
 
-table.players .organization {
-	width: 100px;
+.players .search-results .name {
+  width: 20%;
 }
 
-table.players .rank,
-table.players .sex {
-	width: 50px;
+.players .search-results .country {
+  width: 6%;
 }
 
-table.players .score {
-	/*width: 100px;*/
+.players .search-results .enrollment {
+  width: 10%;
 }
 
-table.players .scorePoint {
-	width: 36px;
+.players .search-results .rank, .players .search-results .sex {
+  width: 5%;
+}
+
+.players .search-results .organization {
+  width: 8%;
+}
+
+.players .search-results .point {
+  width: 3%;
 }
 
 /* -------------------------------------------
    タイトル情報検索
  ------------------------------------------- */
-table.titles tr.retired {
-	background-color: #dddddd;
+.titles .name {
+  width: 19%;
 }
 
-table.titles .titleName,
-table.titles .titleNameEn {
-	width: 170px;
+.titles .winner {
+  width: 15%;
 }
 
-table.titles .winner {
-	width: 150px;
+.titles .holding, .titles .order {
+  width: 5%;
+  text-align: center;
 }
 
-table.titles .holding,
-table.titles .order {
-	width: 40px;
-	text-align: center;
+.titles .team, .titles .closed {
+  width: 5%;
+  text-align: center;
 }
 
-table.titles .groupFlag,
-table.titles .deleteFlag {
-	width: 35px;
-	text-align: center;
+.titles .filename, .titles .modified {
+  width: 10%;
 }
 
-table.titles .htmlFileName {
-	width: 70px;
+.titles input[type=text] {
+  width: 100%;
 }
 
-table.titles .htmlModifyDate {
-	width: 90px;
-}
-
-table.titles .openRetain {
-	width: 50px;
-}
-
-table.titles input[type=text] {
-	width: 100%;
-}
-
-table.titles .holding input[type=text],
-table.titles .order input[type=text],
-table.titles .htmlModifyDate input[type=text] {
-	text-align: center;
+.titles .holding input[type=text],
+.titles .order input[type=text],
+.titles .modified input[type=text] {
+  text-align: center;
 }
 
 /* -------------------------------------------
    タイトル情報詳細
  ------------------------------------------- */
 .retentions {
-    display: none;
-    width: 85%;
-    margin: auto;
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid #000000;
+  display: none;
+  width: 85%;
+  margin: auto;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #000000;
 }
 
-.retentions *,
-.retentions button {
-    font-size: 0.85rem;
+.retentions *, .retentions button {
+  font-size: 0.85rem;
 }
 
 .retentions table {
-    width: 100%;
-    margin: auto;
+  width: 100%;
+  margin: auto;
 }
 
-.retentions table,
-.retentions table tbody,
-.retentions table tr,
-.retentions table td {
-	border: 0.1rem #000000 solid;
-	border-collapse: collapse;
+.retentions table, .retentions table tbody, .retentions table tr, .retentions table td {
+  border: 0.1rem #000000 solid;
+  border-collapse: collapse;
 }
 
-.retentions table tbody,
-.retentions table tr,
-.retentions table td {
-    padding: 0.1rem 0.5rem;
+.retentions table tbody, .retentions table tr, .retentions table td {
+  padding: 0.1rem 0.5rem;
 }
 
 /* -------------------------------------------
    段位別棋士数検索
  ------------------------------------------- */
 .categories {
-    width: 25rem;
+  width: 25rem;
 }
 
-.categories .search-results thead tr {
-    display: table;
-    height: 100%;
+.categories .search-results {
+  width: 12em;
 }
 
-.categories .search-results table .rank {
-    width: 60px;
+.categories .search-results .rank {
+  width: 40%;
 }
 
-.categories .search-results table .count {
-    width: 80px;
+.categories .search-results .count {
+  width: 60%;
 }
 
 /* -------------------------------------------
    成績更新日編集
  ------------------------------------------- */
 .update-points .search-results {
-	border: 0.2rem solid #777777;
-    background-color: #ffffff;
-    border-radius: 0.4rem;
-    max-height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
-    height: auto;
+  border: 0.2rem solid #777777;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+  max-height: calc(100% - 4rem - 0.5rem);
+  /* content - .search-header and margin */
+  height: auto;
+}
+
+.update-points .search-results ul {
+  border: none;
+}
+
+.update-points .search-results ul .label-row {
+  border-radius: initial;
 }
 
 /* -------------------------------------------
    各種情報クエリ更新
  ------------------------------------------- */
-.update-score textarea {
-	height: calc(100% - 3.8rem);
-	width: 100%;
-    font-size: 12px;
-	overflow-y: auto;
-	border: 1px solid #000000;
-	margin-bottom: 5px;
+.update-score .queries {
+  height: calc(100% - 3.8rem);
+  width: 100%;
+  font-size: 12px;
+  overflow-y: auto;
+  border: 1px solid #000000;
+  margin-bottom: 5px;
 }
+
+/*# sourceMappingURL=app.css.map */

@@ -58,12 +58,76 @@ strong {
     min-height: #{$minRowHeight};
 }
 
-label {
-    margin-right: 1em;
-}
-
 .female {
     color: #ff0000;
+}
+
+.category-row {
+    @extend .row;
+    justify-content: flex-start;
+    height: 2.5rem;
+    margin: 0 auto .2rem;
+    text-indent: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #ddeeff;
+}
+
+.genre-row {
+    @extend .row;
+    justify-content: flex-start;
+    height: 2.3rem;
+    text-indent: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #eeffdd;
+}
+
+.label-row {
+    @extend .row;
+    justify-content: flex-start;
+    height: 2.2rem;
+    text-indent: 0.7rem;
+    background-color: #ffeedd;
+    font-weight: bold;
+}
+
+.label-row:first-child {
+    margin: 0 auto 0.2rem;
+    border-radius: 0.4rem;
+}
+
+.input-row {
+    @extend .row;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0 .7rem;
+
+    & > * {
+        margin-left: .5rem;
+    }
+
+    input {
+        margin-right: .5rem;
+    }
+
+    .point, .holding {
+        width: 3rem;
+        text-align: right;
+    }
+
+    .datepicker {
+        width: 9rem;
+    }
+
+    .year {
+        width: 4rem;
+        text-align: right;
+    }
+
+    select, textarea {
+        width: 100%;
+    }
 }
 
 /* -------------------------------------------
@@ -218,74 +282,6 @@ label {
             }
             .box2 {
                 flex-grow: 2;
-            }
-        }
-
-        .category-row {
-            @extend .row;
-            justify-content: flex-start;
-            height: 2.5rem;
-            margin: 0 auto .2rem;
-            text-indent: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            background-color: #ddeeff;
-        }
-
-        .genre-row {
-            @extend .row;
-            justify-content: flex-start;
-            height: 2.3rem;
-            text-indent: 0.6rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            background-color: #eeffdd;
-        }
-
-        .label-row {
-            @extend .row;
-            justify-content: flex-start;
-            height: 2.2rem;
-            text-indent: 0.7rem;
-            background-color: #ffeedd;
-            font-weight: bold;
-        }
-
-        .label-row:first-child {
-            margin: 0 auto 0.2rem;
-            border-radius: 0.4rem;
-        }
-
-        .input-row {
-            @extend .row;
-            justify-content: flex-start;
-            margin: 0;
-            padding: 0 .7rem;
-
-            & > * {
-                margin-left: .5rem;
-            }
-
-            input {
-                margin-right: .5rem;
-            }
-
-            .point, .holding {
-                width: 3rem;
-                text-align: right;
-            }
-
-            .datepicker {
-                width: 9rem;
-            }
-
-            .year {
-                width: 4rem;
-                text-align: right;
-            }
-
-            select, textarea {
-                width: 100%;
             }
         }
     }
