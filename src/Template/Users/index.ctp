@@ -1,4 +1,4 @@
-<article class="login">
+<section class="login">
 	<?= $this->Form->create(null, [
         'method' => 'post',
         'url' => ['action' => 'login'],
@@ -8,37 +8,33 @@
             'passwordFormGroup' => '{{input}}'
         ]
     ]) ?>
-        <section class="row">
-            <section class="label"><span>ID</span></section>
-            <section>
-                <?=
-                    $this->Form->input('username', [
-                        'value' => $this->request->data('username'),
-                        'maxlength' => 10,
-                        'class' => 'imeDisabled'
-                    ]);
-                ?>
-            </section>
-        </section>
-        <section class="row">
-            <section class="label"><span>Password</span></section>
-            <section>
-                <?=
-                    $this->Form->input('password', [
-                        'value' => $this->request->data('password'),
-                        'maxlength' => 20,
-                        'class' => 'imeDisabled'
-                    ]);
-                ?>
-            </section>
-        </section>
-        <section class="row button-row">
+        <div class="row">
+            <label>ID</label>
+            <?=
+                $this->Form->input('username', [
+                    'value' => $this->request->data('username'),
+                    'maxlength' => 10,
+                    'class' => 'imeDisabled'
+                ]);
+            ?>
+        </div>
+        <div class="row">
+            <label>Password</label>
+            <?=
+                $this->Form->input('password', [
+                    'value' => $this->request->data('password'),
+                    'maxlength' => 20,
+                    'class' => 'imeDisabled'
+                ]);
+            ?>
+        </div>
+        <div class="row button-row">
             <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
             <?=$this->Form->button('クリア', ['type' => 'reset'])?>
             <?=$this->Form->button('戻る', ['type' => 'button', 'id' => 'back'])?>
-        </section>
+        </div>
 	<?= $this->Form->end() ?>
-</article>
+</section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>

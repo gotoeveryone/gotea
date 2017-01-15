@@ -1,4 +1,4 @@
-<article class="categories">
+<section class="categories">
     <?=$this->Form->create(null, [
         'id' => 'mainForm',
         'method' => 'post',
@@ -9,16 +9,14 @@
             'selectFormGroup' => '{{input}}'
         ]
     ])?>
-        <section class="search-header">
-            <section class="row">
-                <section class="label">対象国：</section>
-                <section>
-                    <?=
-                        $this->Form->input("selectCountry", [
-                            "id" => "selectCountry", "options" => $countries, "class" => "country"
-                        ]);
-                    ?>
-                </section>
+        <ul class="search-header">
+            <li class="search-row">
+                <label>対象国：</label>
+                <?=
+                    $this->Form->input("selectCountry", [
+                        "id" => "selectCountry", "options" => $countries, "class" => "country"
+                    ]);
+                ?>
                 <section class="button-column">
                     <?=
                         $this->Form->button("検索", [
@@ -26,21 +24,19 @@
                         ]);
                     ?>
                 </section>
-            </section>
-        </section>
+            </li>
+        </ul>
 
-        <section class="search-results">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="rank">段位</th>
-                        <th class="count">人数</th>
-                    </tr>
-                </thead>
-            </table>
-        </section>
+        <div class="search-results">
+            <ul class="table-header">
+                <li class="table-row">
+                    <span class="rank">段位</span>
+                    <span class="count">人数</span>
+                </li>
+            </ul>
+        </div>
     <?=$this->Form->end()?>
-</article>
+</section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
@@ -54,21 +50,21 @@
                 accepts: "application/json; charset=utf-8"
             }).done(function (data) {
                 data = data.response;
-                // TBODY要素を削除
-                $(".search-results tbody").remove();
+                // ボディを削除
+                $('.table-body').remove();
 
-                var tbody = $('<tbody>');
+                var body = $('<ul>', {class: 'table-body'});
                 $.each(data.categories, function(idx, obj) {
-                    // TR要素を作成
-                    var tr = $('<tr>')
-                        .append($('<td>', {class: 'rank'}).html(obj.rank.name))
-                        .append($('<td>', {class: 'count'}).html(obj.count + "人"));
-                    // TBODY要素にTR要素を追加
-                    tbody.append(tr);
+                    // 行を生成
+                    var tr = $('<li>', {class: 'table-row'})
+                        .append($('<span>', {class: 'rank'}).html(obj.rank.name))
+                        .append($('<span>', {class: 'count'}).html(obj.count + "人"));
+                    // 一覧に行を追加
+                    body.append(tr);
                 });
 
-                // TBODY要素を追加
-                $(".search-results thead").after(tbody);
+                // ボディを追加
+                $(".table-header").after(body);
             }).fail(function (data) {
                 var dialog = $("#dialog");
                 dialog.html('<span class="red">データの取得に失敗しました。</span>');

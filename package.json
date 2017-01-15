@@ -1,0 +1,17 @@
+{
+  "name": "igoapp",
+  "version": "1.0.0",
+  "description": "Node.js with gulp",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp watch",
+    "prod": "gulp --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cakephp3-elixir": "^1.0.4",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.0.0"
+  }
+}

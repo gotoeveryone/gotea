@@ -1,4 +1,4 @@
-<article class="update-points">
+<section class="update-points">
     <?=$this->Form->create(null, [
         'id' => 'mainForm',
         'type' => 'post',
@@ -9,47 +9,45 @@
             'selectFormGroup' => '{{input}}'
         ]
     ])?>
-        <section class="search-header">
-            <section class="row">
-                <section class="label">対象年：</section>
-                <section>
-                    <?=$this->Form->input('year', ['options' => $years, 'class' => 'year'])?>
-                </section>
-                <section class="button-column">
+        <ul class="search-header">
+            <li class="search-row">
+                <label>対象年：</label>
+                <?=$this->Form->input('year', ['options' => $years, 'class' => 'year'])?>
+                <div class="button-column">
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                     <?=$this->Form->button('一括更新', ['id' => 'save', 'type' => 'button'])?>
-                </section>
-            </section>
-        </section>
+                </div>
+            </li>
+        </ul>
 
         <?php if (!empty($updatedPoints)) : ?>
-        <section class="search-results">
+        <div class="search-results">
             <?php foreach ($updatedPoints as $key => $point) : ?>
-                <section class="group" data-row="point">
-                    <?=$this->Form->hidden('results['.$key.'][id]', ['value' => $point->id])?>
-                    <?=$this->Form->hidden('results['.$key.'][country_id]', ['value' => $point->country_id])?>
-                    <!--<?=$this->Form->hidden('results['.$key.'][modified]', ['value' => $this->Date->format($point->modified, 'YYYY/MM/dd HH:mm:ss')])?>-->
-                    <?=
-                        $this->Form->hidden('results['.$key.'][bean-scoreUpdateDate]', [
-                            'id' => 'bean-scoreUpdateDate-'.$key,
-                            'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
-                        ])
-                    ?>
-                    <?=
-                        $this->Form->hidden('results['.$key.'][modified]', [
-                            'value' => $this->Date->format($point->modified, 'YYYYMMddHHmmss')
-                        ])
-                    ?>
-                    <?=
-                        $this->Form->hidden('results['.$key.'][update_flag]', [
-                            'id' => 'updateFlag-'.$key,
-                            'value' => $point->update_flag
-                        ])
-                    ?>
-                    <section class="label-row">
+                <?=$this->Form->hidden('results['.$key.'][id]', ['value' => $point->id])?>
+                <?=$this->Form->hidden('results['.$key.'][country_id]', ['value' => $point->country_id])?>
+                <?=$this->Form->hidden('results['.$key.'][modified]', ['value' => $this->Date->format($point->modified, 'YYYY/MM/dd HH:mm:ss')])?>
+                <?=
+                    $this->Form->hidden('results['.$key.'][bean-scoreUpdateDate]', [
+                        'id' => 'bean-scoreUpdateDate-'.$key,
+                        'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
+                    ])
+                ?>
+                <?=
+                    $this->Form->hidden('results['.$key.'][modified]', [
+                        'value' => $this->Date->format($point->modified, 'YYYYMMddHHmmss')
+                    ])
+                ?>
+                <?=
+                    $this->Form->hidden('results['.$key.'][update_flag]', [
+                        'id' => 'updateFlag-'.$key,
+                        'value' => $point->update_flag
+                    ])
+                ?>
+                <ul>
+                    <li class="label-row">
                         <span><?=h($point->country->name)?></span>
-                    </section>
-                    <section class="input-row">
+                    </li>
+                    <li class="input-row">
                         <span>
                         成績更新日：
                         <?=
@@ -64,13 +62,13 @@
                         <span>
                             更新日時：<?=$this->Date->formatToDateTime($point->modified)?>
                         </span>
-                    </section>
-                </section>
+                    </li>
+                </ul>
             <?php endforeach ?>
-        </section>
+        </div>
         <?php endif ?>
     <?=$this->Form->end()?>
-</article>
+</section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>

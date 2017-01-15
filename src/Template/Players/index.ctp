@@ -1,4 +1,4 @@
-<article class="players">
+<section class="players">
     <?=$this->Form->create($form, [
         'id' => 'mainForm',
         'type' => 'post',
@@ -9,94 +9,74 @@
             'selectFormGroup' => '{{input}}'
         ]
     ])?>
-        <section class="search-header">
-            <section class="row">
-                <section class="label">所属国：</section>
-                <section>
-                    <?=
-                        $this->Form->input('country_id', [
-                            'data-id' => 'country',
-                            'options' => $countries,
-                            'class' => 'country',
-                            'empty' => true
-                        ]);
-                    ?>
-                </section>
-                <section class="label">所属組織：</section>
-                <section>
-                    <?=
-                        $this->Form->input('organization_id', [
-                            'data-id' => 'organization',
-                            'options' => $organizations,
-                            'class' => 'organization',
-                            'empty' => true
-                        ]);
-                    ?>
-                </section>
-                <section class="label">段位：</section>
-                <section>
-                    <?=
-                        $this->Form->input('rank_id', [
-                            'data-id' => 'rank',
-                            'options' => $ranks,
-                            'class' => 'rank',
-                            'empty' => true
-                        ]);
-                    ?>
-                </section>
-                <section class="label">性別：</section>
-                <section>
-                    <?=
-                        $this->Form->input('sex', [
-                            'options' => [
-                                '男性' => '男性',
-                                '女性' => '女性'
-                            ],
-                            'class' => 'sex',
-                            'empty' => true
-                        ]);
-                    ?>
-                </section>
-                <section class="label">引退者：</section>
-                <section>
-                    <?=
-                        $this->Form->input('is_retired', [
-                            'options' => [
-                                '0' => '検索しない',
-                                '1' => '検索する'
-                            ],
-                            'class' => 'retired'
-                        ]);
-                    ?>
-                </section>
-                <section class="button-column">
-                    <?php if (!empty($players) && count($players) > 0) { ?>
-                        <span class="left red">
-                            <?=count($players).'件のレコードが該当しました。'?>
-                        </span>
-                    <?php } ?>
-                </section>
-            </section>
-            <section class="row">
-                <section class="label">棋士名：</section>
-                <section>
-                    <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20])?>
-                </section>
-                <section class="label">（英語）：</section>
-                <section>
-                    <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
-                </section>
-                <section class="label">（その他）：</section>
-                <section>
-                    <?=$this->Form->text('name_other', ['class' => 'name-short', 'maxlength' => 20]);?>
-                </section>
-                <section class="label">入段年：</section>
-                <section>
-                    <?=$this->Form->text('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
-                    ～
-                    <?=$this->Form->text('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
-                </section>
-                <section class="button-column">
+        <ul class="search-header">
+            <li class="search-row">
+                <label>所属国：</label>
+                <?=
+                    $this->Form->input('country_id', [
+                        'data-id' => 'country',
+                        'options' => $countries,
+                        'class' => 'country',
+                        'empty' => true
+                    ]);
+                ?>
+                <label>所属組織：</label>
+                <?=
+                    $this->Form->input('organization_id', [
+                        'data-id' => 'organization',
+                        'options' => $organizations,
+                        'class' => 'organization',
+                        'empty' => true
+                    ]);
+                ?>
+                <label>段位：</label>
+                <?=
+                    $this->Form->input('rank_id', [
+                        'data-id' => 'rank',
+                        'options' => $ranks,
+                        'class' => 'rank',
+                        'empty' => true
+                    ]);
+                ?>
+                <label>性別：</label>
+                <?=
+                    $this->Form->input('sex', [
+                        'options' => [
+                            '男性' => '男性',
+                            '女性' => '女性'
+                        ],
+                        'class' => 'sex',
+                        'empty' => true
+                    ]);
+                ?>
+                <label>引退者：</label>
+                <?=
+                    $this->Form->input('is_retired', [
+                        'options' => [
+                            '0' => '検索しない',
+                            '1' => '検索する'
+                        ],
+                        'class' => 'excluded'
+                    ]);
+                ?>
+                <?php if (!empty($players) && count($players) > 0) { ?>
+                <span class="resule-count">
+                    <?=count($players).'件のレコードが該当しました。'?>
+                </span>
+                <?php } ?>
+            </li>
+            <li class="search-row">
+                <label>棋士名：</label>
+                <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20])?>
+                <label>（英語）：</label>
+                <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
+                <label>（その他）：</label>
+                <?=$this->Form->text('name_other', ['class' => 'name-short', 'maxlength' => 20]);?>
+                <label>入段年：</label>
+                <?=$this->Form->text('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
+                ～
+                <?=$this->Form->text('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
+                <div class="button-column">
                     <?=
                         $this->Form->button('新規作成', [
                             'id' => 'addNew',
@@ -105,110 +85,107 @@
                         ]);
                     ?>
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
-                </section>
-            </section>
-        </section>
+                </div>
+            </li>
+        </ul>
 
-        <section class="search-results">
-            <table class="players">
-                <thead>
-                    <tr>
-                        <th rowspan="2" class="playerId">ID</th>
-                        <th rowspan="2" class="playerName">棋士名</th>
-                        <th rowspan="2" class="playerNameEn">棋士名（英語）</th>
-                        <th rowspan="2" class="enrollment">入段日</th>
-                        <th rowspan="2" class="country">所属国</th>
-                        <th rowspan="2" class="organization">所属組織</th>
-                        <th rowspan="2" class="rank">段位</th>
-                        <th rowspan="2" class="sex">性別</th>
-                        <th colspan="3" class="score"><?php echo date('Y')?>年国内成績</th>
-                        <th colspan="3" class="score"><?php echo date('Y')?>年国際成績</th>
-                    </tr>
-                    <tr>
-                        <th class="scorePoint">勝</th>
-                        <th class="scorePoint">敗</th>
-                        <th class="scorePoint">分</th>
-                        <th class="scorePoint">勝</th>
-                        <th class="scorePoint">敗</th>
-                        <th class="scorePoint">分</th>
-                    </tr>
-                </thead>
-                <?php if (!empty($players) && count($players) > 0) : ?>
-                <tbody>
-                    <?php foreach ($players as $player) : ?>
-                    <?php
-                        $class = '';
-                        if ($player->is_retired) {
-                            $class .= 'retired';
-                        }
-                        if ($player->sex === '女性') {
-                            if ($class !== '') {
-                                $class .= ' ';
-                            }
-                            $class .= 'female';
-                        }
+        <div class="search-results">
+            <ul class="players table-header">
+                <li class="table-row">
+                    <span class="id">ID</span>
+                    <span class="name">棋士名</span>
+                    <span class="name">棋士名（英語）</span>
+                    <span class="enrollment">入段日</span>
+                    <span class="country">所属国</span>
+                    <span class="organization">所属組織</span>
+                    <span class="rank">段位</span>
+                    <span class="sex">性別</span>
+                    <span class="score">
+                        <?=date('Y')?>年国内<br/>
+                        <span class="point">勝</span>
+                        <span class="point">敗</span>
+                        <span class="point">分</span>
+                    </span>
+                    <span class="score">
+                        <?=date('Y')?>年国際<br/>
+                        <span class="point">勝</span>
+                        <span class="point">敗</span>
+                        <span class="point">分</span>
+                    </span>
+                </li>
+            </ul>
+            <?php if (!empty($players) && count($players) > 0) : ?>
+            <ul class="players table-body">
+                <?php foreach ($players as $player) : ?>
+                <?php
+                    $class = '';
+                    if ($player->is_retired) {
+                        $class .= 'excluded-row';
+                    }
+                    if ($player->sex === '女性') {
                         if ($class !== '') {
-                            $class = ' class="'.$class.'"';
+                            $class .= ' ';
                         }
-                    ?>
-                    <tr<?php echo $class ?>>
-                        <td class="center playerId">
-                            <?=h($player->id)?>
-                        </td>
-                        <td class="left playerName">
-                            <?php
-                                $setClass = ($player->sex === '女性' ? 'female' : 'blue');
-                                echo $this->Html->link($player->name, [
-                                    'action' => 'detail/'.$player->id
-                                ], [
-                                    'class' => $setClass.' colorbox'
-                                ]);
-                            ?>
-                        </td>
-                        <td class="left playerNameEn">
-                            <?=h($player->name_english); ?>
-                        </td>
-                        <td class="center enrollment">
-                            <?=$this->Date->formatJoinDelimiterValue($player->joined, '/'); ?>
-                        </td>
-                        <td class="center country">
-                            <?=h($player->country->name); ?>
-                        </td>
-                        <td class="center organization">
-                            <?=h($player->organization->name); ?>
-                        </td>
-                        <td class="center rank">
-                            <?=h($player->rank->name); ?>
-                        </td>
-                        <td class="center sex">
-                            <?=h($player->sex); ?>
-                        </td>
-                        <td class="center scorePoint">
-                            <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point)); ?>
-                        </td>
-                        <td class="center scorePoint">
-                            <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point)); ?>
-                        </td>
-                        <td class="center scorePoint">
-                            <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point)); ?>
-                        </td>
-                        <td class="center scorePoint">
-                            <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point_world)); ?>
-                        </td>
-                        <td class="center scorePoint">
-                            <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point_world)); ?>
-                        </td>
-                        <td class="center scorePoint">
-                            <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point_world)); ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
-                </tbody>
-                <?php endif ?>
-            </table>
-        </section>
+                        $class .= 'female';
+                    }
+                ?>
+                <li class="table-row<?= ($class ? ' '.$class : ''); ?>">
+                    <span class="id">
+                        <?=h($player->id)?>
+                    </span>
+                    <span class="name">
+                        <?php
+                            $setClass = ($player->sex === '女性' ? 'female' : 'blue');
+                            echo $this->Html->link($player->name, [
+                                'action' => 'detail/'.$player->id
+                            ], [
+                                'class' => $setClass.' colorbox'
+                            ]);
+                        ?>
+                    </span>
+                    <span class="name">
+                        <?=h($player->name_english); ?>
+                    </span>
+                    <span class="enrollment">
+                        <?=$this->Date->formatJoinDelimiterValue($player->joined, '/'); ?>
+                    </span>
+                    <span class="country">
+                        <?=h($player->country->name); ?>
+                    </span>
+                    <span class="organization">
+                        <?=h($player->organization->name); ?>
+                    </span>
+                    <span class="rank">
+                        <?=h($player->rank->name); ?>
+                    </span>
+                    <span class="sex">
+                        <?=h($player->sex); ?>
+                    </span>
+                    <span class="point">
+                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point)); ?>
+                    </span>
+                    <span class="point">
+                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point)); ?>
+                    </span>
+                    <span class="point">
+                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point)); ?>
+                    </span>
+                    <span class="point">
+                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point_world)); ?>
+                    </span>
+                    <span class="point">
+                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point_world)); ?>
+                    </span>
+                    <span class="point">
+                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point_world)); ?>
+                    </span>
+                </li>
+                <?php endforeach ?>
+            <?php endif ?>
+            </ul>
+        </div>
     <?=$this->Form->end()?>
-</article>
+</section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>

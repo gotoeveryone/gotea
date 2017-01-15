@@ -1,4 +1,4 @@
-<article class="update-score">
+<section class="update-score">
     <?=$this->Form->create(null, [
         'id' => 'mainForm',
         'method' => 'post',
@@ -9,13 +9,13 @@
             'selectFormGroup' => '{{input}}'
         ]
     ])?>
-        <?=$this->Form->textarea('queries', ['id' => 'executeTargets'])?>
-        <section class="row button-row">
+        <?=$this->Form->textarea('queries', ['id' => 'executeTargets', 'class' => 'queries'])?>
+        <div class="button-row">
             <?=$this->Form->button('更新', ['type' => 'button', 'id' => 'update'])?>
             <?=$this->Form->button('クリア', ['type' => 'button', 'id' => 'clear'])?>
-        </section>
+        </div>
     <?=$this->Form->end()?>
-</article>
+</section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>

@@ -17,26 +17,26 @@
     <?=$this->Html->css('app')?>
 </head>
 <body>
-    <section class="container">
+    <div class="container">
         <!-- ヘッダー -->
         <?php if (!isset($isDialog)) : ?>
         <header>
-            <section class="system-name"><span>棋士情報管理システム</span></section>
+            <div class="system-name"><span>棋士情報管理システム</span></div>
             <!-- 見出し -->
-            <section class="page-title">
+            <div class="page-title">
                 <h1><?=h($cakeDescription)?></h1>
-            </section>
-            <section class="other">
+            </div>
+            <div class="other">
                 <?php if (isset($username)) : ?>
                     <span class="username">ユーザ：<?=h($username)?></span>
                 <?php endif ?>
                 <span><?=date('Y年m月d日 H時i分s秒')?></span>
-            </section>
+            </div>
         </header>
         <?php endif ?>
 
         <!-- 本体 -->
-        <section class="content row<?=(isset($isDialog) ? ' modal' : '')?>">
+        <div class="content<?=(isset($isDialog) ? ' modal' : '')?>">
             <?php if (isset($username) && !isset($isDialog)) : ?>
             <!-- ナビゲーション -->
             <nav>
@@ -84,23 +84,23 @@
             <main>
                 <?=$this->fetch('content')?>
             </main>
-        </section>
+        </div>
 
         <!-- フッター -->
         <?php if (!isset($isDialog)) : ?>
         <footer>
             <?php if (isset($username)) : ?>
-            <section>
+            <div>
                 <a href="<?=$this->Url->build(['controller' => 'users', 'action' => 'logout']); ?>">ログアウト</a>
-            </section>
+            </div>
             <?php endif ?>
         </footer>
         <?php endif ?>
-    </section>
+    </div>
 
     <!-- ダイアログ -->
-    <section id="dialog" title="メッセージ"><?=$this->Flash->render()?></section>
-    <section id="confirm" title="確認"></section>
+    <div id="dialog" title="メッセージ"><?=$this->Flash->render()?></div>
+    <div id="confirm" title="確認"></div>
 
     <script src="/js/jquery-2.2.3.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>

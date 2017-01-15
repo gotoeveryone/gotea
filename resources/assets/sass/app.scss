@@ -1,0 +1,579 @@
+$minRowHeight: 2.6rem;
+$rowPadding: .3rem;
+
+%center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* -------------------------------------------
+   タグ単位のレイアウト
+ ------------------------------------------- */
+main, nav {
+    padding: 0 0.5rem;
+}
+
+nav + main {
+    width: 70%;
+    min-width: calc(100% - 220px);
+}
+
+nav {
+    width: 30%;
+	max-width: 220px;
+}
+
+form {
+    height: 100%;
+    width: 100%;
+}
+
+strong {
+    margin: 0 0.3rem;
+    span {
+        color: #ff0000;
+    }
+}
+
+/* -------------------------------------------
+   共通レイアウト
+ ------------------------------------------- */
+.content {
+    display: flex;
+    &.modal {
+        height: 100%;
+        padding: 1rem;
+    }
+    &.row {
+        margin: auto;
+    }
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    margin: 0.2rem auto;
+    padding: 0.2rem;
+    min-height: #{$minRowHeight};
+}
+
+label {
+    margin-right: 1em;
+}
+
+.female {
+    color: #ff0000;
+}
+
+/* -------------------------------------------
+   ダイアログ用
+ ------------------------------------------- */
+#dialog, #confirm {
+	display: none;
+}
+
+#dialog ul {
+    padding-left: 1.5rem;
+}
+
+/* -------------------------------------------
+   検索エリア
+ ------------------------------------------- */
+.search-header {
+    position: relative;
+    margin-bottom: 0.5rem;
+	padding: $rowPadding;
+    background-color: #ffffff;
+	border: 0.2rem solid #bbbbbb;
+    border-radius: 0.4rem;
+    label {
+        margin: 0 0.5rem 0 0.2rem;
+        & + * {
+            margin-right: 1rem;
+        }
+    }
+    .year, .country, .sex, .rank {
+        width: 6em;
+    }
+    .organization, .excluded {
+        width: 10em;
+    }
+    .name {
+        width: 12em;
+    }
+    .name-short {
+        width: 8rem;
+    }
+    .joined {
+        width: 3.2em;
+        text-align: right;
+    }
+}
+
+/* -------------------------------------------
+   検索エリア（一覧）
+ ------------------------------------------- */
+.search-results {
+    height: calc(100% - #{(($rowPadding * 2) + $minRowHeight)} - 1rem); /* content - .search-header and margin */
+
+    .table-body {
+        .excluded-row {
+            background-color: #dddddd;
+        }
+    }
+
+    table {
+        display: block;
+        height: 100%;
+        max-height: 100%;
+        border-collapse: collapse;
+
+        thead {
+            display: table-cell;
+            border: 1px #000000 solid;
+            height: 3.2rem;
+            max-height: 3.2rem;
+        }
+
+        tbody {
+            display: inline-block;
+            max-height: calc(100% - 3.2rem);
+            overflow-x: hidden;
+            overflow-y: scroll;
+            -ms-overflow-x: hidden;
+            -ms-overflow-y: scroll;
+            background-color: #ffffff;
+            border-top: 2px #000000 solid;
+            border-left: 1px #000000 solid;
+            border-right: 2px #000000 solid;
+            border-bottom: 2px #000000 solid;
+            margin-top: -2px;
+        }
+
+        td, th {
+            display: table-cell;
+            padding: 3px;
+            border: 1px solid #000000;
+            table-layout: fixed;
+        }
+
+        tr {         
+            &:first-of-type td {
+                border-top: none;
+            }
+            &:last-of-type(1) td {
+                border-bottom: none;
+            }
+            td:nth-last-of-type(1) {
+                border-right: 2px solid #000000;
+            }
+        }
+    }
+}
+
+/* -------------------------------------------
+   詳細表示エリア
+ ------------------------------------------- */
+.detail-dialog {
+    width: 100%;
+    height: 100%;
+}
+
+.detail-dialog #tabs {
+    height: 30px;
+    letter-spacing: -.4em;
+    font-size: 0;
+}
+
+.detail-dialog #tabs .tab {
+    display: inline-block;
+    vertical-align: middle;
+    letter-spacing: normal;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #000000;
+	border: 0.1rem solid #000000;
+	border-bottom: none;
+    height: 100%;
+    padding: 0.4rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.detail-dialog #tabs .selectTab {
+    font-weight: bold;
+    color: #000000;
+    background-color: #99ffff;
+}
+
+.detail-dialog .detail {
+	height: calc(100% - 30px);
+    overflow-y: auto;
+    border: 0.1rem solid #000000;
+    background-color: #ffffff;
+}
+
+[class^=box] {
+    padding: 0.1rem;
+    vertical-align: top;
+    width: 100%;
+}
+
+[class^=box] [class$=-row] {
+    vertical-align: middle;
+}
+
+.box2 {
+    width: calc(100% / 2);
+}
+
+.box3 {
+    width: calc(100% / 3);
+}
+
+.box4 {
+    width: calc(100% / 4);
+}
+
+/*[class$=-row] {
+    display: table;
+    width: 100%;
+}
+
+[class$=-row] + .row {
+    margin-top: 0;
+}*/
+
+/*[class$=-row]:not(.input-row) > * {
+    display: table-cell;
+    vertical-align: middle;
+}*/
+
+.row-group {
+    border-top: 0.1rem solid #000000;
+}
+
+.category-row {
+	height: 2.5rem;
+	text-indent: 0.5rem;
+	font-weight: bold;
+	background-color: #ddeeff;
+}
+
+.category-row * {
+	font-size: 1.2rem;
+}
+
+.genre-row {
+    @extend .row;
+	height: 2.3rem;
+	text-indent: 0.6rem;
+	font-weight: bold;
+	background-color: #eeffdd;
+}
+
+.genre-row * {
+	font-size: 1.1rem;
+}
+
+.label-row {
+    @extend .row;
+    justify-content: flex-start;
+	height: 2.2rem;
+	text-indent: 0.7rem;
+	background-color: #ffeedd;
+    font-weight: bold;
+}
+
+.label-row:first-child {
+    margin: 0 auto 0.2rem;
+    border-radius: 0.4rem;
+}
+
+.input-row {
+    @extend .row;
+    justify-content: flex-start;
+    margin: 0.5rem 0;
+	padding: 0 0.7rem;
+
+    & > * {
+        margin-left: .5rem;
+    }
+}
+/*
+.input-row > * {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.input-row > [class^=box] > * {
+    display: inline-block;
+}
+
+.input-row > * input {
+    margin-right: 0.2rem;
+}
+
+.input-row .point,
+.input-row .holding {
+    width: 3rem;
+    text-align: right;
+}
+
+.input-row .datepicker {
+    width: 9rem;
+}
+
+.input-row .year {
+    width: 4rem;
+    text-align: right;
+}
+
+.input-row select,
+.input-row textarea {
+    width: 100%;
+}
+
+.input-row [class^=box].button-area {
+    display: table-cell;
+    text-align: right;
+}*/
+
+.button-row {
+    margin: 0.5rem auto;
+    height: 2.8rem;
+    text-align: center;
+}
+
+/* -------------------------------------------
+   ログイン画面
+ ------------------------------------------- */
+.login {
+    @extend %center;
+	width: 20%;
+    min-width: 250px;
+
+    .row {
+        label {
+            padding: 0 .5em 0 0;
+            width: 30%;
+            text-align: right;
+            font-weight: bold;
+        }
+        input {
+            width: 70%;
+        }
+    }
+}
+
+/* -------------------------------------------
+   勝敗ランキング画面
+ ------------------------------------------- */
+.ranking {
+    width: 30rem;
+    select {
+        width: 7rem;
+        margin-right: .4rem;
+    }
+    .search-results {
+        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
+
+        .no, .percent {
+            width: 15%;
+        }
+        .player {
+            width: 40%;
+        }
+        .point {
+            width: 10%;
+        }
+    }
+}
+
+/* -------------------------------------------
+   棋士情報検索
+ ------------------------------------------- */
+.players {
+    .search-header {
+        .resule-count {
+            margin-left: auto;
+            color: red;
+        }
+        .joined {
+            margin-left: .3rem;
+            margin-right: .3rem;
+        }
+    }
+    .search-results {
+        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
+        .table-row {
+            & > :last-child {
+                padding-right: .7rem;
+            }
+        }
+        .score {
+            width: 9%;
+            .point {
+                width: 3%;
+                padding: 0 .5rem;
+                &:first-of-type {
+                    padding: 0 .5rem 0 0;
+                }
+                &:last-of-type {
+                    padding: 0 0 0 .5rem;
+                }
+            }
+        }
+
+        .id {
+            width: 6%;
+        }
+
+        .name {
+            width: 20%;
+        }
+
+        .country {
+            width: 6%;
+        }
+
+
+        .enrollment {
+            width: 10%;
+        }
+
+        .rank, .sex {
+            width: 5%;
+        }
+
+        .organization {
+            width: 8%;
+        }
+
+        .point {
+            width: 3%;
+        }
+    }
+}
+
+/* -------------------------------------------
+   タイトル情報検索
+ ------------------------------------------- */
+.titles {
+    .name {
+        width: 19%;
+    }
+
+    .winner {
+        width: 15%;
+    }
+
+    .holding, .order {
+        width: 5%;
+        text-align: center;
+    }
+
+    .team, .closed {
+        width: 5%;
+        text-align: center;
+    }
+
+    .filename, .modified {
+        width: 10%;
+    }
+
+    input[type=text] {
+        width: 100%;
+    }
+
+    .holding input[type=text],
+    .order input[type=text],
+    .modified input[type=text] {
+        text-align: center;
+    }
+}
+
+/* -------------------------------------------
+   タイトル情報詳細
+ ------------------------------------------- */
+.retentions {
+    display: none;
+    width: 85%;
+    margin: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #000000;
+}
+
+.retentions *,
+.retentions button {
+    font-size: 0.85rem;
+}
+
+.retentions table {
+    width: 100%;
+    margin: auto;
+}
+
+.retentions table,
+.retentions table tbody,
+.retentions table tr,
+.retentions table td {
+	border: 0.1rem #000000 solid;
+	border-collapse: collapse;
+}
+
+.retentions table tbody,
+.retentions table tr,
+.retentions table td {
+    padding: 0.1rem 0.5rem;
+}
+
+/* -------------------------------------------
+   段位別棋士数検索
+ ------------------------------------------- */
+.categories {
+    width: 25rem;
+    .search-results {
+        width: 12em;
+        .rank {
+            width: 40%;
+        }
+        .count {
+            width: 60%;
+        }
+    }
+}
+
+/* -------------------------------------------
+   成績更新日編集
+ ------------------------------------------- */
+.update-points {
+    .search-results {
+        border: 0.2rem solid #777777;
+        background-color: #ffffff;
+        border-radius: 0.4rem;
+        max-height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
+        height: auto;
+        ul {
+            border: none;
+            .label-row {
+                border-radius: initial;
+            }
+        }
+    }
+}
+
+/* -------------------------------------------
+   各種情報クエリ更新
+ ------------------------------------------- */
+.update-score {
+    .queries {
+        height: calc(100% - 3.8rem);
+        width: 100%;
+        font-size: 12px;
+        overflow-y: auto;
+        border: 1px solid #000000;
+        margin-bottom: 5px;
+    }
+}
