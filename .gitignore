@@ -7,3 +7,4 @@
 /.settings/org.eclipse.php.server.core.phpServersPrefs.prefs
 /.settings/org.eclipse.wst.validation.prefs
 /node_modules
+/webroot/css
