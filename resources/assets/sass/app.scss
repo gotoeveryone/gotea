@@ -111,7 +111,12 @@ strong {
         margin-right: .5rem;
     }
 
-    .point, .holding {
+    .point {
+        width: 2.5rem;
+        text-align: right;
+    }
+
+    .holding {
         width: 3rem;
         text-align: right;
     }
