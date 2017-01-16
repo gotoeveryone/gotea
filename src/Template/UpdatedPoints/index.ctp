@@ -25,7 +25,6 @@
             <?php foreach ($updatedPoints as $key => $point) : ?>
                 <?=$this->Form->hidden('results['.$key.'][id]', ['value' => $point->id])?>
                 <?=$this->Form->hidden('results['.$key.'][country_id]', ['value' => $point->country_id])?>
-                <?=$this->Form->hidden('results['.$key.'][modified]', ['value' => $this->Date->format($point->modified, 'YYYY/MM/dd HH:mm:ss')])?>
                 <?=
                     $this->Form->hidden('results['.$key.'][bean-scoreUpdateDate]', [
                         'id' => 'bean-scoreUpdateDate-'.$key,
