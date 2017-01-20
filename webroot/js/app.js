@@ -40,6 +40,18 @@ var openConfirm = function(message, form) {
     confirm.dialog("open");
 };
 
+var checkChange = function(obj) {
+    var self = obj;
+    var parent = self.parent();
+    var bean = parent.find('input[type=hidden][name*=bean_]');
+    var compare = (self.attr('type') === 'checkbox' ? self.prop('checked') : self.val());
+    if (compare !== bean.val()) {
+        self.addClass('red');
+    } else {
+        self.removeClass('red');
+    }
+}
+
 // 初期処理
 $(document).ready(function() {
     // 各種初期設定
@@ -54,15 +66,7 @@ $(document).ready(function() {
 
     // 値変更時
     $('.checkChange').on('change', function() {
-        var self = $(this);
-        var parent = self.parent();
-        var bean = parent.find('input[type=hidden][name*=bean_]');
-        var compare = (self.attr('type') === 'checkbox' ? self.prop('checked') : self.val());
-        if (compare !== bean.val()) {
-            self.addClass('red');
-        } else {
-            self.removeClass('red');
-        }
+        checkChange($(this));
     });
 
     // タブ押下時
@@ -119,18 +123,7 @@ function getDatepickerObject() {
 		showMonthAfterYear: true,
         yearSuffix: "年",
 		onSelect: function() {
-			var id = $(this).attr('id');
-			var idArray = id.split('-');
-			var beforeId = '#bean-' + idArray[0] + '-' + idArray[1];
-            var label = $('#' + id + '-label');
-			if ($(this).val() !== $(beforeId).val()) {
-				$(this).addClass('red');
-                label.addClass('red');
-			} else {
-				$(this).removeClass('red');
-                label.removeClass('red');
-			}
-            label.text($(this).val());
+            checkChange($(this));
 		}
     };
 }
