@@ -9,9 +9,8 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "cakephp3-elixir": "^1.0.4",
-    "gulp": "^3.9.1",
-    "gulp-sass": "^3.0.0"
+    "gulp": "^3.9.1"
   }
 }
