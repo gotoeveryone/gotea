@@ -222,59 +222,59 @@
         $('#addRow').on('click', function() {
             counter++;
 
-            // TR要素を作成
-            var tr = $('<tr>')
+            // 行要素を作成
+            var row = $('<li>', {class: 'table-row'})
                     .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_save]', value: false}))
-                    .append($('<td>', {class: 'left titleName'})
+                    .append($('<span>', {class: 'name'})
                         .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name]', class: 'red'}))
                     )
-                    .append($('<td>', {class: 'left titleNameEn'})
+                    .append($('<span>', {class: 'name'})
                         .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name_english]', class: 'red'}))
                     )
-                    .append($('<td>', {class: 'left holding'})
+                    .append($('<span>', {class: 'holding'})
                         .append($('<input>', {type: 'text', name: 'titles[' + counter + '][holding]', class: 'red', maxlength: 3}))
                     )
-                    .append($('<td>', {class: 'left winner'})
+                    .append($('<span>', {class: 'winner'})
                         .html('&nbsp;')
                     )
-                    .append($('<td>', {class: 'left order'})
+                    .append($('<span>', {class: 'order'})
                         .append($('<input>', {type: 'text', name: 'titles[' + counter + '][sort_order]', class: 'red', maxlength: 2}))
                     )
-                    .append($('<td>', {class: 'left groupFlag'})
+                    .append($('<span>', {class: 'team'})
                         .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_team]', value: 0}))
                         .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_team]', class: 'red'}))
                     )
-                    .append($('<td>', {class: 'left htmlFileName'})
+                    .append($('<span>', {class: 'filename'})
                         .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_name]', class: 'red'}))
                     )
-                    .append($('<td>', {class: 'left htmlModifyDate'})
+                    .append($('<span>', {class: 'modified'})
                         .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_modified]', class: 'red datepicker'}))
                     )
-                    .append($('<td>', {class: 'left deleteFlag'})
+                    .append($('<span>', {class: 'closed'})
                         .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_closed]', value: 0}))
                         .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_closed]', class: 'red'}))
                     )
-                    .append($('<td>', {class: 'center openRetain'})
+                    .append($('<span>', {class: 'center'})
                         .html('新規')
                     );
 
             // 日付ダイアログの設定
-            tr.find('.datepicker').datepicker(getDatepickerObject());
+            row.find('.datepicker').datepicker(getDatepickerObject());
 
-            // 一覧に要素を追加
-            $('table.titles').append(tr);
+            // 一覧に追加
+            $('.table-body').append(row);
         });
 
         // 一括更新ボタン押下時
         $('#save').on('click', function() {
-            var tbody = $('table.titles tbody');
-            if (!tbody.find('input[type!=hidden]').hasClass('red')) {
+            var body = $('.table-body');
+            if (!body.find('input[type!=hidden]').hasClass('red')) {
                 // 変更対象がないので更新しない
                 var dialog = $("#dialog");
                 dialog.html('変更された項目がありません！');
                 dialog.click();
             } else {
-                var rows = tbody.find('tr');
+                var rows = body.find('.table-row');
                 rows.each(function() {
                     var obj = $(this);
                     if (obj.find('input[type!=hidden]').hasClass('red')) {
