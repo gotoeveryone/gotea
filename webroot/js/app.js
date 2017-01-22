@@ -50,7 +50,7 @@ var checkChange = function(obj) {
     } else {
         self.removeClass('red');
     }
-}
+};
 
 // 初期処理
 $(document).ready(function() {
@@ -123,7 +123,9 @@ function getDatepickerObject() {
 		showMonthAfterYear: true,
         yearSuffix: "年",
 		onSelect: function() {
-            checkChange($(this));
+            if ($(this).hasClass('checkChange')) {
+                checkChange($(this));
+            }
 		}
     };
 }

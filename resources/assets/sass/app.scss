@@ -342,6 +342,37 @@ strong {
 }
 
 /* -------------------------------------------
+   タイトル勝敗検索
+ ------------------------------------------- */
+.title-scores {
+    .search-header {
+        .name {
+            width: 12em;
+        }
+        .country {
+            width: 6em;
+        }
+        .year {
+            width: 8em;
+        }
+        .date {
+            width: 8em;
+        }
+    }
+    .search-results {
+        .country, .date {
+            width: 15%;
+        }
+        .name {
+            width: 25%;
+        }
+        .operation {
+            width: 20%;
+        }
+    }
+}
+
+/* -------------------------------------------
    棋士情報検索
  ------------------------------------------- */
 .players {

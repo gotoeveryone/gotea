@@ -26,6 +26,16 @@ class Player extends AppEntity
     }
 
     /**
+     * 棋士名と段位を取得します。
+     * 
+     * @return string 棋士名 段位
+     */
+    public function getNameWithRank()
+    {
+        return $this->name.' '.$this->rank->name;
+    }
+
+    /**
      * 年齢を取得します。
      * 
      * @return int|null 年齢
