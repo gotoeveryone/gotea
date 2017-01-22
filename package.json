@@ -7,10 +7,10 @@
     "test": "gulp watch",
     "prod": "gulp --production"
   },
-  "author": "Kazuki Kamizuru",
+  "author": "",
   "license": "ISC",
-  "private": true,
   "dependencies": {
-    "cakephp3-elixir": "^1.0.4"
+    "cakephp3-elixir": "^1.0.4",
+    "gulp": "^3.9.1"
   }
 }
