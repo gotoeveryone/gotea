@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
-use Cake\ORM\TableRegistry;
 
 /**
  * タイトルマスタ用コントローラ

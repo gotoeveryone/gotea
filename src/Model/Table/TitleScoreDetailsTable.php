@@ -46,6 +46,9 @@ class TitleScoreDetailsTable extends Table
             'foreignKey' => 'title_score_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Players', [
+            'foreignKey' => 'player_id'
+        ]);
         $this->belongsTo('Winner', [
             'className' => 'Players',
             'foreignKey' => 'player_id',

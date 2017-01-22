@@ -352,6 +352,9 @@ strong {
         .country {
             width: 6em;
         }
+        .year {
+            width: 8em;
+        }
         .date {
             width: 8em;
         }
@@ -360,9 +363,11 @@ strong {
         .country, .date {
             width: 15%;
         }
-
         .name {
-            width: 35%;
+            width: 25%;
+        }
+        .operation {
+            width: 20%;
         }
     }
 }

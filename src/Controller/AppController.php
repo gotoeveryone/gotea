@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\Network\Response;
 
@@ -20,7 +19,7 @@ use Cake\Network\Response;
 class AppController extends Controller
 {
     // 許可するアクション
-    private $__allowActions = ["index", "detail", "login", "logout"];
+    protected $_allowActions = ["index", "detail", "login", "logout"];
 
     // リダイレクト先アクション
     protected $_redirectAction = "index";
@@ -60,7 +59,7 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         // 許可したアクション以外でPOSTではないアクセスの場合、デフォルトアクションへ遷移させる
-        if (!in_array($this->request->action, $this->__allowActions) && !$this->request->is('post')
+        if (!in_array($this->request->action, $this->_allowActions) && !$this->request->is('post')
                 && method_exists($this, $this->_redirectAction)) {
             $this->setAction($this->_redirectAction);
             return;
@@ -167,7 +166,7 @@ class AppController extends Controller
      */
     protected function _addAllowGetActions(Array $actions)
     {
-        $detaultActions = $this->__allowActions;
-        $this->__allowActions = array_merge($detaultActions, $actions);
+        $detaultActions = $this->_allowActions;
+        $this->_allowActions = array_merge($detaultActions, $actions);
     }
 }

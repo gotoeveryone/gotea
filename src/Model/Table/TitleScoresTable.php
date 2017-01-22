@@ -1,10 +1,8 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\Database\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Validation\Validator;
 
 /**
  * TitleScores Model
@@ -40,6 +38,10 @@ class TitleScoresTable extends Table
         ]);
         $this->belongsTo('Countries', [
             'foreignKey' => 'country_id'
+        ]);
+        $this->hasMany('TitleScoreDetails', [
+            'joinType' => 'INNER',
+            'foreignKey' => 'title_score_id',
         ]);
         $this->hasOne('WinDetails', [
             'joinType' => 'INNER',
@@ -77,10 +79,12 @@ class TitleScoresTable extends Table
      * タイトル成績を検索します。
      * 
      * @param int $countryId
+     * @param string|null $name
+     * @param string|null $year
      * @param string|null $started
      * @param string|null $ended
      */
-    public function findMatches(int $countryId, $name = null, $started = null, $ended = null)
+    public function findMatches(int $countryId, $name = null, $year = null, $started = null, $ended = null)
     {
         $query = $this->find()
                 ->contain([
@@ -92,19 +96,22 @@ class TitleScoresTable extends Table
                 ->orderDesc('started');
 
         if ($name) {
-            $query->where(['Winner.name like ' => "%{$name}%"])
-            ->orWhere(['Loser.name like ' => "%{$name}%"]);
+            $query->where(['Winner.name like ' => "%{$name}%"])->orWhere(['Loser.name like ' => "%{$name}%"]);
+        }
+
+        if ($year) {
+            $query->where(['YEAR(TitleScores.started)' => $year])->where(['YEAR(TitleScores.ended)' => $year]);
         }
 
         if ($countryId) {
             $query->where(['TitleScores.country_id' => $countryId]);
         }
         if ($started) {
-            $query->where(['started >= ' => $started]);
+            $query->where(['TitleScores.started >= ' => $started]);
         }
 
         if ($ended) {
-            $query->where(['ended <= ' => $ended]);
+            $query->where(['TitleScores.ended <= ' => $ended]);
         }
 
         return $query->all();

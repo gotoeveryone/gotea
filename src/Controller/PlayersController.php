@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use PDOException;
 use App\Form\PlayerForm;
 use App\Model\Entity\Player;
 use Cake\Event\Event;
