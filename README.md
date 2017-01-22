@@ -7,6 +7,7 @@
 
 ## 前提
 以下がインストールされていること。
+
 - php7+
 - composer
 - nodejs
@@ -16,7 +17,25 @@
 1. プロジェクトのルートディレクトリで`composer install`を実行します。   
 2. 同じくルートディレクトリで`npm install`を実行します。
 
-## タスクランナー
+## 注意事項
 
-- gulp-sassを利用しています。
-- `gulp watch`を実行すると、SCSSの変更を監視します（JSファイルは未対応です…）。
+### タスクランナー
+
+cakephp3-elixirを利用しています。  
+`gulp watch`を実行すると、SCSSの変更を監視します（JSファイルは現時点で未対応です）。  
+
+### ログ出力
+
+`/share/log/`に出力します。
+
+- igoapp-access.log（アクセスログ）
+- igoapp-error.log（エラーログ）
+
+### DB接続
+
+MySQLにて`igo`スキーマを利用します。  
+ユーザ・パスワードは環境変数に以下キーで設定してください。  
+※Apache・nginxなどWebサーバーを利用する場合、そちらにも設定が必要です。  
+
+- DB_IGO_USER
+- DB_IGO_PASSWORD

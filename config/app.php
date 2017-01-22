@@ -216,8 +216,8 @@ return [
              * the following line and set the port accordingly
              */
             //'port' => 'nonstandard_port_number',
-            'username' => 'goute',
-            'password' => 'kazuki11',
+            'username' => env('DB_IGO_USER'),
+            'password' => env('DB_IGO_PASSWORD'),
             'database' => 'igo',
             'encoding' => 'utf8',
             'timezone' => 'Asia/Tokyo',
@@ -253,8 +253,8 @@ return [
             'persistent' => false,
             'host' => 'localhost',
             //'port' => 'nonstandard_port_number',
-            'username' => 'goute',
-            'password' => 'kazuki11',
+            'username' => env('DB_IGO_USER'),
+            'password' => env('DB_IGO_PASSWORD'),
             'database' => 'igo',
             'encoding' => 'utf8',
             'timezone' => 'Asia/Tokyo',
