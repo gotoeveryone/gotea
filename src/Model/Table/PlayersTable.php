@@ -172,10 +172,10 @@ class PlayersTable extends AppTable
                 ->innerJoin(['win' => $this->__createSub($country->id, $targetYear, '勝')], ['id = win.player_id'])
                 ->leftJoin(['lose' => $this->__createSub($country->id, $targetYear, '敗')], ['id = lose.player_id'])
                 ->leftJoin(['draw' => $this->__createSub($country->id, $targetYear, '分')], ['id = draw.player_id'])
-                ->where(['win.cnt >= ' => $this->query()->select(['cnt' => 'ifnull(target.cnt, 0)'])
-                        ->from(['target' => $this->__createSub($country->id, $targetYear, '勝')->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
+                ->where(['win.cnt >= ' => 'ifnull('.$this->query()->select(['cnt' => 'target.cnt'])
+                        ->from(['target' => $this->__createSub($country->id, $targetYear, '勝')->orderDesc('cnt')->limit(1)->offset($offset - 1)]).', 0)'])
                 ->orderDesc('win')->order(['lose', 'joined']);
-
+\Cake\Log\Log::write('info', $query);
         return $query->all();
     }
 
