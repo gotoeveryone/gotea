@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Country;
 use App\Model\Entity\Player;
 use Cake\ORM\Query;
 use Cake\I18n\Date;
@@ -152,6 +153,79 @@ class PlayersTable extends AppTable
             },
             'Ranks', 'Countries', 'Organizations'
         ])->all();
+    }
+
+    /**
+     * ランキング集計データを取得します。
+     * 
+     * @param \App\Model\Entity\Country $country
+     * @param int $targetYear
+     * @param int $offset
+     * @return object ランキング集計データ
+     */
+    public function findRanking(Country $country, int $targetYear, int $offset)
+    {
+        $query = $this->find()
+                ->select([
+                    'id', 'name', 'name_english', 'country_id', 'rank_id', 'sex',
+                    'win' => 'win.cnt', 'lose' => 'ifnull(lose.cnt, 0)', 'draw' => 'ifnull(draw.cnt, 0)'])
+                ->innerJoin(['win' => $this->__createSub($country->id, $targetYear, '勝')], ['id = win.player_id'])
+                ->leftJoin(['lose' => $this->__createSub($country->id, $targetYear, '敗')], ['id = lose.player_id'])
+                ->leftJoin(['draw' => $this->__createSub($country->id, $targetYear, '分')], ['id = draw.player_id'])
+                ->where(['win.cnt >= ' => $this->query()->select(['cnt' => 'ifnull(target.cnt, 0)'])
+                        ->from(['target' => $this->__createSub($country->id, $targetYear, '勝')->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
+                ->orderDesc('win')->order(['lose', 'joined']);
+
+        return $query->all();
+    }
+
+    /**
+     * ランキングモデルを配列に変換します。
+     * 
+     * @param type $models
+     * @return array
+     */
+    public function toRankingArray($models) : array
+    {
+        $res = [];
+        $rank = 0;
+        $win = 0;
+        foreach ($models as $key => $model) {
+            $sum = $model->win + $model->lose;
+            if ($win !== $model->win) {
+                $rank = $key + 1;
+                $win = $model->win;
+            }
+            $res[] = [
+                'rank' => $rank,
+                'playerName' => $model->name_english.'('.$model->rank->rank_numeric.' dan)',
+                'playerNameJp' => $model->getNameWithRank(),
+                'sex' => $model->sex,
+                'winPoint' => (int) $model->win,
+                'losePoint' => (int) $model->lose,
+                'drawPoint' => (int) $model->draw,
+                'winPercentage' => (!$sum ? 0 : round($model->win / $sum, 2))
+            ];
+        }
+
+        return $res;
+    }
+
+    private function __createSub($countryId, $targetYear, $division) : \Cake\Database\Query
+    {
+        $titleScoreDetails = \Cake\ORM\TableRegistry::get('TitleScoreDetails');
+        return $titleScoreDetails->find()
+                ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
+                ->contain([
+                    'TitleScores' => function(\Cake\Database\Query $q) use ($targetYear, $countryId) {
+                        return $q->where([
+                            'YEAR(started)' => $targetYear,
+                            'country_id' => $countryId
+                        ]);
+                    }
+                ])
+                ->where(['division' => $division])
+                ->group('player_id');
     }
 
     /**

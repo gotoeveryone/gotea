@@ -47,6 +47,12 @@
                     ], ['class' => 'button']);
                 ?>
                 <?=
+                    $this->Html->link('タイトル勝敗検索', [
+                        'controller' => 'titleScores',
+                        'action' => 'index'
+                    ], ['class' => 'button']);
+                ?>
+                <?=
                     $this->Html->link('棋士情報検索', [
                         'controller' => 'players',
                         'action' => 'index'

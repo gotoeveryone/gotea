@@ -76,9 +76,16 @@ class ApiController extends Controller
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
-        $encodeCountry = urlencode($country);
-        $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($this->request->query('jp') === 'true' ? "&with=jp" : "");
-        $json = $this->Json->sendResource($path, 'get');
+        // 2017年以降
+        if ($year >= 2017) {
+            $json = $this->__newRankings($country, $year, $rank);
+        } else {
+            // 2016年以前
+            $encodeCountry = urlencode($country);
+            $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($this->request->query('jp') === 'true' ? "&with=jp" : "");
+            $json = $this->Json->sendResource($path, 'get');
+        }
+
         // パラメータがあればファイル作成
         if ($this->request->query('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
@@ -101,6 +108,37 @@ class ApiController extends Controller
         $json = $this->Json->sendResource("players/categorize?country={$encodeCountry}".
                 (($this->request->query('all') === 'true') ? "&all=true" : ""), 'get');
         $this->__renderJson($json);
+    }
+
+    /**
+     * ランキングを取得します。
+     * 
+     * @param string $countryName
+     * @param int $year
+     * @param int $rank
+     * @return array
+     */
+    private function __newRankings(string $countryName, int $year, int $rank) : array
+    {
+        // モデルのロード
+        $this->loadModel('Players');
+        $this->loadModel('Countries');
+        $this->loadModel('TitleScoreDetails');
+
+        // 集計対象国の取得
+        $country = $this->Countries->findByName($countryName)->first();
+
+        // ランキングデータの取得
+        $models = $this->Players->findRanking($country, $year, $rank);
+
+        // JSON生成
+        return [
+            'lastUpdate' => $this->TitleScoreDetails->getRecent($country),
+            'targetYear' => $year,
+            'countryName' => $country->name_english,
+            'countryNameAbbreviation' => $country->code,
+            'ranking' => $this->Players->toRankingArray($models)
+        ];
     }
 
     /**

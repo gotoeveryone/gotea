@@ -208,7 +208,11 @@ class PlayersController extends AppController
         // 所属国プルダウン
 		$this->set('countries', $this->Countries->findCountryHasFileToArrayWithSuffix());
         // 年度プルダウン
-        $this->set('years', $this->PlayerScores->findScoreUpdateToArrayWithSuffix());
+        $years = [];
+        for ($i = date('Y'); $i >= 2013; $i--) {
+            $years[$i] = $i.'年度';
+        }
+        $this->set('years', $years);
         $this->_setTitle('棋士勝敗ランキング出力');
     }
 
