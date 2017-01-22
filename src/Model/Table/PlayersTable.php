@@ -168,14 +168,18 @@ class PlayersTable extends AppTable
         $query = $this->find()
                 ->select([
                     'id', 'name', 'name_english', 'country_id', 'rank_id', 'sex',
-                    'win' => 'win.cnt', 'lose' => 'ifnull(lose.cnt, 0)', 'draw' => 'ifnull(draw.cnt, 0)'])
-                ->innerJoin(['win' => $this->__createSub($country->id, $targetYear, '勝')], ['id = win.player_id'])
-                ->leftJoin(['lose' => $this->__createSub($country->id, $targetYear, '敗')], ['id = lose.player_id'])
-                ->leftJoin(['draw' => $this->__createSub($country->id, $targetYear, '分')], ['id = draw.player_id'])
-                ->where(['win.cnt >= ' => 'ifnull('.$this->query()->select(['cnt' => 'target.cnt'])
-                        ->from(['target' => $this->__createSub($country->id, $targetYear, '勝')->orderDesc('cnt')->limit(1)->offset($offset - 1)]).', 0)'])
+                    'win' => 'win.cnt', 'lose' => 'coalesce(lose.cnt, 0)', 'draw' => 'coalesce(draw.cnt, 0)'])
+                ->innerJoin(['win' => $this->__createSub($country, $targetYear, '勝')], ['id = win.player_id'])
+                ->leftJoin(['lose' => $this->__createSub($country, $targetYear, '敗')], ['id = lose.player_id'])
+                ->leftJoin(['draw' => $this->__createSub($country, $targetYear, '分')], ['id = draw.player_id'])
+                ->where(['win.cnt >= ' => $this->query()->select(['cnt' => 'coalesce(sum(target.cnt), 1)'])
+                        ->from(['target' => $this->__createSub($country, $targetYear, '勝')->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
                 ->orderDesc('win')->order(['lose', 'joined']);
-\Cake\Log\Log::write('info', $query);
+
+        if ($country->has_title) {
+            $query->where(['country_id' => $country->id]);
+        }
+
         return $query->all();
     }
 
@@ -211,21 +215,26 @@ class PlayersTable extends AppTable
         return $res;
     }
 
-    private function __createSub($countryId, $targetYear, $division) : \Cake\Database\Query
+    private function __createSub($country, $targetYear, $division) : \Cake\Database\Query
     {
         $titleScoreDetails = \Cake\ORM\TableRegistry::get('TitleScoreDetails');
-        return $titleScoreDetails->find()
+        $subQuery = $titleScoreDetails->find()
                 ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
                 ->contain([
-                    'TitleScores' => function(\Cake\Database\Query $q) use ($targetYear, $countryId) {
-                        return $q->where([
-                            'YEAR(started)' => $targetYear,
-                            'country_id' => $countryId
-                        ]);
+                    'TitleScores' => function(\Cake\Database\Query $q) use ($targetYear, $country) {
+                        return $q->where(['TitleScores.country_id' => $country->id])->orWhere(['is_world' => true])->where(['YEAR(started)' => $targetYear]);
                     }
                 ])
                 ->where(['division' => $division])
                 ->group('player_id');
+
+        if ($country->has_title) {
+            $subQuery->innerJoinWith('Players', function(\Cake\Database\Query $q) use ($country) {
+                return $q->where(['Players.country_id' => $country->id]);
+            });
+        }
+
+        return $subQuery;
     }
 
     /**
