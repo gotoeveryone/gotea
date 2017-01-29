@@ -58,8 +58,8 @@
                     <?=$this->Form->hidden('id', ['value' => $titleScore->id]);?>
                     <span class="country"><?= h($titleScore->country->name.'棋戦') ?></span>
                     <span class="date"><?= h($titleScore->date) ?></span>
-                    <span class="name"><?= h($titleScore->win_detail->winner ? $titleScore->win_detail->winner->getNameWithRank() : '') ?></span>
-                    <span class="name"><?= h($titleScore->lose_detail->loser ? $titleScore->lose_detail->loser->getNameWithRank() : '') ?></span>
+                    <span class="name"><?= h($titleScore->getWinner()) ?></span>
+                    <span class="name"><?= h($titleScore->getLoser()) ?></span>
                     <span class="operation">
                         <?= $this->Form->button('勝敗変更', ['data-id' => $titleScore->id, 'class' => 'change']) ?>
                         <?= $this->Form->button('削除', ['type' => 'button', 'data-id' => $titleScore->id, 'class' => 'delete']) ?>

@@ -91,8 +91,8 @@ class TitleScoresTable extends Table
                     'Countries',
                     'WinDetails', 'WinDetails.Winner', 'WinDetails.Winner.Ranks',
                     'LoseDetails', 'LoseDetails.Loser', 'LoseDetails.Loser.Ranks'])
-                ->innerJoinWith('WinDetails.Winner')
-                ->innerJoinWith('LoseDetails.Loser')
+                ->leftJoinWith('WinDetails.Winner')
+                ->leftJoinWith('LoseDetails.Loser')
                 ->orderDesc('started');
 
         if ($name) {
