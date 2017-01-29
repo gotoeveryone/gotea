@@ -36,6 +36,32 @@ class TitleScore extends Entity
     ];
 
     /**
+     * 勝者名を取得します。
+     * 
+     * @return string 勝者名
+     */
+    public function getWinner()
+    {
+        if (($detail = $this->win_detail) && ($winner = $detail->winner)) {
+            return $winner->getNameWithRank();
+        }
+        return '';
+    }
+
+    /**
+     * 敗者名を取得します。
+     * 
+     * @return string 敗者名
+     */
+    public function getLoser()
+    {
+        if (($detail = $this->lose_detail) && ($loser = $detail->loser)) {
+            return $loser->getNameWithRank();
+        }
+        return '';
+    }
+
+    /**
      * 対局日を取得します。
      * 複数日にまたがった場合、from-toという表示になります。
      * 
