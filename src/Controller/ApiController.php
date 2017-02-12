@@ -76,13 +76,16 @@ class ApiController extends Controller
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
+        // 日本語情報を出力するかどうか
+        $isJp = ($this->request->query('jp') === 'true');
+
         // 2017年以降
         if ($year >= 2017) {
-            $json = $this->__newRankings($country, $year, $rank);
+            $json = $this->__newRankings($country, $year, $rank, $isJp);
         } else {
             // 2016年以前
             $encodeCountry = urlencode($country);
-            $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($this->request->query('jp') === 'true' ? "&with=jp" : "");
+            $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($isJp ? "&with=jp" : "");
             $json = $this->Json->sendResource($path, 'get');
         }
 
@@ -116,9 +119,10 @@ class ApiController extends Controller
      * @param string $countryName
      * @param int $year
      * @param int $rank
+     * @param bool $isJp
      * @return array
      */
-    private function __newRankings(string $countryName, int $year, int $rank) : array
+    private function __newRankings(string $countryName, int $year, int $rank, bool $isJp) : array
     {
         // モデルのロード
         $this->loadModel('Players');
@@ -137,7 +141,7 @@ class ApiController extends Controller
             'targetYear' => $year,
             'countryName' => $country->name_english,
             'countryNameAbbreviation' => $country->code,
-            'ranking' => $this->Players->toRankingArray($models)
+            'ranking' => $this->Players->toRankingArray($models, $isJp)
         ];
     }
 

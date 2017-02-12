@@ -118,24 +118,49 @@ class TitleScoresTable extends Table
     }
 
     /**
-     * 指定の区分の棋士名を抽出する
+     * 指定した棋士の年度別成績を取得します。
      * 
-     * @param type $division
-     * @param type $countryId
-     * @return type
+     * @param $playerId
+     * @return array
      */
-    private function __createSub($division, $countryId = null)
+    public function findFromYear(int $playerId)
     {
-        // 敗者
-        $query = $this->TitleScoreDetails->find()
-                ->select('Players.name')
-                ->innerJoin('Players', ['TitleScoreDetails.player_id = Players.id'])
-                ->where(['division' => $division, 'title_score_id = TitleScores.id']);
+        return $this->find()
+            ->select(['target_year' => 'YEAR(started)', 'win_point' => 'coalesce(win.cnt, 0)',
+                'lose_point' => 'coalesce(lose.cnt, 0)', 'draw_point' => 'coalesce(draw.cnt, 0)',
+                'win_point_world' => 'coalesce(win_world.cnt, 0)', 'lose_point_world' => 'coalesce(lose_world.cnt, 0)',
+                'draw_point_world' => 'coalesce(draw_world.cnt, 0)'])
+            ->leftJoin(['win' => $this->__createSub($playerId, '勝')], ['YEAR(started) = win.target_year'])
+            ->leftJoin(['lose' => $this->__createSub($playerId, '敗')], ['YEAR(started) = lose.target_year'])
+            ->leftJoin(['draw' => $this->__createSub($playerId, '分')], ['YEAR(started) = draw.target_year'])
+            ->leftJoin(['win_world' => $this->__createSub($playerId, '勝', true)], ['YEAR(started) = win_world.target_year'])
+            ->leftJoin(['lose_world' => $this->__createSub($playerId, '敗', true)], ['YEAR(started) = lose_world.target_year'])
+            ->leftJoin(['draw_world' => $this->__createSub($playerId, '分', true)], ['YEAR(started) = draw_world.target_year'])
+            ->group('target_year')->orderDesc('target_year');
+    }
 
-        if ($countryId) {
-            $query->where(['Players.country_id' => $countryId]);
+    /**
+     * サブクエリを作成します。
+     * 
+     * @param $playerId
+     * @param string $division
+     * @param bool $world
+     * @return \Cake\Database\Query
+     */
+    private function __createSub(int $playerId, string $division, bool $world = false) : \Cake\Database\Query
+    {
+        $titleScoreDetails = \Cake\ORM\TableRegistry::get('TitleScoreDetails');
+        $sub = $titleScoreDetails->find()
+                ->select(['player_id' => 'player_id', 'target_year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                ->contain(['TitleScores'])
+                ->where(['division' => $division])->group(['player_id', 'YEAR(started)'])
+                ->innerJoinWith('Players', function(\Cake\Database\Query $q) use ($playerId) {
+                    return $q->where(['Players.id' => $playerId]);
+                });
+
+        if ($world) {
+            $sub->where(['is_world' => true]);
         }
-
-        return $query;
+        return $sub;
     }
 }
