@@ -212,6 +212,7 @@ class PlayersTable extends AppTable
             ];
 
             if ($isJp) {
+                $row['playerId'] = $model->id;
                 $row['playerNameJp'] = $model->getNameWithRank();
                 $row['sex'] = $model->sex;
             }
