@@ -136,7 +136,8 @@ class TitleScoresTable extends Table
             ->leftJoin(['win_world' => $this->__createSub($playerId, '勝', true)], ['YEAR(started) = win_world.target_year'])
             ->leftJoin(['lose_world' => $this->__createSub($playerId, '敗', true)], ['YEAR(started) = lose_world.target_year'])
             ->leftJoin(['draw_world' => $this->__createSub($playerId, '分', true)], ['YEAR(started) = draw_world.target_year'])
-            ->group('target_year')->orderDesc('target_year');
+            ->group(['target_year', 'win_point', 'lose_point', 'draw_point', 'win_point_world', 'lose_point_world', 'draw_point_world'])
+            ->orderDesc('target_year');
     }
 
     /**
