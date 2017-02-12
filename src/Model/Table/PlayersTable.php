@@ -187,9 +187,10 @@ class PlayersTable extends AppTable
      * ランキングモデルを配列に変換します。
      * 
      * @param type $models
+     * @param bool $isJp
      * @return array
      */
-    public function toRankingArray($models) : array
+    public function toRankingArray($models, $isJp) : array
     {
         $res = [];
         $rank = 0;
@@ -200,39 +201,53 @@ class PlayersTable extends AppTable
                 $rank = $key + 1;
                 $win = $model->win;
             }
-            $res[] = [
+
+            $row = [
                 'rank' => $rank,
                 'playerName' => $model->name_english.'('.$model->rank->rank_numeric.' dan)',
-                'playerNameJp' => $model->getNameWithRank(),
-                'sex' => $model->sex,
                 'winPoint' => (int) $model->win,
                 'losePoint' => (int) $model->lose,
                 'drawPoint' => (int) $model->draw,
-                'winPercentage' => (!$sum ? 0 : round($model->win / $sum, 2))
+                'winPercentage' => (!$sum ? 0 : round($model->win / $sum, 2)),
             ];
+
+            if ($isJp) {
+                $row['playerNameJp'] = $model->getNameWithRank();
+                $row['sex'] = $model->sex;
+            }
+            $res[] = $row;
         }
 
         return $res;
     }
 
-    private function __createSub($country, $targetYear, $division) : \Cake\Database\Query
+    /**
+     * サブクエリを作成します。
+     * 
+     * @param \App\Model\Table\App\Model\Entity\Country $country
+     * @param int $targetYear
+     * @param string $division
+     * @return \Cake\Database\Query
+     */
+    private function __createSub(Country $country, int $targetYear, string $division) : \Cake\Database\Query
     {
         $titleScoreDetails = \Cake\ORM\TableRegistry::get('TitleScoreDetails');
         $subQuery = $titleScoreDetails->find()
                 ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
                 ->contain([
-                    'TitleScores' => function(\Cake\Database\Query $q) use ($targetYear, $country) {
+                    'TitleScores' => function(\Cake\Database\Query $q) use ($country, $targetYear) {
                         return $q->where(['TitleScores.country_id' => $country->id])->orWhere(['is_world' => true])->where(['YEAR(started)' => $targetYear]);
                     }
                 ])
-                ->where(['division' => $division])
-                ->group('player_id');
+                ->where(['division' => $division])->group('player_id');
 
-        if ($country->has_title) {
-            $subQuery->innerJoinWith('Players', function(\Cake\Database\Query $q) use ($country) {
-                return $q->where(['Players.country_id' => $country->id]);
-            });
+        if (!$country->has_title) {
+            return $subQuery;
         }
+
+        $subQuery->innerJoinWith('Players', function(\Cake\Database\Query $q) use ($country) {
+            return $q->where(['Players.country_id' => $country->id]);
+        });
 
         return $subQuery;
     }

@@ -13,7 +13,7 @@ class Player extends AppEntity
     /**
      * 成績情報を取得します。
      * 
-     * @return App\Model\Entity\PlayerScore
+     * @return object
      */
     protected function _getPlayerScores($playerScores)
     {
@@ -23,6 +23,17 @@ class Player extends AppEntity
                     ->where(['player_id' => $this->id])->orderDesc('target_year')->all()->toArray();
         }
         return $playerScores;
+    }
+
+    /**
+     * タイトル成績情報を取得します。
+     * 
+     * @return object
+     */
+    protected function _getTitleScores()
+    {
+        $scores = TableRegistry::get('TitleScores');
+        return $scores->findFromYear($this->id);
     }
 
     /**
