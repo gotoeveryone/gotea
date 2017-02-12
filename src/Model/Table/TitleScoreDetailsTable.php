@@ -107,7 +107,7 @@ class TitleScoreDetailsTable extends Table
             'max' => 'max(ended)'
         ])->contain([
             'TitleScores' => function(Query $q) use ($country) {
-                return $q->where(['country_id' => $country->id]);
+                return $q->where(['country_id' => $country->id])->orWhere(['is_world' => true]);
             }
         ])->first()->max;
     }
