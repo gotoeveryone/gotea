@@ -210,6 +210,7 @@
             <div class="category-row">勝敗</div>
 
             <?php // 2017年以降 ?>
+            <?php if ($player->title_scores) : ?>
             <?php foreach ($player->title_scores as $key=>$score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
@@ -241,6 +242,7 @@
                     </li>
                 </ul>
             <?php endforeach ?>
+            <?php endif ?>
 
             <?php // 2016年以前 ?>
             <?php foreach ($player->player_scores as $key=>$score) : ?>
@@ -361,7 +363,7 @@
 <script>
     $(function() {
         // タブ選択
-        selectTab('<?=$this->request->data('tab')?>');
+        selectTab('<?=$this->request->getData('tab')?>');
     });
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>

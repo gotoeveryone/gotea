@@ -45,10 +45,10 @@ class TitleScoresController extends AppController
 
         // 検索
         if ($this->request->isPost()) {
-            $countryId = (int) $this->request->data('country_id');
-            $titleScores = $this->TitleScores->findMatches(
-                $countryId, $this->request->data('name'), $this->request->data('target_year'),
-                $this->request->data('started'), $this->request->data('ended')
+            $countryId = (int) $this->request->getData('country_id');
+            $titleScores = $this->TitleScores->findMatches($countryId,
+                $this->request->getData('name'), $this->request->getData('target_year'),
+                $this->request->getData('started'), $this->request->getData('ended')
             );
 
             if (!($count = count($titleScores))) {
@@ -69,7 +69,7 @@ class TitleScoresController extends AppController
      */
     public function change()
     {
-        $changeId = $this->request->data('change_id');
+        $changeId = $this->request->getData('change_id');
         $model = $this->TitleScores->findById($changeId)->contain(['TitleScoreDetails'])->first();
         $changed = 0;
         foreach ($model->title_score_details as $detail) {
@@ -97,7 +97,7 @@ class TitleScoresController extends AppController
      */
     public function delete()
     {
-        $deleteId = $this->request->data('delete_id');
+        $deleteId = $this->request->getData('delete_id');
         $model = $this->TitleScores->findById($deleteId)->contain(['TitleScoreDetails'])->first();
 
         foreach ($model->title_score_details as $detail) {

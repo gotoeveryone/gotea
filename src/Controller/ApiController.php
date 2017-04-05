@@ -36,7 +36,7 @@ class ApiController extends Controller
     {
         $this->__renderJson($this->Json->sendResource(
             'players/search', 'post',
-            ['name' => $this->request->data('name')]
+            ['name' => $this->request->getData('name')]
         ));
     }
 
@@ -59,8 +59,8 @@ class ApiController extends Controller
     {
         $json = $this->Json->sendResource('titles/news', 'get');
         // パラメータがあればファイル作成
-        if ($this->request->query('make') === 'true') {
-            if (!file_put_contents($this->_homepage."news.json", json_encode($json))) {
+        if ($this->request->getQuery('make') === 'true') {
+            if (!file_put_contents($this->_homepage.'news.json', json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
@@ -77,7 +77,7 @@ class ApiController extends Controller
     public function rankings($country = null, $year = null, $rank = null)
     {
         // 日本語情報を出力するかどうか
-        $isJp = ($this->request->query('jp') === 'true');
+        $isJp = ($this->request->getQuery('jp') === 'true');
 
         // 2017年以降
         if ($year >= 2017) {
@@ -90,7 +90,7 @@ class ApiController extends Controller
         }
 
         // パラメータがあればファイル作成
-        if ($this->request->query('make') === 'true') {
+        if ($this->request->getQuery('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]).$json["targetYear"];
             if (!file_put_contents($this->_homepage."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
@@ -109,7 +109,7 @@ class ApiController extends Controller
     {
         $encodeCountry = urlencode($country);
         $json = $this->Json->sendResource("players/categorize?country={$encodeCountry}".
-                (($this->request->query('all') === 'true') ? "&all=true" : ""), 'get');
+                (($this->request->getQuery('all') === 'true') ? '&all=true' : ''), 'get');
         $this->__renderJson($json);
     }
 

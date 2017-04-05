@@ -12,7 +12,7 @@
             <label>ID</label>
             <?=
                 $this->Form->input('username', [
-                    'value' => $this->request->data('username'),
+                    'value' => $this->request->getData('username'),
                     'maxlength' => 10,
                     'class' => 'imeDisabled'
                 ]);
@@ -22,7 +22,7 @@
             <label>Password</label>
             <?=
                 $this->Form->input('password', [
-                    'value' => $this->request->data('password'),
+                    'value' => $this->request->getData('password'),
                     'maxlength' => 20,
                     'class' => 'imeDisabled'
                 ]);

@@ -1,7 +1,7 @@
 {
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "http://cakephp.org",
+    "name": "igoapp",
+    "description": "IGO players and titles management system.",
+    "homepage": "https://www.kazukisv.com/igoapp",
     "type": "project",
     "license": "MIT",
     "require": {

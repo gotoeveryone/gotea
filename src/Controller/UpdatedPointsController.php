@@ -39,7 +39,8 @@ class UpdatedPointsController extends AppController
 	public function search()
     {
         // 成績更新日情報の取得
-        $updatedPoints = $this->UpdatedPoints->findScoreUpdateHasYear($this->request->data('year'));
+        $updatedPoints = $this->UpdatedPoints->findScoreUpdateHasYear(
+                $this->request->getData('year'));
         $this->set('updatedPoints', $updatedPoints);
 
         // 初期処理
@@ -51,7 +52,7 @@ class UpdatedPointsController extends AppController
      */
 	public function save() {
         // POSTされたタイトル情報から、登録 or 更新対象の一覧を生成
-        $rows = $this->request->data('results');
+        $rows = $this->request->getData('results');
 
         // 更新対象が取得できなければ、検索結果表示処理へ
         if (!($targets = $this->__createUpdateTargets($rows))) {

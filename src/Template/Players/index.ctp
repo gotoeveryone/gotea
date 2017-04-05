@@ -60,7 +60,7 @@
                     ]);
                 ?>
                 <?php if (!empty($players) && count($players) > 0) { ?>
-                <span class="resule-count">
+                <span class="result-count">
                     <?=count($players).'件のレコードが該当しました。'?>
                 </span>
                 <?php } ?>
