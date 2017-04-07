@@ -15,18 +15,16 @@
                 <li class="search-row">
                     <label>対象国：</label>
                     <?=
-                        $this->Form->input('country_id', [
-                            'options' => $countries,
+                        $this->Form->select('country_id', $countries, [
                             'class' => 'country'
                         ]);
                     ?>
                     <label>終了棋戦：</label>
                     <?=
-                        $this->Form->input('is_closed', [
-                            'options' => [
-                                '0' => '検索しない',
-                                '1' => '検索する'
-                            ],
+                        $this->Form->select('is_closed', [
+                            '0' => '検索しない',
+                            '1' => '検索する'
+                        ], [
                             'class' => 'excluded'
                         ]);
                     ?>

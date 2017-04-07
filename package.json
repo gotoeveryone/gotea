@@ -4,7 +4,7 @@
   "description": "Node.js with gulp",
   "main": "index.js",
   "scripts": {
-    "test": "gulp watch",
+    "dev": "gulp watch",
     "prod": "gulp --production"
   },
   "author": "",

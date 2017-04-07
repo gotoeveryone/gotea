@@ -13,26 +13,23 @@
             <li class="search-row">
                 <label>抽出対象：</label>
                 <?=
-                    $this->Form->input('selectYear', [
-                        'id' => 'selectYear',
-                        'options' => $years
+                    $this->Form->select('selectYear', $years, [
+                        'id' => 'selectYear'
                     ]);
                 ?>
                 <?=
-                    $this->Form->input('selectCountry', [
-                        'id' => 'selectCountry',
-                        'options' => $countries
+                    $this->Form->select('selectCountry', $countries, [
+                        'id' => 'selectCountry'
                     ]);
                 ?>
                 <?=
-                    $this->Form->input('selectRank', [
-                        'id' => 'selectRank',
-                        'options' => [
-                            '20' => '～20位',
-                            '30' => '～30位',
-                            '40' => '～40位',
-                            '50' => '～50位',
-                        ]
+                    $this->Form->select('selectRank', [
+                        '20' => '～20位',
+                        '30' => '～30位',
+                        '40' => '～40位',
+                        '50' => '～50位',
+                    ], [
+                        'id' => 'selectRank'
                     ]);
                 ?>
             </li>

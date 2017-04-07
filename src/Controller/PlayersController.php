@@ -71,7 +71,7 @@ class PlayersController extends AppController
 	public function search()
     {
         // リクエストから値を取得
-        $data = $this->request->data;
+        $data = $this->request->getParsedBody();
         $form = new PlayerForm();
         if (!$form->validate($data)) {
             $this->Flash->error($form->errors());
@@ -84,8 +84,8 @@ class PlayersController extends AppController
         // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
         if (!($count = count($players))) {
             $this->Flash->warn(__("検索結果が0件でした。"));
-        } else if ($count > 1000) {
-            $this->Flash->warn(__("検索結果が1000件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
+        } else if ($count > 300) {
+            $this->Flash->warn(__("検索結果が300件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
         } else {
             // 結果をセット
             $this->set('players', $players);
@@ -123,7 +123,7 @@ class PlayersController extends AppController
 
         // 棋士IDが取得出来なければ新規登録画面を表示
         // 所属国が取得出来なければエラー
-        if (!($countryId = $this->request->query('countryId'))) {
+        if (!($countryId = $this->request->getQuery('countryId'))) {
             throw new BadRequestException(__("所属国を指定してください。"));
         }
 
@@ -147,8 +147,8 @@ class PlayersController extends AppController
         $status = ($id) ? '更新' : '登録';
 
         // バリデーションエラーの場合は詳細情報表示処理へ
-        $data = $this->request->data;
-        if (($errors = $this->Players->validator()->errors($this->request->data))) {
+        $data = $this->request->getParsedBody();
+        if (($errors = $this->Players->validator()->errors($this->request->getParsedBody()))) {
             $this->Flash->error($errors);
             return $this->setAction('detail', null, $player);
         }
@@ -164,10 +164,11 @@ class PlayersController extends AppController
         $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
 
         // 所属国IDを設定
-        $this->request->query['countryId'] = $player->country_id;
+        $this->request->withQueryparams(['countryId' => $player->country_id]);
 
         // 詳細情報表示処理へ
-        return ($this->request->data('is_continue')) ? $this->setAction('detail') : $this->setAction('detail', $player->id, $player);
+        return ($this->request->getData('is_continue') ?
+                $this->setAction('detail') : $this->setAction('detail', $player->id, $player));
 	}
 
 	/**
@@ -181,7 +182,7 @@ class PlayersController extends AppController
         $score = $this->PlayerScores->get($id);
 
         // バリデーションエラーの場合はそのまま返す
-        $data = $this->request->data;
+        $data = $this->request->getParsedBody();
         if (($errors = $this->PlayerScores->validator()->errors($data))) {
             // エラーメッセージを書き込み、詳細情報表示処理へ
             $this->Flash->error($errors);

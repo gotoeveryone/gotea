@@ -9,7 +9,6 @@ use Cake\ORM\Table;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\Network\Session;
-use Cake\Validation\Validator;
 
 /**
  * アプリケーションの共通テーブル

@@ -13,8 +13,8 @@
             <li class="search-row">
                 <label>対象国：</label>
                 <?=
-                    $this->Form->input("selectCountry", [
-                        "id" => "selectCountry", "options" => $countries, "class" => "country"
+                    $this->Form->select("selectCountry", $countries, [
+                        "id" => "selectCountry", "class" => "country"
                     ]);
                 ?>
                 <section class="button-column">

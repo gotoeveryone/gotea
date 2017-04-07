@@ -22,11 +22,11 @@
 ### タスクランナー
 
 cakephp3-elixirを利用しています。  
-`gulp watch`を実行すると、SCSSの変更を監視します（JSファイルは現時点で未対応です）。  
+`npm run dev`を実行すると、SCSSの変更を監視します（JSファイルは現時点で未対応です）。  
 
 ### ログ出力
 
-`/share/log/`に出力します。
+環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合は`/share/log/`）。
 
 - igoapp-access.log（アクセスログ）
 - igoapp-error.log（エラーログ）

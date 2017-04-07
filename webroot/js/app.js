@@ -163,7 +163,7 @@ function setTooltip() {
 function setColorbox(href) {
     var options = {
         iframe: true,
-        width: "50%",
+        width: "60%",
         height: "90%"
     };
     if (href) {
