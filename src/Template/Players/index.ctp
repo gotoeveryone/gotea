@@ -13,49 +13,44 @@
             <li class="search-row">
                 <label>所属国：</label>
                 <?=
-                    $this->Form->input('country_id', [
+                    $this->Form->select('country_id', $countries, [
                         'data-id' => 'country',
-                        'options' => $countries,
                         'class' => 'country',
                         'empty' => true
                     ]);
                 ?>
                 <label>所属組織：</label>
                 <?=
-                    $this->Form->input('organization_id', [
+                    $this->Form->select('organization_id', $organizations, [
                         'data-id' => 'organization',
-                        'options' => $organizations,
                         'class' => 'organization',
                         'empty' => true
                     ]);
                 ?>
                 <label>段位：</label>
                 <?=
-                    $this->Form->input('rank_id', [
+                    $this->Form->select('rank_id', $ranks, [
                         'data-id' => 'rank',
-                        'options' => $ranks,
                         'class' => 'rank',
                         'empty' => true
                     ]);
                 ?>
                 <label>性別：</label>
                 <?=
-                    $this->Form->input('sex', [
-                        'options' => [
-                            '男性' => '男性',
-                            '女性' => '女性'
-                        ],
+                    $this->Form->select('sex', [
+                        '男性' => '男性',
+                        '女性' => '女性'
+                    ], [
                         'class' => 'sex',
                         'empty' => true
                     ]);
                 ?>
                 <label>引退者：</label>
                 <?=
-                    $this->Form->input('is_retired', [
-                        'options' => [
-                            '0' => '検索しない',
-                            '1' => '検索する'
-                        ],
+                    $this->Form->select('is_retired', [
+                        '0' => '検索しない',
+                        '1' => '検索する'
+                    ], [
                         'class' => 'excluded'
                     ]);
                 ?>

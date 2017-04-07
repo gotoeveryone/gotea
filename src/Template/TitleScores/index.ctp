@@ -15,16 +15,14 @@
                 <?=$this->Form->text('name', ['class' => 'name']);?>
                 <label>所属国：</label>
                 <?=
-                    $this->Form->input('country_id', [
-                        'options' => $countries,
+                    $this->Form->select('country_id', $countries, [
                         'class' => 'country',
                         'empty' => true
                     ]);
                 ?>
                 <label>対局年：</label>
                 <?=
-                    $this->Form->input('target_year', [
-                        'options' => $years,
+                    $this->Form->select('target_year', $years, [
                         'class' => 'year',
                         'empty' => true
                     ]);

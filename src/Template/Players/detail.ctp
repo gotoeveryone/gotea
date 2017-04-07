@@ -40,8 +40,7 @@
                             <div class="input-row">
                                 <span>
                                     <?=
-                                        $this->Form->input('organization_id', [
-                                            'options' => $organizations,
+                                        $this->Form->select('organization_id', $organizations, [
                                             'class' => 'organization',
                                             'value' => ($player->organization_id ? $player->organization_id : '1')
                                         ]);
@@ -127,11 +126,10 @@
                             <div class="input-row">
                                 <?php
                                     if (!$player->id) {
-                                        echo $this->Form->input('sex', [
-                                            'options' => array(
-                                                '男性' => '男性',
-                                                '女性' => '女性'
-                                            ),
+                                        echo $this->Form->select('sex', [
+                                            '男性' => '男性',
+                                            '女性' => '女性'
+                                        ], [
                                             'class' => 'sex'
                                         ]);
                                     } else {
@@ -145,8 +143,7 @@
                             <div class="label-row">段位</div>
                             <div class="input-row">
                                 <?=
-                                    $this->Form->input('rank_id', [
-                                        'options' => $ranks,
+                                    $this->Form->select('rank_id', $ranks, [
                                         'class' => 'rank',
                                         'value' => ($player->rank_id ? $player->rank_id : '1')
                                     ]);

@@ -11,7 +11,7 @@
         <div class="row">
             <label>ID</label>
             <?=
-                $this->Form->input('username', [
+                $this->Form->text('username', [
                     'value' => $this->request->getData('username'),
                     'maxlength' => 10,
                     'class' => 'imeDisabled'
@@ -21,7 +21,7 @@
         <div class="row">
             <label>Password</label>
             <?=
-                $this->Form->input('password', [
+                $this->Form->password('password', [
                     'value' => $this->request->getData('password'),
                     'maxlength' => 20,
                     'class' => 'imeDisabled'
