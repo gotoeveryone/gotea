@@ -85,7 +85,7 @@ class JsonComponent extends Component
             $data['access_token'] = $this->saveAccessToken($userId, $password);
             $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
         }
-        $this->response->withStatus($response->getStatusCode());
+        $this->response = $this->response->withStatus($response->getStatusCode());
         if ($response->isOk()) {
             return json_decode($response->body(), $assoc);
         } else {

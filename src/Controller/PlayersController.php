@@ -163,12 +163,19 @@ class PlayersController extends AppController
         $this->Players->save($player);
         $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
 
+        // 連続作成なら値を消す
+        if (($continue = $this->request->getData('is_continue'))) {
+            $this->request = $this->request->withParsedBody([]);
+        }
+
         // 所属国IDを設定
-        $this->request->withQueryparams(['countryId' => $player->country_id]);
+        $this->request = $this->request->withQueryparams([
+            'countryId' => $player->country_id
+        ]);
 
         // 詳細情報表示処理へ
-        return ($this->request->getData('is_continue') ?
-                $this->setAction('detail') : $this->setAction('detail', $player->id, $player));
+        return ($continue ? $this->setAction('detail')
+                : $this->setAction('detail', $player->id, $player));
 	}
 
 	/**

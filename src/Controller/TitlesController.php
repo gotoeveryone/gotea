@@ -158,7 +158,7 @@ class TitlesController extends AppController
 
         $this->Flash->info(__("保持履歴を登録しました。"));
         // POSTされたデータを初期化
-        $this->request->withParsedBody([]);
+        $this->request = $this->request->withParsedBody([]);
 
         // 詳細情報表示処理へ
         return $this->setTabAction('detail', 'histories', $titleId);
