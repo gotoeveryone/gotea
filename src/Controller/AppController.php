@@ -124,7 +124,7 @@ class AppController extends Controller
      */
     public function setTabAction(string $action, string $tabName, $args)
     {
-        $this->request->withData('tab', $tabName);
+        $this->set('tab', $tabName);
         return $this->setAction($action, $args);
     }
 

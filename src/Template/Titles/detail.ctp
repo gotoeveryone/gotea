@@ -354,7 +354,7 @@
 <script>
     $(function() {
         // タブ選択
-        selectTab('<?=$this->request->getData('tab')?>');
+        selectTab('<?=($tab ?? '')?>');
     });
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>
