@@ -53,7 +53,7 @@ class TitlesController extends AppController
 	public function search()
     {
         // タイトル一覧を取得
-        $this->request->withData('is_search', true);
+        $this->set('isSearch', true);
         if (!count($titles = $this->Titles->findTitlesByCountry($this->request->getParsedBody()))) {
             $this->Flash->info(__('検索結果が0件でした。'));
         }

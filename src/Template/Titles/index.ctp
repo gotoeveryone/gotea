@@ -11,7 +11,9 @@
             ]
         ])?>
             <ul class="search-header">
-                <?=$this->Form->hidden('is_search', ['id' => 'isSearch'])?>
+                <?=$this->Form->hidden('is_search', [
+                    'id' => 'isSearch', 'value' => ($isSearch ?? false)
+                ])?>
                 <li class="search-row">
                     <label>対象国：</label>
                     <?=
