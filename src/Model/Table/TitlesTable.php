@@ -62,7 +62,7 @@ class TitlesTable extends AppTable {
      * @param array $data
      * @return type
      */
-    public function findTitlesByCountry($data)
+    public function findTitlesByCountry($data = [])
     {
         $query = $this->find()->contain([
             'Countries',
@@ -85,7 +85,7 @@ class TitlesTable extends AppTable {
         }
 
         // データを取得
-        return $query->orderAsc('Titles.sort_order')->all();
+        return $query->order(['Titles.country_id', 'Titles.sort_order'])->all();
     }
 
     /**
@@ -105,5 +105,33 @@ class TitlesTable extends AppTable {
             'RetentionHistories.Titles.Countries',
             'RetentionHistories.Players'
         ])->where(['Titles.id' => $id])->first();
+    }
+
+    /**
+     * ランキングモデルを配列に変換します。
+     * 
+     * @param type $models
+     * @return array
+     */
+    public function toRankingArray($models) : array
+    {
+        $res = [];
+        foreach ($models as $model) {
+            $row = [
+                'countryName' => $model->country->name_english,
+                'countryNameAbbreviation' => $model->country->code,
+                'titleName' => $model->name_english,
+                'holding' => $model->holding,
+                'winnerName' => $model->getWinnerName(false),
+                'htmlFileName' => $model->html_file_name,
+                'htmlFileModified' => $model->html_file_modified->format('Y-m-d'),
+                'isNewHistories' => $model->isNewHistories(),
+                'isRecent' => $model->isRecentModified(),
+            ];
+
+            $res[] = $row;
+        }
+
+        return $res;
     }
 }
