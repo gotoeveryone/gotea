@@ -117,18 +117,7 @@
                         <?=$this->Form->hidden('titles['.$key.'][bean_holding]', ['value' => $title->holding])?>
                     </span>
                     <span class="winner">
-                        <?php
-                            if (empty($title->retention_histories)) {
-                                echo '';
-                            } else {
-                                $retention = $title->retention_histories[0];
-                                if ($title->is_team) {
-                                    echo $retention->win_group_name;
-                                } else {
-                                    echo "{$retention->player->name} {$retention->rank->name}";
-                                }
-                            }
-                        ?>
+                        <?=$title->getWinnerName();?>
                     </span>
                     <span class="order">
                         <?=

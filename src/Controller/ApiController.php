@@ -57,7 +57,13 @@ class ApiController extends Controller
      */
     public function news()
     {
-        $json = $this->Json->sendResource('titles/news', 'get');
+        // モデルのロード
+        $this->loadModel('Titles');
+        $titles = $this->Titles->findTitlesByCountry();
+
+        // JSON生成
+        $json = $this->Titles->toRankingArray($titles);
+
         // パラメータがあればファイル作成
         if ($this->request->getQuery('make') === 'true') {
             if (!file_put_contents($this->_homepage.'news.json', json_encode($json))) {
