@@ -1,16 +1,37 @@
 {
   "name": "igoapp",
   "version": "1.0.0",
-  "description": "Node.js with gulp",
+  "description": "igoapp front development tools configuration",
   "main": "index.js",
   "scripts": {
-    "test": "gulp watch",
-    "prod": "gulp --production"
+    "sass": "node-sass ./resources/assets/sass/app.scss ./webroot/css/app.css -w",
+    "sass-prod": "node-sass ./resources/assets/sass/app.scss ./webroot/css/app.css --output-style compressed",
+    "webpack": "webpack -w --colors --config ./webpack.config.js",
+    "webpack-prod": "webpack -p --progress --colors --config ./webpack.config.js",
+    "dev": "concurrently \"npm run sass\" \"npm run webpack\"",
+    "prod": "npm run sass-prod & npm run webpack-prod"
   },
-  "author": "",
+  "author": "Kazuki Kamizuru",
   "license": "ISC",
-  "dependencies": {
-    "cakephp3-elixir": "^1.0.4",
-    "gulp": "^3.9.1"
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^3.4.0",
+    "node-sass": "^4.5.2",
+    "webpack": "^2.4.1",
+    "@angular/cli": "^1.0.0",
+    "@angular/common": "^4.0.2",
+    "@angular/compiler": "^4.0.2",
+    "@angular/compiler-cli": "^4.0.2",
+    "@angular/core": "^4.0.2",
+    "@angular/forms": "^4.0.2",
+    "@angular/http": "^4.0.2",
+    "@angular/platform-browser": "^4.0.2",
+    "@angular/platform-browser-dynamic": "^4.0.2",
+    "core-js": "^2.4.1",
+    "systemjs": "^0.20.12",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "zone.js": "^0.8.5"
   }
 }
