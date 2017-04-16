@@ -10,6 +10,10 @@ $rowPadding: .3rem;
 /* -------------------------------------------
    タグ単位のレイアウト
  ------------------------------------------- */
+body {
+    overflow-x: hidden;
+}
+
 main, nav {
     padding: 0 0.5rem;
 }
@@ -43,6 +47,27 @@ strong {
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
+.block-ui {
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 300;
+    background-color: #000;
+    transition-property: visibility, opacity;
+    transition-timing-function: ease;
+    transition-duration: .3s;
+    &.blocked {
+        visibility: visible;
+        opacity: .6;
+    }
+}
+
 .content {
     display: flex;
     &.modal {

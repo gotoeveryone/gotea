@@ -1,5 +1,3 @@
-const webpack = require('webpack');
-
 module.exports = {
     entry: './resources/assets/ts/main',
     output: {
@@ -16,11 +14,4 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false,
-        //     }
-        // }),
-    ]
 };

@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
 /**
- * ランキング出力用コンポーネント
+ * ランキングデータ出力用コンポーネント
  */
 @Component({
     selector: '[ranking-results]',
@@ -37,8 +37,7 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
     `
 })
 export class RankingDataComponent {
-    lastUpdate = '';
-    rows = new Array();
+    @Input() rows: any[];
     getRank(_idx: number, _row: any): string {
         if (this.rows[_idx - 1]) {
             const beforeRank = this.rows[_idx - 1].rank;

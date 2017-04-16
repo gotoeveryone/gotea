@@ -25,8 +25,6 @@ import { RankingDataComponent } from './ranking/RankingDataComponent';
     ],
     bootstrap: [
         RankingComponent,
-        RankingHeaderComponent,
-        RankingDataComponent,
     ]
 })
 export class AppModule {}

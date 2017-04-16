@@ -4,10 +4,10 @@
   "description": "igoapp front development tools configuration",
   "main": "index.js",
   "scripts": {
-    "sass": "node-sass ./resources/assets/sass/app.scss ./webroot/css/app.css -w",
-    "sass-prod": "node-sass ./resources/assets/sass/app.scss ./webroot/css/app.css --output-style compressed",
+    "sass": "node-sass ./resources/assets/sass/app.scss -o ./webroot/css/ -w --output-style compressed",
+    "sass-prod": "node-sass ./resources/assets/sass/app.scss -o ./webroot/css/ --output-style compressed",
     "webpack": "webpack -w --colors --config ./webpack.config.js",
-    "webpack-prod": "webpack -p --progress --colors --config ./webpack.config.js",
+    "webpack-prod": "cross-env NODE_ENV=production webpack -p --progress --colors --config ./webpack.config.js",
     "dev": "concurrently \"npm run sass\" \"npm run webpack\"",
     "prod": "npm run sass-prod & npm run webpack-prod"
   },
@@ -16,9 +16,6 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "concurrently": "^3.4.0",
-    "node-sass": "^4.5.2",
-    "webpack": "^2.4.1",
     "@angular/cli": "^1.0.0",
     "@angular/common": "^4.0.2",
     "@angular/compiler": "^4.0.2",
@@ -28,10 +25,14 @@
     "@angular/http": "^4.0.2",
     "@angular/platform-browser": "^4.0.2",
     "@angular/platform-browser-dynamic": "^4.0.2",
+    "concurrently": "^3.4.0",
     "core-js": "^2.4.1",
+    "cross-env": "^4.0.0",
+    "node-sass": "^4.5.2",
     "systemjs": "^0.20.12",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
+    "webpack": "^2.4.1",
     "zone.js": "^0.8.5"
   }
 }
