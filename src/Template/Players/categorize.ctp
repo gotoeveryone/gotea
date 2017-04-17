@@ -1,42 +1,6 @@
-<section class="categories">
-    <?=$this->Form->create(null, [
-        'id' => 'mainForm',
-        'method' => 'post',
-        'url' => ['action' => 'index'],
-        'templates' => [
-            'inputContainer' => '{{content}}',
-            'textFormGroup' => '{{input}}',
-            'selectFormGroup' => '{{input}}'
-        ]
-    ])?>
-        <ul class="search-header">
-            <li class="search-row">
-                <label>対象国：</label>
-                <?=
-                    $this->Form->input("selectCountry", [
-                        "id" => "selectCountry", "options" => $countries, "class" => "country"
-                    ]);
-                ?>
-                <section class="button-column">
-                    <?=
-                        $this->Form->button("検索", [
-                            "type" => "button", "id" => "search", "data-categories" => "ranks"
-                        ]);
-                    ?>
-                </section>
-            </li>
-        </ul>
+<section class="categories" categorize></section>
 
-        <div class="search-results">
-            <ul class="table-header">
-                <li class="table-row">
-                    <span class="rank">段位</span>
-                    <span class="count">人数</span>
-                </li>
-            </ul>
-        </div>
-    <?=$this->Form->end()?>
-</section>
+<?=$this->Html->script('categorize.min', ['inline' => false])?>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>

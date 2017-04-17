@@ -1,5 +1,3 @@
-<section class="ranking">
-    <form ranking></form>
-</section>
+<section class="ranking" ranking></section>
 
-<?=$this->Html->script('app.min', ['inline' => false])?>
+<?=$this->Html->script('ranking.min', ['inline' => false])?>

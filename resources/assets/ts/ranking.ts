@@ -8,9 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
-import { RankingComponent } from './ranking/RankingComponent';
-import { RankingHeaderComponent } from './ranking/RankingHeaderComponent';
-import { RankingDataComponent } from './ranking/RankingDataComponent';
+import { Ranking, RankingHeader, RankingBody } from './ranking/ranking';
 
 @NgModule({
     imports: [
@@ -19,12 +17,12 @@ import { RankingDataComponent } from './ranking/RankingDataComponent';
         FormsModule,
     ],
     declarations: [
-        RankingComponent,
-        RankingHeaderComponent,
-        RankingDataComponent,
+        Ranking,
+        RankingHeader,
+        RankingBody,
     ],
     bootstrap: [
-        RankingComponent,
+        Ranking,
     ]
 })
 export class AppModule {}
