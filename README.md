@@ -19,14 +19,19 @@
 
 ## 注意事項
 
-### タスクランナー
+### フロントコード
 
-cakephp3-elixirを利用しています。  
-`gulp watch`を実行すると、SCSSの変更を監視します（JSファイルは現時点で未対応です）。  
+- TypeScript
+- Angular4
+- webpack
+- node-sass
+
+JSは`webpack`、CSSは`node-sass`を利用して生成します。  
+`npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
 
 ### ログ出力
 
-`/share/log/`に出力します。
+環境変数`LOG_DIR`に出力します。
 
 - igoapp-access.log（アクセスログ）
 - igoapp-error.log（エラーログ）
