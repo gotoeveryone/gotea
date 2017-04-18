@@ -17,6 +17,7 @@
     <?=$this->Html->css('app')?>
 </head>
 <body>
+    <div class="block-ui"></div>
     <div class="container">
         <!-- ヘッダー -->
         <?php if (!isset($isDialog)) : ?>
