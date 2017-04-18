@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Exception;
 use PDOException;
-use Cake\Event\Event;
 
 /**
  * アプリの共通例外コントローラ

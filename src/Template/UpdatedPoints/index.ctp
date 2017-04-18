@@ -12,7 +12,7 @@
         <ul class="search-header">
             <li class="search-row">
                 <label>対象年：</label>
-                <?=$this->Form->input('year', ['options' => $years, 'class' => 'year'])?>
+                <?=$this->Form->select('year', $years, ['class' => 'year'])?>
                 <div class="button-column">
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                     <?=$this->Form->button('一括更新', ['id' => 'save', 'type' => 'button'])?>

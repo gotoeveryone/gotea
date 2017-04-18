@@ -59,7 +59,7 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         // 許可したアクション以外でPOSTではないアクセスの場合、デフォルトアクションへ遷移させる
-        if (!in_array($this->request->action, $this->_allowActions) && !$this->request->is('post')
+        if (!in_array($this->request->action, $this->_allowActions) && !$this->request->isPost()
                 && method_exists($this, $this->_redirectAction)) {
             $this->setAction($this->_redirectAction);
             return;
@@ -124,7 +124,7 @@ class AppController extends Controller
      */
     public function setTabAction(string $action, string $tabName, $args)
     {
-        $this->request->data['tab'] = $tabName;
+        $this->set('tab', $tabName);
         return $this->setAction($action, $args);
     }
 

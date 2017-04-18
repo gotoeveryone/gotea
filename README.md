@@ -19,19 +19,14 @@
 
 ## 注意事項
 
-### フロントコード
+### タスクランナー
 
-- TypeScript
-- Angular4
-- webpack
-- node-sass
-
-JSは`webpack`、CSSは`node-sass`を利用して生成します。  
-`npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
+cakephp3-elixirを利用しています。  
+`npm run dev`を実行すると、SCSSの変更を監視します（JSファイルは現時点で未対応です）。  
 
 ### ログ出力
 
-環境変数`LOG_DIR`に出力します。
+環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合は`/share/log/`）。
 
 - igoapp-access.log（アクセスログ）
 - igoapp-error.log（エラーログ）

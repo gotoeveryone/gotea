@@ -11,22 +11,22 @@
             ]
         ])?>
             <ul class="search-header">
-                <?=$this->Form->hidden('is_search', ['id' => 'isSearch'])?>
+                <?=$this->Form->hidden('is_search', [
+                    'id' => 'isSearch', 'value' => ($isSearch ?? false)
+                ])?>
                 <li class="search-row">
                     <label>対象国：</label>
                     <?=
-                        $this->Form->input('country_id', [
-                            'options' => $countries,
+                        $this->Form->select('country_id', $countries, [
                             'class' => 'country'
                         ]);
                     ?>
                     <label>終了棋戦：</label>
                     <?=
-                        $this->Form->input('is_closed', [
-                            'options' => [
-                                '0' => '検索しない',
-                                '1' => '検索する'
-                            ],
+                        $this->Form->select('is_closed', [
+                            '0' => '検索しない',
+                            '1' => '検索する'
+                        ], [
                             'class' => 'excluded'
                         ]);
                     ?>
@@ -117,18 +117,7 @@
                         <?=$this->Form->hidden('titles['.$key.'][bean_holding]', ['value' => $title->holding])?>
                     </span>
                     <span class="winner">
-                        <?php
-                            if (empty($title->retention_histories)) {
-                                echo '';
-                            } else {
-                                $retention = $title->retention_histories[0];
-                                if ($title->is_team) {
-                                    echo $retention->win_group_name;
-                                } else {
-                                    echo "{$retention->player->name} {$retention->rank->name}";
-                                }
-                            }
-                        ?>
+                        <?=$title->getWinnerName();?>
                     </span>
                     <span class="order">
                         <?=

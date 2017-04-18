@@ -3,7 +3,7 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Network\Http\Client;
+use Cake\Http\Client;
 
 /**
  * JSON連携用コンポーネント
@@ -72,24 +72,24 @@ class JsonComponent extends Component
     {
         // トークンが読み込めた場合はデータに追加
         if (($token = $this->request->session()->read('access_token'))) {
-            $data["access_token"] = $token;
+            $data['access_token'] = $token;
         }
         $http = new Client();
         $callMethod = strtolower($method);
         $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
         // アプリログイン済みだが、APIが401なら再認証
-        if ($response->statusCode() == 401 && $this->MyAuth->user()) {
+        if ($response->getStatusCode() == 401 && $this->MyAuth->user()) {
             $userId = $this->MyAuth->user('userId');
             $password = $this->MyAuth->user('password');
             // トークン再生成
-            $data["access_token"] = $this->saveAccessToken($userId, $password);
+            $data['access_token'] = $this->saveAccessToken($userId, $password);
             $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
         }
-        $this->response->statusCode($response->statusCode());
+        $this->response = $this->response->withStatus($response->getStatusCode());
         if ($response->isOk()) {
             return json_decode($response->body(), $assoc);
         } else {
-            return ["status" => $response->statusCode(), "message" => "{$method}リクエストに失敗しました。"];
+            return ['status' => $response->statusCode(), 'message' => "{$method}リクエストに失敗しました。"];
         }
     }
 

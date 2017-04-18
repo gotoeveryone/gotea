@@ -40,8 +40,7 @@
                             <div class="input-row">
                                 <span>
                                     <?=
-                                        $this->Form->input('organization_id', [
-                                            'options' => $organizations,
+                                        $this->Form->select('organization_id', $organizations, [
                                             'class' => 'organization',
                                             'value' => ($player->organization_id ? $player->organization_id : '1')
                                         ]);
@@ -127,11 +126,10 @@
                             <div class="input-row">
                                 <?php
                                     if (!$player->id) {
-                                        echo $this->Form->input('sex', [
-                                            'options' => array(
-                                                '男性' => '男性',
-                                                '女性' => '女性'
-                                            ),
+                                        echo $this->Form->select('sex', [
+                                            '男性' => '男性',
+                                            '女性' => '女性'
+                                        ], [
                                             'class' => 'sex'
                                         ]);
                                     } else {
@@ -145,8 +143,7 @@
                             <div class="label-row">段位</div>
                             <div class="input-row">
                                 <?=
-                                    $this->Form->input('rank_id', [
-                                        'options' => $ranks,
+                                    $this->Form->select('rank_id', $ranks, [
                                         'class' => 'rank',
                                         'value' => ($player->rank_id ? $player->rank_id : '1')
                                     ]);
@@ -156,7 +153,7 @@
                         <div class="box2">
                             <div class="label-row">更新日時</div>
                             <div class="input-row">
-                                <?=$this->Date->formatToDateTime($player->modified)?>
+                                <?=$player->modified ? $this->Date->formatToDateTime($player->modified) : ''?>
                                 <?=
                                     $this->Form->hidden('modified', ['value' => $this->Date->format($player->modified, 'yyyyMMddHHmmss')])
                                 ?>
@@ -210,6 +207,7 @@
             <div class="category-row">勝敗</div>
 
             <?php // 2017年以降 ?>
+            <?php if ($player->title_scores) : ?>
             <?php foreach ($player->title_scores as $key=>$score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
@@ -241,6 +239,7 @@
                     </li>
                 </ul>
             <?php endforeach ?>
+            <?php endif ?>
 
             <?php // 2016年以前 ?>
             <?php foreach ($player->player_scores as $key=>$score) : ?>
@@ -361,7 +360,7 @@
 <script>
     $(function() {
         // タブ選択
-        selectTab('<?=$this->request->data('tab')?>');
+        selectTab('<?=($tab ?? '')?>');
     });
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>

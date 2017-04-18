@@ -23,7 +23,7 @@ class LogComponent extends Component
         if (!isset($arguments[1])) {
             $arguments[1] = [];
         }
-        $arguments[1]['url'] = $this->request->here;
+        $arguments[1]['url'] = $this->request->getUri()->getPath();
         $this->log($arguments[0], $name, $arguments);
     }
 }

@@ -402,9 +402,10 @@ strong {
  ------------------------------------------- */
 .players {
     .search-header {
-        .resule-count {
+        .result-count {
             margin-left: auto;
             color: red;
+            font-size: .8em;
         }
         .joined {
             margin-left: .3rem;
@@ -413,22 +414,18 @@ strong {
     }
     .search-results {
         height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
-        .table-row {
-            & > :last-child {
-                padding-right: .7rem;
+        .table-body {
+            .table-row {
+                & > :last-child {
+                    padding-right: .7rem;
+                }
             }
         }
         .score {
-            width: 9%;
+            padding: 0;
             .point {
                 width: 3%;
                 padding: 0 .5rem;
-                &:first-of-type {
-                    padding: 0 .5rem 0 0;
-                }
-                &:last-of-type {
-                    padding: 0 0 0 .5rem;
-                }
             }
         }
 
@@ -443,7 +440,6 @@ strong {
         .country {
             width: 6%;
         }
-
 
         .enrollment {
             width: 10%;

@@ -53,8 +53,8 @@ class TitlesController extends AppController
 	public function search()
     {
         // タイトル一覧を取得
-        $this->request->data['is_search'] = true;
-        if (!count($titles = $this->Titles->findTitlesByCountry($this->request->data))) {
+        $this->set('isSearch', true);
+        if (!count($titles = $this->Titles->findTitlesByCountry($this->request->getParsedBody()))) {
             $this->Flash->info(__('検索結果が0件でした。'));
         }
         $this->set('titles', $titles);
@@ -69,7 +69,7 @@ class TitlesController extends AppController
 	public function saveAll()
     {
         // 更新対象が取得できなければ、検索結果表示処理へ
-        if (!($targets = $this->__getUpdateTargets($this->request->data))) {
+        if (!($targets = $this->__getUpdateTargets($this->request->getParsedBody()))) {
             // TODO: この場合再検索になるため入力値が消えるが、ビューにオブジェクトの一覧を返せない為止むを得ない
             return $this->setAction('search');
         }
@@ -115,7 +115,7 @@ class TitlesController extends AppController
         $title = $this->Titles->get($id);
 
         // バリデーションエラーの場合は詳細情報表示処理へ
-        $data = $this->request->data;
+        $data = $this->request->getParsedBody();
         if (($errors = $this->Titles->validator()->errors($data))) {
             $this->Flash->error($errors);
             return $this->setAction('detail', $title->id);
@@ -137,8 +137,8 @@ class TitlesController extends AppController
 	 */
 	public function addHistory()
     {
-        $data = $this->request->data;
-        $titleId = $this->request->data('title_id');
+        $data = $this->request->getParsedBody();
+        $titleId = $this->request->getData('title_id');
 
         // バリデーションエラーの場合はそのまま返す
         if (($errors = $this->RetentionHistories->validator()->errors($data))) {
@@ -158,7 +158,7 @@ class TitlesController extends AppController
 
         $this->Flash->info(__("保持履歴を登録しました。"));
         // POSTされたデータを初期化
-        $this->request->data = [];
+        $this->request = $this->request->withParsedBody([]);
 
         // 詳細情報表示処理へ
         return $this->setTabAction('detail', 'histories', $titleId);

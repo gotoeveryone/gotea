@@ -3,6 +3,7 @@
 namespace App\View\Helper;
 
 use Cake\View\Helper;
+use Cake\I18n\Date;
 use Cake\I18n\Time;
 
 /**
@@ -60,7 +61,7 @@ class DateHelper extends Helper {
     /**
      * 日付型オブジェクトを特定フォーマットの表記に変換して表示します。
      *
-     * @param Time $timeObj 変換するTime型オブジェクト
+     * @param Date|Time $timeObj 変換するDate or Time型オブジェクト
      * @param string $format 指定したフォーマット
      * @return string 整形した日付表記
      */
@@ -81,7 +82,7 @@ class DateHelper extends Helper {
      * @param Time $timeObj 変換するTime型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDateTime($timeObj) {
+    public function formatToDateTime(Time $timeObj) {
         if (empty($timeObj)) {
             return '';
         }
@@ -92,14 +93,14 @@ class DateHelper extends Helper {
      * 日付型オブジェクトを特定フォーマットの表記に変換して表示します。
      * ※YYYY年MM月dd日
      *
-     * @param Time $timeObj 変換するTime型オブジェクト
+     * @param Date $dateObj 変換するDate型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDate($timeObj) {
-        if (empty($timeObj)) {
+    public function formatToDate(Date $dateObj) {
+        if (empty($dateObj)) {
             return '';
         }
-        return h($timeObj->i18nFormat(self::FORMAT_DATE, self::LOCALE));
+        return h($dateObj->i18nFormat(self::FORMAT_DATE, self::LOCALE));
     }
 
     /**

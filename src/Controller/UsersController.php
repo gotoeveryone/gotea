@@ -61,13 +61,13 @@ class UsersController extends AppController
     public function login()
     {
         $form = new LoginForm();
-        if (!$form->validate($this->request->data)) {
+        if (!$form->validate($this->request->getParsedBody())) {
             $this->Flash->error($form->errors());
             return $this->setAction('index');
         }
 
-        $account = $this->request->data('username');
-        $password = $this->request->data('password');
+        $account = $this->request->getData('username');
+        $password = $this->request->getData('password');
 
         // ログイン
         if ($this->MyAuth->login($account, $password)) {
