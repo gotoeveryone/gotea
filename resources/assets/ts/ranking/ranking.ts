@@ -24,7 +24,6 @@ export class Ranking {
     rows = new Array();
 
     constructor(private http: Http) {
-        console.log('hoge!');
         this.years = [
             {
                 value: 2016,
@@ -112,13 +111,13 @@ export class Ranking {
         <li class="search-row">
             <label>抽出対象：</label>
             <select ([ngModel])="selectYear" (change)="changeYear($event.target.value)">
-                <option *ngFor="#year of years" [value]="year.value" [innerText]="year.text"></option>
+                <option *ngFor="let year of years" [value]="year.value" [innerText]="year.text"></option>
             </select>
             <select ([ngModel])="selectCountry" (change)="changeCountry($event.target.value)">
-                <option *ngFor="#country of countries" [value]="country.value" [innerText]="country.text"></option>
+                <option *ngFor="let country of countries" [value]="country.value" [innerText]="country.text"></option>
             </select>
             <select ([ngModel])="selectLimit" (change)="changeLimit($event.target.value)">
-                <option *ngFor="#limit of limits" [value]="limit.value" [innerText]="limit.text"></option>
+                <option *ngFor="let limit of limits" [value]="limit.value" [innerText]="limit.text"></option>
             </select>
         </li>
         <li class="search-row">
@@ -198,7 +197,7 @@ export class RankingHeader {
             </li>
         </ul>
         <ul class="table-body" *ngIf="rows.length">
-            <li class="table-row" *ngFor="#row of rows; let idx = index">
+            <li class="table-row" *ngFor="let row of rows; let idx = index">
                 <span class="right no">
                     <span [innerText]="getRank(idx, row)"></span>
                 </span>
