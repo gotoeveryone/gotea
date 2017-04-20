@@ -37,23 +37,23 @@ export class Ranking {
         this.countries = [
             {
                 value: '日本',
-                text: '日本棋戦',
+                text: '日本棋士',
             },
             {
                 value: '韓国',
-                text: '韓国棋戦',
+                text: '韓国棋士',
             },
             {
                 value: '中国',
-                text: '中国棋戦',
+                text: '中国棋士',
             },
             {
                 value: '台湾',
-                text: '台湾',
+                text: '台湾棋士',
             },
             {
                 value: '国際',
-                text: '国際',
+                text: '国際棋戦',
             },
         ];
         this.limits = [
