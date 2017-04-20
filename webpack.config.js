@@ -1,7 +1,10 @@
 module.exports = {
-    entry: './resources/assets/ts/main',
+    entry: {
+        ranking: './resources/assets/ts/ranking',
+        categorize: './resources/assets/ts/categorize',
+    },
     output: {
-        filename: './webroot/js/app.min.js',
+        filename: './webroot/js/[name].min.js',
     },
     resolve: {
         extensions:['.webpack.js', '.ts', '.tsx', '.js']
@@ -11,7 +14,9 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
-            }
-        ]
+            },
+        ],
     },
+    plugins: [
+    ]
 };
