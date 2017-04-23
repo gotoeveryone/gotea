@@ -1,3 +1,6 @@
+@import 'module/_normalize.scss';
+@import 'module/_custom.scss';
+
 $minRowHeight: 2.6rem;
 $rowPadding: .3rem;
 
@@ -7,41 +10,12 @@ $rowPadding: .3rem;
 	margin-right: auto;
 }
 
-/* -------------------------------------------
-   タグ単位のレイアウト
- ------------------------------------------- */
-body {
-    overflow-x: hidden;
-}
-
-main, nav {
-    padding: 0 0.5rem;
-}
-
-main > section {
-    height: 100%;
-}
-
-nav + main {
-    width: 70%;
-    min-width: calc(100% - 220px);
-}
-
-nav {
-    width: 30%;
-	max-width: 220px;
-}
-
-form {
-    height: 100%;
-    width: 100%;
-}
-
-strong {
-    margin: 0 0.3rem;
-    span {
-        color: #ff0000;
-    }
+%display-center {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 /* -------------------------------------------
@@ -68,6 +42,54 @@ strong {
     }
 }
 
+.iframe-modal {
+    @extend %display-center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, .8);
+    z-index: 200;
+    cursor: pointer;
+    visibility: visible;
+    opacity: 1;
+    transition-property: visibility, opacity, height;
+    transition-timing-function: ease-in;
+    transition-duration: .2s;
+    &.hide {
+        visibility: hidden;
+        opacity: 0;
+    }
+    .modal-parent {
+        @extend %display-center;
+        margin: auto;
+        border-radius: 10px;
+        background: linear-gradient(to bottom right, #99ff99, #ffffee);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        transition-property: height;
+        transition-timing-function: ease-in;
+        transition-duration: .2s;
+        &.hide {
+            height: 0;
+        }
+        .modal-body {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+        .modal-close {
+            display: block;
+            position: absolute;
+            width: 38px;
+            height: 19px;
+            top: 0;
+            right: 5px;
+            background: url('/css/images/controls.png') no-repeat top center;
+            cursor: pointer;
+        }
+    }
+}
+
 .content {
     display: flex;
     &.modal {
@@ -87,8 +109,12 @@ strong {
     min-height: #{$minRowHeight};
 }
 
+.male {
+    color: #00f;
+}
+
 .female {
-    color: #ff0000;
+    color: #f00;
 }
 
 .category-row {
@@ -322,31 +348,11 @@ strong {
 }
 
 /* -------------------------------------------
-   ログイン画面
- ------------------------------------------- */
-.login {
-    @extend %center;
-	width: 20%;
-    min-width: 250px;
-
-    .row {
-        label {
-            padding: 0 .5em 0 0;
-            width: 30%;
-            text-align: right;
-            font-weight: bold;
-        }
-        input {
-            width: 70%;
-        }
-    }
-}
-
-/* -------------------------------------------
    勝敗ランキング画面
  ------------------------------------------- */
 .ranking {
     width: 30rem;
+    margin-top: 0;
     select {
         width: 7rem;
         margin-right: .4rem;
@@ -359,6 +365,10 @@ strong {
         }
         .player {
             width: 40%;
+            &-link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
         .point {
             width: 10%;

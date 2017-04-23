@@ -25,7 +25,7 @@
             <div class="system-name"><span>棋士情報管理システム</span></div>
             <!-- 見出し -->
             <div class="page-title">
-                <h1><?=h($cakeDescription)?></h1>
+                <h1 class="page-title_top"><?=h($cakeDescription)?></h1>
             </div>
             <div class="other">
                 <?php if (isset($username)) : ?>
@@ -115,10 +115,6 @@
     <script src="/js/jquery.colorbox-min.js"></script>
     <script src="/js/common.js"></script>
     <?=$this->Html->script('app')?>
-    <script>
-        // containerを非表示
-        document.getElementsByClassName("content")[0].style.display = "none";
-    </script>
     <?=$this->fetch('script')?>
 </body>
 </html>

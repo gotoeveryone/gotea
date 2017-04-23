@@ -9,6 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { Ranking, RankingHeader, RankingBody } from './ranking/ranking';
+import { Colorbox } from './components/colorbox';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { Ranking, RankingHeader, RankingBody } from './ranking/ranking';
         Ranking,
         RankingHeader,
         RankingBody,
+        Colorbox,
     ],
     bootstrap: [
         Ranking,

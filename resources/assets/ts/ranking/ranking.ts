@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { NgModel } from '@angular/forms';
+import { Colorbox } from '../components/colorbox';
 
 /**
  * ランキング出力用コンポーネント
@@ -13,7 +14,10 @@ import { NgModel } from '@angular/forms';
             [years]="years" [countries]="countries" [limits]="limits" [lastUpdate]="lastUpdate"
             (onSearch)="onSearch($event)" (outputJson)="outputJson($event)">
         </ul>
-        <div ranking-results class="search-results" [rows]="rows"></div>
+        <div ranking-results class="search-results" [rows]="rows" (onSelect)="onSelect($event)"></div>
+        <colorbox class="iframe-modal" [url]="detailUrl" [class.hide]="!detailUrl"
+            (click)="onClose($event)" (onClose)="onClose($event)"
+            [height]="modal.height" [width]="modal.width"></colorbox>
     `,
 })
 export class Ranking {
@@ -22,6 +26,11 @@ export class Ranking {
     limits: any[];
     lastUpdate = '';
     rows = new Array();
+    detailUrl = '';
+    modal = {
+        'width': '0',
+        'height': '0',
+    };
 
     constructor(private http: Http) {
         this.years = [
@@ -100,6 +109,18 @@ export class Ranking {
                 document.querySelector('.block-ui').classList.remove('blocked');
             });
     }
+
+    onSelect(_id: number) {
+        this.modal.width = '90%';
+        this.modal.height = '90%';
+        this.detailUrl = `/igoapp/players/detail/${_id}`;
+    }
+
+    onClose() {
+        this.modal.width = '0';
+        this.modal.height = '0';
+        this.detailUrl = '';
+    }
 }
 
 /**
@@ -160,7 +181,7 @@ export class RankingHeader {
         this.onSearch.emit({
             year: this.selectYear,
             country: this.selectCountry,
-            limit: this.selectLimit
+            limit: this.selectLimit,
         });
     }
 
@@ -168,7 +189,7 @@ export class RankingHeader {
         this.outputJson.emit({
             year: this.selectYear,
             country: this.selectCountry,
-            limit: this.selectLimit
+            limit: this.selectLimit,
         });
     }
 
@@ -202,9 +223,7 @@ export class RankingHeader {
                     <span [innerText]="getRank(idx, row)"></span>
                 </span>
                 <span class="left player">
-                    <a class="colorbox" [href]="'/igoapp/players/detail/' + row.playerId">
-                        <span [ngClass]="{'female': row.sex === '女性'}" [innerText]="row.playerNameJp"></span>
-                    </a>
+                    <a class="player-link" [ngClass]="getSexClass(row)" (click)="select(row)" [innerText]="row.playerNameJp"></a>
                 </span>
                 <span class="point" [innerText]="row.winPoint"></span>
                 <span class="point" [innerText]="row.losePoint"></span>
@@ -216,6 +235,7 @@ export class RankingHeader {
 })
 export class RankingBody {
     @Input() rows: any[];
+    @Output() onSelect = new EventEmitter<any>();
     getRank(_idx: number, _row: any): string {
         if (this.rows[_idx - 1]) {
             const beforeRank = this.rows[_idx - 1].rank;
@@ -225,5 +245,11 @@ export class RankingBody {
     }
     getWinPercentage(_row: any): string {
         return `${Math.round(_row.winPercentage * 100)}%`;
+    }
+    getSexClass(_row: any): string {
+        return (_row.sex === '女性' ? 'female' : 'male');
+    }
+    select(_row: any) {
+        this.onSelect.emit(_row.playerId);
     }
 }
