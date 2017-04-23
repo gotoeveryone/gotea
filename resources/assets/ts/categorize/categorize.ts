@@ -39,12 +39,10 @@ export class Categorize {
     }
 
     onSearch(_params: any) {
-        document.querySelector('.block-ui').classList.add('blocked');
         this.http.get(`/igoapp/api/categorize/${_params.country}/`)
             .forEach((res) => {
                 const json = res.json().response;
                 this.rows = json.categories;
-                document.querySelector('.block-ui').classList.remove('blocked');
             });
     }
 }

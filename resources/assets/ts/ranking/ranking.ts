@@ -12,37 +12,29 @@ import { Colorbox } from '../components/colorbox';
     template: `
         <ul ranking-header class="search-header"
             [years]="years" [countries]="countries" [limits]="limits" [lastUpdate]="lastUpdate"
-            (onSearch)="onSearch($event)" (outputJson)="outputJson($event)">
+            (onSearch)="onSearch($event)" (outputJson)="outputJson($event)" (openDialog)="openDialog($event)">
         </ul>
         <div ranking-results class="search-results" [rows]="rows" (onSelect)="onSelect($event)"></div>
-        <colorbox class="iframe-modal" [url]="detailUrl" [class.hide]="!detailUrl"
-            (click)="onClose($event)" (onClose)="onClose($event)"
+        <colorbox class="iframe-modal" [url]="modal.url" [class.hide]="!modal.url"
+            (click)="onModalClose($event)" (onClose)="onModalClose($event)"
             [height]="modal.height" [width]="modal.width"></colorbox>
+        <dialog class="dialog" [class.hide]="!text" [text]="text" (onClose)="onDialogClose($event)"></dialog>
     `,
 })
 export class Ranking {
-    years: any[];
+    years = this.getYears();
     countries: any[];
     limits: any[];
     lastUpdate = '';
     rows = new Array();
-    detailUrl = '';
+    text = '';
     modal = {
-        'width': '0',
-        'height': '0',
+        url: '',
+        width: '0',
+        height: '0',
     };
 
     constructor(private http: Http) {
-        this.years = [
-            {
-                value: 2016,
-                text: "2016年度",
-            },
-            {
-                value: 2017,
-                text: "2017年度",
-            },
-        ];
         this.countries = [
             {
                 value: '日本',
@@ -89,37 +81,61 @@ export class Ranking {
         ];
     }
 
+    private getYears() {
+        const nowYear = new Date().getFullYear();
+        const years = [];
+        for (let y = nowYear; y >= 2013; y--) {
+            years.push({
+                value: y,
+                text: `${y}年度`,
+            });
+        }
+        return years;
+    }
+
+    private getCountries() {
+        this.http.get(`/igoapp/api/countries/`)
+            .forEach((res) => {
+                const json = res.json().response;
+                this.rows = json.ranking;
+            });
+    }
+
     onSearch(_params: any) {
-        document.querySelector('.block-ui').classList.add('blocked');
         this.http.get(`/igoapp/api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true`)
             .forEach((res) => {
                 const json = res.json().response;
                 const dateObj = new Date(json.lastUpdate);
                 this.lastUpdate = `${dateObj.getFullYear()}年${(dateObj.getMonth() + 1)}月${dateObj.getDate()}日`;
                 this.rows = json.ranking;
-                document.querySelector('.block-ui').classList.remove('blocked');
             });
     }
 
     outputJson(_params: any) {
-        document.querySelector('.block-ui').classList.add('blocked');
         this.http.get(`/igoapp/api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true&make=true`)
             .forEach((res) => {
-                alert('JSONを出力しました。');
-                document.querySelector('.block-ui').classList.remove('blocked');
+                this.openDialog('JSONを出力しました。');
             });
     }
 
-    onSelect(_id: number) {
-        this.modal.width = '90%';
-        this.modal.height = '90%';
-        this.detailUrl = `/igoapp/players/detail/${_id}`;
+    openDialog(_text: string) {
+        this.text = _text;
     }
 
-    onClose() {
+    onDialogClose() {
+        this.text = '';
+    }
+
+    onSelect(_id: number) {
+        this.modal.width = '80%';
+        this.modal.height = '90%';
+        this.modal.url = `/igoapp/players/detail/${_id}`;
+    }
+
+    onModalClose() {
         this.modal.width = '0';
         this.modal.height = '0';
-        this.detailUrl = '';
+        this.modal.url = '';
     }
 }
 
@@ -157,6 +173,7 @@ export class RankingHeader {
     @Input() limits: any[];
     @Output() onSearch = new EventEmitter<any>();
     @Output() outputJson = new EventEmitter<any>();
+    @Output() openDialog = new EventEmitter<any>();
 
     selectCountry: string;
     selectYear: number;
