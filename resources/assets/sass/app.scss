@@ -5,9 +5,17 @@ $minRowHeight: 2.6rem;
 $rowPadding: .3rem;
 
 %center {
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+%row {
+    display: flex;
+    align-items: center;
+    margin: 0.2rem auto;
+    padding: 0.2rem;
+    min-height: #{$minRowHeight};
 }
 
 %display-center {
@@ -170,14 +178,18 @@ $rowPadding: .3rem;
     &.row {
         margin: auto;
     }
+    .button {
+        &.inactive {
+            background-color: #888;
+            &:hover {
+                background-color: #666;
+            }
+        }
+    }
 }
 
 .row {
-    display: flex;
-    align-items: center;
-    margin: 0.2rem auto;
-    padding: 0.2rem;
-    min-height: #{$minRowHeight};
+    @extend %row;
 }
 
 .male {
@@ -189,7 +201,7 @@ $rowPadding: .3rem;
 }
 
 .category-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     height: 2.5rem;
     margin: 0 auto .2rem;
@@ -200,7 +212,7 @@ $rowPadding: .3rem;
 }
 
 .genre-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     height: 2.3rem;
     text-indent: 0.6rem;
@@ -210,7 +222,7 @@ $rowPadding: .3rem;
 }
 
 .label-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     height: 2.2rem;
     text-indent: 0.7rem;
@@ -224,7 +236,7 @@ $rowPadding: .3rem;
 }
 
 .input-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     margin: 0;
     padding: 0 .7rem;
@@ -265,7 +277,7 @@ $rowPadding: .3rem;
    ダイアログ用
  ------------------------------------------- */
 #dialog, #confirm {
-	display: none;
+    display: none;
 }
 
 #dialog ul {
@@ -278,9 +290,9 @@ $rowPadding: .3rem;
 .search-header {
     position: relative;
     margin-bottom: 0.5rem;
-	padding: $rowPadding;
+    padding: $rowPadding;
     background-color: #ffffff;
-	border: 0.2rem solid #bbbbbb;
+    border: 0.2rem solid #bbbbbb;
     border-radius: 0.4rem;
     label {
         margin: 0 0.5rem 0 0.2rem;
@@ -296,9 +308,6 @@ $rowPadding: .3rem;
     }
     .name {
         width: 12em;
-    }
-    .name-short {
-        width: 8rem;
     }
     .joined {
         width: 3.2em;
@@ -484,9 +493,8 @@ $rowPadding: .3rem;
 .players {
     .search-header {
         .result-count {
-            margin-left: auto;
+            margin-left: 5px;
             color: red;
-            font-size: .8em;
         }
         .joined {
             margin-left: .3rem;
@@ -494,7 +502,7 @@ $rowPadding: .3rem;
         }
     }
     .search-results {
-        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
+        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 3} - 0.5rem); /* content - .search-header and margin */
         .table-body {
             .table-row {
                 & > :last-child {

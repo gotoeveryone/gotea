@@ -71,12 +71,6 @@
                         'action' => 'categorize'
                     ], ['class' => 'button']);
                 ?>
-                <?=
-                    $this->Html->link('成績更新日編集', [
-                        'controller' => 'updatedPoints',
-                        'action' => 'index'
-                    ], ['class' => 'button']);
-                ?>
                 <?php if ($admin) : ?>
                 <?=
                     $this->Html->link('各種情報クエリ更新', [
@@ -85,6 +79,12 @@
                     ], ['class' => 'button']);
                 ?>
                 <?php endif ?>
+                <?=
+                    $this->Html->link('成績更新日編集', [
+                        'controller' => 'updatedPoints',
+                        'action' => 'index'
+                    ], ['class' => 'button inactive']);
+                ?>
             </nav>
             <?php endif ?>
             <!-- メインコンテンツ -->

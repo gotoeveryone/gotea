@@ -54,11 +54,6 @@
                         'class' => 'excluded'
                     ]);
                 ?>
-                <?php if (!empty($players) && count($players) > 0) { ?>
-                <span class="result-count">
-                    <?=count($players).'件のレコードが該当しました。'?>
-                </span>
-                <?php } ?>
             </li>
             <li class="search-row">
                 <label>棋士名：</label>
@@ -66,15 +61,22 @@
                 <label>（英語）：</label>
                 <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
                 <label>（その他）：</label>
-                <?=$this->Form->text('name_other', ['class' => 'name-short', 'maxlength' => 20]);?>
+                <?=$this->Form->text('name_other', ['class' => 'name', 'maxlength' => 20]);?>
                 <label>入段年：</label>
                 <?=$this->Form->text('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
                 ～
                 <?=$this->Form->text('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
+            </li>
+            <li class="search-row">
+                <?php if (!empty($players) && count($players) > 0) { ?>
+                <div class="result-count">
+                    <?=count($players).'件のレコードが該当しました。'?>
+                </div>
+                <?php } ?>
                 <div class="button-column">
                     <?=
                         $this->Form->button('新規作成', [
-                            'id' => 'addNew',
+                            'class' => 'add-new',
                             'type' => 'button',
                             'disabled' => 'disabled'
                         ]);
@@ -184,16 +186,20 @@
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
-    $(function () {
-        $('#addNew').attr('disabled', !$('[data-id=country]').val());
-        // 国プルダウン変更時
-        $('[data-id=country]').on('change', function () {
-            $('#addNew').attr('disabled', !$(this).val());
-        });
-        // 新規作成画面へ遷移
-        $('#addNew').click(function () {
-            setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + $('[data-id=country]').val());
-        });
-    });
+    var country = document.querySelector('[data-id=country]');
+    var addNew = document.querySelector('.add-new');
+
+    // 初期状態
+    addNew.disabled = !country.value;
+
+    // 新規作成画面へ遷移
+    addNew.addEventListener('click', function() {
+        setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + country.value);
+    }, false);
+
+    // 所属国変更時
+    country.addEventListener('change', function() {
+        addNew.disabled = !this.value;
+    }, false);
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>
