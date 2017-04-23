@@ -31,18 +31,17 @@
         <div class="row button-row">
             <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
             <?=$this->Form->button('クリア', ['type' => 'reset'])?>
-            <?=$this->Form->button('戻る', ['type' => 'button', 'id' => 'back'])?>
+            <?=$this->Form->button('戻る', ['type' => 'button', 'class' => 'back'])?>
         </div>
 	<?= $this->Form->end() ?>
 </section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
-	$(function() {
-		// 戻るボタン押下時
-		$('#back').click(function() {
-			location.href = '/';
-		});
-	});
+    // 戻るボタン押下時
+	var back = document.querySelector('.back');
+    back.addEventListener('click', function() {
+        location.href = '/';
+    }, false);
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>

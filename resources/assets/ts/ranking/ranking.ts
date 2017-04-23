@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { NgModel } from '@angular/forms';
+import { Colorbox } from '../components/colorbox';
 
 /**
  * ランキング出力用コンポーネント
@@ -11,29 +12,29 @@ import { NgModel } from '@angular/forms';
     template: `
         <ul ranking-header class="search-header"
             [years]="years" [countries]="countries" [limits]="limits" [lastUpdate]="lastUpdate"
-            (onSearch)="onSearch($event)" (outputJson)="outputJson($event)">
+            (onSearch)="onSearch($event)" (outputJson)="outputJson($event)" (openDialog)="openDialog($event)">
         </ul>
-        <div ranking-results class="search-results" [rows]="rows"></div>
+        <div ranking-results class="search-results" [rows]="rows" (onSelect)="onSelect($event)"></div>
+        <colorbox class="iframe-modal" [url]="modal.url" [class.hide]="!modal.url"
+            (click)="onModalClose($event)" (onClose)="onModalClose($event)"
+            [height]="modal.height" [width]="modal.width"></colorbox>
+        <dialog class="dialog" [class.hide]="!text" [text]="text" (onClose)="onDialogClose($event)"></dialog>
     `,
 })
 export class Ranking {
-    years: any[];
+    years = this.getYears();
     countries: any[];
     limits: any[];
     lastUpdate = '';
     rows = new Array();
+    text = '';
+    modal = {
+        url: '',
+        width: '0',
+        height: '0',
+    };
 
     constructor(private http: Http) {
-        this.years = [
-            {
-                value: 2016,
-                text: "2016年度",
-            },
-            {
-                value: 2017,
-                text: "2017年度",
-            },
-        ];
         this.countries = [
             {
                 value: '日本',
@@ -80,25 +81,61 @@ export class Ranking {
         ];
     }
 
+    private getYears() {
+        const nowYear = new Date().getFullYear();
+        const years = [];
+        for (let y = nowYear; y >= 2013; y--) {
+            years.push({
+                value: y,
+                text: `${y}年度`,
+            });
+        }
+        return years;
+    }
+
+    private getCountries() {
+        this.http.get(`/igoapp/api/countries/`)
+            .forEach((res) => {
+                const json = res.json().response;
+                this.rows = json.ranking;
+            });
+    }
+
     onSearch(_params: any) {
-        document.querySelector('.block-ui').classList.add('blocked');
         this.http.get(`/igoapp/api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true`)
             .forEach((res) => {
                 const json = res.json().response;
                 const dateObj = new Date(json.lastUpdate);
                 this.lastUpdate = `${dateObj.getFullYear()}年${(dateObj.getMonth() + 1)}月${dateObj.getDate()}日`;
                 this.rows = json.ranking;
-                document.querySelector('.block-ui').classList.remove('blocked');
             });
     }
 
     outputJson(_params: any) {
-        document.querySelector('.block-ui').classList.add('blocked');
         this.http.get(`/igoapp/api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true&make=true`)
             .forEach((res) => {
-                alert('JSONを出力しました。');
-                document.querySelector('.block-ui').classList.remove('blocked');
+                this.openDialog('JSONを出力しました。');
             });
+    }
+
+    openDialog(_text: string) {
+        this.text = _text;
+    }
+
+    onDialogClose() {
+        this.text = '';
+    }
+
+    onSelect(_id: number) {
+        this.modal.width = '80%';
+        this.modal.height = '90%';
+        this.modal.url = `/igoapp/players/detail/${_id}`;
+    }
+
+    onModalClose() {
+        this.modal.width = '0';
+        this.modal.height = '0';
+        this.modal.url = '';
     }
 }
 
@@ -136,6 +173,7 @@ export class RankingHeader {
     @Input() limits: any[];
     @Output() onSearch = new EventEmitter<any>();
     @Output() outputJson = new EventEmitter<any>();
+    @Output() openDialog = new EventEmitter<any>();
 
     selectCountry: string;
     selectYear: number;
@@ -160,7 +198,7 @@ export class RankingHeader {
         this.onSearch.emit({
             year: this.selectYear,
             country: this.selectCountry,
-            limit: this.selectLimit
+            limit: this.selectLimit,
         });
     }
 
@@ -168,7 +206,7 @@ export class RankingHeader {
         this.outputJson.emit({
             year: this.selectYear,
             country: this.selectCountry,
-            limit: this.selectLimit
+            limit: this.selectLimit,
         });
     }
 
@@ -202,9 +240,7 @@ export class RankingHeader {
                     <span [innerText]="getRank(idx, row)"></span>
                 </span>
                 <span class="left player">
-                    <a class="colorbox" [href]="'/igoapp/players/detail/' + row.playerId">
-                        <span [ngClass]="{'female': row.sex === '女性'}" [innerText]="row.playerNameJp"></span>
-                    </a>
+                    <a class="player-link" [ngClass]="getSexClass(row)" (click)="select(row)" [innerText]="row.playerNameJp"></a>
                 </span>
                 <span class="point" [innerText]="row.winPoint"></span>
                 <span class="point" [innerText]="row.losePoint"></span>
@@ -216,6 +252,7 @@ export class RankingHeader {
 })
 export class RankingBody {
     @Input() rows: any[];
+    @Output() onSelect = new EventEmitter<any>();
     getRank(_idx: number, _row: any): string {
         if (this.rows[_idx - 1]) {
             const beforeRank = this.rows[_idx - 1].rank;
@@ -225,5 +262,11 @@ export class RankingBody {
     }
     getWinPercentage(_row: any): string {
         return `${Math.round(_row.winPercentage * 100)}%`;
+    }
+    getSexClass(_row: any): string {
+        return (_row.sex === '女性' ? 'female' : 'male');
+    }
+    select(_row: any) {
+        this.onSelect.emit(_row.playerId);
     }
 }

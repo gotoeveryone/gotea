@@ -1,47 +1,29 @@
+@import 'module/_normalize.scss';
+@import 'module/_custom.scss';
+
 $minRowHeight: 2.6rem;
 $rowPadding: .3rem;
 
 %center {
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* -------------------------------------------
-   タグ単位のレイアウト
- ------------------------------------------- */
-body {
-    overflow-x: hidden;
+%row {
+    display: flex;
+    align-items: center;
+    margin: 0.2rem auto;
+    padding: 0.2rem;
+    min-height: #{$minRowHeight};
 }
 
-main, nav {
-    padding: 0 0.5rem;
-}
-
-main > section {
-    height: 100%;
-}
-
-nav + main {
-    width: 70%;
-    min-width: calc(100% - 220px);
-}
-
-nav {
-    width: 30%;
-	max-width: 220px;
-}
-
-form {
-    height: 100%;
-    width: 100%;
-}
-
-strong {
-    margin: 0 0.3rem;
-    span {
-        color: #ff0000;
-    }
+%display-center {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 /* -------------------------------------------
@@ -68,6 +50,125 @@ strong {
     }
 }
 
+// ダイアログ
+.dialog {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(#000, .8);
+    &.hide {
+        display: none;
+    }
+    &-content {
+        position: absolute;
+        width: auto;
+        height: auto;
+        margin: auto;
+        padding: 10px;
+        max-width: 400px;
+        min-height: 200px;
+        max-height: 200px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 5px;
+        &-header {
+            display: flex;
+            height: 30px;
+            align-items: center;
+            background-color: #4ba;
+            border-radius: 5px 5px 0 0;
+        }
+        &-title {
+            margin-left: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        &-body {
+            height: calc(100% - 30px - 40px);
+            padding: 15px;
+            font-size: 15px;
+            background-color: #eee;
+            border-bottom: 1px solid #aaa;
+        }
+        &-footer {
+            position: relative;
+            height: 40px;
+            color: #22f;
+            background-color: #eee;
+            border-radius: 0 0 5px 5px;
+            button {
+                position: absolute;
+                top: 2px;
+                right: 5px;
+                color: #386;
+                font-size: 15px;
+                font-weight: bold;
+                background-color: #ccc;
+                &:hover {
+                    background-color: #999;
+                }
+            }
+        }
+    }
+}
+
+// iframe
+.iframe-modal {
+    @extend %display-center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, .8);
+    z-index: 200;
+    cursor: pointer;
+    visibility: visible;
+    opacity: 1;
+    transition-property: visibility, opacity, height;
+    transition-timing-function: ease-in;
+    transition-duration: .2s;
+    &.hide {
+        visibility: hidden;
+        opacity: 0;
+    }
+    .modal-parent {
+        @extend %display-center;
+        margin: auto;
+        border-radius: 10px;
+        background: linear-gradient(to bottom right, #99ff99, #ffffee);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        transition-property: height;
+        transition-timing-function: ease-in;
+        transition-duration: .2s;
+        &.hide {
+            height: 0;
+        }
+        .modal-body {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+        .modal-close {
+            display: block;
+            position: absolute;
+            width: 38px;
+            height: 19px;
+            top: 0;
+            right: 5px;
+            background: url('/css/images/controls.png') no-repeat top center;
+            cursor: pointer;
+        }
+    }
+}
+
 .content {
     display: flex;
     &.modal {
@@ -77,22 +178,30 @@ strong {
     &.row {
         margin: auto;
     }
+    .button {
+        &.inactive {
+            background-color: #888;
+            &:hover {
+                background-color: #666;
+            }
+        }
+    }
 }
 
 .row {
-    display: flex;
-    align-items: center;
-    margin: 0.2rem auto;
-    padding: 0.2rem;
-    min-height: #{$minRowHeight};
+    @extend %row;
+}
+
+.male {
+    color: #00f;
 }
 
 .female {
-    color: #ff0000;
+    color: #f00;
 }
 
 .category-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     height: 2.5rem;
     margin: 0 auto .2rem;
@@ -103,7 +212,7 @@ strong {
 }
 
 .genre-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     height: 2.3rem;
     text-indent: 0.6rem;
@@ -113,7 +222,7 @@ strong {
 }
 
 .label-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     height: 2.2rem;
     text-indent: 0.7rem;
@@ -127,7 +236,7 @@ strong {
 }
 
 .input-row {
-    @extend .row;
+    @extend %row;
     justify-content: flex-start;
     margin: 0;
     padding: 0 .7rem;
@@ -168,7 +277,7 @@ strong {
    ダイアログ用
  ------------------------------------------- */
 #dialog, #confirm {
-	display: none;
+    display: none;
 }
 
 #dialog ul {
@@ -181,9 +290,9 @@ strong {
 .search-header {
     position: relative;
     margin-bottom: 0.5rem;
-	padding: $rowPadding;
+    padding: $rowPadding;
     background-color: #ffffff;
-	border: 0.2rem solid #bbbbbb;
+    border: 0.2rem solid #bbbbbb;
     border-radius: 0.4rem;
     label {
         margin: 0 0.5rem 0 0.2rem;
@@ -199,9 +308,6 @@ strong {
     }
     .name {
         width: 12em;
-    }
-    .name-short {
-        width: 8rem;
     }
     .joined {
         width: 3.2em;
@@ -322,31 +428,11 @@ strong {
 }
 
 /* -------------------------------------------
-   ログイン画面
- ------------------------------------------- */
-.login {
-    @extend %center;
-	width: 20%;
-    min-width: 250px;
-
-    .row {
-        label {
-            padding: 0 .5em 0 0;
-            width: 30%;
-            text-align: right;
-            font-weight: bold;
-        }
-        input {
-            width: 70%;
-        }
-    }
-}
-
-/* -------------------------------------------
    勝敗ランキング画面
  ------------------------------------------- */
 .ranking {
     width: 30rem;
+    margin-top: 0;
     select {
         width: 7rem;
         margin-right: .4rem;
@@ -359,6 +445,10 @@ strong {
         }
         .player {
             width: 40%;
+            &-link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
         .point {
             width: 10%;
@@ -403,9 +493,8 @@ strong {
 .players {
     .search-header {
         .result-count {
-            margin-left: auto;
+            margin-left: 5px;
             color: red;
-            font-size: .8em;
         }
         .joined {
             margin-left: .3rem;
@@ -413,7 +502,7 @@ strong {
         }
     }
     .search-results {
-        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
+        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 3} - 0.5rem); /* content - .search-header and margin */
         .table-body {
             .table-row {
                 & > :last-child {
@@ -529,9 +618,8 @@ strong {
    段位別棋士数検索
  ------------------------------------------- */
 .categories {
-    width: 12em;
+    width: 15em;
     .search-results {
-        width: 12em;
         .rank {
             width: 40%;
         }
