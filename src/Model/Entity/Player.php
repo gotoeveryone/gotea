@@ -11,6 +11,21 @@ use Cake\I18n\Date;
 class Player extends AppEntity
 {
     /**
+     * タイトル成績を表示する年の一覧を取得します。
+     *
+     * @return array 年の一覧
+     */
+    public function years()
+    {
+        $years = [];
+        $nowYear = intval(Date::now()->year);
+        for ($i = $nowYear; $i >= 2017; $i--) {
+            $years[] = $i;
+        }
+        return $years;
+    }
+
+    /**
      * 成績情報を取得します。
      * 
      * @return object
