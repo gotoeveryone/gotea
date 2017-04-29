@@ -1,6 +1,8 @@
 <?= $this->Form->create(null, [
     'method' => 'post',
-    'url' => ['action' => 'login'],
+    'url' => ['action' => 'login'.(
+        $this->request->getQuery('redirect') ? '?redirect='.$this->request->getQuery('redirect') : ''
+    )],
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',
