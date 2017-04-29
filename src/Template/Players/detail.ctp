@@ -207,33 +207,31 @@
             <div class="category-row">勝敗</div>
 
             <?php // 2017年以降 ?>
-            <?php if ($player->win_details) : ?>
-            <?php foreach ($player->win_details as $key=>$win) : ?>
+            <?php foreach ($player->years() as $year) : ?>
                 <ul class="boxes">
-                    <li class="genre-row"><?=h($win->target_year).'年度'?></li>
+                    <li class="genre-row"><?=h($year).'年度'?></li>
                     <li class="row">
                         <div class="box">
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
-                                <?=$player->win($win->year)?>勝
-                                <?=$player->lose($win->year)?>敗
-                                <?=$player->draw($win->year)?>分
-                                <span class="percent">（勝率<strong><?=$player->percent($win->year)?></strong>%）
+                                <?=$player->win($year)?>勝
+                                <?=$player->lose($year)?>敗
+                                <?=$player->draw($year)?>分
+                                <span class="percent">（勝率<strong><?=$player->percent($year)?></strong>%）
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row">勝敗（国際）</div>
                             <div class="input-row">
-                                <?=$player->win($win->year, true)?>勝
-                                <?=$player->lose($win->year, true)?>敗
-                                <?=$player->draw($win->year, true)?>分
-                                <span class="percent">（勝率<strong><?=$player->percent($win->year, true)?></strong>%）
+                                <?=$player->win($year, true)?>勝
+                                <?=$player->lose($year, true)?>敗
+                                <?=$player->draw($year, true)?>分
+                                <span class="percent">（勝率<strong><?=$player->percent($year, true)?></strong>%）
                             </div>
                         </div>
                     </li>
                 </ul>
             <?php endforeach ?>
-            <?php endif ?>
 
             <?php // 2016年以前 ?>
             <?php foreach ($player->player_scores as $key=>$score) : ?>
