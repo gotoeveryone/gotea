@@ -105,12 +105,20 @@ class PlayersTable extends AppTable
      * 指定条件に合致した棋士情報を取得します。
      * 
      * @param array $data
-     * @return Player 棋士情報一覧
+     * @param boolean $isCount
+     * @return Player|int 棋士情報一覧|件数
      */
-    public function findPlayers(array $data)
+    public function findPlayers(array $data, $isCount = false)
     {
         // 棋士情報の取得
-        $query = $this->find();
+        $query = $this->find()->order([
+            'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id'
+        ])->contain([
+            'PlayerScores' => function (Query $q) {
+                return $q->where(['PlayerScores.target_year' => intval(Date::now()->year)]);
+            },
+            'Ranks', 'Countries', 'Organizations'
+        ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
         if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
@@ -144,15 +152,12 @@ class PlayersTable extends AppTable
             $query->where(['Players.is_retired' => 0]);
         }
 
+        if ($isCount) {
+            return $query->count();
+        }
+
         // データを取得
-        return $query->order([
-            'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id'
-        ])->contain([
-            'PlayerScores' => function (Query $q) {
-                return $q->where(['PlayerScores.target_year' => intval(Date::now()->year)]);
-            },
-            'Ranks', 'Countries', 'Organizations'
-        ])->all();
+        return $query->all();
     }
 
     /**

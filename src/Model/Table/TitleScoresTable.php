@@ -76,15 +76,13 @@ class TitleScoresTable extends Table
     }
 
     /**
-     * タイトル成績を検索します。
+     * タイトル勝敗を検索します。
      * 
-     * @param int $countryId
-     * @param string|null $name
-     * @param string|null $year
-     * @param string|null $started
-     * @param string|null $ended
+     * @param array $data
+     * @param boolean $isCount
+     * @return TitleScore|int タイトル勝敗一覧|件数
      */
-    public function findMatches(int $countryId, $name = null, $year = null, $started = null, $ended = null)
+    public function findMatches(array $data, $isCount = false)
     {
         $query = $this->find()
                 ->contain([
@@ -95,23 +93,24 @@ class TitleScoresTable extends Table
                 ->leftJoinWith('LoseDetails.Loser')
                 ->orderDesc('started');
 
-        if ($name) {
+        if (isset($data['name']) && ($name = $data['name'])) {
             $query->where(['Winner.name like ' => "%{$name}%"])->orWhere(['Loser.name like ' => "%{$name}%"]);
         }
-
-        if ($year) {
+        if (isset($data['target_year']) && ($year = $data['target_year'])) {
             $query->where(['YEAR(TitleScores.started)' => $year])->where(['YEAR(TitleScores.ended)' => $year]);
         }
-
-        if ($countryId) {
+        if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
             $query->where(['TitleScores.country_id' => $countryId]);
         }
-        if ($started) {
+        if (isset($data['started']) && ($started = $data['started'])) {
             $query->where(['TitleScores.started >= ' => $started]);
         }
-
-        if ($ended) {
+        if (isset($data['ended']) && ($ended = $data['ended'])) {
             $query->where(['TitleScores.ended <= ' => $ended]);
+        }
+
+        if ($isCount) {
+            return $query->count();
         }
 
         return $query->all();

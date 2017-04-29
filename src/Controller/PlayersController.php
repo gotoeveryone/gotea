@@ -79,15 +79,16 @@ class PlayersController extends AppController
         }
 
         // 該当する棋士情報一覧の件数を取得
-        $players = $this->Players->findPlayers($data);
+        $count = $this->Players->findPlayers($data, true);
 
-        // 件数が0件または1001件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
-        if (!($count = count($players))) {
+        // 件数が0件または301件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
+        if ($count === 0) {
             $this->Flash->warn(__("検索結果が0件でした。"));
         } else if ($count > 300) {
             $this->Flash->warn(__("検索結果が300件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
         } else {
             // 結果をセット
+            $players = $this->Players->findPlayers($data);
             $this->set('players', $players);
         }
 

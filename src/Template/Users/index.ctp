@@ -1,14 +1,14 @@
-<section class="login">
-	<?= $this->Form->create(null, [
-        'method' => 'post',
-        'url' => ['action' => 'login'],
-        'templates' => [
-            'inputContainer' => '{{content}}',
-            'textFormGroup' => '{{input}}',
-            'passwordFormGroup' => '{{input}}'
-        ]
-    ]) ?>
-        <div class="row">
+<?= $this->Form->create(null, [
+    'method' => 'post',
+    'url' => ['action' => 'login'],
+    'templates' => [
+        'inputContainer' => '{{content}}',
+        'textFormGroup' => '{{input}}',
+        'passwordFormGroup' => '{{input}}'
+    ]
+]) ?>
+    <ul class="login">
+        <li class="row">
             <label>ID</label>
             <?=
                 $this->Form->text('username', [
@@ -17,8 +17,8 @@
                     'class' => 'imeDisabled'
                 ]);
             ?>
-        </div>
-        <div class="row">
+        </li>
+        <li class="row">
             <label>Password</label>
             <?=
                 $this->Form->password('password', [
@@ -27,14 +27,14 @@
                     'class' => 'imeDisabled'
                 ]);
             ?>
-        </div>
-        <div class="row button-row">
+        </li>
+        <li class="row button-row">
             <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
             <?=$this->Form->button('クリア', ['type' => 'reset'])?>
             <?=$this->Form->button('戻る', ['type' => 'button', 'class' => 'back'])?>
-        </div>
-	<?= $this->Form->end() ?>
-</section>
+        </li>
+    </ul>
+<?= $this->Form->end() ?>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>

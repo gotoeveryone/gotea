@@ -160,7 +160,7 @@ export class Ranking {
         <li class="search-row">
             <label>最終更新日：</label>
             <span class="lastUpdate" [innerText]="lastUpdate"></span>
-            <div class="button-column">
+            <div class="button-wrap">
                 <button type="button" (click)="json()">JSON出力</button>
             </div>
         </li>
