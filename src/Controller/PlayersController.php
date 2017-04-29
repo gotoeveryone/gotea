@@ -210,14 +210,6 @@ class PlayersController extends AppController
      */
     public function ranking()
     {
-        // 所属国プルダウン
-		$this->set('countries', $this->Countries->findCountryHasFileToArrayWithSuffix());
-        // 年度プルダウン
-        $years = [];
-        for ($i = date('Y'); $i >= 2013; $i--) {
-            $years[$i] = $i.'年度';
-        }
-        $this->set('years', $years);
         $this->_setTitle('棋士勝敗ランキング出力');
     }
 
@@ -226,8 +218,6 @@ class PlayersController extends AppController
      */
     public function categorize()
     {
-		// 所属国プルダウン
-		$this->set("countries", $this->Countries->findCountryBelongToArray());
         $this->_setTitle("段位別棋士数検索");
     }
 }

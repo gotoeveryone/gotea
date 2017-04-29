@@ -38,12 +38,16 @@ class TitleScore extends Entity
     /**
      * 勝者名を取得します。
      * 
+     * @param int|null 棋士ID
      * @return string 勝者名
      */
-    public function getWinner()
+    public function getWinner($id = null)
     {
         if (($detail = $this->win_detail) && ($winner = $detail->winner)) {
-            return $winner->getNameWithRank();
+            if ($winner->id == $id) {
+                return '<span class="selected">'.h($winner->getNameWithRank()).'</span>';
+            }
+            return h($winner->getNameWithRank());
         }
         return '';
     }
@@ -51,12 +55,16 @@ class TitleScore extends Entity
     /**
      * 敗者名を取得します。
      * 
+     * @param int|null 棋士ID
      * @return string 敗者名
      */
-    public function getLoser()
+    public function getLoser($id = null)
     {
         if (($detail = $this->lose_detail) && ($loser = $detail->loser)) {
-            return $loser->getNameWithRank();
+            if ($loser->id == $id) {
+                return '<span class="selected">'.h($loser->getNameWithRank()).'</span>';
+            }
+            return h($loser->getNameWithRank());
         }
         return '';
     }

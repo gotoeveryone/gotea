@@ -291,6 +291,10 @@
         &.modal {
             height: calc(100% - 3rem);
         }
+        .selected {
+            color: #04d;
+            font-weight: bold;
+        }
         .country, .date {
             width: 15%;
         }
