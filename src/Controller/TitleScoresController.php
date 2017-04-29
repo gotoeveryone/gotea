@@ -45,18 +45,18 @@ class TitleScoresController extends AppController
 
         // 検索
         if ($this->request->isPost()) {
+            // リクエストから値を取得
+            $data = $this->request->getParsedBody();
             $countryId = (int) $this->request->getData('country_id');
-            $titleScores = $this->TitleScores->findMatches($countryId,
-                $this->request->getData('name'), $this->request->getData('target_year'),
-                $this->request->getData('started'), $this->request->getData('ended')
-            );
+            $count = $this->TitleScores->findMatches($data, true);
 
-            if (!($count = count($titleScores))) {
+            if ($count === 0) {
                 $this->Flash->warn(__("検索結果が0件でした。"));
             } else if ($count > 500) {
                 $this->Flash->warn(__("検索結果が500件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
             } else {
                 // 結果をセット
+                $titleScores = $this->TitleScores->findMatches($data);
                 $this->set('titleScores', $titleScores);
             }
         }
