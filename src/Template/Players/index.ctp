@@ -158,23 +158,24 @@
                     <span class="sex">
                         <?=h($player->sex); ?>
                     </span>
+                    <?php $score = $player->getTitleScoresNowYear(); ?>
                     <span class="point">
-                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point)); ?>
+                        <?=h((empty($score) ? '-' : $score->win_point)); ?>
                     </span>
                     <span class="point">
-                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point)); ?>
+                        <?=h((empty($score) ? '-' : $score->lose_point)); ?>
                     </span>
                     <span class="point">
-                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point)); ?>
+                        <?=h((empty($score) ? '-' : $score->draw_point)); ?>
                     </span>
                     <span class="point">
-                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->win_point_world)); ?>
+                        <?=h((empty($score) ? '-' : $score->win_point_world)); ?>
                     </span>
                     <span class="point">
-                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->lose_point_world)); ?>
+                        <?=h((empty($score) ? '-' : $score->lose_point_world)); ?>
                     </span>
                     <span class="point">
-                        <?=h((empty($player->player_scores) ? '-' : $player->player_scores[0]->draw_point_world)); ?>
+                        <?=h((empty($score) ? '-' : $score->draw_point_world)); ?>
                     </span>
                 </li>
                 <?php endforeach ?>

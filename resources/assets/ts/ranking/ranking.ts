@@ -23,8 +23,8 @@ import { Colorbox } from '../components/colorbox';
 })
 export class Ranking {
     years = this.getYears();
-    countries: any[];
-    limits: any[];
+    countries = this.getCountries();
+    limits = this.getLimits();
     lastUpdate = '';
     rows = new Array();
     text = '';
@@ -34,52 +34,7 @@ export class Ranking {
         height: '0',
     };
 
-    constructor(private http: Http) {
-        this.countries = [
-            {
-                value: '日本',
-                text: '日本棋士',
-            },
-            {
-                value: '韓国',
-                text: '韓国棋士',
-            },
-            {
-                value: '中国',
-                text: '中国棋士',
-            },
-            {
-                value: '台湾',
-                text: '台湾棋士',
-            },
-            {
-                value: '国際',
-                text: '国際棋戦',
-            },
-        ];
-        this.limits = [
-            {
-                value: 20,
-                text: '～20位',
-            },
-            {
-                value: 30,
-                text: '～30位',
-            },
-            {
-                value: 40,
-                text: '～40位',
-            },
-            {
-                value: 50,
-                text: '～50位',
-            },
-            {
-                value: 60,
-                text: '～60位',
-            },
-        ];
-    }
+    constructor(private http: Http) {}
 
     private getYears() {
         const nowYear = new Date().getFullYear();
@@ -93,12 +48,30 @@ export class Ranking {
         return years;
     }
 
-    private getCountries() {
-        this.http.get(`/igoapp/api/countries/`)
+    private getLimits() {
+        const limits = [];
+        for (let l = 20; l <= 50; l = l + 10) {
+            limits.push({
+                value: l,
+                text: `～${l}位`,
+            });
+        }
+        return limits;
+    }
+
+    private async getCountries() {
+        const countries = new Array();
+        await this.http.get(`/igoapp/api/countries/`)
             .forEach((res) => {
                 const json = res.json().response;
-                this.rows = json.ranking;
+                json.forEach((obj: any) => {
+                    countries.push({
+                        value: obj.name,
+                        text: `${obj.name}棋戦`,
+                    });
+                });
             });
+        return countries;
     }
 
     onSearch(_params: any) {
@@ -127,7 +100,7 @@ export class Ranking {
     }
 
     onSelect(_id: number) {
-        this.modal.width = '80%';
+        this.modal.width = '60%';
         this.modal.height = '90%';
         this.modal.url = `/igoapp/players/detail/${_id}`;
     }
@@ -151,7 +124,7 @@ export class Ranking {
                 <option *ngFor="let year of years" [value]="year.value" [innerText]="year.text"></option>
             </select>
             <select ([ngModel])="selectCountry" (change)="changeCountry($event.target.value)">
-                <option *ngFor="let country of countries" [value]="country.value" [innerText]="country.text"></option>
+                <option *ngFor="let country of showCountries" [value]="country.value" [innerText]="country.text"></option>
             </select>
             <select ([ngModel])="selectLimit" (change)="changeLimit($event.target.value)">
                 <option *ngFor="let limit of limits" [value]="limit.value" [innerText]="limit.text"></option>
@@ -169,12 +142,13 @@ export class Ranking {
 export class RankingHeader {
     @Input() lastUpdate: string;
     @Input() years: any[];
-    @Input() countries: any[];
+    @Input() countries: Promise<any[]>;
     @Input() limits: any[];
     @Output() onSearch = new EventEmitter<any>();
     @Output() outputJson = new EventEmitter<any>();
     @Output() openDialog = new EventEmitter<any>();
 
+    showCountries: any[];
     selectCountry: string;
     selectYear: number;
     selectLimit: number;
@@ -211,10 +185,13 @@ export class RankingHeader {
     }
 
     ngOnInit() {
-        this.selectYear = this.years[0].value;
-        this.selectCountry = this.countries[0].value;
-        this.selectLimit = this.limits[0].value;
-        this.search();
+        this.countries.then(obj => {
+            this.showCountries = obj;
+            this.selectYear = this.years[0].value;
+            this.selectCountry = obj.length ? obj[0].value : '';
+            this.selectLimit = this.limits[0].value;
+            this.search();
+        })
     }
 }
 

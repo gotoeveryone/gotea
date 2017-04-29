@@ -14,7 +14,7 @@
             <li class="search-row">
                 <label>棋士名：</label>
                 <?=$this->Form->text('name', ['class' => 'name']);?>
-                <label>所属国：</label>
+                <label>対象棋戦：</label>
                 <?=
                     $this->Form->select('country_id', $countries, [
                         'class' => 'country',
@@ -58,8 +58,8 @@
                     <?=$this->Form->hidden('id', ['value' => $titleScore->id]);?>
                     <span class="country"><?= h($titleScore->country->name.'棋戦') ?></span>
                     <span class="date"><?= h($titleScore->date) ?></span>
-                    <span class="name"><?= h($titleScore->getWinner()) ?></span>
-                    <span class="name"><?= h($titleScore->getLoser()) ?></span>
+                    <span class="name"><?= $titleScore->getWinner($this->request->getData('id')) ?></span>
+                    <span class="name"><?= $titleScore->getLoser($this->request->getData('id')) ?></span>
                     <?php if (!isset($isDialog)) : ?>
                     <span class="operation">
                         <?= $this->Form->button('勝敗変更', ['data-id' => $titleScore->id, 'class' => 'change']) ?>

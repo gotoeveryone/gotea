@@ -34,20 +34,4 @@ class CountriesTable extends AppTable
             'has_title' => true
         ])->order(['id'])->toArray();
     }
-
-    /**
-     * 所属国情報を取得します。
-     * 
-     * return type
-     */
-    public function findCountryHasFileToArrayWithSuffix()
-    {
-        return $this->find('list', [
-            'keyField' => 'keyField',
-            'valueField' => 'valueField'
-        ])->order(['id' => 'ASC'])->select([
-            'keyField' => 'name',
-            'valueField' => "CASE code WHEN 'wr' THEN CONCAT(name, '棋戦') ELSE CONCAT(name, '棋士') END"
-        ])->toArray();
-    }
 }

@@ -13,10 +13,8 @@ export class CustomHttp extends Http {
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
         document.querySelector('.block-ui').classList.add('blocked');
-        const res = super.request(url, options);
-        res.forEach((res) => {
+        return super.request(url, options).finally(() => {
             document.querySelector('.block-ui').classList.remove('blocked');
         });
-        return res;
     }
 }

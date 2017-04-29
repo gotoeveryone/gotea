@@ -5,6 +5,7 @@ namespace App\Model\Table;
 use App\Model\Entity\Country;
 use App\Model\Entity\Player;
 use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 use Cake\Validation\Validator;
 
@@ -28,51 +29,48 @@ class PlayersTable extends AppTable
         $this->belongsTo('Organizations');
         // 棋士成績
         $this->hasMany('PlayerScores', [
-            'order' => array('PlayerScores.target_year' => 'DESC')
+            'order' => [
+                'PlayerScores.target_year' => 'DESC'
+            ]
         ]);
         // 保持履歴
         $this->hasMany('RetentionHistories', [
-            'joinType' => 'LEFT',
-            'order' => array('RetentionHistories.target_year' => 'DESC')
+            'order' => [
+                'RetentionHistories.target_year' => 'DESC'
+            ]
         ]);
         // タイトル成績
         $this->hasMany('WinDetails', [
-            'joinType' => 'INNER',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'WinDetails.division' => '勝'
             ]
         ]);
         $this->hasMany('LoseDetails', [
-            'joinType' => 'LEFT',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'LoseDetails.division' => '敗'
             ]
         ]);
         $this->hasMany('DrawDetails', [
-            'joinType' => 'LEFT',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'DrawDetails.division' => '分'
             ]
         ]);
         $this->hasMany('WorldWinDetails', [
-            'joinType' => 'LEFT',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'WorldWinDetails.division' => '勝'
             ]
         ]);
         $this->hasMany('WorldLoseDetails', [
-            'joinType' => 'LEFT',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'WorldLoseDetails.division' => '敗',
             ]
         ]);
         $this->hasMany('WorldDrawDetails', [
-            'joinType' => 'LEFT',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'WorldDrawDetails.division' => '分'
@@ -106,10 +104,10 @@ class PlayersTable extends AppTable
     /**
      * 棋士とそれに紐づく棋士成績を取得します。
      * 
-     * @param type $id
-     * @return type 棋士とそれに紐づく棋士成績
+     * @param int $id
+     * @return Player|null 棋士とそれに紐づく棋士成績
      */
-    public function findPlayerWithScores($id)
+    public function findPlayerWithScores(int $id)
     {
         return $this->find()->contain(['PlayerScores' => function(Query $q) {
             return $q->orderDesc('PlayerScores.target_year');
@@ -119,10 +117,10 @@ class PlayersTable extends AppTable
     /**
      * 棋士情報に関する一式を取得します。
      * 
-     * @param type $id
-     * @return type 棋士情報
+     * @param int $id
+     * @return Player|null 棋士情報
      */
-    public function getInner($id)
+    public function getInner(int $id)
     {
 		return $this->find()->contain([
             'WinDetails' => function(Query $q) {
@@ -239,7 +237,7 @@ class PlayersTable extends AppTable
      * @param \App\Model\Entity\Country $country
      * @param int $targetYear
      * @param int $offset
-     * @return object ランキング集計データ
+     * @return array ランキング集計データ
      */
     public function findRanking(Country $country, int $targetYear, int $offset)
     {
@@ -266,7 +264,7 @@ class PlayersTable extends AppTable
      * 
      * @param type $models
      * @param bool $isJp
-     * @return array
+     * @return array ランキングモデルの配列
      */
     public function toRankingArray($models, $isJp) : array
     {
@@ -308,13 +306,13 @@ class PlayersTable extends AppTable
      * @param string $division
      * @return \Cake\Database\Query
      */
-    private function __createSub(Country $country, int $targetYear, string $division) : \Cake\Database\Query
+    private function __createSub(Country $country, int $targetYear, string $division) : Query
     {
-        $titleScoreDetails = \Cake\ORM\TableRegistry::get('TitleScoreDetails');
+        $titleScoreDetails = TableRegistry::get('TitleScoreDetails');
         $subQuery = $titleScoreDetails->find()
                 ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
                 ->contain([
-                    'TitleScores' => function(\Cake\Database\Query $q) use ($country, $targetYear) {
+                    'TitleScores' => function(Query $q) use ($country, $targetYear) {
                         return $q->where(['TitleScores.country_id' => $country->id])->orWhere(['is_world' => true])->where(['YEAR(started)' => $targetYear]);
                     }
                 ])
@@ -336,9 +334,9 @@ class PlayersTable extends AppTable
      * 
      * @param string $fieldName
      * @param string $input
-     * @return Array
+     * @return array
      */
-    private function __createLikeParams($fieldName, $input) : Array
+    private function __createLikeParams(string $fieldName, string $input) : array
     {
         $whereClause = [];
         $params = explode(" ", $input);

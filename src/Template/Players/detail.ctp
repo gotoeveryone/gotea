@@ -60,15 +60,12 @@
                         <div class="box">
                             <div class="label-row">棋士名</div>
                             <div class="input-row">
-                                
                                 <?=
                                     $this->Form->text('name', [
                                         'class' => 'playerName',
                                         'maxlength' => 20
                                     ]);
                                 ?>
-                                
-                                
                                 英語
                                 <?=
                                     $this->Form->text('name_english', [
@@ -76,8 +73,6 @@
                                         'maxlength' => 40
                                     ]);
                                 ?>
-                                
-                                
                                 その他
                                 <?=
                                     $this->Form->text('name_other', [
@@ -85,7 +80,6 @@
                                         'maxlength' => 20
                                     ]);
                                 ?>
-                                
                             </div>
                         </div>
                     </li>
@@ -203,6 +197,7 @@
         </section>
 
         <!-- 棋士成績 -->
+        <?php if ($player->id) : ?>
         <section id="scores">
             <div class="category-row">勝敗</div>
 
@@ -214,19 +209,23 @@
                         <div class="box">
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
-                                <?=$player->win($year)?>勝
-                                <?=$player->lose($year)?>敗
-                                <?=$player->draw($year)?>分
-                                <span class="percent">（勝率<strong><?=$player->percent($year)?></strong>%）
+                                <?php
+                                    $win = $player->win($year);
+                                    $lose = $player->lose($year);
+                                ?>
+                                <?=$win?>勝<?=$lose?>敗<?=$player->draw($year)?>分
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>%）
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row">勝敗（国際）</div>
                             <div class="input-row">
-                                <?=$player->win($year, true)?>勝
-                                <?=$player->lose($year, true)?>敗
-                                <?=$player->draw($year, true)?>分
-                                <span class="percent">（勝率<strong><?=$player->percent($year, true)?></strong>%）
+                                <?php
+                                    $winWr = $player->win($year, true);
+                                    $loseWr = $player->lose($year, true);
+                                ?>
+                                <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($year, true)?>分
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>%）
                             </div>
                         </div>
                         <div class="box">
@@ -314,7 +313,7 @@
                     'selectFormGroup' => '{{input}}'
                 ]
             ])?>
-                <?=$this->Form->hidden('id', ['value' => $player->id])?>
+                <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
                 <?=$this->Form->hidden('country_id', ['value' => $player->country_id])?>
                 <?=$this->Form->hidden('target_year', ['value' => ''])?>
             <?=$this->Form->end()?>
@@ -379,6 +378,7 @@
             <?php endforeach ?>
             <?php endif ?>
         </section>
+        <?php endif ?>
     </div>
 </div>
 

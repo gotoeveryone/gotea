@@ -41,14 +41,25 @@ class Player extends AppEntity
     }
 
     /**
-     * タイトル成績情報を取得します。
+     * 当年のタイトル成績情報を取得します。
      * 
      * @return object
      */
-    protected function _getTitleScores()
+    public function getTitleScoresNowYear()
+    {
+        return $this->getTitleScores(intval(Date::now()->year));
+    }
+
+    /**
+     * タイトル成績情報を取得します。
+     * 
+     * @param int $year
+     * @return object
+     */
+    public function getTitleScores(int $year)
     {
         $scores = TableRegistry::get('TitleScores');
-        return $scores->findFromYear($this->id);
+        return $scores->findFromYear($this->id, $year);
     }
 
     /**
@@ -137,24 +148,6 @@ class Player extends AppEntity
     {
         $details = ($world ? $this->world_draw_details : $this->draw_details);
         return $this->calc($year, $details);
-    }
-
-    /**
-     * 勝率を取得します。
-     *
-     * @param int $year
-     * @param boolean $world
-     * @return int 勝率（整数）
-     */
-    public function percent(int $year, $world = false)
-    {
-        $win = $this->win($year, $world);
-        $lose = $this->lose($year, $world);
-        $sum = $win + $lose;
-        if (!$sum) {
-            return 0;
-        }
-        return round($win / ($sum) * 100);
     }
 
     /**

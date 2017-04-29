@@ -93,7 +93,7 @@ class TitleScoresTable extends Table
                 ->leftJoinWith('LoseDetails.Loser')
                 ->orderDesc('started');
 
-        if (isset($data['id']) && ($id = $data['id'])) {
+        if (isset($data['player_id']) && ($id = $data['player_id'])) {
             $query->where(['Winner.id' => $id])->orWhere(['Loser.id' => $id]);
         }
         if (isset($data['name']) && ($name = $data['name'])) {
@@ -122,12 +122,13 @@ class TitleScoresTable extends Table
     /**
      * 指定した棋士の年度別成績を取得します。
      * 
-     * @param $playerId
-     * @return array
+     * @param int $playerId
+     * @param int|array $years
+     * @return array|object 成績情報
      */
-    public function findFromYear(int $playerId)
+    public function findFromYear(int $playerId, $years = [])
     {
-        return $this->find()
+        $q = $this->find()
             ->select(['target_year' => 'YEAR(started)', 'win_point' => 'coalesce(win.cnt, 0)',
                 'lose_point' => 'coalesce(lose.cnt, 0)', 'draw_point' => 'coalesce(draw.cnt, 0)',
                 'win_point_world' => 'coalesce(win_world.cnt, 0)', 'lose_point_world' => 'coalesce(lose_world.cnt, 0)',
@@ -140,6 +141,15 @@ class TitleScoresTable extends Table
             ->leftJoin(['draw_world' => $this->__createSub($playerId, '分', true)], ['YEAR(started) = draw_world.target_year'])
             ->group(['target_year', 'win_point', 'lose_point', 'draw_point', 'win_point_world', 'lose_point_world', 'draw_point_world'])
             ->orderDesc('target_year');
+
+        if (!$years) {
+            return $q->all();
+        }
+
+        if (is_array($years)) {
+            return $q->where(['YEAR(started) IN' => $years])->all();
+        }
+        return $q->where(['YEAR(started)' => $years])->first();
     }
 
     /**
