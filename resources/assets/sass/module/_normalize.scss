@@ -9,6 +9,10 @@ main, nav {
     padding: 0 0.5rem;
 }
 
+main {
+    display: none;
+}
+
 main > section {
     height: 100%;
 }

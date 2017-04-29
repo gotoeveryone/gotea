@@ -58,7 +58,7 @@ class PlayersTable extends AppTable
             ]
         ]);
         $this->hasMany('WorldWinDetails', [
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
             'className' => 'TitleScoreDetails',
             'conditions' => [
                 'WorldWinDetails.division' => '勝'
