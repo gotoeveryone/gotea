@@ -93,6 +93,9 @@ class TitleScoresTable extends Table
                 ->leftJoinWith('LoseDetails.Loser')
                 ->orderDesc('started');
 
+        if (isset($data['id']) && ($id = $data['id'])) {
+            $query->where(['Winner.id' => $id])->orWhere(['Loser.id' => $id]);
+        }
         if (isset($data['name']) && ($name = $data['name'])) {
             $query->where(['Winner.name like ' => "%{$name}%"])->orWhere(['Loser.name like ' => "%{$name}%"]);
         }

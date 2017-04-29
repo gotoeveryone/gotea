@@ -110,11 +110,14 @@
 .input-row {
     @extend %row;
     margin: 0;
-    padding: .5rem .7rem;
+    padding: .3rem .7rem;
     min-height: 3rem;
 
     & > * {
         margin-left: .5rem;
+        &.button-wrap {
+            margin-left: auto;
+        }
     }
 
     input {
@@ -285,6 +288,9 @@
         }
     }
     .search-results {
+        &.modal {
+            height: calc(100% - 3rem);
+        }
         .country, .date {
             width: 15%;
         }

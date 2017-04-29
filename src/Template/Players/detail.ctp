@@ -229,6 +229,16 @@
                                 <span class="percent">（勝率<strong><?=$player->percent($year, true)?></strong>%）
                             </div>
                         </div>
+                        <div class="box">
+                            <div class="label-row"></div>
+                            <div class="input-row">
+                                <div class="button-wrap">
+                                    <?=$this->Form->button('タイトル成績へ', [
+                                        'data-button-type' => 'title-scores', 'data-year' => $year, 'type' => 'button'
+                                    ])?>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             <?php endforeach ?>
@@ -284,7 +294,7 @@
                                 <div class="box2">
                                     <?=$this->Date->formatToDateTime($score->modified)?>
                                 </div>
-                                <div class="button-column">
+                                <div class="button-wrap">
                                     <?=$this->Form->button('更新', ['data-button-type' => 'score', 'type' => 'button'])?>
                                 </div>
                             </div>
@@ -294,6 +304,21 @@
             <?=$this->Form->end()?>
             <?php endforeach ?>
 
+            <?=$this->Form->create(null, [
+                'id' => 'titleScoreForm',
+                'type' => 'post',
+                'url' => ['controller' => 'title-scores', 'action' => 'modal-search'],
+                'templates' => [
+                    'inputContainer' => '{{content}}',
+                    'textFormGroup' => '{{input}}',
+                    'selectFormGroup' => '{{input}}'
+                ]
+            ])?>
+                <?=$this->Form->hidden('id', ['value' => $player->id])?>
+                <?=$this->Form->hidden('country_id', ['value' => $player->country_id])?>
+                <?=$this->Form->hidden('target_year', ['value' => ''])?>
+            <?=$this->Form->end()?>
+
             <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
             <script>
                 $(function() {
@@ -302,7 +327,9 @@
                         var lose = parent.find("[name^=lose_point]").val();
                         var total = Number(win) + Number(lose);
                         var percent = (total === 0 ? 0 : Math.round(win / total * 100));
-                        parent.find("strong").text(percent);
+                        if (!isNaN(percent)) {
+                            parent.find("strong").text(percent);
+                        }
                     };
 
                     // 勝率を設定
@@ -312,7 +339,7 @@
 
                     // 勝数、敗数変更時に勝率を再設定
                     $("[name*=point").change(function() {
-                        var parent = $(this).parents("[data-row=win-loss]");
+                        var parent = $(this).closest("[data-row=win-loss]");
                         calcPercent(parent);
                     });
 
@@ -321,6 +348,13 @@
                         var targetYear = $(this).parents("form").find("[name=target_year]").val();
                         var message = targetYear + "年度の棋士成績情報を更新します。よろしいですか？";
                         openConfirm(message, $(this).parents("form"));
+                    });
+
+                    // タイトル成績へボタン押下時
+                    $("[data-button-type=title-scores]").click(function() {
+                        var form = $('#titleScoreForm');
+                        form.find('[name=target_year]').val($(this).data('year'));
+                        submitForm(form);
                     });
                 });
             </script>

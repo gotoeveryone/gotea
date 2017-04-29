@@ -59,6 +59,8 @@ $(document).ready(function() {
     setTooltip();
     setColorbox();
 
+    $("main").animate({opacity: "show"}, 500);
+
     $('#dialog').click(function (event) {
         $(this).dialog('open');
         event.preventDefault();
@@ -177,12 +179,6 @@ function setColorbox(href) {
 // Hiddenに選択した値を設定
 function setHidden(obj, setId) {
 	$('#' + setId).val(obj.val());
-}
-
-// ウィンドウをクローズし、親ウィンドウにフォーカスをあてる
-function windowClose() {
-    window.close();
-    window.opener.focus();
 }
 
 // Ajax処理からフォームをサブミットする

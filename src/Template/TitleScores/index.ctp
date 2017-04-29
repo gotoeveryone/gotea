@@ -9,6 +9,7 @@
             'selectFormGroup' => '{{input}}'
         ]
     ])?>
+        <?php if (!isset($isDialog)) : ?>
         <ul class="search-header">
             <li class="search-row">
                 <label>棋士名：</label>
@@ -36,8 +37,9 @@
                 </div>
             </li>
         </ul>
+        <?php endif ?>
 
-        <div class="search-results">
+        <div class="search-results<?=(isset($isDialog) ? ' modal' : '')?>">
             <?=$this->Form->hidden('change_id', ['value' => ''])?>
             <?=$this->Form->hidden('delete_id', ['value' => ''])?>
             <ul class="table-header">
@@ -46,7 +48,7 @@
                     <span class="date">日付</span>
                     <span class="name">勝者</span>
                     <span class="name">敗者</span>
-                    <span class="operation">操作</span>
+                    <?=!isset($isDialog) ? '<span class="operation">操作</span>' : ''?>
                 </li>
             </ul>
             <?php if (isset($titleScores)) : ?>
@@ -58,15 +60,22 @@
                     <span class="date"><?= h($titleScore->date) ?></span>
                     <span class="name"><?= h($titleScore->getWinner()) ?></span>
                     <span class="name"><?= h($titleScore->getLoser()) ?></span>
+                    <?php if (!isset($isDialog)) : ?>
                     <span class="operation">
                         <?= $this->Form->button('勝敗変更', ['data-id' => $titleScore->id, 'class' => 'change']) ?>
                         <?= $this->Form->button('削除', ['type' => 'button', 'data-id' => $titleScore->id, 'class' => 'delete']) ?>
                     </span>
+                    <?php endif ?>
                 </li>
                 <?php endforeach; ?>
             </ul>
             <?php endif ?>
         </div>
+        <?php if (isset($isDialog)) : ?>
+        <div class="button-row">
+            <?=$this->Form->button('戻る', ['type' => 'button', 'class' => 'back'])?>
+        </div>
+        <?php endif ?>
     <?=$this->Form->end()?>
 </section>
 
@@ -86,6 +95,12 @@
             $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'delete'])?>');
             openConfirm('タイトル成績情報を削除します。よろしいですか？');
         });
+        <?php if (isset($isDialog)) : ?>
+        $('.back').on('click', function() {
+            $.blockUI();
+            location.href = '<?=$this->Url->build(['controller' => 'players', 'action' => 'detail', $this->request->data('id')])?>';
+        })
+        <?php endif ?>
     });
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>

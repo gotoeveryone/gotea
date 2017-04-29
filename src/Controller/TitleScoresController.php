@@ -47,7 +47,6 @@ class TitleScoresController extends AppController
         if ($this->request->isPost()) {
             // リクエストから値を取得
             $data = $this->request->getParsedBody();
-            $countryId = (int) $this->request->getData('country_id');
             $count = $this->TitleScores->findMatches($data, true);
 
             if ($count === 0) {
@@ -62,6 +61,15 @@ class TitleScoresController extends AppController
         }
 
         return $this->render('index');
+    }
+
+    /**
+     * 詳細画面からの検索処理
+     */
+    public function modalSearch()
+    {
+        $this->_setDialogMode();
+        return $this->index();
     }
 
     /**
