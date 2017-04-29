@@ -46,9 +46,9 @@ var checkChange = function(obj) {
     var bean = parent.find('input[type=hidden][name*=bean_]');
     var compare = (self.attr('type') === 'checkbox' ? self.prop('checked') : self.val());
     if (compare !== bean.val()) {
-        self.addClass('red');
+        self.addClass('changed');
     } else {
-        self.removeClass('red');
+        self.removeClass('changed');
     }
 };
 

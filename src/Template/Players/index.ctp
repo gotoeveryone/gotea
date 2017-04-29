@@ -73,7 +73,7 @@
                     <?=count($players).'件のレコードが該当しました。'?>
                 </div>
                 <?php } ?>
-                <div class="button-column">
+                <div class="button-wrap">
                     <?=
                         $this->Form->button('新規作成', [
                             'class' => 'add-new',

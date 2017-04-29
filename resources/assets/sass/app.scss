@@ -1,20 +1,18 @@
+@import 'module/_variables.scss';
 @import 'module/_normalize.scss';
-@import 'module/_custom.scss';
-
-$minRowHeight: 2.6rem;
-$rowPadding: .3rem;
 
 %center {
-    text-align: center;
-    margin-left: auto;
     margin-right: auto;
+    margin-left: auto;
+    text-align: center;
 }
 
 %row {
     display: flex;
-    align-items: center;
     margin: 0.2rem auto;
     padding: 0.2rem;
+    align-items: center;
+    justify-content: flex-start;
     min-height: #{$minRowHeight};
 }
 
@@ -30,11 +28,11 @@ $rowPadding: .3rem;
    共通レイアウト
  ------------------------------------------- */
 .block-ui {
+    position: fixed;
+    width: 100%;
+    height: 100%;
     visibility: hidden;
     opacity: 0;
-    position: fixed;
-    height: 100%;
-    width: 100%;
     top: 0;
     right: 0;
     bottom: 0;
@@ -50,133 +48,11 @@ $rowPadding: .3rem;
     }
 }
 
-// ダイアログ
-.dialog {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(#000, .8);
-    &.hide {
-        display: none;
-    }
-    &-content {
-        position: absolute;
-        width: auto;
-        height: auto;
-        margin: auto;
-        padding: 10px;
-        max-width: 400px;
-        min-height: 200px;
-        max-height: 200px;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-radius: 5px;
-        &-header {
-            display: flex;
-            height: 30px;
-            align-items: center;
-            background-color: #4ba;
-            border-radius: 5px 5px 0 0;
-        }
-        &-title {
-            margin-left: 10px;
-            color: #fff;
-            font-size: 15px;
-            font-weight: bold;
-        }
-        &-body {
-            height: calc(100% - 30px - 40px);
-            padding: 15px;
-            font-size: 15px;
-            background-color: #eee;
-            border-bottom: 1px solid #aaa;
-        }
-        &-footer {
-            position: relative;
-            height: 40px;
-            color: #22f;
-            background-color: #eee;
-            border-radius: 0 0 5px 5px;
-            button {
-                position: absolute;
-                top: 2px;
-                right: 5px;
-                color: #386;
-                font-size: 15px;
-                font-weight: bold;
-                background-color: #ccc;
-                &:hover {
-                    background-color: #999;
-                }
-            }
-        }
-    }
-}
-
-// iframe
-.iframe-modal {
-    @extend %display-center;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(#000, .8);
-    z-index: 200;
-    cursor: pointer;
-    visibility: visible;
-    opacity: 1;
-    transition-property: visibility, opacity, height;
-    transition-timing-function: ease-in;
-    transition-duration: .2s;
-    &.hide {
-        visibility: hidden;
-        opacity: 0;
-    }
-    .modal-parent {
-        @extend %display-center;
-        margin: auto;
-        border-radius: 10px;
-        background: linear-gradient(to bottom right, #99ff99, #ffffee);
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        transition-property: height;
-        transition-timing-function: ease-in;
-        transition-duration: .2s;
-        &.hide {
-            height: 0;
-        }
-        .modal-body {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 10px;
-        }
-        .modal-close {
-            display: block;
-            position: absolute;
-            width: 38px;
-            height: 19px;
-            top: 0;
-            right: 5px;
-            background: url('/css/images/controls.png') no-repeat top center;
-            cursor: pointer;
-        }
-    }
-}
-
 .content {
     display: flex;
     &.modal {
         height: 100%;
         padding: 1rem;
-    }
-    &.row {
-        margin: auto;
     }
     .button {
         &.inactive {
@@ -188,23 +64,25 @@ $rowPadding: .3rem;
     }
 }
 
-.row {
-    @extend %row;
-}
-
 .male {
-    color: #00f;
+    color: $c_blue;
 }
 
 .female {
-    color: #f00;
+    color: $c_red;
+}
+
+.button-row {
+    display: flex;
+    margin: .5em auto;
+    align-items: center;
+    justify-content: center;
 }
 
 .category-row {
     @extend %row;
-    justify-content: flex-start;
     height: 2.5rem;
-    margin: 0 auto .2rem;
+    margin: 0 auto;
     text-indent: 0.5rem;
     font-size: 1.2rem;
     font-weight: bold;
@@ -213,7 +91,6 @@ $rowPadding: .3rem;
 
 .genre-row {
     @extend %row;
-    justify-content: flex-start;
     height: 2.3rem;
     text-indent: 0.6rem;
     font-size: 1.1rem;
@@ -223,23 +100,18 @@ $rowPadding: .3rem;
 
 .label-row {
     @extend %row;
-    justify-content: flex-start;
-    height: 2.2rem;
+    margin: 0 auto;
+    min-height: 2.2rem;
     text-indent: 0.7rem;
     background-color: #ffeedd;
     font-weight: bold;
 }
 
-.label-row:first-child {
-    margin: 0 auto 0.2rem;
-    border-radius: 0.4rem;
-}
-
 .input-row {
     @extend %row;
-    justify-content: flex-start;
     margin: 0;
-    padding: 0 .7rem;
+    padding: .5rem .7rem;
+    min-height: 3rem;
 
     & > * {
         margin-left: .5rem;
@@ -291,8 +163,8 @@ $rowPadding: .3rem;
     position: relative;
     margin-bottom: 0.5rem;
     padding: $rowPadding;
-    background-color: #ffffff;
-    border: 0.2rem solid #bbbbbb;
+    background-color: $c_white;
+    border: 0.2rem solid #bbb;
     border-radius: 0.4rem;
     label {
         margin: 0 0.5rem 0 0.2rem;
@@ -316,67 +188,6 @@ $rowPadding: .3rem;
 }
 
 /* -------------------------------------------
-   検索エリア（一覧）
- ------------------------------------------- */
-.search-results {
-    height: calc(100% - #{(($rowPadding * 2) + $minRowHeight)} - 1rem); /* content - .search-header and margin */
-
-    .table-body {
-        .excluded-row {
-            background-color: #dddddd;
-        }
-    }
-
-    table {
-        display: block;
-        height: 100%;
-        max-height: 100%;
-        border-collapse: collapse;
-
-        thead {
-            display: table-cell;
-            border: 1px #000000 solid;
-            height: 3.2rem;
-            max-height: 3.2rem;
-        }
-
-        tbody {
-            display: inline-block;
-            max-height: calc(100% - 3.2rem);
-            overflow-x: hidden;
-            overflow-y: scroll;
-            -ms-overflow-x: hidden;
-            -ms-overflow-y: scroll;
-            background-color: #ffffff;
-            border-top: 2px #000000 solid;
-            border-left: 1px #000000 solid;
-            border-right: 2px #000000 solid;
-            border-bottom: 2px #000000 solid;
-            margin-top: -2px;
-        }
-
-        td, th {
-            display: table-cell;
-            padding: 3px;
-            border: 1px solid #000000;
-            table-layout: fixed;
-        }
-
-        tr {         
-            &:first-of-type td {
-                border-top: none;
-            }
-            &:last-of-type(1) td {
-                border-bottom: none;
-            }
-            td:nth-last-of-type(1) {
-                border-right: 2px solid #000000;
-            }
-        }
-    }
-}
-
-/* -------------------------------------------
    詳細表示エリア
  ------------------------------------------- */
 .detail-dialog {
@@ -384,44 +195,43 @@ $rowPadding: .3rem;
     height: 100%;
     #tabs {
         display: flex;
+        height: 30px;
         margin: 0;
         padding: 0;
         list-style: none;
-        height: 30px;
         .tab {
-            font-size: 1rem;
-            color: #ffffff;
-            background-color: #000000;
-            border: 0.1rem solid #000000;
-            border-bottom: none;
             padding: 0.4rem 1rem;
+            font-size: 1rem;
+            color: $c_white;
+            background-color: $c_black;
+            border: 0.1rem solid $c_black;
+            border-bottom: none;
             border-radius: 0.5rem 0.5rem 0 0;
             &.selectTab {
                 font-weight: bold;
-                color: #000000;
-                background-color: #99ffff;
+                color: $c_black;
+                background-color: #9ff;
             }
         }
     }
     .detail {
         height: calc(100% - 30px);
         overflow-y: auto;
-        border: 0.1rem solid #000000;
-        background-color: #ffffff;
+        border: 0.1rem solid $c_black;
+        background-color: $c_white;
 
         .boxes {
             margin: 0;
             padding: 0;
             list-style: none;
-
-            [class^=box] {
-                padding: 0.1rem;
-            }
-            .box {
-                flex-grow: 1;
-            }
-            .box2 {
-                flex-grow: 2;
+            .row {
+                margin: 0 auto;
+                .box {
+                    flex-grow: 1;
+                }
+                .box2 {
+                    flex-grow: 2;
+                }
             }
         }
     }
@@ -494,11 +304,11 @@ $rowPadding: .3rem;
     .search-header {
         .result-count {
             margin-left: 5px;
-            color: red;
+            color: $c_red;
         }
         .joined {
-            margin-left: .3rem;
             margin-right: .3rem;
+            margin-left: .3rem;
         }
     }
     .search-results {
@@ -552,6 +362,14 @@ $rowPadding: .3rem;
    タイトル情報検索
  ------------------------------------------- */
 .titles {
+    .table-row {
+        span {
+            padding: 0 .3em;
+            .changed {
+                color: $c_red;
+            }
+        }
+    }
     .name {
         width: 19%;
     }
@@ -594,7 +412,7 @@ $rowPadding: .3rem;
     margin: auto;
     max-height: 200px;
     overflow-y: auto;
-    border: 1px solid #000000;
+    border: 1px solid $c_black;
 
     *, button {
         font-size: 0.85rem;
@@ -604,7 +422,7 @@ $rowPadding: .3rem;
         width: 100%;
         margin: auto;
         &, tbody, tr, td {
-            border: 0.1rem #000000 solid;
+            border: 0.1rem $c_black solid;
             border-collapse: collapse;
         }
 
@@ -634,15 +452,14 @@ $rowPadding: .3rem;
  ------------------------------------------- */
 .update-points {
     .search-results {
-        border: 0.2rem solid #777777;
-        background-color: #ffffff;
-        border-radius: 0.4rem;
-        max-height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
         height: auto;
+        border: 0.2rem solid #777;
+        background-color: $c_white;
+        max-height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
         ul {
             border: none;
-            .label-row {
-                border-radius: initial;
+            .changed {
+                color: $c_red;
             }
         }
     }
@@ -653,11 +470,11 @@ $rowPadding: .3rem;
  ------------------------------------------- */
 .update-score {
     .queries {
-        height: calc(100% - 3.8rem);
         width: 100%;
+        height: calc(100% - 3.8rem);
+        margin-bottom: 5px;
         font-size: 12px;
         overflow-y: auto;
-        border: 1px solid #000000;
-        margin-bottom: 5px;
+        border: 1px solid $c_black;
     }
 }

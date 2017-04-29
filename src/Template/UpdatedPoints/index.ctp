@@ -13,7 +13,7 @@
             <li class="search-row">
                 <label>対象年：</label>
                 <?=$this->Form->select('year', $years, ['class' => 'year'])?>
-                <div class="button-column">
+                <div class="button-wrap">
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                     <?=$this->Form->button('一括更新', ['id' => 'save', 'type' => 'button'])?>
                 </div>
@@ -22,15 +22,10 @@
 
         <?php if (!empty($updatedPoints)) : ?>
         <div class="search-results">
+            <ul class="table-body">
             <?php foreach ($updatedPoints as $key => $point) : ?>
                 <?=$this->Form->hidden('results['.$key.'][id]', ['value' => $point->id])?>
                 <?=$this->Form->hidden('results['.$key.'][country_id]', ['value' => $point->country_id])?>
-                <?=
-                    $this->Form->hidden('results['.$key.'][bean-scoreUpdateDate]', [
-                        'id' => 'bean-scoreUpdateDate-'.$key,
-                        'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
-                    ])
-                ?>
                 <?=
                     $this->Form->hidden('results['.$key.'][modified]', [
                         'value' => $this->Date->format($point->modified, 'YYYYMMddHHmmss')
@@ -42,28 +37,32 @@
                         'value' => $point->update_flag
                     ])
                 ?>
-                <ul>
-                    <li class="label-row">
-                        <span><?=h($point->country->name)?></span>
-                    </li>
-                    <li class="input-row">
-                        <span>
-                        成績更新日：
-                        <?=
-                            $this->Form->text('results['.$key.'][score_updated]', [
-                                'id' => 'scoreUpdateDate-'.$key,
-                                'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd'),
-                                'readonly' >= true,
-                                'class' => 'checkChange datepicker'
-                            ]);
-                        ?>
-                        </span>
-                        <span>
-                            更新日時：<?=$this->Date->formatToDateTime($point->modified)?>
-                        </span>
-                    </li>
-                </ul>
+                <li class="label-row">
+                    <span><?=h($point->country->name)?></span>
+                </li>
+                <li class="input-row">
+                    <span>
+                    成績更新日：
+                    <?=
+                        $this->Form->text('results['.$key.'][score_updated]', [
+                            'id' => 'scoreUpdateDate-'.$key,
+                            'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd'),
+                            'readonly' >= true,
+                            'class' => 'checkChange datepicker'
+                        ]);
+                    ?>
+                    <?=
+                        $this->Form->hidden('results['.$key.'][bean_score_updated]', [
+                            'value' => $this->Date->format($point->score_updated, 'YYYY/MM/dd')
+                        ])
+                    ?>
+                    </span>
+                    <span>
+                        更新日時：<?=$this->Date->formatToDateTime($point->modified)?>
+                    </span>
+                </li>
             <?php endforeach ?>
+            </ul>
         </div>
         <?php endif ?>
     <?=$this->Form->end()?>

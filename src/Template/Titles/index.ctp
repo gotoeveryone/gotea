@@ -30,7 +30,7 @@
                             'class' => 'excluded'
                         ]);
                     ?>
-                    <div class="button-column">
+                    <div class="button-wrap">
                         <?=$this->Form->button('検索', ['type' => 'submit'])?>
                         <?=$this->Form->button('行追加', [
                             'type' => 'button',
@@ -215,33 +215,33 @@
             var row = $('<li>', {class: 'table-row'})
                     .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_save]', value: false}))
                     .append($('<span>', {class: 'name'})
-                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name]', class: 'red'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name]', class: 'changed'}))
                     )
                     .append($('<span>', {class: 'name'})
-                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name_english]', class: 'red'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][name_english]', class: 'changed'}))
                     )
                     .append($('<span>', {class: 'holding'})
-                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][holding]', class: 'red', maxlength: 3}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][holding]', class: 'changed', maxlength: 3}))
                     )
                     .append($('<span>', {class: 'winner'})
                         .html('&nbsp;')
                     )
                     .append($('<span>', {class: 'order'})
-                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][sort_order]', class: 'red', maxlength: 2}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][sort_order]', class: 'changed', maxlength: 2}))
                     )
                     .append($('<span>', {class: 'team'})
                         .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_team]', value: 0}))
-                        .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_team]', class: 'red'}))
+                        .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_team]', class: 'changed'}))
                     )
                     .append($('<span>', {class: 'filename'})
-                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_name]', class: 'red'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_name]', class: 'changed'}))
                     )
                     .append($('<span>', {class: 'modified'})
-                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_modified]', class: 'red datepicker'}))
+                        .append($('<input>', {type: 'text', name: 'titles[' + counter + '][html_file_modified]', class: 'changed datepicker'}))
                     )
                     .append($('<span>', {class: 'closed'})
                         .append($('<input>', {type: 'hidden', name: 'titles[' + counter + '][is_closed]', value: 0}))
-                        .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_closed]', class: 'red'}))
+                        .append($('<input>', {type: 'checkbox', name: 'titles[' + counter + '][is_closed]', class: 'changed'}))
                     )
                     .append($('<span>', {class: 'center'})
                         .html('新規')
@@ -257,7 +257,7 @@
         // 一括更新ボタン押下時
         $('#save').on('click', function() {
             var body = $('.table-body');
-            if (!body.find('input[type!=hidden]').hasClass('red')) {
+            if (!body.find('input[type!=hidden]').hasClass('changed')) {
                 // 変更対象がないので更新しない
                 var dialog = $("#dialog");
                 dialog.html('変更された項目がありません！');
@@ -266,7 +266,7 @@
                 var rows = body.find('.table-row');
                 rows.each(function() {
                     var obj = $(this);
-                    if (obj.find('input[type!=hidden]').hasClass('red')) {
+                    if (obj.find('input[type!=hidden]').hasClass('changed')) {
                         obj.find('[name*=is_save]').val(true);
                     }
                 });

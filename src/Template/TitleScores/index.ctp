@@ -31,7 +31,7 @@
                 <?=$this->Form->text('started', ['class' => 'date datepicker'])?>
                 ～
                 <?=$this->Form->text('ended', ['class' => 'date datepicker'])?>
-                <div class="button-column">
+                <div class="button-wrap">
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 </div>
             </li>
