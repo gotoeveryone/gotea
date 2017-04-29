@@ -14,28 +14,24 @@ import { NgModel } from '@angular/forms';
     `,
 })
 export class Categorize {
-    countries: any[];
+    countries = this.getCountries();
     rows = new Array();
 
-    constructor(private http: Http) {
-        this.countries = [
-            {
-                value: '日本',
-                text: '日本',
-            },
-            {
-                value: '韓国',
-                text: '韓国',
-            },
-            {
-                value: '中国',
-                text: '中国',
-            },
-            {
-                value: '台湾',
-                text: '台湾',
-            },
-        ];
+    constructor(private http: Http) {}
+
+    private async getCountries() {
+        const countries = new Array();
+        await this.http.get('/igoapp/api/countries/?has_title=true')
+            .forEach((res) => {
+                const json = res.json().response;
+                json.forEach((obj: any) => {
+                    countries.push({
+                        value: obj.name,
+                        text: obj.name,
+                    });
+                });
+            });
+        return countries;
     }
 
     onSearch(_params: any) {
@@ -53,15 +49,16 @@ export class Categorize {
         <li class="search-row">
             <label>対象国：</label>
             <select class="country" ([ngModel])="selectCountry" (change)="changeCountry($event.target.value)">
-                <option *ngFor="let country of countries" [value]="country.value" [innerText]="country.text"></option>
+                <option *ngFor="let country of showCountries" [value]="country.value" [innerText]="country.text"></option>
             </select>
         </li>
     `,
 })
 export class CategorizeHeader {
-    @Input() countries: any[];
+    @Input() countries: Promise<any[]>;
     @Output() onSearch = new EventEmitter<any>();
 
+    showCountries: any[];
     selectCountry: string;
 
     changeCountry(country: string) {
@@ -76,8 +73,11 @@ export class CategorizeHeader {
     }
 
     ngOnInit() {
-        this.selectCountry = this.countries[0].value;
-        this.search();
+        this.countries.then(obj => {
+            this.showCountries = obj;
+            this.selectCountry = obj.length ? obj[0].value : '';
+            this.search();
+        })
     }
 }
 

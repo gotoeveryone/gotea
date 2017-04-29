@@ -254,7 +254,7 @@
         height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
 
         .no, .percent {
-            width: 15%;
+            width: 13%;
         }
         .player {
             width: 40%;

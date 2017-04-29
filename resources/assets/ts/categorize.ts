@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import 'zone.js/dist/zone';
+import 'rxjs/Rx';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

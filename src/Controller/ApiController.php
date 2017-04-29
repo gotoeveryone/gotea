@@ -30,7 +30,25 @@ class ApiController extends Controller
     }
 
     /**
+     * 所属国情報を取得します。
+     *
+     * @return array 所属国一覧
+     */
+    public function countries()
+    {
+        $this->loadModel('Countries');
+        $query = $this->Countries->find()->where(['code is not' => null]);
+        if ($this->request->getQuery('has_title')) {
+            $query->where(['has_title' => true]);
+        }
+        $countries = $query->select(['id', 'code', 'name', 'name_english'])->all();
+        $this->__renderJson($countries->toArray());
+    }
+
+    /**
      * 名前をもとに棋士情報を取得します。
+     *
+     * @return array 棋士情報一覧
      */
     public function players()
     {
@@ -44,6 +62,7 @@ class ApiController extends Controller
      * IDをもとに棋士情報を取得します。
      * 
      * @param $id
+     * @return object 棋士情報
      */
     public function player(int $id)
     {
@@ -53,7 +72,9 @@ class ApiController extends Controller
     }
 
     /**
-     * Go Newsを取得します。
+     * Go Newsの出力データを取得します。
+     *
+     * @return array タイトル一覧
      */
     public function news()
     {
@@ -79,6 +100,7 @@ class ApiController extends Controller
      * @param string $country
      * @param string $year
      * @param string $rank
+     * @return array ランキング
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
@@ -110,6 +132,7 @@ class ApiController extends Controller
      * カテゴリを取得します。
      * 
      * @param string $country
+     * @return array 段位別棋士一覧
      */
     public function categorize($country = null)
     {
