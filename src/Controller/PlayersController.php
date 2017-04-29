@@ -157,9 +157,6 @@ class PlayersController extends AppController
         // 入力値をエンティティに設定
         $this->Players->patchEntity($player, $data);
 
-        // 棋士成績を設定
-        $this->__setPlayerScores($player);
-
         // 保存処理
         $this->Players->save($player);
         $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
@@ -232,33 +229,5 @@ class PlayersController extends AppController
 		// 所属国プルダウン
 		$this->set("countries", $this->Countries->findCountryBelongToArray());
         $this->_setTitle("段位別棋士数検索");
-    }
-
-    /**
-     * 棋士成績データを設定します。
-     * 
-     * @param type $player
-     */
-    private function __setPlayerScores(&$player)
-    {
-        // 新規登録時は棋士成績を設定
-        $now_year = Date::now()->year;
-        if (!$player->id) {
-            $score = $this->PlayerScores->newEntity([
-                'target_year' => $now_year,
-                'rank_id' => $player->rank_id
-            ]);
-            $player->set('player_scores', [$score]);
-        } else {
-            // 当年のデータで段位が異なる場合は更新
-            foreach ($player->player_scores as $score) {
-                if ($score->target_year === $now_year
-                        && $player->rank_id !== $score->rank_id) {
-                    $score->rank_id = $player->rank_id;
-                    break;
-                }
-            }
-            $player->set('player_scores', $player->player_scores);
-        }
     }
 }
