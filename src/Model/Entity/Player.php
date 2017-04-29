@@ -84,4 +84,78 @@ class Player extends AppEntity
     {
         return str_replace('-', '', str_replace('/', '', $joined));
     }
+
+    /**
+     * 勝数を取得します。
+     *
+     * @param int $year
+     * @param boolean $world
+     * @return int 勝数
+     */
+    public function win(int $year, $world = false)
+    {
+        $details = ($world ? $this->world_win_details : $this->win_details);
+        return $this->calc($year, $details);
+    }
+
+    /**
+     * 敗数を取得します。
+     *
+     * @param int $year
+     * @param boolean $world
+     * @return int 敗数
+     */
+    public function lose(int $year, $world = false)
+    {
+        $details = ($world ? $this->world_lose_details : $this->lose_details);
+        return $this->calc($year, $details);
+    }
+
+    /**
+     * 引分数を取得します。
+     *
+     * @param int $year
+     * @param boolean $world
+     * @return int 引分数
+     */
+    public function draw(int $year, $world = false)
+    {
+        $details = ($world ? $this->world_draw_details : $this->draw_details);
+        return $this->calc($year, $details);
+    }
+
+    /**
+     * 勝率を取得します。
+     *
+     * @param int $year
+     * @param boolean $world
+     * @return int 勝率（整数）
+     */
+    public function percent(int $year, $world = false)
+    {
+        $win = $this->win($year, $world);
+        $lose = $this->lose($year, $world);
+        $sum = $win + $lose;
+        if (!$sum) {
+            return 0;
+        }
+        return round($win / ($sum) * 100);
+    }
+
+    /**
+     * 対象数を取得します。
+     *
+     * @param int year
+     * @param array details
+     * @return int 対象数
+     */
+    private function calc(int $year, array $details)
+    {
+        foreach ($details as $detail) {
+            if ((int) $detail->year === $year) {
+                return $detail->cnt;
+            }
+        }
+        return 0;
+    }
 }

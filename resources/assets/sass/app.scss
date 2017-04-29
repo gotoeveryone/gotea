@@ -313,13 +313,6 @@
     }
     .search-results {
         height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 3} - 0.5rem); /* content - .search-header and margin */
-        .table-body {
-            .table-row {
-                & > :last-child {
-                    padding-right: .7rem;
-                }
-            }
-        }
         .score {
             padding: 0;
             .point {

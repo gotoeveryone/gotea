@@ -35,6 +35,49 @@ class PlayersTable extends AppTable
             'joinType' => 'LEFT',
             'order' => array('RetentionHistories.target_year' => 'DESC')
         ]);
+        // タイトル成績
+        $this->hasMany('WinDetails', [
+            'joinType' => 'INNER',
+            'className' => 'TitleScoreDetails',
+            'conditions' => [
+                'WinDetails.division' => '勝'
+            ]
+        ]);
+        $this->hasMany('LoseDetails', [
+            'joinType' => 'LEFT',
+            'className' => 'TitleScoreDetails',
+            'conditions' => [
+                'LoseDetails.division' => '敗'
+            ]
+        ]);
+        $this->hasMany('DrawDetails', [
+            'joinType' => 'LEFT',
+            'className' => 'TitleScoreDetails',
+            'conditions' => [
+                'DrawDetails.division' => '分'
+            ]
+        ]);
+        $this->hasMany('WorldWinDetails', [
+            'joinType' => 'INNER',
+            'className' => 'TitleScoreDetails',
+            'conditions' => [
+                'WorldWinDetails.division' => '勝'
+            ]
+        ]);
+        $this->hasMany('WorldLoseDetails', [
+            'joinType' => 'LEFT',
+            'className' => 'TitleScoreDetails',
+            'conditions' => [
+                'WorldLoseDetails.division' => '敗',
+            ]
+        ]);
+        $this->hasMany('WorldDrawDetails', [
+            'joinType' => 'LEFT',
+            'className' => 'TitleScoreDetails',
+            'conditions' => [
+                'WorldDrawDetails.division' => '分'
+            ]
+        ]);
     }
 
     /**
@@ -82,6 +125,36 @@ class PlayersTable extends AppTable
     public function getInner($id)
     {
 		return $this->find()->contain([
+            'WinDetails' => function(Query $q) {
+                return $q->select(['player_id', 'year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                    ->contain(['TitleScores'])->group(['WinDetails.player_id', 'YEAR(started)']);
+            },
+            'LoseDetails' => function(Query $q) {
+                return $q->select(['player_id', 'year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                    ->contain(['TitleScores'])->group(['LoseDetails.player_id', 'YEAR(started)']);
+            },
+            'DrawDetails' => function(Query $q) {
+                return $q->select(['player_id', 'year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                    ->contain(['TitleScores'])->group(['DrawDetails.player_id', 'YEAR(started)']);
+            },
+            'WorldWinDetails' => function(Query $q) {
+                return $q->select(['player_id', 'year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                    ->contain(['TitleScores' => function(Query $q) {
+                        return $q->where(['is_world' => true]);
+                    }])->group(['WorldWinDetails.player_id', 'YEAR(started)']);
+            },
+            'WorldLoseDetails' => function(Query $q) {
+                return $q->select(['player_id', 'year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                    ->contain(['TitleScores' => function(Query $q) {
+                        return $q->where(['is_world' => true]);
+                    }])->group(['WorldLoseDetails.player_id', 'YEAR(started)']);
+            },
+            'WorldDrawDetails' => function(Query $q) {
+                return $q->select(['player_id', 'year' => 'YEAR(started)', 'cnt' => 'count(*)'])
+                    ->contain(['TitleScores' => function(Query $q) {
+                        return $q->where(['is_world' => true]);
+                    }])->group(['WorldDrawDetails.player_id', 'YEAR(started)']);
+            },
             'Countries',
             'Ranks',
             'Organizations',
