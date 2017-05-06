@@ -6,7 +6,7 @@
             "type": "php",
             "request": "launch",
             "port": 9000,
-            "serverSourceRoot": "C:/Apache24/htdocs",
+            "serverSourceRoot": "${WWW_ROOT}",
             "localSourceRoot": "./"
         }
     ]
