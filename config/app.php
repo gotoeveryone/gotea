@@ -9,7 +9,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => (getenv('ENVIRONMENT') !== 'production'),
+    'debug' => (env('CAKE_ENV') !== 'production'),
 
     /**
      * Configure basic information about the application.
@@ -63,7 +63,7 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => 'b0a56db6200e876926391e8f87b3ee4c83e07ecbc333658716d7a95b0f3dd6b4',
+        'salt' => env('SECURITY_SALT'),
     ],
 
     /**
@@ -216,8 +216,8 @@ return [
              * the following line and set the port accordingly
              */
             //'port' => 'nonstandard_port_number',
-            'username' => env('DB_IGO_USER'),
-            'password' => env('DB_IGO_PASSWORD'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
             'database' => 'igo',
             'encoding' => 'utf8',
             'timezone' => 'Asia/Tokyo',
@@ -253,8 +253,8 @@ return [
             'persistent' => false,
             'host' => 'localhost',
             //'port' => 'nonstandard_port_number',
-            'username' => env('DB_IGO_USER'),
-            'password' => env('DB_IGO_PASSWORD'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
             'database' => 'igo',
             'encoding' => 'utf8',
             'timezone' => 'Asia/Tokyo',
@@ -271,13 +271,13 @@ return [
     'Log' => [
         'debug' => [
             'className' => 'App\Log\Engine\MyFileLog',
-            'path' => LOGS,
+            'path' => env('LOG_DIR', LOGS),
             'file' => 'igoapp-access',
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [
             'className' => 'App\Log\Engine\MyFileLog',
-            'path' => LOGS,
+            'path' => env('LOG_DIR', LOGS),
             'file' => 'igoapp-error',
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],

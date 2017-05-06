@@ -31,6 +31,18 @@ if (!defined('DS')) {
 define('ROOT', dirname(__DIR__));
 
 /**
+ * 環境ごとの設定ファイル
+ */
+define('ENV', ROOT . DS . '.env');
+
+// .envファイル読み込み
+if (($env = @parse_ini_file(ENV)) !== false && is_array($env)) {
+    foreach ($env as $key => $value) {
+        putenv("${key}=${value}");
+    }
+}
+
+/**
  * The actual directory name for the application directory. Normally
  * named 'src'.
  */
@@ -64,7 +76,7 @@ define('TMP', ROOT . DS . 'tmp' . DS);
 /**
  * Path to the logs directory.
  */
-define('LOGS', ($dir = getenv('LOG_DIR')) ? $dir : '/share/log/');
+define('LOGS', ROOT . DS . 'logs' . DS);
 
 /**
  * Path to the cache files directory. It can be shared between hosts in a multi-server setup.

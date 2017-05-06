@@ -1,6 +1,5 @@
+/.env
 /vendor
-/tmp/*
-/logs/*
 /nbproject
 /.buildpath
 /.project
