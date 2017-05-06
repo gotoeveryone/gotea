@@ -1,5 +1,6 @@
 @import 'module/_variables.scss';
 @import 'module/_normalize.scss';
+@import 'module/_custom.scss';
 
 %center {
     margin-right: auto;
@@ -62,14 +63,6 @@
             }
         }
     }
-}
-
-.male {
-    color: $c_blue;
-}
-
-.female {
-    color: $c_red;
 }
 
 .button-row {

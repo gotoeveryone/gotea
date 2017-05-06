@@ -18,12 +18,23 @@ trait MyValidationTrait
     public $RANGE = 'range';
     public $INLALID_FORMAT = 'invalidFormat';
 
+    private $_messages = [
+        'required' => 'field {0} is required',
+        'numeric' => 'field {0} is numeric value only',
+        'alphaNumeric' => 'field {0} is alpha or numeric value only',
+        'lengthBetween' => 'field {0} length is {1} - {2}',
+        'minLength' => 'field {0} length is over the {1}',
+        'maxLength' => 'field {0} length is under the {1}',
+        'range' => 'field {0} range is {1} - {2}',
+        'invalidFormat' => 'field {0} is {1} format only',
+    ];
+
     /**
      * {@inheritdoc}
      */
     public function alphaNumeric($check)
     {
-        return (bool) preg_match('/^[a-zA-Z0-9\'\-\s]+$/', $check);
+        return (bool) preg_match('/^[a-zA-Z0-9\(\)\'\-\s]+$/', $check);
     }
 
     /**
@@ -35,16 +46,6 @@ trait MyValidationTrait
      */
     public function getMessage(string $key, $args = null) {
         // see \App\Locale\{code}\default.po
-        $messages = [
-            'required' => 'field {0} is required',
-            'numeric' => 'field {0} is numeric value only',
-            'alphaNumeric' => 'field {0} is alpha or numeric value only',
-            'lengthBetween' => 'field {0} length is {1} - {2}',
-            'minLength' => 'field {0} length is over the {1}',
-            'maxLength' => 'field {0} length is under the {1}',
-            'range' => 'field {0} range is {1} - {2}',
-            'invalidFormat' => 'field {0} is {1} format only',
-        ];
-        return __d('default', (array_key_exists($key, $messages) ? $messages[$key] : ''), $args);
+        return __d('default', ($this->_messages[$key] ?? ''), $args);
     }
 }
