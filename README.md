@@ -26,7 +26,7 @@ cakephp3-elixirを利用しています。
 
 ### ログ出力
 
-環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合は`/share/log/`）。
+環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合はプロジェクトルートの`logs`ディレクトリ）。
 
 - igoapp-access.log（アクセスログ）
 - igoapp-error.log（エラーログ）
