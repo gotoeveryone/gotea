@@ -42,7 +42,7 @@ class MyAuthComponent extends AuthComponent
         }
 
         // ユーザの詳細情報を取得してセッションに設定
-        $user = $this->Json->sendResource('users/detail', 'get');
+        $user = $this->Json->sendResource('users', 'get');
         $user['password'] = $password;
         $this->setUser($user);
         $this->Log->info(__("ユーザ：{$user['userName']}がログインしました。"));

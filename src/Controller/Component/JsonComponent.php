@@ -36,7 +36,7 @@ class JsonComponent extends Component
      */
     public function saveAccessToken($account, $password)
     {
-        $token = $this->sendResource('users/login', 'post', [
+        $token = $this->sendResource('auth/login', 'post', [
             "account" => $account,
             "password" => $password
         ]);
@@ -55,7 +55,7 @@ class JsonComponent extends Component
      */
     public function removeAccessToken()
     {
-        return $this->sendResource('users/logout', 'delete', [
+        return $this->sendResource('auth/logout', 'delete', [
             "access_token" => $this->request->session()->read('access_token')
         ]);
     }
@@ -100,8 +100,8 @@ class JsonComponent extends Component
      */
     private function __getApiUrl()
     {
-        $serverName = getenv('SERVER_NAME');
-        return "https://{$serverName}/web-resource/";
+        $serverName = env('SERVER_NAME');
+        return "https://{$serverName}/web-api/v1/";
     }
 
     /**
@@ -112,7 +112,7 @@ class JsonComponent extends Component
     private function __getCaArray()
     {
         return [
-            'ssl_cafile' => getenv('SSL_CA_CRT')
+            'ssl_cafile' => env('SSL_CA_CRT')
         ];
     }
 }

@@ -35,13 +35,6 @@ define('ROOT', dirname(__DIR__));
  */
 define('ENV', ROOT . DS . '.env');
 
-// .envファイル読み込み
-if (($env = @parse_ini_file(ENV)) !== false && is_array($env)) {
-    foreach ($env as $key => $value) {
-        putenv("${key}=${value}");
-    }
-}
-
 /**
  * The actual directory name for the application directory. Normally
  * named 'src'.

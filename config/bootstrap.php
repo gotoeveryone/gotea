@@ -54,6 +54,13 @@ use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
+// .envファイル読み込み
+if (($env = @parse_ini_file(ENV)) !== false && is_array($env)) {
+    foreach ($env as $key => $value) {
+        $_ENV[$key] = $value;
+    }
+}
+
 /**
  * Read configuration file and inject configuration into various
  * CakePHP classes.

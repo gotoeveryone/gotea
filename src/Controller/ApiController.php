@@ -52,10 +52,29 @@ class ApiController extends Controller
      */
     public function players()
     {
-        $this->__renderJson($this->Json->sendResource(
-            'players/search', 'post',
-            ['name' => $this->request->getData('name')]
-        ));
+        $res = [];
+        if (!($name = $this->request->getData('name'))) {
+            $this->__renderJson($res);
+            return;
+        }
+
+        $this->loadModel('Players');
+        $players = $this->Players->findPlayers(['name' => $name]);
+        foreach ($players as $player) {
+            $res[] = [
+                'id' => $player->id,
+                'name' => $player->name,
+                'nameEnglish' => $player->name_english,
+                'sex' => $player->sex,
+                'countryName' => $player->country->name,
+                'rankId' => $player->rank->id,
+                'rankName' => $player->rank->name,
+            ];
+        }
+        $this->__renderJson([
+            'size' => $players->count(),
+            'results' => $res,
+        ]);
     }
 
     /**
@@ -66,9 +85,18 @@ class ApiController extends Controller
      */
     public function player(int $id)
     {
-        $this->__renderJson($this->Json->sendResource(
-            'players/'.$id, 'get'
-        ));
+        $this->loadModel('Players');
+        $player = $this->Players->findById($id)->contain(['Countries', 'Ranks'])->first();
+
+        $this->__renderJson([
+            'id' => $player->id,
+            'name' => $player->name,
+            'nameEnglish' => $player->name_english,
+            'sex' => $player->sex,
+            'countryName' => $player->country->name,
+            'rankId' => $player->rank->id,
+            'rankName' => $player->rank->name,
+        ]);
     }
 
     /**
