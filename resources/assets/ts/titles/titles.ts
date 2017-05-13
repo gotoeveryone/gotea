@@ -87,7 +87,6 @@ export class Titles {
 
     outputJson(_params: any) {
         const options = new URLSearchParams();
-        options.set('jp', 'true');
         options.set('make', 'true');
         options.set('country_id', _params.country);
         options.set('is_closed', _params.type);
