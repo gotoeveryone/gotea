@@ -69,4 +69,23 @@ class Title extends AppEntity
     {
         return $this->modified->wasWithinLast('1 months');
     }
+
+    /**
+     * モデルのデータを出力用配列形式で返却します。
+     *
+     * @return array 配列
+     */
+    public function renderArray() : array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'nameEnglish' => $this->name_english,
+            'countryName' => $this->country ? $this->country->name : '',
+            'holding' => $this->holding,
+            'sortOrder' => $this->sort_order,
+            'htmlFileName' => $this->html_file_name,
+            'htmlFileModified' => $this->html_file_modified,
+        ];
+    }
 }

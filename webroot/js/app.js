@@ -124,9 +124,15 @@ function getDatepickerObject() {
         yearRange: "-100:+1",
 		showMonthAfterYear: true,
         yearSuffix: "年",
-		onSelect: function() {
+		onSelect: function(d, i) {
             if ($(this).hasClass('checkChange')) {
                 checkChange($(this));
+            }
+            // onChangeイベントを強制発火
+            if (d !== i.lastVal) {
+                var customEvent = document.createEvent('HTMLEvents');
+                customEvent.initEvent('change', true, false);
+                $(this).get(0).dispatchEvent(customEvent);
             }
 		}
     };
@@ -134,7 +140,9 @@ function getDatepickerObject() {
 
 // 日付欄の入力制御
 function setDatepicker() {
-	$('.datepicker').datepicker(getDatepickerObject());
+    $('.content').on('focus', '.datepicker', function() {
+        $(this).datepicker(getDatepickerObject());
+    });
     // 誕生日の場合は初期表示を20年前に設定
     $('.datepicker.birthday').each(function() {
         if (!$(this).val()) {

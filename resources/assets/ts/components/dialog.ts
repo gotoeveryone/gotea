@@ -7,10 +7,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     selector: 'dialog',
     template: `
         <div class="dialog-content" [class.hide]="!this.text">
-            <div class="dialog-content-header">
+            <div class="dialog-content-header" *ngIf="title">
                 <div class="dialog-content-title" [innerText]="title"></div>
             </div>
-            <div class="dialog-content-body" [innerText]="text"></div>
+            <div class="dialog-content-body">
+                <div class="dialog-content-body-text" [innerHTML]="text"></div>
+            </div>
             <div class="dialog-content-footer">
                 <button (click)="close()">閉じる</button>
             </div>

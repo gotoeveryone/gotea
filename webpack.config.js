@@ -2,6 +2,7 @@ module.exports = {
     entry: {
         ranking: './resources/assets/ts/ranking',
         ranks: './resources/assets/ts/ranks',
+        titles: './resources/assets/ts/titles',
     },
     output: {
         filename: './webroot/js/[name].min.js',

@@ -4,6 +4,7 @@ namespace App\Model\Table;
 
 use Cake\Validation\Validator;
 use Cake\ORM\Query;
+use App\Model\Entity\Title;
 
 /**
  * タイトル
@@ -108,12 +109,14 @@ class TitlesTable extends AppTable {
     }
 
     /**
-     * ランキングモデルを配列に変換します。
+     * モデルを配列に変換します。
      * 
      * @param type $models
+     * @param bool $admin 管理者情報を取得するか
+     * @param bool $isJp 日本語情報を取得するか
      * @return array
      */
-    public function toRankingArray($models) : array
+    public function toArray($models, $admin = false, $isJp = false) : array
     {
         $res = [];
         foreach ($models as $model) {
@@ -122,16 +125,49 @@ class TitlesTable extends AppTable {
                 'countryNameAbbreviation' => $model->country->code,
                 'titleName' => $model->name_english,
                 'holding' => $model->holding,
-                'winnerName' => $model->getWinnerName(false),
+                'isTeam' => $model->is_team,
+                'winnerName' => $model->getWinnerName($isJp),
                 'htmlFileName' => $model->html_file_name,
-                'htmlFileModified' => $model->html_file_modified->format('Y-m-d'),
+                'htmlFileModified' => $model->html_file_modified->format(($admin ? 'Y/m/d' : 'Y-m-d')),
                 'isNewHistories' => $model->isNewHistories(),
                 'isRecent' => $model->isRecentModified(),
             ];
+
+            if ($admin) {
+                $row['titleId'] = $model->id;
+                $row['countryId'] = $model->country_id;
+                $row['sortOrder'] = $model->sort_order;
+                $row['titleNameJp'] = $model->name;
+                $row['isClosed'] = $model->is_closed;
+            }
 
             $res[] = $row;
         }
 
         return $res;
+    }
+
+    /**
+     * 配列からモデルデータを生成します。
+     *
+     * @param array $data
+     * @return Title
+     */
+    public function fromArray($data = []) : Title
+    {
+        $title = (isset($data['titleId'])) ? $this->get($data['titleId']) : $this->newEntity();
+
+        // 入力値の変更
+        $title->name = $data['titleNameJp'] ?? '';
+        $title->name_english = $data['titleName'] ?? '';
+        $title->country_id = $data['countryId'] ?? '';
+        $title->sort_order = $data['sortOrder'] ?? 1;
+        $title->holding = $data['holding'] ?? '';
+        $title->is_team = $data['isTeam'] ?? false;
+        $title->html_file_name = $data['htmlFileName'] ?? '';
+        $title->html_file_modified = $data['htmlFileModified'] ?? '';
+        $title->is_closed = $data['isClosed'] ?? false;
+
+        return $title;
     }
 }
