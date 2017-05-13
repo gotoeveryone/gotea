@@ -61,13 +61,13 @@ class Title extends AppEntity
     }
 
     /**
-     * タイトルマスタの更新日が指定日以内かどうかを判定する。
+     * 修正日が指定日以内かどうかを判定する。
      * 
      * @return boolean
      */
     public function isRecentModified() : bool
     {
-        return $this->modified->wasWithinLast('1 months');
+        return $this->html_file_modified->wasWithinLast('1 months');
     }
 
     /**
