@@ -67,8 +67,9 @@ class JsonComponent extends Component
      * @param string $method
      * @param bool $data
      * @param bool $assoc
+     * @param bool $useOld 旧APIサーバを利用するかどうか
      */
-    public function sendResource(string $url, string $method, $data = [], $assoc = true)
+    public function sendResource(string $url, string $method, $data = [], $assoc = true, $useOld = false)
     {
         // トークンが読み込めた場合はデータに追加
         if (($token = $this->request->session()->read('access_token'))) {
@@ -76,7 +77,7 @@ class JsonComponent extends Component
         }
         $http = new Client();
         $callMethod = strtolower($method);
-        $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
+        $response = $http->$callMethod($this->__getApiUrl($useOld).$url, $data, $this->__getCaArray());
         // アプリログイン済みだが、APIが401なら再認証
         if ($response->getStatusCode() == 401 && $this->MyAuth->user()) {
             $userId = $this->MyAuth->user('userId');
@@ -96,12 +97,13 @@ class JsonComponent extends Component
     /**
      * APIサーバのURLを取得します。
      * 
-     * @return type
+     * @param bool $useOld 旧APIサーバを利用するかどうか
+     * @return string APIサーバのURL
      */
-    private function __getApiUrl()
+    private function __getApiUrl($useOld = false)
     {
         $serverName = env('SERVER_NAME');
-        return "https://{$serverName}/web-api/v1/";
+        return "https://{$serverName}/".(!$useOld ? 'web-api/v1/' : 'web-resource/');
     }
 
     /**

@@ -36,7 +36,7 @@ class PlayersController extends AppController
         $this->loadModel('Organizations');
 
         // GETアクセスを許可するアクションを定義
-        $this->_addAllowGetActions(["categorize", "ranking"]);
+        $this->_addAllowGetActions(["viewRanks", "ranking"]);
     }
 
 	/**
@@ -214,10 +214,10 @@ class PlayersController extends AppController
     }
 
     /**
-     * カテゴリ処理
+     * 段位別棋士数表示
      */
-    public function categorize()
+    public function viewRanks()
     {
-        $this->_setTitle("段位別棋士数検索");
+        $this->_setTitle("段位別棋士数表示");
     }
 }

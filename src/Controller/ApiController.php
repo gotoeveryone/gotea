@@ -137,12 +137,12 @@ class ApiController extends Controller
 
         // 2017年以降
         if ($year >= 2017) {
-            $json = $this->__newRankings($country, $year, $rank, $isJp);
+            $json = $this->__rankings($country, $year, $rank, $isJp);
         } else {
             // 2016年以前
             $encodeCountry = urlencode($country);
             $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($isJp ? "&with=jp" : "");
-            $json = $this->Json->sendResource($path, 'get');
+            $json = $this->Json->sendResource($path, 'get', [], true, true);
         }
 
         // パラメータがあればファイル作成
@@ -159,15 +159,16 @@ class ApiController extends Controller
     /**
      * カテゴリを取得します。
      * 
-     * @param string $country
+     * @param int $countryId
      * @return array 段位別棋士一覧
      */
-    public function categorize($country = null)
+    public function ranks(int $countryId)
     {
-        $encodeCountry = urlencode($country);
-        $json = $this->Json->sendResource("players/categorize?country={$encodeCountry}".
-                (($this->request->getQuery('all') === 'true') ? '&all=true' : ''), 'get');
-        $this->__renderJson($json);
+        $this->loadModel('Players');
+        $ranks = $this->Players->find()->contain(['Ranks'])->select([
+            'Ranks.name', 'count' => 'count(*)'
+        ])->where(['country_id' => $countryId])->group('Ranks.name')->orderDesc('Ranks.rank_numeric')->all();
+        $this->__renderJson($ranks->toArray());
     }
 
     /**
@@ -179,7 +180,7 @@ class ApiController extends Controller
      * @param bool $isJp
      * @return array
      */
-    private function __newRankings(string $countryName, int $year, int $rank, bool $isJp) : array
+    private function __rankings(string $countryName, int $year, int $rank, bool $isJp) : array
     {
         // モデルのロード
         $this->loadModel('Players');
