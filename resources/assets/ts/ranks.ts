@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 
-import { Categorize, CategorizeHeader, CategorizeBody } from './categorize/categorize';
+import { Ranks, RanksHeader, RanksBody } from './ranks/ranks';
 import { CustomHttp } from './components/customhttp';
 
 @NgModule({
@@ -28,12 +28,12 @@ import { CustomHttp } from './components/customhttp';
         },
     ],
     declarations: [
-        Categorize,
-        CategorizeHeader,
-        CategorizeBody,
+        Ranks,
+        RanksHeader,
+        RanksBody,
     ],
     bootstrap: [
-        Categorize,
+        Ranks,
     ]
 })
 export class AppModule {}

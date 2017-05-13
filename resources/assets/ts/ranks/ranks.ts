@@ -7,13 +7,13 @@ import { NgModel } from '@angular/forms';
  * 段位別棋士数出力用コンポーネント
  */
 @Component({
-    selector: '[categorize]',
+    selector: '[ranks]',
     template: `
-        <ul categorize-header class="search-header" [countries]="countries" (onSearch)="onSearch($event)"></ul>
-        <div categorize-body class="search-results" [rows]="rows"></div>
+        <ul ranks-header class="search-header" [countries]="countries" (onSearch)="onSearch($event)"></ul>
+        <div ranks-body class="search-results" [rows]="rows"></div>
     `,
 })
-export class Categorize {
+export class Ranks {
     countries = this.getCountries();
     rows = new Array();
 
@@ -26,7 +26,7 @@ export class Categorize {
                 const json = res.json().response;
                 json.forEach((obj: any) => {
                     countries.push({
-                        value: obj.name,
+                        value: obj.id,
                         text: obj.name,
                     });
                 });
@@ -35,16 +35,15 @@ export class Categorize {
     }
 
     onSearch(_params: any) {
-        this.http.get(`/igoapp/api/categorize/${_params.country}/`)
+        this.http.get(`/igoapp/api/ranks/${_params.country}/`)
             .forEach((res) => {
-                const json = res.json().response;
-                this.rows = json.categories;
+                this.rows = res.json().response;
             });
     }
 }
 
 @Component({
-    selector: '[categorize-header]',
+    selector: '[ranks-header]',
     template: `
         <li class="search-row">
             <label>対象国：</label>
@@ -54,7 +53,7 @@ export class Categorize {
         </li>
     `,
 })
-export class CategorizeHeader {
+export class RanksHeader {
     @Input() countries: Promise<any[]>;
     @Output() onSearch = new EventEmitter<any>();
 
@@ -82,7 +81,7 @@ export class CategorizeHeader {
 }
 
 @Component({
-    selector: '[categorize-body]',
+    selector: '[ranks-body]',
     template: `    
         <ul class="table-header">
             <li class="table-row">
@@ -98,7 +97,7 @@ export class CategorizeHeader {
         </ul>
     `,
 })
-export class CategorizeBody {
+export class RanksBody {
     @Input() rows: any[];
 
     count(_row: any): string {

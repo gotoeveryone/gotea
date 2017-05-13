@@ -68,7 +68,7 @@
                 <?=
                     $this->Html->link('段位別棋士数検索', [
                         'controller' => 'players',
-                        'action' => 'categorize'
+                        'action' => 'view-ranks'
                     ], ['class' => 'button']);
                 ?>
                 <?php if ($admin) : ?>
