@@ -167,7 +167,10 @@ class ApiController extends Controller
         $this->loadModel('Players');
         $ranks = $this->Players->find()->contain(['Ranks'])->select([
             'Ranks.name', 'count' => 'count(*)'
-        ])->where(['country_id' => $countryId])->group('Ranks.name')->orderDesc('Ranks.rank_numeric')->all();
+        ])->where([
+            'country_id' => $countryId,
+            'is_retired' => false,
+        ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric')->all();
         $this->__renderJson($ranks->toArray());
     }
 
