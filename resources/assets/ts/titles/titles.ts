@@ -85,11 +85,9 @@ export class Titles {
         });
     }
 
-    outputJson(_params: any) {
+    outputJson() {
         const options = new URLSearchParams();
         options.set('make', 'true');
-        options.set('country_id', _params.country);
-        options.set('is_closed', _params.type);
         this.http.get('/igoapp/api/news/', new RequestOptions({search: options}))
             .forEach((res) => {
                 this.openDialog('JSONを出力しました。');
@@ -173,10 +171,7 @@ export class TitlesHeader {
     }
 
     json() {
-        this.outputJson.emit({
-            country: this.selectCountry,
-            type: this.selectType,
-        });
+        this.outputJson.emit();
     }
 
     ngOnInit() {
@@ -234,7 +229,7 @@ export class TitlesHeader {
                     <input type="text" (change)="saveDatepicker($event, row)" class="datepicker" [(ngModel)]="row.htmlFileModified">
                 </span>
                 <span class="closed">
-                    <input type="checkbox" (change)="save(row)" [(ngModel)]="row.isClose">
+                    <input type="checkbox" (change)="save(row)" [(ngModel)]="row.isClosed">
                 </span>
                 <span class="center">
                     <a (click)="add(row)" *ngIf="!row.titleId">登録</a>
