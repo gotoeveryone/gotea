@@ -314,7 +314,6 @@
                 ]
             ])?>
                 <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
-                <?=$this->Form->hidden('country_id', ['value' => $player->country_id])?>
                 <?=$this->Form->hidden('target_year', ['value' => ''])?>
             <?=$this->Form->end()?>
 

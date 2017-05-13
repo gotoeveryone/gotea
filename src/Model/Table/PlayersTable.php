@@ -313,7 +313,7 @@ class PlayersTable extends AppTable
                 ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
                 ->contain([
                     'TitleScores' => function(Query $q) use ($country, $targetYear) {
-                        return $q->where(['TitleScores.country_id' => $country->id])->orWhere(['is_world' => true])->where(['YEAR(started)' => $targetYear]);
+                        return $q->where(['is_world' => true])->where(['YEAR(started)' => $targetYear]);
                     }
                 ])
                 ->where(['division' => $division])->group('player_id');

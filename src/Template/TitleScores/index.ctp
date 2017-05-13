@@ -98,7 +98,7 @@
         <?php if (isset($isDialog)) : ?>
         $('.back').on('click', function() {
             $.blockUI();
-            location.href = '<?=$this->Url->build(['controller' => 'players', 'action' => 'detail', $this->request->data('id')])?>';
+            location.href = '<?=$this->Url->build(['controller' => 'players', 'action' => 'detail', $this->request->data('player_id')])?>';
         })
         <?php endif ?>
     });

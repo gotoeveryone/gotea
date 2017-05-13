@@ -33,15 +33,18 @@ class TitleScoresController extends AppController
      */
     public function index()
     {
-		// 所属国プルダウン
-		$this->set('countries', $this->Countries->findCountryHasFileToArray());
+        // ダイアログ状態でない場合はヘッダを取得
+        if (!$this->_isDialogMode()) {
+            // 所属国プルダウン
+            $this->set('countries', $this->Countries->findCountryHasFileToArray());
 
-        // 年度プルダウン
-        $years = [];
-        for ($i = date('Y'); $i >= 2013; $i--) {
-            $years[$i] = $i.'年度';
+            // 年度プルダウン
+            $years = [];
+            for ($i = date('Y'); $i >= 2013; $i--) {
+                $years[$i] = $i.'年度';
+            }
+            $this->set('years', $years);
         }
-        $this->set('years', $years);
 
         // 検索
         if ($this->request->isPost()) {

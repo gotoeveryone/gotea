@@ -25,6 +25,13 @@ class AppController extends Controller
     protected $_redirectAction = "index";
 
     /**
+     * ダイアログ表示状態かどうか
+     *
+     * @var boolean
+     */
+    private $__dialog = false;
+
+    /**
      * 初期処理
      */
 	public function initialize()
@@ -152,10 +159,21 @@ class AppController extends Controller
     }
 
     /**
+     * ダイアログ表示状態かどうかを判定します。
+     * 
+     * @return bool ダイアログ表示状態ならtrue
+     */
+    protected function _isDialogMode()
+    {
+        return $this->__dialog ?? false;
+    }
+
+    /**
      * ダイアログ表示を設定します。
      */
     protected function _setDialogMode()
     {
+        $this->__dialog = true;
         $this->set('isDialog', true);
     }
 
