@@ -313,6 +313,10 @@ class PlayersTable extends AppTable
                 ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
                 ->contain([
                     'TitleScores' => function(Query $q) use ($country, $targetYear) {
+                        // タイトルがない所属国の場合、国際棋戦のみ対象とする
+                        if (!$country->has_title) {
+                            $q->where(['is_world' => true]);
+                        }
                         return $q->where(['YEAR(started)' => $targetYear]);
                     }
                 ])
