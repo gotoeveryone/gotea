@@ -112,6 +112,24 @@ class Player extends AppEntity
     }
 
     /**
+     * モデルのデータを出力用配列形式で返却します。
+     *
+     * @return array 配列
+     */
+    public function renderArray() : array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'nameEnglish' => $this->name_english,
+            'sex' => $this->sex,
+            'countryName' => $this->country ? $this->country->name : '',
+            'rankId' => $this->rank->id,
+            'rankName' => $this->rank ? $this->rank->name : '',
+        ];
+    }
+
+    /**
      * 勝数を取得します。
      *
      * @param int $year

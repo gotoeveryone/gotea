@@ -12,9 +12,6 @@ use Cake\Controller\Exception\MissingActionException;
  */
 class ApiController extends Controller
 {
-    // ホームページコンテンツのディレクトリ
-    private $_homepage = "/share/windows/Homepage/";
-
     /**
      * 初期処理
      */
@@ -48,9 +45,10 @@ class ApiController extends Controller
     /**
      * 名前をもとに棋士情報を取得します。
      *
+     * @param $id
      * @return array 棋士情報一覧
      */
-    public function players()
+    public function players($id = null)
     {
         $res = [];
         if (!($name = $this->request->getData('name'))) {
@@ -61,15 +59,7 @@ class ApiController extends Controller
         $this->loadModel('Players');
         $players = $this->Players->findPlayers(['name' => $name]);
         foreach ($players as $player) {
-            $res[] = [
-                'id' => $player->id,
-                'name' => $player->name,
-                'nameEnglish' => $player->name_english,
-                'sex' => $player->sex,
-                'countryName' => $player->country->name,
-                'rankId' => $player->rank->id,
-                'rankName' => $player->rank->name,
-            ];
+            $res[] = $player->renderArray();
         }
         $this->__renderJson([
             'size' => $players->count(),
@@ -80,23 +70,55 @@ class ApiController extends Controller
     /**
      * IDをもとに棋士情報を取得します。
      * 
-     * @param $id
+     * @param int|null $id ID
      * @return object 棋士情報
      */
     public function player(int $id)
     {
         $this->loadModel('Players');
         $player = $this->Players->findById($id)->contain(['Countries', 'Ranks'])->first();
+        $this->__renderJson($player->renderArray());
+    }
 
-        $this->__renderJson([
-            'id' => $player->id,
-            'name' => $player->name,
-            'nameEnglish' => $player->name_english,
-            'sex' => $player->sex,
-            'countryName' => $player->country->name,
-            'rankId' => $player->rank->id,
-            'rankName' => $player->rank->name,
-        ]);
+    /**
+     * IDをもとにタイトル情報を取得します。
+     * 
+     * @param int|null $id ID
+     * @return object 棋士情報
+     */
+    public function titles($id = null)
+    {
+        $this->loadModel('Titles');
+
+        if ($this->request->is('GET') && $id) {
+            $title = $this->Titles->get($id);
+            $this->__renderJson($title->renderArray());
+            return;
+        }
+
+        if ($this->request->is('POST') || $this->request->is('PUT')) {
+            $input = $this->request->getParsedBody();
+            if ($id) {
+                $input['titleId'] = $id;
+            }
+            $title = $this->Titles->fromArray($input);
+
+            if (($errors = $this->Titles->validator()->errors($title->toArray()))) {
+                // バリデーションの場合、フィールド => [定義 => メッセージ]となっている
+                foreach ($errors as $expr) {
+                    $out[] = array_shift($expr);
+                }
+                $this->response = $this->response->withStatus(400);
+                $this->__renderJson([
+                    'status' => $this->response->statusCode(),
+                    'messages' => $out,
+                ]);
+                return;
+            }
+
+            $this->Titles->save($title);
+            $this->__renderJson(['titleId' => $title->id]);
+        }
     }
 
     /**
@@ -106,19 +128,26 @@ class ApiController extends Controller
      */
     public function news()
     {
+        // 日本語情報を出力するかどうか
+        $isJp = ($this->request->getQuery('jp') === 'true');
+
+        // 管理者情報を出力するかどうか
+        $admin = ($this->request->getQuery('admin') === 'true');
+
         // モデルのロード
         $this->loadModel('Titles');
-        $titles = $this->Titles->findTitlesByCountry();
+        $titles = $this->Titles->findTitlesByCountry($this->request->getQuery());
 
-        // JSON生成
-        $json = $this->Titles->toRankingArray($titles);
+        // 出力データを生成
+        $json = $this->Titles->toArray($titles, $admin, $isJp);
 
         // パラメータがあればファイル作成
         if ($this->request->getQuery('make') === 'true') {
-            if (!file_put_contents($this->_homepage.'news.json', json_encode($json))) {
+            if (!file_put_contents(env('JSON_OUTPUT_DIR').'news.json', json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
+
         $this->__renderJson($json);
     }
 
@@ -149,7 +178,7 @@ class ApiController extends Controller
         if ($this->request->getQuery('make') === 'true') {
             $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]).$json["targetYear"];
-            if (!file_put_contents($this->_homepage."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
+            if (!file_put_contents(env('JSON_OUTPUT_DIR')."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }

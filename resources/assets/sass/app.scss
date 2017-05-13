@@ -304,6 +304,11 @@
    棋士情報検索
  ------------------------------------------- */
 .players {
+    .table-row {
+        .retired {
+            background-color: $c_gray;
+        }
+    }
     .search-header {
         .result-count {
             margin-left: 5px;
@@ -364,6 +369,9 @@
             .changed {
                 color: $c_red;
             }
+        }
+        &.closed {
+            background-color: $c_gray;
         }
     }
     .name {
