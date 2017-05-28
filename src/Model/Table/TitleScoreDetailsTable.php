@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Model\Table;
 
 use App\Model\Entity\Country;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -23,7 +25,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TitleScoreDetailsTable extends Table
+class TitleScoreDetailsTable extends AppTable
 {
 
     /**
@@ -99,10 +101,17 @@ class TitleScoreDetailsTable extends Table
      * 最新データの対局日を取得します。
      * 
      * @param \App\Model\Entity\Country $country
-     * @return int|null
+     * @param int $targetYear
+     * @return string|null
      */
-    public function getRecent(Country $country)
+    public function findRecent(Country $country, int $targetYear)
     {
+        // 旧方式
+        if ($this->_isOldRanking($targetYear)) {
+            $points = TableRegistry::get('UpdatedPoints');
+            return $points->findRecent($country, $targetYear);
+        }
+
         return $this->find()->select([
             'max' => 'max(ended)'
         ])->contain([

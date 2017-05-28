@@ -241,6 +241,11 @@ class PlayersTable extends AppTable
      */
     public function findRanking(Country $country, int $targetYear, int $offset)
     {
+        // 旧方式
+        if ($this->_isOldRanking($targetYear)) {
+            return $this->findOldRanking($country, $targetYear, $offset);
+        }
+
         $query = $this->find()
                 ->select([
                     'id', 'name', 'name_english', 'country_id', 'rank_id', 'sex',
@@ -348,5 +353,59 @@ class PlayersTable extends AppTable
             array_push($whereClause, ["Players.{$fieldName} LIKE" => "%{$param}%"]);
         }
         return $whereClause;
+    }
+
+    /**
+     * ランキング集計データを取得します。
+     * ※2016年以前の集計です。
+     *
+     * @param Country $country
+     * @param int $targetYear
+     * @param int $offset
+     * @return void
+     */
+    private function findOldRanking(Country $country, int $targetYear, int $offset)
+    {
+        $suffix = ($country->has_title ? '' : '_world');
+
+        // サブクエリ
+        $scores = TableRegistry::get('PlayerScores');
+        $subQuery = $scores->find()
+                ->select('PlayerScores.win_point'.$suffix)
+                ->innerJoinWith('Players')->innerJoinWith('Players.Countries')
+                ->where([
+                    'PlayerScores.target_year' => $targetYear,
+                ])->orderDesc('PlayerScores.win_point'.$suffix)->order('PlayerScores.lose_point'.$suffix)
+                ->limit(1)->offset($offset - 1);
+
+        if ($country->has_title) {
+            $subQuery->where(['Countries.id' => $country->id]);
+        }
+
+        $query = $this->find()
+            ->innerJoinWith('PlayerScores')
+            ->select([
+                'Players.id', 'Players.name', 'Players.name_english', 'Players.sex',
+                'win' => 'PlayerScores.win_point'.$suffix,
+                'lose' => 'PlayerScores.lose_point'.$suffix,
+                'draw' => 'PlayerScores.draw_point'.$suffix,
+                'Countries.name', 'Ranks.rank_numeric', 'Ranks.name'])
+            ->contain([
+                'Countries',
+                'Ranks',
+            ])->where(function($exp, $q) use ($subQuery, $suffix) {
+                return $exp->gte('PlayerScores.win_point'.$suffix, $subQuery);
+            })->where([
+                'PlayerScores.target_year' => $targetYear,
+            ])->orderDesc('PlayerScores.win_point'.$suffix)
+            ->order('PlayerScores.lose_point'.$suffix)
+            ->orderDesc('Ranks.rank_numeric')
+            ->order('Players.joined');
+
+        if ($country->has_title) {
+            $query->where(['country_id' => $country->id]);
+        }
+
+        return $query->all();
     }
 }

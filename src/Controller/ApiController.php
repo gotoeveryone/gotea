@@ -164,15 +164,8 @@ class ApiController extends Controller
         // 日本語情報を出力するかどうか
         $isJp = ($this->request->getQuery('jp') === 'true');
 
-        // 2017年以降
-        if ($year >= 2017) {
-            $json = $this->__rankings($country, $year, $rank, $isJp);
-        } else {
-            // 2016年以前
-            $encodeCountry = urlencode($country);
-            $path = "players/ranking?country={$encodeCountry}&year={$year}&limit={$rank}".($isJp ? "&with=jp" : "");
-            $json = $this->Json->sendResource($path, 'get', [], true, true);
-        }
+        // ランキングデータ取得
+        $json = $this->__rankings($country, $year, $rank, $isJp);
 
         // パラメータがあればファイル作成
         if ($this->request->getQuery('make') === 'true') {
@@ -225,9 +218,12 @@ class ApiController extends Controller
         // ランキングデータの取得
         $models = $this->Players->findRanking($country, $year, $rank);
 
+        // 最終更新日の取得
+        $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year);
+
         // JSON生成
         return [
-            'lastUpdate' => $this->TitleScoreDetails->getRecent($country),
+            'lastUpdate' => $lastUpdate,
             'targetYear' => $year,
             'countryName' => $country->name_english,
             'countryNameAbbreviation' => $country->code,

@@ -46,7 +46,8 @@ class AppTable extends Table
      * @param ArrayObject $options
      * @param type $operation
      */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    {
 		// 新規登録時は登録日時を設定
 		$nowDate = Time::now();
 		$userId = $this->__getLoginUserId();
@@ -59,11 +60,23 @@ class AppTable extends Table
 	}
 
     /**
+     * ランキングデータの取得方法を判定します。
+     *
+     * @param int $targetYear
+     * @return bool
+     */
+    protected function _isOldRanking(int $targetYear) : bool
+    {
+        return ($targetYear < 2017);
+    }
+
+    /**
      * ログインユーザIDを取得する。
      * 
-     * @return ログインユーザID
+     * @return string ログインユーザID
      */
-	private function __getLoginUserId() {
+	private function __getLoginUserId() : string
+    {
 	    $session = new Session();
         $userId = $session->read('Auth.User.userId');
         return !$userId ? str_replace('/', '', ROOT) : $userId;
