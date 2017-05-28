@@ -74,13 +74,8 @@
                 </div>
                 <?php } ?>
                 <div class="button-wrap">
-                    <?=
-                        $this->Form->button('新規作成', [
-                            'class' => 'add-new',
-                            'type' => 'button',
-                            'disabled' => 'disabled'
-                        ]);
-                    ?>
+                    <button type="button" class="add-new" value="add" disabled
+                        @click="openModal('/igoapp/players/detail/', 'country_id')">新規作成</button>
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 </div>
             </li>
@@ -133,12 +128,10 @@
                     <span class="name">
                         <?php
                             $setClass = ($player->sex === '女性' ? 'female' : 'blue');
-                            echo $this->Html->link($player->name, [
-                                'action' => 'detail/'.$player->id
-                            ], [
-                                'class' => $setClass.' colorbox'
-                            ]);
                         ?>
+                        <a class="<?=$setClass?>" @click="openModal('/igoapp/players/detail/<?=$player->id?>')">
+                            <?=h($player->name)?>
+                        </a>
                     </span>
                     <span class="name">
                         <?=h($player->name_english); ?>
@@ -183,24 +176,19 @@
             </ul>
         </div>
     <?=$this->Form->end()?>
+    <!-- モーダルコンテンツ -->
+    <modal :options="modal" :class="{'hide': !modal.url}"
+        @modal-close="closeModal()"></modal>
 </section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
-    var country = document.querySelector('[data-id=country]');
-    var addNew = document.querySelector('.add-new');
-
-    // 初期状態
-    addNew.disabled = !country.value;
-
-    // 新規作成画面へ遷移
-    addNew.addEventListener('click', function() {
-        setColorbox("<?=$this->Url->build(['action' => 'detail'])?>?countryId=" + country.value);
-    }, false);
-
     // 所属国変更時
+    var country = document.querySelector('[data-id=country]');
     country.addEventListener('change', function() {
+        var addNew = document.querySelector('.add-new');
         addNew.disabled = !this.value;
     }, false);
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>
+<?=$this->Html->script('common.min', ['inline' => false])?>

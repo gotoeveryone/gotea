@@ -12,6 +12,8 @@ import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { Ranks, RanksHeader, RanksBody } from './ranks/ranks';
 import { CustomHttp } from './components/customhttp';
 
+import { BaseModule, isProdMode } from './base';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -36,6 +38,8 @@ import { CustomHttp } from './components/customhttp';
         Ranks,
     ]
 })
-export class AppModule {}
+export class AppModule extends BaseModule {}
+
+isProdMode();
 
 platformBrowserDynamic().bootstrapModule(AppModule);

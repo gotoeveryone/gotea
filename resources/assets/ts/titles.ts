@@ -14,6 +14,8 @@ import { Colorbox } from './components/colorbox';
 import { Dialog } from './components/dialog';
 import { CustomHttp } from './components/customhttp';
 
+import { BaseModule, isProdMode } from './base';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -41,5 +43,7 @@ import { CustomHttp } from './components/customhttp';
     ]
 })
 export class AppModule {}
+
+isProdMode();
 
 platformBrowserDynamic().bootstrapModule(AppModule);

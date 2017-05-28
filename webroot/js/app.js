@@ -40,35 +40,18 @@ var openConfirm = function(message, form) {
     confirm.dialog("open");
 };
 
-var checkChange = function(obj) {
-    var self = obj;
-    var parent = self.parent();
-    var bean = parent.find('input[type=hidden][name*=bean_]');
-    var compare = (self.attr('type') === 'checkbox' ? self.prop('checked') : self.val());
-    if (compare !== bean.val()) {
-        self.addClass('changed');
-    } else {
-        self.removeClass('changed');
-    }
-};
+var outMessage = '';
 
 // 初期処理
 $(document).ready(function() {
     // 各種初期設定
     setDatepicker();
-    setTooltip();
-    setColorbox();
 
     $("main").animate({opacity: "show"}, 500);
 
     $('#dialog').click(function (event) {
         $(this).dialog('open');
         event.preventDefault();
-    });
-
-    // 値変更時
-    $('.checkChange').on('change', function() {
-        checkChange($(this));
     });
 
     // タブ押下時
@@ -125,9 +108,6 @@ function getDatepickerObject() {
 		showMonthAfterYear: true,
         yearSuffix: "年",
 		onSelect: function(d, i) {
-            if ($(this).hasClass('checkChange')) {
-                checkChange($(this));
-            }
             // onChangeイベントを強制発火
             if (d !== i.lastVal) {
                 var customEvent = document.createEvent('HTMLEvents');
@@ -149,44 +129,6 @@ function setDatepicker() {
             $(this).datepicker("option", "defaultDate", "-20y");
         }
     });
-}
-
-// ツールチップの設定
-function setTooltip() {
-    $('.tooltip').tooltip({
-        show: {
-            delay: 200
-        },
-        hide: {
-            delay: 200
-        },
-        position: {
-            my: 'left top',
-            at: 'left bottom',
-            collision: 'fit'
-        },
-        track: true
-    });
-}
-
-// カラーボックスの設定
-function setColorbox(href) {
-    var options = {
-        iframe: true,
-        width: "60%",
-        height: "90%"
-    };
-    if (href) {
-        options["href"] = href;
-        $.colorbox(options);
-    } else {
-        $('.colorbox').colorbox(options);
-    }
-}
-
-// Hiddenに選択した値を設定
-function setHidden(obj, setId) {
-	$('#' + setId).val(obj.val());
 }
 
 // Ajax処理からフォームをサブミットする

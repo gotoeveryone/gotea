@@ -11,9 +11,8 @@
         <?='棋士情報管理システム - '.$cakeDescription ?>
     </title>
     <?=$this->Html->meta('icon')?>
-    <link rel="stylesheet" href="/css/jquery-ui.min.css" />
-    <link rel="stylesheet" href="/css/colorbox.css" />
-    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" />
+    <link rel="stylesheet" href="https://k2ss.info/css/common.css" />
     <?=$this->Html->css('app')?>
 </head>
 <body>
@@ -109,11 +108,10 @@
     <div id="dialog" title="メッセージ"><?=$this->Flash->render()?></div>
     <div id="confirm" title="確認"></div>
 
-    <script src="/js/jquery-2.2.3.min.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
-    <script src="/js/jquery.blockUI.js"></script>
-    <script src="/js/jquery.colorbox-min.js"></script>
-    <script src="/js/common.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script src="https://k2ss.info/js/common.js"></script>
     <?=$this->Html->script('app')?>
     <?=$this->fetch('script')?>
 </body>

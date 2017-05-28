@@ -124,7 +124,7 @@ class PlayersController extends AppController
 
         // 棋士IDが取得出来なければ新規登録画面を表示
         // 所属国が取得出来なければエラー
-        if (!($countryId = $this->request->getQuery('countryId'))) {
+        if (!($countryId = $this->request->getQuery('country_id'))) {
             throw new BadRequestException(__("所属国を指定してください。"));
         }
 
