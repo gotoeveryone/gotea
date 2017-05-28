@@ -76,14 +76,14 @@ class JsonComponent extends Component
         }
         $http = new Client();
         $callMethod = strtolower($method);
-        $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
+        $response = $http->$callMethod($this->__getApiUrl().$url, $data);
         // アプリログイン済みだが、APIが401なら再認証
         if ($response->getStatusCode() == 401 && $this->MyAuth->user()) {
             $userId = $this->MyAuth->user('userId');
             $password = $this->MyAuth->user('password');
             // トークン再生成
             $data['access_token'] = $this->saveAccessToken($userId, $password);
-            $response = $http->$callMethod($this->__getApiUrl().$url, $data, $this->__getCaArray());
+            $response = $http->$callMethod($this->__getApiUrl().$url, $data);
         }
         $this->response = $this->response->withStatus($response->getStatusCode());
         if ($response->isOk()) {
@@ -101,17 +101,5 @@ class JsonComponent extends Component
     private function __getApiUrl()
     {
         return env('WEB_API_DOMAIN').'web-api/v1/';
-    }
-
-    /**
-     * CA証明書の配列を生成して取得します。
-     * 
-     * @return type
-     */
-    private function __getCaArray()
-    {
-        return [
-            'ssl_cafile' => env('SSL_CA_CRT')
-        ];
     }
 }
