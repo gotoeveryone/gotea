@@ -14,6 +14,7 @@ class PlayerScoresTable extends AppTable
 	 */
     public function initialize(array $config)
     {
+        $this->belongsTo('Players');
         $this->belongsTo('Ranks');
     }
 
