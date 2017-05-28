@@ -1,0 +1,15 @@
+nginx-igoapp:
+  build: ./nginx
+  ports:
+    - 80:80
+  volumes:
+    - ../../igoapp:/usr/share/nginx/html/igoapp
+  links:
+    - php7-igoapp
+
+php7-igoapp:
+  build: ./php-fpm
+  ports:
+    - 9000:9000
+  volumes:
+    - ../../igoapp:/usr/share/nginx/html/igoapp
