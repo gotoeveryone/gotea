@@ -6,7 +6,7 @@ RUN apt-get update \
         libpng12-dev libmcrypt-dev zlib1g-dev libicu-dev g++ \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl pdo_mysql mysqli mbstring gd iconv mcrypt \
-    && pecl install xdebug \
+    && yes "" | pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apt-get clean
 
