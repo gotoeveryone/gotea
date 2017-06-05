@@ -1,15 +1,23 @@
-nginx-igoapp:
-  build: ./nginx
-  ports:
-    - 80:80
-  volumes:
-    - ../../igoapp:/usr/share/nginx/html/igoapp
-  links:
-    - php7-igoapp
+version: '2'
+services:
+  igoapp:
+    image: busybox
+    volumes:
+      - ../:/usr/share/nginx/html
 
-php7-igoapp:
-  build: ./php-fpm
-  ports:
-    - 9000:9000
-  volumes:
-    - ../../igoapp:/usr/share/nginx/html/igoapp
+  nginx-igoapp:
+    build: ./nginx
+    volumes_from: [igoapp]
+    ports:
+      - 80:80
+    links:
+      - php7-igoapp
+
+  php7-igoapp:
+    build: ./php-fpm
+    volumes_from: [igoapp]
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      XDEBUG_CONFIG: remote_host=172.18.0.3
