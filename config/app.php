@@ -271,13 +271,13 @@ return [
     'Log' => [
         'debug' => [
             'className' => 'App\Log\Engine\MyFileLog',
-            'path' => env('LOG_DIR', LOGS),
+            'path' => env('LOG_DIR', LOGS.'/'),
             'file' => 'igoapp-access',
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [
             'className' => 'App\Log\Engine\MyFileLog',
-            'path' => env('LOG_DIR', LOGS),
+            'path' => env('LOG_DIR', LOGS.'/'),
             'file' => 'igoapp-error',
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
