@@ -8,6 +8,14 @@
             "port": 9000,
             "serverSourceRoot": "${WWW_ROOT}",
             "localSourceRoot": "./"
+        },
+        {
+            "name": "Listen for Docker XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9001,
+            "serverSourceRoot": "/usr/share/nginx/html",
+            "localSourceRoot": "${workspaceRoot}"
         }
     ]
 }

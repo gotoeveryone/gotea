@@ -16,8 +16,11 @@ services:
   php7-igoapp:
     build: ./php-fpm
     volumes_from: [igoapp]
+    expose:
+      - 9000
     ports:
-      - 9000:9000
       - 9001:9001
+    extra_hosts:
+      - dockerhost:<local_ip>
     environment:
-      XDEBUG_CONFIG: remote_host=172.18.0.3
+      XDEBUG_CONFIG: remote_host=<local_ip>
