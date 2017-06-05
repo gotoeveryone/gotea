@@ -143,7 +143,7 @@ class ApiController extends Controller
 
         // パラメータがあればファイル作成
         if ($this->request->getQuery('make') === 'true') {
-            if (!file_put_contents(env('JSON_OUTPUT_DIR').'news.json', json_encode($json))) {
+            if (!file_put_contents(env('JSON_OUTPUT_DIR').'json/news.json', json_encode($json))) {
                 throw new MissingActionException(__("JSON出力失敗"), 500);
             }
         }
