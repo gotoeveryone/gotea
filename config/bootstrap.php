@@ -54,11 +54,14 @@ use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
+use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
+
 // .envファイル読み込み
-if (($env = @parse_ini_file(ENV)) !== false && is_array($env)) {
-    foreach ($env as $key => $value) {
-        $_ENV[$key] = $value;
-    }
+try {
+    (new Dotenv(__DIR__.'/../'))->overload();
+} catch (InvalidPathException $e) {
+    die($e->getMessage() . "\n");
 }
 
 /**
