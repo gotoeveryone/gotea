@@ -15,7 +15,7 @@ class JsonComponent extends Component
 {
     public $controller = null;
     public $session = null;
-    public $components = ['MyAuth'];
+    public $components = ['Auth'];
 
     public function initialize(array $config)
     {
@@ -78,9 +78,9 @@ class JsonComponent extends Component
         $callMethod = strtolower($method);
         $response = $http->$callMethod($this->__getApiUrl().$url, $data);
         // アプリログイン済みだが、APIが401なら再認証
-        if ($response->getStatusCode() == 401 && $this->MyAuth->user()) {
-            $userId = $this->MyAuth->user('userId');
-            $password = $this->MyAuth->user('password');
+        if ($response->getStatusCode() == 401 && $this->Auth->user()) {
+            $userId = $this->Auth->user('userId');
+            $password = $this->Auth->user('password');
             // トークン再生成
             $data['access_token'] = $this->saveAccessToken($userId, $password);
             $response = $http->$callMethod($this->__getApiUrl().$url, $data);

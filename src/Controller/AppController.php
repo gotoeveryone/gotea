@@ -14,7 +14,7 @@ use Cake\Network\Response;
  * 
  * @property \App\Controller\Component\LogComponent $Log
  * @property \App\Controller\Component\TransactionComponent $Transaction
- * @property \App\Controller\Component\MyAuthComponent $MyAuth
+ * @property \App\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
 {
@@ -40,7 +40,8 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('Log');
         $this->loadComponent('Transaction');
-        $this->loadComponent('MyAuth', [
+        $this->loadComponent('Auth', [
+            'className' => 'MyAuth',
             'loginAction' => [
                 'controller' => 'users',
                 'action' => 'index'
@@ -99,9 +100,9 @@ class AppController extends Controller
         parent::beforeRender($event);
 
         // ユーザ名を表示
-        if ($this->MyAuth->user()) {
-            $this->set('username', $this->MyAuth->user('userName'));
-            $this->set('admin', ($this->MyAuth->user('role') === '管理者'));
+        if ($this->Auth->user()) {
+            $this->set('username', $this->Auth->user('userName'));
+            $this->set('admin', ($this->Auth->user('role') === '管理者'));
         }
     }
 
