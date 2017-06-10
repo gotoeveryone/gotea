@@ -29,11 +29,11 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
 		// すでにログイン済みならリダイレクト
-        if ($this->MyAuth->user() && ($this->request->action !== 'logout')) {
-			return $this->redirect($this->MyAuth->redirectUrl());
+        if ($this->Auth->user() && ($this->request->action !== 'logout')) {
+			return $this->redirect($this->Auth->redirectUrl());
         }
         parent::beforeFilter($event);
-        $this->MyAuth->allow(['index', 'login']);
+        $this->Auth->allow(['index', 'login']);
     }
 
 	/**
@@ -70,9 +70,9 @@ class UsersController extends AppController
         $password = $this->request->getData('password');
 
         // ログイン
-        if ($this->MyAuth->login($account, $password)) {
+        if ($this->Auth->login($account, $password)) {
             // リダイレクト
-            return $this->redirect($this->MyAuth->redirectUrl());
+            return $this->redirect($this->Auth->redirectUrl());
         }
 
         return $this->setAction('index');
@@ -84,6 +84,6 @@ class UsersController extends AppController
      */
     public function logout()
     {
-        return $this->redirect($this->MyAuth->logout());
+        return $this->redirect($this->Auth->logout());
     }
 }

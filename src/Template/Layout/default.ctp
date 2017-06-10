@@ -7,6 +7,7 @@
 <html>
 <head>
     <?=$this->Html->charset()?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         <?='棋士情報管理システム - '.$cakeDescription ?>
     </title>
@@ -23,9 +24,7 @@
         <header>
             <div class="system-name"><span>棋士情報管理システム</span></div>
             <!-- 見出し -->
-            <div class="page-title">
-                <h1 class="page-title_top"><?=h($cakeDescription)?></h1>
-            </div>
+            <h1 class="page-title"><?=h($cakeDescription)?></h1>
             <div class="other">
                 <?php if (isset($username)) : ?>
                     <span class="username">ユーザ：<?=h($username)?></span>
