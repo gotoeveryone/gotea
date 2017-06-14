@@ -35,7 +35,7 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 - webpack
 - Vue.js (一部のみ、最終的にはAngularとどちらかで統一予定)
 
-最終的なJS・CSSは`webpack`を利用して生成します。
+最終的なJS・CSSは`webpack`を利用して生成します。  
 `npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
 
 ### ログ出力
