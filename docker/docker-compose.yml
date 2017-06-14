@@ -21,6 +21,6 @@ services:
     ports:
       - 9001:9001
     extra_hosts:
-      - dockerhost:<local_ip>
+      - dockerhost:${LOCAL_IP}
     environment:
-      XDEBUG_CONFIG: remote_host=<local_ip>
+      XDEBUG_CONFIG: remote_host=${LOCAL_IP}
