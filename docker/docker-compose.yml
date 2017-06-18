@@ -22,5 +22,3 @@ services:
       - 9001:9001
     extra_hosts:
       - dockerhost:${LOCAL_IP}
-    environment:
-      XDEBUG_CONFIG: remote_host=${LOCAL_IP}
