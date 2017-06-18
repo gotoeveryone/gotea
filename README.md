@@ -11,13 +11,20 @@
 
 ## セットアップ
 
-1. プロジェクトのルートディレクトリで`composer install`を実行します。   
-2. 同じくルートディレクトリで`npm install`を実行します。
+1. `.env.example`を参考にプロジェクトルートに`.env`ファイルを生成します。
+2. プロジェクトルートで`composer install`を実行します。
+3. 同じくプロジェクトルートで`npm install`を実行します。
 
 ### Dockerを利用する場合
 
-1. `docker`ディレクトリにある`docker-compose.yml`の`<local_ip>`を自端末のIPに変更します。
-2. 上記ディレクトリで`docker-compose up`を実行します。
+以下コマンドを実行してください。
+
+```
+$ cd ./docker
+$ LOCAL_IP=<your local ip> docker-compose up
+$ # Macの場合
+$ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
+```
 
 ## 注意事項
 
@@ -26,6 +33,7 @@
 - TypeScript
 - Angular4
 - webpack
+- Vue.js (一部のみ、最終的にはAngularとどちらかで統一予定)
 
 最終的なJS・CSSは`webpack`を利用して生成します。  
 `npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
@@ -36,12 +44,3 @@
 
 - igoapp-access.log（アクセスログ）
 - igoapp-error.log（エラーログ）
-
-### DB接続
-
-MySQLにて`igo`スキーマを利用します。  
-ユーザ・パスワードは環境変数に以下キーで設定してください。  
-※Apache・nginxなどWebサーバーを利用する場合、そちらにも設定が必要です。  
-
-- DB_IGO_USER
-- DB_IGO_PASSWORD
