@@ -99,7 +99,7 @@ class TitleScoreDetailsTable extends AppTable
 
     /**
      * 最新データの対局日を取得します。
-     * 
+     *
      * @param \App\Model\Entity\Country $country
      * @param int $targetYear
      * @return string|null
@@ -112,12 +112,13 @@ class TitleScoreDetailsTable extends AppTable
             return $points->findRecent($country, $targetYear);
         }
 
+        // 対局棋士の所属国が該当する・もしくは国際棋戦の最新であるデータの対局日を返却
         return $this->find()->select([
             'max' => 'max(ended)'
         ])->contain([
-            'TitleScores' => function(Query $q) use ($country) {
-                return $q->where(['country_id' => $country->id])->orWhere(['is_world' => true]);
-            }
-        ])->first()->max;
+            'TitleScores',
+            'Players',
+        ])->where(['Players.country_id' => $country->id])
+            ->orWhere(['TitleScores.is_world' => true])->first()->max;
     }
 }
