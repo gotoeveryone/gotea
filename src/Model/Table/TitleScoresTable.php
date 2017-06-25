@@ -77,7 +77,7 @@ class TitleScoresTable extends Table
 
     /**
      * タイトル勝敗を検索します。
-     * 
+     *
      * @param array $data
      * @param boolean $isCount
      * @return TitleScore|int タイトル勝敗一覧|件数
@@ -93,22 +93,22 @@ class TitleScoresTable extends Table
                 ->leftJoinWith('LoseDetails.Loser')
                 ->orderDesc('started');
 
-        if (isset($data['player_id']) && ($id = $data['player_id'])) {
+        if (($id = $data['player_id'] ?? '')) {
             $query->where(['Winner.id' => $id])->orWhere(['Loser.id' => $id]);
         }
-        if (isset($data['name']) && ($name = $data['name'])) {
+        if (($name = trim($data['name'] ?? ''))) {
             $query->where(['Winner.name like ' => "%{$name}%"])->orWhere(['Loser.name like ' => "%{$name}%"]);
         }
-        if (isset($data['target_year']) && ($year = $data['target_year'])) {
+        if (($year = $data['target_year'] ?? '')) {
             $query->where(['YEAR(TitleScores.started)' => $year])->where(['YEAR(TitleScores.ended)' => $year]);
         }
-        if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
+        if (($countryId = $data['country_id'] ?? '')) {
             $query->where(['TitleScores.country_id' => $countryId]);
         }
-        if (isset($data['started']) && ($started = $data['started'])) {
+        if (($started = $data['started'] ?? 0)) {
             $query->where(['TitleScores.started >= ' => $started]);
         }
-        if (isset($data['ended']) && ($ended = $data['ended'])) {
+        if (($ended = $data['ended'] ?? 0)) {
             $query->where(['TitleScores.ended <= ' => $ended]);
         }
 
@@ -121,7 +121,7 @@ class TitleScoresTable extends Table
 
     /**
      * 指定した棋士の年度別成績を取得します。
-     * 
+     *
      * @param int $playerId
      * @param int|array $years
      * @return array|object 成績情報
@@ -154,7 +154,7 @@ class TitleScoresTable extends Table
 
     /**
      * サブクエリを作成します。
-     * 
+     *
      * @param $playerId
      * @param string $division
      * @param bool $world

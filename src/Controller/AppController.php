@@ -8,22 +8,16 @@ use Cake\Network\Response;
 
 /**
  * アプリの共通コントローラ
- * 
+ *
  * @author  Kazuki Kamizuru
  * @since   2015/07/26
- * 
+ *
  * @property \App\Controller\Component\LogComponent $Log
  * @property \App\Controller\Component\TransactionComponent $Transaction
  * @property \App\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
 {
-    // 許可するアクション
-    protected $_allowActions = ["index", "detail", "login", "logout"];
-
-    // リダイレクト先アクション
-    protected $_redirectAction = "index";
-
     /**
      * ダイアログ表示状態かどうか
      *
@@ -59,19 +53,12 @@ class AppController extends Controller
 
 	/**
 	 * アクション遷移前処理
-     * 
+     *
      * @param Event $event
      */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-
-        // 許可したアクション以外でPOSTではないアクセスの場合、デフォルトアクションへ遷移させる
-        if (!in_array($this->request->action, $this->_allowActions) && !$this->request->isPost()
-                && method_exists($this, $this->_redirectAction)) {
-            $this->setAction($this->_redirectAction);
-            return;
-        }
 
         // トランザクションの開始
         $this->Transaction->begin();
@@ -79,7 +66,7 @@ class AppController extends Controller
 
     /**
      * アクション遷移後処理
-     * 
+     *
      * @param Event $event
      */
     public function afterFilter(Event $event)
@@ -92,7 +79,7 @@ class AppController extends Controller
 
     /**
      * ビュー描画前処理
-     * 
+     *
      * @param Event $event
      */
     public function beforeRender(Event $event)
@@ -108,7 +95,7 @@ class AppController extends Controller
 
     /**
      * リダイレクト前処理
-     * 
+     *
      * @param Event $event
      * @param type $url
      * @param Response $response
@@ -124,7 +111,7 @@ class AppController extends Controller
     /**
      * 遷移先のアクションをセットします。
      * 加えて、初期表示するタブを制御します。
-     * 
+     *
      * @param string $action
      * @param string $tabName
      * @param mixed $args
@@ -138,7 +125,7 @@ class AppController extends Controller
 
     /**
      * 指定したリクエスト以外でアクセスがあった場合、デフォルトアクションへ遷移させます。
-     * 
+     *
      * @param string $method
      * @param string $action
      */
@@ -161,7 +148,7 @@ class AppController extends Controller
 
     /**
      * ダイアログ表示状態かどうかを判定します。
-     * 
+     *
      * @return bool ダイアログ表示状態ならtrue
      */
     protected function _isDialogMode()

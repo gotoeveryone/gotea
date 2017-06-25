@@ -13,7 +13,7 @@ class TitlesTable extends AppTable {
 
     /**
 	 * 初期設定
-     * 
+     *
      * @param $config
 	 */
     public function initialize(array $config)
@@ -31,7 +31,7 @@ class TitlesTable extends AppTable {
 
     /**
      * バリデーションルール
-     * 
+     *
      * @param \App\Model\Table\Validator $validator
      * @return type
      */
@@ -59,7 +59,7 @@ class TitlesTable extends AppTable {
 
     /**
      * 所属国をもとにタイトルの一覧を取得します。
-     * 
+     *
      * @param array $data
      * @return type
      */
@@ -91,11 +91,11 @@ class TitlesTable extends AppTable {
 
     /**
      * タイトル情報一式を取得
-     * 
-     * @param type $id
-     * @return type
+     *
+     * @param int $id
+     * @return Title|null
      */
-    public function getInner($id)
+    public function findWithRelations(int $id)
     {
 		return $this->find()->contain([
             'Countries',
@@ -109,8 +109,28 @@ class TitlesTable extends AppTable {
     }
 
     /**
+     * 保存処理
+     *
+     * @param array $data
+     * @return Title|false 保存に成功すればそのEntity
+     */
+    public function saveEntity(array $data)
+    {
+        // IDからデータを取得
+        if (!($title = $this->get($data['id']))) {
+            return false;
+        }
+
+        // 入力値をエンティティに設定
+        $this->patchEntity($title, $data);
+
+        // 保存処理
+        return $this->save($title);
+    }
+
+    /**
      * モデルを配列に変換します。
-     * 
+     *
      * @param type $models
      * @param bool $admin 管理者情報を取得するか
      * @param bool $isJp 日本語情報を取得するか

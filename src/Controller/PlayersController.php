@@ -6,6 +6,7 @@ use App\Form\PlayerForm;
 use App\Model\Entity\Player;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
+use Cake\Network\Exception\NotFoundException;
 use Cake\I18n\Date;
 
 /**
@@ -13,7 +14,7 @@ use Cake\I18n\Date;
  *
  * @author  Kazuki Kamizuru
  * @since   2015/07/20
- * 
+ *
  * @property \App\Model\Table\PlayersTable $Players
  * @property \App\Model\Table\PlayerScoresTable $PlayerScores
  * @property \App\Model\Table\CountriesTable $Countries
@@ -23,7 +24,7 @@ use Cake\I18n\Date;
 class PlayersController extends AppController
 {
     /**
-     * 初期処理
+     * {@inheritDoc}
      */
 	public function initialize()
     {
@@ -34,13 +35,10 @@ class PlayersController extends AppController
         $this->loadModel('Countries');
         $this->loadModel('Ranks');
         $this->loadModel('Organizations');
-
-        // GETアクセスを許可するアクションを定義
-        $this->_addAllowGetActions(["viewRanks", "ranking"]);
     }
 
 	/**
-	 * 描画前処理
+     * {@inheritDoc}
 	 */
     public function beforeRender(Event $event)
     {
@@ -53,54 +51,51 @@ class PlayersController extends AppController
    	}
 
 	/**
-	 * 初期処理
+	 * 初期処理 or 検索処理
+     *
+     * @return Response
 	 */
-	public function index(PlayerForm $form = null)
+	public function index()
     {
+        $this->_setTitle('棋士情報検索');
 		// 所属国プルダウン
 		$this->set('countries', $this->Countries->findCountryBelongToArray());
-        $this->_setTitle('棋士情報検索');
 
-        $this->set('form', ($form ? $form : new PlayerForm));
+        // 検索
+        if ($this->request->isPost()) {
+            // リクエストから値を取得
+            $data = $this->request->getParsedBody();
+            $form = new PlayerForm();
+            if (!$form->validate($data)) {
+                $this->Flash->error($form->errors());
+                return $this->setAction('index', $form);
+            }
+
+            // 該当する棋士情報一覧の件数を取得
+            $query = $this->Players->findPlayersQuery($data);
+            $count = $query->count();
+
+            // 件数が0件または301件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
+            if ($count === 0) {
+                $this->Flash->warn(__("検索結果が0件でした。"));
+            } else if ($count > 300) {
+                $this->Flash->warn(__("検索結果が300件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
+            } else {
+                // 結果をセット
+                $this->set('players', $query->all());
+            }
+        }
+
+        $this->set('form', ($form ?? new PlayerForm));
         return $this->render('index');
-    }
-
-    /**
-	 * 検索処理
-	 */
-	public function search()
-    {
-        // リクエストから値を取得
-        $data = $this->request->getParsedBody();
-        $form = new PlayerForm();
-        if (!$form->validate($data)) {
-            $this->Flash->error($form->errors());
-            return $this->setAction('index', $form);
-        }
-
-        // 該当する棋士情報一覧の件数を取得
-        $count = $this->Players->findPlayers($data, true);
-
-        // 件数が0件または301件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
-        if ($count === 0) {
-            $this->Flash->warn(__("検索結果が0件でした。"));
-        } else if ($count > 300) {
-            $this->Flash->warn(__("検索結果が300件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
-        } else {
-            // 結果をセット
-            $players = $this->Players->findPlayers($data);
-            $this->set('players', $players);
-        }
-
-        // 初期表示処理へ
-        return $this->setAction('index', $form);
     }
 
 	/**
 	 * 詳細情報表示処理
-     * 
-     * @param $id 取得するデータのID
-     * @param $existPlayer 棋士情報（エラー時の遷移用）
+     *
+     * @param int|null $id 取得するデータのID
+     * @param Player $existPlayer 棋士情報（エラー時の遷移用）
+     * @return Response
 	 */
 	public function detail($id = null, Player $existPlayer = null)
     {
@@ -109,7 +104,7 @@ class PlayersController extends AppController
 
         // IDが指定されていれば、棋士情報一式を設定
         if ($id) {
-            if (!($player = $this->Players->getInner($id))) {
+            if (!($player = $this->Players->findWithRelations($id))) {
                 throw new NotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
             }
             $this->set('player', $player);
@@ -122,7 +117,7 @@ class PlayersController extends AppController
             return $this->render('detail');
         }
 
-        // 棋士IDが取得出来なければ新規登録画面を表示
+        // 棋士ID・既存の棋士情報が取得出来なければ新規登録画面を表示
         // 所属国が取得出来なければエラー
         if (!($countryId = $this->request->getQuery('country_id'))) {
             throw new BadRequestException(__("所属国を指定してください。"));
@@ -138,11 +133,15 @@ class PlayersController extends AppController
 
 	/**
 	 * 棋士マスタの登録・更新処理
-     * 
-     * @param $id 保存対象データのID
+     *
+     * @param int|null $id 保存対象データのID
+     * @return Response
 	 */
 	public function save($id = null)
     {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
         // IDからデータを取得
         $player = ($id) ? $this->Players->findPlayerWithScores($id) : $this->Players->newEntity();
         $status = ($id) ? '更新' : '登録';
@@ -168,7 +167,7 @@ class PlayersController extends AppController
 
         // 所属国IDを設定
         $this->request = $this->request->withQueryparams([
-            'countryId' => $player->country_id
+            'country_id' => $player->country_id
         ]);
 
         // 詳細情報表示処理へ
@@ -176,48 +175,25 @@ class PlayersController extends AppController
                 : $this->setAction('detail', $player->id, $player));
 	}
 
-	/**
-	 * 棋士成績を更新します。
-     * 
-     * @param $id 棋士成績のID
-	 */
-	public function saveScore($id)
-    {
-        // IDからデータを取得
-        $score = $this->PlayerScores->get($id);
-
-        // バリデーションエラーの場合はそのまま返す
-        $data = $this->request->getParsedBody();
-        if (($errors = $this->PlayerScores->validator()->errors($data))) {
-            // エラーメッセージを書き込み、詳細情報表示処理へ
-            $this->Flash->error($errors);
-            return $this->setTabAction('detail', 'scores', $score->player_id);
-        }
-
-        // 入力値をエンティティに設定
-        $this->PlayerScores->patchEntity($score, $data);
-
-        // 棋士成績情報の更新
-        $this->PlayerScores->save($score);
-        $this->Flash->info(__("{$score->target_year}年度の棋士成績情報を更新しました。"));
-
-        // 詳細情報表示処理へ
-        return $this->setTabAction('detail', 'scores', $score->player_id);
-	}
-
     /**
      * ランキング出力処理
+     *
+     * @return Response
      */
     public function ranking()
     {
         $this->_setTitle('棋士勝敗ランキング出力');
+        return $this->render();
     }
 
     /**
      * 段位別棋士数表示
+     *
+     * @return Response
      */
     public function viewRanks()
     {
         $this->_setTitle("段位別棋士数表示");
+        return $this->render();
     }
 }

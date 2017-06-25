@@ -12,7 +12,7 @@
             <?=$this->Form->create($title, [
                 'id' => 'mainForm',
                 'type' => 'post',
-                'url' => ['action' => 'save', $title->id],
+                'url' => ['action' => 'detail'],
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
@@ -204,7 +204,7 @@
                             <?php if (!$header) : ?>
                             <li class="row">
                                 <div class="box">
-                                    <div class="label-row">保持情報（履歴）</div>                                
+                                    <div class="label-row">保持情報（履歴）</div>
                                 </div>
                             </li>
                             <?php $header = true; ?>

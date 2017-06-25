@@ -48,7 +48,7 @@ class RetentionHistoriesTable extends AppTable {
 
     /**
      * キー情報をもとに、保持履歴を1件取得します。
-     * 
+     *
      * @param array $data
      * @return null|\App\Model\Entity\RetentionHistory
      */
@@ -65,8 +65,26 @@ class RetentionHistoriesTable extends AppTable {
     }
 
     /**
+     * データを追加します。
+     *
+     * @param array $data
+     * @return RetentionHistory|false データが登録できればそのEntity
+     */
+    public function add(array $data)
+    {
+        // 同一キーのデータがあれば終了
+		if ($this->findByKey($data)) {
+            return false;
+		}
+
+        // タイトル保持情報の登録
+        $history = $this->newEntity($data);
+        return $this->save($history);
+    }
+
+    /**
      * バリデーションルール
-     * 
+     *
      * @param \App\Model\Table\Validator $validator
      * @return type
      */

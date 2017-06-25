@@ -244,63 +244,29 @@
 
             <?php // 2016年以前 ?>
             <?php foreach ($player->player_scores as $key=>$score) : ?>
-
-            <?=$this->Form->create($score, [
-                'name' => 'scoreForm',
-                'type' => 'post',
-                'url' => ['action' => 'saveScore', $score->id],
-                'templates' => [
-                    'inputContainer' => '{{content}}',
-                    'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
-                ]
-            ])?>
-                <?=$this->Form->hidden('id', ['value' => $score->id])?>
-                <?=$this->Form->hidden('target_year', ['value' => $score->target_year])?>
-                <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($score->modified, 'YYYYMMddHHmmss')])?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
                     <li class="row">
+                        <div class="box">
+                            <div class="label-row">勝敗（国内）</div>
+                            <div class="input-row">
+                                <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>%）
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="label-row">勝敗（国際）</div>
+                            <div class="input-row">
+                                <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>%）
+                            </div>
+                        </div>
                         <div class="box">
                             <div class="label-row">段位</div>
                             <div class="input-row"><?=h($score->rank->name)?></div>
                         </div>
                     </li>
-                    <li class="row">
-                        <div class="box">
-                            <div class="label-row">勝敗（国内）</div>
-                            <div class="input-row" data-row="win-loss">
-                                <?=$this->Form->text('win_point', ['value' => $score->win_point, 'class' => 'point imeDisabled']).'勝';?>
-                                <?=$this->Form->text('lose_point', ['value' => $score->lose_point, 'class' => 'point imeDisabled']).'敗';?>
-                                <?=$this->Form->text('draw_point', ['value' => $score->draw_point, 'class' => 'point imeDisabled']).'分';?>
-                                <span class="percent">（勝率<strong></strong>%）
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row">勝敗（国際）</div>
-                            <div class="input-row" data-row="win-loss">
-                                <?=$this->Form->text('win_point_world', ['value' => $score->win_point_world, 'class' => 'point imeDisabled']).'勝';?>
-                                <?=$this->Form->text('lose_point_world', ['value' => $score->lose_point_world, 'class' => 'point imeDisabled']).'敗';?>
-                                <?=$this->Form->text('draw_point_world', ['value' => $score->draw_point_world, 'class' => 'point imeDisabled']).'分';?>
-                                <span class="percent">（勝率<strong></strong>%）
-                            </div>
-                        </div>
-                    </li>
-                    <li class="row">
-                        <div class="box">
-                            <div class="label-row">更新日時</div>
-                            <div class="input-row">
-                                <div class="box2">
-                                    <?=$this->Date->formatToDateTime($score->modified)?>
-                                </div>
-                                <div class="button-wrap">
-                                    <?=$this->Form->button('更新', ['data-button-type' => 'score', 'type' => 'button'])?>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
-            <?=$this->Form->end()?>
             <?php endforeach ?>
 
             <?=$this->Form->create(null, [
@@ -316,47 +282,6 @@
                 <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
                 <?=$this->Form->hidden('target_year', ['value' => ''])?>
             <?=$this->Form->end()?>
-
-            <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
-            <script>
-                $(function() {
-                    var calcPercent = function(parent) {
-                        var win = parent.find("[name^=win_point]").val();
-                        var lose = parent.find("[name^=lose_point]").val();
-                        var total = Number(win) + Number(lose);
-                        var percent = (total === 0 ? 0 : Math.round(win / total * 100));
-                        if (!isNaN(percent)) {
-                            parent.find("strong").text(percent);
-                        }
-                    };
-
-                    // 勝率を設定
-                    $("[data-row=win-loss]").each(function () {
-                        calcPercent($(this));
-                    });
-
-                    // 勝数、敗数変更時に勝率を再設定
-                    $("[name*=point").change(function() {
-                        var parent = $(this).closest("[data-row=win-loss]");
-                        calcPercent(parent);
-                    });
-
-                    // 棋士成績情報更新ボタン押下時
-                    $("[data-button-type=score]").click(function() {
-                        var targetYear = $(this).parents("form").find("[name=target_year]").val();
-                        var message = targetYear + "年度の棋士成績情報を更新します。よろしいですか？";
-                        openConfirm(message, $(this).parents("form"));
-                    });
-
-                    // タイトル成績へボタン押下時
-                    $("[data-button-type=title-scores]").click(function() {
-                        var form = $('#titleScoreForm');
-                        form.find('[name=target_year]').val($(this).data('year'));
-                        submitForm(form);
-                    });
-                });
-            </script>
-            <?php $this->MyHtml->scriptEnd(); ?>
         </section>
 
         <!-- タイトル取得履歴 -->
@@ -386,6 +311,12 @@
     $(function() {
         // タブ選択
         selectTab('<?=($tab ?? '')?>');
+        // タイトル成績へボタン押下時
+        $("[data-button-type=title-scores]").click(function() {
+            var form = $('#titleScoreForm');
+            form.find('[name=target_year]').val($(this).data('year'));
+            submitForm(form);
+        });
     });
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>

@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Form\LoginForm;
 use Cake\Event\Event;
+use Cake\Http\Response;
+use App\Form\LoginForm;
 
 /**
  * ログイン用コントローラ
@@ -13,18 +14,8 @@ use Cake\Event\Event;
  */
 class UsersController extends AppController
 {
-    /**
-     * 初期処理
-     */
-    public function initialize()
-    {
-        parent::initialize();
-    }
-
 	/**
-	 * アクション実行前処理
-     * 
-     * @param $event
+     * {@inheritDoc}
 	 */
     public function beforeFilter(Event $event)
     {
@@ -32,34 +23,33 @@ class UsersController extends AppController
         if ($this->Auth->user() && ($this->request->action !== 'logout')) {
 			return $this->redirect($this->Auth->redirectUrl());
         }
+
         parent::beforeFilter($event);
         $this->Auth->allow(['index', 'login']);
     }
 
-	/**
-	 * 描画前処理
-     * 
-     * @param $event
-	 */
-    public function beforeRender(Event $event)
-    {
-        $this->_setTitle('ログイン');
-        parent::beforeRender($event);
-    }
-
     /**
      * 初期表示処理
+     *
+     * @return Response
      */
     public function index()
     {
-        return $this->render('index');
+        $this->_setTitle('ログイン');
+        return $this->render();
     }
 
     /**
-     * 初期表示処理
+     * ログイン処理
+     *
+     * @return Response
      */
     public function login()
     {
+        // POSTのみ許可
+        $this->request->allowMethod(['post']);
+
+        // ログイン
         $form = new LoginForm();
         if (!$form->validate($this->request->getParsedBody())) {
             $this->Flash->error($form->errors());
@@ -80,10 +70,12 @@ class UsersController extends AppController
 
     /**
      * ログアウト
-     * @return bool
+     *
+     * @return Response
      */
     public function logout()
     {
+        $this->request->session()->destroy();
         return $this->redirect($this->Auth->logout());
     }
 }

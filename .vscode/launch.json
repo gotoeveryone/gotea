@@ -6,8 +6,8 @@
             "type": "php",
             "request": "launch",
             "port": 9000,
-            "serverSourceRoot": "${WWW_ROOT}",
-            "localSourceRoot": "./"
+            "serverSourceRoot": "${workspaceRoot}",
+            "localSourceRoot": "${workspaceRoot}"
         },
         {
             "name": "Listen for Docker XDebug",

@@ -16,7 +16,7 @@ class PlayersTable extends AppTable
 {
 	/**
 	 * 初期設定
-     * 
+     *
      * @param $config
 	 */
     public function initialize(array $config)
@@ -80,7 +80,7 @@ class PlayersTable extends AppTable
 
     /**
      * バリデーションルール
-     * 
+     *
      * @param \App\Model\Table\Validator $validator
      * @return type
      */
@@ -103,7 +103,7 @@ class PlayersTable extends AppTable
 
     /**
      * 棋士とそれに紐づく棋士成績を取得します。
-     * 
+     *
      * @param int $id
      * @return Player|null 棋士とそれに紐づく棋士成績
      */
@@ -116,11 +116,11 @@ class PlayersTable extends AppTable
 
     /**
      * 棋士情報に関する一式を取得します。
-     * 
+     *
      * @param int $id
      * @return Player|null 棋士情報
      */
-    public function getInner(int $id)
+    public function findWithRelations(int $id)
     {
 		return $this->find()->contain([
             'WinDetails' => function(Query $q) {
@@ -174,12 +174,11 @@ class PlayersTable extends AppTable
 
     /**
      * 指定条件に合致した棋士情報を取得します。
-     * 
+     *
      * @param array $data
-     * @param boolean $isCount
-     * @return Player|int 棋士情報一覧|件数
+     * @return Query 生成されたクエリ
      */
-    public function findPlayers(array $data, $isCount = false)
+    public function findPlayersQuery(array $data) : Query
     {
         // 棋士情報の取得
         $query = $this->find()->order([
@@ -192,48 +191,44 @@ class PlayersTable extends AppTable
         ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
+        if (($countryId = $data['country_id'] ?? '')) {
             $query->where(['Countries.id' => $countryId]);
         }
-        if (isset($data['organization_id']) && ($organizationId = $data['organization_id'])) {
+        if (($organizationId = $data['organization_id'] ?? '')) {
             $query->where(['Organizations.id' => $organizationId]);
         }
-        if (isset($data['rank_id']) && ($rankId = $data['rank_id'])) {
+        if (($rankId = $data['rank_id'] ?? '') !== '') {
             $query->where(['Ranks.id' => $rankId]);
         }
-        if (isset($data['sex']) && ($sex = $data['sex'])) {
+        if (($sex = $data['sex'] ?? '')) {
             $query->where(['Players.sex' => $sex]);
         }
-        if (isset($data['name']) && ($name = trim($data['name']))) {
+        if (($name = trim($data['name'] ?? ''))) {
             $query->where(['OR' => $this->__createLikeParams('name', $name)]);
         }
-        if (isset($data['name_english']) && ($nameEnglish = trim($data['name_english']))) {
+        if (($nameEnglish = trim($data['name_english'] ?? ''))) {
             $query->where(['OR' => $this->__createLikeParams('name_english', $nameEnglish)]);
         }
-        if (isset($data['name_other']) && ($nameOther = trim($data['name_other']))) {
+        if (($nameOther = trim($data['name_other'] ?? ''))) {
             $query->where(['OR' => $this->__createLikeParams('name_other', $nameOther)]);
         }
-        if (isset($data['joined_from']) && is_numeric(($joinedFrom = $data['joined_from']))) {
+        if (is_numeric(($joinedFrom = $data['joined_from'] ?? ''))) {
             $query->where(['SUBSTR(Players.joined, 1, 4) >=' => $joinedFrom]);
         }
-        if (isset($data['joined_to']) && is_numeric(($joinedTo = $data['joined_to']))) {
+        if (is_numeric(($joinedTo = $data['joined_to'] ?? ''))) {
             $query->where(['SUBSTR(Players.joined, 1, 4) <=' => $joinedTo]);
         }
-        if (!isset($data['is_retired']) || !$data['is_retired']) {
+        if (!($data['is_retired'] ?? false)) {
             $query->where(['Players.is_retired' => 0]);
         }
 
-        if ($isCount) {
-            return $query->count();
-        }
-
-        // データを取得
-        return $query->all();
+        // クエリを返却
+        return $query;
     }
 
     /**
      * ランキング集計データを取得します。
-     * 
+     *
      * @param \App\Model\Entity\Country $country
      * @param int $targetYear
      * @param int $offset
@@ -246,16 +241,22 @@ class PlayersTable extends AppTable
             return $this->findOldRanking($country, $targetYear, $offset);
         }
 
-        $query = $this->find()
-                ->select([
-                    'id', 'name', 'name_english', 'country_id', 'rank_id', 'sex',
-                    'win' => 'win.cnt', 'lose' => 'coalesce(lose.cnt, 0)', 'draw' => 'coalesce(draw.cnt, 0)'])
-                ->innerJoin(['win' => $this->__createSub($country, $targetYear, '勝')], ['id = win.player_id'])
-                ->leftJoin(['lose' => $this->__createSub($country, $targetYear, '敗')], ['id = lose.player_id'])
-                ->leftJoin(['draw' => $this->__createSub($country, $targetYear, '分')], ['id = draw.player_id'])
-                ->where(['win.cnt >= ' => $this->query()->select(['cnt' => 'coalesce(sum(target.cnt), 1)'])
-                        ->from(['target' => $this->__createSub($country, $targetYear, '勝')->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
-                ->orderDesc('win')->order(['lose', 'joined']);
+        $query = $this->find();
+        $query->select([
+                'id', 'name', 'name_english', 'country_id', 'rank_id', 'sex',
+                'win' => 'win.cnt',
+                'lose' => $query->func()->coalesce(['lose.cnt' => 'identifier', 0]),
+                'draw' => $query->func()->coalesce(['draw.cnt' => 'identifier', 0]),
+            ])
+            ->innerJoin(['win' => $this->__createSub($country, $targetYear, '勝')], ['id = win.player_id'])
+            ->leftJoin(['lose' => $this->__createSub($country, $targetYear, '敗')], ['id = lose.player_id'])
+            ->leftJoin(['draw' => $this->__createSub($country, $targetYear, '分')], ['id = draw.player_id'])
+            ->where(['win.cnt >= ' =>
+                $this->query()->select([
+                    'cnt' => 'coalesce(sum(target.cnt), 1)'
+                ])->from(['target' => $this->__createSub($country, $targetYear, '勝')
+                ->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
+            ->orderDesc('win')->order(['lose', 'joined']);
 
         if ($country->has_title) {
             $query->where(['country_id' => $country->id]);
@@ -266,7 +267,7 @@ class PlayersTable extends AppTable
 
     /**
      * ランキングモデルを配列に変換します。
-     * 
+     *
      * @param type $models
      * @param bool $isJp
      * @return array ランキングモデルの配列
@@ -305,7 +306,7 @@ class PlayersTable extends AppTable
 
     /**
      * サブクエリを作成します。
-     * 
+     *
      * @param \App\Model\Table\App\Model\Entity\Country $country
      * @param int $targetYear
      * @param string $division
@@ -331,7 +332,7 @@ class PlayersTable extends AppTable
             return $subQuery;
         }
 
-        $subQuery->innerJoinWith('Players', function(\Cake\Database\Query $q) use ($country) {
+        $subQuery->innerJoinWith('Players', function(Query $q) use ($country) {
             return $q->where(['Players.country_id' => $country->id]);
         });
 
@@ -340,7 +341,7 @@ class PlayersTable extends AppTable
 
     /**
      * LIKE検索用のWHERE句を生成します。
-     * 
+     *
      * @param string $fieldName
      * @param string $input
      * @return array

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Cake\Event\Event;
+use Cake\Http\Response;
 
 /**
  * メニュー用コントローラ
@@ -13,20 +13,12 @@ use Cake\Event\Event;
 class MenuController extends AppController
 {
 	/**
-	 * 描画前処理
-     *
-     * @param Event $event
-	 */
-    public function beforeRender(Event $event)
-    {
-        $this->_setTitle('メニュー');
-        parent::beforeRender($event);
-    }
-
-	/**
 	 * 初期処理
+     *
+     * @return Response
 	 */
     public function index() {
+        $this->_setTitle('メニュー');
         return $this->render('index');
     }
 }
