@@ -7,7 +7,7 @@ use Cake\Http\Client;
 
 /**
  * JSON連携用コンポーネント
- * 
+ *
  * @author		Kazuki Kamizuru
  * @since		2016/05/05
  */
@@ -17,6 +17,9 @@ class JsonComponent extends Component
     public $session = null;
     public $components = ['Auth'];
 
+    /**
+     * {@inheritDoc}
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -29,7 +32,7 @@ class JsonComponent extends Component
 
     /**
      * アクセストークンを取得します。
-     * 
+     *
      * @param $account
      * @param $password
      * @return type
@@ -50,7 +53,7 @@ class JsonComponent extends Component
 
     /**
      * アクセストークンを破棄します。
-     * 
+     *
      * @return type
      */
     public function removeAccessToken()
@@ -62,7 +65,7 @@ class JsonComponent extends Component
 
     /**
      * APIをコールします。
-     * 
+     *
      * @param string $url
      * @param string $method
      * @param bool $data
@@ -95,7 +98,7 @@ class JsonComponent extends Component
 
     /**
      * APIサーバのURLを取得します。
-     * 
+     *
      * @return string APIサーバのURL
      */
     private function __getApiUrl()

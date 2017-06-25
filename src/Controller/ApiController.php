@@ -7,13 +7,13 @@ use Cake\Controller\Exception\MissingActionException;
 
 /**
  * アプリの共通コントローラ
- * 
+ *
  * @property \App\Controller\Component\JsonComponent $Json
  */
 class ApiController extends Controller
 {
     /**
-     * 初期処理
+     * {@inheritDoc}
      */
     public function initialize()
     {
@@ -45,19 +45,27 @@ class ApiController extends Controller
     /**
      * 名前をもとに棋士情報を取得します。
      *
-     * @param $id
-     * @return array 棋士情報一覧
+     * @param int|null $id ID
+     * @return Json 棋士情報一覧
      */
     public function players($id = null)
     {
         $res = [];
+
+        // IDの指定があれば1件取得して返却
+        if ($id && is_numeric($id)) {
+            $player = $this->Players->findById($id)->contain(['Countries', 'Ranks'])->first();
+            $this->__renderJson($player->renderArray());
+            return;
+        }
+
         if (!($name = $this->request->getData('name'))) {
             $this->__renderJson($res);
             return;
         }
 
         $this->loadModel('Players');
-        $players = $this->Players->findPlayers(['name' => $name]);
+        $players = $this->Players->findPlayersQuery(['name' => $name])->all();
         foreach ($players as $player) {
             $res[] = $player->renderArray();
         }
@@ -68,29 +76,16 @@ class ApiController extends Controller
     }
 
     /**
-     * IDをもとに棋士情報を取得します。
-     * 
-     * @param int|null $id ID
-     * @return object 棋士情報
-     */
-    public function player(int $id)
-    {
-        $this->loadModel('Players');
-        $player = $this->Players->findById($id)->contain(['Countries', 'Ranks'])->first();
-        $this->__renderJson($player->renderArray());
-    }
-
-    /**
      * IDをもとにタイトル情報を取得します。
-     * 
+     *
      * @param int|null $id ID
-     * @return object 棋士情報
+     * @return Json タイトル情報
      */
     public function titles($id = null)
     {
         $this->loadModel('Titles');
 
-        if ($this->request->is('GET') && $id) {
+        if ($this->request->isGet() && $id) {
             $title = $this->Titles->get($id);
             $this->__renderJson($title->renderArray());
             return;
@@ -153,7 +148,7 @@ class ApiController extends Controller
 
     /**
      * ランキングを取得します。
-     * 
+     *
      * @param string $country
      * @param string $year
      * @param string $rank
@@ -180,7 +175,7 @@ class ApiController extends Controller
 
     /**
      * カテゴリを取得します。
-     * 
+     *
      * @param int $countryId
      * @return array 段位別棋士一覧
      */
@@ -198,7 +193,7 @@ class ApiController extends Controller
 
     /**
      * ランキングを取得します。
-     * 
+     *
      * @param string $countryName
      * @param int $year
      * @param int $rank
@@ -233,7 +228,7 @@ class ApiController extends Controller
 
     /**
      * レスポンスにJSONを設定します。
-     * 
+     *
      * @param type $json
      */
     private function __renderJson($json)

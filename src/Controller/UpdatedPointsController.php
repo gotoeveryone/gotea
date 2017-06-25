@@ -9,13 +9,13 @@ use Cake\Event\Event;
  *
  * @author  Kazuki Kamizuru
  * @since   2015/08/15
- * 
+ *
  * @property \App\Model\Table\UpdatedPointsTable $UpdatedPoints
  */
 class UpdatedPointsController extends AppController
 {
 	/**
-	 * 描画前処理
+     * {@inheritDoc}
 	 */
     public function beforeRender(Event $event)
     {
@@ -73,7 +73,7 @@ class UpdatedPointsController extends AppController
 
     /**
      * 登録・更新対象の一覧を生成します。
-     * 
+     *
      * @param array $rows
      * @return array
      */
