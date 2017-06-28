@@ -40,7 +40,7 @@ class TitlesController extends AppController
         $this->_setDialogMode();
 
         // 保存処理
-        if ($id === null && $this->request->isPost()) {
+        if ($id !== null && $this->request->isPost()) {
             // バリデーションエラーの場合は処理終了
             $data = $this->request->getParsedBody();
             if (($errors = $this->Titles->validator()->errors($data))) {
