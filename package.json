@@ -6,7 +6,7 @@
   "scripts": {
     "webpack": "webpack --colors --config=./webpack.config.js",
     "dev": "npm run webpack -- -w",
-    "prod": "npm run webpack -- -p"
+    "prod": "cross-env NODE_ENV=production npm run webpack -- -p"
   },
   "author": "Kazuki Kamizuru",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "buble": "^0.15.2",
     "buble-loader": "^0.4.1",
     "core-js": "^2.4.1",
+    "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.1.2",
     "node-sass": "^4.5.3",

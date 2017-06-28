@@ -22,8 +22,8 @@ new Vue({
             }
             this.modal = {
                 url: href,
-                width: '90%',
-                height: '85%',
+                width: '60%',
+                height: '90%',
             };
         },
         closeModal() {
