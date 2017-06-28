@@ -13,6 +13,7 @@ class Player extends AppEntity
     /**
      * ランキング表示用の名前を取得します。
      *
+     * @param Country $country 検索対象の所属国
      * @param boolean $showJp 日本語で表示するか
      * @return string
      */
