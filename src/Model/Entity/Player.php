@@ -11,6 +11,30 @@ use Cake\I18n\Date;
 class Player extends AppEntity
 {
     /**
+     * ランキング表示用の名前を取得します。
+     *
+     * @param Country $country 検索対象の所属国
+     * @param boolean $showJp 日本語で表示するか
+     * @return string
+     */
+    public function getRankingName(Country $country, $showJp = false): string
+    {
+        // タイトル保持無しの棋戦は所属国を表示
+        if (!$country->has_title) {
+            if ($showJp) {
+                return $this->name.'('.$this->country->name.')';
+            }
+            return $this->name_english.'('.$this->country->name_english.')';
+        }
+
+        // タイトル保持ありの棋戦
+        if ($showJp) {
+            return $this->name.' '.$this->rank->name;
+        }
+        return $this->name_english.'('.$this->rank->rank_numeric.' dan)';
+    }
+
+    /**
      * タイトル成績を表示する年の一覧を取得します。
      *
      * @return array 年の一覧
@@ -27,7 +51,7 @@ class Player extends AppEntity
 
     /**
      * 成績情報を取得します。
-     * 
+     *
      * @return object
      */
     protected function _getPlayerScores($playerScores)
@@ -42,7 +66,7 @@ class Player extends AppEntity
 
     /**
      * 当年のタイトル成績情報を取得します。
-     * 
+     *
      * @return object
      */
     public function getTitleScoresNowYear()
@@ -52,7 +76,7 @@ class Player extends AppEntity
 
     /**
      * タイトル成績情報を取得します。
-     * 
+     *
      * @param int $year
      * @return object
      */
@@ -64,7 +88,7 @@ class Player extends AppEntity
 
     /**
      * 棋士名と段位を取得します。
-     * 
+     *
      * @return string 棋士名 段位
      */
     public function getNameWithRank()
@@ -74,7 +98,7 @@ class Player extends AppEntity
 
     /**
      * 年齢を取得します。
-     * 
+     *
      * @return int|null 年齢
      */
     public function getAge()
@@ -88,7 +112,7 @@ class Player extends AppEntity
 
     /**
      * 誕生日を設定します。
-     * 
+     *
      * @param type $birthday
      * @return Date
      */
@@ -102,7 +126,7 @@ class Player extends AppEntity
 
     /**
      * 入段日を設定します。
-     * 
+     *
      * @param type $joined
      * @return string
      */

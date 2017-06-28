@@ -268,11 +268,12 @@ class PlayersTable extends AppTable
     /**
      * ランキングモデルを配列に変換します。
      *
-     * @param type $models
-     * @param bool $isJp
+     * @param Country $country
+     * @param \Cake\ORM\ResultSet $models
+     * @param bool $showJp
      * @return array ランキングモデルの配列
      */
-    public function toRankingArray($models, $isJp) : array
+    public function toRankingArray(Country $country, $models, $showJp) : array
     {
         $res = [];
         $rank = 0;
@@ -286,16 +287,17 @@ class PlayersTable extends AppTable
 
             $row = [
                 'rank' => $rank,
-                'playerName' => $model->name_english.'('.$model->rank->rank_numeric.' dan)',
+                'playerName' => $model->getRankingName($country),
                 'winPoint' => (int) $model->win,
                 'losePoint' => (int) $model->lose,
                 'drawPoint' => (int) $model->draw,
                 'winPercentage' => (!$sum ? 0 : round($model->win / $sum, 2)),
             ];
 
-            if ($isJp) {
+            // 日本語の情報を表示するか
+            if ($showJp) {
                 $row['playerId'] = $model->id;
-                $row['playerNameJp'] = $model->getNameWithRank();
+                $row['playerNameJp'] = $model->getRankingName($country, true);
                 $row['sex'] = $model->sex;
             }
             $res[] = $row;

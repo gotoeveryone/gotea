@@ -197,10 +197,10 @@ class ApiController extends Controller
      * @param string $countryName
      * @param int $year
      * @param int $rank
-     * @param bool $isJp
+     * @param bool $showJp
      * @return array
      */
-    private function __rankings(string $countryName, int $year, int $rank, bool $isJp) : array
+    private function __rankings(string $countryName, int $year, int $rank, bool $showJp) : array
     {
         // モデルのロード
         $this->loadModel('Players');
@@ -222,7 +222,7 @@ class ApiController extends Controller
             'targetYear' => $year,
             'countryName' => $country->name_english,
             'countryNameAbbreviation' => $country->code,
-            'ranking' => $this->Players->toRankingArray($models, $isJp)
+            'ranking' => $this->Players->toRankingArray($country, $models, $showJp)
         ];
     }
 
