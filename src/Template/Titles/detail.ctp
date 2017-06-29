@@ -1,6 +1,6 @@
 <div class="detail-dialog">
     <!-- タブ -->
-    <ul id="tabs">
+    <ul id="tabs" class="tabs">
         <li class="tab" name="title">タイトル情報</li>
         <li class="tab" name="histories">保持履歴</li>
     </ul>

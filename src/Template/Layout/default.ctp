@@ -104,8 +104,8 @@
     </div>
 
     <!-- ダイアログ -->
-    <div id="dialog" title="メッセージ"><?=$this->Flash->render()?></div>
-    <div id="confirm" title="確認"></div>
+    <div id="dialog" class="layout-dialog" title="メッセージ"><?=$this->Flash->render()?></div>
+    <div id="confirm" class="layout-dialog" title="確認"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

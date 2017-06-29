@@ -18,7 +18,6 @@ new Vue({
             if (name) {
                 const param = document.querySelector(`[name=${name}]`).value;
                 href = `${href}?${name}=${param}`;
-                console.log(href);
             }
             this.modal = {
                 url: href,

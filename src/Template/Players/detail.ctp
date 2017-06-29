@@ -1,6 +1,6 @@
 <div class="detail-dialog">
     <!-- タブ -->
-    <ul id="tabs">
+    <ul id="tabs" class="tabs">
         <li class="tab" name="player">棋士情報</li>
         <?php if ($player->id) : ?>
             <li class="tab" name="scores">成績情報</li>
