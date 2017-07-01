@@ -231,7 +231,7 @@ export class TitlesHeader {
                 <span class="closed">
                     <input type="checkbox" (change)="save(row)" [(ngModel)]="row.isClosed">
                 </span>
-                <span class="center">
+                <span>
                     <a (click)="add(row)" *ngIf="!row.titleId">登録</a>
                     <a (click)="select(row)" *ngIf="row.titleId">開く</a>
                 </span>
