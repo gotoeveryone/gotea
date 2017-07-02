@@ -35,18 +35,18 @@ class JsonComponent extends Component
      *
      * @param $account
      * @param $password
-     * @return type
+     * @return string|null
      */
     public function saveAccessToken($account, $password)
     {
-        $token = $this->sendResource('auth/login', 'post', [
-            "account" => $account,
-            "password" => $password
+        $response = $this->sendResource('auth/login', 'post', [
+            'account' => $account,
+            'password' => $password,
         ]);
-        if ($token && isset($token['access_token'])) {
+        if (isset($response['access_token']) && ($token = $response['access_token'])) {
             // セッションにトークンを書き込み
-            $this->request->session()->write('access_token', $token['access_token']);
-            return $token['access_token'];
+            $this->request->session()->write('access_token', $token);
+            return $token;
         }
         return null;
     }
@@ -54,13 +54,11 @@ class JsonComponent extends Component
     /**
      * アクセストークンを破棄します。
      *
-     * @return type
+     * @return array|object
      */
     public function removeAccessToken()
     {
-        return $this->sendResource('auth/logout', 'delete', [
-            "access_token" => $this->request->session()->read('access_token')
-        ]);
+        return $this->sendResource('auth/logout', 'delete');
     }
 
     /**
@@ -70,24 +68,25 @@ class JsonComponent extends Component
      * @param string $method
      * @param bool $data
      * @param bool $assoc
+     * @return array|object
      */
     public function sendResource(string $url, string $method, $data = [], $assoc = true)
     {
-        // トークンが読み込めた場合はデータに追加
-        if (($token = $this->request->session()->read('access_token'))) {
-            $data['access_token'] = $token;
-        }
         $http = new Client();
         $callMethod = strtolower($method);
-        $response = $http->$callMethod($this->__getApiUrl().$url, $data);
+        $token = $this->request->session()->read('access_token');
+        $response = $http->$callMethod($this->__getApiUrl().$url, $data,
+            $this->__getAuthorizationHeaders($token));
+
         // アプリログイン済みだが、APIが401なら再認証
         if ($response->getStatusCode() == 401 && $this->Auth->user()) {
             $userId = $this->Auth->user('userId');
             $password = $this->Auth->user('password');
-            // トークン再生成
-            $data['access_token'] = $this->saveAccessToken($userId, $password);
-            $response = $http->$callMethod($this->__getApiUrl().$url, $data);
+            $newToken = $this->saveAccessToken($userId, $password);
+            $response = $http->$callMethod($this->__getApiUrl().$url, $data,
+                $this->__getAuthorizationHeaders($newToken));
         }
+
         $this->response = $this->response->withStatus($response->getStatusCode());
         if ($response->isOk()) {
             return json_decode($response->body(), $assoc);
@@ -104,5 +103,19 @@ class JsonComponent extends Component
     private function __getApiUrl()
     {
         return env('WEB_API_DOMAIN').'web-api/v1/';
+    }
+
+    /**
+     * 認可ヘッダを生成します。
+     *
+     * @return string APIサーバのURL
+     */
+    private function __getAuthorizationHeaders($token)
+    {
+        return [
+            'headers' => [
+                'Authorization' => 'Bearer '.$token,
+            ]
+        ];
     }
 }
