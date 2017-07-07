@@ -32,20 +32,21 @@ class TitlesController extends AppController
 	 * 詳細情報表示・更新処理
      *
      * @param int|null $id 取得するデータのID
+     * @param bool $save 保存処理をおこなうかどうか
      * @return Response
 	 */
-	public function detail($id = null)
+	public function detail($id = null, $save = true)
     {
         // ダイアログ表示
         $this->_setDialogMode();
 
         // 保存処理
-        if ($id !== null && $this->request->isPost()) {
+        if ($id !== null && $save && $this->request->isPost()) {
             // バリデーションエラーの場合は処理終了
             $data = $this->request->getParsedBody();
             if (($errors = $this->Titles->validator()->errors($data))) {
                 $this->Flash->error($errors);
-                return $this->render();
+                return $this->render('detail');
             }
 
             // 保存処理
@@ -58,7 +59,7 @@ class TitlesController extends AppController
 
         $this->set('title', $title);
 
-        return $this->render();
+        return $this->render('detail');
     }
 
 	/**
@@ -68,6 +69,9 @@ class TitlesController extends AppController
 	 */
 	public function addHistory()
     {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
         $this->loadModel('RetentionHistories');
         $this->loadModel('Countries');
 
@@ -77,13 +81,13 @@ class TitlesController extends AppController
         // バリデーションエラーの場合はそのまま返す
         if (($errors = $this->RetentionHistories->validator()->errors($data))) {
             $this->Flash->error($errors);
-            return $this->setTabAction('detail', 'histories', $titleId);
+            return $this->setTabAction('detail', 'histories', $titleId, false);
         }
 
         // すでに存在するかどうかを確認
 		if (!$this->RetentionHistories->add($data)) {
             $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
-            return $this->setTabAction('detail', 'histories', $titleId);
+            return $this->setTabAction('detail', 'histories', $titleId, false);
 		}
         $this->Flash->info(__("保持履歴を登録しました。"));
 
@@ -91,6 +95,6 @@ class TitlesController extends AppController
         $this->request = $this->request->withParsedBody([]);
 
         // 詳細情報表示処理へ
-        return $this->setTabAction('detail', 'histories', $titleId);
+        return $this->setTabAction('detail', 'histories', $titleId, false);
 	}
 }
