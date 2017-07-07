@@ -117,10 +117,10 @@ class AppController extends Controller
      * @param mixed $args
      * @return mixed Returns the return value of the called action
      */
-    public function setTabAction(string $action, string $tabName, $args)
+    public function setTabAction(string $action, string $tabName, ...$args)
     {
         $this->set('tab', $tabName);
-        return $this->setAction($action, $args);
+        return $this->setAction($action, ...$args);
     }
 
     /**
