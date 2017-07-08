@@ -40,7 +40,7 @@ class AppTable extends Table
     /**
 	 * 保存前処理
      * エンティティに管理項目を設定します。
-     * 
+     *
      * @param Event $event
      * @param EntityInterface $entity
      * @param ArrayObject $options
@@ -60,6 +60,25 @@ class AppTable extends Table
 	}
 
     /**
+     * キー情報をもとに、データを1件取得します。
+     *
+     * @param array $data
+     * @param array $fields
+     * @return null|\Cake\ORM\Entity
+     */
+    public function findByKey(array $data, $fields = [])
+    {
+        $params = [];
+        foreach ($fields as $field) {
+            if (empty($data[$field])) {
+                return null;
+            }
+            $params[$field] = $data[$field];
+        }
+		return $this->find()->where($params)->first();
+    }
+
+    /**
      * ランキングデータの取得方法を判定します。
      *
      * @param int $targetYear
@@ -72,7 +91,7 @@ class AppTable extends Table
 
     /**
      * ログインユーザIDを取得する。
-     * 
+     *
      * @return string ログインユーザID
      */
 	private function __getLoginUserId() : string

@@ -50,21 +50,6 @@ class Player extends AppEntity
     }
 
     /**
-     * 成績情報を取得します。
-     *
-     * @return object
-     */
-    protected function _getPlayerScores($playerScores)
-    {
-        if (!$playerScores) {
-            $scores = TableRegistry::get('PlayerScores');
-            $playerScores = $scores->find()
-                    ->where(['player_id' => $this->id])->orderDesc('target_year')->all()->toArray();
-        }
-        return $playerScores;
-    }
-
-    /**
      * 当年のタイトル成績情報を取得します。
      *
      * @return object

@@ -160,6 +160,20 @@ class PlayersController extends AppController
         $this->Players->save($player);
         $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
 
+        // 入段日を登録時段位の昇段日として設定
+        $promoted = Date::parseDate($player->joined, 'yyyyMMdd');
+
+        // 棋士昇段情報へ登録
+        $this->loadModel('PlayerRanks');
+        $playerRank = $this->PlayerRanks->newEntity([
+            'player_id' => $player->id,
+            'rank_id' => $player->rank_id,
+            'promoted' => $promoted->format('Y/m/d'),
+        ]);
+        if (!($res = $this->PlayerRanks->save($playerRank))) {
+            throw new \PDOException('棋士昇段情報への登録に失敗しました。');
+        }
+
         // 連続作成なら値を消す
         if (($continue = $this->request->getData('is_continue'))) {
             $this->request = $this->request->withParsedBody([]);
@@ -174,6 +188,48 @@ class PlayersController extends AppController
         return ($continue ? $this->setAction('detail')
                 : $this->setAction('detail', $player->id, $player));
 	}
+
+    /**
+     * 昇段情報追加
+     *
+     * @return Response
+     */
+    public function addRanks()
+    {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
+        $this->loadModel('PlayerRanks');
+
+        $data = $this->request->getParsedBody();
+        $playerId = $data['player_id'] ?? '';
+
+        // バリデーションエラーの場合はそのまま返す
+        if (($errors = $this->PlayerRanks->validator()->errors($data))) {
+            $this->Flash->error($errors);
+            return $this->setTabAction('detail', 'ranks', $playerId);
+        }
+
+        // すでに存在するかどうかを確認
+		if (!$this->PlayerRanks->add($data)) {
+            $this->Flash->error(__("昇段情報がすでに存在します。"));
+            return $this->setTabAction('detail', 'ranks', $playerId);
+		}
+
+        // 最新データとして指定があれば棋士情報を更新
+        if ($this->request->getData('newest')) {
+            $player = $this->Players->get($playerId);
+            $player->rank_id = $data['rank_id'];
+            $this->Players->save($player);
+        }
+
+        $this->Flash->info(__("昇段情報を登録しました。"));
+
+        // POSTされたデータを初期化
+        $this->request = $this->request->withParsedBody([]);
+
+        return $this->setTabAction('detail', 'ranks', $playerId);
+    }
 
     /**
      * ランキング出力処理
