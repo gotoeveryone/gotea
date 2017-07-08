@@ -232,7 +232,7 @@ class PlayersTable extends AppTable
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
-            return $this->findOldRanking($country, $targetYear, $offset);
+            return $this->__findOldRanking($country, $targetYear, $offset);
         }
 
         $query = $this->find();
@@ -361,7 +361,7 @@ class PlayersTable extends AppTable
      * @param int $offset
      * @return void
      */
-    private function findOldRanking(Country $country, int $targetYear, int $offset)
+    private function __findOldRanking(Country $country, int $targetYear, int $offset)
     {
         $suffix = ($country->has_title ? '' : '_world');
 
