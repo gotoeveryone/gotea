@@ -110,19 +110,7 @@
             <?php if (!empty($players) && count($players) > 0) : ?>
             <ul class="players table-body">
                 <?php foreach ($players as $player) : ?>
-                <?php
-                    $class = '';
-                    if ($player->is_retired) {
-                        $class .= 'excluded-row';
-                    }
-                    if ($player->sex === '女性') {
-                        if ($class !== '') {
-                            $class .= ' ';
-                        }
-                        $class .= 'female';
-                    }
-                ?>
-                <li class="table-row<?= ($class ? ' '.$class : ''); ?>">
+                <li class="table-row<?= ($player->is_retired ? ' retired' : '') ?>">
                     <span class="id">
                         <?=h($player->id)?>
                     </span>

@@ -53,6 +53,9 @@
                             <div class="input-row">
                                 <?=$this->Form->checkbox('is_retired', ['id' => 'retired'])?>
                                 <label for="retired">引退しました</label>
+                                <?= $this->Form->text('retired', [
+                                    'class' => 'datepicker'
+                                ]) ?>
                             </div>
                         </div>
                     </li>
