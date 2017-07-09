@@ -162,7 +162,7 @@ class PlayersTable extends AppTable
                     'RetentionHistories.target_year' => 'DESC',
                     'Titles.country_id' => 'ASC',
                     'Titles.sort_order' => 'ASC'
-                ], true);
+                ]);
             },
             'RetentionHistories.Titles.Countries',
         ])->where(['Players.id' => $id])->first();
