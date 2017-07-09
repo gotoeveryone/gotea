@@ -153,16 +153,18 @@ class PlayersTable extends AppTable
             'PlayerScores' => function (Query $q) {
                 return $q->orderDesc('PlayerScores.target_year');
             },
-            'PlayerRanks.Ranks' => function (Query $q) {
+            'PlayerRanks' => function (Query $q) {
                 return $q->orderDesc('Ranks.rank_numeric');
             },
-            'RetentionHistories.Titles.Countries' => function (Query $q) {
+            'PlayerRanks.Ranks',
+            'RetentionHistories' => function (Query $q) {
                 return $q->order([
                     'RetentionHistories.target_year' => 'DESC',
                     'Titles.country_id' => 'ASC',
                     'Titles.sort_order' => 'ASC'
                 ]);
             },
+            'RetentionHistories.Titles.Countries',
         ])->where(['Players.id' => $id])->first();
     }
 
