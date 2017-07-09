@@ -3,12 +3,10 @@
     <ul id="tabs" class="tabs">
         <li class="tab" name="player">棋士情報</li>
         <?php if ($player->id) : ?>
+            <li class="tab" name="ranks">昇段情報</li>
             <li class="tab" name="scores">成績情報</li>
             <?php if (!empty($player->retention_histories)) : ?>
             <li class="tab" name="titleRetains">タイトル取得情報</li>
-            <?php endif ?>
-            <?php if (!empty($player->player_ranks)) : ?>
-            <li class="tab" name="ranks">昇段情報</li>
             <?php endif ?>
         <?php endif ?>
     </ul>
@@ -207,6 +205,60 @@
 
         </section>
 
+        <!-- 昇段情報 -->
+        <section id="ranks">
+            <div class="category-row">昇段情報</div>
+            <?= $this->Form->create($player, [
+                'class' => 'rank-form',
+                'type' => 'post',
+                'url' => ['action' => 'add-ranks'],
+                'templates' => [
+                    'inputContainer' => '{{content}}',
+                    'textFormGroup' => '{{input}}',
+                    'selectFormGroup' => '{{input}}'
+                ]
+            ]) ?>
+                <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
+                <?=$this->Form->hidden('newest', ['id' => 'newest', 'value' => ''])?>
+                <ul class="boxes">
+                    <li class="row">
+                        <div class="box">
+                            <div class="label-row">新規登録</div>
+                            <div class="add-condition input-row">
+                                <?= $this->Form->select('rank_id', $ranks, ['value' => $player->rank_id]) ?>
+                                <?= $this->Form->text('promoted', ['class' => 'datepicker']) ?>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="label-row"></div>
+                            <div class="input-row">
+                                <div class="button-wrap">
+                                    <?= $this->Form->button('登録', ['class' => 'add-ranks']) ?>
+                                    <?= $this->Form->button('最新として登録', [
+                                        'value' => 'newest',
+                                        'class' => 'add-ranks',
+                                    ]) ?>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="row">
+                        <?php if (!empty($player->player_ranks)) : ?>
+                        <div class="box">
+                            <div class="label-row">昇段履歴</div>
+                            <?php foreach ($player->player_ranks as $player_rank) : ?>
+                                <div class="input-row">
+                                    <?= h($player_rank->rank->name) ?>
+                                    <?= h($player_rank->promoted) ?>
+                                </div>
+                            <?php endforeach ?>
+                        </div>
+                        <?php endif ?>
+                    </li>
+                </ul>
+            <?= $this->Form->end() ?>
+        </section>
+
         <!-- 棋士成績 -->
         <?php if ($player->id) : ?>
         <section id="scores">
@@ -314,60 +366,6 @@
                 <?php $beforeYear = $retention_history->target_year; ?>
             <?php endforeach ?>
             <?php endif ?>
-        </section>
-
-        <!-- 昇段情報 -->
-        <section id="ranks">
-            <div class="category-row">昇段情報</div>
-            <?= $this->Form->create($player, [
-                'class' => 'rank-form',
-                'type' => 'post',
-                'url' => ['action' => 'add-ranks'],
-                'templates' => [
-                    'inputContainer' => '{{content}}',
-                    'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
-                ]
-            ]) ?>
-                <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
-                <?=$this->Form->hidden('newest', ['id' => 'newest', 'value' => ''])?>
-                <ul class="boxes">
-                    <li class="row">
-                        <div class="box">
-                            <div class="label-row">新規登録</div>
-                            <div class="add-condition input-row">
-                                <?= $this->Form->select('rank_id', $ranks, ['value' => $player->rank_id]) ?>
-                                <?= $this->Form->text('promoted', ['class' => 'datepicker']) ?>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row"></div>
-                            <div class="input-row">
-                                <div class="button-wrap">
-                                    <?= $this->Form->button('登録', ['class' => 'add-ranks']) ?>
-                                    <?= $this->Form->button('最新として登録', [
-                                        'value' => 'newest',
-                                        'class' => 'add-ranks',
-                                    ]) ?>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="row">
-                        <?php if (!empty($player->player_ranks)) : ?>
-                        <div class="box">
-                            <div class="label-row">昇段履歴</div>
-                            <?php foreach ($player->player_ranks as $player_rank) : ?>
-                                <div class="input-row">
-                                    <?= h($player_rank->rank->name) ?>
-                                    <?= h($player_rank->promoted) ?>
-                                </div>
-                            <?php endforeach ?>
-                        </div>
-                        <?php endif ?>
-                    </li>
-                </ul>
-            <?= $this->Form->end() ?>
         </section>
         <?php endif ?>
     </div>
