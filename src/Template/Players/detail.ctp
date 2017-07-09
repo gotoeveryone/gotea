@@ -389,6 +389,20 @@
                 $(this).closest('.rank-form').find('#newest').val('1');
             }
         });
+
+        // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
+        var setRetired = function() {
+            if ($('#retired').prop('checked')) {
+                $('[name=retired]').removeAttr('disabled');
+            } else {
+                $('[name=retired]').attr('disabled', true).val('');
+            }
+        };
+
+        $('#retired').on('click', function() {
+            setRetired();
+        });
+        setRetired();
     });
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>
