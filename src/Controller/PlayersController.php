@@ -142,13 +142,15 @@ class PlayersController extends AppController
         // POST以外は許可しない
         $this->request->allowMethod(['post']);
 
+        // 新規登録かどうか
+        $isAdd = ($id === null);
+
         // IDからデータを取得
-        $player = ($id) ? $this->Players->findPlayerWithScores($id) : $this->Players->newEntity();
-        $status = ($id) ? '更新' : '登録';
+        $player = ($isAdd) ? $this->Players->newEntity() : $this->Players->findPlayerWithScores($id);
 
         // バリデーションエラーの場合は詳細情報表示処理へ
         $data = $this->request->getParsedBody();
-        if (($errors = $this->Players->validator()->errors($this->request->getParsedBody()))) {
+        if (($errors = $this->Players->validator()->errors($data))) {
             $this->Flash->error($errors);
             return $this->setAction('detail', null, $player);
         }
@@ -158,35 +160,15 @@ class PlayersController extends AppController
 
         // 保存処理
         $this->Players->save($player);
-        $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を{$status}しました。"));
 
-        // 入段日を登録時段位の昇段日として設定
-        $promoted = Date::parseDate($player->joined, 'yyyyMMdd');
-
-        // 棋士昇段情報へ登録
-        $this->loadModel('PlayerRanks');
-        $playerRank = $this->PlayerRanks->newEntity([
-            'player_id' => $player->id,
-            'rank_id' => $player->rank_id,
-            'promoted' => $promoted->format('Y/m/d'),
-        ]);
-        if (!($res = $this->PlayerRanks->save($playerRank))) {
-            throw new \PDOException('棋士昇段情報への登録に失敗しました。');
+        // 新規登録でない場合はここで終了
+        if (!$isAdd) {
+            $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を更新しました。"));
+            return $this->setAction('detail', $player->id, $player);
         }
 
-        // 連続作成なら値を消す
-        if (($continue = $this->request->getData('is_continue'))) {
-            $this->request = $this->request->withParsedBody([]);
-        }
-
-        // 所属国IDを設定
-        $this->request = $this->request->withQueryparams([
-            'country_id' => $player->country_id
-        ]);
-
-        // 詳細情報表示処理へ
-        return ($continue ? $this->setAction('detail')
-                : $this->setAction('detail', $player->id, $player));
+        // 以降は新規登録時の処理
+        return $this->addPlayer($player);
 	}
 
     /**
@@ -251,5 +233,42 @@ class PlayersController extends AppController
     {
         $this->_setTitle("段位別棋士数表示");
         return $this->render();
+    }
+
+    /**
+     * 段位別棋士数表示
+     *
+     * @param Player $player
+     * @return Response
+     */
+    private function addPlayer($player)
+    {
+        // 入段日を登録時段位の昇段日として設定
+        $promoted = Date::parseDate($player->joined, 'yyyyMMdd');
+
+        // 棋士昇段情報へ登録
+        $this->loadModel('PlayerRanks');
+        if (!($res = $this->PlayerRanks->add([
+            'player_id' => $player->id,
+            'rank_id' => $player->rank_id,
+            'promoted' => $promoted->format('Y/m/d'),
+        ]))) {
+            throw new \PDOException('棋士昇段情報への登録に失敗しました。');
+        }
+
+        // 連続作成なら値を消す
+        if (($continue = $this->request->getData('is_continue'))) {
+            $this->request = $this->request->withParsedBody([]);
+        }
+
+        // 所属国IDを設定
+        $this->request = $this->request->withQueryparams([
+            'country_id' => $player->country_id
+        ]);
+
+        // 詳細情報表示処理へ
+        $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を登録しました。"));
+        return ($continue ? $this->setAction('detail')
+                : $this->setAction('detail', $player->id, $player));
     }
 }
