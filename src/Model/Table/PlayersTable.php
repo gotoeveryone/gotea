@@ -27,18 +27,12 @@ class PlayersTable extends AppTable
         $this->belongsTo('Ranks');
         // 組織
         $this->belongsTo('Organizations');
+        // 昇段情報
+        $this->hasMany('PlayerRanks');
         // 棋士成績
-        $this->hasMany('PlayerScores', [
-            'order' => [
-                'PlayerScores.target_year' => 'DESC'
-            ]
-        ]);
+        $this->hasMany('PlayerScores');
         // 保持履歴
-        $this->hasMany('RetentionHistories', [
-            'order' => [
-                'RetentionHistories.target_year' => 'DESC'
-            ]
-        ]);
+        $this->hasMany('RetentionHistories');
         // タイトル成績
         $this->hasMany('WinDetails', [
             'className' => 'TitleScoreDetails',
@@ -159,16 +153,16 @@ class PlayersTable extends AppTable
             'PlayerScores' => function (Query $q) {
                 return $q->orderDesc('PlayerScores.target_year');
             },
-            'PlayerScores.Ranks',
-            'RetentionHistories.Titles',
-            'RetentionHistories' => function (Query $q) {
+            'PlayerRanks.Ranks' => function (Query $q) {
+                return $q->orderDesc('Ranks.rank_numeric');
+            },
+            'RetentionHistories.Titles.Countries' => function (Query $q) {
                 return $q->order([
                     'RetentionHistories.target_year' => 'DESC',
                     'Titles.country_id' => 'ASC',
                     'Titles.sort_order' => 'ASC'
                 ]);
             },
-            'RetentionHistories.Titles.Countries'
         ])->where(['Players.id' => $id])->first();
     }
 
@@ -238,7 +232,7 @@ class PlayersTable extends AppTable
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
-            return $this->findOldRanking($country, $targetYear, $offset);
+            return $this->__findOldRanking($country, $targetYear, $offset);
         }
 
         $query = $this->find();
@@ -367,7 +361,7 @@ class PlayersTable extends AppTable
      * @param int $offset
      * @return void
      */
-    private function findOldRanking(Country $country, int $targetYear, int $offset)
+    private function __findOldRanking(Country $country, int $targetYear, int $offset)
     {
         $suffix = ($country->has_title ? '' : '_world');
 

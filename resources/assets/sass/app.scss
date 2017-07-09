@@ -305,7 +305,7 @@
  ------------------------------------------- */
 .players {
     .table-row {
-        .retired {
+        &.retired {
             background-color: $c_gray;
         }
     }
