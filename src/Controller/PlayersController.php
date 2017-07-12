@@ -85,7 +85,7 @@ class PlayersController extends AppController
 
         $this->loadModel('Countries');
         return $this->_setTitle('棋士情報検索')
-            ->set('countries', $this->Countries->findCountryBelongToArray())
+            ->set('countries', $this->Countries->findLists(true))
             ->set('form', ($form ?? new PlayerForm))
             ->render('index');
     }

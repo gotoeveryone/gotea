@@ -22,8 +22,6 @@ class TitleScoresController extends AppController
 
         // モデルをロード
         $this->loadModel('TitleScoreDetails');
-        $this->loadModel('Players');
-        $this->loadModel('Countries');
     }
 
     /**
@@ -36,7 +34,8 @@ class TitleScoresController extends AppController
         // ダイアログ状態でない場合はヘッダを取得
         if (!$this->_isDialogMode()) {
             // 所属国プルダウン
-            $this->set('countries', $this->Countries->findCountryHasFileToArray());
+            $this->loadModel('Countries');
+            $this->set('countries', $this->Countries->findLists());
 
             // 年度プルダウン
             $years = [];
@@ -68,15 +67,18 @@ class TitleScoresController extends AppController
 
     /**
      * 詳細画面からの検索処理
+     *
+     * @return \Cake\Network\Response|null
      */
     public function modalSearch()
     {
-        $this->_setDialogMode();
-        return $this->index();
+        return $this->_setDialogMode()->index();
     }
 
     /**
      * 勝敗変更処理
+     *
+     * @return \Cake\Network\Response|null
      */
     public function change()
     {
@@ -105,6 +107,8 @@ class TitleScoresController extends AppController
 
     /**
      * 削除処理
+     *
+     * @return \Cake\Network\Response|null
      */
     public function delete()
     {

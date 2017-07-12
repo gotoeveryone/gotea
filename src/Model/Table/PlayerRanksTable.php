@@ -96,7 +96,6 @@ class PlayerRanksTable extends AppTable
 		}
 
         // タイトル保持情報の登録
-        $history = $this->newEntity($data);
-        return $this->save($history);
+        return $this->save($this->newEntity($data));
     }
 }

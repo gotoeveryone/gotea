@@ -4,13 +4,14 @@ namespace App\Model\Table;
 
 use Cake\Validation\Validator;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use App\Model\Entity\Title;
 
 /**
  * タイトル
  */
-class TitlesTable extends AppTable {
-
+class TitlesTable extends AppTable
+{
     /**
 	 * 初期設定
      *
@@ -76,12 +77,12 @@ class TitlesTable extends AppTable {
         ]);
 
         // 所属国があれば条件追加
-        if (isset($data['country_id']) && ($countryId = $data['country_id'])) {
+        if (($countryId = $data['country_id'] ?? '')) {
             $query->where(['Countries.id' => $countryId]);
         }
 
         // 有効なタイトルのみ検索
-        if (!isset($data['is_closed']) || !$data['is_closed']) {
+        if (!($data['is_closed'] ?? '')) {
             $query->where(['Titles.is_closed' => 0]);
         }
 
@@ -131,40 +132,37 @@ class TitlesTable extends AppTable {
     /**
      * モデルを配列に変換します。
      *
-     * @param type $models
+     * @param ResultSet $models
      * @param bool $admin 管理者情報を取得するか
      * @param bool $isJp 日本語情報を取得するか
      * @return array
      */
-    public function toArray($models, $admin = false, $isJp = false) : array
+    public function toArray(ResultSet $models, $admin = false, $isJp = false) : array
     {
-        $res = [];
-        foreach ($models as $model) {
-            $row = [
-                'countryName' => $model->country->name_english,
-                'countryNameAbbreviation' => $model->country->code,
-                'titleName' => $model->name_english,
-                'holding' => $model->holding,
-                'isTeam' => $model->is_team,
-                'winnerName' => $model->getWinnerName($isJp),
-                'htmlFileName' => $model->html_file_name,
-                'htmlFileModified' => $model->html_file_modified->format(($admin ? 'Y/m/d' : 'Y-m-d')),
-                'isNewHistories' => $model->isNewHistories(),
-                'isRecent' => $model->isRecentModified(),
+        return $models->map(function(Title $item, $key) use ($admin, $isJp) {
+            $data = [
+                'countryName' => $item->country->name_english,
+                'countryNameAbbreviation' => $item->country->code,
+                'titleName' => $item->name_english,
+                'holding' => $item->holding,
+                'isTeam' => $item->is_team,
+                'winnerName' => $item->getWinnerName($isJp),
+                'htmlFileName' => $item->html_file_name,
+                'htmlFileModified' => $item->html_file_modified->format(($admin ? 'Y/m/d' : 'Y-m-d')),
+                'isNewHistories' => $item->isNewHistories(),
+                'isRecent' => $item->isRecentModified(),
             ];
 
             if ($admin) {
-                $row['titleId'] = $model->id;
-                $row['countryId'] = $model->country_id;
-                $row['sortOrder'] = $model->sort_order;
-                $row['titleNameJp'] = $model->name;
-                $row['isClosed'] = $model->is_closed;
+                $data['titleId'] = $item->id;
+                $data['countryId'] = $item->country_id;
+                $data['sortOrder'] = $item->sort_order;
+                $data['titleNameJp'] = $item->name;
+                $data['isClosed'] = $item->is_closed;
             }
 
-            $res[] = $row;
-        }
-
-        return $res;
+            return $data;
+        })->toArray();
     }
 
     /**

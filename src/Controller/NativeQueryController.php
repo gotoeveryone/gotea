@@ -14,7 +14,7 @@ use Cake\Http\Response;
 class NativeQueryController extends AppController
 {
 	/**
-	 * 初期処理
+	 * 初期表示・更新処理
      *
      * @return Response
 	 */
