@@ -42,33 +42,21 @@ class Player extends AppEntity
     public function years()
     {
         $years = [];
-        $nowYear = intval(Date::now()->year);
-        for ($i = $nowYear; $i >= 2017; $i--) {
+        $year = intval(Date::now()->year);
+        // 引退棋士
+        if ($this->is_retired) {
+            if (!$this->retired) {
+                return [];
+            }
+            // 前年以前に引退している場合は引退した年まで
+            if ($year > $this->retired->year) {
+                $year = $this->retired->year;
+            }
+        }
+        for ($i = $year; $i >= 2017; $i--) {
             $years[] = $i;
         }
         return $years;
-    }
-
-    /**
-     * 当年のタイトル成績情報を取得します。
-     *
-     * @return object
-     */
-    public function getTitleScoresNowYear()
-    {
-        return $this->getTitleScores(intval(Date::now()->year));
-    }
-
-    /**
-     * タイトル成績情報を取得します。
-     *
-     * @param int $year
-     * @return object
-     */
-    public function getTitleScores(int $year)
-    {
-        $scores = TableRegistry::get('TitleScores');
-        return $scores->findFromYear($this->id, $year);
     }
 
     /**
@@ -141,56 +129,71 @@ class Player extends AppEntity
     /**
      * 勝数を取得します。
      *
-     * @param int $year
+     * @param ResultSet $scores
+     * @param int|null $year
      * @param boolean $world
-     * @return int 勝数
+     * @return int|string 勝数
      */
-    public function win(int $year, $world = false)
+    public function win($scores, $year = null, $world = false)
     {
-        $details = ($world ? $this->world_win_details : $this->win_details);
-        return $this->calc($year, $details);
+        return $this->show('win', $scores, $year, $world);
     }
 
     /**
      * 敗数を取得します。
      *
-     * @param int $year
+     * @param ResultSet $scores
+     * @param int|null $year
      * @param boolean $world
-     * @return int 敗数
+     * @return int|string 敗数
      */
-    public function lose(int $year, $world = false)
+    public function lose($scores, $year = null, $world = false)
     {
-        $details = ($world ? $this->world_lose_details : $this->lose_details);
-        return $this->calc($year, $details);
+        return $this->show('lose', $scores, $year, $world);
     }
 
     /**
      * 引分数を取得します。
      *
-     * @param int $year
+     * @param ResultSet $scores
+     * @param int|null $year
      * @param boolean $world
-     * @return int 引分数
+     * @return int|string 引分数
      */
-    public function draw(int $year, $world = false)
+    public function draw($scores, $year = null, $world = false)
     {
-        $details = ($world ? $this->world_draw_details : $this->draw_details);
-        return $this->calc($year, $details);
+        return $this->show('draw', $scores, $year, $world);
     }
 
     /**
-     * 対象数を取得します。
+     * 指定された成績の値を取得します。
      *
-     * @param int year
-     * @param array details
-     * @return int 対象数
+     * @param string $type
+     * @param ResultSet $scores
+     * @param int|null $year
+     * @param bool $world
+     * @return int|string 対象数
      */
-    private function calc(int $year, array $details)
+    private function show($type, $scores, $year = null, $world = false)
     {
-        foreach ($details as $detail) {
-            if ((int) $detail->year === $year) {
-                return $detail->cnt;
-            }
+        if ($year === null) {
+            $year = Date::now()->year;
         }
-        return 0;
+        $score = $scores->filter(function($item, $key) use ($year) {
+            return (int) $item->player_id === $this->id
+                && (int) $item->target_year === $year;
+        })->first();
+
+        // 該当年の対局がない
+        if (!$score) {
+            // 前年以前に引退している場合は'-'固定
+            if ($this->is_retired && (!$this->retired || $year > $this->retired->year)) {
+                return '-';
+            }
+            return 0;
+        }
+
+        $propertyName = ($world) ? "${type}_point_world" : "${type}_point";
+        return (int) $score->$propertyName;
     }
 }

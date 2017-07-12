@@ -131,7 +131,7 @@
                                             'class' => 'sex'
                                         ]);
                                     } else {
-                                        echo ''.h($player->sex).'';
+                                        echo h($player->sex);
                                         echo $this->Form->hidden('sex');
                                     }
                                 ?>
@@ -273,10 +273,10 @@
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
                                 <?php
-                                    $win = $player->win($year);
-                                    $lose = $player->lose($year);
+                                    $win = $player->win($scores, $year);
+                                    $lose = $player->lose($scores, $year);
                                 ?>
-                                <?=$win?>勝<?=$lose?>敗<?=$player->draw($year)?>分
+                                <?=$win?>勝<?=$lose?>敗<?=$player->draw($scores, $year)?>分
                                 <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>%）
                             </div>
                         </div>
@@ -284,10 +284,10 @@
                             <div class="label-row">勝敗（国際）</div>
                             <div class="input-row">
                                 <?php
-                                    $winWr = $player->win($year, true);
-                                    $loseWr = $player->lose($year, true);
+                                    $winWr = $player->win($scores, $year, true);
+                                    $loseWr = $player->lose($scores, $year, true);
                                 ?>
-                                <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($year, true)?>分
+                                <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($scores, $year, true)?>分
                                 <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>%）
                             </div>
                         </div>

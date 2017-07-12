@@ -6,7 +6,7 @@ use Cake\Controller\Controller;
 use Cake\Controller\Exception\MissingActionException;
 
 /**
- * アプリの共通コントローラ
+ * APIコントローラ
  *
  * @property \App\Controller\Component\JsonComponent $Json
  */
@@ -27,9 +27,9 @@ class ApiController extends Controller
     }
 
     /**
-     * 所属国情報を取得します。
+     * 所属国一覧を取得します。
      *
-     * @return array 所属国一覧
+     * @return Response 所属国一覧
      */
     public function countries()
     {
@@ -39,39 +39,35 @@ class ApiController extends Controller
             $query->where(['has_title' => true]);
         }
         $countries = $query->select(['id', 'code', 'name', 'name_english'])->all();
-        $this->__renderJson($countries->toArray());
+        return $this->__renderJson($countries->toArray());
     }
 
     /**
      * 名前をもとに棋士情報を取得します。
      *
      * @param int|null $id ID
-     * @return Json 棋士情報一覧
+     * @return Response 棋士情報一覧
      */
     public function players($id = null)
     {
-        $res = [];
+        $this->loadModel('Players');
 
         // IDの指定があれば1件取得して返却
         if ($id && is_numeric($id)) {
             $player = $this->Players->findById($id)->contain(['Countries', 'Ranks'])->first();
-            $this->__renderJson($player->renderArray());
-            return;
+            return $this->__renderJson($player->renderArray());
         }
 
-        if (!($name = $this->request->getData('name'))) {
-            $this->__renderJson($res);
-            return;
+        if (!($name = $this->request->getQuery('name'))) {
+            return $this->__renderJson();
         }
 
-        $this->loadModel('Players');
         $players = $this->Players->findPlayersQuery(['name' => $name])->all();
-        foreach ($players as $player) {
-            $res[] = $player->renderArray();
-        }
-        $this->__renderJson([
+        return $this->__renderJson([
             'size' => $players->count(),
-            'results' => $res,
+            'results' => $players->map(function(Player $item, $key) {
+                return $item->renderArray();
+            })->toArray(),
         ]);
     }
 
@@ -79,19 +75,21 @@ class ApiController extends Controller
      * IDをもとにタイトル情報を取得します。
      *
      * @param int|null $id ID
-     * @return Json タイトル情報
+     * @return Response タイトル情報
      */
     public function titles($id = null)
     {
         $this->loadModel('Titles');
 
-        if ($this->request->isGet() && $id) {
+        if ($this->request->isGet()) {
+            if (!$id) {
+                return $this->__renderJson();
+            }
             $title = $this->Titles->get($id);
-            $this->__renderJson($title->renderArray());
-            return;
+            return $this->__renderJson($title->renderArray());
         }
 
-        if ($this->request->is('POST') || $this->request->is('PUT')) {
+        if ($this->request->isPost() || $this->request->isPut()) {
             $input = $this->request->getParsedBody();
             if ($id) {
                 $input['titleId'] = $id;
@@ -103,23 +101,20 @@ class ApiController extends Controller
                 foreach ($errors as $expr) {
                     $out[] = array_shift($expr);
                 }
-                $this->response = $this->response->withStatus(400);
-                $this->__renderJson([
-                    'status' => $this->response->statusCode(),
-                    'messages' => $out,
-                ]);
-                return;
+                return $this->__renderError(400, $out);
             }
 
             $this->Titles->save($title);
             $this->__renderJson(['titleId' => $title->id]);
         }
+
+        return $this->__renderError(405, 'Method Not Allowed');
     }
 
     /**
      * Go Newsの出力データを取得します。
      *
-     * @return array タイトル一覧
+     * @return Response タイトル一覧
      */
     public function news()
     {
@@ -139,11 +134,11 @@ class ApiController extends Controller
         // パラメータがあればファイル作成
         if ($this->request->getQuery('make') === 'true') {
             if (!file_put_contents(env('JSON_OUTPUT_DIR').'json/news.json', json_encode($json))) {
-                throw new MissingActionException(__("JSON出力失敗"), 500);
+                return $this->__renderError(500, 'JSON出力失敗');
             }
         }
 
-        $this->__renderJson($json);
+        return $this->__renderJson($json);
     }
 
     /**
@@ -152,7 +147,7 @@ class ApiController extends Controller
      * @param string $country
      * @param string $year
      * @param string $rank
-     * @return array ランキング
+     * @return Response ランキング
      */
     public function rankings($country = null, $year = null, $rank = null)
     {
@@ -167,17 +162,17 @@ class ApiController extends Controller
             $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]).$json["targetYear"];
             if (!file_put_contents(env('JSON_OUTPUT_DIR')."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
-                throw new MissingActionException(__("JSON出力失敗"), 500);
+                return $this->__renderError(500, 'JSON出力失敗');
             }
         }
-        $this->__renderJson($json);
+        return $this->__renderJson($json);
     }
 
     /**
      * カテゴリを取得します。
      *
      * @param int $countryId
-     * @return array 段位別棋士一覧
+     * @return Response 段位別棋士一覧
      */
     public function ranks(int $countryId)
     {
@@ -188,7 +183,7 @@ class ApiController extends Controller
             'country_id' => $countryId,
             'is_retired' => false,
         ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric')->all();
-        $this->__renderJson($ranks->toArray());
+        return $this->__renderJson($ranks->toArray());
     }
 
     /**
@@ -197,10 +192,10 @@ class ApiController extends Controller
      * @param string $countryName
      * @param int $year
      * @param int $rank
-     * @param bool $showJp
+     * @param bool $admin
      * @return array
      */
-    private function __rankings(string $countryName, int $year, int $rank, bool $showJp) : array
+    private function __rankings(string $countryName, int $year, int $rank, bool $admin) : array
     {
         // モデルのロード
         $this->loadModel('Players');
@@ -211,7 +206,7 @@ class ApiController extends Controller
         $country = $this->Countries->findByName($countryName)->first();
 
         // ランキングデータの取得
-        $models = $this->Players->findRanking($country, $year, $rank);
+        $ranking = $this->Players->findRanking($country, $year, $rank, $admin);
 
         // 最終更新日の取得
         $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year);
@@ -222,20 +217,37 @@ class ApiController extends Controller
             'targetYear' => $year,
             'countryName' => $country->name_english,
             'countryNameAbbreviation' => $country->code,
-            'ranking' => $this->Players->toRankingArray($country, $models, $showJp)
+            'ranking' => $ranking->toArray(),
         ];
     }
 
     /**
-     * レスポンスにJSONを設定します。
+     * エラーレスポンスを生成します。
      *
-     * @param type $json
+     * @param int $code
+     * @param string $message
+     * @return Response
      */
-    private function __renderJson($json)
+    private function __renderError($code = 500, $message = 'Internal Error')
     {
-        $this->set([
+        $this->response = $this->response->withStatus($code);
+        return $this->__renderJson([
+            'code' => $code,
+            'message' => $message,
+        ]);
+    }
+
+    /**
+     * JSONレスポンスを返却します。
+     *
+     * @param array $json
+     * @return Response
+     */
+    private function __renderJson($json = [])
+    {
+        return $this->set([
             'response' => $json,
             '_serialize' => true
-        ]);
+        ])->render();
     }
 }

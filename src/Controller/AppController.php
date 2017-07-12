@@ -140,10 +140,11 @@ class AppController extends Controller
      * タイトルタグに表示する値を設定します。
      *
      * @param string $title
+     * @return AppController
      */
     protected function _setTitle(string $title)
     {
-        $this->set('cakeDescription', $title);
+        return $this->set('cakeDescription', $title);
     }
 
     /**
@@ -158,11 +159,12 @@ class AppController extends Controller
 
     /**
      * ダイアログ表示を設定します。
+     *
+     * @return AppController
      */
     protected function _setDialogMode()
     {
-        $this->__dialog = true;
-        $this->set('isDialog', true);
+        return $this->set('isDialog', ($this->__dialog = true));
     }
 
     /**
