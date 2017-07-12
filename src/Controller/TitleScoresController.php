@@ -35,7 +35,7 @@ class TitleScoresController extends AppController
         if (!$this->_isDialogMode()) {
             // 所属国プルダウン
             $this->loadModel('Countries');
-            $this->set('countries', $this->Countries->findLists());
+            $this->set('countries', $this->Countries->findToKeyValue());
 
             // 年度プルダウン
             $years = [];

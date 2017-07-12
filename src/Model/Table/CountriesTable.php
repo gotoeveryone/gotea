@@ -8,22 +8,27 @@ namespace App\Model\Table;
 class CountriesTable extends AppTable
 {
     /**
+     * {@inheritDoc}
+     */
+    public function initialize(array $config)
+    {
+        $this->displayField('name');
+    }
+
+    /**
      * 所属国一覧（ID・名前）を取得します。
      *
-     * @param bool $has_title
+     * @param bool $hasTitle
      * @return array
      */
-    public function findLists($hasTitle = false)
+    public function findToKeyValue($hasTitle = false)
     {
-		$query = $this->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->order(['id']);
+		$query = $this->find('list');
 
         if ($hasTitle) {
             $query->where('has_title', true);
         }
 
-        return $query->toArray();
+        return $query->order(['id'])->toArray();
     }
 }

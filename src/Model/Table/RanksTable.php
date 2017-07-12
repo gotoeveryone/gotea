@@ -7,13 +7,23 @@ namespace App\Model\Table;
  */
 class RanksTable extends AppTable
 {
-    public function getRanksToArray()
+    /**
+     * {@inheritDoc}
+     */
+    public function initialize(array $config)
+    {
+        $this->displayField('name');
+    }
+
+    /**
+     * 段位のID・名前を一覧で取得します。
+     *
+     * @return array
+     */
+    public function findToKeyValue()
     {
 		// 段位プルダウン
-		return $this->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->where([
+		return $this->find('list')->where([
             'rank_numeric IS NOT' => null
         ])->order('rank_numeric DESC')->toArray();
     }

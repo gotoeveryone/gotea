@@ -43,7 +43,7 @@ class PlayersController extends AppController
         parent::beforeRender($event);
 
 		// 段位プルダウン
-		$this->set('ranks', $this->Ranks->getRanksToArray());
+		$this->set('ranks', $this->Ranks->findToKeyValue());
 		// 所属プルダウン
 		$this->set('organizations', $this->Organizations->findToKeyValue());
    	}
@@ -85,7 +85,7 @@ class PlayersController extends AppController
 
         $this->loadModel('Countries');
         return $this->_setTitle('棋士情報検索')
-            ->set('countries', $this->Countries->findLists(true))
+            ->set('countries', $this->Countries->findToKeyValue(true))
             ->set('form', ($form ?? new PlayerForm))
             ->render('index');
     }
