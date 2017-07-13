@@ -58,16 +58,16 @@ class ApiController extends Controller
             return $this->__renderJson($player->renderArray());
         }
 
-        if (!($name = $this->request->getQuery('name'))) {
+        if (!($name = $this->request->getData('name'))) {
             return $this->__renderJson();
         }
 
-        $players = $this->Players->findPlayersQuery(['name' => $name])->all();
+        $players = $this->Players->findPlayersQuery($this->request)->all();
         return $this->__renderJson([
             'size' => $players->count(),
-            'results' => $players->map(function(Player $item, $key) {
+            'results' => $players->map(function($item, $key) {
                 return $item->renderArray();
-            })->toArray(),
+            }),
         ]);
     }
 
@@ -247,7 +247,7 @@ class ApiController extends Controller
     {
         return $this->set([
             'response' => $json,
-            '_serialize' => true
+            '_serialize' => true,
         ])->render();
     }
 }

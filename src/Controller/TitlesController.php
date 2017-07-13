@@ -13,7 +13,6 @@ use Cake\Network\Exception\NotFoundException;
  *
  * @property \App\Model\Table\TitlesTable $Titles
  * @property \App\Model\Table\RetentionHistoriesTable $RetentionHistories
- * @property \App\Model\Table\CountriesTable $Countries
  */
 class TitlesController extends AppController
 {
@@ -24,8 +23,7 @@ class TitlesController extends AppController
 	 */
 	public function index()
     {
-        $this->_setTitle('タイトル情報検索');
-        return $this->render();
+        return $this->_setTitle('タイトル情報検索')->render();
     }
 
 	/**
@@ -73,10 +71,9 @@ class TitlesController extends AppController
         $this->request->allowMethod(['post']);
 
         $this->loadModel('RetentionHistories');
-        $this->loadModel('Countries');
 
         $data = $this->request->getParsedBody();
-        $titleId = $data['title_id'] ?? '';
+        $titleId = $this->request->getData('title_id', '');
 
         // バリデーションエラーの場合はそのまま返す
         if (($errors = $this->RetentionHistories->validator()->errors($data))) {

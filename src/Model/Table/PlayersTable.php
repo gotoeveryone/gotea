@@ -2,13 +2,15 @@
 
 namespace App\Model\Table;
 
-use App\Model\Entity\Country;
-use App\Model\Entity\Player;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 use Cake\Validation\Validator;
+use App\Form\PlayerForm;
+use App\Model\Entity\Country;
+use App\Model\Entity\Player;
 
 /**
  * 棋士
@@ -93,10 +95,10 @@ class PlayersTable extends AppTable
     /**
      * 指定条件に合致した棋士情報を取得します。
      *
-     * @param array $data
+     * @param ServerRequest $request
      * @return Query 生成されたクエリ
      */
-    public function findPlayersQuery(array $data) : Query
+    public function findPlayersQuery(ServerRequest $request) : Query
     {
         // 棋士情報の取得
         $query = $this->find()->order([
@@ -106,38 +108,37 @@ class PlayersTable extends AppTable
         ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (($countryId = $data['country_id'] ?? '')) {
+        if (is_numeric($countryId = $request->getData('country_id'))) {
             $query->where(['Countries.id' => $countryId]);
         }
-        if (($organizationId = $data['organization_id'] ?? '')) {
+        if (is_numeric($organizationId = $request->getData('organization_id'))) {
             $query->where(['Organizations.id' => $organizationId]);
         }
-        if (($rankId = $data['rank_id'] ?? '') !== '') {
+        if (is_numeric($rankId = $request->getData('rank_id'))) {
             $query->where(['Ranks.id' => $rankId]);
         }
-        if (($sex = $data['sex'] ?? '')) {
+        if (($sex = $request->getData('sex'))) {
             $query->where(['Players.sex' => $sex]);
         }
-        if (($name = trim($data['name'] ?? ''))) {
+        if (($name = trim($request->getData('name')))) {
             $query->where(['OR' => $this->__createLikeParams('name', $name)]);
         }
-        if (($nameEnglish = trim($data['name_english'] ?? ''))) {
+        if (($nameEnglish = trim($request->getData('name_english')))) {
             $query->where(['OR' => $this->__createLikeParams('name_english', $nameEnglish)]);
         }
-        if (($nameOther = trim($data['name_other'] ?? ''))) {
+        if (($nameOther = trim($request->getData('name_other')))) {
             $query->where(['OR' => $this->__createLikeParams('name_other', $nameOther)]);
         }
-        if (is_numeric(($joinedFrom = $data['joined_from'] ?? ''))) {
+        if (is_numeric(($joinedFrom = $request->getData('joined_from')))) {
             $query->where(['SUBSTR(Players.joined, 1, 4) >=' => $joinedFrom]);
         }
-        if (is_numeric(($joinedTo = $data['joined_to'] ?? ''))) {
+        if (is_numeric(($joinedTo = $request->getData('joined_to')))) {
             $query->where(['SUBSTR(Players.joined, 1, 4) <=' => $joinedTo]);
         }
-        if (!($data['is_retired'] ?? false)) {
+        if (!($request->getData('is_retired', false))) {
             $query->where(['Players.is_retired' => 0]);
         }
 
-        // クエリを返却
         return $query;
     }
 
@@ -179,6 +180,19 @@ class PlayersTable extends AppTable
         }
 
         return $this->__mapped($query->all(), $country, $admin);
+    }
+
+    /**
+     * データを追加します。
+     *
+     * @param array $data
+     * @return \App\Model\Entity\Player|false データが登録できればそのEntity
+     */
+    public function add(array $data)
+    {
+		return $this->_addEntity($data, [
+            'country_id', 'name', 'birthday',
+        ]);
     }
 
     /**

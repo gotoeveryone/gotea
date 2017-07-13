@@ -88,14 +88,8 @@ class PlayerRanksTable extends AppTable
      */
     public function add(array $data)
     {
-        // 同一キーのデータがあれば終了
-		if ($this->findByKey($data, [
+		return $this->_addEntity($data, [
             'player_id', 'rank_id',
-        ])) {
-            return false;
-		}
-
-        // タイトル保持情報の登録
-        return $this->save($this->newEntity($data));
+        ]);
     }
 }

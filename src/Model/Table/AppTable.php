@@ -79,6 +79,24 @@ class AppTable extends Table
     }
 
     /**
+     * データを追加します。
+     *
+     * @param array $data
+     * @param array $fields
+     * @return \App\Model\Entity\AppEntity|false データが登録できればそのEntity
+     */
+    protected function _addEntity(array $data, $fields = [])
+    {
+        // 同一キーのデータがあれば終了
+		if ($this->findByKey($data, $fields)) {
+            return false;
+		}
+
+        // データの登録
+        return $this->save($this->newEntity($data));
+    }
+
+    /**
      * ランキングデータの取得方法を判定します。
      *
      * @param int $targetYear

@@ -35,8 +35,7 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->_setTitle('ログイン');
-        return $this->render();
+        return $this->_setTitle('ログイン')->render();
     }
 
     /**

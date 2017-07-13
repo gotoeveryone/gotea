@@ -25,9 +25,9 @@ class AppController extends Controller
      */
     private $__dialog = false;
 
-    /**
-     * 初期処理
-     */
+	/**
+     * {@inheritDoc}
+	 */
 	public function initialize()
     {
         $this->loadComponent('Csrf');
@@ -52,10 +52,8 @@ class AppController extends Controller
     }
 
 	/**
-	 * アクション遷移前処理
-     *
-     * @param Event $event
-     */
+     * {@inheritDoc}
+	 */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
@@ -64,11 +62,9 @@ class AppController extends Controller
         $this->Transaction->begin();
     }
 
-    /**
-     * アクション遷移後処理
-     *
-     * @param Event $event
-     */
+	/**
+     * {@inheritDoc}
+	 */
     public function afterFilter(Event $event)
     {
         parent::afterFilter($event);
@@ -77,11 +73,9 @@ class AppController extends Controller
         $this->Transaction->commitOrRollback();
     }
 
-    /**
-     * ビュー描画前処理
-     *
-     * @param Event $event
-     */
+	/**
+     * {@inheritDoc}
+	 */
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
@@ -93,13 +87,9 @@ class AppController extends Controller
         }
     }
 
-    /**
-     * リダイレクト前処理
-     *
-     * @param Event $event
-     * @param type $url
-     * @param Response $response
-     */
+	/**
+     * {@inheritDoc}
+	 */
     public function beforeRedirect(Event $event, $url, Response $response)
     {
         // トランザクションのコミットまたはロールバック
@@ -119,28 +109,14 @@ class AppController extends Controller
      */
     public function setTabAction(string $action, string $tabName, ...$args)
     {
-        $this->set('tab', $tabName);
-        return $this->setAction($action, ...$args);
-    }
-
-    /**
-     * 指定したリクエスト以外でアクセスがあった場合、デフォルトアクションへ遷移させます。
-     *
-     * @param string $method
-     * @param string $action
-     */
-    protected function _checkAllowRequest(string $method, string $action)
-    {
-        if (!$this->request->is($method)) {
-            $this->setAction($action);
-        }
+        return $this->set('tab', $tabName)->setAction($action, ...$args);
     }
 
     /**
      * タイトルタグに表示する値を設定します。
      *
      * @param string $title
-     * @return AppController
+     * @return Controller
      */
     protected function _setTitle(string $title)
     {
@@ -160,21 +136,10 @@ class AppController extends Controller
     /**
      * ダイアログ表示を設定します。
      *
-     * @return AppController
+     * @return Controller
      */
     protected function _setDialogMode()
     {
         return $this->set('isDialog', ($this->__dialog = true));
-    }
-
-    /**
-     * GETアクセスを許可するアクションを追加します。
-     *
-     * @param Array $actions
-     */
-    protected function _addAllowGetActions(Array $actions)
-    {
-        $detaultActions = $this->_allowActions;
-        $this->_allowActions = array_merge($detaultActions, $actions);
     }
 }

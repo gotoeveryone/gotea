@@ -68,19 +68,12 @@ class RetentionHistoriesTable extends AppTable {
      * データを追加します。
      *
      * @param array $data
-     * @return RetentionHistory|false データが登録できればそのEntity
+     * @return \App\Model\Entity\RetentionHistory|false データが登録できればそのEntity
      */
     public function add(array $data)
     {
-        // 同一キーのデータがあれば終了
-		if ($this->findByKey($data, [
+		return $this->_addEntity($data, [
             'title_id', 'holding',
-        ])) {
-            return false;
-		}
-
-        // タイトル保持情報の登録
-        $history = $this->newEntity($data);
-        return $this->save($history);
+        ]);
     }
 }
