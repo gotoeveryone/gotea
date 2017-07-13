@@ -9,8 +9,8 @@ use Cake\Validation\Validator;
 /**
  * 保持履歴
  */
-class RetentionHistoriesTable extends AppTable {
-
+class RetentionHistoriesTable extends AppTable
+{
     /**
 	 * 初期設定
 	 */

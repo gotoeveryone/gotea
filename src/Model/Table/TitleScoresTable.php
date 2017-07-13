@@ -4,7 +4,6 @@ namespace App\Model\Table;
 use Cake\Database\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -23,7 +22,7 @@ use Cake\ORM\TableRegistry;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TitleScoresTable extends Table
+class TitleScoresTable extends AppTable
 {
 
     /**

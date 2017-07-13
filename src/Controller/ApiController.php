@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Controller\Exception\MissingActionException;
 
 /**
  * APIコントローラ
