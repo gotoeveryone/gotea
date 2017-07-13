@@ -41,7 +41,7 @@ class AppController extends Controller
                 'action' => 'index'
             ],
             'loginRedirect' => [
-                'controller' => 'menu',
+                'controller' => 'players',
                 'action' => 'index'
             ],
             'logoutRedirect' => [
