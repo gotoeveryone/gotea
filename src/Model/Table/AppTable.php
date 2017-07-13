@@ -51,7 +51,7 @@ class AppTable extends Table
 		// 新規登録時は登録日時を設定
 		$nowDate = Time::now();
 		$userId = $this->__getLoginUserId();
-		if (!$entity->isNew() === false) {
+		if ($entity->isNew()) {
 			$entity->created = $nowDate;
 			$entity->created_by = $userId;
 		}

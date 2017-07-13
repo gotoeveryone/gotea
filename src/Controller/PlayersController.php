@@ -207,10 +207,9 @@ class PlayersController extends AppController
 
         $this->Flash->info(__("昇段情報を登録しました。"));
 
-        // POSTされたデータを初期化
-        $this->request = $this->request->withParsedBody([]);
-
-        return $this->setTabAction('detail', 'ranks', $playerId);
+        // リクエストを初期化して詳細画面に遷移
+        return $this->_resetRequest()
+            ->setTabAction('detail', 'ranks', $playerId);
     }
 
     /**
@@ -259,9 +258,9 @@ class PlayersController extends AppController
             throw new \PDOException('棋士昇段情報への登録に失敗しました。');
         }
 
-        // 連続作成なら値を消す
+        // 連続作成ならリクエストを初期化
         if (($continue = $this->request->getData('is_continue'))) {
-            $this->request = $this->request->withParsedBody([]);
+            $this->_resetRequest();
         }
 
         // 所属国IDを設定

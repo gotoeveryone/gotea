@@ -14,11 +14,13 @@ class AppEntity extends Entity
 	protected $_accessible = [
         '*' => true,
         'id' => false,
+        'created' => false,
+        'modified' => false,
     ];
 
     /**
      * 所属國を取得します。
-     * 
+     *
      * @param type $country
      * @return App\Model\Entity\Country
      */
@@ -29,7 +31,7 @@ class AppEntity extends Entity
 
     /**
      * 段位を取得します。
-     * 
+     *
      * @param type $rank
      * @return App\Model\Entity\Rank
      */
@@ -40,7 +42,7 @@ class AppEntity extends Entity
 
     /**
      * 所属組織を取得します。
-     * 
+     *
      * @param type $organization
      * @return App\Model\Entity\Organization
      */

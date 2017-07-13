@@ -111,7 +111,7 @@
                                             'class' => 'imeDisabled datepicker'
                                         ]);
                                     } else {
-                                        echo ''.$this->Date->formatJpValue($player->joined).'';
+                                        echo $this->Date->formatJpValue($player->joined);
                                         echo $this->Form->hidden('joined');
                                     }
                                 ?>

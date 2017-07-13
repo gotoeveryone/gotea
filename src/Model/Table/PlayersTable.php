@@ -58,7 +58,9 @@ class PlayersTable extends AppTable
             ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
             ->date('birthday', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['生年月日', 'yyyy/MM/dd']))
             ->notEmpty('joined', $this->getMessage($this->REQUIRED, '入段日'))
-            ->date('joined', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['入段日', 'yyyy/MM/dd']));
+            ->date('joined', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['入段日', 'yyyy/MM/dd']), function($context) {
+                return empty($context['data']['id']);
+            });
     }
 
     /**

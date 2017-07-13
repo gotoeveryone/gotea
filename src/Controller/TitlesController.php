@@ -23,7 +23,7 @@ class TitlesController extends AppController
 	 */
 	public function index()
     {
-        return $this->_setTitle('タイトル情報検索')->render();
+        return $this->_setTitle('タイトル情報検索')->render('index');
     }
 
 	/**
@@ -55,9 +55,7 @@ class TitlesController extends AppController
             throw new NotFoundException(__("タイトル情報が取得できませんでした。ID：{$id}"));
         }
 
-        $this->set('title', $title);
-
-        return $this->render('detail');
+        return $this->set('title', $title)->render('detail');
     }
 
 	/**
@@ -86,12 +84,11 @@ class TitlesController extends AppController
             $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
             return $this->setTabAction('detail', 'histories', $titleId, false);
 		}
+
         $this->Flash->info(__("保持履歴を登録しました。"));
 
-        // POSTされたデータを初期化
-        $this->request = $this->request->withParsedBody([]);
-
-        // 詳細情報表示処理へ
-        return $this->setTabAction('detail', 'histories', $titleId, false);
+        // リクエストを初期化して詳細画面に遷移
+        return $this->_resetRequest()
+            ->setTabAction('detail', 'histories', $titleId, false);
 	}
 }

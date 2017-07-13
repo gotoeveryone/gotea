@@ -113,6 +113,17 @@ class AppController extends Controller
     }
 
     /**
+     * リクエストを初期化します。
+     *
+     * @return Controller
+     */
+    protected function _resetRequest()
+    {
+        $this->request = $this->request->withParsedBody([]);
+        return $this;
+    }
+
+    /**
      * タイトルタグに表示する値を設定します。
      *
      * @param string $title
