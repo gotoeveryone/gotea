@@ -224,9 +224,14 @@
                     <li class="row">
                         <div class="box">
                             <div class="label-row">新規登録</div>
-                            <div class="add-condition input-row">
+                            <div class="input-row">
                                 <?= $this->Form->select('rank_id', $ranks, ['value' => $player->rank_id]) ?>
-                                <?= $this->Form->text('promoted', ['class' => 'datepicker']) ?>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="label-row"></div>
+                            <div class="input-row">
+                                昇段日：<?= $this->Form->text('promoted', ['class' => 'datepicker']) ?>
                             </div>
                         </div>
                         <div class="box">

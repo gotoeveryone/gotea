@@ -57,8 +57,9 @@ class PlayersTable extends AppTable
                 'message' => $this->getMessage($this->ALPHA_NUMERIC, '棋士名（英語）')
             ])
             ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
-            ->date('birthday', 'ymd', $this->getMessage($this->MAX_LENGTH, ['生年月日', 'yyyy/MM/dd']))
-            ->notEmpty('joined', $this->getMessage($this->REQUIRED, '入段日'));
+            ->date('birthday', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['生年月日', 'yyyy/MM/dd']))
+            ->notEmpty('joined', $this->getMessage($this->REQUIRED, '入段日'))
+            ->date('joined', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['入段日', 'yyyy/MM/dd']));
     }
 
     /**
@@ -155,7 +156,7 @@ class PlayersTable extends AppTable
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
-            return $this->__findOldRanking($country, $targetYear, $offset);
+            return $this->__findOldRanking($country, $targetYear, $offset, $admin);
         }
 
         $query = $this->find();
@@ -238,7 +239,7 @@ class PlayersTable extends AppTable
     /**
      * サブクエリを作成します。
      *
-     * @param \App\Model\Table\App\Model\Entity\Country $country
+     * @param Country $country
      * @param int $targetYear
      * @param string $division
      * @return \Cake\Database\Query
@@ -263,11 +264,9 @@ class PlayersTable extends AppTable
             return $subQuery;
         }
 
-        $subQuery->innerJoinWith('Players', function(Query $q) use ($country) {
+        return $subQuery->innerJoinWith('Players', function(Query $q) use ($country) {
             return $q->where(['Players.country_id' => $country->id]);
         });
-
-        return $subQuery;
     }
 
     /**

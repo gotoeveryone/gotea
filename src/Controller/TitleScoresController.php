@@ -1,8 +1,9 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use Cake\Event\Event;
+use App\Controller\AppController;
+use App\Form\TitleScoreForm;
 
 /**
  * TitleScores Controller
@@ -47,6 +48,12 @@ class TitleScoresController extends AppController
 
         // 検索
         if ($this->request->isPost()) {
+            $form = new TitleScoreForm();
+            if (!$form->validate($this->request->getParsedBody())) {
+                $this->Flash->error($form->errors());
+                return $this->set('form', $form)->render('index');
+            }
+
             // リクエストから値を取得
             $data = $this->request->getParsedBody();
             $count = $this->TitleScores->findMatches($data, true);
@@ -62,7 +69,7 @@ class TitleScoresController extends AppController
             }
         }
 
-        return $this->render('index');
+        return $this->set('form', ($form ?? new TitleScoreForm))->render('index');
     }
 
     /**

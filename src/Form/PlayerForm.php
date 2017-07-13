@@ -12,7 +12,7 @@ class PlayerForm extends AppForm
 {
     /**
      * {@inheritdoc}
-     * 
+     *
      * @param \Cake\Form\Schema $schema
      * @return type
      */
@@ -26,6 +26,7 @@ class PlayerForm extends AppForm
             'is_retired' => 'string',
             'name' => ['type' => 'text'],
             'name_english' => ['type' => 'text'],
+            'name_other' => ['type' => 'text'],
             'joined_from', ['type' => 'text'],
             'joined_to', ['type' => 'text']
         ]);
@@ -33,7 +34,7 @@ class PlayerForm extends AppForm
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * @param Validator $validator
      * @return type
      */

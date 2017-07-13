@@ -58,9 +58,9 @@ class PlayerRanksTable extends AppTable
             ->allowEmpty('id', 'create');
 
         $validator
-            ->date('promoted')
-            ->requirePresence('promoted', 'create')
-            ->notEmpty('promoted');
+            ->notEmpty('promoted', $this->getMessage($this->REQUIRED, '昇段日'))
+            ->date('promoted', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['昇段日', 'yyyy/MM/dd']))
+            ->requirePresence('promoted', 'create');
 
         return $validator;
     }
