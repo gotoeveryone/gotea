@@ -132,10 +132,10 @@ class PlayersTable extends AppTable
             $query->where(['OR' => $this->__createLikeParams('name_other', $nameOther)]);
         }
         if (is_numeric(($joinedFrom = $request->getData('joined_from')))) {
-            $query->where(['Players.joined >=' => str_pad($joinedFrom, 4, 0, STR_PAD_LEFT).'0101']);
+            $query->where(['SUBSTR(Players.joined, 1, 4) >=' => sprintf('%04d', $joinedFrom)]);
         }
         if (is_numeric(($joinedTo = $request->getData('joined_to')))) {
-            $query->where(['Players.joined <=' => str_pad($joinedTo, 4, 0, STR_PAD_LEFT).'1231']);
+            $query->where(['SUBSTR(Players.joined, 1, 4) <=' => sprintf('%04d', $joinedTo)]);
         }
         if (!($request->getData('is_retired', false))) {
             $query->where(['Players.is_retired' => 0]);
