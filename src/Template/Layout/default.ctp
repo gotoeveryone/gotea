@@ -77,12 +77,6 @@
                     ], ['class' => 'button']);
                 ?>
                 <?php endif ?>
-                <?=
-                    $this->Html->link('成績更新日編集', [
-                        'controller' => 'updatedPoints',
-                        'action' => 'index'
-                    ], ['class' => 'button inactive']);
-                ?>
             </nav>
             <?php endif ?>
             <!-- メインコンテンツ -->

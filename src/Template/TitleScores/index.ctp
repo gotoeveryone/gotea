@@ -1,5 +1,5 @@
 <section class="title-scores">
-    <?=$this->Form->create(null, [
+    <?=$this->Form->create($form, [
         'id' => 'mainForm',
         'type' => 'post',
         'url' => ['action' => 'index'],
@@ -13,19 +13,17 @@
         <ul class="search-header">
             <li class="search-row">
                 <label>棋士名：</label>
-                <?=$this->Form->text('name', ['class' => 'name']);?>
+                <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20]);?>
                 <label>対象棋戦：</label>
                 <?=
                     $this->Form->select('country_id', $countries, [
-                        'class' => 'country',
-                        'empty' => true
+                        'class' => 'country', 'empty' => true,
                     ]);
                 ?>
                 <label>対局年：</label>
                 <?=
                     $this->Form->select('target_year', $years, [
-                        'class' => 'year',
-                        'empty' => true
+                        'class' => 'year', 'empty' => true,
                     ]);
                 ?>
                 <label>対局日：</label>

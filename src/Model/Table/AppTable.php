@@ -51,7 +51,7 @@ class AppTable extends Table
 		// 新規登録時は登録日時を設定
 		$nowDate = Time::now();
 		$userId = $this->__getLoginUserId();
-		if (!$entity->isNew() === false) {
+		if ($entity->isNew()) {
 			$entity->created = $nowDate;
 			$entity->created_by = $userId;
 		}
@@ -76,6 +76,24 @@ class AppTable extends Table
             $params[$field] = $data[$field];
         }
 		return $this->find()->where($params)->first();
+    }
+
+    /**
+     * データを追加します。
+     *
+     * @param array $data
+     * @param array $fields
+     * @return \App\Model\Entity\AppEntity|false データが登録できればそのEntity
+     */
+    protected function _addEntity(array $data, $fields = [])
+    {
+        // 同一キーのデータがあれば終了
+		if ($this->findByKey($data, $fields)) {
+            return false;
+		}
+
+        // データの登録
+        return $this->save($this->newEntity($data));
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use Cake\Event\Event;
+use App\Form\TitleScoreForm;
 
 /**
  * TitleScores Controller
@@ -22,8 +22,6 @@ class TitleScoresController extends AppController
 
         // モデルをロード
         $this->loadModel('TitleScoreDetails');
-        $this->loadModel('Players');
-        $this->loadModel('Countries');
     }
 
     /**
@@ -36,7 +34,8 @@ class TitleScoresController extends AppController
         // ダイアログ状態でない場合はヘッダを取得
         if (!$this->_isDialogMode()) {
             // 所属国プルダウン
-            $this->set('countries', $this->Countries->findCountryHasFileToArray());
+            $this->loadModel('Countries');
+            $this->set('countries', $this->Countries->findToKeyValue());
 
             // 年度プルダウン
             $years = [];
@@ -48,6 +47,12 @@ class TitleScoresController extends AppController
 
         // 検索
         if ($this->request->isPost()) {
+            $form = new TitleScoreForm();
+            if (!$form->validate($this->request->getParsedBody())) {
+                $this->Flash->error($form->errors());
+                return $this->set('form', $form)->render('index');
+            }
+
             // リクエストから値を取得
             $data = $this->request->getParsedBody();
             $count = $this->TitleScores->findMatches($data, true);
@@ -63,20 +68,23 @@ class TitleScoresController extends AppController
             }
         }
 
-        return $this->render('index');
+        return $this->set('form', ($form ?? new TitleScoreForm))->render('index');
     }
 
     /**
      * 詳細画面からの検索処理
+     *
+     * @return \Cake\Network\Response|null
      */
     public function modalSearch()
     {
-        $this->_setDialogMode();
-        return $this->index();
+        return $this->_setDialogMode()->index();
     }
 
     /**
      * 勝敗変更処理
+     *
+     * @return \Cake\Network\Response|null
      */
     public function change()
     {
@@ -105,6 +113,8 @@ class TitleScoresController extends AppController
 
     /**
      * 削除処理
+     *
+     * @return \Cake\Network\Response|null
      */
     public function delete()
     {

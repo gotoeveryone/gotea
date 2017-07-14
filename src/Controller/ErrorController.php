@@ -7,7 +7,7 @@ use PDOException;
 
 /**
  * アプリの共通例外コントローラ
- * 
+ *
  * @author  Kazuki Kamizuru
  * @since   2016/12/28
  */
@@ -15,7 +15,7 @@ class ErrorController extends AppController
 {
 	/**
 	 * ロールバック処理を行います。
-     * 
+     *
      * @param Exception $exception
      */
     public function _rollback(Exception $exception)

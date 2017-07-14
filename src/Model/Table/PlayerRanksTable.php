@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -58,9 +57,9 @@ class PlayerRanksTable extends AppTable
             ->allowEmpty('id', 'create');
 
         $validator
-            ->date('promoted')
-            ->requirePresence('promoted', 'create')
-            ->notEmpty('promoted');
+            ->notEmpty('promoted', $this->getMessage($this->REQUIRED, '昇段日'))
+            ->date('promoted', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['昇段日', 'yyyy/MM/dd']))
+            ->requirePresence('promoted', 'create');
 
         return $validator;
     }
@@ -88,15 +87,8 @@ class PlayerRanksTable extends AppTable
      */
     public function add(array $data)
     {
-        // 同一キーのデータがあれば終了
-		if ($this->findByKey($data, [
+		return $this->_addEntity($data, [
             'player_id', 'rank_id',
-        ])) {
-            return false;
-		}
-
-        // タイトル保持情報の登録
-        $history = $this->newEntity($data);
-        return $this->save($history);
+        ]);
     }
 }

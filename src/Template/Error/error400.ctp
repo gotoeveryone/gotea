@@ -29,7 +29,7 @@ if (Configure::read('debug')):
 
     $this->end();
 else:
-    $this->layout = 'error';
+    $this->layout = 'default';
 endif;
 ?>
 <p><strong><?= __d('cake', 'ステータスコード：'.$code) ?></strong></p>

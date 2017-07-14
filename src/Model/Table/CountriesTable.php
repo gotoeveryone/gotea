@@ -3,35 +3,32 @@
 namespace App\Model\Table;
 
 /**
- * 国
+ * 所属国
  */
 class CountriesTable extends AppTable
 {
     /**
-     * 所属国情報を取得します。
-     * 
-     * return type
+     * {@inheritDoc}
      */
-    public function findCountryHasFileToArray()
+    public function initialize(array $config)
     {
-		return $this->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->order(['id'])->toArray();
+        $this->displayField('name');
     }
 
     /**
-     * 所属国情報を取得します。
-     * 
-     * return type
+     * 所属国一覧（ID・名前）を取得します。
+     *
+     * @param bool $hasTitle
+     * @return array
      */
-    public function findCountryBelongToArray()
+    public function findToKeyValue($hasTitle = false)
     {
-		return $this->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->where([
-            'has_title' => true
-        ])->order(['id'])->toArray();
+		$query = $this->find('list');
+
+        if ($hasTitle) {
+            $query->where('has_title', true);
+        }
+
+        return $query->order(['id'])->toArray();
     }
 }

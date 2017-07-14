@@ -14,7 +14,7 @@ use Cake\Http\Response;
 class NativeQueryController extends AppController
 {
 	/**
-	 * 初期処理
+	 * 初期表示・更新処理
      *
      * @return Response
 	 */
@@ -34,12 +34,12 @@ class NativeQueryController extends AppController
                 $this->Flash->info(__("{$count}件のクエリを実行しました。"));
             } catch (PDOException $e) {
                 $this->Transaction->markToRollback();
+                $this->Log->error($e);
                 $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
             }
         }
 
-        $this->_setTitle('各種情報クエリ更新');
-        return $this->render();
+        return $this->_setTitle('各種情報クエリ更新')->render();
     }
 
     /**
