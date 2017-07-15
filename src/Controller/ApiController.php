@@ -104,7 +104,7 @@ class ApiController extends Controller
             }
 
             $this->Titles->save($title);
-            $this->__renderJson(['titleId' => $title->id]);
+            return $this->__renderJson(['titleId' => $title->id]);
         }
 
         return $this->__renderError(405, 'Method Not Allowed');
