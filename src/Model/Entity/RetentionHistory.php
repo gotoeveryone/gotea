@@ -11,18 +11,27 @@ class RetentionHistory extends AppEntity
 {
     /**
      * 棋士を取得します。
-     * 
-     * @param type $player
-     * @return App\Model\Entity\Player
+     *
+     * @param mixed $value
+     * @return Player|null
      */
-    protected function _getPlayer($player)
+    protected function _getPlayer($value)
     {
-        return ($player ? $player : TableRegistry::get('Players')->get($this->player_id));
+        if ($value) {
+            return $value;
+        }
+
+        if (!$this->player_id) {
+            return null;
+        }
+
+        $result = TableRegistry::get('Players')->get($this->player_id);
+        return $this->player = $result;
     }
 
     /**
      * タイトル保持者を取得します。
-     * 
+     *
      * @param type $is_team
      * @return type
      */
