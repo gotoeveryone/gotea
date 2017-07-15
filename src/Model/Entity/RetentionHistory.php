@@ -32,11 +32,11 @@ class RetentionHistory extends AppEntity
     /**
      * タイトル保持者を取得します。
      *
-     * @param type $is_team
-     * @return type
+     * @param bool $is_team
+     * @return string
      */
     public function getWinnerName($is_team = false)
     {
-        return $is_team ? $this->win_group_name : __("{$this->player->name} {$this->rank->name}");
+        return $is_team ? $this->win_group_name : "{$this->player->name} {$this->rank->name}";
     }
 }
