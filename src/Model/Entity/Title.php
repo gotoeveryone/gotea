@@ -10,24 +10,28 @@ use Cake\ORM\TableRegistry;
 class Title extends AppEntity
 {
     /**
-     * 保持履歴を取得します。
-     * 
-     * @param array $histories
-     * @return array
+     * タイトル獲得履歴を取得します。
+     *
+     * @param mixed $value
+     * @return \Cake\ORM\ResultSet|null タイトル獲得履歴
      */
-    protected function _getRetentionHistories($histories)
+    protected function _getRetentionHistories($value)
     {
-        if (!$histories) {
-            $tables = TableRegistry::get('RetentionHistories');
-            $histories = $tables->find()
-                    ->where(['title_id' => $this->id])->orderDesc('target_year')->all()->toArray();
+        if ($value) {
+            return $value;
         }
-        return $histories;
+
+        if (!$this->id) {
+            return null;
+        }
+
+        $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);
+        return $this->retention_histories = $result;
     }
 
     /**
      * 現在の優勝者を取得します。
-     * 
+     *
      * @param boolean $isJp
      * @return string
      */
@@ -49,7 +53,7 @@ class Title extends AppEntity
 
     /**
      * 保持者の最終登録日が指定日以内かどうかを判定する。
-     * 
+     *
      * @return boolean
      */
     public function isNewHistories() : bool
@@ -62,7 +66,7 @@ class Title extends AppEntity
 
     /**
      * 修正日が指定日以内かどうかを判定する。
-     * 
+     *
      * @return boolean
      */
     public function isRecentModified() : bool

@@ -18,26 +18,6 @@ class AppTable extends Table
     use MyValidationTrait;
 
     /**
-     * {@inheritdoc}
-     */
-    public function patchEntity(EntityInterface $entity, array $data, array $options = [])
-    {
-        // 基本はバリデーションしない
-        $options['validate'] = false;
-        return parent::patchEntity($entity, $data, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save(EntityInterface $entity, $options = [])
-    {
-        // 基本はバリデーションしない
-        $options['validate'] = false;
-        return parent::save($entity, $options);
-    }
-
-    /**
 	 * 保存前処理
      * エンティティに管理項目を設定します。
      *

@@ -12,27 +12,20 @@ use Cake\Validation\Validator;
 class RetentionHistoriesTable extends AppTable
 {
     /**
-	 * 初期設定
-	 */
+     * {@inheritdoc}
+     */
     public function initialize(array $config)
     {
         // タイトルマスタ
         $this->belongsTo('Titles');
         // 棋士マスタ
-        $this->belongsTo('Players', [
-            'joinType' => 'LEFT'
-        ]);
+        $this->belongsTo('Players');
         // 段位マスタ
-        $this->belongsTo('Ranks', [
-            'joinType' => 'LEFT'
-        ]);
+        $this->belongsTo('Ranks');
     }
 
     /**
-     * バリデーションルール
-     *
-     * @param \App\Model\Table\Validator $validator
-     * @return type
+     * {@inheritdoc}
      */
     public function validationDefault(Validator $validator)
     {
@@ -75,5 +68,37 @@ class RetentionHistoriesTable extends AppTable
 		return $this->_addEntity($data, [
             'title_id', 'holding',
         ]);
+    }
+
+    /**
+     * 指定した棋士のタイトル履歴を取得します。
+     *
+     * @param int $playerId
+     * @return \Cake\ORM\ResultSet
+     */
+    public function findHistoriesByPlayer(int $playerId)
+    {
+        return $this->findByPlayerId($playerId)
+            ->contain(['Titles.Countries'])
+            ->order([
+                'RetentionHistories.target_year' => 'DESC',
+                'Titles.country_id' => 'ASC',
+                'Titles.sort_order' => 'ASC'
+            ])->all();
+    }
+
+    /**
+     * 指定したタイトルの履歴を取得します。
+     *
+     * @param int $titleId
+     * @return \Cake\ORM\ResultSet
+     */
+    public function findHistoriesByTitle(int $titleId)
+    {
+        return $this->findByTitleId($titleId)
+            ->contain(['Titles'])
+            ->order([
+                'RetentionHistories.target_year' => 'DESC',
+            ])->all();
     }
 }

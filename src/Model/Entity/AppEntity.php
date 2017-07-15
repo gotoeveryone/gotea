@@ -21,33 +21,32 @@ class AppEntity extends Entity
     /**
      * 所属國を取得します。
      *
-     * @param type $country
-     * @return App\Model\Entity\Country
+     * @param mixed $value
+     * @return Country
      */
-    protected function _getCountry($country)
+    protected function _getCountry($value)
     {
-        return ($country ? $country : TableRegistry::get('Countries')->get($this->country_id));
+        if ($value) {
+            return $value;
+        }
+
+        $result = TableRegistry::get('Countries')->get($this->country_id);
+        return $this->country = $result;
     }
 
     /**
      * 段位を取得します。
      *
-     * @param type $rank
-     * @return App\Model\Entity\Rank
+     * @param mixed $value
+     * @return Rank
      */
-    protected function _getRank($rank)
+    protected function _getRank($value)
     {
-        return ($rank ? $rank : TableRegistry::get('Ranks')->get($this->rank_id));
-    }
+        if ($value) {
+            return $value;
+        }
 
-    /**
-     * 所属組織を取得します。
-     *
-     * @param type $organization
-     * @return App\Model\Entity\Organization
-     */
-    protected function _getOrganization($organization)
-    {
-        return ($organization ? $organization : TableRegistry::get('Organizations')->get($this->organization_id));
+        $result = TableRegistry::get('Ranks')->get($this->rank_id);
+        return $this->rank = $result;
     }
 }

@@ -23,12 +23,8 @@ use Cake\Validation\Validator;
  */
 class PlayerRanksTable extends AppTable
 {
-
     /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
+     * {@inheritdoc}
      */
     public function initialize(array $config)
     {
@@ -45,10 +41,7 @@ class PlayerRanksTable extends AppTable
     }
 
     /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * {@inheritdoc}
      */
     public function validationDefault(Validator $validator)
     {
@@ -65,11 +58,7 @@ class PlayerRanksTable extends AppTable
     }
 
     /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * {@inheritdoc}
      */
     public function buildRules(RulesChecker $rules)
     {
@@ -90,5 +79,17 @@ class PlayerRanksTable extends AppTable
 		return $this->_addEntity($data, [
             'player_id', 'rank_id',
         ]);
+    }
+
+    /**
+     * 棋士に該当する段位一覧を取得します。
+     *
+     * @param int $playerId
+     * @return \Cake\ORM\ResultSet
+     */
+    public function findRanks(int $playerId)
+    {
+        return $this->findByPlayerId($playerId)
+            ->contain(['Ranks'])->orderDesc('Ranks.rank_numeric')->all();
     }
 }

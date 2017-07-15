@@ -8,7 +8,7 @@ namespace App\Model\Table;
 class CountriesTable extends AppTable
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize(array $config)
     {

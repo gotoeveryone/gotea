@@ -28,9 +28,9 @@ class TitleScore extends AppEntity
     {
         if (($detail = $this->win_detail) && ($winner = $detail->winner)) {
             if ($winner->id == $id) {
-                return '<span class="selected">'.h($winner->getNameWithRank()).'</span>';
+                return '<span class="selected">'.h($winner->name_with_rank).'</span>';
             }
-            return h($winner->getNameWithRank());
+            return $winner->name_with_rank;
         }
         return '';
     }
@@ -45,9 +45,9 @@ class TitleScore extends AppEntity
     {
         if (($detail = $this->lose_detail) && ($loser = $detail->loser)) {
             if ($loser->id == $id) {
-                return '<span class="selected">'.h($loser->getNameWithRank()).'</span>';
+                return '<span class="selected">'.h($loser->name_with_rank).'</span>';
             }
-            return h($loser->getNameWithRank());
+            return $loser->name_with_rank;
         }
         return '';
     }

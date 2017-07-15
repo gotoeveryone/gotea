@@ -12,7 +12,7 @@
             <?=$this->Form->create($title, [
                 'id' => 'mainForm',
                 'type' => 'post',
-                'url' => ['action' => 'detail'],
+                'url' => ['action' => 'save'],
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',

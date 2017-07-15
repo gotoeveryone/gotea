@@ -13,10 +13,8 @@ use App\Model\Entity\Title;
 class TitlesTable extends AppTable
 {
     /**
-	 * 初期設定
-     *
-     * @param $config
-	 */
+     * {@inheritdoc}
+     */
     public function initialize(array $config)
     {
         // タイトル保持情報
@@ -31,10 +29,7 @@ class TitlesTable extends AppTable
     }
 
     /**
-     * バリデーションルール
-     *
-     * @param \App\Model\Table\Validator $validator
-     * @return type
+     * {@inheritdoc}
      */
     public function validationDefault(Validator $validator)
     {
@@ -88,45 +83,6 @@ class TitlesTable extends AppTable
 
         // データを取得
         return $query->order(['Titles.country_id', 'Titles.sort_order'])->all();
-    }
-
-    /**
-     * タイトル情報一式を取得
-     *
-     * @param int $id
-     * @return Title|null
-     */
-    public function findWithRelations(int $id)
-    {
-		return $this->find()->contain([
-            'Countries',
-            'RetentionHistories' => function (Query $q) {
-                return $q->orderDesc('RetentionHistories.target_year');
-            },
-            'RetentionHistories.Ranks',
-            'RetentionHistories.Titles.Countries',
-            'RetentionHistories.Players'
-        ])->where(['Titles.id' => $id])->first();
-    }
-
-    /**
-     * 保存処理
-     *
-     * @param array $data
-     * @return Title|false 保存に成功すればそのEntity
-     */
-    public function saveEntity(array $data)
-    {
-        // IDからデータを取得
-        if (!($title = $this->get($data['id']))) {
-            return false;
-        }
-
-        // 入力値をエンティティに設定
-        $this->patchEntity($title, $data);
-
-        // 保存処理
-        return $this->save($title);
     }
 
     /**

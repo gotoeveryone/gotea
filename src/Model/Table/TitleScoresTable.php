@@ -24,12 +24,8 @@ use Cake\ORM\TableRegistry;
  */
 class TitleScoresTable extends AppTable
 {
-
     /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
+     * {@inheritdoc}
      */
     public function initialize(array $config)
     {
@@ -64,11 +60,7 @@ class TitleScoresTable extends AppTable
     }
 
     /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * {@inheritdoc}
      */
     public function buildRules(RulesChecker $rules)
     {
