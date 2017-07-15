@@ -79,7 +79,6 @@ class PlayersController extends AppController
             } else {
                 // 結果をセット
                 $players = $query->all();
-                $this->loadModel('TitleScores');
                 $this->set('players', $players)
                     ->set('scores', $this->TitleScores->findFromYear(
                         $players->extract('id')->toArray(), Date::now()->year));
@@ -96,40 +95,29 @@ class PlayersController extends AppController
      * @param Player $player 棋士情報（エラー時の遷移用）
      * @return Response
 	 */
-	public function detail($id = null, Player $player = null)
+	public function detail($id = null, $player = null)
     {
         // ダイアログ表示
         $this->_setDialogMode();
 
-        // タイトル成績
-        $scoreTable = $this->loadModel('TitleScores');
-
-        // IDが指定されていれば、棋士情報一式を設定
-        if ($id) {
-            if (!($player = $this->Players->findWithRelations($id))) {
-                throw new NotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
-            }
-        }
-
-        // 棋士情報があればそれをセットして描画
-        if ($player) {
-            return $this->set('player', $player)
-                ->set('scores', $scoreTable->findFromYear($player->id))
-                ->render('detail');
+        if ($id && !($player = $this->Players->get($id))) {
+            throw new NotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
         }
 
         // 棋士ID・既存の棋士情報が取得出来なければ新規登録画面を表示
-        // 所属国が取得出来なければエラー
-        if (!($countryId = $this->request->getQuery('country_id'))) {
-            throw new BadRequestException(__("所属国を指定してください。"));
-        }
+        if (!$player) {
+            // 所属国が取得出来なければエラー
+            if (!($countryId = $this->request->getQuery('country_id'))) {
+                throw new BadRequestException(__("所属国を指定してください。"));
+            }
 
-        // モデルを生成し、国と組織を設定
-        $organization = $this->Organizations->findByCountry($countryId)->first();
-        $player = $this->Players->newEntity([
-            'country_id' => $countryId,
-            'organization_id' => ($organization ? $organization->id : ''),
-        ]);
+            // モデルを生成し、国と組織を設定
+            $organization = $this->Organizations->findByCountryId($countryId)->first();
+            $player = $this->Players->newEntity([
+                'country_id' => $countryId,
+                'organization_id' => ($organization ? $organization->id : ''),
+            ]);
+        }
 
         return $this->set('player', $player)->render('detail');
 	}
@@ -140,32 +128,27 @@ class PlayersController extends AppController
      * @param int|null $id 保存対象データのID
      * @return Response
 	 */
-	public function save($id = null)
+	public function save()
     {
         // POST以外は許可しない
         $this->request->allowMethod(['post']);
 
-        // 新規登録かどうか
-        $isAdd = ($id === null);
+        // エンティティ取得
+        $id = $this->request->getData('id');
+        $player = ($id) ? $this->Players->get($id) : $this->Players->newEntity();
 
-        // IDからデータを取得
-        $player = ($isAdd) ? $this->Players->newEntity() : $this->Players->get($id);
-
-        // 入力値をエンティティに設定
-        $data = $this->request->getParsedBody();
-        $this->Players->patchEntity($player, $data);
-
-        // バリデーションエラーの場合は詳細情報表示処理へ
-        if (($errors = $this->Players->validator()->errors($data))) {
-            $this->Flash->error($errors);
-            return $this->setAction('detail', null, $player);
+        // バリデーション
+        $this->Players->patchEntity($player, $this->request->getParsedBody());
+        if (($errors = $player->errors())) {
+            return $this->_setErrors($errors)
+                ->setAction('detail', null, $player);
         }
 
         // 新規登録でない場合は保存して終了
-        if (!$isAdd) {
+        if ($id) {
             $this->Players->save($player);
-            $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を更新しました。"));
-            return $this->setAction('detail', $player->id);
+            return $this->_setMessages(__("棋士ID：{$player->id}の棋士情報を更新しました。"))
+                ->setAction('detail', $player->id);
         }
 
         // 以降は新規登録時の処理
@@ -182,34 +165,36 @@ class PlayersController extends AppController
         // POST以外は許可しない
         $this->request->allowMethod(['post']);
 
-        $data = $this->request->getParsedBody();
-        $playerId = $data['player_id'] ?? '';
+        // タイトルIDが取得できなければエラー
+        if (!($id = $this->request->getData('player_id'))) {
+            throw new BadRequestException(__('棋士IDは必須です。'));
+        }
 
-        // バリデーションエラーの場合はそのまま返す
-        $playerRanks = $this->loadModel('PlayerRanks');
-        if (($errors = $playerRanks->validator()->errors($data))) {
-            $this->Flash->error($errors);
-            return $this->setTabAction('detail', 'ranks', $playerId);
+        // バリデーション
+        $this->loadModel('PlayerRanks');
+        $playerRanks = $this->PlayerRanks->newEntity($this->request->getParsedBody());
+        if (($errors = $playerRanks->errors())) {
+            return $this->_setErrors($errors)
+                ->setTabAction('detail', 'ranks', $id);
         }
 
         // すでに存在するかどうかを確認
-		if (!$playerRanks->add($data)) {
-            $this->Flash->error(__("昇段情報がすでに存在します。"));
-            return $this->setTabAction('detail', 'ranks', $playerId);
+		if (!$this->PlayerRanks->add($playerRanks->toArray())) {
+            return $this->_setErrors(__('昇段情報がすでに存在します。'))
+                ->setTabAction('detail', 'ranks', $id);
 		}
 
         // 最新データとして指定があれば棋士情報を更新
         if ($this->request->getData('newest')) {
-            $player = $this->Players->get($playerId);
+            $player = $this->Players->get($id);
             $player->rank_id = $data['rank_id'];
             $this->Players->save($player);
         }
 
-        $this->Flash->info(__("昇段情報を登録しました。"));
-
         // リクエストを初期化して詳細画面に遷移
-        return $this->_resetRequest()
-            ->setTabAction('detail', 'ranks', $playerId);
+        return $this->_setMessages(__("昇段情報を登録しました。"))
+            ->_resetRequest()
+            ->setTabAction('detail', 'ranks', $id);
     }
 
     /**
@@ -242,8 +227,8 @@ class PlayersController extends AppController
     {
         // 登録処理
 		if (!($player = $this->Players->add($player->toArray()))) {
-            $this->Flash->error(__("棋士情報がすでに存在します。"));
-            return $this->setAction('detail', null, $player);
+            return $this->_setErrors(__('棋士情報がすでに存在します。'))
+                ->setAction('detail', null, $player);
 		}
 
         // 入段日を登録時段位の昇段日として設定
@@ -269,8 +254,7 @@ class PlayersController extends AppController
         ]);
 
         // 詳細情報表示処理へ
-        $this->Flash->info(__("棋士ID：{$player->id}の棋士情報を登録しました。"));
-        return ($continue ? $this->setAction('detail')
-                : $this->setAction('detail', $player->id));
+        return $this->_setMessages(__("棋士ID：{$player->id}の棋士情報を登録しました。"))
+            ->setAction('detail', ($continue ? null : $player->id));
     }
 }

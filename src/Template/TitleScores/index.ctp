@@ -56,8 +56,8 @@
                     <?=$this->Form->hidden('id', ['value' => $titleScore->id]);?>
                     <span class="country"><?= h($titleScore->country->name.'棋戦') ?></span>
                     <span class="date"><?= h($titleScore->date) ?></span>
-                    <span class="name"><?= $titleScore->getWinner($this->request->getData('id')) ?></span>
-                    <span class="name"><?= $titleScore->getLoser($this->request->getData('id')) ?></span>
+                    <span class="name"><?= $titleScore->getWinner($this->request->getData('player_id')) ?></span>
+                    <span class="name"><?= $titleScore->getLoser($this->request->getData('player_id')) ?></span>
                     <?php if (!isset($isDialog)) : ?>
                     <span class="operation">
                         <?= $this->Form->button('勝敗変更', ['data-id' => $titleScore->id, 'class' => 'change']) ?>

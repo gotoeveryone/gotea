@@ -26,12 +26,8 @@ use Cake\Validation\Validator;
  */
 class TitleScoreDetailsTable extends AppTable
 {
-
     /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
+     * {@inheritdoc}
      */
     public function initialize(array $config)
     {
@@ -63,10 +59,7 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * {@inheritdoc}
      */
     public function validationDefault(Validator $validator)
     {
@@ -82,11 +75,7 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * {@inheritdoc}
      */
     public function buildRules(RulesChecker $rules)
     {

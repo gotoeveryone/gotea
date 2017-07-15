@@ -3,12 +3,134 @@
 namespace App\Model\Entity;
 
 use Cake\I18n\Date;
+use Cake\ORM\TableRegistry;
 
 /**
  * 棋士エンティティ
  */
 class Player extends AppEntity
 {
+    /**
+     * 年齢を取得します。
+     *
+     * @return int|null 年齢
+     */
+    protected function _getAge()
+    {
+        return $this->birthday ? $this->birthday->age : null;
+    }
+
+    /**
+     * 棋士名と段位を取得します。
+     *
+     * @return string 棋士名 段位
+     */
+    protected function _getNameWithRank()
+    {
+        return $this->name.' '.$this->rank->name;
+    }
+
+    /**
+     * 棋士の所属組織を取得します。
+     *
+     * @param mixed $value
+     * @return Organization 所属組織
+     */
+    protected function _getOrganization($value)
+    {
+        if ($value) {
+            return $value;
+        }
+
+        $result = TableRegistry::get('Organizations')->get($this->organization_id);
+        return $this->organizations = $result;
+    }
+
+    /**
+     * 棋士の昇段情報を取得します。
+     *
+     * @param mixed $value
+     * @return \Cake\ORM\ResultSet|null 昇段情報
+     */
+    protected function _getPlayerRanks($value)
+    {
+        if ($value) {
+            return $value;
+        }
+
+        if (!$this->id) {
+            return null;
+        }
+
+        $result = TableRegistry::get('PlayerRanks')->findRanks($this->id);
+        return $this->player_ranks = $result;
+    }
+
+    /**
+     * 棋士の成績を取得します。
+     *
+     * @param mixed $value
+     * @return \Cake\ORM\ResultSet|null 成績
+     */
+    protected function _getTitleScores($value)
+    {
+        if ($value) {
+            return $value;
+        }
+
+        if (!$this->id) {
+            return null;
+        }
+
+        $result = TableRegistry::get('TitleScores')->findFromYear($this->id);
+        return $this->title_scores = $result;
+    }
+
+    /**
+     * 棋士のタイトル獲得履歴を取得します。
+     *
+     * @param mixed $value
+     * @return \Cake\ORM\ResultSet|null タイトル獲得履歴
+     */
+    protected function _getRetentionHistories($value)
+    {
+        if ($value) {
+            return $value;
+        }
+
+        if (!$this->id) {
+            return null;
+        }
+
+        $result = TableRegistry::get('RetentionHistories')->findHistoriesByPlayer($this->id);
+        return $this->retention_histories = $result;
+    }
+
+    /**
+     * 誕生日を設定します。
+     *
+     * @param type $birthday
+     * @return Date
+     */
+    protected function _setBirthday($birthday)
+    {
+        if ($birthday && !($birthday instanceof Date)) {
+            return Date::parseDate($birthday, 'YYYY/MM/dd');
+        }
+        return $birthday;
+    }
+
+    /**
+     * 入段日を設定します。
+     *
+     * @param type $joined
+     * @return string
+     */
+    protected function _setJoined($joined)
+    {
+        return str_replace('-', '', str_replace('/', '', $joined));
+    }
+
     /**
      * ランキング表示用の名前を取得します。
      *
@@ -40,7 +162,6 @@ class Player extends AppEntity
      */
     public function years()
     {
-        $years = [];
         $year = intval(Date::now()->year);
         // 引退棋士
         if ($this->is_retired) {
@@ -52,59 +173,12 @@ class Player extends AppEntity
                 $year = $this->retired->year;
             }
         }
+
+        $years = [];
         for ($i = $year; $i >= 2017; $i--) {
             $years[] = $i;
         }
         return $years;
-    }
-
-    /**
-     * 棋士名と段位を取得します。
-     *
-     * @return string 棋士名 段位
-     */
-    public function getNameWithRank()
-    {
-        return $this->name.' '.$this->rank->name;
-    }
-
-    /**
-     * 年齢を取得します。
-     *
-     * @return int|null 年齢
-     */
-    public function getAge()
-    {
-        if (!$this->birthday) {
-            return null;
-        }
-        $now = new Date();
-        return $now->diffInYears($this->birthday);
-    }
-
-    /**
-     * 誕生日を設定します。
-     *
-     * @param type $birthday
-     * @return Date
-     */
-    protected function _setBirthday($birthday)
-    {
-        if ($birthday && !($birthday instanceof Date)) {
-            return Date::parseDate($birthday, 'YYYY/MM/dd');
-        }
-        return $birthday;
-    }
-
-    /**
-     * 入段日を設定します。
-     *
-     * @param type $joined
-     * @return string
-     */
-    protected function _setJoined($joined)
-    {
-        return str_replace('-', '', str_replace('/', '', $joined));
     }
 
     /**
@@ -128,57 +202,53 @@ class Player extends AppEntity
     /**
      * 勝数を取得します。
      *
-     * @param ResultSet $scores
      * @param int|null $year
      * @param boolean $world
      * @return int|string 勝数
      */
-    public function win($scores, $year = null, $world = false)
+    public function win($year = null, $world = false)
     {
-        return $this->show('win', $scores, $year, $world);
+        return $this->show('win', $year, $world);
     }
 
     /**
      * 敗数を取得します。
      *
-     * @param ResultSet $scores
      * @param int|null $year
      * @param boolean $world
      * @return int|string 敗数
      */
-    public function lose($scores, $year = null, $world = false)
+    public function lose($year = null, $world = false)
     {
-        return $this->show('lose', $scores, $year, $world);
+        return $this->show('lose', $year, $world);
     }
 
     /**
      * 引分数を取得します。
      *
-     * @param ResultSet $scores
      * @param int|null $year
      * @param boolean $world
      * @return int|string 引分数
      */
-    public function draw($scores, $year = null, $world = false)
+    public function draw($year = null, $world = false)
     {
-        return $this->show('draw', $scores, $year, $world);
+        return $this->show('draw', $year, $world);
     }
 
     /**
      * 指定された成績の値を取得します。
      *
      * @param string $type
-     * @param ResultSet $scores
      * @param int|null $year
      * @param bool $world
      * @return int|string 対象数
      */
-    private function show($type, $scores, $year = null, $world = false)
+    private function show($type, $year = null, $world = false)
     {
         if ($year === null) {
             $year = Date::now()->year;
         }
-        $score = $scores->filter(function($item, $key) use ($year) {
+        $score = $this->title_scores->filter(function($item, $key) use ($year) {
             return (int) $item->player_id === $this->id
                 && (int) $item->target_year === $year;
         })->first();

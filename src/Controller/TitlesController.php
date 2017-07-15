@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cake\Http\Response;
+use Cake\Network\Exception\BadRequestException;
 use Cake\Network\Exception\NotFoundException;
 
 /**
@@ -27,35 +28,54 @@ class TitlesController extends AppController
     }
 
 	/**
-	 * 詳細情報表示・更新処理
+	 * 詳細表示処理
      *
-     * @param int|null $id 取得するデータのID
-     * @param bool $save 保存処理をおこなうかどうか
+     * @param int $id 取得するデータのID
+     * @param Title|null $title 表示に利用するデータ
      * @return Response
 	 */
-	public function detail($id = null, $save = true)
+	public function detail(int $id, $title = null)
     {
         // ダイアログ表示
         $this->_setDialogMode();
 
-        // 保存処理
-        if ($id !== null && $save && $this->request->isPost()) {
-            // バリデーションエラーの場合は処理終了
-            $data = $this->request->getParsedBody();
-            if (($errors = $this->Titles->validator()->errors($data))) {
-                $this->Flash->error($errors);
-                return $this->render('detail');
-            }
-
-            // 保存処理
-            if (($title = $this->Titles->saveEntity($data))) {
-                $this->Flash->info(__("タイトル：{$title->name}を更新しました。"));
-            }
-        } elseif (!($title = $this->Titles->findWithRelations($id))) {
-            throw new NotFoundException(__("タイトル情報が取得できませんでした。ID：{$id}"));
+        // 表示に利用するデータがあればそれを設定して終了
+        if ($title) {
+            return $this->set('title', $title)->render('detail');
         }
 
-        return $this->set('title', $title)->render('detail');
+        return $this->set('title', $this->Titles->get($id))->render('detail');
+    }
+
+    /**
+     * 保存処理
+     *
+     * @return Response
+     */
+    public function save()
+    {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
+        // IDが取得できなければエラー
+        if (!($id = $this->request->getData('id'))) {
+            throw new BadRequestException(__('IDは必須です。'));
+        }
+
+        // IDからデータを取得
+        $title = $this->Titles->get($id);
+
+        // バリデーション
+        $this->Titles->patchEntity($title, $this->request->getParsedBody());
+        if (($errors = $title->errors())) {
+            return $this->_setErrors($errors)
+                ->setAction('detail', $id, $title);
+        }
+
+        // 保存して詳細画面へ
+        $this->Titles->save($title);
+        return $this->_setMessages(__("タイトル：{$title->name}を更新しました。"))
+            ->setAction('detail', $id, $title);
     }
 
 	/**
@@ -68,27 +88,28 @@ class TitlesController extends AppController
         // POST以外は許可しない
         $this->request->allowMethod(['post']);
 
+        // タイトルIDが取得できなければエラー
+        if (!($id = $this->request->getData('title_id'))) {
+            throw new BadRequestException(__('タイトルIDは必須です。'));
+        }
+
+        // バリデーション
         $this->loadModel('RetentionHistories');
-
-        $data = $this->request->getParsedBody();
-        $titleId = $this->request->getData('title_id', '');
-
-        // バリデーションエラーの場合はそのまま返す
-        if (($errors = $this->RetentionHistories->validator()->errors($data))) {
-            $this->Flash->error($errors);
-            return $this->setTabAction('detail', 'histories', $titleId, false);
+        $history = $this->RetentionHistories->newEntity($this->request->getParsedBody());
+        if (($errors = $history->errors())) {
+            return $this->_setErrors($errors)
+                ->setTabAction('detail', 'histories', $id);
         }
 
         // すでに存在するかどうかを確認
-		if (!$this->RetentionHistories->add($data)) {
-            $this->Flash->error(__("タイトル保持情報がすでに存在します。タイトルID：{$titleId}"));
-            return $this->setTabAction('detail', 'histories', $titleId, false);
+		if (!$this->RetentionHistories->add($history->toArray())) {
+            return $this->_setErrors(__('タイトル保持情報がすでに存在します。'))
+                ->setTabAction('detail', 'histories', $id);
 		}
 
-        $this->Flash->info(__("保持履歴を登録しました。"));
-
         // リクエストを初期化して詳細画面に遷移
-        return $this->_resetRequest()
-            ->setTabAction('detail', 'histories', $titleId, false);
+        return $this->_setMessages(__("保持履歴を登録しました。"))
+            ->_resetRequest()
+            ->setTabAction('detail', 'histories', $id);
 	}
 }

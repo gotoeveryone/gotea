@@ -16,11 +16,9 @@ use App\Model\Entity\Player;
  */
 class PlayersTable extends AppTable
 {
-	/**
-	 * 初期設定
-     *
-     * @param $config
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function initialize(array $config)
     {
         // 国
@@ -38,10 +36,7 @@ class PlayersTable extends AppTable
     }
 
     /**
-     * バリデーションルール
-     *
-     * @param \App\Model\Table\Validator $validator
-     * @return type
+     * {@inheritdoc}
      */
     public function validationDefault(Validator $validator)
     {
@@ -61,37 +56,6 @@ class PlayersTable extends AppTable
             ->date('joined', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['入段日', 'yyyy/MM/dd']), function($context) {
                 return empty($context['data']['id']);
             });
-    }
-
-    /**
-     * 棋士情報に関する一式を取得します。
-     *
-     * @param int $id
-     * @return Player|null 棋士情報
-     */
-    public function findWithRelations(int $id)
-    {
-		return $this->find()->contain([
-            'Countries',
-            'Ranks',
-            'Organizations',
-            'PlayerScores' => function (Query $q) {
-                return $q->orderDesc('PlayerScores.target_year');
-            },
-            'PlayerScores.Ranks',
-            'PlayerRanks' => function (Query $q) {
-                return $q->orderDesc('Ranks.rank_numeric');
-            },
-            'PlayerRanks.Ranks',
-            'RetentionHistories' => function (Query $q) {
-                return $q->order([
-                    'RetentionHistories.target_year' => 'DESC',
-                    'Titles.country_id' => 'ASC',
-                    'Titles.sort_order' => 'ASC'
-                ]);
-            },
-            'RetentionHistories.Titles.Countries',
-        ])->where(['Players.id' => $id])->first();
     }
 
     /**
@@ -151,7 +115,7 @@ class PlayersTable extends AppTable
      * @param int $targetYear
      * @param int $offset
      * @param bool $admin
-     * @return Collection ランキング集計データ
+     * @return \Cake\Collection\Collection ランキング集計データ
      */
     public function findRanking(Country $country, int $targetYear, int $offset, bool $admin)
     {
@@ -203,7 +167,7 @@ class PlayersTable extends AppTable
      * @param ResultSet $models
      * @param Country $country
      * @param bool $admin
-     * @return Collection ランキング
+     * @return \Cake\Collection\Collection ランキング
      */
     private function __mapped(ResultSet $models, Country $country, bool $admin)
     {
@@ -243,7 +207,7 @@ class PlayersTable extends AppTable
      * @param Country $country
      * @param int $targetYear
      * @param string $division
-     * @return \Cake\Database\Query
+     * @return Query
      */
     private function __createSub(Country $country, int $targetYear, string $division)
     {
@@ -277,7 +241,7 @@ class PlayersTable extends AppTable
      * @param string $input
      * @return array
      */
-    private function __createLikeParams(string $fieldName, string $input) : array
+    private function __createLikeParams(string $fieldName, string $input)
     {
         $whereClause = [];
         $params = explode(" ", $input);
@@ -295,7 +259,7 @@ class PlayersTable extends AppTable
      * @param int $targetYear
      * @param int $offset
      * @param bool $admin
-     * @return Collection
+     * @return \Cake\Collection\Collection
      */
     private function __findOldRanking(Country $country, int $targetYear, int $offset, bool $admin)
     {

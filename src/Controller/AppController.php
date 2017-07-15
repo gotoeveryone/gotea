@@ -113,6 +113,30 @@ class AppController extends Controller
     }
 
     /**
+     * エラーを設定します。
+     *
+     * @param array|string $errors
+     * @return Controller
+     */
+    protected function _setErrors($errors)
+    {
+        return $this->_setMessages($errors, 'error');
+    }
+
+    /**
+     * エラーを設定します。
+     *
+     * @param array|string $messages
+     * @param string $type
+     * @return Controller
+     */
+    protected function _setMessages($messages, $type = 'info')
+    {
+        $this->Flash->$type($messages);
+        return $this;
+    }
+
+    /**
      * リクエストを初期化します。
      *
      * @return Controller
