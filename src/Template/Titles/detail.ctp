@@ -44,18 +44,7 @@
                         </div>
                         <div class="box">
                             <div class="label-row">現在の保持者</div>
-                            <div class="input-row">
-                                <?php
-                                    if (!empty(($histories = $title->retention_histories))) :
-                                        foreach ($histories as $history) :
-                                            if ($history->holding === $title->holding) :
-                                                echo h($history->getWinnerName($title->is_team));
-                                                break;
-                                            endif;
-                                        endforeach;
-                                    endif;
-                                ?>
-                            </div>
+                            <div class="input-row"><?= h($title->getWinnerName(true)) ?></div>
                         </div>
                         <div class="box">
                             <div class="label-row">団体戦</div>

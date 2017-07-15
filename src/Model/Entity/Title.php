@@ -33,21 +33,20 @@ class Title extends AppEntity
      * 現在の優勝者を取得します。
      *
      * @param boolean $isJp
-     * @return string
+     * @return string|null
      */
-    public function getWinnerName($isJp = true): string
+    public function getWinnerName($isJp = true)
     {
-        if (empty($this->retention_histories)) {
-            return '';
+        if (!($history = $this->__getRetention())) {
+            return null;
+        }
+
+        if ($this->is_team) {
+            return $history->win_group_name;
+        } else if (!$isJp) {
+            return "{$history->player->name_english} ({$history->rank->rank_numeric} dan)";
         } else {
-            $retention = $this->retention_histories[0];
-            if ($this->is_team) {
-                return $retention->win_group_name;
-            } else if (!$isJp) {
-                return "{$retention->player->name_english} ({$retention->rank->rank_numeric} dan)";
-            } else {
-                return "{$retention->player->name} {$retention->rank->name}";
-            }
+            return "{$history->player->name} {$history->rank->name}";
         }
     }
 
@@ -58,10 +57,11 @@ class Title extends AppEntity
      */
     public function isNewHistories() : bool
     {
-        if (!$this->retention_histories) {
+        if (!($history = $this->__getRetention())) {
             return false;
         }
-        return $this->retention_histories[0]->created->wasWithinLast(20);
+
+        return $history->created->wasWithinLast(20);
     }
 
     /**
@@ -91,5 +91,22 @@ class Title extends AppEntity
             'htmlFileName' => $this->html_file_name,
             'htmlFileModified' => $this->html_file_modified,
         ];
+    }
+
+    /**
+     * 期が一致するに該当するタイトル獲得履歴を1件取得します。
+     *
+     * @return RetentionHistory|null
+     */
+    private function __getRetention()
+    {
+        $histories = collection($this->retention_histories);
+        if ($histories->isEmpty()) {
+            return null;
+        }
+
+        return $histories->filter(function($item, $key) {
+            return $item->holding === $this->holding;
+        })->first();
     }
 }
