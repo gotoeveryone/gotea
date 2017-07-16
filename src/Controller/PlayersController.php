@@ -16,7 +16,6 @@ use Cake\I18n\Date;
  * @since   2015/07/20
  *
  * @property \App\Model\Table\PlayersTable $Players
- * @property \App\Model\Table\CountriesTable $Countries
  * @property \App\Model\Table\RanksTable $Ranks
  * @property \App\Model\Table\OrganizationsTable $Organizations
  * @property \App\Model\Table\TitleScoresTable $TitleScores
@@ -33,6 +32,7 @@ class PlayersController extends AppController
         // モデルをロード
         $this->loadModel('Ranks');
         $this->loadModel('Organizations');
+        $this->loadModel('TitleScores');
     }
 
 	/**
@@ -41,9 +41,6 @@ class PlayersController extends AppController
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
-
-		// 段位プルダウン
-		$this->set('ranks', $this->Ranks->findToKeyValue());
 		// 所属プルダウン
 		$this->set('organizations', $this->Organizations->findToKeyValue());
    	}
@@ -55,17 +52,15 @@ class PlayersController extends AppController
 	 */
 	public function index()
     {
-        $this->loadModel('Countries');
-        $this->_setTitle('棋士情報検索')
-            ->set('countries', $this->Countries->findToKeyValue(true));
+        $this->_setTitle('棋士情報検索');
 
         // 検索
         if ($this->request->isPost()) {
             // リクエストから値を取得
             $form = new PlayerForm();
             if (!$form->validate($this->request->getParsedBody())) {
-                $this->Flash->error($form->errors());
-                return $this->set('form', $form)->render('index');
+                return $this->_setErrors($form->errors())
+                    ->set('form', $form)->render('index');
             }
 
             // 該当する棋士情報一覧の件数を取得
@@ -119,7 +114,10 @@ class PlayersController extends AppController
             ]);
         }
 
-        return $this->set('player', $player)->render('detail');
+        return $this->set('player', $player)
+            ->set('scores', $this->TitleScores->findFromYear(
+                $player->id, Date::now()->year))
+            ->render('detail');
 	}
 
 	/**

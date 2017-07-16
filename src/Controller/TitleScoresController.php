@@ -33,10 +33,6 @@ class TitleScoresController extends AppController
     {
         // ダイアログ状態でない場合はヘッダを取得
         if (!$this->_isDialogMode()) {
-            // 所属国プルダウン
-            $this->loadModel('Countries');
-            $this->set('countries', $this->Countries->findToKeyValue());
-
             // 年度プルダウン
             $years = [];
             for ($i = date('Y'); $i >= 2013; $i--) {

@@ -12,13 +12,7 @@
         <ul class="search-header">
             <li class="search-row">
                 <label>所属国：</label>
-                <?=
-                    $this->Form->select('country_id', $countries, [
-                        'data-id' => 'country',
-                        'class' => 'country',
-                        'empty' => true
-                    ]);
-                ?>
+                <?= $this->cell('Countries', ['hasTitle' => true])->render() ?>
                 <label>所属組織：</label>
                 <?=
                     $this->Form->select('organization_id', $organizations, [
@@ -28,13 +22,7 @@
                     ]);
                 ?>
                 <label>段位：</label>
-                <?=
-                    $this->Form->select('rank_id', $ranks, [
-                        'data-id' => 'rank',
-                        'class' => 'rank',
-                        'empty' => true
-                    ]);
-                ?>
+                <?= $this->cell('Ranks', ['empty' => true])->render() ?>
                 <label>性別：</label>
                 <?=
                     $this->Form->select('sex', [
