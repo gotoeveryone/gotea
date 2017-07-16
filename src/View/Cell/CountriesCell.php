@@ -4,10 +4,13 @@ namespace App\View\Cell;
 
 use Cake\View\Cell;
 
+/**
+ * 所属国を表示するためのセル
+ */
 class CountriesCell extends Cell
 {
     /**
-     * 所属国を表示するためのセル
+     * 表示処理
      *
      * @param boolean $hasTitle
      * @return void

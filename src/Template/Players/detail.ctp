@@ -39,14 +39,12 @@
                         <div class="box">
                             <div class="label-row"><span>所属組織</span></div>
                             <div class="input-row">
-                                <span>
-                                    <?=
-                                        $this->Form->select('organization_id', $organizations, [
-                                            'class' => 'organization',
-                                            'value' => ($player->organization_id ? $player->organization_id : '1')
-                                        ]);
-                                    ?>
-                                </span>
+                                <?=
+                                    $this->cell('Organizations', [
+                                        'empty' => false,
+                                        'value' => ($player->organization_id ? $player->organization_id : '1'),
+                                    ])->render()
+                                ?>
                             </div>
                         </div>
                         <div class="box">
@@ -54,9 +52,7 @@
                             <div class="input-row">
                                 <?=$this->Form->checkbox('is_retired', ['id' => 'retired'])?>
                                 <label for="retired">引退しました</label>
-                                <?= $this->Form->text('retired', [
-                                    'class' => 'datepicker'
-                                ]) ?>
+                                <?= $this->Form->text('retired', ['class' => 'datepicker']) ?>
                             </div>
                         </div>
                     </li>
@@ -121,12 +117,7 @@
                             <div class="input-row">
                                 <?php
                                     if (!$player->id) {
-                                        echo $this->Form->select('sex', [
-                                            '男性' => '男性',
-                                            '女性' => '女性'
-                                        ], [
-                                            'class' => 'sex'
-                                        ]);
+                                        echo $this->MyForm->sexes(['class' => 'sex']);
                                     } else {
                                         echo h($player->sex);
                                         echo $this->Form->hidden('sex');
@@ -139,10 +130,10 @@
                             <div class="input-row">
                                 <?php
                                     if (!$player->id) {
-                                        echo $this->Form->select('rank_id', $ranks, [
-                                            'class' => 'rank',
-                                            'value' => ($player->rank_id ? $player->rank_id : '1')
-                                        ]);
+                                        echo $this->cell('Ranks', [
+                                            'empty' => false,
+                                            'value' => ($player->rank_id ? $player->rank_id : '1'),
+                                        ])->render();
                                     } else {
                                         echo h($player->rank->name);
                                         echo $this->Form->hidden('rank_id');

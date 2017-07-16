@@ -14,25 +14,11 @@
                 <label>所属国：</label>
                 <?= $this->cell('Countries', ['hasTitle' => true])->render() ?>
                 <label>所属組織：</label>
-                <?=
-                    $this->Form->select('organization_id', $organizations, [
-                        'data-id' => 'organization',
-                        'class' => 'organization',
-                        'empty' => true
-                    ]);
-                ?>
+                <?= $this->cell('Organizations', ['empty' => true])->render() ?>
                 <label>段位：</label>
                 <?= $this->cell('Ranks', ['empty' => true])->render() ?>
                 <label>性別：</label>
-                <?=
-                    $this->Form->select('sex', [
-                        '男性' => '男性',
-                        '女性' => '女性'
-                    ], [
-                        'class' => 'sex',
-                        'empty' => true
-                    ]);
-                ?>
+                <?= $this->MyForm->sexes(['class' => 'sex', 'empty' => true]) ?>
                 <label>引退者：</label>
                 <?=
                     $this->Form->select('is_retired', [
@@ -103,10 +89,8 @@
                         <?=h($player->id)?>
                     </span>
                     <span class="name">
-                        <?php
-                            $setClass = ($player->sex === '女性' ? 'female' : 'blue');
-                        ?>
-                        <a class="<?=$setClass?>" @click="openModal('/igoapp/players/detail/<?=$player->id?>')">
+                        <a class="<?= ($player->sex === '女性' ? 'female' : 'blue') ?>"
+                            @click="openModal('/igoapp/players/detail/<?=$player->id?>')">
                             <?=h($player->name)?>
                         </a>
                     </span>

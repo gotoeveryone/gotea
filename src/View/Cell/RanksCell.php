@@ -4,10 +4,13 @@ namespace App\View\Cell;
 
 use Cake\View\Cell;
 
+/**
+ * 段位を表示するためのセル
+ */
 class RanksCell extends Cell
 {
     /**
-     * 段位を表示するためのセル
+     * 表示処理
      *
      * @param bool $empty
      * @param string $value
@@ -17,7 +20,7 @@ class RanksCell extends Cell
     {
         $ranks = $this->loadModel('Ranks');
         $this->set('empty', $empty)
-            ->set('value', ($value ? $value : $this->request->getData('rank_id')))
+            ->set('value', ($req = $this->request->getData('rank_id')) ? $req : $value)
             ->set('ranks', $ranks->findToKeyValue());
     }
 }

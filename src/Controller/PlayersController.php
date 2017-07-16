@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Form\PlayerForm;
-use App\Model\Entity\Player;
+use PDOException;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\Date;
+use App\Form\PlayerForm;
+use App\Model\Entity\Player;
 
 /**
  * 棋士マスタ用コントローラ
@@ -16,8 +17,7 @@ use Cake\I18n\Date;
  * @since   2015/07/20
  *
  * @property \App\Model\Table\PlayersTable $Players
- * @property \App\Model\Table\RanksTable $Ranks
- * @property \App\Model\Table\OrganizationsTable $Organizations
+ * @property \App\Model\Table\PlayerRanksTable $PlayerRanks
  * @property \App\Model\Table\TitleScoresTable $TitleScores
  */
 class PlayersController extends AppController
@@ -30,20 +30,9 @@ class PlayersController extends AppController
         parent::initialize();
 
         // モデルをロード
-        $this->loadModel('Ranks');
-        $this->loadModel('Organizations');
+        $this->loadModel('PlayerRanks');
         $this->loadModel('TitleScores');
     }
-
-	/**
-     * {@inheritDoc}
-	 */
-    public function beforeRender(Event $event)
-    {
-        parent::beforeRender($event);
-		// 所属プルダウン
-		$this->set('organizations', $this->Organizations->findToKeyValue());
-   	}
 
 	/**
 	 * 初期処理 or 検索処理
@@ -96,7 +85,7 @@ class PlayersController extends AppController
         $this->_setDialogMode();
 
         if ($id && !($player = $this->Players->get($id))) {
-            throw new NotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
+            throw new RecordNotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
         }
 
         // 棋士ID・既存の棋士情報が取得出来なければ新規登録画面を表示
@@ -107,11 +96,10 @@ class PlayersController extends AppController
             }
 
             // モデルを生成し、国と組織を設定
-            $organization = $this->Organizations->findByCountryId($countryId)->first();
             $player = $this->Players->newEntity([
                 'country_id' => $countryId,
-                'organization_id' => ($organization ? $organization->id : ''),
             ]);
+            $player->organization_id = $player->country->organizations->first()->id;
         }
 
         return $this->set('player', $player)
@@ -169,7 +157,6 @@ class PlayersController extends AppController
         }
 
         // バリデーション
-        $this->loadModel('PlayerRanks');
         $playerRanks = $this->PlayerRanks->newEntity($this->request->getParsedBody());
         if (($errors = $playerRanks->errors())) {
             return $this->_setErrors($errors)
@@ -185,7 +172,7 @@ class PlayersController extends AppController
         // 最新データとして指定があれば棋士情報を更新
         if ($this->request->getData('newest')) {
             $player = $this->Players->get($id);
-            $player->rank_id = $data['rank_id'];
+            $player->rank_id = $playerRanks->rank_id;
             $this->Players->save($player);
         }
 
@@ -233,12 +220,12 @@ class PlayersController extends AppController
         $promoted = Date::parseDate($player->joined, 'yyyyMMdd');
 
         // 棋士昇段情報へ登録
-        if (!$this->loadModel('PlayerRanks')->add([
+        if (!$this->PlayerRanks->add([
             'player_id' => $player->id,
             'rank_id' => $player->rank_id,
             'promoted' => $promoted->format('Y/m/d'),
         ])) {
-            throw new \PDOException('棋士昇段情報への登録に失敗しました。');
+            throw new PDOException('棋士昇段情報への登録に失敗しました。');
         }
 
         // 連続作成ならリクエストを初期化

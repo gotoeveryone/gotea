@@ -43,7 +43,7 @@ class Player extends AppEntity
         }
 
         $result = TableRegistry::get('Organizations')->get($this->organization_id);
-        return $this->organizations = $result;
+        return $this->organization = $result;
     }
 
     /**

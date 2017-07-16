@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Cake\Http\Response;
 use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Exception\NotFoundException;
 
 /**
  * タイトルマスタ用コントローラ
@@ -17,6 +16,17 @@ use Cake\Network\Exception\NotFoundException;
  */
 class TitlesController extends AppController
 {
+    /**
+     * {@inheritDoc}
+     */
+	public function initialize()
+    {
+        parent::initialize();
+
+        // モデルをロード
+        $this->loadModel('RetentionHistories');
+    }
+
 	/**
 	 * 初期処理
      *
@@ -94,7 +104,6 @@ class TitlesController extends AppController
         }
 
         // バリデーション
-        $this->loadModel('RetentionHistories');
         $history = $this->RetentionHistories->newEntity($this->request->getParsedBody());
         if (($errors = $history->errors())) {
             return $this->_setErrors($errors)
