@@ -43,7 +43,7 @@ class Player extends AppEntity
         }
 
         $result = TableRegistry::get('Organizations')->get($this->organization_id);
-        return $this->organizations = $result;
+        return $this->organization = $result;
     }
 
     /**
@@ -109,7 +109,7 @@ class Player extends AppEntity
     /**
      * 誕生日を設定します。
      *
-     * @param type $birthday
+     * @param mixed $birthday
      * @return Date
      */
     protected function _setBirthday($birthday)
@@ -123,12 +123,12 @@ class Player extends AppEntity
     /**
      * 入段日を設定します。
      *
-     * @param type $joined
+     * @param mixed $joined
      * @return string
      */
     protected function _setJoined($joined)
     {
-        return str_replace('-', '', str_replace('/', '', $joined));
+        return str_replace(['-', '/'], '', $joined);
     }
 
     /**
@@ -160,7 +160,7 @@ class Player extends AppEntity
      *
      * @return array 年の一覧
      */
-    public function years()
+    public function years(): array
     {
         $year = intval(Date::now()->year);
         // 引退棋士
@@ -186,7 +186,7 @@ class Player extends AppEntity
      *
      * @return array 配列
      */
-    public function renderArray() : array
+    public function renderArray(): array
     {
         return [
             'id' => $this->id,
@@ -202,53 +202,57 @@ class Player extends AppEntity
     /**
      * 勝数を取得します。
      *
+     * @param \Cake\ORM\ResultSet $scores
      * @param int|null $year
      * @param boolean $world
      * @return int|string 勝数
      */
-    public function win($year = null, $world = false)
+    public function win($scores, $year = null, $world = false)
     {
-        return $this->show('win', $year, $world);
+        return $this->__show('win', $scores, $year, $world);
     }
 
     /**
      * 敗数を取得します。
      *
+     * @param \Cake\ORM\ResultSet $scores
      * @param int|null $year
      * @param boolean $world
      * @return int|string 敗数
      */
-    public function lose($year = null, $world = false)
+    public function lose($scores, $year = null, $world = false)
     {
-        return $this->show('lose', $year, $world);
+        return $this->__show('lose', $scores, $year, $world);
     }
 
     /**
      * 引分数を取得します。
      *
+     * @param \Cake\ORM\ResultSet $scores
      * @param int|null $year
      * @param boolean $world
      * @return int|string 引分数
      */
-    public function draw($year = null, $world = false)
+    public function draw($scores, $year = null, $world = false)
     {
-        return $this->show('draw', $year, $world);
+        return $this->__show('draw', $scores, $year, $world);
     }
 
     /**
      * 指定された成績の値を取得します。
      *
      * @param string $type
+     * @param \Cake\ORM\ResultSet $scores
      * @param int|null $year
      * @param bool $world
      * @return int|string 対象数
      */
-    private function show($type, $year = null, $world = false)
+    private function __show($type, $scores, $year = null, $world = false)
     {
         if ($year === null) {
             $year = Date::now()->year;
         }
-        $score = $this->title_scores->filter(function($item, $key) use ($year) {
+        $score = $scores->filter(function($item, $key) use ($year) {
             return (int) $item->player_id === $this->id
                 && (int) $item->target_year === $year;
         })->first();

@@ -1,0 +1,26 @@
+<?php
+
+namespace App\View\Cell;
+
+use Cake\View\Cell;
+
+/**
+ * 段位を表示するためのセル
+ */
+class RanksCell extends Cell
+{
+    /**
+     * 表示処理
+     *
+     * @param bool $empty
+     * @param string $value
+     * @return void
+     */
+    public function display($empty = false, $value = '')
+    {
+        $ranks = $this->loadModel('Ranks');
+        $this->set('empty', $empty)
+            ->set('value', ($req = $this->request->getData('rank_id')) ? $req : $value)
+            ->set('ranks', $ranks->findToKeyValue());
+    }
+}

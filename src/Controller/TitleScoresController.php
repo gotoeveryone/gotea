@@ -1,24 +1,22 @@
 <?php
 namespace App\Controller;
 
-use Cake\Event\Event;
 use App\Form\TitleScoreForm;
 
 /**
  * TitleScores Controller
  *
  * @property \App\Model\Table\TitleScoresTable $TitleScores
+ * @property \App\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
  */
 class TitleScoresController extends AppController
 {
     /**
-     * 初期処理
+     * {@inheritDoc}
      */
 	public function initialize()
     {
         parent::initialize();
-
-        $this->_setTitle('タイトル勝敗検索');
 
         // モデルをロード
         $this->loadModel('TitleScoreDetails');
@@ -31,12 +29,10 @@ class TitleScoresController extends AppController
      */
     public function index()
     {
+        $this->_setTitle('タイトル勝敗検索');
+
         // ダイアログ状態でない場合はヘッダを取得
         if (!$this->_isDialogMode()) {
-            // 所属国プルダウン
-            $this->loadModel('Countries');
-            $this->set('countries', $this->Countries->findToKeyValue());
-
             // 年度プルダウン
             $years = [];
             for ($i = date('Y'); $i >= 2013; $i--) {
