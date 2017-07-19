@@ -173,41 +173,36 @@
                         </div>
                     </li>
                     <?php endif ?>
-                    <?php if (!empty(($histories))) : ?>
-                        <?php foreach ($histories as $history) : ?>
-                            <?php if ($title->holding === $history->holding) : ?>
+                    <?php if (!empty(($title->retention_histories))) : ?>
+                        <?php if (($retention = $title->now_retention)) : ?>
                             <li class="row">
                                 <div class="box">
                                     <div class="label-row">現在の保持情報</div>
+                                </div>
+                            </li>
+                            <li class="row">
+                                <div class="box">
                                     <div class="input-row">
-                                        <?=h(__("{$history->target_year}年 {$history->holding}期 {$history->name} "))?>
+                                        <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
+                                        <?=h($retention->getWinnerName($title->is_team))?>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php endif ?>
+                        <li class="row">
+                            <div class="box">
+                                <div class="label-row">保持情報（履歴）</div>
+                            </div>
+                        </li>
+                        <?php foreach ($title->histories as $history) : ?>
+                            <li class="row">
+                                <div class="box">
+                                    <div class="input-row">
+                                        <?=h("{$history->target_year}年 {$history->holding}期 {$history->name} ")?>
                                         <?=h($history->getWinnerName($title->is_team))?>
                                     </div>
                                 </div>
                             </li>
-                            <?php break ?>
-                            <?php endif ?>
-                        <?php endforeach ?>
-                        <?php $header = false; ?>
-                        <?php foreach ($histories as $history) : ?>
-                            <?php if (!$header) : ?>
-                            <li class="row">
-                                <div class="box">
-                                    <div class="label-row">保持情報（履歴）</div>
-                                </div>
-                            </li>
-                            <?php $header = true; ?>
-                            <?php endif ?>
-                            <?php if ($title->holding !== $history->holding) : ?>
-                            <li class="row">
-                                <div class="box">
-                                    <div class="input-row">
-                                        <?=h(__("{$history->target_year}年 {$history->holding}期 {$history->name} "))?>
-                                        <?=h($history->getWinnerName($title->is_team))?>
-                                    </div>
-                                </div>
-                            </li>
-                            <?php endif ?>
                         <?php endforeach ?>
                     <?php endif ?>
                 </ul>
