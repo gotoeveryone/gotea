@@ -8,10 +8,11 @@ use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use App\Middleware\LogMiddleware;
+use App\Middleware\TransactionMiddleware;
 
 /**
  * アプリケーションクラス
- * 
+ *
  * @author  Kazuki Kamizuru
  * @since   2017/06/07
  */
@@ -25,10 +26,11 @@ class Application extends BaseApplication
         $middlewareQueue
             ->add(new ErrorHandlerMiddleware())
             ->add(new AssetMiddleware())
-            ->add(new RoutingMiddleware());
- 
+            ->add(new RoutingMiddleware())
+            ->add(new TransactionMiddleware());
+
         if (Configure::read('debug')) {
-            $middlewareQueue->add(new LogMiddleware());            
+            $middlewareQueue->add(new LogMiddleware());
         }
 
         return $middlewareQueue;

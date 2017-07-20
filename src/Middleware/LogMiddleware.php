@@ -2,10 +2,10 @@
 
 namespace App\Middleware;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Cake\Log\LogTrait;
-use Cake\Http\ServerRequest as Request;
-use Cake\Http\Response;
 
 /**
  * ログ出力ミドルウェア
@@ -17,7 +17,7 @@ class LogMiddleware
 {
     use LogTrait;
 
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         $url = $request->here();
         $this->log("${url} - 開始", LogLevel::INFO);

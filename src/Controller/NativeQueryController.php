@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use PDOException;
+use Cake\Datasource\ConnectionInterface;
+use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
 
 /**
@@ -28,12 +30,14 @@ class NativeQueryController extends AppController
             // 「;」で分割
             $queries = explode(';', trim($updateText));
 
+            $conn = ConnectionManager::get('default');
             try {
-                // クエリの実行
-                $count = $this->__executeQueries($queries);
+                $count = $conn->transactional(function(ConnectionInterface $conn) use ($queries) {
+                    // クエリの実行
+                    return $this->__executeQueries($conn, $queries);
+                });
                 $this->Flash->info(__("{$count}件のクエリを実行しました。"));
             } catch (PDOException $e) {
-                $this->Transaction->markToRollback();
                 $this->Log->error($e);
                 $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
             }
@@ -45,11 +49,12 @@ class NativeQueryController extends AppController
     /**
      * クエリを実行し、件数を返します。
      *
+     * @param ConnectionInterface $conn
      * @param array $queries
      * @return int
      * @throws PDOException
      */
-    private function __executeQueries($queries)
+    private function __executeQueries(ConnectionInterface $conn, $queries)
     {
         $counter = 0;
         foreach ($queries as $query) {
@@ -58,7 +63,7 @@ class NativeQueryController extends AppController
             }
 
             // 更新
-            $cnt = $this->Transaction->getConnection()->execute($query)->count();
+            $cnt = $conn->execute($query)->count();
             if ($cnt !== 1) {
                 throw new PDOException(__("レコードの更新エラー"));
             }

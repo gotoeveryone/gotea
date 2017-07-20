@@ -13,7 +13,6 @@ use Cake\Network\Response;
  * @since   2015/07/26
  *
  * @property \App\Controller\Component\LogComponent $Log
- * @property \App\Controller\Component\TransactionComponent $Transaction
  * @property \App\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
@@ -33,7 +32,6 @@ class AppController extends Controller
         $this->loadComponent('Csrf');
         $this->loadComponent('Flash');
         $this->loadComponent('Log');
-        $this->loadComponent('Transaction');
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',
             'loginAction' => [
@@ -54,28 +52,6 @@ class AppController extends Controller
 	/**
      * {@inheritDoc}
 	 */
-    public function beforeFilter(Event $event)
-    {
-        parent::beforeFilter($event);
-
-        // トランザクションの開始
-        $this->Transaction->begin();
-    }
-
-	/**
-     * {@inheritDoc}
-	 */
-    public function afterFilter(Event $event)
-    {
-        parent::afterFilter($event);
-
-        // トランザクションのコミットまたはロールバック
-        $this->Transaction->commitOrRollback();
-    }
-
-	/**
-     * {@inheritDoc}
-	 */
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
@@ -85,17 +61,6 @@ class AppController extends Controller
             $this->set('username', $this->Auth->user('userName'));
             $this->set('admin', ($this->Auth->user('role') === '管理者'));
         }
-    }
-
-	/**
-     * {@inheritDoc}
-	 */
-    public function beforeRedirect(Event $event, $url, Response $response)
-    {
-        // トランザクションのコミットまたはロールバック
-        $this->Transaction->commitOrRollback();
-
-        return parent::beforeRedirect($event, $url, $response);
     }
 
     /**
