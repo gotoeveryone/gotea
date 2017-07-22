@@ -21,7 +21,7 @@ class PlayersController extends AppController
     /**
      * {@inheritDoc}
      */
-	public function initialize()
+    public function initialize()
     {
         parent::initialize();
 
@@ -29,12 +29,12 @@ class PlayersController extends AppController
         $this->loadModel('TitleScores');
     }
 
-	/**
-	 * 初期表示・検索処理
+    /**
+     * 初期表示・検索処理
      *
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function index()
+     */
+    public function index()
     {
         $this->_setTitle('棋士情報検索');
 
@@ -53,7 +53,7 @@ class PlayersController extends AppController
             // 件数が0件または301件以上の場合はメッセージを出力（1001件以上の場合は一覧を表示しない）
             if (($count = $query->count()) === 0) {
                 $this->Flash->warn(__("検索結果が0件でした。"));
-            } else if ($count > 300) {
+            } elseif ($count > 300) {
                 $this->Flash->warn(__("検索結果が300件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
             } else {
                 // 結果をセット
@@ -94,13 +94,13 @@ class PlayersController extends AppController
         return $this->set('player', $player)->render('detail');
     }
 
-	/**
-	 * 詳細表示処理
+    /**
+     * 詳細表示処理
      *
      * @param int $id 取得するデータのID
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function detail(int $id)
+     */
+    public function detail(int $id)
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($player = $this->__readSession())) {
@@ -110,14 +110,14 @@ class PlayersController extends AppController
 
         return $this->_setDialogMode()
             ->set('player', $player)->set('scores', $scores)->render('detail');
-	}
+    }
 
-	/**
-	 * 棋士マスタの登録・更新処理
+    /**
+     * 棋士マスタの登録・更新処理
      *
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function save()
+     */
+    public function save()
     {
         // POST以外は許可しない
         $this->request->allowMethod(['post']);

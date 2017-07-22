@@ -8,8 +8,8 @@ namespace App\Model\Table;
 class PlayerScoresTable extends AppTable
 {
     /**
-	 * 初期設定
-	 */
+     * 初期設定
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);

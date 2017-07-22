@@ -11,7 +11,7 @@ use Cake\ORM\TableRegistry;
 class AppEntity extends Entity
 {
     // アクセス許可
-	protected $_accessible = [
+    protected $_accessible = [
         '*' => true,
         'id' => false,
         'created' => false,

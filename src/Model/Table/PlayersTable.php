@@ -57,7 +57,7 @@ class PlayersTable extends AppTable
             ->maxLength('name_other', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名（その他）', 20]))
             ->date('birthday', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['生年月日', 'yyyy/MM/dd']))
             ->notEmpty('joined', $this->getMessage($this->REQUIRED, '入段日'))
-            ->date('joined', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['入段日', 'yyyy/MM/dd']), function($context) {
+            ->date('joined', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['入段日', 'yyyy/MM/dd']), function ($context) {
                 return empty($context['data']['id']);
             });
     }
@@ -204,7 +204,7 @@ class PlayersTable extends AppTable
         $this->__rank = 0;
         $this->__win = 0;
 
-        return $models->map(function($item, $key) use ($country, $admin) {
+        return $models->map(function ($item, $key) use ($country, $admin) {
             $sum = $item->win + $item->lose;
             if ($this->__win !== $item->win) {
                 $this->__rank = $key + 1;
@@ -245,7 +245,7 @@ class PlayersTable extends AppTable
         $subQuery = $titleScoreDetails->find()
                 ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
                 ->contain([
-                    'TitleScores' => function(Query $q) use ($country, $targetYear) {
+                    'TitleScores' => function (Query $q) use ($country, $targetYear) {
                         // タイトルがない所属国の場合、国際棋戦のみ対象とする
                         if (!$country->has_title) {
                             $q->where(['is_world' => true]);
@@ -259,7 +259,7 @@ class PlayersTable extends AppTable
             return $subQuery;
         }
 
-        return $subQuery->innerJoinWith('Players', function(Query $q) use ($country) {
+        return $subQuery->innerJoinWith('Players', function (Query $q) use ($country) {
             return $q->where(['Players.country_id' => $country->id]);
         });
     }
@@ -320,7 +320,7 @@ class PlayersTable extends AppTable
             ->contain([
                 'Countries',
                 'Ranks',
-            ])->where(function($exp, $q) use ($subQuery, $suffix) {
+            ])->where(function ($exp, $q) use ($subQuery, $suffix) {
                 return $exp->gte('PlayerScores.win_point'.$suffix, $subQuery);
             })->where([
                 'PlayerScores.target_year' => $targetYear,

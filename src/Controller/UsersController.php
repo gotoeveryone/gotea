@@ -8,19 +8,19 @@ use App\Form\LoginForm;
 /**
  * ログイン用コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2015/07/26
+ * @author      Kazuki Kamizuru
+ * @since       2015/07/26
  */
 class UsersController extends AppController
 {
-	/**
+    /**
      * {@inheritDoc}
-	 */
+     */
     public function beforeFilter(Event $event)
     {
-		// すでにログイン済みならリダイレクト
+        // すでにログイン済みならリダイレクト
         if ($this->Auth->user() && ($this->request->action !== 'logout')) {
-			return $this->redirect($this->Auth->redirectUrl());
+            return $this->redirect($this->Auth->redirectUrl());
         }
 
         parent::beforeFilter($event);

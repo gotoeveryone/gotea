@@ -14,7 +14,7 @@ class TitleScoresController extends AppController
     /**
      * {@inheritDoc}
      */
-	public function initialize()
+    public function initialize()
     {
         parent::initialize();
 
@@ -55,7 +55,7 @@ class TitleScoresController extends AppController
 
             if ($count === 0) {
                 $this->Flash->warn(__("検索結果が0件でした。"));
-            } else if ($count > 500) {
+            } elseif ($count > 500) {
                 $this->Flash->warn(__("検索結果が500件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
             } else {
                 // 結果をセット

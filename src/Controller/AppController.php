@@ -23,10 +23,10 @@ class AppController extends Controller
      */
     private $__dialog = false;
 
-	/**
+    /**
      * {@inheritDoc}
-	 */
-	public function initialize()
+     */
+    public function initialize()
     {
         $this->loadComponent('Csrf');
         $this->loadComponent('Flash');
@@ -48,9 +48,9 @@ class AppController extends Controller
         ]);
     }
 
-	/**
+    /**
      * {@inheritDoc}
-	 */
+     */
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);

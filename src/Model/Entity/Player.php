@@ -283,7 +283,7 @@ class Player extends AppEntity
         if ($year === null) {
             $year = Date::now()->year;
         }
-        $score = $scores->filter(function($item, $key) use ($year) {
+        $score = $scores->filter(function ($item, $key) use ($year) {
             return (int) $item->player_id === $this->id
                 && (int) $item->target_year === $year;
         })->first();

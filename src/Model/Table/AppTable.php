@@ -40,7 +40,7 @@ class AppTable extends Table
             }
             $params[$field] = $data[$field];
         }
-		return $this->find()->where($params)->first();
+        return $this->find()->where($params)->first();
     }
 
     /**
@@ -53,9 +53,9 @@ class AppTable extends Table
     protected function _addEntity(array $data, $fields = [])
     {
         // 同一キーのデータがあれば終了
-		if ($this->findByKey($data, $fields)) {
+        if ($this->findByKey($data, $fields)) {
             return false;
-		}
+        }
 
         // データの登録
         return $this->save($this->newEntity($data));

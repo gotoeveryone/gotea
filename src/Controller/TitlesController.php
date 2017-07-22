@@ -7,30 +7,30 @@ use Cake\Network\Exception\BadRequestException;
 /**
  * タイトル情報コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2015/07/25
+ * @author      Kazuki Kamizuru
+ * @since       2015/07/25
  *
  * @property \App\Model\Table\TitlesTable $Titles
  */
 class TitlesController extends AppController
 {
-	/**
-	 * 初期処理
+    /**
+     * 初期処理
      *
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function index()
+     */
+    public function index()
     {
         return $this->_setTitle('タイトル情報検索')->render('index');
     }
 
-	/**
-	 * 詳細表示処理
+    /**
+     * 詳細表示処理
      *
      * @param int $id 取得するデータのID
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function detail(int $id)
+     */
+    public function detail(int $id)
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($title = $this->__readSession())) {

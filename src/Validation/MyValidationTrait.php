@@ -5,7 +5,7 @@ namespace App\Validation;
  * バリデーションメッセージを出力します。
  *
  * @author      Kazuki Kamizuru
- * @since		2015/07/26
+ * @since       2015/07/26
  */
 trait MyValidationTrait
 {
@@ -39,12 +39,13 @@ trait MyValidationTrait
 
     /**
      * 必須入力のメッセージを取得します。
-     * 
+     *
      * @param string $key
      * @param null|array $args
      * @return string|null Translated string.
      */
-    public function getMessage(string $key, $args = null) {
+    public function getMessage(string $key, $args = null)
+    {
         // see \App\Locale\{code}\default.po
         return __d('default', ($this->_messages[$key] ?? ''), $args);
     }

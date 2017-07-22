@@ -35,6 +35,6 @@ class OrganizationsTable extends AppTable
      */
     public function findToKeyValue()
     {
-		return $this->find('list')->order(['id'])->toArray();
+        return $this->find('list')->order(['id'])->toArray();
     }
 }
