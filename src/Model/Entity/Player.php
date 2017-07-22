@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\Collection\Collection;
 use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 
@@ -59,7 +60,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return null;
+            return new Collection();
         }
 
         $result = TableRegistry::get('PlayerRanks')->findRanks($this->id);
@@ -79,11 +80,32 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return null;
+            return new Collection();
         }
 
         $result = TableRegistry::get('TitleScores')->findFromYear($this->id);
         return $this->title_scores = $result;
+    }
+
+    /**
+     * 棋士の成績（旧取得方式）を取得します。
+     *
+     * @param mixed $value
+     * @return \Cake\ORM\ResultSet|null 昇段情報
+     */
+    protected function _getOldScores($value)
+    {
+        if ($value) {
+            return $value;
+        }
+
+        if (!$this->id) {
+            return new Collection();
+        }
+
+        $result = TableRegistry::get('PlayerScores')->findByPlayerId($this->id)
+            ->contain(['Ranks'])->orderDesc('target_year');
+        return $this->old_scores = $result;
     }
 
     /**
@@ -129,6 +151,16 @@ class Player extends AppEntity
     protected function _setJoined($joined)
     {
         return str_replace(['-', '/'], '', $joined);
+    }
+
+    /**
+     * 年度単位でグループ化します。
+     *
+     * @return Collection
+     */
+    public function groupByYearFromHistories()
+    {
+        return $this->retention_histories->groupBy('target_year');
     }
 
     /**

@@ -299,8 +299,7 @@
             <?php endforeach ?>
 
             <?php // 2016年以前 ?>
-            <?php if (!empty($player->player_scores)) : ?>
-            <?php foreach ($player->player_scores as $key=>$score) : ?>
+            <?php foreach ($player->old_scores as $key=>$score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
                     <li class="row">
@@ -325,7 +324,6 @@
                     </li>
                 </ul>
             <?php endforeach ?>
-            <?php endif ?>
 
             <?=$this->Form->create(null, [
                 'id' => 'titleScoreForm',
@@ -346,19 +344,15 @@
         <section id="titleRetains">
             <div class="category-row">タイトル取得履歴</div>
 
-            <?php if (!empty($player->retention_histories)) : ?>
-            <?php $beforeYear = 0; ?>
-            <?php foreach ($player->retention_histories as $retention_history) : ?>
-                <?php if ($beforeYear !== $retention_history->target_year) : ?>
-                <div class="genre-row"><?=h($retention_history->target_year).'年度'?></div>
-                <?php endif ?>
+            <?php foreach ($player->groupByYearFromHistories() as $key => $items) : ?>
+                <div class="genre-row"><?=h($key).'年度'?></div>
+                <?php foreach ($items as $item) : ?>
                 <div class="input-row">
-                    <?=h($retention_history->holding).'期'.h($retention_history->title->name)?>
-                    <?="（{$retention_history->title->country->name}棋戦）"?>
+                    <?=h($item->holding).'期'.h($item->title->name)?>
+                    <?="（{$item->title->country->name}棋戦）"?>
                 </div>
-                <?php $beforeYear = $retention_history->target_year; ?>
+                <?php endforeach ?>
             <?php endforeach ?>
-            <?php endif ?>
         </section>
         <?php endif ?>
     </div>
