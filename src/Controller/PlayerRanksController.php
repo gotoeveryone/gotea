@@ -18,8 +18,8 @@ class PlayerRanksController extends AppController
      * 登録処理
      *
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function add()
+     */
+    public function add()
     {
         // POST以外は許可しない
         $this->request->allowMethod(['post']);

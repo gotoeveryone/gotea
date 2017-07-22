@@ -7,19 +7,19 @@ use Cake\Network\Exception\BadRequestException;
 /**
  * タイトル保持履歴コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2017/07/22
+ * @author      Kazuki Kamizuru
+ * @since       2017/07/22
  *
  * @property \App\Model\Table\RetentionHistoriesTable $RetentionHistories
  */
 class RetentionHistoriesController extends AppController
 {
-	/**
-	 * 登録処理
+    /**
+     * 登録処理
      *
      * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function add()
+     */
+    public function add()
     {
         // POST以外は許可しない
         $this->request->allowMethod(['post']);
@@ -43,5 +43,5 @@ class RetentionHistoriesController extends AppController
             '?' => ['tab' => 'histories'],
             $id,
         ]);
-	}
+    }
 }
