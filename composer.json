@@ -2,6 +2,14 @@
     "name": "igoapp",
     "description": "IGO players and titles management system.",
     "homepage": "https://www.kazukisv.com/igoapp",
+    "authors": [
+        {
+            "name": "Kazuki Kamizuru",
+            "email": "webmaster@k2ss.info",
+            "homepage": "https://k2ss.info/",
+            "role": "developer"
+        }
+    ],
     "type": "project",
     "license": "MIT",
     "require": {
