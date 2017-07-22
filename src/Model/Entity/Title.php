@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -22,11 +23,35 @@ class Title extends AppEntity
         }
 
         if (!$this->id) {
-            return null;
+            return new Collection();
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);
         return $this->retention_histories = $result;
+    }
+
+    /**
+     * 現在の保持情報を取得します。
+     *
+     * @return RetentionHistory|null
+     */
+    protected function _getNowRetention()
+    {
+        return $this->retention_histories->filter(function($item, $key) {
+            return $item->holding === $this->holding;
+        })->first();
+    }
+
+    /**
+     * 前期以前の取得履歴を取得します。
+     *
+     * @return RetentionHistory|null
+     */
+    protected function _getHistories()
+    {
+        return $this->retention_histories->filter(function($item, $key) {
+            return $item->holding < $this->holding;
+        });
     }
 
     /**
