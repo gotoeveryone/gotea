@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Network\Response;
 
 /**
  * アプリの共通コントローラ
@@ -13,7 +12,6 @@ use Cake\Network\Response;
  * @since   2015/07/26
  *
  * @property \App\Controller\Component\LogComponent $Log
- * @property \App\Controller\Component\TransactionComponent $Transaction
  * @property \App\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
@@ -25,15 +23,14 @@ class AppController extends Controller
      */
     private $__dialog = false;
 
-	/**
+    /**
      * {@inheritDoc}
-	 */
-	public function initialize()
+     */
+    public function initialize()
     {
         $this->loadComponent('Csrf');
         $this->loadComponent('Flash');
         $this->loadComponent('Log');
-        $this->loadComponent('Transaction');
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',
             'loginAction' => [
@@ -51,65 +48,23 @@ class AppController extends Controller
         ]);
     }
 
-	/**
+    /**
      * {@inheritDoc}
-	 */
-    public function beforeFilter(Event $event)
-    {
-        parent::beforeFilter($event);
-
-        // トランザクションの開始
-        $this->Transaction->begin();
-    }
-
-	/**
-     * {@inheritDoc}
-	 */
-    public function afterFilter(Event $event)
-    {
-        parent::afterFilter($event);
-
-        // トランザクションのコミットまたはロールバック
-        $this->Transaction->commitOrRollback();
-    }
-
-	/**
-     * {@inheritDoc}
-	 */
+     */
     public function beforeRender(Event $event)
     {
         parent::beforeRender($event);
+
+        // 表示タブの指定があれば変数に設定
+        if (($tab = $this->request->getQuery('tab'))) {
+            $this->set('tab', $tab);
+        }
 
         // ユーザ名を表示
         if ($this->Auth->user()) {
             $this->set('username', $this->Auth->user('userName'));
             $this->set('admin', ($this->Auth->user('role') === '管理者'));
         }
-    }
-
-	/**
-     * {@inheritDoc}
-	 */
-    public function beforeRedirect(Event $event, $url, Response $response)
-    {
-        // トランザクションのコミットまたはロールバック
-        $this->Transaction->commitOrRollback();
-
-        return parent::beforeRedirect($event, $url, $response);
-    }
-
-    /**
-     * 遷移先のアクションをセットします。
-     * 加えて、初期表示するタブを制御します。
-     *
-     * @param string $action
-     * @param string $tabName
-     * @param mixed $args
-     * @return mixed Returns the return value of the called action
-     */
-    public function setTabAction(string $action, string $tabName, ...$args)
-    {
-        return $this->set('tab', $tabName)->setAction($action, ...$args);
     }
 
     /**
@@ -133,17 +88,6 @@ class AppController extends Controller
     protected function _setMessages($messages, $type = 'info')
     {
         $this->Flash->$type($messages);
-        return $this;
-    }
-
-    /**
-     * リクエストを初期化します。
-     *
-     * @return Controller
-     */
-    protected function _resetRequest()
-    {
-        $this->request = $this->request->withParsedBody([]);
         return $this;
     }
 

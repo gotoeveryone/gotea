@@ -3,25 +3,24 @@
 namespace App\Controller;
 
 use Cake\Event\Event;
-use Cake\Http\Response;
 use App\Form\LoginForm;
 
 /**
  * ログイン用コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2015/07/26
+ * @author      Kazuki Kamizuru
+ * @since       2015/07/26
  */
 class UsersController extends AppController
 {
-	/**
+    /**
      * {@inheritDoc}
-	 */
+     */
     public function beforeFilter(Event $event)
     {
-		// すでにログイン済みならリダイレクト
+        // すでにログイン済みならリダイレクト
         if ($this->Auth->user() && ($this->request->action !== 'logout')) {
-			return $this->redirect($this->Auth->redirectUrl());
+            return $this->redirect($this->Auth->redirectUrl());
         }
 
         parent::beforeFilter($event);
@@ -31,7 +30,7 @@ class UsersController extends AppController
     /**
      * 初期表示処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function index()
     {
@@ -41,7 +40,7 @@ class UsersController extends AppController
     /**
      * ログイン処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function login()
     {
@@ -70,7 +69,7 @@ class UsersController extends AppController
     /**
      * ログアウト
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function logout()
     {

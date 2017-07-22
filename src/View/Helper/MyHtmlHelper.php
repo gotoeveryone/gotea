@@ -10,16 +10,16 @@ class MyHtmlHelper extends HtmlHelper
 {
     /**
      * インラインで記載しているScriptの出力処理。
-     * 
+     *
      * Scriptタグを自動挿入されてしまうとIDE補完が効かず、
      * 各ビューにてタグを書くと二重出力になるため、
      * Scriptタグがあれば取り除くよう対応
      * ビューでは以下のように利用（PHPタグは省略）
-     * 
+     *
      *   $this->MyHtml->scriptStart();
      *     // ここにJS
      *   $this->MyHtml->scriptEnd();
-     * 
+     *
      * @param string $script
      * @param array $options
      */

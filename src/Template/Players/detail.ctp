@@ -199,7 +199,7 @@
             <?= $this->Form->create($player, [
                 'class' => 'rank-form',
                 'type' => 'post',
-                'url' => ['action' => 'add-ranks'],
+                'url' => ['controller' => 'player-ranks', 'action' => 'add'],
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',

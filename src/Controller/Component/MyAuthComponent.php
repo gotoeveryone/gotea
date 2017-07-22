@@ -6,7 +6,7 @@ use Cake\Controller\Component\AuthComponent;
 
 /**
  * 独自認証用コンポーネント
- * 
+ *
  * @author  Kazuki Kamizuru
  * @since   2016/12/25
  */
@@ -27,7 +27,7 @@ class MyAuthComponent extends AuthComponent
 
     /**
      * ログイン処理を行います。
-     * 
+     *
      * @param $account
      * @param $password
      * @return user object or false
@@ -52,7 +52,7 @@ class MyAuthComponent extends AuthComponent
 
     /**
      * ログアウト処理を行います。
-     * 
+     *
      * @return string Normalized config `logoutRedirect`
      */
     public function logout()

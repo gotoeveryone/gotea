@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use PDOException;
-use Cake\Http\Response;
+use Cake\Datasource\ConnectionInterface;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * 各種情報クエリ更新用コントローラ
@@ -16,11 +17,10 @@ class NativeQueryController extends AppController
 	/**
 	 * 初期表示・更新処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
 	 */
     public function index()
     {
-        // 実行処理
         if ($this->request->isPost()) {
             // トリムし、改行・タブ・全角スペースがあれば除去
             $updateText = str_replace(["\r", "\n", "\t", '　'], '',
@@ -28,28 +28,31 @@ class NativeQueryController extends AppController
             // 「;」で分割
             $queries = explode(';', trim($updateText));
 
+            $conn = ConnectionManager::get('default');
             try {
-                // クエリの実行
-                $count = $this->__executeQueries($queries);
+                $count = $conn->transactional(function(ConnectionInterface $conn) use ($queries) {
+                    // クエリの実行
+                    return $this->__executeQueries($conn, $queries);
+                });
                 $this->Flash->info(__("{$count}件のクエリを実行しました。"));
             } catch (PDOException $e) {
-                $this->Transaction->markToRollback();
                 $this->Log->error($e);
                 $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
             }
         }
 
-        return $this->_setTitle('各種情報クエリ更新')->render();
+        return $this->_setTitle('各種情報クエリ更新')->render('index');
     }
 
     /**
      * クエリを実行し、件数を返します。
      *
+     * @param ConnectionInterface $conn
      * @param array $queries
      * @return int
      * @throws PDOException
      */
-    private function __executeQueries($queries)
+    private function __executeQueries(ConnectionInterface $conn, $queries)
     {
         $counter = 0;
         foreach ($queries as $query) {
@@ -58,7 +61,7 @@ class NativeQueryController extends AppController
             }
 
             // 更新
-            $cnt = $this->Transaction->getConnection()->execute($query)->count();
+            $cnt = $conn->execute($query)->count();
             if ($cnt !== 1) {
                 throw new PDOException(__("レコードの更新エラー"));
             }

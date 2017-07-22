@@ -23,7 +23,7 @@ class CountriesTable extends AppTable
      */
     public function findToKeyValue($hasTitle = false)
     {
-		$query = $this->find('list');
+        $query = $this->find('list');
 
         if ($hasTitle) {
             $query->where('has_title', true);

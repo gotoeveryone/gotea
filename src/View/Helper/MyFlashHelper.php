@@ -13,7 +13,7 @@ class MyFlashHelper extends FlashHelper
 
     /**
      * エラーメッセージ単位に配列形式で取得する。
-     * 
+     *
      * @param string|array $messages
      * @return array
      */

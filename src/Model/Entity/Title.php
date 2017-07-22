@@ -2,7 +2,6 @@
 
 namespace App\Model\Entity;
 
-use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -23,7 +22,7 @@ class Title extends AppEntity
         }
 
         if (!$this->id) {
-            return new Collection();
+            return [];
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);
@@ -37,7 +36,7 @@ class Title extends AppEntity
      */
     protected function _getNowRetention()
     {
-        return $this->retention_histories->filter(function($item, $key) {
+        return $this->retention_histories->filter(function ($item, $key) {
             return $item->holding === $this->holding;
         })->first();
     }
@@ -49,7 +48,7 @@ class Title extends AppEntity
      */
     protected function _getHistories()
     {
-        return $this->retention_histories->filter(function($item, $key) {
+        return $this->retention_histories->filter(function ($item, $key) {
             return $item->holding < $this->holding;
         });
     }
@@ -68,7 +67,7 @@ class Title extends AppEntity
 
         if ($this->is_team) {
             return $history->win_group_name;
-        } else if (!$isJp) {
+        } elseif (!$isJp) {
             return "{$history->player->name_english} ({$history->rank->rank_numeric} dan)";
         } else {
             return "{$history->player->name} {$history->rank->name}";
@@ -130,7 +129,7 @@ class Title extends AppEntity
             return null;
         }
 
-        return $histories->filter(function($item, $key) {
+        return $histories->filter(function ($item, $key) {
             return $item->holding === $this->holding;
         })->first();
     }

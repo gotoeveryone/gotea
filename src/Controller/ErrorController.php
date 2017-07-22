@@ -20,14 +20,11 @@ class ErrorController extends AppController
      */
     public function _rollback(Exception $exception)
     {
-        $this->Log->error(__('例外が発生したので、トランザクションをロールバックしました。'));
         $this->Log->error(__('Error Code: '.$exception->getCode()));
+        $this->Log->error(__($exception->getMessage()));
 
         if ($exception instanceof PDOException) {
             $this->Flash->error(__("データの保存に失敗しました…。"));
         }
-
-        // トランザクションをロールバック
-        $this->Transaction->rollback();
     }
 }

@@ -2,42 +2,27 @@
 
 namespace App\Model\Table;
 
-use App\Validation\MyValidationTrait;
-use ArrayObject;
-use Cake\Event\Event;
+use Cake\Log\LogTrait;
 use Cake\ORM\Table;
-use Cake\Datasource\EntityInterface;
-use Cake\I18n\Time;
-use Cake\Network\Session;
+use App\Validation\MyValidationTrait;
 
 /**
  * アプリケーションの共通テーブル
  */
 class AppTable extends Table
 {
+    use LogTrait;
     use MyValidationTrait;
 
     /**
-	 * 保存前処理
-     * エンティティに管理項目を設定します。
-     *
-     * @param Event $event
-     * @param EntityInterface $entity
-     * @param ArrayObject $options
-     * @param type $operation
+     * {@inheritdoc}
      */
-	public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function initialize(array $config)
     {
-		// 新規登録時は登録日時を設定
-		$nowDate = Time::now();
-		$userId = $this->__getLoginUserId();
-		if ($entity->isNew()) {
-			$entity->created = $nowDate;
-			$entity->created_by = $userId;
-		}
-		$entity->modified = $nowDate;
-		$entity->modified_by = $userId;
-	}
+        parent::initialize($config);
+
+        $this->addBehavior('Save');
+    }
 
     /**
      * キー情報をもとに、データを1件取得します。
@@ -55,7 +40,7 @@ class AppTable extends Table
             }
             $params[$field] = $data[$field];
         }
-		return $this->find()->where($params)->first();
+        return $this->find()->where($params)->first();
     }
 
     /**
@@ -68,9 +53,9 @@ class AppTable extends Table
     protected function _addEntity(array $data, $fields = [])
     {
         // 同一キーのデータがあれば終了
-		if ($this->findByKey($data, $fields)) {
+        if ($this->findByKey($data, $fields)) {
             return false;
-		}
+        }
 
         // データの登録
         return $this->save($this->newEntity($data));
@@ -86,16 +71,4 @@ class AppTable extends Table
     {
         return ($targetYear < 2017);
     }
-
-    /**
-     * ログインユーザIDを取得する。
-     *
-     * @return string ログインユーザID
-     */
-	private function __getLoginUserId() : string
-    {
-	    $session = new Session();
-        $userId = $session->read('Auth.User.userId');
-        return !$userId ? str_replace('/', '', ROOT) : $userId;
-	}
 }

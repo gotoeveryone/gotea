@@ -3,7 +3,7 @@
 namespace App\Model\Entity;
 
 /**
- * 組織エンティティ
+ * 所属組織エンティティ
  */
 class Organization extends AppEntity
 {

@@ -50,7 +50,7 @@
                 <div class="button-wrap">
                     <button type="button" class="add-new" value="add"
                         <?=($this->request->getData('country_id') ? '' : ' disabled')?>
-                        @click="openModal('/igoapp/players/detail/', 'country_id')">新規作成</button>
+                        @click="openModal('<?=$this->Url->build(['action' => 'new'])?>', 'country_id')">新規作成</button>
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 </div>
             </li>

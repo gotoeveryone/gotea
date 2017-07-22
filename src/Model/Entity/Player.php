@@ -2,7 +2,6 @@
 
 namespace App\Model\Entity;
 
-use Cake\Collection\Collection;
 use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 
@@ -60,7 +59,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return new Collection();
+            return [];
         }
 
         $result = TableRegistry::get('PlayerRanks')->findRanks($this->id);
@@ -80,7 +79,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return new Collection();
+            return [];
         }
 
         $result = TableRegistry::get('TitleScores')->findFromYear($this->id);
@@ -100,7 +99,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return new Collection();
+            return [];
         }
 
         $result = TableRegistry::get('PlayerScores')->findByPlayerId($this->id)
@@ -156,7 +155,7 @@ class Player extends AppEntity
     /**
      * 年度単位でグループ化します。
      *
-     * @return Collection
+     * @return Cake\Collection\Collection
      */
     public function groupByYearFromHistories()
     {
@@ -284,7 +283,7 @@ class Player extends AppEntity
         if ($year === null) {
             $year = Date::now()->year;
         }
-        $score = $scores->filter(function($item, $key) use ($year) {
+        $score = $scores->filter(function ($item, $key) use ($year) {
             return (int) $item->player_id === $this->id
                 && (int) $item->target_year === $year;
         })->first();
