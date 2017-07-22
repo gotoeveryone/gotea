@@ -1,8 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -65,20 +66,30 @@ class PlayerRanksTable extends AppTable
         $rules->add($rules->existsIn(['player_id'], 'Players'));
         $rules->add($rules->existsIn(['rank_id'], 'Ranks'));
 
+        $rules->add($rules->isUnique(
+            ['player_id', 'rank_id'],
+            '昇段情報がすでに存在します。'
+        ));
+
         return $rules;
     }
 
     /**
-     * データを追加します。
-     *
-     * @param array $data
-     * @return \App\Model\Entity\PlayerRank|false データが登録できればそのEntity
+     * {@inheritdoc}
      */
-    public function add(array $data)
+    public function save(EntityInterface $entity, $options = [])
     {
-		return $this->_addEntity($data, [
-            'player_id', 'rank_id',
-        ]);
+        $save = parent::save($entity, $options);
+
+        // 最新の昇段情報として登録する場合は棋士情報を更新
+        if ($save && $entity->newest) {
+            $players = TableRegistry::get('Players');
+            $player = $players->get($entity->player_id);
+            $player->rank_id = $entity->rank_id;
+            $players->save($player);
+        }
+
+        return $save;
     }
 
     /**

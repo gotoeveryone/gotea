@@ -14,8 +14,9 @@ class OrganizationsTable extends AppTable
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
         $this->displayField('name');
-        // 国
+        // 所属国
         $this->belongsTo('Countries');
     }
 

@@ -25,7 +25,7 @@ class TitleScoresController extends AppController
     /**
      * 初期表示、検索処理
      *
-     * @return \Cake\Network\Response|null
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function index()
     {
@@ -70,20 +70,26 @@ class TitleScoresController extends AppController
     /**
      * 詳細画面からの検索処理
      *
-     * @return \Cake\Network\Response|null
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function modalSearch()
     {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
         return $this->_setDialogMode()->index();
     }
 
     /**
      * 勝敗変更処理
      *
-     * @return \Cake\Network\Response|null
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function change()
     {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
         $changeId = $this->request->getData('change_id');
         $model = $this->TitleScores->findById($changeId)->contain(['TitleScoreDetails'])->first();
         $changed = 0;
@@ -110,10 +116,13 @@ class TitleScoresController extends AppController
     /**
      * 削除処理
      *
-     * @return \Cake\Network\Response|null
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function delete()
     {
+        // POST以外は許可しない
+        $this->request->allowMethod(['post']);
+
         $deleteId = $this->request->getData('delete_id');
         $model = $this->TitleScores->findById($deleteId)->contain(['TitleScoreDetails'])->first();
 

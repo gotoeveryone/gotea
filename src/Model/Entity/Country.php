@@ -2,11 +2,10 @@
 
 namespace App\Model\Entity;
 
-use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 
 /**
- * 国エンティティ
+ * 所属国エンティティ
  */
 class Country extends AppEntity
 {
@@ -23,7 +22,7 @@ class Country extends AppEntity
         }
 
         if (!$this->id) {
-            return new Collection();
+            return [];
         }
 
         $result = TableRegistry::get('Organizations')->findByCountryId($this->id);

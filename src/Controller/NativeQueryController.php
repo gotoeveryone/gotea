@@ -5,7 +5,6 @@ namespace App\Controller;
 use PDOException;
 use Cake\Datasource\ConnectionInterface;
 use Cake\Datasource\ConnectionManager;
-use Cake\Http\Response;
 
 /**
  * 各種情報クエリ更新用コントローラ
@@ -18,11 +17,10 @@ class NativeQueryController extends AppController
 	/**
 	 * 初期表示・更新処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
 	 */
     public function index()
     {
-        // 実行処理
         if ($this->request->isPost()) {
             // トリムし、改行・タブ・全角スペースがあれば除去
             $updateText = str_replace(["\r", "\n", "\t", '　'], '',
@@ -43,7 +41,7 @@ class NativeQueryController extends AppController
             }
         }
 
-        return $this->_setTitle('各種情報クエリ更新')->render();
+        return $this->_setTitle('各種情報クエリ更新')->render('index');
     }
 
     /**

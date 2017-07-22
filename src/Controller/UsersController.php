@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Cake\Event\Event;
-use Cake\Http\Response;
 use App\Form\LoginForm;
 
 /**
@@ -31,7 +30,7 @@ class UsersController extends AppController
     /**
      * 初期表示処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function index()
     {
@@ -41,7 +40,7 @@ class UsersController extends AppController
     /**
      * ログイン処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function login()
     {
@@ -70,7 +69,7 @@ class UsersController extends AppController
     /**
      * ログアウト
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function logout()
     {

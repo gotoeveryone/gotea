@@ -17,6 +17,8 @@ class TitlesTable extends AppTable
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
+
         // タイトル保持情報
         $this->hasMany('RetentionHistories', [
             'order' => [

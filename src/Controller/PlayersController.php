@@ -2,22 +2,18 @@
 
 namespace App\Controller;
 
-use PDOException;
-use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\Date;
 use App\Form\PlayerForm;
-use App\Model\Entity\Player;
 
 /**
- * 棋士マスタ用コントローラ
+ * 棋士情報コントローラ
  *
  * @author  Kazuki Kamizuru
  * @since   2015/07/20
  *
  * @property \App\Model\Table\PlayersTable $Players
- * @property \App\Model\Table\PlayerRanksTable $PlayerRanks
+ * @property \App\Model\Table\OrganizationsTable $Organizations
  * @property \App\Model\Table\TitleScoresTable $TitleScores
  */
 class PlayersController extends AppController
@@ -29,15 +25,14 @@ class PlayersController extends AppController
     {
         parent::initialize();
 
-        // モデルをロード
-        $this->loadModel('PlayerRanks');
+        $this->loadModel('Organizations');
         $this->loadModel('TitleScores');
     }
 
 	/**
-	 * 初期処理 or 検索処理
+	 * 初期表示・検索処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
 	 */
 	public function index()
     {
@@ -72,47 +67,55 @@ class PlayersController extends AppController
         return $this->set('form', ($form ?? new PlayerForm))->render('index');
     }
 
-	/**
-	 * 詳細情報表示処理
+    /**
+     * 新規作成画面表示処理
      *
-     * @param int|null $id 取得するデータのID
-     * @param Player $player 棋士情報（エラー時の遷移用）
-     * @return Response
-	 */
-	public function detail($id = null, $player = null)
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function new()
     {
         // ダイアログ表示
         $this->_setDialogMode();
 
-        if ($id && !($player = $this->Players->get($id))) {
-            throw new RecordNotFoundException(__("棋士情報が取得できませんでした。ID：{$id}"));
-        }
-
-        // 棋士ID・既存の棋士情報が取得出来なければ新規登録画面を表示
-        if (!$player) {
-            // 所属国が取得出来なければエラー
+        if (!($player = $this->__readSession())) {
+            // 所属国IDが取得出来なければエラー
             if (!($countryId = $this->request->getQuery('country_id'))) {
                 throw new BadRequestException(__("所属国を指定してください。"));
             }
 
-            // モデルを生成し、国と組織を設定
+            // モデルを生成し、所属国と所属組織を設定
+            $organization = $this->Organizations->findByCountryId($countryId)->firstOrFail();
             $player = $this->Players->newEntity([
                 'country_id' => $countryId,
+                'organization_id' => $organization->id,
             ]);
-            $player->organization_id = $player->country->organizations->first()->id;
         }
 
-        return $this->set('player', $player)
-            ->set('scores', $this->TitleScores->findFromYear(
-                $player->id, Date::now()->year))
-            ->render('detail');
+        return $this->set('player', $player)->render('detail');
+    }
+
+	/**
+	 * 詳細表示処理
+     *
+     * @param int $id 取得するデータのID
+     * @return \Psr\Http\Message\ResponseInterface
+	 */
+	public function detail(int $id)
+    {
+        // セッションから入力値が取得できなければIDで取得
+        if (!($player = $this->__readSession())) {
+            $player = $this->Players->get($id);
+        }
+        $scores = $this->TitleScores->findFromYear($player->id, Date::now()->year);
+
+        return $this->_setDialogMode()
+            ->set('player', $player)->set('scores', $scores)->render('detail');
 	}
 
 	/**
 	 * 棋士マスタの登録・更新処理
      *
-     * @param int|null $id 保存対象データのID
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
 	 */
 	public function save()
     {
@@ -123,69 +126,29 @@ class PlayersController extends AppController
         $id = $this->request->getData('id');
         $player = ($id) ? $this->Players->get($id) : $this->Players->newEntity();
 
-        // バリデーション
+        // 保存
         $this->Players->patchEntity($player, $this->request->getParsedBody());
-        if (($errors = $player->errors())) {
-            return $this->_setErrors($errors)
-                ->setAction('detail', null, $player);
+        if (!$this->Players->save($player)) {
+            $this->__writeSession($player)->_setErrors($player->errors());
+        } else {
+            $this->_setMessages(__("ID：{$player->id}の棋士情報を保存しました。"));
+
+            // 連続作成の場合は新規登録画面へリダイレクト
+            if (!$id && ($continue = $this->request->getData('is_continue'))) {
+                return $this->redirect([
+                    'action' => 'new',
+                    '?' => ['country_id' => $player->country_id],
+                ]);
+            }
         }
 
-        // 新規登録でない場合は保存して終了
-        if ($id) {
-            $this->Players->save($player);
-            return $this->_setMessages(__("棋士ID：{$player->id}の棋士情報を更新しました。"))
-                ->setAction('detail', $player->id);
-        }
-
-        // 以降は新規登録時の処理
-        return $this->addPlayer($player);
-	}
-
-    /**
-     * 昇段情報追加
-     *
-     * @return Response
-     */
-    public function addRanks()
-    {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        // タイトルIDが取得できなければエラー
-        if (!($id = $this->request->getData('player_id'))) {
-            throw new BadRequestException(__('棋士IDは必須です。'));
-        }
-
-        // バリデーション
-        $playerRanks = $this->PlayerRanks->newEntity($this->request->getParsedBody());
-        if (($errors = $playerRanks->errors())) {
-            return $this->_setErrors($errors)
-                ->setTabAction('detail', 'ranks', $id);
-        }
-
-        // すでに存在するかどうかを確認
-		if (!$this->PlayerRanks->add($playerRanks->toArray())) {
-            return $this->_setErrors(__('昇段情報がすでに存在します。'))
-                ->setTabAction('detail', 'ranks', $id);
-		}
-
-        // 最新データとして指定があれば棋士情報を更新
-        if ($this->request->getData('newest')) {
-            $player = $this->Players->get($id);
-            $player->rank_id = $playerRanks->rank_id;
-            $this->Players->save($player);
-        }
-
-        // リクエストを初期化して詳細画面に遷移
-        return $this->_setMessages(__("昇段情報を登録しました。"))
-            ->_resetRequest()
-            ->setTabAction('detail', 'ranks', $id);
+        return $this->setAction(($id ? 'detail' : 'new'), $id);
     }
 
     /**
      * ランキング出力処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function ranking()
     {
@@ -195,7 +158,7 @@ class PlayersController extends AppController
     /**
      * 段位別棋士数表示
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function viewRanks()
     {
@@ -203,43 +166,24 @@ class PlayersController extends AppController
     }
 
     /**
-     * 段位別棋士数表示
+     * 入力値をセッションに設定します。
      *
-     * @param Player $player
-     * @return Response
+     * @param \App\Model\Entity\Player $player
+     * @return \Cake\Controller\Controller
      */
-    private function addPlayer(Player $player)
+    private function __writeSession($player)
     {
-        // 登録処理
-		if (!($player = $this->Players->add($player->toArray()))) {
-            return $this->_setErrors(__('棋士情報がすでに存在します。'))
-                ->setAction('detail', null, $player);
-		}
+        $this->request->session()->write('player', $player);
+        return $this;
+    }
 
-        // 入段日を登録時段位の昇段日として設定
-        $promoted = Date::parseDate($player->joined, 'yyyyMMdd');
-
-        // 棋士昇段情報へ登録
-        if (!$this->PlayerRanks->add([
-            'player_id' => $player->id,
-            'rank_id' => $player->rank_id,
-            'promoted' => $promoted->format('Y/m/d'),
-        ])) {
-            throw new PDOException('棋士昇段情報への登録に失敗しました。');
-        }
-
-        // 連続作成ならリクエストを初期化
-        if (($continue = $this->request->getData('is_continue'))) {
-            $this->_resetRequest();
-        }
-
-        // 所属国IDを設定
-        $this->request = $this->request->withQueryparams([
-            'country_id' => $player->country_id
-        ]);
-
-        // 詳細情報表示処理へ
-        return $this->_setMessages(__("棋士ID：{$player->id}の棋士情報を登録しました。"))
-            ->setAction('detail', ($continue ? null : $player->id));
+    /**
+     * 入力値をセッションから取得します。
+     *
+     * @return \App\Model\Entity\Player|null
+     */
+    private function __readSession()
+    {
+        return $this->request->session()->consume('player');
     }
 }

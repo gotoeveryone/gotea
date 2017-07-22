@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Network\Response;
 
 /**
  * アプリの共通コントローラ
@@ -56,25 +55,16 @@ class AppController extends Controller
     {
         parent::beforeRender($event);
 
+        // 表示タブの指定があれば変数に設定
+        if (($tab = $this->request->getQuery('tab'))) {
+            $this->set('tab', $tab);
+        }
+
         // ユーザ名を表示
         if ($this->Auth->user()) {
             $this->set('username', $this->Auth->user('userName'));
             $this->set('admin', ($this->Auth->user('role') === '管理者'));
         }
-    }
-
-    /**
-     * 遷移先のアクションをセットします。
-     * 加えて、初期表示するタブを制御します。
-     *
-     * @param string $action
-     * @param string $tabName
-     * @param mixed $args
-     * @return mixed Returns the return value of the called action
-     */
-    public function setTabAction(string $action, string $tabName, ...$args)
-    {
-        return $this->set('tab', $tabName)->setAction($action, ...$args);
     }
 
     /**
@@ -98,17 +88,6 @@ class AppController extends Controller
     protected function _setMessages($messages, $type = 'info')
     {
         $this->Flash->$type($messages);
-        return $this;
-    }
-
-    /**
-     * リクエストを初期化します。
-     *
-     * @return Controller
-     */
-    protected function _resetRequest()
-    {
-        $this->request = $this->request->withParsedBody([]);
         return $this;
     }
 

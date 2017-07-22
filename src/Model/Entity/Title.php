@@ -2,7 +2,6 @@
 
 namespace App\Model\Entity;
 
-use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -23,7 +22,7 @@ class Title extends AppEntity
         }
 
         if (!$this->id) {
-            return new Collection();
+            return [];
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);

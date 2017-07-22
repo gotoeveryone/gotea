@@ -102,7 +102,7 @@
             <?=$this->Form->create(null, [
                 'id' => 'addHistoryForm',
                 'type' => 'post',
-                'url' => ['action' => 'addHistory'],
+                'url' => ['controller' => 'retention-histories', 'action' => 'add'],
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',

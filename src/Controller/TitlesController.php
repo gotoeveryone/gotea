@@ -2,35 +2,22 @@
 
 namespace App\Controller;
 
-use Cake\Http\Response;
 use Cake\Network\Exception\BadRequestException;
 
 /**
- * タイトルマスタ用コントローラ
+ * タイトル情報コントローラ
  *
  * @author		Kazuki Kamizuru
  * @since		2015/07/25
  *
  * @property \App\Model\Table\TitlesTable $Titles
- * @property \App\Model\Table\RetentionHistoriesTable $RetentionHistories
  */
 class TitlesController extends AppController
 {
-    /**
-     * {@inheritDoc}
-     */
-	public function initialize()
-    {
-        parent::initialize();
-
-        // モデルをロード
-        $this->loadModel('RetentionHistories');
-    }
-
 	/**
 	 * 初期処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
 	 */
 	public function index()
     {
@@ -41,84 +28,67 @@ class TitlesController extends AppController
 	 * 詳細表示処理
      *
      * @param int $id 取得するデータのID
-     * @param Title|null $title 表示に利用するデータ
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
 	 */
-	public function detail(int $id, $title = null)
+	public function detail(int $id)
     {
-        // ダイアログ表示
-        $this->_setDialogMode();
-
-        // 表示に利用するデータがあればそれを設定して終了
-        if ($title) {
-            return $this->set('title', $title)->render('detail');
+        // セッションから入力値が取得できなければIDで取得
+        if (!($title = $this->__readSession())) {
+            $title = $this->Titles->get($id);
         }
 
-        return $this->set('title', $this->Titles->get($id))->render('detail');
+        return $this->_setDialogMode()
+            ->set('title', $title)->render('detail');
     }
 
     /**
      * 保存処理
      *
-     * @return Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function save()
     {
         // POST以外は許可しない
         $this->request->allowMethod(['post']);
 
-        // IDが取得できなければエラー
+        // 現状は更新のみなので、IDが取得できなければエラー
         if (!($id = $this->request->getData('id'))) {
             throw new BadRequestException(__('IDは必須です。'));
         }
 
-        // IDからデータを取得
+        // データ取得
         $title = $this->Titles->get($id);
-
-        // バリデーション
         $this->Titles->patchEntity($title, $this->request->getParsedBody());
-        if (($errors = $title->errors())) {
-            return $this->_setErrors($errors)
-                ->setAction('detail', $id, $title);
+
+        // 保存
+        if (!$this->Titles->save($title)) {
+            $this->__writeSession($title)->_setErrors($title->errors());
+        } else {
+            $this->_setMessages(__("タイトル：{$title->name}を保存しました。"));
         }
 
-        // 保存して詳細画面へ
-        $this->Titles->save($title);
-        return $this->_setMessages(__("タイトル：{$title->name}を更新しました。"))
-            ->setAction('detail', $id, $title);
+        return $this->setAction('detail', $title->id);
     }
 
-	/**
-	 * タイトル保持情報の登録
+    /**
+     * 入力値をセッションに設定します。
      *
-     * @return Response
-	 */
-	public function addHistory()
+     * @param \App\Model\Entity\Title $title
+     * @return \Cake\Controller\Controller
+     */
+    private function __writeSession($title)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
+        $this->request->session()->write('title', $title);
+        return $this;
+    }
 
-        // タイトルIDが取得できなければエラー
-        if (!($id = $this->request->getData('title_id'))) {
-            throw new BadRequestException(__('タイトルIDは必須です。'));
-        }
-
-        // バリデーション
-        $history = $this->RetentionHistories->newEntity($this->request->getParsedBody());
-        if (($errors = $history->errors())) {
-            return $this->_setErrors($errors)
-                ->setTabAction('detail', 'histories', $id);
-        }
-
-        // すでに存在するかどうかを確認
-		if (!$this->RetentionHistories->add($history->toArray())) {
-            return $this->_setErrors(__('タイトル保持情報がすでに存在します。'))
-                ->setTabAction('detail', 'histories', $id);
-		}
-
-        // リクエストを初期化して詳細画面に遷移
-        return $this->_setMessages(__("保持履歴を登録しました。"))
-            ->_resetRequest()
-            ->setTabAction('detail', 'histories', $id);
-	}
+    /**
+     * 入力値をセッションから取得します。
+     *
+     * @return \App\Model\Entity\Title|null
+     */
+    private function __readSession()
+    {
+        return $this->request->session()->consume('title');
+    }
 }
