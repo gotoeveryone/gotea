@@ -5,7 +5,7 @@
         <?php if ($player->id) : ?>
             <li class="tab" name="ranks">昇段情報</li>
             <li class="tab" name="scores">成績情報</li>
-            <?php if (!empty($player->retention_histories)) : ?>
+            <?php if (!$player->retention_histories) : ?>
             <li class="tab" name="titleRetains">タイトル取得情報</li>
             <?php endif ?>
         <?php endif ?>
@@ -99,14 +99,14 @@
                             <div class="label-row">入段日</div>
                             <div class="input-row">
                                 <?php
-                                    if (!$player->id) {
-                                        echo $this->Form->text('joined', [
-                                            'class' => 'imeDisabled datepicker'
-                                        ]);
-                                    } else {
-                                        echo $this->Date->formatJpValue($player->joined);
-                                        echo $this->Form->hidden('joined');
-                                    }
+                                if (!$player->id) {
+                                    echo $this->Form->text('joined', [
+                                    'class' => 'imeDisabled datepicker'
+                                    ]);
+                                } else {
+                                    echo $this->Date->formatJpValue($player->joined);
+                                    echo $this->Form->hidden('joined');
+                                }
                                 ?>
                             </div>
                         </div>
@@ -116,12 +116,12 @@
                             <div class="label-row">性別</div>
                             <div class="input-row">
                                 <?php
-                                    if (!$player->id) {
-                                        echo $this->MyForm->sexes(['class' => 'sex']);
-                                    } else {
-                                        echo h($player->sex);
-                                        echo $this->Form->hidden('sex');
-                                    }
+                                if (!$player->id) {
+                                    echo $this->MyForm->sexes(['class' => 'sex']);
+                                } else {
+                                    echo h($player->sex);
+                                    echo $this->Form->hidden('sex');
+                                }
                                 ?>
                             </div>
                         </div>
@@ -129,15 +129,15 @@
                             <div class="label-row">段位</div>
                             <div class="input-row">
                                 <?php
-                                    if (!$player->id) {
-                                        echo $this->cell('Ranks', [
-                                            'empty' => false,
-                                            'value' => ($player->rank_id ? $player->rank_id : '1'),
-                                        ])->render();
-                                    } else {
-                                        echo h($player->rank->name);
-                                        echo $this->Form->hidden('rank_id');
-                                    }
+                                if (!$player->id) {
+                                    echo $this->cell('Ranks', [
+                                    'empty' => false,
+                                    'value' => ($player->rank_id ? $player->rank_id : '1'),
+                                    ])->render();
+                                } else {
+                                    echo h($player->rank->name);
+                                    echo $this->Form->hidden('rank_id');
+                                }
                                 ?>
                             </div>
                         </div>
@@ -299,7 +299,7 @@
             <?php endforeach ?>
 
             <?php // 2016年以前 ?>
-            <?php foreach ($player->old_scores as $key=>$score) : ?>
+            <?php foreach ($player->old_scores as $key => $score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
                     <li class="row">

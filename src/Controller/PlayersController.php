@@ -77,6 +77,7 @@ class PlayersController extends AppController
         // ダイアログ表示
         $this->_setDialogMode();
 
+        // セッションから棋士情報が取得できない場合はデフォルト値の表示
         if (!($player = $this->__readSession())) {
             // 所属国IDが取得出来なければエラー
             if (!($countryId = $this->request->getQuery('country_id'))) {
@@ -142,7 +143,7 @@ class PlayersController extends AppController
             }
         }
 
-        return $this->setAction(($id ? 'detail' : 'new'), $id);
+        return $this->setAction(($player->id ? 'detail' : 'new'), $player->id);
     }
 
     /**
