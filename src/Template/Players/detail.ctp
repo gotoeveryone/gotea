@@ -128,17 +128,10 @@
                         <div class="box">
                             <div class="label-row">段位</div>
                             <div class="input-row">
-                                <?php
-                                if (!$player->id) {
-                                    echo $this->cell('Ranks', [
+                                <?= $this->cell('Ranks', [
                                     'empty' => false,
                                     'value' => ($player->rank_id ? $player->rank_id : '1'),
-                                    ])->render();
-                                } else {
-                                    echo h($player->rank->name);
-                                    echo $this->Form->hidden('rank_id');
-                                }
-                                ?>
+                                ])->render() ?>
                             </div>
                         </div>
                         <div class="box">

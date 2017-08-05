@@ -90,7 +90,7 @@
                     </span>
                     <span class="name">
                         <a class="<?= ($player->sex === '女性' ? 'female' : 'blue') ?>"
-                            @click="openModal('/igoapp/players/detail/<?=$player->id?>')">
+                            @click="openModal('<?= $this->Url->build(['action' => 'detail', $player->id]) ?>')">
                             <?=h($player->name)?>
                         </a>
                     </span>
