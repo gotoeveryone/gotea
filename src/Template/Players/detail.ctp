@@ -25,7 +25,6 @@
                     'selectFormGroup' => '{{input}}'
                 ]
             ])?>
-                <?=$this->Form->hidden('is_continue', ['id' => 'isContinue', 'value' => false])?>
                 <?=$this->Form->hidden('id', ['value' => $player->id])?>
                 <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($player->modified, 'YYYYMMddHHmmss')])?>
                 <?=$this->Form->hidden('country_id')?>
@@ -160,20 +159,16 @@
                         </div>
                     </li>
                     <li class="button-row">
-                        <?php
-                            echo $this->Form->button(($player->id ? '更新' : '登録'), [
-                                'data-button-type' => 'player',
-                                'type' => 'button',
-                                'value' => 'save'
-                            ]);
-                            if (!$player->id) {
-                                echo $this->Form->button('連続作成', [
-                                    'data-button-type' => 'player',
-                                    'type' => 'button',
-                                    'value' => 'saveWithContinue'
-                                ]);
-                            }
-                        ?>
+                        <?php // 新規登録時は続けて登録チェックボックス表示 ?>
+                        <?php if (!$player->id) : ?>
+                            <?= $this->Form->checkbox('is_continue', ['id' => 'continue']) ?>
+                            <?= $this->Form->label('continue', '続けて登録') ?>
+                        <?php endif ?>
+                        <?= $this->Form->button(($player->id ? '更新' : '登録'), [
+                            'data-button-type' => 'player',
+                            'type' => 'button',
+                            'value' => 'save'
+                        ]) ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>
@@ -182,9 +177,6 @@
                 $(function() {
                     // 登録・更新ボタン押下時
                     $("[data-button-type=player]").click(function() {
-                        if ($(this).val() === 'saveWithContinue') {
-                            $('#isContinue').val(true);
-                        }
                         openConfirm('棋士情報を' + $(this).text() + 'します。よろしいですか？');
                     });
                 });
