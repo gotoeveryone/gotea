@@ -51,7 +51,7 @@
                             <div class="label-row">引退フラグ</div>
                             <div class="input-row">
                                 <?=$this->Form->checkbox('is_retired', ['id' => 'retired'])?>
-                                <label for="retired">引退しました</label>
+                                <?= $this->Form->label('retired', '引退しました') ?>
                                 <?= $this->Form->text('retired', ['class' => 'datepicker']) ?>
                             </div>
                         </div>
@@ -203,11 +203,10 @@
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
+                    'selectFormGroup' => '{{input}}',
                 ]
             ]) ?>
                 <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
-                <?=$this->Form->hidden('newest', ['id' => 'newest', 'value' => ''])?>
                 <ul class="boxes">
                     <li class="row">
                         <div class="box">
@@ -225,12 +224,10 @@
                         <div class="box">
                             <div class="label-row"></div>
                             <div class="input-row">
+                                <?= $this->Form->checkbox('newest', ['id' => 'newest']) ?>
+                                <?= $this->Form->label('newest', '最新として登録') ?>
                                 <div class="button-wrap">
                                     <?= $this->Form->button('登録', ['class' => 'add-ranks']) ?>
-                                    <?= $this->Form->button('最新として登録', [
-                                        'value' => 'newest',
-                                        'class' => 'add-ranks',
-                                    ]) ?>
                                 </div>
                             </div>
                         </div>
@@ -368,13 +365,6 @@
             var form = $('#titleScoreForm');
             form.find('[name=target_year]').val($(this).data('year'));
             submitForm(form);
-        });
-        // 昇段情報登録
-        $('.add-ranks').on('click', function() {
-            // 最新を登録する場合はパラメータ追加
-            if ($(this).val() === 'newest') {
-                $(this).closest('.rank-form').find('#newest').val('1');
-            }
         });
 
         // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
