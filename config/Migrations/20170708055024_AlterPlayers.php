@@ -14,6 +14,7 @@ class AlterPlayers extends AbstractMigration
     {
         $table = $this->table('players');
         $table->addColumn('retired', 'date', [
+            'comment' => '引退日',
             'default' => null,
             'null' => true,
             'after' => 'is_retired',
