@@ -63,7 +63,7 @@ class RetentionHistoriesTable extends AppTable
         $save = parent::save($entity, $options);
 
         // 最新を登録する場合はタイトルマスタも更新
-        if ($save && $entity->is_latest) {
+        if ($save && $entity->newest) {
             $table = TableRegistry::get('Titles');
             $title = $table->get($entity->title_id);
             $title->holding = $entity->holding;
