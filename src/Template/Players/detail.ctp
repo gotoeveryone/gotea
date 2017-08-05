@@ -17,6 +17,7 @@
         <section id="player">
             <?=$this->Form->create($player, [
                 'id' => 'mainForm',
+                'class' => 'mainForm',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
                 'templates' => [
@@ -25,7 +26,6 @@
                     'selectFormGroup' => '{{input}}'
                 ]
             ])?>
-                <?=$this->Form->hidden('is_continue', ['id' => 'isContinue', 'value' => false])?>
                 <?=$this->Form->hidden('id', ['value' => $player->id])?>
                 <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($player->modified, 'YYYYMMddHHmmss')])?>
                 <?=$this->Form->hidden('country_id')?>
@@ -51,7 +51,7 @@
                             <div class="label-row">引退フラグ</div>
                             <div class="input-row">
                                 <?=$this->Form->checkbox('is_retired', ['id' => 'retired'])?>
-                                <label for="retired">引退しました</label>
+                                <?= $this->Form->label('retired', '引退しました') ?>
                                 <?= $this->Form->text('retired', ['class' => 'datepicker']) ?>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                                         'class' => 'imeDisabled datepicker birthday'
                                     ]);
                                 ?>
-                                <span class="age">（<?=(is_numeric($player->age) ? $player->age.'歳' : '不明')?>）
+                                <span class="age">（<?=(is_numeric($player->age) ? $player->age.'歳' : '不明')?>）</span>
                             </div>
                         </div>
                         <div class="box">
@@ -153,20 +153,16 @@
                         </div>
                     </li>
                     <li class="button-row">
-                        <?php
-                            echo $this->Form->button(($player->id ? '更新' : '登録'), [
-                                'data-button-type' => 'player',
-                                'type' => 'button',
-                                'value' => 'save'
-                            ]);
-                            if (!$player->id) {
-                                echo $this->Form->button('連続作成', [
-                                    'data-button-type' => 'player',
-                                    'type' => 'button',
-                                    'value' => 'saveWithContinue'
-                                ]);
-                            }
-                        ?>
+                        <?php // 新規登録時は続けて登録チェックボックス表示 ?>
+                        <?php if (!$player->id) : ?>
+                            <?= $this->Form->checkbox('is_continue', ['id' => 'continue']) ?>
+                            <?= $this->Form->label('continue', '続けて登録') ?>
+                        <?php endif ?>
+                        <?= $this->Form->button(($player->id ? '更新' : '登録'), [
+                            'data-button-type' => 'player',
+                            'type' => 'button',
+                            'value' => 'save'
+                        ]) ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>
@@ -175,9 +171,6 @@
                 $(function() {
                     // 登録・更新ボタン押下時
                     $("[data-button-type=player]").click(function() {
-                        if ($(this).val() === 'saveWithContinue') {
-                            $('#isContinue').val(true);
-                        }
                         openConfirm('棋士情報を' + $(this).text() + 'します。よろしいですか？');
                     });
                 });
@@ -196,11 +189,10 @@
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
+                    'selectFormGroup' => '{{input}}',
                 ]
             ]) ?>
                 <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
-                <?=$this->Form->hidden('newest', ['id' => 'newest', 'value' => ''])?>
                 <ul class="boxes">
                     <li class="row">
                         <div class="box">
@@ -218,12 +210,10 @@
                         <div class="box">
                             <div class="label-row"></div>
                             <div class="input-row">
+                                <?= $this->Form->checkbox('newest', ['id' => 'newest']) ?>
+                                <?= $this->Form->label('newest', '最新として登録') ?>
                                 <div class="button-wrap">
                                     <?= $this->Form->button('登録', ['class' => 'add-ranks']) ?>
-                                    <?= $this->Form->button('最新として登録', [
-                                        'value' => 'newest',
-                                        'class' => 'add-ranks',
-                                    ]) ?>
                                 </div>
                             </div>
                         </div>
@@ -263,7 +253,7 @@
                                     $lose = $player->lose($scores, $year);
                                 ?>
                                 <?=$win?>勝<?=$lose?>敗<?=$player->draw($scores, $year)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
@@ -274,16 +264,22 @@
                                     $loseWr = $player->lose($scores, $year, true);
                                 ?>
                                 <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($scores, $year, true)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row"></div>
                             <div class="input-row">
                                 <div class="button-wrap">
-                                    <?=$this->Form->button('タイトル成績へ', [
-                                        'data-button-type' => 'title-scores', 'data-year' => $year, 'type' => 'button'
-                                    ])?>
+                                    <?= $this->Form->postButton('タイトル成績へ', [
+                                        'controller' => 'TitleScores', 'action' => 'index',
+                                    ], [
+                                        'data' => [
+                                            'player_id' => $player->id,
+                                            'target_year' => $year,
+                                            'modal' => true,
+                                        ],
+                                    ]) ?>
                                 </div>
                             </div>
                         </div>
@@ -300,37 +296,34 @@
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
                                 <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row">勝敗（国際）</div>
                             <div class="input-row">
                                 <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
+                                <div class="button-wrap">
+                                    <?= $this->Form->postButton('タイトル成績へ', [
+                                        'controller' => 'TitleScores', 'action' => 'index',
+                                    ], [
+                                        'data' => [
+                                            'player_id' => $player->id,
+                                            'target_year' => $score->target_year,
+                                            'modal' => true,
+                                        ],
+                                    ]) ?>
+                                </div>
                             <div class="label-row">段位</div>
                             <div class="input-row"><?=h($score->rank->name)?></div>
                         </div>
                     </li>
                 </ul>
             <?php endforeach ?>
-
-            <?=$this->Form->create(null, [
-                'id' => 'titleScoreForm',
-                'type' => 'post',
-                'url' => ['controller' => 'title-scores', 'action' => 'modal-search'],
-                'templates' => [
-                    'inputContainer' => '{{content}}',
-                    'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
-                ]
-            ])?>
-                <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
-                <?=$this->Form->hidden('target_year', ['value' => ''])?>
-            <?=$this->Form->end()?>
         </section>
 
         <!-- タイトル取得履歴 -->
@@ -361,13 +354,6 @@
             var form = $('#titleScoreForm');
             form.find('[name=target_year]').val($(this).data('year'));
             submitForm(form);
-        });
-        // 昇段情報登録
-        $('.add-ranks').on('click', function() {
-            // 最新を登録する場合はパラメータ追加
-            if ($(this).val() === 'newest') {
-                $(this).closest('.rank-form').find('#newest').val('1');
-            }
         });
 
         // 引退フラグにチェックされていれば引退日の入力欄を設定可能に

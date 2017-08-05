@@ -31,18 +31,13 @@ class TitleScoresController extends AppController
     {
         $this->_setTitle('タイトル勝敗検索');
 
-        // ダイアログ状態でない場合はヘッダを取得
-        if (!$this->_isDialogMode()) {
-            // 年度プルダウン
-            $years = [];
-            for ($i = date('Y'); $i >= 2013; $i--) {
-                $years[$i] = $i.'年度';
-            }
-            $this->set('years', $years);
-        }
-
         // 検索
         if ($this->request->isPost()) {
+            // モーダル表示かどうか
+            if ($this->request->getData('modal')) {
+                $this->_setDialogMode();
+            }
+
             $form = new TitleScoreForm();
             if (!$form->validate($this->request->getParsedBody())) {
                 $this->Flash->error($form->errors());
@@ -64,20 +59,17 @@ class TitleScoresController extends AppController
             }
         }
 
+        // ダイアログ状態でない場合はヘッダを取得
+        if (!$this->_isDialogMode()) {
+            // 年度プルダウン
+            $years = [];
+            for ($i = date('Y'); $i >= 2013; $i--) {
+                $years[$i] = $i.'年度';
+            }
+            $this->set('years', $years);
+        }
+
         return $this->set('form', ($form ?? new TitleScoreForm))->render('index');
-    }
-
-    /**
-     * 詳細画面からの検索処理
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function modalSearch()
-    {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        return $this->_setDialogMode()->index();
     }
 
     /**

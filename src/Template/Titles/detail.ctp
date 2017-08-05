@@ -11,6 +11,7 @@
         <section id="title">
             <?=$this->Form->create($title, [
                 'id' => 'mainForm',
+                'class' => 'mainForm',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
                 'templates' => [
@@ -109,7 +110,6 @@
                     'selectFormGroup' => '{{input}}'
                 ]
             ])?>
-                <?=$this->Form->hidden('is_latest', ['id' => 'isLatest', 'value' => ''])?>
                 <?=$this->Form->hidden('title_id', ['value' => $title->id])?>
                 <?=$this->Form->hidden('name', ['value' => $title->name])?>
                 <?=$this->Form->hidden('is_team', ['value' => $title->is_team])?>
@@ -126,18 +126,12 @@
                                 <?=$this->Form->text('holding', ['value' => '', 'maxlength' => 3, 'class' => 'holding'])?>
                             </div>
                             <div class="button-column">
+                                <?= $this->Form->checkbox('newest', ['id' => 'newest', 'disabled' => true]) ?>
+                                <?= $this->Form->label('newest', '最新として登録') ?>
                                 <?=
-                                    $this->Form->button('新規登録', [
-                                        'type' => 'button',
+                                    $this->Form->button('登録', [
+                                        'data-button-type' => 'add',
                                         'disabled' => true,
-                                        'data-button-type' => 'add'
-                                    ]);
-                                ?>
-                                <?=
-                                    $this->Form->button('最新として登録', [
-                                        'type' => 'button',
-                                        'disabled' => true,
-                                        'data-button-type' => 'addLatest'
                                     ]);
                                 ?>
                             </div>
@@ -216,13 +210,13 @@
                     var disabled = false;
                     $('.add-condition input[type!=hidden]').each(function() {
                         if (!$(this).val()) {
-                            $('.add-condition button').attr('disabled', true);
+                            $('.add-condition button, #newest').attr('disabled', true);
                             disabled = true;
                             return false;
                         }
                     });
                     if (!disabled) {
-                        $('.add-condition button').removeAttr('disabled');
+                        $('.add-condition button, #newest').removeAttr('disabled');
                     }
                 };
                 controlAddCondition();
@@ -233,20 +227,15 @@
                 });
 
                 // 新規登録、最新として登録ボタン押下時
-                $('.add-condition button').on('click', function() {
+                $('.add-condition button').on('click', function(e) {
                     if (!$('#winner').val()) {
                         var dialog = $("#dialog");
                         dialog.html('<?=($title->is_team ? '優勝団体名を入力してください。' : '棋士を選択してください。')?>');
                         dialog.click();
+                        e.preventDefault();
+                        $.unblockUI();
                         return;
                     }
-
-                    // 最新として登録するかどうか
-                    if ($(this).attr('data-button-type') === 'addLatest') {
-                        $('#isLatest').val(true);
-                    }
-
-                    openConfirm('保持履歴を登録します。よろしいですか？', $('#addHistoryForm'));
                 });
 
                 <?php if (!$title->is_team) : ?>
