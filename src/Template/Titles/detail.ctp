@@ -11,6 +11,7 @@
         <section id="title">
             <?=$this->Form->create($title, [
                 'id' => 'mainForm',
+                'class' => 'mainForm',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
                 'templates' => [

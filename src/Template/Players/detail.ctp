@@ -17,6 +17,7 @@
         <section id="player">
             <?=$this->Form->create($player, [
                 'id' => 'mainForm',
+                'class' => 'mainForm',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
                 'templates' => [
@@ -91,7 +92,7 @@
                                         'class' => 'imeDisabled datepicker birthday'
                                     ]);
                                 ?>
-                                <span class="age">（<?=(is_numeric($player->age) ? $player->age.'歳' : '不明')?>）
+                                <span class="age">（<?=(is_numeric($player->age) ? $player->age.'歳' : '不明')?>）</span>
                             </div>
                         </div>
                         <div class="box">
@@ -259,7 +260,7 @@
                                     $lose = $player->lose($scores, $year);
                                 ?>
                                 <?=$win?>勝<?=$lose?>敗<?=$player->draw($scores, $year)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
@@ -270,16 +271,22 @@
                                     $loseWr = $player->lose($scores, $year, true);
                                 ?>
                                 <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($scores, $year, true)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row"></div>
                             <div class="input-row">
                                 <div class="button-wrap">
-                                    <?=$this->Form->button('タイトル成績へ', [
-                                        'data-button-type' => 'title-scores', 'data-year' => $year, 'type' => 'button'
-                                    ])?>
+                                    <?= $this->Form->postButton('タイトル成績へ', [
+                                        'controller' => 'TitleScores', 'action' => 'index',
+                                    ], [
+                                        'data' => [
+                                            'player_id' => $player->id,
+                                            'target_year' => $year,
+                                            'modal' => true,
+                                        ],
+                                    ]) ?>
                                 </div>
                             </div>
                         </div>
@@ -296,37 +303,34 @@
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
                                 <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row">勝敗（国際）</div>
                             <div class="input-row">
                                 <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>%）
+                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>%）</span>
                             </div>
                         </div>
                         <div class="box">
+                                <div class="button-wrap">
+                                    <?= $this->Form->postButton('タイトル成績へ', [
+                                        'controller' => 'TitleScores', 'action' => 'index',
+                                    ], [
+                                        'data' => [
+                                            'player_id' => $player->id,
+                                            'target_year' => $score->target_year,
+                                            'modal' => true,
+                                        ],
+                                    ]) ?>
+                                </div>
                             <div class="label-row">段位</div>
                             <div class="input-row"><?=h($score->rank->name)?></div>
                         </div>
                     </li>
                 </ul>
             <?php endforeach ?>
-
-            <?=$this->Form->create(null, [
-                'id' => 'titleScoreForm',
-                'type' => 'post',
-                'url' => ['controller' => 'title-scores', 'action' => 'modal-search'],
-                'templates' => [
-                    'inputContainer' => '{{content}}',
-                    'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
-                ]
-            ])?>
-                <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
-                <?=$this->Form->hidden('target_year', ['value' => ''])?>
-            <?=$this->Form->end()?>
         </section>
 
         <!-- タイトル取得履歴 -->

@@ -1,6 +1,7 @@
 <section class="players">
     <?=$this->Form->create($form, [
         'id' => 'mainForm',
+        'class' => 'mainForm',
         'type' => 'post',
         'url' => ['action' => 'index'],
         'templates' => [
