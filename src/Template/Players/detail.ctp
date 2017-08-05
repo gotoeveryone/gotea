@@ -307,17 +307,6 @@
                             </div>
                         </div>
                         <div class="box">
-                                <div class="button-wrap">
-                                    <?= $this->Form->postButton('タイトル成績へ', [
-                                        'controller' => 'TitleScores', 'action' => 'index',
-                                    ], [
-                                        'data' => [
-                                            'player_id' => $player->id,
-                                            'target_year' => $score->target_year,
-                                            'modal' => true,
-                                        ],
-                                    ]) ?>
-                                </div>
                             <div class="label-row">段位</div>
                             <div class="input-row"><?=h($score->rank->name)?></div>
                         </div>
