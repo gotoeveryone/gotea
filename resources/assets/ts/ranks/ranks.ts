@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core
 import { Http } from '@angular/http';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { NgModel } from '@angular/forms';
+import { WEB_ROOT } from '../base';
 
 /**
  * 段位別棋士数出力用コンポーネント
@@ -17,11 +18,11 @@ export class Ranks {
     countries = this.getCountries();
     rows = new Array();
 
-    constructor(private http: Http) {}
+    constructor(private http: Http) { }
 
     private async getCountries() {
         const countries = new Array();
-        await this.http.get('/igoapp/api/countries/?has_title=true')
+        await this.http.get(`${WEB_ROOT}api/countries/?has_title=true`)
             .forEach((res) => {
                 const json = res.json().response;
                 json.forEach((obj: any) => {
@@ -35,7 +36,7 @@ export class Ranks {
     }
 
     onSearch(_params: any) {
-        this.http.get(`/igoapp/api/ranks/${_params.country}/`)
+        this.http.get(`${WEB_ROOT}api/ranks/${_params.country}/`)
             .forEach((res) => {
                 this.rows = res.json().response;
             });
@@ -82,7 +83,7 @@ export class RanksHeader {
 
 @Component({
     selector: '[ranks-body]',
-    template: `    
+    template: `
         <ul class="table-header">
             <li class="table-row">
                 <span class="rank">段位</span>

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { NgModel } from '@angular/forms';
+import { WEB_ROOT } from '../base';
 import { Colorbox } from '../components/colorbox';
 
 /**
@@ -34,7 +35,7 @@ export class Titles {
         height: '0',
     };
 
-    constructor(private http: Http) {}
+    constructor(private http: Http) { }
 
     private getTypes() {
         return [
@@ -51,7 +52,7 @@ export class Titles {
 
     private async getCountries() {
         const countries = new Array();
-        await this.http.get(`/igoapp/api/countries/`)
+        await this.http.get(`${WEB_ROOT}api/countries/`)
             .forEach((res) => {
                 const json = res.json().response;
                 json.forEach((obj: any) => {
@@ -72,7 +73,7 @@ export class Titles {
         options.set('jp', 'true');
         options.set('country_id', _params.country);
         options.set('is_closed', _params.type);
-        this.http.get('/igoapp/api/news/', new RequestOptions({search: options}))
+        this.http.get(`${WEB_ROOT}api/news/`, new RequestOptions({ search: options }))
             .forEach((res) => {
                 this.rows = res.json().response;
             });
@@ -88,7 +89,7 @@ export class Titles {
     outputJson() {
         const options = new URLSearchParams();
         options.set('make', 'true');
-        this.http.get('/igoapp/api/news/', new RequestOptions({search: options}))
+        this.http.get(`${WEB_ROOT}api/news/`, new RequestOptions({ search: options }))
             .forEach((res) => {
                 this.openDialog('JSONを出力しました。');
             });
@@ -105,7 +106,7 @@ export class Titles {
     select(_id: number) {
         this.modal.width = '60%';
         this.modal.height = '90%';
-        this.modal.url = `/igoapp/titles/detail/${_id}`;
+        this.modal.url = `${WEB_ROOT}titles/detail/${_id}`;
     }
 
     closeModal() {
@@ -244,17 +245,17 @@ export class TitlesBody {
     @Output() onSelect = new EventEmitter<any>();
     @Output() openDialog = new EventEmitter<any>();
 
-    constructor(private http: Http) {}
+    constructor(private http: Http) { }
 
     getWinnerName(_row: any) {
         return _row.winnerName || '';
     }
 
     add(_row: any) {
-        const headers = new Headers({'Content-Type': 'application/json' });
+        const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
         // 登録処理
-        this.http.post(`/igoapp/api/titles/`, JSON.stringify(_row), options)
+        this.http.post(`${WEB_ROOT}api/titles/`, JSON.stringify(_row), options)
             .forEach((res) => {
                 _row.titleId = res.json().response.titleId;
                 this.openDialog.emit(`タイトル【${_row.titleNameJp}】を登録しました。`);
@@ -281,10 +282,10 @@ export class TitlesBody {
         if (!_row.titleId) {
             return;
         }
-        const headers = new Headers({'Content-Type': 'application/json' });
+        const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
         // 更新処理
-        this.http.put(`/igoapp/api/titles/${_row.titleId}`, JSON.stringify(_row), options)
+        this.http.put(`${WEB_ROOT}api/titles/${_row.titleId}`, JSON.stringify(_row), options)
             .forEach(() => {
             }).catch((res) => {
                 const messages = res.json().response.messages;

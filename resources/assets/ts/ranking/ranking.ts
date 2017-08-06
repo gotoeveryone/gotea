@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { NgModel } from '@angular/forms';
+import { WEB_ROOT } from '../base';
 import { Colorbox } from '../components/colorbox';
 
 /**
@@ -34,7 +35,7 @@ export class Ranking {
         height: '0',
     };
 
-    constructor(private http: Http) {}
+    constructor(private http: Http) { }
 
     private getYears() {
         const nowYear = new Date().getFullYear();
@@ -61,7 +62,7 @@ export class Ranking {
 
     private async getCountries() {
         const countries = new Array();
-        await this.http.get(`/igoapp/api/countries/`)
+        await this.http.get(`${WEB_ROOT}api/countries/`)
             .forEach((res) => {
                 const json = res.json().response;
                 json.forEach((obj: any) => {
@@ -75,7 +76,7 @@ export class Ranking {
     }
 
     onSearch(_params: any) {
-        this.http.get(`/igoapp/api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true`)
+        this.http.get(`${WEB_ROOT}api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true`)
             .forEach((res) => {
                 const json = res.json().response;
                 const dateObj = new Date(json.lastUpdate);
@@ -85,7 +86,7 @@ export class Ranking {
     }
 
     outputJson(_params: any) {
-        this.http.get(`/igoapp/api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true&make=true`)
+        this.http.get(`${WEB_ROOT}api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true&make=true`)
             .forEach((res) => {
                 this.openDialog('JSONを出力しました。');
             });
@@ -102,7 +103,7 @@ export class Ranking {
     onSelect(_id: number) {
         this.modal.width = '60%';
         this.modal.height = '90%';
-        this.modal.url = `/igoapp/players/detail/${_id}`;
+        this.modal.url = `${WEB_ROOT}/players/detail/${_id}`;
     }
 
     onModalClose() {
