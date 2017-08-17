@@ -220,7 +220,7 @@ return [
             'password' => env('DB_PASSWORD'),
             'database' => env('DB_NAME', 'igo'),
             'encoding' => 'utf8',
-            'timezone' => 'Asia/Tokyo',
+            'timezone' => env('DB_TIMEZONE', 'UTC'),
             'cacheMetadata' => true,
             'log' => false,
 
@@ -257,7 +257,7 @@ return [
             'password' => env('DB_TEST_PASSWORD'),
             'database' => env('DB_TEST_NAME', 'igo'),
             'encoding' => 'utf8',
-            'timezone' => 'Asia/Tokyo',
+            'timezone' => env('DB_TEST_TIMEZONE', 'UTC'),
             'cacheMetadata' => true,
             'quoteIdentifiers' => false,
             'log' => false,

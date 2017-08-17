@@ -69,8 +69,8 @@ export class Titles {
         this.country = _params.country;
 
         const options = new URLSearchParams();
-        options.set('admin', 'true');
-        options.set('jp', 'true');
+        options.set('admin', '1');
+        options.set('withJa', '1');
         options.set('country_id', _params.country);
         options.set('is_closed', _params.type);
         this.http.get(`${WEB_ROOT}api/news/`, new RequestOptions({ search: options }))
@@ -88,7 +88,7 @@ export class Titles {
 
     outputJson() {
         const options = new URLSearchParams();
-        options.set('make', 'true');
+        options.set('make', '1');
         this.http.get(`${WEB_ROOT}api/news/`, new RequestOptions({ search: options }))
             .forEach((res) => {
                 this.openDialog('JSONを出力しました。');

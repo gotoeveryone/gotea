@@ -92,26 +92,27 @@ class TitlesTable extends AppTable
      *
      * @param ResultSet $models
      * @param bool $admin 管理者情報を取得するか
-     * @param bool $isJp 日本語情報を取得するか
+     * @param bool $withJa 日本語情報を取得するか
      * @return array
      */
-    public function toArray(ResultSet $models, $admin = false, $isJp = false) : array
+    public function toArray(ResultSet $models, $admin = false, $withJa = false) : array
     {
-        return $models->map(function(Title $item, $key) use ($admin, $isJp) {
+        return $models->map(function(Title $item, $key) use ($admin, $withJa) {
             $data = [
                 'countryName' => $item->country->name_english,
                 'countryNameAbbreviation' => $item->country->code,
                 'titleName' => $item->name_english,
                 'holding' => $item->holding,
                 'isTeam' => $item->is_team,
-                'winnerName' => $item->getWinnerName($isJp),
+                'winnerName' => $item->getWinnerName($withJa),
                 'htmlFileName' => $item->html_file_name,
                 'htmlFileModified' => $item->html_file_modified->format(($admin ? 'Y/m/d' : 'Y-m-d')),
                 'isNewHistories' => $item->isNewHistories(),
                 'isRecent' => $item->isRecentModified(),
             ];
 
-            if ($admin) {
+            // 日本語情報出力あり
+            if ($withJa) {
                 $data['titleId'] = $item->id;
                 $data['countryId'] = $item->country_id;
                 $data['sortOrder'] = $item->sort_order;

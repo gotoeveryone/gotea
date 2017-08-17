@@ -102,7 +102,7 @@ class JsonComponent extends Component
      */
     private function __getApiUrl()
     {
-        return env('WEB_API_DOMAIN').'web-api/v1/';
+        return env('AUTH_API_PATH', 'http://localhost/');
     }
 
     /**
