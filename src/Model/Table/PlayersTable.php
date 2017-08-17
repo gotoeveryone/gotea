@@ -164,7 +164,7 @@ class PlayersTable extends AppTable
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
-            return $this->__findOldRanking($country, $targetYear, $offset, $admin);
+            return $this->__findOldRanking($country, $targetYear, $offset, $withJa);
         }
 
         $query = $this->find();
@@ -288,10 +288,10 @@ class PlayersTable extends AppTable
      * @param Country $country
      * @param int $targetYear
      * @param int $offset
-     * @param bool $admin
+     * @param bool $withJa
      * @return \Cake\Collection\Collection
      */
-    private function __findOldRanking(Country $country, int $targetYear, int $offset, bool $admin)
+    private function __findOldRanking(Country $country, int $targetYear, int $offset, bool $withJa)
     {
         $suffix = ($country->has_title ? '' : '_world');
 
@@ -333,6 +333,6 @@ class PlayersTable extends AppTable
             $query->where(['country_id' => $country->id]);
         }
 
-        return $this->__mapped($query->all(), $country, $admin);
+        return $this->__mapped($query->all(), $country, $withJa);
     }
 }
