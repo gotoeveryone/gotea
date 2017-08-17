@@ -67,7 +67,7 @@ export class Ranking {
                 const json = res.json().response;
                 json.forEach((obj: any) => {
                     countries.push({
-                        value: obj.name,
+                        value: obj.code,
                         text: `${obj.name}棋戦`,
                     });
                 });
@@ -76,7 +76,7 @@ export class Ranking {
     }
 
     onSearch(_params: any) {
-        this.http.get(`${WEB_ROOT}api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true`)
+        this.http.get(`${WEB_ROOT}api/rankings/${_params.country}/${_params.year}/${_params.limit}?withJa=1`)
             .forEach((res) => {
                 const json = res.json().response;
                 const dateObj = new Date(json.lastUpdate);
@@ -86,7 +86,7 @@ export class Ranking {
     }
 
     outputJson(_params: any) {
-        this.http.get(`${WEB_ROOT}api/rankings/${_params.country}/${_params.year}/${_params.limit}?jp=true&make=true`)
+        this.http.get(`${WEB_ROOT}api/rankings/${_params.country}/${_params.year}/${_params.limit}?make=1`)
             .forEach((res) => {
                 this.openDialog('JSONを出力しました。');
             });

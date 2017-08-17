@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Filesystem\File;
 
 /**
  * APIコントローラ
@@ -19,6 +20,7 @@ class ApiController extends Controller
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Json');
+        $this->loadComponent('Log');
 
         // 当アクションのレスポンスはすべてJSON形式
         $this->RequestHandler->renderAs($this, 'json');
@@ -118,21 +120,24 @@ class ApiController extends Controller
     public function news()
     {
         // 日本語情報を出力するかどうか
-        $isJp = ($this->request->getQuery('jp') === 'true');
+        $withJa = ($this->request->getQuery('withJa') === '1');
 
         // 管理者情報を出力するかどうか
-        $admin = ($this->request->getQuery('admin') === 'true');
+        $admin = ($this->request->getQuery('admin') === '1');
 
         // モデルのロード
         $this->loadModel('Titles');
         $titles = $this->Titles->findTitlesByCountry($this->request->getQuery());
 
         // 出力データを生成
-        $json = $this->Titles->toArray($titles, $admin, $isJp);
+        $json = $this->Titles->toArray($titles, $admin, $withJa);
 
         // パラメータがあればファイル作成
-        if ($this->request->getQuery('make') === 'true') {
-            if (!file_put_contents(env('JSON_OUTPUT_DIR').'json/news.json', json_encode($json))) {
+        if ($this->request->getQuery('make') === '1') {
+            $file = new File(env('JSON_OUTPUT_DIR').'news.json');
+            $this->Log->info('JSONファイル出力：'.$file->path);
+
+            if (!$file->write(json_encode($json))) {
                 return $this->__renderError(500, 'JSON出力失敗');
             }
         }
@@ -151,16 +156,23 @@ class ApiController extends Controller
     public function rankings($country = null, $year = null, $rank = null)
     {
         // 日本語情報を出力するかどうか
-        $isJp = ($this->request->getQuery('jp') === 'true');
+        $withJa = ($this->request->getQuery('withJa') === '1');
 
         // ランキングデータ取得
-        $json = $this->__rankings($country, $year, $rank, $isJp);
+        $json = $this->__rankings($country, $year, $rank, $withJa);
+
+        if (!$json) {
+            return $this->__renderJson($json);
+        }
 
         // パラメータがあればファイル作成
-        if ($this->request->getQuery('make') === 'true') {
+        if ($this->request->getQuery('make') === '1') {
             $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]).$json["targetYear"];
-            if (!file_put_contents(env('JSON_OUTPUT_DIR')."{$dir}/ranking/{$fileName}.json", json_encode($json))) {
+            $file = new File(env('JSON_OUTPUT_DIR')."ranking/${country}/{$fileName}.json");
+            $this->Log->info('JSONファイル出力：'.$file->path);
+
+            if (!$file->write(json_encode($json))) {
                 return $this->__renderError(500, 'JSON出力失敗');
             }
         }
@@ -188,13 +200,13 @@ class ApiController extends Controller
     /**
      * ランキングを取得します。
      *
-     * @param string $countryName
+     * @param string $countryCode
      * @param int $year
      * @param int $rank
-     * @param bool $admin
+     * @param bool $withJa
      * @return array
      */
-    private function __rankings(string $countryName, int $year, int $rank, bool $admin) : array
+    private function __rankings(string $countryCode, int $year, int $rank, bool $withJa) : array
     {
         // モデルのロード
         $this->loadModel('Players');
@@ -202,10 +214,10 @@ class ApiController extends Controller
         $this->loadModel('TitleScoreDetails');
 
         // 集計対象国の取得
-        $country = $this->Countries->findByName($countryName)->first();
+        $country = $this->Countries->findByCode($countryCode)->first();
 
         // ランキングデータの取得
-        $ranking = $this->Players->findRanking($country, $year, $rank, $admin);
+        $ranking = $this->Players->findRanking($country, $year, $rank, $withJa);
 
         // 最終更新日の取得
         $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year);

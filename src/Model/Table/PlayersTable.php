@@ -157,10 +157,10 @@ class PlayersTable extends AppTable
      * @param Country $country
      * @param int $targetYear
      * @param int $offset
-     * @param bool $admin
+     * @param bool $withJa
      * @return \Cake\Collection\Collection ランキング集計データ
      */
-    public function findRanking(Country $country, int $targetYear, int $offset, bool $admin)
+    public function findRanking(Country $country, int $targetYear, int $offset, bool $withJa)
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
@@ -188,7 +188,7 @@ class PlayersTable extends AppTable
             $query->where(['country_id' => $country->id]);
         }
 
-        return $this->__mapped($query->all(), $country, $admin);
+        return $this->__mapped($query->all(), $country, $withJa);
     }
 
     /**
@@ -196,15 +196,15 @@ class PlayersTable extends AppTable
      *
      * @param ResultSet $models
      * @param Country $country
-     * @param bool $admin
+     * @param bool $withJa
      * @return \Cake\Collection\Collection ランキング
      */
-    private function __mapped(ResultSet $models, Country $country, bool $admin)
+    private function __mapped(ResultSet $models, Country $country, bool $withJa)
     {
         $this->__rank = 0;
         $this->__win = 0;
 
-        return $models->map(function ($item, $key) use ($country, $admin) {
+        return $models->map(function ($item, $key) use ($country, $withJa) {
             $sum = $item->win + $item->lose;
             if ($this->__win !== $item->win) {
                 $this->__rank = $key + 1;
@@ -220,8 +220,8 @@ class PlayersTable extends AppTable
                 'winPercentage' => (!$sum ? 0 : round($item->win / $sum, 2)),
             ];
 
-            // 管理者
-            if ($admin) {
+            // 日本語出力あり
+            if ($withJa) {
                 $row['playerId'] = $item->id;
                 $row['playerNameJp'] = $item->getRankingName($country, true);
                 $row['sex'] = $item->sex;

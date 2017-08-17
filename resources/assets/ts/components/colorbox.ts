@@ -9,7 +9,7 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
     template: `
         <div class="modal-parent" [style.width]="width" [style.height]="height" [class.hide]="!this.url">
             <iframe class="modal-body" [src]="getSrc()"></iframe>
-            <div class="modal-close" (click)="close()"></div>
+            <div class="modal-close" (click)="close()"><span class="modal-close-mark">×</span></div>
         </div>
     `
 })

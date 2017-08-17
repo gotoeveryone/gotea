@@ -213,6 +213,10 @@
                 color: $c_black;
                 background-color: #9ff;
             }
+            &:not(.selectTab):hover {
+                background-color: lighten($c_black, 25%);
+                cursor: pointer;
+            }
         }
     }
     .detail {
