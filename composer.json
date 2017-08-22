@@ -14,7 +14,7 @@
     "license": "MIT",
     "require": {
         "php": ">=7.0.0",
-        "cakephp/cakephp": "^3.4",
+        "cakephp/cakephp": "3.5.*",
         "mobiledetect/mobiledetectlib": "^2.8",
         "cakephp/migrations": "^1.6",
         "cakephp/plugin-installer": "^1.0",

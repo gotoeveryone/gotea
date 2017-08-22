@@ -97,7 +97,7 @@ class ApiController extends Controller
             }
             $title = $this->Titles->fromArray($input);
 
-            if (($errors = $this->Titles->validator()->errors($title->toArray()))) {
+            if (($errors = $this->Titles->getValidator()->errors($title->toArray()))) {
                 // バリデーションの場合、フィールド => [定義 => メッセージ]となっている
                 foreach ($errors as $expr) {
                     $out[] = array_shift($expr);

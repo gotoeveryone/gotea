@@ -28,7 +28,6 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        $this->loadComponent('Csrf');
         $this->loadComponent('Flash');
         $this->loadComponent('Log');
         $this->loadComponent('Auth', [

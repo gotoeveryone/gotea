@@ -7,7 +7,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
+import { HttpModule, Http, XHRBackend, RequestOptions, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 
 import { Titles, TitlesHeader, TitlesBody } from './titles/titles';
 import { Colorbox } from './components/colorbox';
@@ -29,6 +29,10 @@ import { BaseModule, isProdMode } from './base';
                 return new CustomHttp(backend, options);
             },
             deps: [XHRBackend, RequestOptions],
+        },
+        {
+            provide: XSRFStrategy,
+            useValue: new CookieXSRFStrategy('csrfToken', 'X-CSRF-Token'),
         },
     ],
     declarations: [
