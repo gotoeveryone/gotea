@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Cake\Event\Event;
 use App\Form\LoginForm;
 
 /**
@@ -14,26 +13,16 @@ use App\Form\LoginForm;
 class UsersController extends AppController
 {
     /**
-     * {@inheritDoc}
-     */
-    public function beforeFilter(Event $event)
-    {
-        // すでにログイン済みならリダイレクト
-        if ($this->Auth->user() && ($this->request->action !== 'logout')) {
-            return $this->redirect($this->Auth->redirectUrl());
-        }
-
-        parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'login']);
-    }
-
-    /**
      * 初期表示処理
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function index()
     {
+        // すでにログイン済みならリダイレクト
+        if ($this->Auth->user()) {
+            return $this->redirect($this->Auth->redirectUrl());
+        }
         return $this->_setTitle('ログイン')->render();
     }
 
@@ -57,12 +46,13 @@ class UsersController extends AppController
         $account = $this->request->getData('username');
         $password = $this->request->getData('password');
 
-        // ログイン
+        // ログイン成功→リダイレクト
         if ($this->Auth->login($account, $password)) {
-            // リダイレクト
             return $this->redirect($this->Auth->redirectUrl());
         }
 
+        // ログイン失敗
+        $this->Flash->error(__('認証に失敗しました。'));
         return $this->setAction('index');
     }
 

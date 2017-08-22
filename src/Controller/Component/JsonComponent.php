@@ -13,109 +13,75 @@ use Cake\Http\Client;
  */
 class JsonComponent extends Component
 {
-    public $controller = null;
-    public $session = null;
-    public $components = ['Auth'];
-
-    /**
-     * {@inheritDoc}
-     */
-    public function initialize(array $config)
-    {
-        parent::initialize($config);
-
-        /**
-         * Get current controller
-        */
-        $this->controller = $this->_registry->getController();
-    }
-
-    /**
-     * アクセストークンを取得します。
-     *
-     * @param $account
-     * @param $password
-     * @return string|null
-     */
-    public function saveAccessToken($account, $password)
-    {
-        $response = $this->sendResource('auth/login', 'post', [
-            'account' => $account,
-            'password' => $password,
-        ]);
-        if (isset($response['access_token']) && ($token = $response['access_token'])) {
-            // セッションにトークンを書き込み
-            $this->request->session()->write('access_token', $token);
-            return $token;
-        }
-        return null;
-    }
-
-    /**
-     * アクセストークンを破棄します。
-     *
-     * @return array|object
-     */
-    public function removeAccessToken()
-    {
-        return $this->sendResource('auth/logout', 'delete');
-    }
+    public $components = ['Log', 'Auth'];
 
     /**
      * APIをコールします。
      *
-     * @param string $url
+     * @param string $path
      * @param string $method
-     * @param bool $data
+     * @param array $data
+     * @param array $headers
      * @param bool $assoc
      * @return array|object
      */
-    public function sendResource(string $url, string $method, $data = [], $assoc = true)
+    public function callApi(string $path, $method = 'get', $data = [], $headers = [], $assoc = true)
     {
-        $http = new Client();
         $callMethod = strtolower($method);
-        $token = $this->request->session()->read('access_token');
-        $response = $http->$callMethod($this->__getApiUrl().$url, $data,
-            $this->__getAuthorizationHeaders($token));
+        $url = $this->__getApiPath($path);
+        $data = (count($data) > 0 ? json_encode($data) : $data);
+        $headers = $this->__createHeaders($headers);
 
-        // アプリログイン済みだが、APIが401なら再認証
-        if ($response->getStatusCode() == 401 && $this->Auth->user()) {
-            $userId = $this->Auth->user('userId');
-            $password = $this->Auth->user('password');
-            $newToken = $this->saveAccessToken($userId, $password);
-            $response = $http->$callMethod($this->__getApiUrl().$url, $data,
-                $this->__getAuthorizationHeaders($newToken));
-        }
+        $http = new Client();
+        $response = $http->$callMethod($url, $data, $headers);
+        $body = $response->getBody();
 
         $this->response = $this->response->withStatus($response->getStatusCode());
         if ($response->isOk()) {
-            return json_decode($response->body(), $assoc);
-        } else {
-            return ['status' => $response->statusCode(), 'message' => "{$method}リクエストに失敗しました。"];
+            return json_decode($body, $assoc);
         }
+
+        // 失敗
+        $this->Log->error($body);
+        return ['status' => $response->statusCode(), 'message' => "{$method}リクエストに失敗しました。"];
     }
 
     /**
      * APIサーバのURLを取得します。
      *
-     * @return string APIサーバのURL
+     * @param string パス
+     * @return string 対象APIのURL
      */
-    private function __getApiUrl()
+    private function __getApiPath(string $path)
     {
-        return env('AUTH_API_PATH', 'http://localhost/');
+        $url = env('AUTH_API_URL', 'http://localhost/');
+        $length = strlen($url);
+
+        if (substr($url, -$length) === $length) {
+            $url .= '/';
+        }
+
+        return $url.$path;
     }
 
     /**
      * 認可ヘッダを生成します。
      *
-     * @return string APIサーバのURL
+     * @param array $headers
+     * @return string ヘッダ情報
      */
-    private function __getAuthorizationHeaders($token)
+    private function __createHeaders($optionHeaders = [])
     {
+        $headers = [
+            'Content-Type' => 'application/json',
+        ];
+
+        foreach ($optionHeaders as $key => $value) {
+            $headers[$key] = $value;
+        }
+
         return [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ]
+            'headers' => $headers,
         ];
     }
 }
