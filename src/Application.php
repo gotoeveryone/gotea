@@ -5,6 +5,7 @@ namespace App;
 use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use App\Middleware\LogMiddleware;
@@ -27,6 +28,7 @@ class Application extends BaseApplication
             ->add(new ErrorHandlerMiddleware())
             ->add(new AssetMiddleware())
             ->add(new RoutingMiddleware())
+            ->add(new CsrfProtectionMiddleware())
             ->add(new TransactionMiddleware());
 
         if (Configure::read('debug')) {

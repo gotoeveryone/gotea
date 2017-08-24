@@ -259,10 +259,10 @@ export class TitlesBody {
             .forEach((res) => {
                 _row.titleId = res.json().response.titleId;
                 this.openDialog.emit(`タイトル【${_row.titleNameJp}】を登録しました。`);
-            }).catch((res) => {
-                const messages = res.json().response.messages;
-                if (messages) {
-                    this.openDialog.emit(`<ul class="message error"><li>${messages.join('</li><li>')}</li></ul>`);
+            }).catch(res => {
+                const message = res.json().response.message;
+                if (message) {
+                    this.openDialog.emit(`<ul class="message error"><li>${message.join('</li><li>')}</li></ul>`);
                 } else {
                     this.openDialog.emit('登録に失敗しました…。');
                 }
@@ -287,10 +287,10 @@ export class TitlesBody {
         // 更新処理
         this.http.put(`${WEB_ROOT}api/titles/${_row.titleId}`, JSON.stringify(_row), options)
             .forEach(() => {
-            }).catch((res) => {
-                const messages = res.json().response.messages;
-                if (messages) {
-                    this.openDialog.emit(`<ul class="message error"><li>${messages.join('</li><li>')}</li></ul>`);
+            }).catch(res => {
+                const message = res.json().response.message;
+                if (message) {
+                    this.openDialog.emit(`<ul class="message error"><li>${message.join('</li><li>')}</li></ul>`);
                 } else {
                     this.openDialog.emit('更新に失敗しました…。');
                 }
