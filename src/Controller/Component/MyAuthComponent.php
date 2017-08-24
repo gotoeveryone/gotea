@@ -12,41 +12,24 @@ use Cake\Controller\Component\AuthComponent;
  */
 class MyAuthComponent extends AuthComponent
 {
-    public $controller = null;
-    public $components = ['Json', 'Log', 'Flash'];
-
-    public function initialize(array $config)
-    {
-        parent::initialize($config);
-
-        /**
-         * Get current controller
-        */
-        $this->controller = $this->_registry->getController();
-    }
+    public $components = ['Json', 'Log'];
 
     /**
      * ログイン処理を行います。
      *
      * @param $account
      * @param $password
-     * @return user object or false
+     * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
      */
     public function login($account, $password)
     {
         // トークンが保存できなければログインエラー
-        if (!$this->Json->saveAccessToken($account, $password)) {
+        if (!($user = $this->__authenticate($account, $password))) {
             $this->Log->error(__('ログイン失敗（認証）'));
-            $this->Flash->error(__('認証に失敗しました。'));
             return false;
         }
 
-        // ユーザの詳細情報を取得してセッションに設定
-        $user = $this->Json->sendResource('users', 'get');
-        $user['password'] = $password;
-        $this->setUser($user);
         $this->Log->info(__("ユーザ：{$user['userName']}がログインしました。"));
-
         return $user;
     }
 
@@ -57,8 +40,48 @@ class MyAuthComponent extends AuthComponent
      */
     public function logout()
     {
-        // トークンの削除
-        $this->Json->removeAccessToken();
+        $token = $this->user('access_token');
+        if ($token) {
+            $this->Json->callApi('deauth', 'delete', [], [
+                'Authorization' => "Bearer ${token}",
+            ]);
+        }
         return parent::logout();
+    }
+
+    /**
+     * 認証を行います。
+     *
+     * @param $account
+     * @param $password
+     * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
+     */
+    private function __authenticate($account, $password)
+    {
+        // トークン発行
+        $response = $this->Json->callApi('auth', 'post', [
+            'account' => $account,
+            'password' => $password,
+        ]);
+        $token = $response['access_token'] ?? null;
+
+        if ($this->response->getStatusCode() !== 200) {
+            return false;
+        }
+
+        // ユーザ取得
+        $user = $this->Json->callApi('users', 'get', [], [
+            'Authorization' => "Bearer ${token}",
+        ]);
+
+        if ($this->response->getStatusCode() !== 200) {
+            return false;
+        }
+
+        // セッションにユーザを保存
+        $user['password'] = $password;
+        $user['access_token'] = $token;
+        $this->setUser($user);
+        return $user;
     }
 }

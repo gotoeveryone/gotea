@@ -28,23 +28,23 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        $this->loadComponent('Csrf');
         $this->loadComponent('Flash');
         $this->loadComponent('Log');
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',
             'loginAction' => [
                 'controller' => 'users',
-                'action' => 'index'
+                'action' => 'index',
             ],
             'loginRedirect' => [
                 'controller' => 'players',
-                'action' => 'index'
+                'action' => 'index',
             ],
             'logoutRedirect' => [
                 'controller' => 'users',
-                'action' => 'index'
-            ]
+                'action' => 'index',
+            ],
+            'authorize' => 'Controller',
         ]);
     }
 
@@ -59,12 +59,22 @@ class AppController extends Controller
         if (($tab = $this->request->getQuery('tab'))) {
             $this->set('tab', $tab);
         }
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isAuthorized($user = null)
+    {
         // ユーザ名を表示
-        if ($this->Auth->user()) {
-            $this->set('username', $this->Auth->user('userName'));
-            $this->set('admin', ($this->Auth->user('role') === '管理者'));
+        if ($user) {
+            $this->set('username', $user['userName']);
+            $this->set('admin', ($user['role'] === '管理者'));
+            return true;
         }
+
+        // デフォルトは拒否
+        return false;
     }
 
     /**
