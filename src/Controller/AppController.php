@@ -11,7 +11,6 @@ use Cake\Event\Event;
  * @author  Kazuki Kamizuru
  * @since   2015/07/26
  *
- * @property \App\Controller\Component\LogComponent $Log
  * @property \App\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
@@ -29,7 +28,6 @@ class AppController extends Controller
     public function initialize()
     {
         $this->loadComponent('Flash');
-        $this->loadComponent('Log');
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',
             'loginAction' => [

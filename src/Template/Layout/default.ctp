@@ -9,7 +9,7 @@
     <?=$this->Html->charset()?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?='棋士情報管理システム - '.$cakeDescription ?>
+        <?='棋士情報管理システム - '.($cakeDescription ?? '') ?>
     </title>
     <?=$this->Html->meta('icon')?>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" />
