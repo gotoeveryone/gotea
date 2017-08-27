@@ -3,6 +3,7 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component\AuthComponent;
+use Cake\Log\Log;
 
 /**
  * 独自認証用コンポーネント
@@ -12,7 +13,7 @@ use Cake\Controller\Component\AuthComponent;
  */
 class MyAuthComponent extends AuthComponent
 {
-    public $components = ['Json', 'Log'];
+    public $components = ['Json', 'Flash'];
 
     /**
      * ログイン処理を行います。
@@ -25,11 +26,11 @@ class MyAuthComponent extends AuthComponent
     {
         // トークンが保存できなければログインエラー
         if (!($user = $this->__authenticate($account, $password))) {
-            $this->Log->error(__('ログイン失敗（認証）'));
+            Log::error(__('ログイン失敗（認証）'));
             return false;
         }
 
-        $this->Log->info(__("ユーザ：{$user['userName']}がログインしました。"));
+        Log::info(__("ユーザ：{$user['userName']}がログインしました。"));
         return $user;
     }
 

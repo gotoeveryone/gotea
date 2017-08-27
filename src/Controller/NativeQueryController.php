@@ -5,6 +5,7 @@ namespace App\Controller;
 use PDOException;
 use Cake\Datasource\ConnectionInterface;
 use Cake\Datasource\ConnectionManager;
+use Cake\Log\Log;
 
 /**
  * 各種情報クエリ更新用コントローラ
@@ -36,7 +37,7 @@ class NativeQueryController extends AppController
                 });
                 $this->Flash->info(__("{$count}件のクエリを実行しました。"));
             } catch (PDOException $e) {
-                $this->Log->error($e);
+                Log::error($e);
                 $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
             }
         }

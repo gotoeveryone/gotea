@@ -167,23 +167,27 @@ class Player extends AppEntity
      *
      * @param Country $country 検索対象の所属国
      * @param boolean $showJp 日本語で表示するか
-     * @return string
+     * @return string ランキング表示用の名前
      */
     public function getRankingName(Country $country, $showJp = false): string
     {
+        // 取得するプロパティ名のサフィックス
+        $suffix = ($showJp ? '' : '_english');
+
+        // 棋士名
+        $name = $this->{'name'.$suffix};
+
         // タイトル保持無しの棋戦は所属国を表示
         if (!$country->has_title) {
-            if ($showJp) {
-                return $this->name.'('.$this->country->name.')';
-            }
-            return $this->name_english.'('.$this->country->name_english.')';
+            $countryName = ($this->{'country_name'.$suffix} ?? $this->country->{'name'.$suffix});
+            return $name.'('.$countryName.')';
         }
 
-        // タイトル保持ありの棋戦
-        if ($showJp) {
-            return $this->name.' '.$this->rank->name;
-        }
-        return $this->name_english.'('.$this->rank->rank_numeric.' dan)';
+        // 上記以外は段位を表示
+        $rankName = ($this->rank_name ? $this->rank_name : $this->rank->name);
+        $rankNumeric = ($this->rank_numeric ? $this->rank_numeric : $this->rank->rank_numeric);
+
+        return $name.($showJp ? " ${rankName}" : "(${rankNumeric} dan)");
     }
 
     /**

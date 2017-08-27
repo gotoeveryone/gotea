@@ -25,9 +25,13 @@ class Application extends BaseApplication
     public function middleware($middlewareQueue)
     {
         $middlewareQueue
-            ->add(new ErrorHandlerMiddleware())
-            ->add(new AssetMiddleware())
-            ->add(new RoutingMiddleware())
+            // Catch any exceptions in the lower layers,
+            // and make an error page/response
+            ->add(ErrorHandlerMiddleware::class)
+            // Handle plugin/theme assets like CakePHP normally does.
+            ->add(AssetMiddleware::class)
+            // Add routing middleware.
+            ->add(new RoutingMiddleware($this))
             ->add(new CsrfProtectionMiddleware())
             ->add(new TransactionMiddleware());
 

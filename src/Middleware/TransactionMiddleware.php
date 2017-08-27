@@ -4,9 +4,8 @@ namespace App\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LogLevel;
 use Cake\Datasource\ConnectionManager;
-use Cake\Log\LogTrait;
+use Cake\Log\Log;
 
 /**
  * トランザクション管理ミドルウェア
@@ -16,19 +15,32 @@ use Cake\Log\LogTrait;
  */
 class TransactionMiddleware
 {
-    use LogTrait;
-
+    /**
+     * ミドルウェアの実行メソッド
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param callable $next
+     * @return ResponseInterface
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
+        // プラグインのリクエストなら後続処理へ
+        $params = (array) $request->getAttribute('params', []);
+        if (isset($params['plugin'])) {
+            return $next($request, $response);
+        }
+
         $conn = ConnectionManager::get('default');
+
         return $conn->enableSavePoints(true)
-            ->transactional(function() use ($request, $response, $next) {
+            ->transactional(function($conn) use ($request, $response, $next) {
                 try {
                     $res = $next($request, $response);
-                    $this->log('トランザクションをコミットしました。', LogLevel::INFO);
+                    Log::debug('トランザクションをコミットしました。');
                     return $res;
                 } catch (Exception $e) {
-                    $this->log('トランザクションをロールバックしました。', LogLevel::ERROR);
+                    Log::error('トランザクションをロールバックしました。');
                     throw $e;
                 }
             });

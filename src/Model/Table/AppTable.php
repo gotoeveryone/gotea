@@ -2,7 +2,6 @@
 
 namespace App\Model\Table;
 
-use Cake\Log\LogTrait;
 use Cake\ORM\Table;
 use App\Validation\MyValidationTrait;
 
@@ -11,7 +10,6 @@ use App\Validation\MyValidationTrait;
  */
 class AppTable extends Table
 {
-    use LogTrait;
     use MyValidationTrait;
 
     /**

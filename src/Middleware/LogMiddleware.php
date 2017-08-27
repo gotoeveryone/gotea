@@ -4,8 +4,7 @@ namespace App\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LogLevel;
-use Cake\Log\LogTrait;
+use Cake\Log\Log;
 
 /**
  * ログ出力ミドルウェア
@@ -15,14 +14,27 @@ use Cake\Log\LogTrait;
  */
 class LogMiddleware
 {
-    use LogTrait;
-
+    /**
+     * ミドルウェアの実行メソッド
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param callable $next
+     * @return ResponseInterface
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
+        // プラグインのリクエストなら後続処理へ
+        $params = (array) $request->getAttribute('params', []);
+        if (isset($params['plugin'])) {
+            return $next($request, $response);
+        }
+
         $url = $request->here();
-        $this->log("${url} - 開始", LogLevel::INFO);
+
+        Log::info("${url} - 開始");
         $response = $next($request, $response);
-        $this->log("${url} - 終了", LogLevel::INFO);
+        Log::info("${url} - 終了");
 
         return $response;
     }

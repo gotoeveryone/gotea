@@ -4,6 +4,7 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Http\Client;
+use Cake\Log\Log;
 
 /**
  * JSON連携用コンポーネント
@@ -13,8 +14,6 @@ use Cake\Http\Client;
  */
 class JsonComponent extends Component
 {
-    public $components = ['Log', 'Auth'];
-
     /**
      * APIをコールします。
      *
@@ -42,7 +41,7 @@ class JsonComponent extends Component
         }
 
         // 失敗
-        $this->Log->error($body);
+        Log::error($body);
         return ['status' => $response->statusCode(), 'message' => "{$method}リクエストに失敗しました。"];
     }
 
@@ -54,7 +53,7 @@ class JsonComponent extends Component
      */
     private function __getApiPath(string $path)
     {
-        $url = env('AUTH_API_URL', 'http://localhost/');
+        $url = env('API_URL', 'http://localhost/');
         $length = strlen($url);
 
         if (substr($url, -$length) === $length) {

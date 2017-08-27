@@ -173,10 +173,11 @@ class PlayersTable extends AppTable
                 'win' => 'win.cnt',
                 'lose' => $query->func()->coalesce(['lose.cnt' => 'identifier', 0 => 'literal']),
                 'draw' => $query->func()->coalesce(['draw.cnt' => 'identifier', 0 => 'literal']),
-            ])
+            ])->select($this->Countries)->select($this->Ranks)
             ->innerJoin(['win' => $this->__createSub($country, $targetYear, '勝')], ['id = win.player_id'])
             ->leftJoin(['lose' => $this->__createSub($country, $targetYear, '敗')], ['id = lose.player_id'])
             ->leftJoin(['draw' => $this->__createSub($country, $targetYear, '分')], ['id = draw.player_id'])
+            ->contain(['Countries', 'Ranks'])
             ->where(['win.cnt >= ' =>
                 $this->query()->select([
                     'cnt' => 'coalesce(sum(target.cnt), 1)'
@@ -311,15 +312,17 @@ class PlayersTable extends AppTable
 
         $query = $this->find()
             ->innerJoinWith('PlayerScores')
+            ->innerJoinWith('PlayerScores.Ranks')
             ->select([
                 'Players.id', 'Players.name', 'Players.name_english', 'Players.sex',
                 'win' => 'PlayerScores.win_point'.$suffix,
                 'lose' => 'PlayerScores.lose_point'.$suffix,
                 'draw' => 'PlayerScores.draw_point'.$suffix,
-                'Countries.name', 'Ranks.rank_numeric', 'Ranks.name'])
-            ->contain([
+                'country_name' => 'Countries.name', 'country_name_english' => 'Countries.name_english',
+                'rank_name' => 'Ranks.name', 'rank_numeric' => 'Ranks.rank_numeric',
+            ])->contain([
                 'Countries',
-                'Ranks',
+                'PlayerScores.Ranks'
             ])->where(function ($exp, $q) use ($subQuery, $suffix) {
                 return $exp->gte('PlayerScores.win_point'.$suffix, $subQuery);
             })->where([

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Cake\Event\Event;
 use App\Form\LoginForm;
 
 /**
@@ -12,6 +13,15 @@ use App\Form\LoginForm;
  */
 class UsersController extends AppController
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['index', 'login']);
+    }
+
     /**
      * 初期表示処理
      *

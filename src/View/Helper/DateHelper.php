@@ -3,8 +3,8 @@
 namespace App\View\Helper;
 
 use Cake\View\Helper;
-use Cake\I18n\Date;
-use Cake\I18n\Time;
+use Cake\Chronos\Date;
+use Cake\Chronos\Chronos;
 
 /**
  * 日付・時刻の表示周りの共通処理
@@ -82,7 +82,7 @@ class DateHelper extends Helper {
      * @param Time $timeObj 変換するTime型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDateTime(Time $timeObj) {
+    public function formatToDateTime(Chronos $timeObj) {
         if (empty($timeObj)) {
             return '';
         }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Filesystem\File;
+use Cake\Log\Log;
 
 /**
  * APIコントローラ
@@ -20,7 +21,6 @@ class ApiController extends Controller
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Json');
-        $this->loadComponent('Log');
 
         // 当アクションのレスポンスはすべてJSON形式
         $this->RequestHandler->renderAs($this, 'json');
@@ -135,7 +135,7 @@ class ApiController extends Controller
         // パラメータがあればファイル作成
         if ($this->request->getQuery('make') === '1') {
             $file = new File(env('JSON_OUTPUT_DIR').'news.json');
-            $this->Log->info('JSONファイル出力：'.$file->path);
+            Log::info('JSONファイル出力：'.$file->path);
 
             if (!$file->write(json_encode($json))) {
                 return $this->__renderError(500, 'JSON出力失敗');
@@ -170,7 +170,7 @@ class ApiController extends Controller
             $dir = $json["countryNameAbbreviation"];
             $fileName = strtolower($json["countryName"]).$json["targetYear"];
             $file = new File(env('JSON_OUTPUT_DIR')."ranking/${country}/{$fileName}.json");
-            $this->Log->info('JSONファイル出力：'.$file->path);
+            Log::info('JSONファイル出力：'.$file->path);
 
             if (!$file->write(json_encode($json))) {
                 return $this->__renderError(500, 'JSON出力失敗');

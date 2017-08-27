@@ -19,9 +19,6 @@
  */
 require __DIR__ . '/paths.php';
 
-// Use composer to load the autoloader.
-require ROOT . DS . 'vendor' . DS . 'autoload.php';
-
 /**
  * Bootstrap CakePHP.
  *
@@ -33,11 +30,6 @@ require ROOT . DS . 'vendor' . DS . 'autoload.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
-// You can remove this if you are confident you have intl installed.
-if (!extension_loaded('intl')) {
-    trigger_error('You must enable the intl extension to use CakePHP.', E_USER_ERROR);
-}
-
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
 use Cake\Core\App;
@@ -47,19 +39,24 @@ use Cake\Core\Plugin;
 use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
+use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Email;
-use Cake\Network\Request;
-use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 
+/**
+ * Read .env file if APP_NAME is not set.
+ *
+ * You can remove this block if you do not want to use environment
+ * variables for configuration when deploying.
+ */
 // .envファイル読み込み
 try {
-    (new Dotenv(__DIR__.'/../'))->overload();
+    (new Dotenv(ROOT))->overload();
 } catch (InvalidPathException $e) {
     die($e->getMessage() . "\n");
 }
@@ -107,7 +104,7 @@ mb_internal_encoding(Configure::read('App.encoding'));
  * Set the default locale. This controls how dates, number and currency is
  * formatted and sets the default language to use for translations.
  */
-ini_set('intl.default_locale', 'ja_JP');
+ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 
 /**
  * Register application error and exception handlers.
@@ -160,36 +157,53 @@ Security::salt(Configure::consume('Security.salt'));
 /**
  * Setup detectors for mobile and tablet.
  */
-Request::addDetector('mobile', function ($request) {
+ServerRequest::addDetector('mobile', function ($request) {
     $detector = new \Detection\MobileDetect();
+
     return $detector->isMobile();
 });
-Request::addDetector('tablet', function ($request) {
+ServerRequest::addDetector('tablet', function ($request) {
     $detector = new \Detection\MobileDetect();
+
     return $detector->isTablet();
 });
 
-/**
- * Custom Inflector rules, can be set to correctly pluralize or singularize
- * table, model, controller names or whatever other string is passed to the
- * inflection functions.
+/*
+ * Enable immutable time objects in the ORM.
  *
- * Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
- * Inflector::rules('irregular', ['red' => 'redlings']);
- * Inflector::rules('uninflected', ['dontinflectme']);
- * Inflector::rules('transliteration', ['/å/' => 'aa']);
+ * You can enable default locale format parsing by adding calls
+ * to `useLocaleParser()`. This enables the automatic conversion of
+ * locale specific date formats. For details see
+ * @link https://book.cakephp.org/3.0/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
  */
+Type::build('time')
+    ->useImmutable();
+Type::build('date')
+    ->useImmutable();
+Type::build('datetime')
+    ->useImmutable();
+Type::build('timestamp')
+    ->useImmutable();
 
-/**
- * Plugins need to be loaded manually, you can either load them one by one or all of them in a single call
- * Uncomment one of the lines below, as you need. make sure you read the documentation on Plugin to use more
- * advanced ways of loading plugins
- *
- * Plugin::loadAll(); // Loads all plugins at once
- * Plugin::load('Migrations'); //Loads a single plugin named Migrations
- *
- */
+/*
+* Custom Inflector rules, can be set to correctly pluralize or singularize
+* table, model, controller names or whatever other string is passed to the
+* inflection functions.
+*/
+//Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
+//Inflector::rules('irregular', ['red' => 'redlings']);
+//Inflector::rules('uninflected', ['dontinflectme']);
+//Inflector::rules('transliteration', ['/å/' => 'aa']);
 
+/*
+* Plugins need to be loaded manually, you can either load them one by one or all of them in a single call
+* Uncomment one of the lines below, as you need. make sure you read the documentation on Plugin to use more
+* advanced ways of loading plugins
+*
+* Plugin::loadAll(); // Loads all plugins at once
+* Plugin::load('Migrations'); //Loads a single plugin named Migrations
+*
+*/
 Plugin::load('Migrations');
 
 // Only try to load DebugKit in development mode
@@ -197,17 +211,3 @@ Plugin::load('Migrations');
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
-
-/**
- * Connect middleware/dispatcher filters.
- */
-DispatcherFactory::add('Asset');
-DispatcherFactory::add('Routing');
-DispatcherFactory::add('ControllerFactory');
-
-/**
- * Enable default locale format parsing.
- * This is needed for matching the auto-localized string output of Time() class when parsing dates.
- */
-Type::build('date')->useLocaleParser();
-Type::build('datetime')->useLocaleParser();
