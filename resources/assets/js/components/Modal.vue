@@ -1,8 +1,8 @@
 <template>
-    <div class="iframe-modal" @click="close()">
-        <div class="modal-parent" :class="{'hide': !options.url}"
-            :style="{'height': options.height, 'width': options.width}">
-            <iframe class="modal-body" :src="options.url"></iframe>
+    <div class="iframe-modal" @click="close()" :class="{'hide': !isShow()}">
+        <div class="modal-parent" :class="{'hide': !isShow()}"
+            :style="{'height': getHeight(), 'width': getWidth()}">
+            <iframe class="modal-body" :src="getUrl()"></iframe>
             <div class="modal-close" @click="close()"><span class="modal-close-mark">×</span></div>
         </div>
     </div>
@@ -10,16 +10,25 @@
 
 <script>
     export default {
-        data: () => {
-            return {}
-        },
-        props: [
-            'options'
-        ],
         methods: {
+            getUrl() {
+                return this.getOptions().url;
+            },
+            getWidth() {
+                return this.getOptions().width || '90%';
+            },
+            getHeight() {
+                return this.getOptions().height || '90%';
+            },
+            isShow() {
+                return (this.getUrl() !== '');
+            },
             close() {
-                this.$emit('modal-close');
-            }
-        }
+                this.$store.dispatch('closeModal');
+            },
+            getOptions() {
+                return this.$store.getters.modalOptions();
+            },
+        },
     }
 </script>

@@ -82,6 +82,10 @@
             <!-- メインコンテンツ -->
             <main>
                 <?=$this->fetch('content')?>
+                <!-- モーダルコンテンツ -->
+                <modal></modal>
+                <!-- ダイアログ -->
+                <app-dialog props-message=""></app-dialog>
             </main>
         </div>
 
@@ -105,7 +109,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
     <script src="<?=env('ASSETS_URL')?>js/common.js"></script>
+    <script>
+        window.Cake = {
+            csrfToken: '<?= $this->request->getParam('_csrfToken') ?>',
+        }
+    </script>
     <?=$this->Html->script('app')?>
+    <?=$this->Html->script('common.min')?>
     <?=$this->fetch('script')?>
 </body>
 </html>

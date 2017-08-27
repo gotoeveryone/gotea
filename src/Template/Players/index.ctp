@@ -13,7 +13,11 @@
         <ul class="search-header">
             <li class="search-row">
                 <label>所属国：</label>
-                <?= $this->cell('Countries', ['hasTitle' => true])->render() ?>
+                <?= $this->cell('Countries', ['hasTitle' => true,
+                    'customOptions' => [
+                        '@change' => 'changeCountry($event)',
+                    ],
+                ])->render() ?>
                 <label>所属組織：</label>
                 <?= $this->cell('Organizations', ['empty' => true])->render() ?>
                 <label>段位：</label>
@@ -49,9 +53,8 @@
                 </div>
                 <?php } ?>
                 <div class="button-wrap">
-                    <button type="button" class="add-new" value="add"
-                        <?=($this->request->getData('country_id') ? '' : ' disabled')?>
-                        @click="openModal('<?=$this->Url->build(['action' => 'new'])?>', 'country_id')">新規作成</button>
+                    <button type="button" class="add-new" value="add" :disabled="disabled"
+                        @click="newPlayer('<?= $this->Url->build(['action' => 'new']) ?>')">新規作成</button>
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 </div>
             </li>
@@ -137,19 +140,15 @@
             </ul>
         </div>
     <?=$this->Form->end()?>
-    <!-- モーダルコンテンツ -->
-    <modal :options="modal" :class="{'hide': !modal.url}"
-        @modal-close="closeModal()"></modal>
 </section>
 
 <?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
 <script>
     // 所属国変更時
-    var country = document.querySelector('[data-id=country]');
-    country.addEventListener('change', function() {
-        var addNew = document.querySelector('.add-new');
-        addNew.disabled = !this.value;
-    }, false);
+    // var country = document.querySelector('[data-id=country]');
+    // country.addEventListener('change', function() {
+    //     var addNew = document.querySelector('.add-new');
+    //     addNew.disabled = !this.value;
+    // }, false);
 </script>
 <?php $this->MyHtml->scriptEnd(); ?>
-<?=$this->Html->script('common.min', ['inline' => false])?>
