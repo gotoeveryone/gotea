@@ -1,5 +1,8 @@
+// ダイアログのメッセージ
+window.outMessage = '';
+
 // 確認ダイアログ
-var openConfirm = function(message, form) {
+window.openConfirm = (message, form) => {
     var confirm = $('#confirm');
     confirm.text(message);
 
@@ -40,31 +43,8 @@ var openConfirm = function(message, form) {
     confirm.dialog("open");
 };
 
-window.outMessage = '';
-
-// 初期処理
-$(document).ready(function() {
-    // 各種初期設定
-    setDatepicker();
-
-    $("main").animate({opacity: "show"}, 500);
-
-    $('#dialog').click(function (event) {
-        $(this).dialog('open');
-        event.preventDefault();
-    });
-
-    // タブ押下時
-    $("#tabs .tab").on("click", function () {
-        var obj = $(this);
-        if (obj.hasClass("selectTab")) {
-            return false;
-        }
-        selectTab(obj.attr('name'));
-    });
-});
-
-function selectTab(tabName) {
+// タブ選択
+window.selectTab = (tabName) => {
     var details = $('.detail-dialog .detail > *');
     details.hide();
     if (!tabName) {
@@ -83,6 +63,12 @@ function selectTab(tabName) {
             $('#tabs [name=' + id + ']').removeClass('selectTab');
         }
     });
+}
+
+// Ajax処理からフォームをサブミットする
+window.submitForm = (targetForm) => {
+    targetForm.submit();
+    $.blockUI();
 }
 
 function getDatepickerObject() {
@@ -131,8 +117,24 @@ function setDatepicker() {
     });
 }
 
-// Ajax処理からフォームをサブミットする
-function submitForm(targetForm) {
-    targetForm.submit();
-    $.blockUI();
-}
+// 初期処理
+$(document).ready(function() {
+    // 各種初期設定
+    setDatepicker();
+
+    $("main").animate({opacity: "show"}, 500);
+
+    $('#dialog').click(function (event) {
+        $(this).dialog('open');
+        event.preventDefault();
+    });
+
+    // タブ押下時
+    $("#tabs .tab").on("click", function () {
+        var obj = $(this);
+        if (obj.hasClass("selectTab")) {
+            return false;
+        }
+        selectTab(obj.attr('name'));
+    });
+});

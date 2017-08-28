@@ -53,8 +53,9 @@
                 </div>
                 <?php } ?>
                 <div class="button-wrap">
-                    <button type="button" class="add-new" value="add" :disabled="disabled"
-                        @click="newPlayer('<?= $this->Url->build(['action' => 'new']) ?>')">新規作成</button>
+                    <add-button :country-id="countryId" :changed="changed"
+                        :url="'<?= $this->Url->build(['action' => 'new']) ?>'"
+                        :param-id="'<?= $this->request->getData('country_id') ?>'"></add-button>
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 </div>
             </li>
@@ -141,14 +142,3 @@
         </div>
     <?=$this->Form->end()?>
 </section>
-
-<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
-<script>
-    // 所属国変更時
-    // var country = document.querySelector('[data-id=country]');
-    // country.addEventListener('change', function() {
-    //     var addNew = document.querySelector('.add-new');
-    //     addNew.disabled = !this.value;
-    // }, false);
-</script>
-<?php $this->MyHtml->scriptEnd(); ?>
