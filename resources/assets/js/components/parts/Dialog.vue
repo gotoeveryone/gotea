@@ -49,7 +49,10 @@
         },
         mounted() {
             if (this.propsMessage) {
-                this.$store.dispatch('openDialog', this.propsMessage, this.getTitle());
+                this.$store.dispatch('openDialog', {
+                    messages: this.propsMessage,
+                    title: this.getTitle(),
+                });
             }
         },
     }
