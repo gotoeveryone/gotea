@@ -1,31 +1,24 @@
 const path = require('path');
-const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = [
     {
         entry: {
+            app: './resources/assets/js/app',
             common: './resources/assets/js/common',
-            ranking: './resources/assets/ts/ranking',
-            ranks: './resources/assets/ts/ranks',
-            titles: './resources/assets/ts/titles',
         },
         output: {
             path: path.join(__dirname, 'webroot/js'),
-            filename: '[name].min.js',
+            filename: '[name].js',
         },
         resolve: {
-            extensions:['.webpack.js', '.tag', '.ts', '.tsx', '.js'],
+            extensions:['.webpack.js', '.vue', '.js'],
             alias: {
                 'vue$': 'vue/dist/vue.common',
-            }
+            },
         },
         module: {
             loaders: [
-                {
-                    test: /\.tsx?$/,
-                    loader: 'ts-loader',
-                },
                 {
                     test: /\.vue$/,
                     loader: 'vue-loader',
@@ -42,11 +35,6 @@ module.exports = [
                 },
             ],
         },
-        plugins: [
-            new webpack.DefinePlugin({
-                'PRODUCTION': (process.env.NODE_ENV === 'production'),
-            }),
-        ],
     },
     {
         entry: {

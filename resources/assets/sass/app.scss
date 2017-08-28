@@ -157,6 +157,17 @@
     }
 }
 
+
+.message-info {
+    color: $c_black;
+}
+.message-warning {
+    color: $c_blue;
+}
+.message-error {
+    color: $c_red;
+}
+
 /* -------------------------------------------
    検索エリア
  ------------------------------------------- */

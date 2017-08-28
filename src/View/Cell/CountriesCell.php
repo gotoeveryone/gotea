@@ -13,11 +13,13 @@ class CountriesCell extends Cell
      * 表示処理
      *
      * @param boolean $hasTitle
+     * @param array $customOptions
      * @return void
      */
-    public function display($hasTitle = false)
+    public function display($hasTitle = false, $customOptions = [])
     {
         $countries = $this->loadModel('Countries');
-        $this->set('countries', $countries->findToKeyValue($hasTitle));
+        $this->set('countries', $countries->findToKeyValue($hasTitle))
+            ->set('customOptions', $customOptions);
     }
 }

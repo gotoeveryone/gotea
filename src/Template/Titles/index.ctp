@@ -1,3 +1,2 @@
-<section class="titles" titles></section>
-
-<?=$this->Html->script('titles.min', ['inline' => false])?>
+<titles :domain="'<?= $this->Url->build('/') ?>'"
+    :detail-url="'<?= $this->Url->build(['action' => 'detail']) ?>'"></titles>
