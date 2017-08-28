@@ -23,11 +23,9 @@
 </template>
 
 <script>
-import { WEB_ROOT } from '../../common';
-
 export default {
     props: {
-        root: String,
+        domain: String,
         lastUpdate: String,
     },
     data: () => {
@@ -53,7 +51,7 @@ export default {
         },
     },
     mounted() {
-        this.$http.get(`${WEB_ROOT}api/countries/`)
+        this.$http.get(`${this.domain}api/countries/`)
             .then(res => {
                 const countries = [];
                 const json = res.body.response;

@@ -1,7 +1,4 @@
-import Vue from 'vue/dist/vue.common';
 import Vuex from 'vuex';
-
-Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
@@ -13,6 +10,7 @@ export const store = new Vuex.Store({
         dialog: {
             title: '',
             messages: '',
+            error: false,
         },
     },
     getters: {
@@ -51,11 +49,8 @@ export const store = new Vuex.Store({
         closeModal(context) {
             context.commit('closeModal');
         },
-        openDialog(context, _message, _title) {
-            context.commit('openDialog', {
-                messages: _message,
-                title: _title,
-            });
+        openDialog(context, _dialog) {
+            context.commit('openDialog', _dialog);
         },
         closeDialog(context) {
             context.commit('closeDialog');

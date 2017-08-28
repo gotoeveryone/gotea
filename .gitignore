@@ -7,4 +7,4 @@
 /.settings/org.eclipse.wst.validation.prefs
 /node_modules
 /webroot/css
-/webroot/js/*.min.js*
+/webroot/js

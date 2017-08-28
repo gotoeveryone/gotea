@@ -114,8 +114,8 @@
             csrfToken: '<?= $this->request->getParam('_csrfToken') ?>',
         }
     </script>
+    <?=$this->Html->script('common')?>
     <?=$this->Html->script('app')?>
-    <?=$this->Html->script('common.min')?>
     <?=$this->fetch('script')?>
 </body>
 </html>

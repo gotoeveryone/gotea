@@ -1,23 +1,21 @@
 <template>
     <section class="titles">
-        <title-header @add="addRow" @search="onSearch" @json="outputJson"></title-header>
-        <title-items :items="items"></title-items>
+        <title-header :domain="domain" @add="addRow" @search="onSearch" @json="outputJson"></title-header>
+        <title-items :domain="domain" :detail-url="detailUrl" :items="items"></title-items>
     </section>
 </template>
 
 <script>
 import Header from './Header.vue';
 import Items from './Items.vue';
-import { WEB_ROOT } from '../../common';
 
 export default {
     props: {
-        root: String,
-        lastUpdate: String,
+        domain: String,
+        detailUrl: String,
     },
     data: () => {
         return {
-            domain: '',
             items: [],
             countries: [],
             select: {
@@ -40,7 +38,7 @@ export default {
                 'is_closed': _params.type,
             };
 
-            this.$http.get(`${WEB_ROOT}api/news/`, { params: params })
+            this.$http.get(this.getUrl(), { params: params })
                 .then(res => {
                     this.items = res.body.response;
                 });
@@ -52,12 +50,20 @@ export default {
             });
         },
         outputJson() {
-            this.$http.get(`${WEB_ROOT}api/news/`, { params: {'make': '1'} })
-                .then(res => this.openDialog('JSONを出力しました。'));
+            this.$http.get(this.getUrl(), { params: {'make': '1'} })
+                .then(res => this.$store.dispatch('openDialog', {
+                    messages: 'JSONを出力しました。',
+                })).catch(res => this.$store.dispatch('openDialog', {
+                    messages: 'JSON出力に失敗しました…。',
+                    error: true,
+                }));
         },
         changeValue($event) {
             this.select[$event.target.name] = $event.target.value;
             this.search();
+        },
+        getUrl() {
+            return `${this.domain}api/news/`;
         },
     },
 }

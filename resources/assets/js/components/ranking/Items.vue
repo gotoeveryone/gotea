@@ -29,10 +29,9 @@
 </template>
 
 <script>
-import { WEB_ROOT } from '../../common';
-
 export default {
     props: {
+        detailUrl: String,
         items: Array,
     },
     data: () => {
@@ -54,7 +53,7 @@ export default {
         },
         select(_row) {
             this.$store.dispatch('openModal', {
-                url: `${WEB_ROOT}players/detail/${_row.playerId}`,
+                url: `${this.detailUrl}/${_row.playerId}`,
             });
         },
     },

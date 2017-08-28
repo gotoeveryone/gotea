@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import { WEB_ROOT } from '../../common';
-
 export default {
     props: {
+        domain: String,
+        detailUrl: String,
         items: Array,
     },
     methods: {
@@ -63,20 +63,17 @@ export default {
         },
         add(_item) {
             // 登録処理
-            this.$http.post(`${WEB_ROOT}api/titles/`, JSON.stringify(_item), {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(res => {
+            this.$http.post(`${this.domain}api/titles/`, JSON.stringify(_item)).then(res => {
                 _item.titleId = res.body.response.titleId;
-                this.$store.dispatch('openDialog', `タイトル【${_item.titleNameJp}】を登録しました。`);
+                this.$store.dispatch('openDialog', {
+                    messages: `タイトル【${_item.titleNameJp}】を登録しました。`,
+                });
             }).catch(res => {
                 const message = res.body.response.message;
-                if (message) {
-                    this.$store.dispatch('openDialog', `<ul class="message error"><li>${message.join('</li><li>')}</li></ul>`);
-                } else {
-                    this.$store.dispatch('openDialog', '登録に失敗しました…。');
-                }
+                this.$store.dispatch('openDialog', {
+                    messages: (message || '登録に失敗しました…。'),
+                    error: true,
+                });
             });
         },
         save(_item) {
@@ -84,22 +81,17 @@ export default {
                 return;
             }
             // 更新処理
-            this.$http.put(`${WEB_ROOT}api/titles/${_item.titleId}`, JSON.stringify(_item), {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(() => {}).catch(res => {
+            this.$http.put(`${this.domain}api/titles/${_item.titleId}`, JSON.stringify(_item)).catch(res => {
                 const message = res.body.response.message;
-                if (message) {
-                    this.$store.dispatch('openDialog', `<ul class="message error"><li>${message.join('</li><li>')}</li></ul>`);
-                } else {
-                    this.$store.dispatch('openDialog', '更新に失敗しました…。');
-                }
+                this.$store.dispatch('openDialog', {
+                    messages: (message || '更新に失敗しました…。'),
+                    error: true,
+                });
             });
         },
         select(_item) {
             this.$store.dispatch('openModal', {
-                url: `${WEB_ROOT}titles/detail/${_item.titleId}`,
+                url: `${this.detailUrl}/${_item.titleId}`,
             });
         },
         saveDatepicker($event, _item) {
