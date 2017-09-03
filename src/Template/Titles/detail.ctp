@@ -268,7 +268,10 @@
                         url: "<?=$this->Url->build(['controller' => 'api', 'action' => 'players'])?>",
                         contentType: "application/json",
                         dataType: 'json',
-                        data: JSON.stringify({name: searchValue})
+                        data: JSON.stringify({name: searchValue}),
+                        headers: {
+                            'X-CSRF-Token': Cake.csrfToken,
+                        },
                     }).done(function (data) {
                         data = data.response;
                         // 該当者1件の場合はそのまま設定
