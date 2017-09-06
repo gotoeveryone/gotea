@@ -14,14 +14,19 @@ export default {
     methods: {
         newPlayer() {
             this.$store.dispatch('openModal', {
-                url: `${this.url}?country_id=${this.countryId}`,
+                url: `${this.url}?country_id=${this.targetId}`,
             });
         },
         isDisable() {
+            return this.targetId === '';
+        },
+    },
+    computed: {
+        targetId() {
             if (!this.changed) {
-                return this.paramId === '';
+                return this.paramId;
             }
-            return this.countryId === '';
+            return this.countryId;
         },
     },
 }
