@@ -37,13 +37,3 @@
         </li>
     </ul>
 <?= $this->Form->end() ?>
-
-<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
-<script>
-    // 戻るボタン押下時
-	var back = document.querySelector('.back');
-    back.addEventListener('click', function() {
-        location.href = '/';
-    }, false);
-</script>
-<?php $this->MyHtml->scriptEnd(); ?>

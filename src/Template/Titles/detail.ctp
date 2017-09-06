@@ -126,7 +126,7 @@
                                 <?=$this->Form->text('holding', ['value' => '', 'maxlength' => 3, 'class' => 'holding'])?>
                             </div>
                             <div class="button-column">
-                                <?= $this->Form->checkbox('newest', ['id' => 'newest', 'disabled' => true]) ?>
+                                <?= $this->Form->checkbox('newest', ['id' => 'newest', 'checked', 'disabled' => true]) ?>
                                 <?= $this->Form->label('newest', '最新として登録') ?>
                                 <?=
                                     $this->Form->button('登録', [

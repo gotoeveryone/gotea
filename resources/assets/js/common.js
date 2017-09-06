@@ -1,3 +1,76 @@
+// ドキュメント準備完了
+window.onload = () => {
+    // 戻るボタン
+    const back = document.querySelector('.back');
+    if (back) {
+        back.addEventListener('click', () => {
+            location.href = '/';
+        }, false);
+    }
+
+    // 棋士保存
+    const save = document.querySelector('[data-button-type=player]');
+    if (save) {
+        save.addEventListener('click', (e) => {
+            openConfirm('棋士情報を' + e.target.innerText + 'します。よろしいですか？');
+        });
+    }
+
+    // 引退フラグ・引退日
+    const isRetired = document.querySelector('#retired');
+    if (isRetired) {
+        // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
+        const setRetired = function() {
+            var isRetired = document.querySelector('#retired');
+            if (isRetired) {
+                var retired = document.querySelector('[name=retired]');
+                if (isRetired.checked) {
+                    retired.disabled = true;
+                    retired.value = '';
+                } else {
+                    retired.disabled = false;
+                }
+            }
+        };
+        setRetired();
+        isRetired.addEventListener('click', () => {
+            setRetired();
+        }, false);
+    }
+
+    // クエリ更新
+    const updateScore = document.querySelector('[data-button-type=execute-queries]');
+    if (updateScore) {
+        updateScore.addEventListener('click', () => {
+            const textarea = document.querySelector('#input-queries');
+            // クエリを整形
+            // 前後の空白をトリムして、空行を削除
+            const queries = textarea.value;
+            const repText = queries.trim().replace(/;[\t]/g, ';\n').replace(/　/g, '')
+                    .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
+
+            if (repText) {
+                // 更新処理
+                textarea.value = repText;
+                openConfirm('更新します。よろしいですか？');
+            } else {
+                const dialog = document.querySelector("#dialog");
+                dialog.innerText = '更新対象が1件も存在しません。';
+                dialog.click();
+            }
+        }, false);
+    }
+
+    // クエリクリア
+    const clearQuery = document.querySelector('[data-button-type=clear-queries]');
+    if (clearQuery) {
+        clearQuery.addEventListener('click', () => {
+            const textarea = document.querySelector('#input-queries');
+            textarea.value = '';
+        }, false);
+    }
+};
+
 // ダイアログのメッセージ
 window.outMessage = '';
 

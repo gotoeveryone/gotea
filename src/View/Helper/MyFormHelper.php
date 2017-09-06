@@ -1,6 +1,7 @@
 <?php
 namespace App\View\Helper;
 
+use Cake\I18n\Number;
 use Cake\View\Helper\FormHelper;
 
 /**
@@ -13,15 +14,15 @@ class MyFormHelper extends FormHelper
      *
      * @param int $win
      * @param int $lose
-     * @param int 勝率（整数値）
+     * @param string 勝率（整数値）
      */
     public function percent(int $win, int $lose)
     {
         $sum = $win + $lose;
-        if (!$sum) {
-            return 0;
-        }
-        return round($win / ($sum) * 100);
+        $calc = $sum === 0 ? 0 : ($win / $sum);
+        return Number::toPercentage($calc, 0, [
+            'multiply' => true,
+        ]);
     }
 
     /**
