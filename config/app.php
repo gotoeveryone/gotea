@@ -177,7 +177,7 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => 'Mail',
+            'className' => 'Smtp',
             // The following keys are used in SMTP transports
             'host' => env('EMAIL_HOST', 'localhost'),
             'port' => env('EMAIL_PORT', 25),
@@ -185,8 +185,15 @@ return [
             'username' => env('EMAIL_USERNAME'),
             'password' => env('EMAIL_PASSWORD'),
             'client' => null,
-            'tls' => null,
+            'tls' => true,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+            'context' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ],
         ],
     ],
 
@@ -202,7 +209,9 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => env('EMAIL_FROM'),
+            'from' => [
+                env('EMAIL_FROM') => env('EMAIL_FROM_USER'),
+            ],
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

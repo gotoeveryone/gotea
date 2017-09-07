@@ -8,7 +8,7 @@
         </ul>
         <ul class="table-body" v-if="items.length">
             <li class="table-row" v-for="(item, idx) in items" :key="idx">
-                <span class="rank" v-text="item.rank.name"></span>
+                <span class="rank" v-text="item.name"></span>
                 <span class="count" v-text="count(item)"></span>
             </li>
         </ul>
