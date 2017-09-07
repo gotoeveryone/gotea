@@ -193,6 +193,32 @@ class PlayersTable extends AppTable
     }
 
     /**
+     * 段位ごとの棋士数を取得します。
+     *
+     * @param int $countryId
+     * @param string $countryName
+     * @return Query 生成されたクエリ
+     */
+    public function findRanksCount($countryId = null, $countryName = null)
+    {
+        $query = $this->find()->contain('Ranks')->where(['is_retired' => false]);
+
+        if ($countryId) {
+            $query->where(['country_id' => $countryId]);
+        }
+
+        if ($countryName) {
+            $query->innerJoinWith('Countries', function($q) use ($countryName) {
+                return $q->where(['Countries.name' => $countryName]);
+            });
+        }
+
+        return $query->select([
+            'rank' => 'Ranks.rank_numeric', 'name' => 'Ranks.name', 'count' => $query->func()->count('*')
+        ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric');
+    }
+
+    /**
      * ランキングモデルを配列に変換します。
      *
      * @param ResultSet $models

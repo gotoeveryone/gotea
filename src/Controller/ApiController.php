@@ -188,12 +188,7 @@ class ApiController extends Controller
     public function ranks(int $countryId)
     {
         $this->loadModel('Players');
-        $ranks = $this->Players->find()->contain(['Ranks'])->select([
-            'Ranks.name', 'count' => 'count(*)'
-        ])->where([
-            'country_id' => $countryId,
-            'is_retired' => false,
-        ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric')->all();
+        $ranks = $this->Players->findRanksCount($countryId);
         return $this->__renderJson($ranks->toArray());
     }
 

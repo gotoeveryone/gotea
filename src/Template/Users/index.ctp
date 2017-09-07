@@ -1,8 +1,9 @@
-<?= $this->Form->create(null, [
+<?= $this->Form->create($form, [
     'method' => 'post',
     'url' => ['action' => 'login'.(
         $this->request->getQuery('redirect') ? '?redirect='.$this->request->getQuery('redirect') : ''
     )],
+    'novalidate' => 'novalidate',
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',
@@ -13,20 +14,16 @@
         <li class="row">
             <label>ID</label>
             <?=
-                $this->Form->text('username', [
-                    'value' => $this->request->getData('username'),
+                $this->Form->control('username', [
                     'maxlength' => 10,
-                    'class' => 'imeDisabled'
                 ]);
             ?>
         </li>
         <li class="row">
             <label>Password</label>
             <?=
-                $this->Form->password('password', [
-                    'value' => $this->request->getData('password'),
+                $this->Form->control('password', [
                     'maxlength' => 20,
-                    'class' => 'imeDisabled'
                 ]);
             ?>
         </li>
