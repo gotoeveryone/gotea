@@ -1,1 +1,1 @@
-<ul class="error"><?php echo $this->MyFlash->getMessages($message) ?></ul>
+<app-dialog serv-type="error" serv-message="<?= $this->MyFlash->getMessages($message) ?>"></app-dialog>

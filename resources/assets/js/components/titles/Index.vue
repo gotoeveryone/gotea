@@ -74,7 +74,7 @@ export default {
                     messages: 'JSONを出力しました。',
                 })).catch(res => this.$store.dispatch('openDialog', {
                     messages: 'JSON出力に失敗しました…。',
-                    error: true,
+                    type: 'error',
                 }));
         },
         changeValue($event) {

@@ -324,14 +324,22 @@
             color: #04d;
             font-weight: bold;
         }
+        .id {
+            width: 6%;
+        }
         .country, .date {
-            width: 15%;
+            width: 12%;
         }
         .name {
             width: 25%;
         }
         .operation {
+            display: flex;
             width: 20%;
+            justify-content: center;
+            form {
+                width: 40%;
+            }
         }
     }
 }
@@ -411,25 +419,27 @@
         }
     }
     .name {
-        width: 19%;
+        width: 18%;
     }
 
     .winner {
         width: 15%;
     }
 
-    .holding, .order {
+    .holding, .order, .team, .closed {
         width: 5%;
         text-align: center;
     }
 
-    .team, .closed {
-        width: 5%;
-        text-align: center;
+    .filename {
+        width: 9%;
     }
 
-    .filename, .modified {
-        width: 10%;
+    .modified {
+        width: 13%;
+        .el-date-editor.el-input {
+            width: 100%;
+        }
     }
 
     input[type=text] {

@@ -11,7 +11,7 @@ import Titles from './components/titles/Index.vue';
 import AddHistory from './components/titles/AddHistory.vue';
 import Ranks from './components/ranks/Index.vue';
 
-new Vue({
+window.App = new Vue({
     store,
     el: '.content',
     data: {
@@ -39,6 +39,13 @@ new Vue({
                 url: _url,
                 width: _width,
                 height: _height,
+            });
+        },
+        openDialog(_title, _messages, _error) {
+            this.$store.dispatch('openDialog', {
+                title: _title,
+                messages: _messages,
+                error: _error,
             });
         },
     },

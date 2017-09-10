@@ -1,29 +1,30 @@
 <template>
     <li class="table-row" :class="getRowClass()">
         <span class="name">
-            <input type="text" @change="save()" v-model="item.titleNameJp">
+            <input type="text" @change="save" v-model="item.titleNameJp">
         </span>
         <span class="name">
-            <input type="text" @change="save()" v-model="item.titleName">
+            <input type="text" @change="save" v-model="item.titleName">
         </span>
         <span class="holding">
-            <input type="text" @change="save()" v-model="item.holding">
+            <input type="text" @change="save" v-model="item.holding">
         </span>
         <span class="winner" v-text="getWinnerName()"></span>
         <span class="order">
-            <input type="text" @change="save()" v-model="item.sortOrder">
+            <input type="text" @change="save" v-model="item.sortOrder">
         </span>
         <span class="team">
-            <input type="checkbox" @change="save()" v-model="item.isTeam">
+            <input type="checkbox" @change="save" v-model="item.isTeam">
         </span>
         <span class="filename">
-            <input type="text" @change="save()" v-model="item.htmlFileName">
+            <input type="text" @change="save" v-model="item.htmlFileName">
         </span>
         <span class="modified">
-            <input type="text" @change="saveDatepicker($event)" class="datepicker" v-model="item.htmlFileModified">
+            <date-picker type="date" @change="saveDatepicker" v-model="item.htmlFileModified"
+                size="small" format="yyyy/MM/dd"></date-picker>
         </span>
         <span class="closed">
-            <input type="checkbox" @change="save()" v-model="item.isClosed">
+            <input type="checkbox" @change="save" v-model="item.isClosed">
         </span>
         <span>
             <a @click="add()" v-if="!item.titleId">登録</a>
@@ -60,7 +61,7 @@ export default {
                 const message = res.body.response.message;
                 this.$store.dispatch('openDialog', {
                     messages: (message || '登録に失敗しました…。'),
-                    error: true,
+                    type: 'error',
                 });
             });
         },
@@ -73,7 +74,7 @@ export default {
                 const message = res.body.response.message;
                 this.$store.dispatch('openDialog', {
                     messages: (message || '更新に失敗しました…。'),
-                    error: true,
+                    type: 'error',
                 });
             });
         },
@@ -82,9 +83,11 @@ export default {
                 url: `${this.detailUrl}/${this.item.titleId}`,
             });
         },
-        saveDatepicker($event) {
-            this.item.htmlFileModified = $event.target.value;
-            this.save();
+        saveDatepicker(value) {
+            if (this.item.htmlFileModified !== value) {
+                this.item.htmlFileModified = value;
+                this.save();
+            }
         },
         getRowClass() {
             return this.item.isClosed ? 'closed' : '';

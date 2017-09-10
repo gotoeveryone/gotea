@@ -41,7 +41,7 @@ export default {
                 }))
                 .catch(res => this.$store.dispatch('openDialog', {
                     messages: 'JSON出力に失敗しました…。',
-                    error: true,
+                    type: 'error',
                 }));
         },
         getUrl(_params) {

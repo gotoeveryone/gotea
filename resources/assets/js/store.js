@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
         dialog: {
             title: '',
             messages: '',
-            error: false,
+            type: 'info',
         },
     },
     getters: {

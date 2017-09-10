@@ -82,7 +82,7 @@ export default {
             if (this.name === '') {
                 this.$store.dispatch('openDialog', {
                     messages: '棋士名は必須です。',
-                    error: true,
+                    type: 'error',
                 });
                 return;
             }
@@ -95,7 +95,7 @@ export default {
                     case 0:
                         this.$store.dispatch('openDialog', {
                             messages: '検索結果が0件でした。',
-                            error: true,
+                            type: 'warning',
                         });
                         break;
                     case 1:
@@ -109,7 +109,7 @@ export default {
                 const message = res.body.response.message;
                 this.$store.dispatch('openDialog', {
                     messages: (message || '更新に失敗しました…。'),
-                    error: true,
+                    type: 'error',
                 });
             });
         },

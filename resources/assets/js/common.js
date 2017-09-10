@@ -1,21 +1,86 @@
 // 画面をブロック
+const block = () => {
+    const blockui = document.querySelector('.block-ui');
+    blockui.classList.add('blocked');
+};
+
+// ブロック解除
+const unblock = () => {
+    const blockui = document.querySelector('.block-ui');
+    blockui.classList.remove('blocked');
+};
+
+// タブ変更
+const changeTab = (_element) => {
+    // タブ・コンテンツを非表示
+    const tabs = document.querySelectorAll('.tabs .tab');
+    Array.prototype.slice.call(tabs, 0).forEach(element => {
+        element.classList.remove('selectTab');
+    }, false);
+    const tabContents = document.querySelectorAll('.tab-contents');
+    Array.prototype.slice.call(tabContents, 0).forEach(element => {
+        element.classList.add('not-select');
+    }, false);
+
+    // 選択したコンテンツを表示
+    _element.classList.add('selectTab');
+    const selectTab = _element.getAttribute('data-tabname');
+    const selectContents = document.querySelector(`[data-contentname=${selectTab}]`);
+    if (selectContents) {
+        selectContents.classList.remove('not-select');
+    }
+}
+
+// 日付選択オプション
+const pikadayOptions = (_element, _birthday) => {
+    const nowYear = new Date().getFullYear();
+    const startYear = (_birthday ? 1920 : nowYear - 10);
+    const endYear = (_birthday ? nowYear - 5 : nowYear + 1);
+    return {
+        field: _element,
+        i18n: {
+            previousMonth : '前の月',
+            nextMonth     : '次の月',
+            months        : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月',],
+            weekdays      : ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'],
+            weekdaysShort : ['日','月','火','水','木','金','土'],
+        },
+		closeText: "閉じる",
+		currentText: "今日",
+		weekHeader: "週",
+		minDate: "1920/01/01",
+		format: "YYYY/MM/DD",
+		firstDay: 0,
+		isRTL: false,
+		changeYear: true,
+        yearRange: [startYear, endYear],
+		showMonthAfterYear: true,
+        yearSuffix: "年",
+    };
+}
+
 const main = document.querySelector('.main');
 main.classList.add('hide');
 
 // ドキュメント準備完了
 window.onload = () => {
-    // ブロック解除
     const main = document.querySelector('.main');
     main.classList.remove('hide');
-};
 
-// 戻るボタン
-const back = document.querySelector('.back');
-if (back) {
-    back.addEventListener('click', () => {
-        location.href = '/';
-    }, false);
-}
+    // リンク・ボタンにブロック追加
+    const links = document.querySelectorAll('a[href]');
+    Array.prototype.slice.call(links, 0).forEach(element => {
+        element.addEventListener('click', () => {
+            block();
+        }, false);
+    });
+    const forms = document.querySelectorAll('form');
+    Array.prototype.slice.call(forms, 0).forEach(element => {
+        element.addEventListener('submit', () => {
+            block();
+        }, false);
+    });
+};
 
 // タブ押下時
 const tabWrap = document.querySelector('.tabs');
@@ -41,6 +106,21 @@ if (tabWrap) {
     }
 }
 
+import Pikaday from 'pikaday';
+import 'pikaday/css/pikaday.css';
+const datepicker = document.querySelectorAll('.datepicker');
+Array.prototype.slice.call(datepicker, 0).forEach(element => {
+    const pikaday = new Pikaday(pikadayOptions(element, element.classList.contains('birthday')));
+});
+
+// 戻るボタン
+const back = document.querySelector('.back');
+if (back) {
+    back.addEventListener('click', () => {
+        location.href = '/';
+    }, false);
+}
+
 // 引退フラグ・引退日
 const isRetired = document.querySelector('#retired');
 if (isRetired) {
@@ -63,25 +143,31 @@ if (isRetired) {
     }, false);
 }
 
-// クエリ更新
-const updateScore = document.querySelector('[data-button-type=execute-queries]');
-if (updateScore) {
-    updateScore.addEventListener('click', () => {
-        const textarea = document.querySelector('#input-queries');
+// クエリ整形
+const inputQueries = document.querySelector('#input-queries');
+if (inputQueries) {
+    inputQueries.addEventListener('blur', (event) => {
         // クエリを整形
         // 前後の空白をトリムして、空行を削除
-        const queries = textarea.value;
-        const repText = queries.trim().replace(/;[\t]/g, ';\n').replace(/　/g, '')
+        event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/　/g, '')
                 .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
+    }, false);
+}
 
-        if (repText) {
-            // 更新処理
-            textarea.value = repText;
-            openConfirm('更新します。よろしいですか？');
-        } else {
-            const dialog = document.querySelector("#dialog");
-            dialog.innerText = '更新対象が1件も存在しません。';
-            dialog.click();
+// クエリ更新
+const updateQuery = document.querySelector('[data-button-type=execute-queries]');
+if (updateQuery) {
+    updateQuery.addEventListener('click', (event) => {
+        const inputQueries = document.querySelector('#input-queries');
+        if (!inputQueries.value) {
+            event.preventDefault();
+            App.openDialog(null, '更新対象が1件も存在しません。');
+            unblock();
+            return;
+        }
+
+        if (!confirm('更新します。よろしいですか？')) {
+            event.preventDefault();
         }
     }, false);
 }
@@ -93,125 +179,4 @@ if (clearQuery) {
         const textarea = document.querySelector('#input-queries');
         textarea.value = '';
     }, false);
-}
-
-// ダイアログのメッセージ
-window.outMessage = '';
-
-// 確認ダイアログ
-window.openConfirm = (message, form) => {
-    var confirm = $('#confirm');
-    confirm.text(message);
-
-    // ダイアログの設定
-    confirm.dialog({
-        autoOpen: false,
-        modal: true,
-        top: 0,
-        left: 0,
-        width: 400,
-        open: function (event, ui) {
-            $('.ui-dialog-titlebar-close').hide();
-        },
-        buttons: [
-            {
-                text: 'OK',
-                click: function (event) {
-                    if (!form) {
-                        form = $("#mainForm");
-                    }
-                    form.submit();
-                    var button = $('.ui-dialog-buttonpane').find('button:contains("OK")');
-                    button.attr('disabled', true);
-                    button.addClass('ui-state-disabled');
-                }
-            },
-            {
-                text: 'キャンセル',
-                class: "cancel",
-                click: function () {
-                    $(this).dialog('close');
-                }
-            }
-        ]
-    });
-
-    // ダイアログオープン
-    confirm.dialog("open");
-};
-
-// 初期処理
-$(document).ready(() => {
-    // 各種初期設定
-    setDatepicker();
-
-    $('#dialog').click(event => {
-        $(this).dialog('open');
-        event.preventDefault();
-    });
-});
-
-// タブ変更
-function changeTab(_element) {
-    // タブ・コンテンツを非表示
-    const tabs = document.querySelectorAll('.tabs .tab');
-    Array.prototype.slice.call(tabs, 0).forEach(element => {
-        element.classList.remove('selectTab');
-    }, false);
-    const tabContents = document.querySelectorAll('.tab-contents');
-    Array.prototype.slice.call(tabContents, 0).forEach(element => {
-        element.classList.add('not-select');
-    }, false);
-
-    // 選択したコンテンツを表示
-    _element.classList.add('selectTab');
-    const selectTab = _element.getAttribute('data-tabname');
-    const selectContents = document.querySelector(`[data-contentname=${selectTab}]`);
-    selectContents.classList.remove('not-select');
-}
-
-function getDatepickerObject() {
-    return {
-		closeText: "閉じる",
-		prevText: "&#x3c;前",
-		nextText: "次&#x3e;",
-		currentText: "今日",
-		monthNames: ["1月","2月","3月","4月","5月","6月",
-		"7月","8月","9月","10月","11月","12月"],
-		monthNamesShort: ["1月","2月","3月","4月","5月","6月",
-		"7月","8月","9月","10月","11月","12月"],
-		dayNames: ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
-		dayNamesShort: ["日","月","火","水","木","金","土"],
-		dayNamesMin: ["日","月","火","水","木","金","土"],
-		weekHeader: "週",
-		minDate: "1920/01/01",
-		dateFormat: "yy/mm/dd",
-		firstDay: 0,
-		isRTL: false,
-		changeYear: true,
-        yearRange: "-100:+1",
-		showMonthAfterYear: true,
-        yearSuffix: "年",
-		onSelect: function(d, i) {
-            // onChangeイベントを強制発火
-            if (d !== i.lastVal) {
-                var customEvent = document.createEvent('HTMLEvents');
-                customEvent.initEvent('change', true, false);
-                $(this).get(0).dispatchEvent(customEvent);
-            }
-		}
-    };
-}
-
-// 日付欄の入力制御
-function setDatepicker() {
-    $('.content').on('focus', '.datepicker', function() {
-        $(this).datepicker(getDatepickerObject());
-    });
-    // 誕生日の場合は初期表示を20年前に設定
-    $('.datepicker.birthday').each(function() {
-        if (!$(this).val()) {
-            $(this).datepicker("option", "defaultDate", "-20y");
-        }
-    });
 }

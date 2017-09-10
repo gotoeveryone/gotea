@@ -38,10 +38,9 @@
     <?php endif ?>
 
     <div class="search-results<?=(isset($isDialog) ? ' modal' : '')?>">
-        <?=$this->Form->hidden('change_id', ['value' => ''])?>
-        <?=$this->Form->hidden('delete_id', ['value' => ''])?>
         <ul class="table-header">
             <li class="table-row">
+                <span class="id">ID</span>
                 <span class="country">対象国</span>
                 <span class="date">日付</span>
                 <span class="name">勝者</span>
@@ -53,15 +52,38 @@
         <ul class="table-body">
             <?php foreach ($titleScores as $titleScore) : ?>
             <li class="table-row">
-                <?=$this->Form->hidden('id', ['value' => $titleScore->id]);?>
+                <span class="id"><?= h($titleScore->id) ?></span>
                 <span class="country"><?= h($titleScore->country->name.'棋戦') ?></span>
                 <span class="date"><?= h($titleScore->date) ?></span>
                 <span class="name"><?= $titleScore->getWinner($this->request->getData('player_id')) ?></span>
                 <span class="name"><?= $titleScore->getLoser($this->request->getData('player_id')) ?></span>
                 <?php if (!isset($isDialog)) : ?>
                 <span class="operation">
-                    <?= $this->Form->button('勝敗変更', ['data-id' => $titleScore->id, 'class' => 'change']) ?>
-                    <?= $this->Form->button('削除', ['type' => 'button', 'data-id' => $titleScore->id, 'class' => 'delete']) ?>
+                    <?= $this->Form->postButton('勝敗変更', [
+                        'action' => 'change',
+                    ], [
+                        'data' => [
+                            'change_id' => $titleScore->id,
+                            'name' => $this->request->getData('name'),
+                            'country_id' => $this->request->getData('country_id'),
+                            'target_year' => $this->request->getData('target_year'),
+                            'started' => $this->request->getData('started'),
+                            'ended' => $this->request->getData('ended'),
+                        ],
+                    ]) ?>
+                    <?= $this->Form->postButton('削除', [
+                        'action' => 'delete',
+                    ], [
+                        'data' => [
+                            'delete_id' => $titleScore->id,
+                            'name' => $this->request->getData('name'),
+                            'country_id' => $this->request->getData('country_id'),
+                            'target_year' => $this->request->getData('target_year'),
+                            'started' => $this->request->getData('started'),
+                            'ended' => $this->request->getData('ended'),
+                        ],
+                        'onclick' => "return confirm('タイトル成績情報を削除します。よろしいですか？')",
+                    ]) ?>
                 </span>
                 <?php endif ?>
             </li>
@@ -78,23 +100,3 @@
     </div>
     <?php endif ?>
 </section>
-
-<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
-<script>
-    $(function() {
-        // 勝敗変更ボタン押下時
-        $('.change').on('click', function() {
-            var id = $(this).attr('data-id');
-            $('[name=change_id]').val(id);
-            $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'change'])?>').submit();
-        });
-        // 削除ボタン押下時
-        $('.delete').on('click', function() {
-            var id = $(this).attr('data-id');
-            $('[name=delete_id]').val(id);
-            $('#mainForm').attr('action', '<?=$this->Url->build(['action' => 'delete'])?>');
-            openConfirm('タイトル成績情報を削除します。よろしいですか？');
-        });
-    });
-</script>
-<?php $this->MyHtml->scriptEnd(); ?>
