@@ -1,6 +1,6 @@
 # 棋戦情報管理システム
 
-[CakePHP](http://cakephp.org) 3.x を利用した囲碁棋戦情報管理システムです。
+[CakePHP](http://cakephp.org) 3.x を利用した[Go to Everyone!](https://gotoeveryone.k2ss.info)の管理システムです。
 
 ## 前提
 以下がインストールされていること。
@@ -30,10 +30,9 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 
 ### フロントコード
 
-- TypeScript
-- Angular4
 - webpack
-- Vue.js (一部のみ、最終的にはAngularとどちらかで統一予定)
+- Vue.js
+- Sass
 
 最終的なJS・CSSは`webpack`を利用して生成します。  
 `npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
@@ -44,3 +43,5 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 
 - igoapp-access.log（アクセスログ）
 - igoapp-error.log（エラーログ）
+- igoapp-cli-debug.log（CLIデバッグログ）
+- igoapp-cli-error.log（CLIエラーログ）
