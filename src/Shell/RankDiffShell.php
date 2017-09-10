@@ -5,7 +5,6 @@ namespace App\Shell;
 use Cake\Console\Shell;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\Utility\Hash;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
@@ -33,8 +32,8 @@ class RankDiffShell extends Shell
      */
     public function main()
     {
-        $koreaDiffs = $this->getDiff('韓国', $this->__korea());
-        $taiwanDiffs = $this->getDiff('台湾', $this->__taiwan());
+        $koreaDiffs = $this->__getDiff('韓国', $this->__getPlayerFromKorea());
+        $taiwanDiffs = $this->__getDiff('台湾', $this->__getPlayerFromTaiwan());
         $results = array_merge($koreaDiffs, $taiwanDiffs);
 
         // メール送信
@@ -51,13 +50,14 @@ class RankDiffShell extends Shell
      * @param array $results
      * @return void
      */
-    private function getDiff($key, $results)
+    private function __getDiff($key, $results)
     {
         $values = $this->Players->findRanksCount(null, $key)->filter(function($item, $key) use ($results) {
-            $web = $results[$item->rank] ?? null;
-            return ($web !== null && $web !== intval($item->count));
+            $web = count($results[$item->rank]) ?? 0;
+            return $web !== $item->count;
         })->map(function($item, $key) use ($results) {
-            return "　{$item->name} WEB: {$results[$item->rank]} - DB: {$item->count}";
+            $web = count($results[$item->rank]) ?? 0;
+            return "　{$item->name} WEB: {$web} - DB: {$item->count}";
         });
 
         if (!$values) {
@@ -68,58 +68,62 @@ class RankDiffShell extends Shell
     }
 
     /**
-     * 韓国棋士の差分チェック
+     * 韓国棋士の段位と棋士数を取得
      *
-     * @return array 段位と棋士数の一覧
+     * @return array 段位と棋士の一覧
      */
-    private function __korea()
+    private function __getPlayerFromKorea()
     {
         Log::info('韓国棋士の差分を抽出します。');
 
-        $this->results = [];
-
+        $results = [];
         $crawler = $this->__getCrawler(env('DIFF_KOREA_URL'));
-        $content = $crawler->filter('#content')->first();
-        $content->filter('.facetop')->each(function(Crawler $node) {
+        $crawler->filter('#content .facetop')->each(function(Crawler $node) use (&$results) {
             $src = $node->filter('img')->attr('src');
             if (preg_match('/list_([1-9])dan/', $src, $matches)) {
                 $rank = $matches[1];
-                $count = $node->nextAll()->filter('script')->first()->text();
-                if (preg_match('/\'([0-9]{1,})+/', $count, $matches)) {
-                    $count = $matches[1];
-                    $this->results[$rank] = $count;
-                }
+                $playerNodes = $node->nextAll()->filter('table')->first()->filter('td');
+                $players = $playerNodes->each(function($node) {
+                    return $node->text();
+                });
+
+                $results[$rank] = collection($players)->filter(function($item, $key) {
+                    $text = $item;
+                    if (preg_match('/(\s)/u', $text)) {
+                        $text = preg_replace('/(\s)/u', '', $text);
+                    }
+                    return $text !== '';
+                })->toArray();
             }
         });
 
-        return $this->results;
+        return $results;
     }
 
     /**
-     * 台湾棋士の差分チェック
+     * 台湾棋士の段位と棋士数を取得
      *
-     * @return array 段位と棋士数の一覧
+     * @return array 段位と棋士の一覧
      */
-    private function __taiwan()
+    private function __getPlayerFromTaiwan()
     {
         Log::info('台湾棋士の差分を抽出します。');
 
-        $this->results = [];
-
+        $results = [];
         $crawler = $this->__getCrawler(env('DIFF_TAIWAN_URL'));
-        $crawler->filter('table[width=685]')->each(function(Crawler $node) {
-            $node->filter('tr')->each(function(Crawler $node) {
-                $img = $node->filter('img')->first();
-                if ($img->count() && count($src = $img->attr('src'))
-                    && preg_match('/dan([0-9]{2})/', $src, $matches)) {
-                    $rank = intval($matches[1]);
-                    $count = $node->filter('td[align=right]')->text();
-                    $this->results[$rank] = intval($count);
-                }
-            });
+        $crawler->filter('table[width=685] tr')->each(function(Crawler $node) use (&$results) {
+            $img = $node->filter('img')->first();
+            if ($img->count() && count($src = $img->attr('src'))
+                && preg_match('/dan([0-9]{2})/', $src, $matches)) {
+                $rank = intval($matches[1]);
+                $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');
+                $results[$rank] = $playerNodes->each(function($node) {
+                    return $node->text();
+                });
+            }
         });
 
-        return $this->results;
+        return $results;
     }
 
     /**
