@@ -1,12 +1,12 @@
 <div class="detail-dialog">
     <!-- タブ -->
-    <ul id="tabs" class="tabs">
-        <li class="tab" name="player">棋士情報</li>
+    <ul class="tabs" data-selecttab="<?= ($tab ?? '') ?>">
+        <li class="tab" data-tabname="player">棋士情報</li>
         <?php if ($player->id) : ?>
-            <li class="tab" name="ranks">昇段情報</li>
-            <li class="tab" name="scores">成績情報</li>
+            <li class="tab" data-tabname="ranks">昇段情報</li>
+            <li class="tab" data-tabname="scores">成績情報</li>
             <?php if (!$player->retention_histories) : ?>
-            <li class="tab" name="titleRetains">タイトル取得情報</li>
+            <li class="tab" data-tabname="titleRetains">タイトル取得情報</li>
             <?php endif ?>
         <?php endif ?>
     </ul>
@@ -14,12 +14,13 @@
     <!-- 詳細 -->
     <div class="detail">
         <!-- 棋士成績 -->
-        <section id="player">
+        <section data-contentname="player" class="tab-contents">
             <?=$this->Form->create($player, [
                 'id' => 'mainForm',
                 'class' => 'mainForm',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
+                'novalidate' => 'novalidate',
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
@@ -52,7 +53,7 @@
                             <div class="input-row">
                                 <?=$this->Form->checkbox('is_retired', ['id' => 'retired'])?>
                                 <?= $this->Form->label('retired', '引退しました') ?>
-                                <?= $this->Form->text('retired', ['class' => 'datepicker']) ?>
+                                <?= $this->Form->text('retired', ['class' => 'datepicker', 'disabled']) ?>
                             </div>
                         </div>
                     </li>
@@ -158,18 +159,14 @@
                             <?= $this->Form->checkbox('is_continue', ['id' => 'continue', 'checked']) ?>
                             <?= $this->Form->label('continue', '続けて登録') ?>
                         <?php endif ?>
-                        <?= $this->Form->button(($player->id ? '更新' : '登録'), [
-                            'data-button-type' => 'player',
-                            'type' => 'button',
-                            'value' => 'save'
-                        ]) ?>
+                        <?= $this->Form->button(($player->id ? '更新' : '登録')) ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>
         </section>
 
         <!-- 昇段情報 -->
-        <section id="ranks">
+        <section data-contentname="ranks" class="tab-contents">
             <div class="category-row">昇段情報</div>
             <?= $this->Form->create($player, [
                 'class' => 'rank-form',
@@ -226,7 +223,7 @@
 
         <!-- 棋士成績 -->
         <?php if ($player->id) : ?>
-        <section id="scores">
+        <section data-contentname="scores" class="tab-contents">
             <div class="category-row">勝敗</div>
 
             <?php // 2017年以降 ?>
@@ -305,7 +302,7 @@
         </section>
 
         <!-- タイトル取得履歴 -->
-        <section id="titleRetains">
+        <section data-contentname="titleRetains" class="tab-contents">
             <div class="category-row">タイトル取得履歴</div>
 
             <?php foreach ($player->groupByYearFromHistories() as $key => $items) : ?>
@@ -321,12 +318,3 @@
         <?php endif ?>
     </div>
 </div>
-
-<?php $this->MyHtml->scriptStart(['inline' => false, 'block' => 'script']); ?>
-<script>
-    $(function () {
-        // タブ選択
-        selectTab('<?=($tab ?? '')?>');
-    });
-</script>
-<?php $this->MyHtml->scriptEnd(); ?>

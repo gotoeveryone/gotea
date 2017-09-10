@@ -47,11 +47,11 @@
                 <?=$this->Form->text('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
             </li>
             <li class="search-row">
-                <?php if (!empty($players) && count($players) > 0) { ?>
+                <?php if (!empty($players) && count($players) > 0) : ?>
                 <div class="result-count">
                     <?=count($players).'件のレコードが該当しました。'?>
                 </div>
-                <?php } ?>
+                <?php endif ?>
                 <div class="button-wrap">
                     <add-button :country-id="countryId" :changed="changed"
                         :url="'<?= $this->Url->build(['action' => 'new']) ?>'"

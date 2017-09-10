@@ -12,11 +12,29 @@
             "off"
         ],
         "indent": [
-            "off"
+            "error",
+            4
+        ],
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "no-irregular-whitespace": [
+            "error",
+            {
+                "skipRegExps": true
+            }
+        ],
+        "no-unused-vars": [
+            1,
+            {
+                "vars": "all",
+                "args": "after-used"
+            }
         ],
         "linebreak-style": [
             "error",
-            "windows"
+            "unix"
         ],
         "quotes": [
             "error",

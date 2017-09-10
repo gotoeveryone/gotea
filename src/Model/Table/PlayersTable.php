@@ -80,12 +80,14 @@ class PlayersTable extends AppTable
      */
     public function save(EntityInterface $entity, $options = [])
     {
-        $new = $entity->isNew();
-
+        // 引退フラグがfalseなら引退日を空欄にする
+        if (!$entity->is_retired) {
+            $entity->retired = null;
+        }
         $save = parent::save($entity, $options);
 
         // 新規作成時には昇段情報も登録
-        if ($save && $new) {
+        if ($save && $entity->isNew()) {
             // 入段日を登録時段位の昇段日として設定
             $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
 

@@ -28,6 +28,16 @@
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
+.main {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility .5s ease-in, opacity .5s ease-in;
+    &.hide {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
 .block-ui {
     position: fixed;
     width: 100%;
@@ -39,7 +49,7 @@
     bottom: 0;
     left: 0;
     z-index: 300;
-    background-color: #000;
+    background-color: $c_black;
     transition-property: visibility, opacity;
     transition-timing-function: ease;
     transition-duration: .3s;
@@ -79,7 +89,7 @@
     text-indent: 0.5rem;
     font-size: 1.2rem;
     font-weight: bold;
-    background-color: #ddeeff;
+    background-color: #def;
 }
 
 .genre-row {
@@ -88,7 +98,7 @@
     text-indent: 0.6rem;
     font-size: 1.1rem;
     font-weight: bold;
-    background-color: #eeffdd;
+    background-color: #efd;
 }
 
 .label-row {
@@ -96,7 +106,7 @@
     margin: 0 auto;
     min-height: 2.2rem;
     text-indent: 0.7rem;
-    background-color: #ffeedd;
+    background-color: #fed;
     font-weight: bold;
 }
 
@@ -236,6 +246,12 @@
         border: 0.1rem solid $c_black;
         background-color: $c_white;
 
+        .tab-contents {
+            &.not-select {
+                display: none;
+            }
+        }
+
         .boxes {
             margin: 0;
             padding: 0;
@@ -308,14 +324,22 @@
             color: #04d;
             font-weight: bold;
         }
+        .id {
+            width: 6%;
+        }
         .country, .date {
-            width: 15%;
+            width: 12%;
         }
         .name {
             width: 25%;
         }
         .operation {
+            display: flex;
             width: 20%;
+            justify-content: center;
+            form {
+                width: 40%;
+            }
         }
     }
 }
@@ -395,25 +419,27 @@
         }
     }
     .name {
-        width: 19%;
+        width: 18%;
     }
 
     .winner {
         width: 15%;
     }
 
-    .holding, .order {
+    .holding, .order, .team, .closed {
         width: 5%;
         text-align: center;
     }
 
-    .team, .closed {
-        width: 5%;
-        text-align: center;
+    .filename {
+        width: 9%;
     }
 
-    .filename, .modified {
-        width: 10%;
+    .modified {
+        width: 13%;
+        .el-date-editor.el-input {
+            width: 100%;
+        }
     }
 
     input[type=text] {
@@ -431,14 +457,14 @@
    タイトル情報詳細
  ------------------------------------------- */
 .retentions {
-    display: none;
     width: 85%;
     margin: auto;
+    max-width: 700px;
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid $c_black;
 
-    *, button {
+    * {
         font-size: 0.85rem;
     }
 
@@ -452,6 +478,11 @@
 
         tbody, tr, td {
             padding: 0.1rem 0.5rem;
+        }
+
+        .select {
+            width: 80px;
+            text-align: center;
         }
     }
 }

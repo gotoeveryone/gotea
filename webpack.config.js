@@ -8,11 +8,12 @@ module.exports = [
             common: './resources/assets/js/common',
         },
         output: {
+            publicPath: 'js/',
             path: path.join(__dirname, 'webroot/js'),
             filename: '[name].js',
         },
         resolve: {
-            extensions:['.webpack.js', '.vue', '.js'],
+            extensions: ['.webpack.js', '.vue', '.js'],
             alias: {
                 'vue$': 'vue/dist/vue.common',
             },
@@ -32,6 +33,21 @@ module.exports = [
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: 'buble-loader',
+                },
+                {
+                    test: /\.css$/,
+                    loader: 'style-loader!css-loader'
+                },
+                {
+                    test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+                    loader: 'file-loader'
+                },
+                {
+                    test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
+                    loader: 'file-loader',
+                    query: {
+                        name: '[name].[ext]?[hash]'
+                    },
                 },
             ],
         },

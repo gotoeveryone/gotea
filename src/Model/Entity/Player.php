@@ -227,6 +227,7 @@ class Player extends AppEntity
             'id' => $this->id,
             'name' => $this->name,
             'nameEnglish' => $this->name_english,
+            'nameOther' => $this->name_other,
             'sex' => $this->sex,
             'countryName' => $this->country ? $this->country->name : '',
             'rankId' => $this->rank->id,

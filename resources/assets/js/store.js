@@ -10,14 +10,14 @@ export const store = new Vuex.Store({
         dialog: {
             title: '',
             messages: '',
-            error: false,
+            type: 'info',
         },
     },
     getters: {
-        modalOptions: (state, getters) => () => {
+        modalOptions: (state) => () => {
             return state.modal;
         },
-        dialogOptions: (state, getters) => () => {
+        dialogOptions: (state) => () => {
             return state.dialog;
         },
     },

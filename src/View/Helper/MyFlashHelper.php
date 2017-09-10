@@ -29,6 +29,7 @@ class MyFlashHelper extends FlashHelper
             }
         }
 
-        return $this->_prefix.implode($this->_suffix.$this->_prefix, $out).$this->_suffix;
+        return implode(',', $out);
+        // return $this->_prefix.implode($this->_suffix.$this->_prefix, $out).$this->_suffix;
     }
 }
