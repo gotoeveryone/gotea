@@ -8,6 +8,7 @@ import Modal from './components/parts/Modal.vue';
 import AddButton from './components/players/Button.vue';
 import Ranking from './components/ranking/Index.vue';
 import Titles from './components/titles/Index.vue';
+import AddHistory from './components/titles/AddHistory.vue';
 import Ranks from './components/ranks/Index.vue';
 
 new Vue({
@@ -21,6 +22,7 @@ new Vue({
         modal: Modal,
         appDialog: Dialog,
         addButton: AddButton,
+        addHistory: AddHistory,
         ranking: Ranking,
         titles: Titles,
         ranks: Ranks,

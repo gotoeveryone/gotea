@@ -60,7 +60,7 @@ class ApiController extends Controller
         }
 
         if (!($name = $this->request->getData('name'))) {
-            return $this->__renderJson();
+            return $this->__renderError(400, '棋士名は必須です。');
         }
 
         $players = $this->Players->findPlayersQuery($this->request)->all();

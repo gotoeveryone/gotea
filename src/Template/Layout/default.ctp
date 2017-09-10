@@ -80,7 +80,7 @@
             </nav>
             <?php endif ?>
             <!-- メインコンテンツ -->
-            <main>
+            <main class="main">
                 <?=$this->fetch('content')?>
                 <!-- モーダルコンテンツ -->
                 <modal></modal>
