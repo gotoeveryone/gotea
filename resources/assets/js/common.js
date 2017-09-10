@@ -29,7 +29,7 @@ const changeTab = (_element) => {
     if (selectContents) {
         selectContents.classList.remove('not-select');
     }
-}
+};
 
 // 日付選択オプション
 const pikadayOptions = (_element, _birthday) => {
@@ -39,25 +39,25 @@ const pikadayOptions = (_element, _birthday) => {
     return {
         field: _element,
         i18n: {
-            previousMonth : '前の月',
-            nextMonth     : '次の月',
-            months        : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月',],
-            weekdays      : ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'],
-            weekdaysShort : ['日','月','火','水','木','金','土'],
+            previousMonth: '前の月',
+            nextMonth: '次の月',
+            months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            weekdays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+            weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
         },
-		closeText: "閉じる",
-		currentText: "今日",
-		weekHeader: "週",
-		minDate: "1920/01/01",
-		format: "YYYY/MM/DD",
-		firstDay: 0,
-		isRTL: false,
-		changeYear: true,
+        closeText: '閉じる',
+        currentText: '今日',
+        weekHeader: '週',
+        minDate: '1920/01/01',
+        format: 'YYYY/MM/DD',
+        firstDay: 0,
+        isRTL: false,
+        changeYear: true,
         yearRange: [startYear, endYear],
-		showMonthAfterYear: true,
-        yearSuffix: "年",
+        showMonthAfterYear: true,
+        yearSuffix: '年',
     };
-}
+};
 
 const main = document.querySelector('.main');
 main.classList.add('hide');
@@ -110,7 +110,7 @@ import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
 const datepicker = document.querySelectorAll('.datepicker');
 Array.prototype.slice.call(datepicker, 0).forEach(element => {
-    const pikaday = new Pikaday(pikadayOptions(element, element.classList.contains('birthday')));
+    new Pikaday(pikadayOptions(element, element.classList.contains('birthday')));
 });
 
 // 戻るボタン
@@ -125,7 +125,7 @@ if (back) {
 const isRetired = document.querySelector('#retired');
 if (isRetired) {
     // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
-    const setRetired = function() {
+    const setRetired = function () {
         var isRetired = document.querySelector('#retired');
         if (isRetired) {
             var retired = document.querySelector('[name=retired]');
@@ -150,7 +150,7 @@ if (inputQueries) {
         // クエリを整形
         // 前後の空白をトリムして、空行を削除
         event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/　/g, '')
-                .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
+            .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
     }, false);
 }
 

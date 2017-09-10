@@ -14,10 +14,10 @@ export const store = new Vuex.Store({
         },
     },
     getters: {
-        modalOptions: (state, getters) => () => {
+        modalOptions: (state) => () => {
             return state.modal;
         },
-        dialogOptions: (state, getters) => () => {
+        dialogOptions: (state) => () => {
             return state.dialog;
         },
     },

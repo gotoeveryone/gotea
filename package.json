@@ -6,7 +6,8 @@
   "scripts": {
     "webpack": "webpack --colors --config=./webpack.config.js",
     "dev": "npm run webpack -- -w",
-    "prod": "cross-env NODE_ENV=production npm run webpack -- -p"
+    "prod": "cross-env NODE_ENV=production npm run webpack -- -p",
+    "lint": "eslint resources/assets/js/**/*.js"
   },
   "author": "Kazuki Kamizuru",
   "license": "ISC",
