@@ -42,7 +42,6 @@ class TitleScoresTable extends AppTable
             'foreignKey' => 'title_score_id',
         ]);
         $this->hasOne('WinDetails', [
-            'joinType' => 'INNER',
             'className' => 'TitleScoreDetails',
             'foreignKey' => 'title_score_id',
             'conditions' => [
@@ -50,7 +49,6 @@ class TitleScoresTable extends AppTable
             ]
         ]);
         $this->hasOne('LoseDetails', [
-            'joinType' => 'INNER',
             'className' => 'TitleScoreDetails',
             'foreignKey' => 'title_score_id',
             'conditions' => [
@@ -83,9 +81,7 @@ class TitleScoresTable extends AppTable
                     'Countries',
                     'WinDetails', 'WinDetails.Winner', 'WinDetails.Winner.Ranks',
                     'LoseDetails', 'LoseDetails.Loser', 'LoseDetails.Loser.Ranks'])
-                ->leftJoinWith('WinDetails.Winner')
-                ->leftJoinWith('LoseDetails.Loser')
-                ->orderDesc('started');
+                ->orderDesc('started')->orderDesc('TitleScores.id');
 
         if (($id = $data['player_id'] ?? '')) {
             $query->where(['Winner.id' => $id])->orWhere(['Loser.id' => $id]);

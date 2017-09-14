@@ -49,12 +49,10 @@ class TitleScoreDetailsTable extends AppTable
         $this->belongsTo('Winner', [
             'className' => 'Players',
             'foreignKey' => 'player_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Loser', [
             'className' => 'Players',
             'foreignKey' => 'player_id',
-            'joinType' => 'INNER'
         ]);
     }
 
