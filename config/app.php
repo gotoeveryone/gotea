@@ -234,7 +234,7 @@ return [
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
-            //'port' => 'nonstandard_port_number',
+            'port' => env('DB_PORT', 3306),
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
             'database' => env('DB_NAME', 'igo'),
@@ -274,10 +274,10 @@ return [
             'driver' => 'Cake\Database\Driver\Mysql',
             'persistent' => false,
             'host' => env('DB_TEST_HOST', 'localhost'),
-            //'port' => 'nonstandard_port_number',
+            'port' => env('DB_TEST_PORT', 3306),
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
-            'database' => env('DB_TEST_NAME', 'igo'),
+            'database' => env('DB_TEST_NAME', 'igo_test'),
             'encoding' => 'utf8',
             'timezone' => env('DB_TEST_TIMEZONE', 'UTC'),
             'cacheMetadata' => true,
