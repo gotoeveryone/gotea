@@ -58,7 +58,7 @@ class RankDiffShell extends Shell
         })->map(function($item, $key) use ($results) {
             $web = count($results[$item->rank]) ?? 0;
             return "　{$item->name} WEB: {$web} - DB: {$item->count}";
-        });
+        })->toArray();
 
         if (!$values) {
             return [];

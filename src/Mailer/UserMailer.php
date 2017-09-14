@@ -20,34 +20,11 @@ class UserMailer extends Mailer
      * 通知メール送信
      *
      * @param string $subject
-     * @param string|array $body
+     * @param array $messages
      * @return void
      */
-    public function notification(string $subject, $messages)
+    public function notification(string $subject, array $messages)
     {
-        // メッセージ生成
-        if (!is_array($messages)) {
-            $body = [$messages];
-        } else {
-            $body = [];
-            foreach ($messages as $key => $values) {
-                if (!$values) {
-                    continue;
-                }
-
-                if (!is_array($values) && !$values instanceof \Traversable) {
-                    $body[] = $values;
-                    continue;
-                }
-
-                $body[] = "【${key}】";
-                foreach ($values as $value) {
-                    $body[] = $value;
-                }
-                $body[] = '';
-            }
-        }
-
         // 宛先
         $to = env('EMAIL_TO');
         if (strpos($to, ',') !== false) {
@@ -57,8 +34,7 @@ class UserMailer extends Mailer
         // メール送信
         $this->addTo($to)
             ->setSubject($subject)
-            ->set(['content' => implode("\n", $body)])
-            ->setTemplate('default');
+            ->set(['messages' => $messages]);
 
         Log::info('メールを送信します。');
     }
