@@ -130,27 +130,27 @@ class TitleScoresTable extends AppTable
                 'win_point_world' => 'coalesce(win_world.cnt, 0)', 'lose_point_world' => 'coalesce(lose_world.cnt, 0)',
                 'draw_point_world' => 'coalesce(draw_world.cnt, 0)'])
             ->innerJoin(['TitleScoreDetails' => 'title_score_details'], ['TitleScoreDetails.title_score_id = TitleScores.id'])
-            ->leftJoin(['win' => $this->__createSub('勝')], [
+            ->leftJoin(['win' => $this->__createSub('勝', $years)], [
                 'YEAR(started) = win.target_year',
                 'TitleScoreDetails.player_id = win.player_id',
             ])
-            ->leftJoin(['lose' => $this->__createSub('敗')], [
+            ->leftJoin(['lose' => $this->__createSub('敗', $years)], [
                 'YEAR(started) = lose.target_year',
                 'TitleScoreDetails.player_id = lose.player_id',
             ])
-            ->leftJoin(['draw' => $this->__createSub('分')], [
+            ->leftJoin(['draw' => $this->__createSub('分', $years)], [
                 'YEAR(started) = draw.target_year',
                 'TitleScoreDetails.player_id = draw.player_id',
             ])
-            ->leftJoin(['win_world' => $this->__createSub('勝', true)], [
+            ->leftJoin(['win_world' => $this->__createSub('勝', $years, true)], [
                 'YEAR(started) = win_world.target_year',
                 'TitleScoreDetails.player_id = win_world.player_id',
             ])
-            ->leftJoin(['lose_world' => $this->__createSub('敗', true)], [
+            ->leftJoin(['lose_world' => $this->__createSub('敗', $years, true)], [
                 'YEAR(started) = lose_world.target_year',
                 'TitleScoreDetails.player_id = lose_world.player_id',
             ])
-            ->leftJoin(['draw_world' => $this->__createSub('分', true)], [
+            ->leftJoin(['draw_world' => $this->__createSub('分', $years, true)], [
                 'YEAR(started) = draw_world.target_year',
                 'TitleScoreDetails.player_id = draw_world.player_id',
             ])
@@ -169,16 +169,19 @@ class TitleScoresTable extends AppTable
      * サブクエリを作成します。
      *
      * @param string $division
+     * @param int|array $years
      * @param bool $world
      * @return \Cake\Database\Query
      */
-    private function __createSub(string $division, $world = false) : Query
+    private function __createSub(string $division, $years, $world = false) : Query
     {
         $titleScoreDetails = TableRegistry::get('TitleScoreDetails');
         $sub = $titleScoreDetails->find()
                 ->select(['player_id' => 'player_id', 'target_year' => 'YEAR(started)', 'cnt' => 'count(*)'])
                 ->contain(['TitleScores'])
-                ->where(['division' => $division])->group(['player_id', 'YEAR(started)']);
+                ->where(['division' => $division])
+                ->where(['YEAR(started) IN' => $years])
+                ->group(['player_id', 'target_year']);
 
         return ($world ? $sub->where(['is_world' => true]) : $sub);
     }
