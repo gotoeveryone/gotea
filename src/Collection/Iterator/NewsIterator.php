@@ -14,6 +14,7 @@ class NewsIterator
         return [
             'nameEnglish' => $item->name_english,
             'countryName' => $item->country->name_english,
+            'countryCode' => $item->country->code,
             'holding' => $item->holding,
             'winnerName' => $item->getWinnerName(false),
             'htmlFileName' => $item->html_file_name,
