@@ -24,16 +24,34 @@ export default {
         servType: String,
         servMessage: String,
     },
+    data: () => {
+        return {
+            options: {
+                title: '',
+                messages: [],
+                type: 'info',
+            },
+        };
+    },
     methods: {
+        getOptions() {
+            // 保持しているオプションがあればそれを返却
+            if (this.options.messages.length) {
+                return this.options;
+            }
+            const options = this.$store.getters.dialogOptions();
+
+            // 配列に変換
+            if (!Array.isArray(options.messages) && options.messages) {
+                options.messages = [options.messages];
+            }
+            return options;
+        },
         getTitle() {
             return this.getOptions().title || 'メッセージ';
         },
         getMessages() {
-            const op = this.getOptions();
-            if (!Array.isArray(op.messages) && op.messages) {
-                return [op.messages];
-            }
-            return op.messages;
+            return this.getOptions().messages;
         },
         getMessageClass() {
             const op = this.getOptions();
@@ -46,19 +64,25 @@ export default {
             return this.getMessages().length > 0;
         },
         close() {
-            this.$store.dispatch('closeDialog');
-        },
-        getOptions() {
-            return this.$store.getters.dialogOptions();
+            if (this.servMessage) {
+                this.options = {
+                    title: '',
+                    messages: [],
+                    type: 'info',
+                };
+            } else {
+                this.$store.dispatch('closeDialog');
+            }
         },
     },
     mounted() {
+        // サーバからのメッセージを保持している場合、それをオプションに設定
         if (this.servMessage) {
-            this.$store.dispatch('openDialog', {
-                messages: this.servMessage.split(','),
+            this.options = {
                 title: this.getTitle(),
+                messages: this.servMessage.split(','),
                 type: this.servType,
-            });
+            }
         }
     },
 }

@@ -12,7 +12,6 @@
             <?='棋士情報管理システム - '.h($cakeDescription ?? '') ?>
         </title>
         <?=$this->Html->meta('icon')?>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" />
         <link rel="stylesheet" href="<?=env('ASSETS_URL')?>css/common.css" />
         <?=$this->Html->css('app')?>
     </head>
@@ -21,8 +20,8 @@
         <div class="container">
             <!-- ヘッダー -->
             <?php if (!isset($isDialog)) : ?>
-            <header>
-                <div class="system-name"><span>棋士情報管理システム</span></div>
+            <header class="header">
+                <div class="system-name">棋士情報管理システム</div>
                 <!-- 見出し -->
                 <h1 class="page-title"><?=h($cakeDescription ?? '')?></h1>
                 <div class="other">
@@ -35,7 +34,7 @@
             <?php endif ?>
 
             <!-- 本体 -->
-            <div class="content<?=(isset($isDialog) ? ' modal' : '')?>">
+            <div class="main-content<?=(isset($isDialog) ? ' modal' : '')?>">
                 <?php if (isset($username) && !isset($isDialog)) : ?>
                 <!-- ナビゲーション -->
                 <nav>
@@ -86,7 +85,7 @@
                     <modal></modal>
                     <!-- ダイアログ -->
                     <app-dialog></app-dialog>
-                    <div class="layout-dialog"><?=$this->Flash->render()?></div>
+                    <?= $this->Flash->render() ?>
                 </main>
             </div>
 
@@ -108,8 +107,9 @@
                 accessUser: '<?= $userid ?? '' ?>',
             };
         </script>
-        <?=$this->Html->script('app')?>
+        <script src="<?=env('ASSETS_URL')?>js/common.js"></script>
         <?=$this->Html->script('common')?>
+        <?=$this->Html->script('app')?>
         <?=$this->fetch('script')?>
     </body>
 </html>

@@ -28,50 +28,36 @@
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
-.main {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility .5s ease-in, opacity .5s ease-in;
-    &.hide {
-        visibility: hidden;
-        opacity: 0;
+.header {
+    padding: 0 10px;
+    .system-name {
+        width: 15%;
+        min-width: 200px;
+        font-size: 130%;
+        font-weight: bold;
+    }
+    .page-title {
+        width: 70%;
+    }
+    .other {
+        width: 15%;
+        min-width: 200px;
+        text-align: right;
+        & > * {
+            display: flex;
+            height: 50%;
+            flex-flow: wrap;
+            align-items: center;
+            justify-content: flex-end;
+        }
     }
 }
 
-.block-ui {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    visibility: hidden;
-    opacity: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 300;
-    background-color: $c_black;
-    transition-property: visibility, opacity;
-    transition-timing-function: ease;
-    transition-duration: .3s;
-    &.blocked {
-        visibility: visible;
-        opacity: .6;
-    }
-}
-
-.content {
+.main-content {
     display: flex;
     &.modal {
         height: 100%;
         padding: 1rem;
-    }
-    .button {
-        &.inactive {
-            background-color: #888;
-            &:hover {
-                background-color: #666;
-            }
-        }
     }
 }
 
@@ -154,28 +140,6 @@
 .mainForm {
     width: 100%;
     height: 100%;
-}
-
-/* -------------------------------------------
-   ダイアログ用
- ------------------------------------------- */
-.layout-dialog {
-    display: none;
-
-    ul {
-        padding-left: 1.5rem;
-    }
-}
-
-
-.message-info {
-    color: $c_black;
-}
-.message-warning {
-    color: $c_blue;
-}
-.message-error {
-    color: $c_red;
 }
 
 /* -------------------------------------------
@@ -354,6 +318,8 @@
         }
     }
     .search-header {
+        height: 130px;
+
         .result-count {
             margin-left: 5px;
             color: $c_red;
@@ -364,7 +330,7 @@
         }
     }
     .search-results {
-        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 3} - 0.5rem); /* content - .search-header and margin */
+        height: calc(100% - 130px - 10px); /* content - .search-header and padding */
         .score {
             padding: 0;
             .point {
@@ -498,24 +464,6 @@
         }
         .count {
             width: 60%;
-        }
-    }
-}
-
-/* -------------------------------------------
-   成績更新日編集
- ------------------------------------------- */
-.update-points {
-    .search-results {
-        height: auto;
-        border: 0.2rem solid #777;
-        background-color: $c_white;
-        max-height: calc(100% - 4rem - 0.5rem); /* content - .search-header and margin */
-        ul {
-            border: none;
-            .changed {
-                color: $c_red;
-            }
         }
     }
 }
