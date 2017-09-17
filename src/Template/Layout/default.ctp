@@ -105,7 +105,8 @@
         <script>
             window.Cake = {
                 csrfToken: '<?= $this->request->getParam('_csrfToken') ?>',
-            }
+                accessUser: '<?= $userid ?? '' ?>',
+            };
         </script>
         <?=$this->Html->script('app')?>
         <?=$this->Html->script('common')?>

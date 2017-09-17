@@ -4,14 +4,13 @@ namespace App\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\I18n\Time;
 use Cake\Network\Session;
 use Cake\ORM\Behavior;
 
 /**
  * 保存処理実行時のビヘイビア
  */
-class SaveBehavior extends Behavior
+class SaveUserBehavior extends Behavior
 {
     /**
      * 保存前処理
@@ -23,13 +22,10 @@ class SaveBehavior extends Behavior
     public function beforeSave(Event $event, EntityInterface $entity)
     {
         // 新規登録時は登録日時を設定
-        $nowDate = Time::now();
         $userId = $this->__getLoginUserId();
         if ($entity->isNew()) {
-            $entity->created = $nowDate;
             $entity->created_by = $userId;
         }
-        $entity->modified = $nowDate;
         $entity->modified_by = $userId;
     }
 
@@ -42,6 +38,6 @@ class SaveBehavior extends Behavior
     {
         $session = new Session();
         $userId = $session->read('Auth.User.userId');
-        return !$userId ? str_replace('/', '', ROOT) : $userId;
+        return !$userId ? $session->consume('Api-UserId') : $userId;
     }
 }

@@ -21,6 +21,6 @@ class RanksCell extends Cell
         $ranks = $this->loadModel('Ranks');
         $this->set('empty', $empty)
             ->set('value', ($req = $this->request->getData('rank_id')) ? $req : $value)
-            ->set('ranks', $ranks->findToKeyValue());
+            ->set('ranks', $ranks->findProfessional()->combine('id', 'name'));
     }
 }

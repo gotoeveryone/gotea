@@ -13,8 +13,11 @@ Vue.use(VueResource);
 Vue.use(Vuex);
 
 Vue.http.interceptors.push((request, next) => {
-    request.headers.set('X-CSRF-Token', Cake.csrfToken);
     request.headers.set('Content-Type', 'application/json');
+    request.headers.set('X-CSRF-Token', Cake.csrfToken);
+    if (Cake.accessUser) {
+        request.headers.set('X-Access-User', Cake.accessUser);
+    }
 
     document.querySelector('.block-ui').classList.add('blocked');
     next(() => {

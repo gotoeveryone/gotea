@@ -5,7 +5,7 @@
         <?php if ($player->id) : ?>
             <li class="tab" data-tabname="ranks">昇段情報</li>
             <li class="tab" data-tabname="scores">成績情報</li>
-            <?php if (!$player->retention_histories) : ?>
+            <?php if (!$player->retention_histories->isEmpty()) : ?>
             <li class="tab" data-tabname="titleRetains">タイトル取得情報</li>
             <?php endif ?>
         <?php endif ?>
@@ -35,7 +35,17 @@
                     <li class="row">
                         <div class="box">
                             <div class="label-row">所属国</div>
-                            <div class="input-row"><?=h($player->country->name)?></div>
+                            <div class="input-row">
+                                <?=
+                                    $this->cell('Countries', [
+                                        'hasTitle' => true,
+                                        'customOptions' => [
+                                            'empty' => false,
+                                            'value' => $player->country_id,
+                                        ],
+                                    ])->render()
+                                ?>
+                            </div>
                         </div>
                         <div class="box">
                             <div class="label-row"><span>所属組織</span></div>
@@ -90,7 +100,7 @@
                             <div class="input-row">
                                 <?=
                                     $this->Form->text('birthday', [
-                                        'class' => 'imeDisabled datepicker birthday'
+                                        'class' => 'datepicker birthday'
                                     ]);
                                 ?>
                                 <span class="age">（<?=(is_numeric($player->age) ? $player->age.'歳' : '不明')?>）</span>
@@ -116,14 +126,7 @@
                         <div class="box">
                             <div class="label-row">性別</div>
                             <div class="input-row">
-                                <?php
-                                if (!$player->id) {
-                                    echo $this->MyForm->sexes(['class' => 'sex']);
-                                } else {
-                                    echo h($player->sex);
-                                    echo $this->Form->hidden('sex');
-                                }
-                                ?>
+                                <?= $this->MyForm->sexes(['class' => 'sex']) ?>
                             </div>
                         </div>
                         <div class="box">
@@ -136,7 +139,7 @@
                             </div>
                         </div>
                         <div class="box">
-                            <div class="label-row">更新日時</div>
+                            <div class="label-row">最終更新日時</div>
                             <div class="input-row">
                                 <?=$player->modified ? $this->Date->formatToDateTime($player->modified) : ''?>
                                 <?=
@@ -166,6 +169,7 @@
         </section>
 
         <!-- 昇段情報 -->
+        <?php if ($player->id) : ?>
         <section data-contentname="ranks" class="tab-contents">
             <div class="category-row">昇段情報</div>
             <?= $this->Form->create($player, [
@@ -205,7 +209,6 @@
                         </div>
                     </li>
                     <li class="row">
-                        <?php if (!empty($player->player_ranks)) : ?>
                         <div class="box">
                             <div class="label-row">昇段履歴</div>
                             <?php foreach ($player->player_ranks as $player_rank) : ?>
@@ -215,106 +218,108 @@
                                 </div>
                             <?php endforeach ?>
                         </div>
-                        <?php endif ?>
                     </li>
                 </ul>
             <?= $this->Form->end() ?>
         </section>
 
         <!-- 棋士成績 -->
-        <?php if ($player->id) : ?>
         <section data-contentname="scores" class="tab-contents">
             <div class="category-row">勝敗</div>
 
             <?php // 2017年以降 ?>
             <?php foreach ($player->years() as $year) : ?>
-                <ul class="boxes">
-                    <li class="genre-row"><?=h($year).'年度'?></li>
-                    <li class="row">
-                        <div class="box">
-                            <div class="label-row">勝敗（国内）</div>
-                            <div class="input-row">
-                                <?php
-                                    $win = $player->win($scores, $year);
-                                    $lose = $player->lose($scores, $year);
-                                ?>
-                                <?=$win?>勝<?=$lose?>敗<?=$player->draw($scores, $year)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>）</span>
+            <ul class="boxes">
+                <li class="genre-row"><?=h($year).'年度'?></li>
+                <li class="row">
+                    <div class="box">
+                        <div class="label-row">勝敗（国内）</div>
+                        <div class="input-row">
+                            <?php
+                                $win = $player->win($scores, $year);
+                                $lose = $player->lose($scores, $year);
+                            ?>
+                            <?=$win?>勝<?=$lose?>敗<?=$player->draw($scores, $year)?>分
+                            <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>）</span>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="label-row">勝敗（国際）</div>
+                        <div class="input-row">
+                            <?php
+                                $winWr = $player->win($scores, $year, true);
+                                $loseWr = $player->lose($scores, $year, true);
+                            ?>
+                            <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($scores, $year, true)?>分
+                            <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>）</span>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="label-row"></div>
+                        <div class="input-row">
+                            <div class="button-wrap">
+                                <?= $this->Form->postButton('タイトル成績へ', [
+                                    'controller' => 'TitleScores', 'action' => 'index',
+                                ], [
+                                    'data' => [
+                                        'player_id' => $player->id,
+                                        'target_year' => $year,
+                                        'modal' => true,
+                                    ],
+                                ]) ?>
                             </div>
                         </div>
-                        <div class="box">
-                            <div class="label-row">勝敗（国際）</div>
-                            <div class="input-row">
-                                <?php
-                                    $winWr = $player->win($scores, $year, true);
-                                    $loseWr = $player->lose($scores, $year, true);
-                                ?>
-                                <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($scores, $year, true)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>）</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row"></div>
-                            <div class="input-row">
-                                <div class="button-wrap">
-                                    <?= $this->Form->postButton('タイトル成績へ', [
-                                        'controller' => 'TitleScores', 'action' => 'index',
-                                    ], [
-                                        'data' => [
-                                            'player_id' => $player->id,
-                                            'target_year' => $year,
-                                            'modal' => true,
-                                        ],
-                                    ]) ?>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                    </div>
+                </li>
+            </ul>
             <?php endforeach ?>
 
             <?php // 2016年以前 ?>
             <?php foreach ($player->old_scores as $key => $score) : ?>
-                <ul class="boxes">
-                    <li class="genre-row"><?=h($score->target_year).'年度'?></li>
-                    <li class="row">
-                        <div class="box">
-                            <div class="label-row">勝敗（国内）</div>
-                            <div class="input-row">
-                                <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>）</span>
-                            </div>
+            <ul class="boxes">
+                <li class="genre-row"><?=h($score->target_year).'年度'?></li>
+                <li class="row">
+                    <div class="box">
+                        <div class="label-row">勝敗（国内）</div>
+                        <div class="input-row">
+                            <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
+                            <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>）</span>
                         </div>
-                        <div class="box">
-                            <div class="label-row">勝敗（国際）</div>
-                            <div class="input-row">
-                                <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>）</span>
-                            </div>
+                    </div>
+                    <div class="box">
+                        <div class="label-row">勝敗（国際）</div>
+                        <div class="input-row">
+                            <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
+                            <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>）</span>
                         </div>
-                        <div class="box">
-                            <div class="label-row">段位</div>
-                            <div class="input-row"><?=h($score->rank->name)?></div>
-                        </div>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="box">
+                        <div class="label-row">段位</div>
+                        <div class="input-row"><?=h($score->rank->name)?></div>
+                    </div>
+                </li>
+            </ul>
             <?php endforeach ?>
         </section>
 
-        <!-- タイトル取得履歴 -->
-        <section data-contentname="titleRetains" class="tab-contents">
-            <div class="category-row">タイトル取得履歴</div>
+            <!-- タイトル取得履歴 -->
+            <?php if (!$player->retention_histories->isEmpty()) : ?>
+            <section data-contentname="titleRetains" class="tab-contents">
+                <div class="category-row">タイトル取得履歴</div>
 
-            <?php foreach ($player->groupByYearFromHistories() as $key => $items) : ?>
-                <div class="genre-row"><?=h($key).'年度'?></div>
-                <?php foreach ($items as $item) : ?>
-                <div class="input-row">
-                    <?=h($item->holding).'期'.h($item->title->name)?>
-                    <?="（{$item->title->country->name}棋戦）"?>
-                </div>
+                <?php
+                    $histories = $player->groupByYearFromHistories();
+                    foreach ($histories as $key => $items) : ?>
+                    <div class="genre-row"><?=h($key).'年度'?></div>
+                    <?php foreach ($items as $item) : ?>
+                    <div class="input-row">
+                        <?=h($item->holding).'期'.h($item->title->name)?>
+                        <?="（{$item->title->country->name}棋戦）"?>
+                    </div>
+                    <?php endforeach ?>
                 <?php endforeach ?>
-            <?php endforeach ?>
-        </section>
+            </section>
+            <?php endif ?>
         <?php endif ?>
     </div>
 </div>

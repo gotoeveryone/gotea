@@ -66,6 +66,7 @@ export default {
                     country: this.countries[0].value || '',
                     type: this.types[0].value,
                 };
+                this.search();
             });
     },
     computed: {

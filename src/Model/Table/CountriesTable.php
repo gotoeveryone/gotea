@@ -16,19 +16,19 @@ class CountriesTable extends AppTable
     }
 
     /**
-     * 所属国一覧（ID・名前）を取得します。
+     * コードが設定されている所属国一覧を取得します。
      *
-     * @param bool $hasTitle
-     * @return array
+     * @param boolean $hasTitle
+     * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findToKeyValue($hasTitle = false)
+    public function findAllHasCode($hasTitle = false)
     {
-        $query = $this->find('list');
+        $query = $this->find()->where(['code is not' => null]);
 
         if ($hasTitle) {
-            $query->where('has_title', true);
+            $query->where(['has_title' => true]);
         }
 
-        return $query->order(['id'])->toArray();
+        return $query->select(['id', 'code', 'name', 'name_english', 'has_title']);
     }
 }

@@ -51,13 +51,11 @@ export default {
     methods: {
         onSearch(_params) {
             const params = {
-                'admin': '1',
-                'withJa': '1',
                 'country_id': _params.country,
                 'is_closed': _params.type,
             };
 
-            this.$http.get(this.getUrl(), { params: params })
+            this.$http.get(`${this.domain}api/titles`, { params: params })
                 .then(res => {
                     this.items = res.body.response;
                 });
@@ -69,7 +67,7 @@ export default {
             });
         },
         outputJson() {
-            this.$http.get(this.getUrl(), { params: {'make': '1'} })
+            this.$http.post(`${this.domain}api/create-news`)
                 .then(res => this.$store.dispatch('openDialog', {
                     messages: 'JSONを出力しました。',
                 })).catch(res => this.$store.dispatch('openDialog', {
@@ -80,9 +78,6 @@ export default {
         changeValue($event) {
             this.select[$event.target.name] = $event.target.value;
             this.search();
-        },
-        getUrl() {
-            return `${this.domain}api/news/`;
         },
     },
 }

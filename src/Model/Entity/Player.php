@@ -2,7 +2,7 @@
 
 namespace App\Model\Entity;
 
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -31,26 +31,10 @@ class Player extends AppEntity
     }
 
     /**
-     * 棋士の所属組織を取得します。
-     *
-     * @param mixed $value
-     * @return Organization 所属組織
-     */
-    protected function _getOrganization($value)
-    {
-        if ($value) {
-            return $value;
-        }
-
-        $result = TableRegistry::get('Organizations')->get($this->organization_id);
-        return $this->organization = $result;
-    }
-
-    /**
      * 棋士の昇段情報を取得します。
      *
      * @param mixed $value
-     * @return \Cake\ORM\ResultSet|null 昇段情報
+     * @return \Cake\Collection\CollectionInterface 昇段情報
      */
     protected function _getPlayerRanks($value)
     {
@@ -59,7 +43,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return [];
+            return collection([]);
         }
 
         $result = TableRegistry::get('PlayerRanks')->findRanks($this->id);
@@ -70,7 +54,7 @@ class Player extends AppEntity
      * 棋士の成績を取得します。
      *
      * @param mixed $value
-     * @return \Cake\ORM\ResultSet|null 成績
+     * @return \Cake\Collection\CollectionInterface 成績
      */
     protected function _getTitleScores($value)
     {
@@ -79,7 +63,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return [];
+            return collection([]);
         }
 
         $result = TableRegistry::get('TitleScores')->findFromYear($this->id);
@@ -90,7 +74,7 @@ class Player extends AppEntity
      * 棋士の成績（旧取得方式）を取得します。
      *
      * @param mixed $value
-     * @return \Cake\ORM\ResultSet|null 昇段情報
+     * @return \Cake\Collection\CollectionInterface 昇段情報
      */
     protected function _getOldScores($value)
     {
@@ -99,11 +83,10 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return [];
+            return collection([]);
         }
 
-        $result = TableRegistry::get('PlayerScores')->findByPlayerId($this->id)
-            ->contain(['Ranks'])->orderDesc('target_year');
+        $result = TableRegistry::get('PlayerScores')->findDescYears($this->id);
         return $this->old_scores = $result;
     }
 
@@ -111,7 +94,7 @@ class Player extends AppEntity
      * 棋士のタイトル獲得履歴を取得します。
      *
      * @param mixed $value
-     * @return \Cake\ORM\ResultSet|null タイトル獲得履歴
+     * @return \Cake\Collection\CollectionInterface タイトル獲得履歴
      */
     protected function _getRetentionHistories($value)
     {
@@ -120,7 +103,7 @@ class Player extends AppEntity
         }
 
         if (!$this->id) {
-            return null;
+            return collection([]);
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByPlayer($this->id);
@@ -131,12 +114,12 @@ class Player extends AppEntity
      * 誕生日を設定します。
      *
      * @param mixed $birthday
-     * @return Date
+     * @return FrozenDate
      */
     protected function _setBirthday($birthday)
     {
-        if ($birthday && !($birthday instanceof Date)) {
-            return Date::parseDate($birthday, 'YYYY/MM/dd');
+        if ($birthday && !($birthday instanceof FrozenDate)) {
+            return FrozenDate::parseDate($birthday, 'YYYY/MM/dd');
         }
         return $birthday;
     }
@@ -165,11 +148,11 @@ class Player extends AppEntity
     /**
      * ランキング表示用の名前を取得します。
      *
-     * @param Country $country 検索対象の所属国
+     * @param boolean $isWorlds 国際棋戦かどうか
      * @param boolean $showJp 日本語で表示するか
      * @return string ランキング表示用の名前
      */
-    public function getRankingName(Country $country, $showJp = false): string
+    public function getRankingName(bool $isWorlds, $showJp = false): string
     {
         // 取得するプロパティ名のサフィックス
         $suffix = ($showJp ? '' : '_english');
@@ -177,8 +160,8 @@ class Player extends AppEntity
         // 棋士名
         $name = $this->{'name'.$suffix};
 
-        // タイトル保持無しの棋戦は所属国を表示
-        if (!$country->has_title) {
+        // 国際棋戦は所属国を表示
+        if ($isWorlds) {
             $countryName = ($this->{'country_name'.$suffix} ?? $this->country->{'name'.$suffix});
             return $name.'('.$countryName.')';
         }
@@ -197,7 +180,7 @@ class Player extends AppEntity
      */
     public function years(): array
     {
-        $year = intval(Date::now()->year);
+        $year = intval(FrozenDate::now()->year);
         // 引退棋士
         if ($this->is_retired) {
             if (!$this->retired) {
@@ -221,7 +204,7 @@ class Player extends AppEntity
      *
      * @return array 配列
      */
-    public function renderArray(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id,
@@ -229,9 +212,12 @@ class Player extends AppEntity
             'nameEnglish' => $this->name_english,
             'nameOther' => $this->name_other,
             'sex' => $this->sex,
-            'countryName' => $this->country ? $this->country->name : '',
+            'birthday' => $this->birthday->format('Y/m/d'),
+            'countryName' => $this->country->name,
             'rankId' => $this->rank->id,
-            'rankName' => $this->rank ? $this->rank->name : '',
+            'rankName' => $this->rank->name,
+            'isRetired' => $this->is_retired,
+            'retired' => $this->retired,
         ];
     }
 
@@ -286,7 +272,7 @@ class Player extends AppEntity
     private function __show($type, $scores, $year = null, $world = false)
     {
         if ($year === null) {
-            $year = Date::now()->year;
+            $year = FrozenDate::now()->year;
         }
         $score = $scores->filter(function ($item, $key) use ($year) {
             return (int) $item->player_id === $this->id

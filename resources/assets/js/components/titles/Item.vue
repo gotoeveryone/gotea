@@ -1,10 +1,10 @@
 <template>
     <li class="table-row" :class="getRowClass()">
         <span class="name">
-            <input type="text" @change="save" v-model="item.titleNameJp">
+            <input type="text" @change="save" v-model="item.name">
         </span>
         <span class="name">
-            <input type="text" @change="save" v-model="item.titleName">
+            <input type="text" @change="save" v-model="item.nameEnglish">
         </span>
         <span class="holding">
             <input type="text" @change="save" v-model="item.holding">
@@ -27,8 +27,8 @@
             <input type="checkbox" @change="save" v-model="item.isClosed">
         </span>
         <span>
-            <a @click="add()" v-if="!item.titleId">登録</a>
-            <a @click="select()" v-if="item.titleId">開く</a>
+            <a @click="add()" v-if="!item.id">登録</a>
+            <a @click="select()" v-if="item.id">開く</a>
         </span>
     </li>
 </template>
@@ -52,8 +52,8 @@ export default {
         },
         add() {
             // 登録処理
-            this.$http.post(`${this.domain}api/titles/`, JSON.stringify(this.item)).then(res => {
-                this.item.titleId = res.body.response.titleId;
+            this.$http.post(`${this.domain}api/titles/`, this.item).then(res => {
+                this.item.id = res.body.response.id;
                 this.$store.dispatch('openDialog', {
                     messages: `タイトル【${this.item.titleNameJp}】を登録しました。`,
                 });
@@ -66,11 +66,11 @@ export default {
             });
         },
         save() {
-            if (!this.item.titleId) {
+            if (!this.item.id) {
                 return;
             }
             // 更新処理
-            this.$http.put(`${this.domain}api/titles/${this.item.titleId}`, JSON.stringify(this.item)).catch(res => {
+            this.$http.put(`${this.domain}api/titles/${this.item.id}`, this.item).catch(res => {
                 const message = res.body.response.message;
                 this.$store.dispatch('openDialog', {
                     messages: (message || '更新に失敗しました…。'),
@@ -80,7 +80,7 @@ export default {
         },
         select() {
             this.$store.dispatch('openModal', {
-                url: `${this.detailUrl}/${this.item.titleId}`,
+                url: `${this.detailUrl}/${this.item.id}`,
             });
         },
         saveDatepicker(value) {

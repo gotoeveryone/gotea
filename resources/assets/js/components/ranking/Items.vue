@@ -17,12 +17,12 @@
                 </span>
                 <span class="left player">
                     <a class="player-link" :class="getSexClass(item)" @click="select(item)"
-                        v-text="item.playerNameJp"></a>
+                        v-text="item.name"></a>
                 </span>
-                <span class="point" v-text="item.winPoint"></span>
-                <span class="point" v-text="item.losePoint"></span>
-                <span class="point" v-text="item.drawPoint"></span>
-                <span class="percent" v-text="getWinPercentage(item)"></span>
+                <span class="point" v-text="item.win"></span>
+                <span class="point" v-text="item.lose"></span>
+                <span class="point" v-text="item.draw"></span>
+                <span class="percent" v-text="item.percentage"></span>
             </li>
         </ul>
     </div>
@@ -45,15 +45,12 @@ export default {
             }
             return _row.rank;
         },
-        getWinPercentage(_row) {
-            return `${Math.round(_row.winPercentage * 100)}%`;
-        },
         getSexClass(_row) {
             return (_row.sex === '女性' ? 'female' : 'male');
         },
         select(_row) {
             this.$store.dispatch('openModal', {
-                url: `${this.detailUrl}/${_row.playerId}`,
+                url: `${this.detailUrl}/${_row.id}`,
             });
         },
     },

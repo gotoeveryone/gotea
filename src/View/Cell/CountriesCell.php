@@ -19,7 +19,7 @@ class CountriesCell extends Cell
     public function display($hasTitle = false, $customOptions = [])
     {
         $countries = $this->loadModel('Countries');
-        $this->set('countries', $countries->findToKeyValue($hasTitle))
+        $this->set('countries', $countries->findAllHasCode($hasTitle)->combine('id', 'name'))
             ->set('customOptions', $customOptions);
     }
 }
