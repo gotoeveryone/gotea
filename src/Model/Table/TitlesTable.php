@@ -5,6 +5,7 @@ namespace App\Model\Table;
 use Cake\Validation\Validator;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
+use Cake\Utility\Inflector;
 use App\Model\Entity\Title;
 
 /**
@@ -56,12 +57,12 @@ class TitlesTable extends AppTable
     }
 
     /**
-     * 所属国をもとにタイトルの一覧を取得します。
+     * タイトル情報を取得します。
      *
      * @param array $data
-     * @return type
+     * @return \Cake\ORM\Query 生成したクエリ
      */
-    public function findTitlesByCountry($data = [])
+    public function findTitlesQuery($data = [])
     {
         $query = $this->find()->contain([
             'Countries',
@@ -80,71 +81,34 @@ class TitlesTable extends AppTable
 
         // 有効なタイトルのみ検索
         if (!($data['is_closed'] ?? '')) {
-            $query->where(['Titles.is_closed' => 0]);
+            $query->where(['Titles.is_closed' => false]);
         }
 
         // データを取得
-        return $query->order(['Titles.country_id', 'Titles.sort_order'])->all();
-    }
-
-    /**
-     * モデルを配列に変換します。
-     *
-     * @param ResultSet $models
-     * @param bool $admin 管理者情報を取得するか
-     * @param bool $withJa 日本語情報を取得するか
-     * @return array
-     */
-    public function toArray(ResultSet $models, $admin = false, $withJa = false) : array
-    {
-        return $models->map(function(Title $item, $key) use ($admin, $withJa) {
-            $data = [
-                'countryName' => $item->country->name_english,
-                'countryNameAbbreviation' => $item->country->code,
-                'titleName' => $item->name_english,
-                'holding' => $item->holding,
-                'isTeam' => $item->is_team,
-                'winnerName' => $item->getWinnerName($withJa),
-                'htmlFileName' => $item->html_file_name,
-                'htmlFileModified' => $item->html_file_modified->format(($admin ? 'Y/m/d' : 'Y-m-d')),
-                'isNewHistories' => $item->isNewHistories(),
-                'isRecent' => $item->isRecentModified(),
-            ];
-
-            // 日本語情報出力あり
-            if ($withJa) {
-                $data['titleId'] = $item->id;
-                $data['countryId'] = $item->country_id;
-                $data['sortOrder'] = $item->sort_order;
-                $data['titleNameJp'] = $item->name;
-                $data['isClosed'] = $item->is_closed;
-            }
-
-            return $data;
-        })->toArray();
+        return $query->order(['Titles.country_id', 'Titles.sort_order']);
     }
 
     /**
      * 配列からモデルデータを生成します。
      *
      * @param array $data
-     * @return Title
+     * @return \App\Model\Entity\Title
      */
-    public function fromArray($data = []) : Title
+    public function createEntity($data = []) : Title
     {
-        $title = (isset($data['titleId'])) ? $this->get($data['titleId']) : $this->newEntity();
+        $id = $data['id'] ?? null;
 
-        // 入力値の変更
-        $title->name = $data['titleNameJp'] ?? '';
-        $title->name_english = $data['titleName'] ?? '';
-        $title->country_id = $data['countryId'] ?? '';
-        $title->sort_order = $data['sortOrder'] ?? 1;
-        $title->holding = $data['holding'] ?? '';
-        $title->is_team = $data['isTeam'] ?? false;
-        $title->html_file_name = $data['htmlFileName'] ?? '';
-        $title->html_file_modified = $data['htmlFileModified'] ?? '';
-        $title->is_closed = $data['isClosed'] ?? false;
+        $properties = [];
+        foreach ($data as $key => $value) {
+            $name = Inflector::underscore($key);
+            $properties[$name] = $value;
+        }
 
-        return $title;
+        if ($id) {
+            $title = $this->get($id);
+            return $this->patchEntity($title, $properties);
+        }
+
+        return $this->newEntity($properties);
     }
 }

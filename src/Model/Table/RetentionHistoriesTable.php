@@ -77,7 +77,7 @@ class RetentionHistoriesTable extends AppTable
      * 指定した棋士のタイトル履歴を取得します。
      *
      * @param int $playerId
-     * @return \Cake\ORM\ResultSet
+     * @return \Cake\ORM\ResultSet 履歴一覧
      */
     public function findHistoriesByPlayer(int $playerId)
     {
@@ -94,7 +94,7 @@ class RetentionHistoriesTable extends AppTable
      * 指定したタイトルの履歴を取得します。
      *
      * @param int $titleId
-     * @return \Cake\ORM\ResultSet
+     * @return \Cake\ORM\ResultSet 履歴一覧
      */
     public function findHistoriesByTitle(int $titleId)
     {

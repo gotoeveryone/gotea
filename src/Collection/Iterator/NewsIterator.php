@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Collection\Iterator;
+
+use App\Model\Entity\Title;
+
+/**
+ * Go News出力データを処理するイテレータ
+ */
+class NewsIterator
+{
+    public function __invoke(Title $item, $key)
+    {
+        return [
+            'nameEnglish' => $item->name_english,
+            'countryName' => $item->country->name_english,
+            'holding' => $item->holding,
+            'winnerName' => $item->getWinnerName(false),
+            'htmlFileName' => $item->html_file_name,
+            'htmlFileModified' => $item->html_file_modified->format('Y-m-d'),
+            'isNewHistories' => $item->isNewHistories(),
+            'isRecent' => $item->isRecentModified(),
+        ];
+    }
+}

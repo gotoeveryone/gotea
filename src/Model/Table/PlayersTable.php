@@ -12,12 +12,15 @@ use Cake\I18n\Date;
 use Cake\Validation\Validator;
 use App\Model\Entity\Country;
 use App\Model\Entity\Player;
+use App\Utility\CalculatorTrait;
 
 /**
  * 棋士
  */
 class PlayersTable extends AppTable
 {
+    use CalculatorTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -104,10 +107,23 @@ class PlayersTable extends AppTable
     }
 
     /**
+     * IDから棋士情報を1件取得します。
+     *
+     * @param int $id
+     * @return \App\Model\Entity\Player
+     */
+    public function findOne(int $id)
+    {
+        return $this->findById($id)
+            ->contain(['Countries', 'Ranks'])
+            ->firstOrFail();
+    }
+
+    /**
      * 指定条件に合致した棋士情報を取得します。
      *
      * @param ServerRequest $request
-     * @return Query 生成されたクエリ
+     * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findPlayersQuery(ServerRequest $request) : Query
     {
@@ -154,13 +170,41 @@ class PlayersTable extends AppTable
     }
 
     /**
+     * 段位ごとの棋士数を取得します。
+     *
+     * @param int $countryId
+     * @param string $countryName
+     * @return \Cake\ORM\Query 生成されたクエリ
+     */
+    public function findRanksCount($countryId = null, $countryName = null)
+    {
+        $query = $this->find()->contain('Ranks')->where(['is_retired' => false]);
+
+        if ($countryId) {
+            $query->where(['country_id' => $countryId]);
+        }
+
+        if ($countryName) {
+            $query->innerJoinWith('Countries', function(Query $q) use ($countryName) {
+                return $q->where(['Countries.name' => $countryName]);
+            });
+        }
+
+        return $query->select([
+            'rank' => 'Ranks.rank_numeric',
+            'name' => 'Ranks.name',
+            'count' => $query->func()->count('*')
+        ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric');
+    }
+
+    /**
      * ランキング集計データを取得します。
      *
      * @param Country $country
      * @param int $targetYear
      * @param int $offset
      * @param bool $withJa
-     * @return \Cake\Collection\Collection ランキング集計データ
+     * @return \Cake\Collection\Collection ランキング
      */
     public function findRanking(Country $country, int $targetYear, int $offset, bool $withJa)
     {
@@ -187,72 +231,45 @@ class PlayersTable extends AppTable
                 ->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
             ->orderDesc('win')->order(['lose', 'joined']);
 
-        if ($country->has_title) {
+        if (!$country->isWorlds()) {
             $query->where(['country_id' => $country->id]);
         }
 
-        return $this->__mapped($query->all(), $country, $withJa);
-    }
-
-    /**
-     * 段位ごとの棋士数を取得します。
-     *
-     * @param int $countryId
-     * @param string $countryName
-     * @return Query 生成されたクエリ
-     */
-    public function findRanksCount($countryId = null, $countryName = null)
-    {
-        $query = $this->find()->contain('Ranks')->where(['is_retired' => false]);
-
-        if ($countryId) {
-            $query->where(['country_id' => $countryId]);
-        }
-
-        if ($countryName) {
-            $query->innerJoinWith('Countries', function($q) use ($countryName) {
-                return $q->where(['Countries.name' => $countryName]);
-            });
-        }
-
-        return $query->select([
-            'rank' => 'Ranks.rank_numeric', 'name' => 'Ranks.name', 'count' => $query->func()->count('*')
-        ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric');
+        return $this->__mapped($query->all(), $country->isWorlds(), $withJa);
     }
 
     /**
      * ランキングモデルを配列に変換します。
      *
      * @param ResultSet $models
-     * @param Country $country
-     * @param bool $withJa
+     * @param bool $isWorlds 国際棋戦かどうか
+     * @param bool $withJa 日本語情報を表示するかどうか
      * @return \Cake\Collection\Collection ランキング
      */
-    private function __mapped(ResultSet $models, Country $country, bool $withJa)
+    private function __mapped(ResultSet $models, bool $isWorlds, bool $withJa)
     {
-        $this->__rank = 0;
-        $this->__win = 0;
+        $rank = 0;
+        $win = 0;
 
-        return $models->map(function ($item, $key) use ($country, $withJa) {
+        return $models->map(function ($item, $key) use ($isWorlds, $withJa, &$rank, &$win) {
             $sum = $item->win + $item->lose;
-            if ($this->__win !== $item->win) {
-                $this->__rank = $key + 1;
-                $this->__win = $item->win;
+            if ($win !== $item->win) {
+                $rank = $key + 1;
+                $win = $item->win;
             }
 
             $row = [
-                'rank' => $this->__rank,
-                'playerName' => $item->getRankingName($country),
-                'winPoint' => (int) $item->win,
-                'losePoint' => (int) $item->lose,
-                'drawPoint' => (int) $item->draw,
-                'winPercentage' => (!$sum ? 0 : round($item->win / $sum, 2)),
+                'rank' => $rank,
+                'name' => $item->getRankingName($isWorlds, $withJa),
+                'win' => (int) $item->win,
+                'lose' => (int) $item->lose,
+                'draw' => (int) $item->draw,
+                'percentage' => $this->percent($item->win, $item->lose),
             ];
 
             // 日本語出力あり
             if ($withJa) {
-                $row['playerId'] = $item->id;
-                $row['playerNameJp'] = $item->getRankingName($country, true);
+                $row['id'] = $item->id;
                 $row['sex'] = $item->sex;
             }
 
@@ -360,10 +377,10 @@ class PlayersTable extends AppTable
             ->orderDesc('Ranks.rank_numeric')
             ->order('Players.joined');
 
-        if ($country->has_title) {
+        if (!$country->isWorlds()) {
             $query->where(['country_id' => $country->id]);
         }
 
-        return $this->__mapped($query->all(), $country, $withJa);
+        return $this->__mapped($query->all(), $country->isWorlds(), $withJa);
     }
 }

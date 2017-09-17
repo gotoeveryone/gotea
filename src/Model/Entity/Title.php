@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -54,6 +55,20 @@ class Title extends AppEntity
     }
 
     /**
+     * HTMLファイル修正日を設定します。
+     *
+     * @param mixed $newValue
+     * @return \Cake\I18n\FrozenDate
+     */
+    protected function _setHtmlFileModified($newValue)
+    {
+        if ($newValue && !($newValue instanceof FrozenDate)) {
+            return FrozenDate::parseDate($newValue, 'YYYY/MM/dd');
+        }
+        return $newValue;
+    }
+
+    /**
      * 現在の優勝者を取得します。
      *
      * @param boolean $isJp
@@ -103,7 +118,7 @@ class Title extends AppEntity
      *
      * @return array 配列
      */
-    public function renderArray() : array
+    public function toArray() : array
     {
         return [
             'id' => $this->id,
@@ -112,8 +127,10 @@ class Title extends AppEntity
             'countryName' => $this->country ? $this->country->name : '',
             'holding' => $this->holding,
             'sortOrder' => $this->sort_order,
+            'isTeam' => $this->is_team,
             'htmlFileName' => $this->html_file_name,
-            'htmlFileModified' => $this->html_file_modified,
+            'htmlFileModified' => $this->html_file_modified->format('Y/m/d'),
+            'isClosed' => $this->is_closed,
         ];
     }
 

@@ -35,7 +35,7 @@ export default {
             });
         },
         outputJson(_params) {
-            this.$http.get(this.getUrl(_params), { params: {'make': '1'} })
+            this.$http.post(this.getUrl(_params))
                 .then(res => this.$store.dispatch('openDialog', {
                     messages: 'JSONを出力しました。',
                 }))

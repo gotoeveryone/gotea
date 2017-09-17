@@ -28,4 +28,14 @@ class Country extends AppEntity
         $result = TableRegistry::get('Organizations')->findByCountryId($this->id);
         return $this->organizations = $result;
     }
+
+    /**
+     * 国際棋戦かどうかを判定します。
+     *
+     * @return boolean 国際棋戦ならtrue
+     */
+    public function isWorlds()
+    {
+        return !$this->has_title;
+    }
 }

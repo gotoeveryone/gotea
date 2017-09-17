@@ -31,6 +31,7 @@ export default {
     data: () => {
         return {
             countries: [],
+            years: [],
             select: {
                 year: null,
                 country: null,
@@ -51,38 +52,34 @@ export default {
         },
     },
     mounted() {
-        this.$http.get(`${this.domain}api/countries/`)
-            .then(res => {
-                const countries = [];
-                const json = res.body.response;
-                json.forEach(obj => {
-                    countries.push({
-                        value: obj.code,
-                        text: `${obj.name}棋戦`,
-                    });
+        // 所属国
+        Promise.all([
+            this.$http.get(`${this.domain}api/countries`),
+            this.$http.get(`${this.domain}api/years`),
+        ]).then(data => {
+            data[0].body.response.forEach(obj => {
+                this.countries.push({
+                    value: obj.code,
+                    text: `${obj.name}棋戦`,
                 });
-                return countries;
-            }).then(countries => {
-                this.countries = countries;
-                this.select = {
-                    year: this.years[0].value,
-                    country: this.countries[0].value || '',
-                    limit: this.limits[0].value,
-                };
             });
+
+            data[1].body.response.forEach(obj => {
+                this.years.push({
+                    value: obj,
+                    text: `${obj}年度`,
+                });
+            });
+        }).then(() => {
+            this.select = {
+                year: this.years[0].value,
+                country: this.countries[0].value || '',
+                limit: this.limits[0].value,
+            };
+            this.search();
+        });
     },
     computed: {
-        years() {
-            const nowYear = new Date().getFullYear();
-            const years = [];
-            for (let y = nowYear; y >= 2013; y--) {
-                years.push({
-                    value: y,
-                    text: `${y}年度`,
-                });
-            }
-            return years;
-        },
         limits() {
             const limits = [];
             for (let l = 20; l <= 50; l = l + 10) {
