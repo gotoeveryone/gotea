@@ -19,7 +19,8 @@ class AppTable extends Table
     {
         parent::initialize($config);
 
-        $this->addBehavior('Save');
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('SaveUser');
     }
 
     /**

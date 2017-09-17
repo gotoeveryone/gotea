@@ -66,6 +66,7 @@ class AppController extends Controller
     {
         // ユーザ名を表示
         if ($user) {
+            $this->set('userid', $user['userId']);
             $this->set('username', $user['userName']);
             $this->set('admin', ($user['role'] === '管理者'));
             return true;

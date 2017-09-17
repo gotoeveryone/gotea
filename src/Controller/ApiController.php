@@ -25,6 +25,10 @@ class ApiController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Json');
 
+        // ヘッダのユーザIDをセッションに乗せる
+        $this->request->session()->write(
+            'Api-UserId', $this->request->getHeaderLine('X-Access-User'));
+
         // 当アクションのレスポンスはすべてJSON形式
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('application/json');
