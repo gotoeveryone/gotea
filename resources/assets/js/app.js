@@ -13,7 +13,7 @@ import Ranks from './components/ranks/Index.vue';
 
 window.App = new Vue({
     store,
-    el: '.content',
+    el: '.main-content',
     data: {
         countryId: '',
         changed: false,

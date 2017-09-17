@@ -1,35 +1,5 @@
-// 画面をブロック
-const block = () => {
-    const blockui = document.querySelector('.block-ui');
-    blockui.classList.add('blocked');
-};
-
-// ブロック解除
-const unblock = () => {
-    const blockui = document.querySelector('.block-ui');
-    blockui.classList.remove('blocked');
-};
-
-// タブ変更
-const changeTab = (_element) => {
-    // タブ・コンテンツを非表示
-    const tabs = document.querySelectorAll('.tabs .tab');
-    Array.prototype.slice.call(tabs, 0).forEach(element => {
-        element.classList.remove('selectTab');
-    }, false);
-    const tabContents = document.querySelectorAll('.tab-contents');
-    Array.prototype.slice.call(tabContents, 0).forEach(element => {
-        element.classList.add('not-select');
-    }, false);
-
-    // 選択したコンテンツを表示
-    _element.classList.add('selectTab');
-    const selectTab = _element.getAttribute('data-tabname');
-    const selectContents = document.querySelector(`[data-contentname=${selectTab}]`);
-    if (selectContents) {
-        selectContents.classList.remove('not-select');
-    }
-};
+import Pikaday from 'pikaday';
+import 'pikaday/css/pikaday.css';
 
 // 日付選択オプション
 const pikadayOptions = (_element, _birthday) => {
@@ -59,27 +29,30 @@ const pikadayOptions = (_element, _birthday) => {
     };
 };
 
-const main = document.querySelector('.main');
-main.classList.add('hide');
+const datepicker = document.querySelectorAll('.datepicker');
+Array.prototype.slice.call(datepicker, 0).forEach(element => {
+    new Pikaday(pikadayOptions(element, element.classList.contains('birthday')));
+});
 
-// ドキュメント準備完了
-window.onload = () => {
-    const main = document.querySelector('.main');
-    main.classList.remove('hide');
+// タブ変更
+const changeTab = (_element) => {
+    // タブ・コンテンツを非表示
+    const tabs = document.querySelectorAll('.tabs .tab');
+    Array.prototype.slice.call(tabs, 0).forEach(element => {
+        element.classList.remove('selectTab');
+    }, false);
+    const tabContents = document.querySelectorAll('.tab-contents');
+    Array.prototype.slice.call(tabContents, 0).forEach(element => {
+        element.classList.add('not-select');
+    }, false);
 
-    // リンク・ボタンにブロック追加
-    const links = document.querySelectorAll('a[href]');
-    Array.prototype.slice.call(links, 0).forEach(element => {
-        element.addEventListener('click', () => {
-            block();
-        }, false);
-    });
-    const forms = document.querySelectorAll('form');
-    Array.prototype.slice.call(forms, 0).forEach(element => {
-        element.addEventListener('submit', () => {
-            block();
-        }, false);
-    });
+    // 選択したコンテンツを表示
+    _element.classList.add('selectTab');
+    const selectTab = _element.getAttribute('data-tabname');
+    const selectContents = document.querySelector(`[data-contentname=${selectTab}]`);
+    if (selectContents) {
+        selectContents.classList.remove('not-select');
+    }
 };
 
 // タブ押下時
@@ -105,13 +78,6 @@ if (tabWrap) {
         changeTab(tabs[0]);
     }
 }
-
-import Pikaday from 'pikaday';
-import 'pikaday/css/pikaday.css';
-const datepicker = document.querySelectorAll('.datepicker');
-Array.prototype.slice.call(datepicker, 0).forEach(element => {
-    new Pikaday(pikadayOptions(element, element.classList.contains('birthday')));
-});
 
 // 戻るボタン
 const back = document.querySelector('.back');
