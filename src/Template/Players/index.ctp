@@ -137,8 +137,8 @@
                     </span>
                 </li>
                 <?php endforeach ?>
-            <?php endif ?>
             </ul>
+            <?php endif ?>
         </div>
     <?=$this->Form->end()?>
 </section>

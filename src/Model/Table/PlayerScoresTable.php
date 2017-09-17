@@ -14,6 +14,7 @@ class PlayerScoresTable extends AppTable
     {
         parent::initialize($config);
 
+        $this->belongsTo('Players');
         $this->belongsTo('Ranks');
     }
 
