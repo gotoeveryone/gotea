@@ -21,6 +21,6 @@ class OrganizationsCell extends Cell
         $organizations = $this->loadModel('Organizations');
         $this->set('empty', $empty)
             ->set('value', ($req = $this->request->getData('organization_id')) ? $req : $value)
-            ->set('organizations', $organizations->findToKeyValue());
+            ->set('organizations', $organizations->findSorted());
     }
 }

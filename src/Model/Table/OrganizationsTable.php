@@ -29,12 +29,12 @@ class OrganizationsTable extends AppTable
     }
 
     /**
-     * キーにID：値に名前を保持する配列形式で取得します。
+     * 所属書式をID・名前の一覧で取得します。
      *
-     * @return array
+     * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findToKeyValue()
+    public function findSorted()
     {
-        return $this->find('list')->order(['id'])->toArray();
+        return $this->find('list')->order(['country_id', 'id']);
     }
 }
