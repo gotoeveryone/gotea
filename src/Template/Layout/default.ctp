@@ -108,8 +108,8 @@
             };
         </script>
         <script src="<?=env('ASSETS_URL')?>js/common.js"></script>
-        <?=$this->Html->script('common')?>
         <?=$this->Html->script('app')?>
+        <?=$this->Html->script('common')?>
         <?=$this->fetch('script')?>
     </body>
 </html>
