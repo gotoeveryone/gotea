@@ -1,1 +1,2 @@
-<app-dialog serv-type="info" serv-message="<?= $this->MyFlash->getMessages($message) ?>"></app-dialog>
+<app-dialog :options="dialog" serv-type="info"
+    :serv-messages="<?= $this->MyFlash->getMessages($message) ?>"></app-dialog>

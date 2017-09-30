@@ -82,9 +82,9 @@
                 <main class="main">
                     <?=$this->fetch('content')?>
                     <!-- モーダルコンテンツ -->
-                    <modal></modal>
+                    <modal :options="modal"></modal>
                     <!-- ダイアログ -->
-                    <app-dialog></app-dialog>
+                    <app-dialog :options="dialog"></app-dialog>
                     <?= $this->Flash->render() ?>
                 </main>
             </div>

@@ -41,12 +41,20 @@ window.App = new Vue({
                 height: _height,
             });
         },
-        openDialog(_title, _messages, _error) {
+        openDialog(_title, _messages, _type) {
             this.$store.dispatch('openDialog', {
                 title: _title,
                 messages: _messages,
-                error: _error,
+                type: _type,
             });
+        },
+    },
+    computed: {
+        modal() {
+            return this.$store.getters.modalOptions();
+        },
+        dialog() {
+            return this.$store.getters.dialogOptions();
         },
     },
 });
