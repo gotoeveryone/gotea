@@ -73,21 +73,21 @@
                             <div class="input-row">
                                 <?=
                                     $this->Form->text('name', [
-                                        'class' => 'playerName',
+                                        'class' => 'name',
                                         'maxlength' => 20
                                     ]);
                                 ?>
                                 英語
                                 <?=
                                     $this->Form->text('name_english', [
-                                        'class' => 'playerName',
+                                        'class' => 'name',
                                         'maxlength' => 40
                                     ]);
                                 ?>
                                 その他
                                 <?=
                                     $this->Form->text('name_other', [
-                                        'class' => 'playerName',
+                                        'class' => 'name',
                                         'maxlength' => 20
                                     ]);
                                 ?>
