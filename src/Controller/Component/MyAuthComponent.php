@@ -21,7 +21,7 @@ class MyAuthComponent extends AuthComponent
      * @param array $credentials 認証情報
      * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
      */
-    public function login($credentials)
+    public function login(array $credentials)
     {
         // トークンが保存できなければログインエラー
         if (!($user = $this->__authenticate($credentials))) {
@@ -55,7 +55,7 @@ class MyAuthComponent extends AuthComponent
      * @param array $credentials 認証情報
      * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
      */
-    private function __authenticate($credentials)
+    private function __authenticate(array $credentials)
     {
         // トークン発行
         $response = $this->Json->callApi('auth', 'post', $credentials);
