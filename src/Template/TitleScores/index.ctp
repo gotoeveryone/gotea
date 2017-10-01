@@ -20,7 +20,7 @@
                     <?= $this->cell('Countries')->render() ?>
                     <label>対局年：</label>
                     <?=
-                        $this->Form->select('target_year', $years, [
+                        $this->MyForm->years('target_year', [
                             'class' => 'year', 'empty' => true,
                         ]);
                     ?>
