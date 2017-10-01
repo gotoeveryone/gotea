@@ -282,7 +282,3 @@ msgstr "11月"
 #: View/Widget/DateTimeWidget.php:541
 msgid "December"
 msgstr "12月"
-
-
-msgid "field {0} range is {1} - {2}"
-msgstr "{0}は{1}～{2}の範囲で入力してください。"

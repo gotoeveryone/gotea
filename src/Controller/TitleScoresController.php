@@ -59,16 +59,6 @@ class TitleScoresController extends AppController
             }
         }
 
-        // ダイアログ状態でない場合はヘッダを取得
-        if (!$this->_isDialogMode()) {
-            // 年度プルダウン
-            $years = [];
-            for ($i = date('Y'); $i >= 2013; $i--) {
-                $years[$i] = $i.'年度';
-            }
-            $this->set('years', $years);
-        }
-
         return $this->set('form', ($form ?? new TitleScoreForm))->render('index');
     }
 

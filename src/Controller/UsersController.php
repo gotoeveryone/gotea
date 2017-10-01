@@ -47,17 +47,15 @@ class UsersController extends AppController
         $this->request->allowMethod(['post']);
 
         // ログイン
+        $credentials = $this->request->getParsedBody();
         $form = new LoginForm();
-        if (!$form->validate($this->request->getParsedBody())) {
+        if (!$form->validate($credentials)) {
             $this->Flash->error($form->errors());
             return $this->setAction('index');
         }
 
-        $account = $this->request->getData('username');
-        $password = $this->request->getData('password');
-
         // ログイン成功→リダイレクト
-        if ($this->Auth->login($account, $password)) {
+        if ($this->Auth->login($credentials)) {
             return $this->redirect($this->Auth->redirectUrl());
         }
 

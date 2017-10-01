@@ -2,14 +2,11 @@
 
 namespace App;
 
-use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use App\Middleware\LogMiddleware;
-use App\Middleware\TransactionMiddleware;
 
 /**
  * アプリケーションクラス
@@ -32,12 +29,7 @@ class Application extends BaseApplication
             ->add(AssetMiddleware::class)
             // Add routing middleware.
             ->add(new RoutingMiddleware($this))
-            ->add(new CsrfProtectionMiddleware())
-            ->add(new TransactionMiddleware());
-
-        if (Configure::read('debug')) {
-            $middlewareQueue->add(new LogMiddleware());
-        }
+            ->add(new CsrfProtectionMiddleware());
 
         return $middlewareQueue;
     }

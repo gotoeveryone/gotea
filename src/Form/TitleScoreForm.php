@@ -37,8 +37,8 @@ class TitleScoreForm extends AppForm
     {
         return $validator
             ->allowEmpty(['name', 'country_id', 'target_year', 'started', 'ended'])
-            ->maxLength('name', 20, $this->getMessage($this->MAX_LENGTH, ['棋士名', 20]))
-            ->date('started', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['対局日(FROM)', 'yyyy/MM/dd']))
-            ->date('ended', 'ymd', $this->getMessage($this->INLALID_FORMAT, ['対局日(TO)', 'yyyy/MM/dd']));
+            ->maxLength('name', 20)
+            ->date('started', 'ymd')
+            ->date('ended', 'ymd');
     }
 }

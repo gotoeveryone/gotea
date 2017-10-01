@@ -14,7 +14,7 @@
         <li class="row">
             <label>ID</label>
             <?=
-                $this->Form->control('username', [
+                $this->Form->control('account', [
                     'maxlength' => 10,
                 ]);
             ?>

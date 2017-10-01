@@ -20,6 +20,8 @@
 
 use Cake\Core\Plugin;
 use Cake\Routing\Router;
+use Gotoeveryone\Middleware\TraceMiddleware;
+use Gotoeveryone\Middleware\TransactionMiddleware;
 
 /**
  * The default class to use for all routes
@@ -42,6 +44,11 @@ use Cake\Routing\Router;
 Router::defaultRouteClass('DashedRoute');
 
 Router::scope('/', function ($routes) {
+    // ミドルウェアの登録
+    $routes->registerMiddleware('trace', new TraceMiddleware())
+        ->registerMiddleware('transaction', new TransactionMiddleware())
+        ->applyMiddleware('trace', 'transaction');
+
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file

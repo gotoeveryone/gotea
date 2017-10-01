@@ -3,21 +3,21 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
-use App\Validation\MyValidationTrait;
 
 /**
  * アプリケーションの共通テーブル
  */
 class AppTable extends Table
 {
-    use MyValidationTrait;
-
     /**
      * {@inheritdoc}
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
+
+        // カスタムバリデータクラスに変更
+        $this->_validatorClass = '\App\Validation\MyValidator';
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('SaveUser');
