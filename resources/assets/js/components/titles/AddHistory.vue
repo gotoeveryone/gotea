@@ -10,7 +10,7 @@
                     <input type="text" v-model="holding" maxlength="4" class="holding" name="holding">
                 </div>
                 <div class="button-column">
-                    <input type="checkbox" id="newest" checked :disabled="required()" />
+                    <input type="checkbox" id="newest" name="newest" checked :disabled="required()" />
                     <label for="newest">最新として登録</label>
                     <button type="submit" :disabled="required()">登録</button>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="input-row">
                     <div class="box">
                         棋士名：
-                        <input type="text" v-model="name" class="playerName">
+                        <input type="text" v-model="name" class="name">
                     </div>
                     <div class="button-column">
                         <button type="button" @click="search()">検索</button>

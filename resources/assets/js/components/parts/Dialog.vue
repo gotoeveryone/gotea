@@ -1,18 +1,18 @@
 <template>
-    <div class="dialog" :class="{'hide': !isShow()}">
-        <div class="dialog-content" :class="{'hide': !isShow()}">
+    <div class="dialog" v-if="isShow()">
+        <div class="dialog-content">
             <div class="dialog-content-header">
-                <div class="dialog-content-title" v-text="getTitle()"></div>
+                <div class="dialog-content-title" v-text="title"></div>
             </div>
             <div class="dialog-content-body">
                 <div class="dialog-content-body-text">
-                    <ul :class="getMessageClass()">
-                        <li v-for="(message, idx) in getMessages()" :key="idx" v-html="message"></li>
+                    <ul :class="messageClass">
+                        <li v-for="(message, idx) in messages" :key="idx" v-html="message"></li>
                     </ul>
                 </div>
             </div>
             <div class="dialog-content-footer">
-                <button id="dialog-close" class="dialog-close" autofocus @click="close()">閉じる</button>
+                <button @click="close()">閉じる</button>
             </div>
         </div>
     </div>
@@ -21,68 +21,55 @@
 <script>
 export default {
     props: {
+        options: Object,
         servType: String,
-        servMessage: String,
+        servMessages: {
+            type: Array,
+            required: false,
+        },
     },
-    data: () => {
-        return {
-            options: {
-                title: '',
-                messages: [],
-                type: 'info',
+    directives: {
+        focus: {
+            inserted: (el) => {
+                el.focus();
             },
-        };
+        },
     },
     methods: {
-        getOptions() {
-            // 保持しているオプションがあればそれを返却
-            if (this.options.messages.length) {
-                return this.options;
-            }
-            const options = this.$store.getters.dialogOptions();
-
-            // 配列に変換
-            if (!Array.isArray(options.messages) && options.messages) {
-                options.messages = [options.messages];
-            }
-            return options;
-        },
-        getTitle() {
-            return this.getOptions().title || 'メッセージ';
-        },
-        getMessages() {
-            return this.getOptions().messages;
-        },
-        getMessageClass() {
-            const op = this.getOptions();
-            if (op.type) {
-                return `message-${op.type}`;
-            }
-            return 'message-info';
+        close() {
+            this.$store.dispatch('closeDialog');
         },
         isShow() {
-            return this.getMessages().length > 0;
+            return this.messages.length > 0;
         },
-        close() {
-            if (this.servMessage) {
-                this.options = {
-                    title: '',
-                    messages: [],
-                    type: 'info',
-                };
-            } else {
-                this.$store.dispatch('closeDialog');
+    },
+    computed: {
+        title() {
+            return this.options.title || 'メッセージ';
+        },
+        messages() {
+            const m = this.options.messages;
+            if (!Array.isArray(m)) {
+                return m ? [m] : [];
             }
+            return m;
+        },
+        messageClass() {
+            if (this.options.type) {
+                return `message-${this.options.type}`;
+            }
+            return 'message-info';
         },
     },
     mounted() {
         // サーバからのメッセージを保持している場合、それをオプションに設定
-        if (this.servMessage) {
-            this.options = {
-                title: this.getTitle(),
-                messages: this.servMessage.split(','),
+        console.log(this.servMessages);
+        if (this.servMessages && this.servMessages.length) {
+            this.$store.dispatch('openDialog', {
+                title: this.title,
+                messages: this.servMessages,
                 type: this.servType,
-            }
+            });
         }
     },
 }

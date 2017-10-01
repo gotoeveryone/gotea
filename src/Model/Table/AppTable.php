@@ -24,43 +24,6 @@ class AppTable extends Table
     }
 
     /**
-     * キー情報をもとに、データを1件取得します。
-     *
-     * @param array $data
-     * @param array $fields
-     * @return null|\Cake\ORM\Entity
-     */
-    public function findByKey(array $data, $fields = [])
-    {
-        $params = [];
-        foreach ($fields as $field) {
-            if (empty($data[$field])) {
-                return null;
-            }
-            $params[$field] = $data[$field];
-        }
-        return $this->find()->where($params)->first();
-    }
-
-    /**
-     * データを追加します。
-     *
-     * @param array $data
-     * @param array $fields
-     * @return \App\Model\Entity\AppEntity|false データが登録できればそのEntity
-     */
-    protected function _addEntity(array $data, $fields = [])
-    {
-        // 同一キーのデータがあれば終了
-        if ($this->findByKey($data, $fields)) {
-            return false;
-        }
-
-        // データの登録
-        return $this->save($this->newEntity($data));
-    }
-
-    /**
      * ランキングデータの取得方法を判定します。
      *
      * @param int $targetYear

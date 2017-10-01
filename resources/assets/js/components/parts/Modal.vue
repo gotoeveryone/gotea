@@ -1,34 +1,45 @@
 <template>
-    <div class="iframe-modal" @click="close()" :class="{'hide': !isShow()}">
-        <div class="modal-parent" :class="{'hide': !isShow()}"
-            :style="{'height': getHeight(), 'width': getWidth()}">
-            <iframe class="modal-body" :src="getUrl()"></iframe>
-            <div class="modal-close" @click="close()"><span class="modal-close-mark">×</span></div>
+    <transition name="modal">
+        <div class="iframe-modal" @click="close()" v-if="isShow()">
+            <div class="modal-parent" :style="{'height': height, 'width': width}">
+                <iframe class="modal-body" :src="options.url"></iframe>
+                <div class="modal-close" @click="close()">
+                    <span class="modal-close-mark">×</span>
+                </div>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
-    export default {
-        methods: {
-            getUrl() {
-                return this.getOptions().url;
-            },
-            getWidth() {
-                return this.getOptions().width || '90%';
-            },
-            getHeight() {
-                return this.getOptions().height || '90%';
-            },
-            isShow() {
-                return (this.getUrl() !== '');
-            },
-            close() {
-                this.$store.dispatch('closeModal');
-            },
-            getOptions() {
-                return this.$store.getters.modalOptions();
-            },
+export default {
+    props: {
+        options: Object,
+    },
+    methods: {
+        close() {
+            this.$store.dispatch('closeModal');
         },
-    }
+        isShow() {
+            return (this.options.url !== '');
+        },
+    },
+    computed: {
+        height() {
+            return this.options.height || '90%';
+        },
+        width() {
+            return this.options.width || '90%';
+        },
+    },
+}
 </script>
+
+<style>
+.modal-enter-active, .modal-leave-active {
+    transition: opacity .5s;
+}
+.modal-enter, .modal-leave-to {
+    opacity: 0;
+}
+</style>
