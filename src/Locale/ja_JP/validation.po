@@ -10,8 +10,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "name"
+msgstr "名前"
+
+msgid "name_english"
+msgstr "名前（英語）"
+
+msgid "name_other"
+msgstr "名前（その他）"
+
+msgid "birthday"
+msgstr "生年月日"
+
+msgid "joined"
+msgstr "入段日"
+
+msgid "joined_from"
+msgstr "入段年（開始）"
+
+msgid "joined_to"
+msgstr "入段年（終了）"
+
+msgid "holding"
+msgstr "期"
+
+msgid "sort_order"
+msgstr "並び順"
+
+msgid "html_file_name"
+msgstr "HTMLファイル名"
+
+msgid "html_file_modified"
+msgstr "修正日"
+
+msgid "promoted"
+msgstr "昇段日"
+
+msgid "target_year"
+msgstr "対象年度"
+
+msgid "win_group_name"
+msgstr "グループ名"
+
 msgid "field {0} is required"
 msgstr "{0}は必須入力です。"
+
+msgid "field {0} cannot be left empty"
+msgstr "{0}は空欄にできません。"
 
 msgid "field {0} is numeric value only"
 msgstr "{0}は数値のみで入力してください。"
