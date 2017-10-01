@@ -6,10 +6,7 @@ use Cake\Validation\Validation;
 use Gotoeveryone\Validation\CustomValidationTrait;
 
 /**
- * バリデーションメッセージを出力します。
- *
- * @author      Kazuki Kamizuru
- * @since       2015/07/26
+ * カスタムのバリデーションクラスです。
  */
 class MyValidation extends Validation
 {

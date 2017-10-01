@@ -5,7 +5,7 @@ namespace App\Validation;
 use Cake\Validation\Validator;
 
 /**
- * Undocumented class
+ * カスタムバリデータクラス
  */
 class MyValidator extends Validator
 {
