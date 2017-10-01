@@ -15,7 +15,7 @@ class LoginForm extends AppForm
      */
     protected function _buildSchema(Schema $schema)
     {
-        return $schema->addField('username', ['type' => 'string'])
+        return $schema->addField('account', ['type' => 'string'])
             ->addField('password', ['type' => 'password']);
     }
 
@@ -26,15 +26,15 @@ class LoginForm extends AppForm
     {
         // ユーザID
         $validator
-            ->notEmpty('username', $this->getMessage($this->REQUIRED, 'ID'))
-            ->maxLength('username', 10, $this->getMessage($this->MAX_LENGTH, ['ID', 10]))
-            ->alphaNumeric('username', $this->getMessage($this->ALPHA_NUMERIC, 'ID'));
+            ->notEmpty('account')
+            ->maxLength('account', 10)
+            ->alphaNumeric('account');
 
         // パスワード
         $validator
-            ->notEmpty('password', $this->getMessage($this->REQUIRED, 'パスワード'))
-            ->maxLength('password', 20, $this->getMessage($this->MAX_LENGTH, ['パスワード', 20]))
-            ->alphaNumeric('password', $this->getMessage($this->ALPHA_NUMERIC, 'パスワード'));
+            ->notEmpty('password')
+            ->maxLength('password', 20)
+            ->alphaNumeric('password');
 
         return $validator;
     }

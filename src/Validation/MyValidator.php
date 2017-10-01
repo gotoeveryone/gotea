@@ -35,10 +35,7 @@ class MyValidator extends Validator
         if (!isset($rule['message']) || $rule['message'] === '') {
             $key = $name;
             $args = [__d('validation', $field)];
-            if ($name === 'date') {
-                $key = 'invalidFormat';
-                $args[] = 'yyyy/MM/dd';
-            } else if (isset($rule['rule']) && is_array($rule['rule'])) {
+            if (isset($rule['rule']) && is_array($rule['rule'])) {
                 $rules = $rule['rule'];
                 array_shift($rules);
                 $args = array_merge($args, $rules);
@@ -55,16 +52,29 @@ class MyValidator extends Validator
     {
         $results = parent::_convertValidatorToArray($fieldName, $defaults, $settings);
         foreach ($results as $name => &$property) {
-            // プロパティが存在しない
             if (isset($property['mode'])) {
+                // プロパティが存在しない
                 $property['message'] = $this->getMessage('required', __d('validation', $name));
-            }
-            // プロパティが空欄
-            if (isset($property['when'])) {
+            } else if (isset($property['when'])) {
+                // プロパティが空欄
                 $property['message'] = $this->getMessage('notEmpty', __d('validation', $name));
             }
         }
         return $results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function date($field, $formats = ['ymd'], $message = null, $when = null)
+    {
+        $args = [__d('validation', $field)];
+        if (!is_array($formats)) {
+            $formats = [$formats];
+        }
+        $args[] = implode('/', str_split($formats[0]));
+        $message = $this->getMessage('invalidFormat', $args);
+        return parent::date($field, $formats, $message, $when);
     }
 
     /**
@@ -74,7 +84,7 @@ class MyValidator extends Validator
      * @param null|array $args
      * @return string|null Translated string.
      */
-    public function getMessage(string $key, $args = null)
+    public function getMessage(string $key, ...$args)
     {
         $message = $this->_messages[$key] ?? null;
         if (!$message) {
@@ -82,6 +92,6 @@ class MyValidator extends Validator
         }
 
         // see \App\Locale\{code}\validation.po
-        return __d('validation', $message, $args);
+        return __d('validation', $message, ...$args);
     }
 }

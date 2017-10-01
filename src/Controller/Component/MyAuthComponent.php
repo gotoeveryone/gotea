@@ -18,14 +18,13 @@ class MyAuthComponent extends AuthComponent
     /**
      * ログイン処理を行います。
      *
-     * @param $account
-     * @param $password
+     * @param array $credentials 認証情報
      * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
      */
-    public function login($account, $password)
+    public function login($credentials)
     {
         // トークンが保存できなければログインエラー
-        if (!($user = $this->__authenticate($account, $password))) {
+        if (!($user = $this->__authenticate($credentials))) {
             Log::error(__('ログイン失敗（認証）'));
             return false;
         }
@@ -53,17 +52,13 @@ class MyAuthComponent extends AuthComponent
     /**
      * 認証を行います。
      *
-     * @param $account
-     * @param $password
+     * @param array $credentials 認証情報
      * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
      */
-    private function __authenticate($account, $password)
+    private function __authenticate($credentials)
     {
         // トークン発行
-        $response = $this->Json->callApi('auth', 'post', [
-            'account' => $account,
-            'password' => $password,
-        ]);
+        $response = $this->Json->callApi('auth', 'post', $credentials);
         $token = $response['access_token'] ?? null;
 
         if ($this->response->getStatusCode() !== 200) {
@@ -80,7 +75,7 @@ class MyAuthComponent extends AuthComponent
         }
 
         // セッションにユーザを保存
-        $user['password'] = $password;
+        $user['password'] = $credentials['password'];
         $user['access_token'] = $token;
         $this->setUser($user);
         return $user;

@@ -10,6 +10,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "account"
+msgstr "ID"
+
+msgid "password"
+msgstr "パスワード"
+
 msgid "name"
 msgstr "名前"
 
@@ -26,10 +32,10 @@ msgid "joined"
 msgstr "入段日"
 
 msgid "joined_from"
-msgstr "入段年（開始）"
+msgstr "入段年（FROM）"
 
 msgid "joined_to"
-msgstr "入段年（終了）"
+msgstr "入段年（TO）"
 
 msgid "holding"
 msgstr "期"
@@ -51,6 +57,12 @@ msgstr "対象年度"
 
 msgid "win_group_name"
 msgstr "グループ名"
+
+msgid "started"
+msgstr "対局日（FROM）"
+
+msgid "ended"
+msgstr "対局日（TO）"
 
 msgid "field {0} is required"
 msgstr "{0}は必須入力です。"
