@@ -19,7 +19,8 @@
         "cakephp/migrations": "^1.6",
         "cakephp/plugin-installer": "^1.0",
         "vlucas/phpdotenv": "^2.4",
-        "fabpot/goutte": "^3.2"
+        "fabpot/goutte": "^3.2",
+        "gotoeveryone/cake-parts": "0.0.*"
     },
     "require-dev": {
         "psy/psysh": "@stable",

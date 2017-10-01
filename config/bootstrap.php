@@ -44,6 +44,8 @@ use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
+use Cake\Validation\RulesProvider;
+use Cake\Validation\Validator;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
@@ -184,6 +186,9 @@ Type::build('datetime')
     ->useImmutable();
 Type::build('timestamp')
     ->useImmutable();
+
+// デフォルトのバリデータを変更
+Validator::addDefaultProvider('default', new RulesProvider('App\Validation\MyValidation'));
 
 /*
 * Custom Inflector rules, can be set to correctly pluralize or singularize

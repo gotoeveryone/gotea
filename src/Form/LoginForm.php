@@ -12,9 +12,6 @@ class LoginForm extends AppForm
 {
     /**
      * {@inheritdoc}
-     * 
-     * @param \Cake\Form\Schema $schema
-     * @return type
      */
     protected function _buildSchema(Schema $schema)
     {
@@ -24,24 +21,21 @@ class LoginForm extends AppForm
 
     /**
      * {@inheritdoc}
-     * 
-     * @param Validator $validator
-     * @return type
      */
     protected function _buildValidator(Validator $validator)
     {
-        return $validator
+        // ユーザID
+        $validator
             ->notEmpty('username', $this->getMessage($this->REQUIRED, 'ID'))
             ->maxLength('username', 10, $this->getMessage($this->MAX_LENGTH, ['ID', 10]))
-            ->add('username', 'default', [
-                'rule' => [$this, 'alphaNumeric'],
-                'message' => $this->getMessage($this->ALPHA_NUMERIC, 'ID')
-            ])
+            ->alphaNumeric('username', $this->getMessage($this->ALPHA_NUMERIC, 'ID'));
+
+        // パスワード
+        $validator
             ->notEmpty('password', $this->getMessage($this->REQUIRED, 'パスワード'))
             ->maxLength('password', 20, $this->getMessage($this->MAX_LENGTH, ['パスワード', 20]))
-            ->add('password', 'default', [
-                'rule' => [$this, 'alphaNumeric'],
-                'message' => $this->getMessage($this->ALPHA_NUMERIC, 'パスワード')
-            ]);
+            ->alphaNumeric('password', $this->getMessage($this->ALPHA_NUMERIC, 'パスワード'));
+
+        return $validator;
     }
 }

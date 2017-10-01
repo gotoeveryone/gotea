@@ -30,14 +30,6 @@ trait MyValidationTrait
     ];
 
     /**
-     * {@inheritdoc}
-     */
-    public function alphaNumeric($check)
-    {
-        return (bool) preg_match('/^[a-zA-Z0-9\(\)\'\-\s]+$/', $check);
-    }
-
-    /**
      * 必須入力のメッセージを取得します。
      *
      * @param string $key
