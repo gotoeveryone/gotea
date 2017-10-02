@@ -49,6 +49,7 @@ export default {
                 this.select = {
                     country: this.countries[0].value || '',
                 };
+                this.search();
             });
     },
 }

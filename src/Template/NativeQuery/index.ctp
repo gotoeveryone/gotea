@@ -1,7 +1,7 @@
 <section class="update-score">
     <?=$this->Form->create(null, [
         'id' => 'mainForm',
-        'class' => 'mainForm',
+        'class' => 'main-form',
         'method' => 'post',
         'url' => ['action' => 'index'],
         'templates' => [

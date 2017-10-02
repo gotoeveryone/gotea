@@ -36,10 +36,10 @@ export default {
         },
         outputJson(_params) {
             this.$http.post(this.getUrl(_params))
-                .then(res => this.$store.dispatch('openDialog', {
+                .then(() => this.$store.dispatch('openDialog', {
                     messages: 'JSONを出力しました。',
                 }))
-                .catch(res => this.$store.dispatch('openDialog', {
+                .catch(() => this.$store.dispatch('openDialog', {
                     messages: 'JSON出力に失敗しました…。',
                     type: 'error',
                 }));

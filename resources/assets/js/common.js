@@ -115,7 +115,7 @@ if (inputQueries) {
     inputQueries.addEventListener('blur', (event) => {
         // クエリを整形
         // 前後の空白をトリムして、空行を削除
-        event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/　/g, '')
+        event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/\s/g, '')
             .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
     }, false);
 }
@@ -127,8 +127,8 @@ if (updateQuery) {
         const inputQueries = document.querySelector('#input-queries');
         if (!inputQueries.value) {
             event.preventDefault();
-            App.openDialog(null, '更新対象が1件も存在しません。', 'warning');
-            unblock();
+            window.App.openDialog(null, '更新対象が1件も存在しません。', 'warning');
+            window.unblock();
             return;
         }
 

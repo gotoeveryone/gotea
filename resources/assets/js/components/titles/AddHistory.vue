@@ -37,20 +37,18 @@
                         <button type="button" @click="search()">検索</button>
                     </div>
                 </div>
-                <div class="retentions" v-if="players.length">
-                    <table>
-                        <tr v-for="(player, idx) in players" :key="idx">
-                            <td v-text="getName(player)"></td>
-                            <td v-text="player.nameEnglish"></td>
-                            <td v-text="player.countryName"></td>
-                            <td v-text="player.rankName"></td>
-                            <td v-text="player.sex"></td>
-                            <td class="select">
-                                <button type="button" @click="select(player)">選択</button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                <ul class="table-body retentions" v-if="players.length">
+                    <li class="table-row" v-for="(player, idx) in players" :key="idx">
+                        <span class="retentions-name" v-text="getName(player)"></span>
+                        <span class="retentions-name" v-text="player.nameEnglish"></span>
+                        <span class="retentions-country" v-text="player.countryName"></span>
+                        <span class="retentions-rank" v-text="player.rankName"></span>
+                        <span class="retentions-sex" v-text="player.sex"></span>
+                        <span class="retentions-select">
+                            <button type="button" @click="select(player)">選択</button>
+                        </span>
+                    </li>
+                </ul>
             </div>
         </div>
     </li>

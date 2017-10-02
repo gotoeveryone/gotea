@@ -1,0 +1,35 @@
+@mixin navi($color) {
+    background-color: #{$color};
+    transition: background-color .3s ease-in-out;
+
+    &:hover {
+        background-color: darken($color, 15%);
+    }
+}
+
+@mixin button($color) {
+    background-color: #{$color};
+    transition: background-color .3s ease-in-out;
+
+    &:enabled:hover {
+        background-color: darken($color, 20%);
+    }
+}
+
+/* アニメーション */
+@mixin fade($second, $fadeClass) {
+    animation: show #{$second}s ease-in-out;
+    @content;
+    &.#{$fadeClass} {
+        display: none;
+    }
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

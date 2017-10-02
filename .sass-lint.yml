@@ -6,9 +6,7 @@ options:
   # Don't merge default rules
   merge-default-rules: false
   # Set the formatter to 'html'
-  formatter: html
-  # Output file instead of logging results
-  output-file: 'linters/sass-lint.html'
+  formatter: stylish
   # Raise an error if more than 50 warnings are generated
   max-warnings: 50
 # File Options
@@ -46,8 +44,6 @@ rules:
       order:
         - display
         - position
-        - width
-        - height
         - margin
         - margin-top
         - margin-right

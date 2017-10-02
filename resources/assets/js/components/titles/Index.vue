@@ -4,16 +4,16 @@
         <div class="search-results">
             <ul class="table-header">
                 <li class="table-row">
-                    <span class="name">タイトル名</span>
-                    <span class="name">タイトル名（英語）</span>
-                    <span class="holding">期</span>
-                    <span class="winner">優勝者</span>
-                    <span class="order">並び<br>順</span>
-                    <span class="team">団体</span>
-                    <span class="filename">HTML<br>ファイル名</span>
-                    <span class="modified">修正日</span>
-                    <span class="closed">終了<br>棋戦</span>
-                    <span>詳細</span>
+                    <span class="table-column name">タイトル名</span>
+                    <span class="table-column name">タイトル名（英語）</span>
+                    <span class="table-column holding">期</span>
+                    <span class="table-column winner">優勝者</span>
+                    <span class="table-column order">並び順</span>
+                    <span class="table-column team">団体</span>
+                    <span class="table-column filename">ファイル名</span>
+                    <span class="table-column modified">修正日</span>
+                    <span class="table-column closed">終了<br>棋戦</span>
+                    <span class="table-column open-detail">詳細</span>
                 </li>
             </ul>
             <ul class="table-body" v-if="items.length">
@@ -68,9 +68,9 @@ export default {
         },
         outputJson() {
             this.$http.post(`${this.domain}api/create-news`)
-                .then(res => this.$store.dispatch('openDialog', {
+                .then(() => this.$store.dispatch('openDialog', {
                     messages: 'JSONを出力しました。',
-                })).catch(res => this.$store.dispatch('openDialog', {
+                })).catch(() => this.$store.dispatch('openDialog', {
                     messages: 'JSON出力に失敗しました…。',
                     type: 'error',
                 }));

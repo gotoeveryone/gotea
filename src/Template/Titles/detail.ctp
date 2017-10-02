@@ -11,7 +11,7 @@
         <section data-contentname="title" class="tab-contents">
             <?=$this->Form->create($title, [
                 'id' => 'mainForm',
-                'class' => 'mainForm',
+                'class' => 'main-form',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
                 'novalidate' => 'novalidate',

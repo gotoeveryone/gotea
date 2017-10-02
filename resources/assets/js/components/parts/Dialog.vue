@@ -1,21 +1,23 @@
 <template>
-    <div class="dialog" v-if="isShow()">
-        <div class="dialog-content">
-            <div class="dialog-content-header">
-                <div class="dialog-content-title" v-text="title"></div>
-            </div>
-            <div class="dialog-content-body">
-                <div class="dialog-content-body-text">
-                    <ul :class="messageClass">
-                        <li v-for="(message, idx) in messages" :key="idx" v-html="message"></li>
-                    </ul>
+    <transition name="dialog">
+        <div class="dialog" v-if="isShow()">
+            <div class="dialog-content">
+                <div class="dialog-content-header">
+                    <div class="dialog-content-title" v-text="title"></div>
+                </div>
+                <div class="dialog-content-body">
+                    <div class="dialog-content-body-text">
+                        <ul :class="messageClass">
+                            <li v-for="(message, idx) in messages" :key="idx" v-html="message"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="dialog-content-footer">
+                    <button v-focus @click="close()">閉じる</button>
                 </div>
             </div>
-            <div class="dialog-content-footer">
-                <button @click="close()">閉じる</button>
-            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -40,7 +42,11 @@ export default {
             this.$store.dispatch('closeDialog');
         },
         isShow() {
-            return this.messages.length > 0;
+            return this.messages.length > 0 &&
+                ((this.isServ() && this.options.server) || (!this.isServ() && !this.options.server));
+        },
+        isServ() {
+            return (this.servMessages && this.servMessages.length);
         },
     },
     computed: {
@@ -63,14 +69,23 @@ export default {
     },
     mounted() {
         // サーバからのメッセージを保持している場合、それをオプションに設定
-        console.log(this.servMessages);
-        if (this.servMessages && this.servMessages.length) {
+        if (this.isServ()) {
             this.$store.dispatch('openDialog', {
                 title: this.title,
                 messages: this.servMessages,
                 type: this.servType,
+                server: true,
             });
         }
     },
 }
 </script>
+
+<style>
+.dialog-enter-active, .dialog-leave-active {
+    transition: opacity .5s;
+}
+.dialog-enter, .dialog-leave-to {
+    opacity: 0;
+}
+</style>

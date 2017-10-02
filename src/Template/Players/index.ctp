@@ -1,7 +1,7 @@
 <section class="players">
     <?=$this->Form->create($form, [
         'id' => 'mainForm',
-        'class' => 'mainForm',
+        'class' => 'main-form',
         'type' => 'post',
         'url' => ['action' => 'index'],
         'templates' => [
@@ -12,41 +12,59 @@
     ])?>
         <ul class="search-header">
             <li class="search-row">
-                <label>所属国：</label>
-                <?= $this->cell('Countries', ['hasTitle' => true,
-                    'customOptions' => [
-                        '@change' => 'changeCountry($event)',
-                    ],
-                ])->render() ?>
-                <label>所属組織：</label>
-                <?= $this->cell('Organizations', ['empty' => true])->render() ?>
-                <label>段位：</label>
-                <?= $this->cell('Ranks', ['empty' => true])->render() ?>
-                <label>性別：</label>
-                <?= $this->MyForm->sexes(['class' => 'sex', 'empty' => true]) ?>
-                <label>引退者：</label>
-                <?=
-                    $this->Form->select('is_retired', [
-                        '0' => '検索しない',
-                        '1' => '検索する'
-                    ], [
-                        'class' => 'excluded'
-                    ]);
-                ?>
+                <div>
+                    <label>所属国：</label>
+                    <?= $this->cell('Countries', ['hasTitle' => true,
+                        'customOptions' => [
+                            '@change' => 'changeCountry($event)',
+                        ],
+                    ])->render() ?>
+                </div>
+                <div>
+                    <label>所属組織：</label>
+                    <?= $this->cell('Organizations', ['empty' => true])->render() ?>
+                </div>
+                <div>
+                    <label>段位：</label>
+                    <?= $this->cell('Ranks', ['empty' => true])->render() ?>
+                </div>
+                <div>
+                    <label>性別：</label>
+                    <?= $this->MyForm->sexes(['class' => 'sex', 'empty' => true]) ?>
+                </div>
+                <div>
+                    <label>入段年：</label>
+                    <?=$this->Form->number('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
+                    ～
+                    <?=$this->Form->number('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
+                </div>
             </li>
             <li class="search-row">
-                <label>棋士名：</label>
-                <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20])?>
-                <label>（英語）：</label>
-                <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
-                <label>（その他）：</label>
-                <?=$this->Form->text('name_other', ['class' => 'name', 'maxlength' => 20]);?>
-                <label>入段年：</label>
-                <?=$this->Form->text('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
-                ～
-                <?=$this->Form->text('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
+                <div>
+                    <label>棋士名：</label>
+                    <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20])?>
+                </div>
+                <div>
+                    <label>（英語）：</label>
+                    <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
+                </div>
+                <div>
+                    <label>（その他）：</label>
+                    <?=$this->Form->text('name_other', ['class' => 'name', 'maxlength' => 20]);?>
+                </div>
             </li>
             <li class="search-row">
+                <div>
+                    <label>引退者：</label>
+                    <?=
+                        $this->Form->select('is_retired', [
+                            '0' => '検索しない',
+                            '1' => '検索する'
+                        ], [
+                            'class' => 'excluded'
+                        ]);
+                    ?>
+                </div>
                 <?php if (!empty($players) && count($players) > 0) : ?>
                 <div class="result-count">
                     <?=count($players).'件のレコードが該当しました。'?>
@@ -73,16 +91,20 @@
                     <span class="rank">段位</span>
                     <span class="sex">性別</span>
                     <span class="score">
-                        <?=date('Y')?>年国内<br/>
-                        <span class="point">勝</span>
-                        <span class="point">敗</span>
-                        <span class="point">分</span>
+                        <div><?= date('Y') ?>年国内</div>
+                        <div class="score-point">
+                            <span>勝</span>
+                            <span>敗</span>
+                            <span>分</span>
+                        </div>
                     </span>
                     <span class="score">
-                        <?=date('Y')?>年国際<br/>
-                        <span class="point">勝</span>
-                        <span class="point">敗</span>
-                        <span class="point">分</span>
+                        <div><?= date('Y') ?>年国際</div>
+                        <div class="score-point">
+                            <span>勝</span>
+                            <span>敗</span>
+                            <span>分</span>
+                        </div>
                     </span>
                 </li>
             </ul>
