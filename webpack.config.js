@@ -32,7 +32,10 @@ module.exports = [
                 {
                     test: /\.js$/,
                     exclude: /node_modules/,
-                    loader: 'buble-loader',
+                    loaders: [
+                        'buble-loader',
+                        'eslint-loader',
+                    ],
                 },
                 {
                     test: /\.css$/,

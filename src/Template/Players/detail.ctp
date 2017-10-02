@@ -17,7 +17,7 @@
         <section data-contentname="player" class="tab-contents">
             <?=$this->Form->create($player, [
                 'id' => 'mainForm',
-                'class' => 'mainForm',
+                'class' => 'main-form',
                 'type' => 'post',
                 'url' => ['action' => 'save'],
                 'novalidate' => 'novalidate',
@@ -77,14 +77,14 @@
                                         'maxlength' => 20
                                     ]);
                                 ?>
-                                英語
+                                <span class="input-row-label">英語</span>
                                 <?=
                                     $this->Form->text('name_english', [
                                         'class' => 'name',
                                         'maxlength' => 40
                                     ]);
                                 ?>
-                                その他
+                                <span class="input-row-label">その他</span>
                                 <?=
                                     $this->Form->text('name_other', [
                                         'class' => 'name',
@@ -306,10 +306,8 @@
             <?php if (!$player->retention_histories->isEmpty()) : ?>
             <section data-contentname="titleRetains" class="tab-contents">
                 <div class="category-row">タイトル取得履歴</div>
-
-                <?php
-                    $histories = $player->groupByYearFromHistories();
-                    foreach ($histories as $key => $items) : ?>
+                <?php $histories = $player->groupByYearFromHistories(); ?>
+                <?php foreach ($histories as $key => $items) : ?>
                     <div class="genre-row"><?=h($key).'年度'?></div>
                     <?php foreach ($items as $item) : ?>
                     <div class="input-row">

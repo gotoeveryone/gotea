@@ -3,7 +3,7 @@
     <div>
         <?=$this->Form->create($form, [
             'id' => 'mainForm',
-            'class' => 'mainForm',
+            'class' => 'main-form',
             'type' => 'post',
             'url' => ['action' => 'index'],
             'templates' => [
@@ -14,20 +14,28 @@
         ])?>
             <ul class="search-header">
                 <li class="search-row">
-                    <label>棋士名：</label>
-                    <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20]);?>
-                    <label>対象棋戦：</label>
-                    <?= $this->cell('Countries')->render() ?>
-                    <label>対局年：</label>
-                    <?=
-                        $this->MyForm->years('target_year', [
-                            'class' => 'year', 'empty' => true,
-                        ]);
-                    ?>
-                    <label>対局日：</label>
-                    <?=$this->Form->text('started', ['class' => 'date datepicker'])?>
-                    ～
-                    <?=$this->Form->text('ended', ['class' => 'date datepicker'])?>
+                    <div>
+                        <label>棋士名：</label>
+                        <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20]);?>
+                    </div>
+                    <div>
+                        <label>対象棋戦：</label>
+                        <?= $this->cell('Countries')->render() ?>
+                    </div>
+                    <div>
+                        <label>対局年：</label>
+                        <?=
+                            $this->MyForm->years('target_year', [
+                                'class' => 'year', 'empty' => true,
+                            ]);
+                        ?>
+                    </div>
+                    <div>
+                        <label>対局日：</label>
+                        <?=$this->Form->text('started', ['class' => 'date datepicker'])?>
+                        <span>～</span>
+                        <?=$this->Form->text('ended', ['class' => 'date datepicker'])?>
+                    </div>
                     <div class="button-wrap">
                         <?=$this->Form->button('検索', ['type' => 'submit'])?>
                     </div>

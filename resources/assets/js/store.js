@@ -11,6 +11,7 @@ export const store = new Vuex.Store({
             title: '',
             messages: '',
             type: 'info',
+            server: false,
         },
     },
     getters: {

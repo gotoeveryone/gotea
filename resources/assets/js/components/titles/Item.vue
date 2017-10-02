@@ -1,32 +1,32 @@
 <template>
     <li class="table-row" :class="getRowClass()">
-        <span class="name">
+        <span class="table-column name">
             <input type="text" @change="save" v-model="item.name">
         </span>
-        <span class="name">
+        <span class="table-column name">
             <input type="text" @change="save" v-model="item.nameEnglish">
         </span>
-        <span class="holding">
-            <input type="text" @change="save" v-model="item.holding">
+        <span class="table-column holding">
+            <input type="text" class="input-holding" @change="save" v-model="item.holding">
         </span>
-        <span class="winner" v-text="getWinnerName()"></span>
-        <span class="order">
-            <input type="text" @change="save" v-model="item.sortOrder">
+        <span class="table-column winner" v-text="getWinnerName()"></span>
+        <span class="table-column order">
+            <input type="text" class="input-sortorder" @change="save" v-model="item.sortOrder">
         </span>
-        <span class="team">
+        <span class="table-column team">
             <input type="checkbox" @change="save" v-model="item.isTeam">
         </span>
-        <span class="filename">
+        <span class="table-column filename">
             <input type="text" @change="save" v-model="item.htmlFileName">
         </span>
-        <span class="modified">
+        <span class="table-column modified">
             <date-picker type="date" @change="saveDatepicker" v-model="item.htmlFileModified"
                 size="small" format="yyyy/MM/dd"></date-picker>
         </span>
-        <span class="closed">
+        <span class="table-column closed">
             <input type="checkbox" @change="save" v-model="item.isClosed">
         </span>
-        <span>
+        <span class="table-column open-detail">
             <a @click="add()" v-if="!item.id">登録</a>
             <a @click="select()" v-if="item.id">開く</a>
         </span>
@@ -90,7 +90,7 @@ export default {
             }
         },
         getRowClass() {
-            return this.item.isClosed ? 'closed' : '';
+            return this.item.isClosed ? 'table-row-closed' : '';
         },
     },
 }

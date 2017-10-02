@@ -1,16 +1,20 @@
 <template>
     <ul class="search-header">
         <li class="search-row">
-            <label>対象国：</label>
-            <select v-model="select.country" @change="changeValue($event)">
-                <option v-for="(country, idx) in countries" :key="idx"
-                    :value="country.value" v-text="country.text"></option>
-            </select>
-            <label>終了棋戦：</label>
-            <select v-model="select.type" @change="changeValue($event)">
-                <option v-for="(type, idx) in types" :key="idx"
-                    :value="type.value" v-text="type.text"></option>
-            </select>
+            <div>
+                <label>対象国：</label>
+                <select class="titles-country" v-model="select.country" @change="changeValue($event)">
+                    <option v-for="(country, idx) in countries" :key="idx"
+                        :value="country.value" v-text="country.text"></option>
+                </select>
+            </div>
+            <div>
+                <label>終了棋戦：</label>
+                <select class="titles-closed" v-model="select.type" @change="changeValue($event)">
+                    <option v-for="(type, idx) in types" :key="idx"
+                        :value="type.value" v-text="type.text"></option>
+                </select>
+            </div>
             <div class="button-wrap">
                 <button type="button" @click="add()">行追加</button>
                 <button type="button" @click="json()">JSON出力</button>

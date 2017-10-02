@@ -1,12 +1,6 @@
 @import 'module/_variables.scss';
 @import 'module/_normalize.scss';
-@import 'module/_custom.scss';
-
-%center {
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
-}
+@import 'module/_mixin.scss';
 
 %row {
     display: flex;
@@ -17,17 +11,30 @@
     min-height: #{$minRowHeight};
 }
 
-%display-center {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
+.nav {
+    margin: 0;
+    padding: 0;
+    background-color: #848fa3;
+}
+
+.nav-menu {
+    @include navi(#848fa3);
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid $c_gray;
+    color: $c_white;
+    font-size: 140%;
+    text-align: center;
+    text-decoration: none;
+}
+
 .header {
     padding: 0 10px;
     .system-name {
@@ -56,8 +63,8 @@
 .main-content {
     display: flex;
     &.modal {
-        height: 100%;
         padding: 1rem;
+        height: 100%;
     }
 }
 
@@ -70,8 +77,8 @@
 
 .category-row {
     @extend %row;
-    height: 2.5rem;
     margin: 0 auto;
+    height: 2.5rem;
     text-indent: 0.5rem;
     font-size: 1.2rem;
     font-weight: bold;
@@ -102,15 +109,12 @@
     padding: .3rem .7rem;
     min-height: 3rem;
 
-    & > * {
-        margin-left: .5rem;
-        &.button-wrap {
-            margin-left: auto;
-        }
+    .button-wrap {
+        margin-left: auto;
     }
 
-    input {
-        margin-right: .5rem;
+    &-label {
+        margin-left: 10px;
     }
 
     .name {
@@ -141,7 +145,7 @@
     }
 }
 
-.mainForm {
+.main-form {
     width: 100%;
     height: 100%;
 }
@@ -156,24 +160,25 @@
     background-color: $c_white;
     border: 0.2rem solid #bbb;
     border-radius: 0.4rem;
+}
+
+.search-row {
+    & > * {
+        margin-right: 1rem;
+    }
+    .button-wrap {
+        margin-right: 0;
+    }
+
     label {
-        margin: 0 0.5rem 0 0.2rem;
-        & + * {
-            margin-right: 1rem;
-        }
+        padding: 0 5px 0 3px;
+        font-weight: normal;
     }
     .year, .country, .sex, .rank {
         width: 6em;
     }
     .organization, .excluded {
         width: 10em;
-    }
-    .name {
-        width: 12em;
-    }
-    .joined {
-        width: 3.2em;
-        text-align: right;
     }
 }
 
@@ -185,9 +190,9 @@
     height: 100%;
     .tabs {
         display: flex;
-        height: 30px;
         margin: 0;
         padding: 0;
+        height: 30px;
         list-style: none;
         .tab {
             padding: 0.4rem 1rem;
@@ -197,6 +202,7 @@
             border: 0.1rem solid $c_black;
             border-bottom: none;
             border-radius: 0.5rem 0.5rem 0 0;
+            transition: font-weight .3s, color .3s, background-color .3s;
             &.selectTab {
                 font-weight: bold;
                 color: $c_black;
@@ -215,9 +221,7 @@
         background-color: $c_white;
 
         .tab-contents {
-            &.not-select {
-                display: none;
-            }
+            @include fade(.5, 'not-select');
         }
 
         .boxes {
@@ -241,11 +245,11 @@
    勝敗ランキング画面
  ------------------------------------------- */
 .ranking {
-    width: 30rem;
     margin-top: 0;
+    width: 30rem;
     select {
-        width: 7rem;
         margin-right: .4rem;
+        width: 7rem;
     }
     .search-results {
         height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
@@ -328,18 +332,23 @@
             margin-left: 5px;
             color: $c_red;
         }
+        .name {
+            width: 180px;
+        }
         .joined {
             margin-right: .3rem;
             margin-left: .3rem;
+            width: 70px;
         }
     }
     .search-results {
         height: calc(100% - 130px - 10px); /* content - .search-header and padding */
         .score {
             padding: 0;
-            .point {
-                width: 3%;
-                padding: 0 .5rem;
+            width: 9%;
+            &-point {
+                display: flex;
+                justify-content: space-around;
             }
         }
 
@@ -377,17 +386,24 @@
    タイトル情報検索
  ------------------------------------------- */
 .titles {
-    .table-row {
-        span {
-            padding: 0 .3em;
-            .changed {
-                color: $c_red;
-            }
-        }
-        &.closed {
-            background-color: $c_gray;
+    .table-column {
+        padding: 0 5px;
+        & > * {
+            max-width: 100%;
         }
     }
+
+    &-country {
+        width: 90px;
+    }
+    &-closed {
+        width: 100px;
+    }
+
+    .table-row-closed {
+        background-color: $c_gray;
+    }
+
     .name {
         width: 18%;
     }
@@ -396,7 +412,11 @@
         width: 15%;
     }
 
-    .holding, .order, .team, .closed {
+    .holding, .order {
+        width: 5%;
+    }
+
+    .team, .closed {
         width: 5%;
         text-align: center;
     }
@@ -407,19 +427,15 @@
 
     .modified {
         width: 13%;
-        .el-date-editor.el-input {
-            width: 100%;
-        }
     }
 
-    input[type=text] {
-        width: 100%;
+    .open-detail {
+        padding-left: 10px;
     }
 
-    .holding input[type=text],
-    .order input[type=text],
-    .modified input[type=text] {
-        text-align: center;
+    .input-holding,
+    .input-sortorder {
+        text-align: right;
     }
 }
 
@@ -427,33 +443,19 @@
    タイトル情報詳細
  ------------------------------------------- */
 .retentions {
+    margin: 5px auto;
     width: 85%;
-    margin: auto;
-    max-width: 700px;
+    max-width: 750px;
     max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid $c_black;
 
-    * {
-        font-size: 0.85rem;
+    &-name {
+        width: 25%;
     }
-
-    table {
-        width: 100%;
-        margin: auto;
-        &, tbody, tr, td {
-            border: 0.1rem $c_black solid;
-            border-collapse: collapse;
-        }
-
-        tbody, tr, td {
-            padding: 0.1rem 0.5rem;
-        }
-
-        .select {
-            width: 80px;
-            text-align: center;
-        }
+    &-country, &-rank, &-sex {
+        width: 10%;
+    }
+    &-select {
+        width: 20%;
     }
 }
 
@@ -477,9 +479,9 @@
  ------------------------------------------- */
 .update-score {
     .queries {
+        margin-bottom: 5px;
         width: 100%;
         height: calc(100% - 3.8rem);
-        margin-bottom: 5px;
         font-size: 12px;
         overflow-y: auto;
         border: 1px solid $c_black;

@@ -1,8 +1,16 @@
 /* -------------------------------------------
    タグ単位のレイアウト
  ------------------------------------------- */
+@import url('https://fonts.googleapis.com/earlyaccess/sawarabigothic.css');
+
+* {
+    font-family: 'Sawarabi Gothic';
+    font-size: .85rem;
+}
+
 body {
     overflow-x: hidden;
+    background-color: $c_white;
 }
 
 main, nav {
@@ -25,7 +33,10 @@ nav {
 
 strong {
     margin: 0 0.3rem;
-    span {
-        color: #ff0000;
+}
+
+input, textarea, select {
+    &:focus {
+        background-color: #ffc;
     }
 }
