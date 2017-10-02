@@ -4,7 +4,9 @@
         "plugin:vue/recommended"
     ],
     "globals": {
-        "Vue": true
+        "Vue": true,
+        "Cake": true,
+        "App": true
     },
     "rules": {
         "comma-dangle": [

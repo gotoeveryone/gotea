@@ -14,9 +14,9 @@ Vue.use(Vuex);
 
 Vue.http.interceptors.push((request, next) => {
     request.headers.set('Content-Type', 'application/json');
-    request.headers.set('X-CSRF-Token', window.Cake.csrfToken);
-    if (window.Cake.accessUser) {
-        request.headers.set('X-Access-User', window.Cake.accessUser);
+    request.headers.set('X-CSRF-Token', Cake.csrfToken);
+    if (Cake.accessUser) {
+        request.headers.set('X-Access-User', Cake.accessUser);
     }
 
     document.querySelector('.block-ui').classList.add('blocked');

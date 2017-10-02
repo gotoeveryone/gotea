@@ -127,7 +127,7 @@ if (updateQuery) {
         const inputQueries = document.querySelector('#input-queries');
         if (!inputQueries.value) {
             event.preventDefault();
-            window.App.openDialog(null, '更新対象が1件も存在しません。', 'warning');
+            App.openDialog(null, '更新対象が1件も存在しません。', 'warning');
             window.unblock();
             return;
         }
