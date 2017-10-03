@@ -11,7 +11,7 @@
                 </div>
                 <div class="button-column">
                     <input type="checkbox" id="newest" name="newest" checked :disabled="required()" />
-                    <label for="newest">最新として登録</label>
+                    <label for="newest" class="checkbox-label">最新として登録</label>
                     <button type="submit" :disabled="required()">登録</button>
                 </div>
             </div>

@@ -51,8 +51,8 @@
                         <div class="box">
                             <div class="label-row">団体戦</div>
                             <div class="input-row">
-                                <?=$this->Form->checkbox('is_team', ['id' => 'team'])?>
-                                <?=$this->Form->label('team', '団体戦')?>
+                                <?= $this->Form->checkbox('is_team', ['id' => 'team']) ?>
+                                <?= $this->Form->label('team', '団体戦', ['class' => 'checkbox-label']) ?>
                             </div>
                         </div>
                     </li>
@@ -83,7 +83,7 @@
                         </div>
                     </li>
                     <li class="button-row">
-                        <?=$this->Form->button('更新')?>
+                        <?= $this->Form->button('保存') ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>

@@ -61,8 +61,8 @@
                         <div class="box">
                             <div class="label-row">引退フラグ</div>
                             <div class="input-row">
-                                <?=$this->Form->checkbox('is_retired', ['id' => 'retired'])?>
-                                <?= $this->Form->label('retired', '引退しました') ?>
+                                <?= $this->Form->checkbox('is_retired', ['id' => 'retired']) ?>
+                                <?= $this->Form->label('retired', '引退しました', ['class' => 'checkbox-label']) ?>
                                 <?= $this->Form->text('retired', ['class' => 'datepicker', 'disabled']) ?>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                                 <?php
                                 if (!$player->id) {
                                     echo $this->Form->text('joined', [
-                                    'class' => 'imeDisabled datepicker'
+                                        'class' => 'imeDisabled datepicker'
                                     ]);
                                 } else {
                                     echo $this->Date->formatJpValue($player->joined);
@@ -160,7 +160,7 @@
                         <?php // 新規登録時は続けて登録チェックボックス表示 ?>
                         <?php if (!$player->id) : ?>
                             <?= $this->Form->checkbox('is_continue', ['id' => 'continue', 'checked']) ?>
-                            <?= $this->Form->label('continue', '続けて登録') ?>
+                            <?= $this->Form->label('continue', '続けて登録', ['class' => 'checkbox-label']) ?>
                         <?php endif ?>
                         <?= $this->Form->button(($player->id ? '更新' : '登録')) ?>
                     </li>
@@ -201,7 +201,7 @@
                             <div class="label-row"></div>
                             <div class="input-row">
                                 <?= $this->Form->checkbox('newest', ['id' => 'newest', 'checked']) ?>
-                                <?= $this->Form->label('newest', '最新として登録') ?>
+                                <?= $this->Form->label('newest', '最新として登録', ['class' => 'checkbox-label']) ?>
                                 <div class="button-wrap">
                                     <?= $this->Form->button('登録', ['class' => 'add-ranks']) ?>
                                 </div>
