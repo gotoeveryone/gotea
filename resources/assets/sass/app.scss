@@ -109,12 +109,22 @@
     padding: .3rem .7rem;
     min-height: 3rem;
 
+    &-label {
+        margin-right: 5px;
+        margin-left: 15px;
+    }
+
+    select {
+        width: 100%;
+    }
+
     .button-wrap {
         margin-left: auto;
     }
 
-    &-label {
-        margin-left: 10px;
+    .checkbox-label {
+        margin-right: 10px;
+        margin-left: 5px;
     }
 
     .name {
@@ -140,7 +150,7 @@
         text-align: right;
     }
 
-    select, textarea {
+    .remarks {
         width: 100%;
     }
 }

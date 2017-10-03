@@ -115,7 +115,7 @@ if (inputQueries) {
     inputQueries.addEventListener('blur', (event) => {
         // クエリを整形
         // 前後の空白をトリムして、空行を削除
-        event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/\s/g, '')
+        event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/\u3000/g, '')
             .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
     }, false);
 }
