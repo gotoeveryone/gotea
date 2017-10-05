@@ -33,7 +33,7 @@ class UsersController extends AppController
         if ($this->Auth->user()) {
             return $this->redirect($this->Auth->redirectUrl());
         }
-        return $this->_setTitle('ログイン')->set('form', new LoginForm)->render();
+        return $this->set('form', new LoginForm)->_renderWith('ログイン');
     }
 
     /**

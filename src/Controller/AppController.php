@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Event\Event;
 
 /**
  * アプリの共通コントローラ
@@ -11,22 +10,26 @@ use Cake\Event\Event;
  * @author  Kazuki Kamizuru
  * @since   2015/07/26
  *
+ * @property \Cake\Controller\Component\FlashComponent $Flash
+ * @property \Cake\Controller\Component\SecurityComponent $Security
  * @property \App\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
 {
     /**
-     * ダイアログ表示状態かどうか
-     *
-     * @var boolean
-     */
-    private $__dialog = false;
-
-    /**
      * {@inheritDoc}
      */
     public function initialize()
     {
+        // ローカル以外はSSLを強制
+        if (env('CAKE_ENV', 'local') !== 'local') {
+            $this->loadComponent('Security', [
+                'blackHoleCallback' => 'forceSSL',
+                'validatePost' => false,
+            ]);
+            $this->Security->requireSecure();
+        }
+
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',
@@ -47,16 +50,13 @@ class AppController extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * SSLを強制する
+     *
+     * @return \Cake\Http\Response|null
      */
-    public function beforeRender(Event $event)
+    public function forceSSL()
     {
-        parent::beforeRender($event);
-
-        // 表示タブの指定があれば変数に設定
-        if (($tab = $this->request->getQuery('tab'))) {
-            $this->set('tab', $tab);
-        }
+        return $this->redirect('https://' . env('SERVER_NAME') . $this->request->here());
     }
 
     /**
@@ -64,11 +64,12 @@ class AppController extends Controller
      */
     public function isAuthorized($user = null)
     {
-        // ユーザ名を表示
         if ($user) {
-            $this->set('userid', $user['userId']);
-            $this->set('username', $user['userName']);
-            $this->set('admin', ($user['role'] === '管理者'));
+            $this->set([
+                'userid' => $user['userId'],
+                'username' => $user['userName'],
+                'admin' => ($user['role'] === '管理者'),
+            ]);
             return true;
         }
 
@@ -77,10 +78,90 @@ class AppController extends Controller
     }
 
     /**
+     * タイトルタグに表示する値を設定します。
+     *
+     * @param string $title
+     * @param string|null $view View to use for rendering
+     * @param string|null $layout Layout to use
+     * @return \Cake\Http\Response|null
+     */
+    protected function _renderWith(string $title, $view = null, $layout = null)
+    {
+        return $this->_setTitle($title)->render($view, $layout);
+    }
+
+    /**
+     * タイトルタグに表示する値を設定します。
+     *
+     * @param string|null $view View to use for rendering
+     * @param string|null $layout Layout to use
+     * @return \Cake\Http\Response|null
+     */
+    protected function _renderWithDialog($view = null, $layout = null)
+    {
+        return $this->_enableDialogMode()->render($view, $layout);
+    }
+
+    /**
      * エラーを設定します。
      *
      * @param array|string $errors
-     * @return Controller
+     * @param string $title
+     * @param string|null $view View to use for rendering
+     * @param string|null $layout Layout to use
+     * @return \Cake\Http\Response|null
+     */
+    protected function _renderWithErrors($errors, $title, $view = null, $layout = null)
+    {
+        return $this->_setErrors($errors)->_renderWith($title, $view, $layout);
+    }
+
+    /**
+     * タイトルタグに表示する値を設定します。
+     *
+     * @param array $options
+     * @param string|array $url A string or array-based URL pointing to another location within the app,
+     *     or an absolute URL
+     * @param int $status HTTP status code (eg: 301)
+     * @return \Cake\Http\Response|null
+     */
+    protected function _redirectWith($options = [], string $url, $status = 302)
+    {
+        if ($options) {
+            $this->set($options);
+        }
+        return $this->redirect($url, $status);
+    }
+
+    /**
+     * セッションに書き込みます。
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return \Cake\Controller\Controller
+     */
+    protected function _writeToSession($key, $value)
+    {
+        $this->request->session()->write($key, $value);
+        return $this;
+    }
+
+    /**
+     * 指定キーの値をセッションから取り出します。
+     *
+     * @param string $key
+     * @return mixed
+     */
+    protected function _consumeBySession(string $key)
+    {
+        return $this->request->session()->consume($key);
+    }
+
+    /**
+     * エラーを設定します。
+     *
+     * @param array|string $errors
+     * @return \Cake\Controller\Controller
      */
     protected function _setErrors($errors)
     {
@@ -92,7 +173,7 @@ class AppController extends Controller
      *
      * @param array|string $messages
      * @param string $type
-     * @return Controller
+     * @return \Cake\Controller\Controller
      */
     protected function _setMessages($messages, $type = 'info')
     {
@@ -104,7 +185,7 @@ class AppController extends Controller
      * タイトルタグに表示する値を設定します。
      *
      * @param string $title
-     * @return Controller
+     * @return \Cake\Controller\Controller
      */
     protected function _setTitle(string $title)
     {
@@ -112,22 +193,12 @@ class AppController extends Controller
     }
 
     /**
-     * ダイアログ表示状態かどうかを判定します。
-     *
-     * @return bool ダイアログ表示状態ならtrue
-     */
-    protected function _isDialogMode()
-    {
-        return $this->__dialog ?? false;
-    }
-
-    /**
      * ダイアログ表示を設定します。
      *
-     * @return Controller
+     * @return \Cake\Controller\Controller
      */
-    protected function _setDialogMode()
+    protected function _enableDialogMode()
     {
-        return $this->set('isDialog', ($this->__dialog = true));
+        return $this->set('isDialog', true);
     }
 }

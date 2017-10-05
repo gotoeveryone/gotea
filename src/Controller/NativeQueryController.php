@@ -42,7 +42,7 @@ class NativeQueryController extends AppController
             }
         }
 
-        return $this->_setTitle('各種情報クエリ更新')->render('index');
+        return $this->_renderWith('各種情報クエリ更新', 'index');
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\Database\Query;
+use Cake\I18n\FrozenDate;
+use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -71,10 +72,9 @@ class TitleScoresTable extends AppTable
      * タイトル勝敗を検索します。
      *
      * @param array $data
-     * @param boolean $isCount
-     * @return TitleScore|int タイトル勝敗一覧|件数
+     * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findMatches(array $data, $isCount = false)
+    public function findMatches(array $data) : Query
     {
         $query = $this->find()
                 ->contain([
@@ -102,24 +102,23 @@ class TitleScoresTable extends AppTable
             $query->where(['TitleScores.ended <= ' => $ended]);
         }
 
-        if ($isCount) {
-            return $query->count();
-        }
-
-        return $query->all();
+        return $query;
     }
 
     /**
      * 指定した棋士の年度別成績を取得します。
      *
      * @param mixed $ids
-     * @param int|array $years
-     * @return \Cake\ORM\ResultSet 成績情報
+     * @param mixed $years
+     * @return \Cake\ORM\Query 生成クエリ
      */
-    public function findFromYear($ids, $years = []) : ResultSet
+    public function findFromYear($ids, $years = []) : Query
     {
         if (!is_array($ids)) {
             $ids = [$ids];
+        }
+        if (is_array($years) && count($years) === 0) {
+            $years = [FrozenDate::now()->year];
         }
         if (!is_array($years)) {
             $years = [$years];
@@ -159,10 +158,10 @@ class TitleScoresTable extends AppTable
             ->orderDesc('target_year');
 
         if (!$years) {
-            return $q->all();
+            return $q;
         }
 
-        return $q->where(['YEAR(started) IN' => $years])->all();
+        return $q->where(['YEAR(started) IN' => $years]);
     }
 
     /**
@@ -171,7 +170,7 @@ class TitleScoresTable extends AppTable
      * @param string $division
      * @param int|array $years
      * @param bool $world
-     * @return \Cake\Database\Query
+     * @return \Cake\ORM\Query
      */
     private function __createSub(string $division, $years, $world = false) : Query
     {
