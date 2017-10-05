@@ -1,6 +1,6 @@
 <div class="detail-dialog">
     <!-- タブ -->
-    <ul class="tabs" data-selecttab="<?= ($tab ?? '') ?>">
+    <ul class="tabs" data-selecttab="<?= $this->request->getQuery('tab') ?>">
         <li class="tab" data-tabname="player">棋士情報</li>
         <?php if ($player->id) : ?>
             <li class="tab" data-tabname="ranks">昇段情報</li>
