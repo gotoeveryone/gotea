@@ -18,54 +18,57 @@ class TitleScoresController extends AppController
     {
         parent::initialize();
 
-        // モデルをロード
         $this->loadModel('TitleScoreDetails');
     }
 
     /**
      * 初期表示、検索処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
     public function index()
     {
-        $this->_setTitle('タイトル勝敗検索');
+        $this->set('form', ($form = new TitleScoreForm));
 
-        // 検索
-        if ($this->request->isPost()) {
-            // モーダル表示かどうか
-            if ($this->request->getData('modal')) {
-                $this->_setDialogMode();
-            }
-
-            $form = new TitleScoreForm();
-            if (!$form->validate($this->request->getParsedBody())) {
-                $this->Flash->error($form->errors());
-                return $this->set('form', $form)->render('index');
-            }
-
-            // リクエストから値を取得
-            $data = $this->request->getParsedBody();
-            $count = $this->TitleScores->findMatches($data, true);
-
-            if ($count === 0) {
-                $this->Flash->warn(__("検索結果が0件でした。"));
-            } elseif ($count > 500) {
-                $this->Flash->warn(__("検索結果が500件を超えています（{$count}件）。<BR>条件を絞って再検索してください。"));
-            } else {
-                // 結果をセット
-                $titleScores = $this->TitleScores->findMatches($data);
-                $this->set('titleScores', $titleScores);
-            }
+        // 初期表示
+        if (!$this->request->isPost()) {
+            return $this->_renderWith('タイトル勝敗検索', 'index');
         }
 
-        return $this->set('form', ($form ?? new TitleScoreForm))->render('index');
+        // バリデーション
+        if (!$form->validate($this->request->getParsedBody())) {
+            return $this->_renderWithErrors($form->errors(), 'タイトル勝敗検索', 'index');
+        }
+
+        // モーダル表示かどうか
+        if ($this->request->getData('modal')) {
+            $this->_enableDialogMode();
+        }
+
+        // リクエストから値を取得
+        $data = $this->request->getParsedBody();
+        $titleScores = $this->TitleScores->findMatches($data);
+
+        // 件数が0件または多すぎる場合はメッセージを出力
+        $over = 500;
+        if (!$titleScores->count()) {
+            $this->Flash->warn(__("検索結果が0件でした。"));
+        } elseif (($count = $titleScores->count()) > $over) {
+            $warning = '検索結果が{0}件を超えています（{1}件）。<br/>条件を絞って再検索してください。';
+            $this->Flash->warn(__($warning, $over, $count));
+        } else {
+            // 結果をセット
+            $titleScores = $this->TitleScores->findMatches($data);
+            $this->set(compact('titleScores'));
+        }
+
+        return $this->_renderWith('タイトル勝敗検索', 'index');
     }
 
     /**
      * 勝敗変更処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
     public function change()
     {
@@ -98,7 +101,7 @@ class TitleScoresController extends AppController
     /**
      * 削除処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
     public function delete()
     {

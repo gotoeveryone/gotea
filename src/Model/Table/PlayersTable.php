@@ -8,7 +8,7 @@ use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\Validation\Validator;
 use App\Model\Entity\Country;
 use App\Model\Entity\Player;
@@ -86,7 +86,7 @@ class PlayersTable extends AppTable
         // 新規作成時には昇段情報も登録
         if ($save && $entity->isNew()) {
             // 入段日を登録時段位の昇段日として設定
-            $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
+            $promoted = FrozenDate::parseDate($entity->joined, 'yyyyMMdd');
 
             // 棋士昇段情報へ登録
             $playerRanks = TableRegistry::get('PlayerRanks');
@@ -166,8 +166,8 @@ class PlayersTable extends AppTable
     /**
      * 段位ごとの棋士数を取得します。
      *
-     * @param int $countryId
-     * @param string $countryName
+     * @param int|null $countryId
+     * @param string|null $countryName
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findRanksCount($countryId = null, $countryName = null)

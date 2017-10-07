@@ -17,34 +17,33 @@ class TitlesController extends AppController
     /**
      * 初期処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
     public function index()
     {
-        return $this->_setTitle('タイトル情報検索')->render('index');
+        return $this->_renderWith('タイトル情報検索');
     }
 
     /**
      * 詳細表示処理
      *
      * @param int $id 取得するデータのID
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
     public function detail(int $id)
     {
         // セッションから入力値が取得できなければIDで取得
-        if (!($title = $this->__readSession())) {
+        if (!($title = $this->_consumeBySession('title'))) {
             $title = $this->Titles->get($id);
         }
 
-        return $this->_setDialogMode()
-            ->set('title', $title)->render('detail');
+        return $this->set('title', $title)->_renderWithDialog('detail');
     }
 
     /**
      * 保存処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
     public function save()
     {
@@ -62,33 +61,11 @@ class TitlesController extends AppController
 
         // 保存
         if (!$this->Titles->save($title)) {
-            $this->__writeSession($title)->_setErrors($title->errors());
+            $this->_writeToSession('title', $title)->_setErrors($title->errors());
         } else {
-            $this->_setMessages(__("タイトル：{$title->name}を保存しました。"));
+            $this->_setMessages(__('[{0}: {1}] を保存しました。', $title->id, $title->name));
         }
 
         return $this->setAction('detail', $title->id);
-    }
-
-    /**
-     * 入力値をセッションに設定します。
-     *
-     * @param \App\Model\Entity\Title $title
-     * @return \Cake\Controller\Controller
-     */
-    private function __writeSession($title)
-    {
-        $this->request->session()->write('title', $title);
-        return $this;
-    }
-
-    /**
-     * 入力値をセッションから取得します。
-     *
-     * @return \App\Model\Entity\Title|null
-     */
-    private function __readSession()
-    {
-        return $this->request->session()->consume('title');
     }
 }

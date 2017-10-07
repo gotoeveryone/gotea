@@ -6,14 +6,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?=$this->Html->charset()?>
+        <?= $this->Html->charset() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
             <?='棋士情報管理システム - '.h($cakeDescription ?? '') ?>
         </title>
-        <?=$this->Html->meta('icon')?>
-        <link rel="stylesheet" href="<?=env('ASSETS_URL')?>css/common.css" />
-        <?=$this->Html->css('app')?>
+        <?= $this->Html->meta('icon') ?>
+
+        <?= $this->MyHtml->commonCss('css/common.css') ?>
+        <?= $this->Html->css('app') ?>
+        <?= $this->fetch('css') ?>
     </head>
     <body>
         <div class="block-ui"></div>
@@ -36,47 +38,7 @@
             <!-- 本体 -->
             <div class="main-content<?=(isset($isDialog) ? ' modal' : '')?>">
                 <?php if (isset($username) && !isset($isDialog)) : ?>
-                <!-- ナビゲーション -->
-                <nav class="nav">
-                    <?=
-                        $this->Html->link('棋士勝敗ランキング出力', [
-                            'controller' => 'players',
-                            'action' => 'ranking'
-                        ], ['class' => 'nav-menu']);
-                    ?>
-                    <?=
-                        $this->Html->link('タイトル勝敗検索', [
-                            'controller' => 'titleScores',
-                            'action' => 'index'
-                        ], ['class' => 'nav-menu']);
-                    ?>
-                    <?=
-                        $this->Html->link('棋士情報検索', [
-                            'controller' => 'players',
-                            'action' => 'index'
-                        ], ['class' => 'nav-menu']);
-                    ?>
-                    <?=
-                        $this->Html->link('タイトル情報検索', [
-                            'controller' => 'titles',
-                            'action' => 'index'
-                        ], ['class' => 'nav-menu']);
-                    ?>
-                    <?=
-                        $this->Html->link('段位別棋士数検索', [
-                            'controller' => 'players',
-                            'action' => 'view-ranks'
-                        ], ['class' => 'nav-menu']);
-                    ?>
-                    <?php if ($admin) : ?>
-                    <?=
-                        $this->Html->link('各種情報クエリ更新', [
-                            'controller' => 'nativeQuery',
-                            'action' => 'index'
-                        ], ['class' => 'nav-menu']);
-                    ?>
-                    <?php endif ?>
-                </nav>
+                    <?= $this->element('sidebar') ?>
                 <?php endif ?>
                 <!-- メインコンテンツ -->
                 <main class="main">
@@ -107,9 +69,8 @@
                 accessUser: '<?= $userid ?? '' ?>',
             };
         </script>
-        <script src="<?=env('ASSETS_URL')?>js/common.js"></script>
-        <?=$this->Html->script('app')?>
-        <?=$this->Html->script('common')?>
-        <?=$this->fetch('script')?>
+        <?= $this->MyHtml->commonScript('js/common.js') ?>
+        <?= $this->Html->script(['app', 'common']) ?>
+        <?= $this->fetch('script') ?>
     </body>
 </html>

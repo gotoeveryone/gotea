@@ -1,6 +1,6 @@
 <div class="detail-dialog">
     <!-- タブ -->
-    <ul class="tabs" data-selecttab="<?=($tab ?? '')?>">
+    <ul class="tabs" data-selecttab="<?= $this->request->getQuery('tab') ?>">
         <li class="tab" data-tabname="title">タイトル情報</li>
         <li class="tab" data-tabname="histories">保持履歴</li>
     </ul>

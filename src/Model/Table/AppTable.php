@@ -24,6 +24,21 @@ class AppTable extends Table
     }
 
     /**
+     * 指定された条件でテーブルを検索し、存在しなければ条件を生成したモデルを返却します。
+     *
+     * @param array $options
+     * @return \Cake\Datasource\EntityInterface
+     */
+    public function findOrNew(array $options)
+    {
+        $model = $this->find()->where($options)->first();
+        if ($model !== null) {
+            return $model;
+        }
+        return $this->newEntity($options);
+    }
+
+    /**
      * ランキングデータの取得方法を判定します。
      *
      * @param int $targetYear
