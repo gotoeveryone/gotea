@@ -6,7 +6,6 @@ use Cake\Controller\Controller;
 use Cake\Filesystem\File;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
-use Cake\ORM\Query;
 use App\Collection\Iterator\NewsIterator;
 use App\Collection\Iterator\TitlesIterator;
 
@@ -187,17 +186,17 @@ class ApiController extends Controller
      * ランキングを取得します。
      *
      * @param string $country
-     * @param string $year
-     * @param string $rank
+     * @param int $year
+     * @param int $offset
      * @return \Cake\Http\Response ランキング
      */
-    public function rankings($country = null, $year = null, $rank = null)
+    public function rankings(string $country, int $year, int $offset)
     {
         // 日本語情報を出力するかどうか
         $withJa = ($this->request->getQuery('withJa') === '1');
 
         // ランキングデータ取得
-        $json = $this->__rankings($country, $year, $rank, $withJa);
+        $json = $this->__rankings($country, $year, $offset, $withJa);
 
         if (!$json) {
             return $this->__renderJson($json);
@@ -223,7 +222,7 @@ class ApiController extends Controller
      *
      * @param string $countryCode
      * @param int $year
-     * @param int $limit
+     * @param int $offset
      * @param bool $withJa
      * @return array
      */

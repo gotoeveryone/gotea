@@ -187,7 +187,6 @@ class Player extends AppEntity
      * 指定された成績の値を取得します。
      *
      * @param string $type
-     * @param \Cake\ORM\ResultSet $scores
      * @param int|null $year
      * @param bool $world
      * @return int|string 対象数
