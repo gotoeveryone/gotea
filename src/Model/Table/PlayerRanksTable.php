@@ -35,10 +35,10 @@ class PlayerRanksTable extends AppTable
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
-        $this->belongsTo('Players');
-        $this->belongsTo('Ranks');
+        $this->belongsTo('Players')
+            ->setJoinType('INNER');
+        $this->belongsTo('Ranks')
+            ->setJoinType('INNER');
     }
 
     /**

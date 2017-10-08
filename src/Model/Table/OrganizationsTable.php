@@ -16,8 +16,10 @@ class OrganizationsTable extends AppTable
     {
         parent::initialize($config);
         $this->displayField('name');
+
         // 所属国
-        $this->belongsTo('Countries');
+        $this->belongsTo('Countries')
+            ->setJoinType('INNER');
     }
 
     /**

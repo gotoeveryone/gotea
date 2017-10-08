@@ -228,30 +228,32 @@
             <div class="category-row">勝敗</div>
 
             <?php // 2017年以降 ?>
-            <?php foreach ($player->years() as $year) : ?>
+            <?php foreach ($player->title_score_details as $score) : ?>
             <ul class="boxes">
-                <li class="genre-row"><?=h($year).'年度'?></li>
+                <li class="genre-row"><?=h($score->target_year).'年度'?></li>
                 <li class="row">
                     <div class="box">
                         <div class="label-row">勝敗（国内）</div>
                         <div class="input-row">
-                            <?php
-                                $win = $player->win($scores, $year);
-                                $lose = $player->lose($scores, $year);
-                            ?>
-                            <?=$win?>勝<?=$lose?>敗<?=$player->draw($scores, $year)?>分
-                            <span class="percent">（勝率<strong><?=$this->MyForm->percent($win, $lose)?></strong>）</span>
+                            <?= $score->win_point ?>勝<?= $score->lose_point ?>敗<?= $score->draw_point ?>分
+                            <span class="percent">
+                                （勝率<strong>
+                                    <?= $this->MyForm->percent($score->win_point, $score->lose_point)?>
+                                </strong>）
+                            </span>
                         </div>
                     </div>
                     <div class="box">
                         <div class="label-row">勝敗（国際）</div>
                         <div class="input-row">
-                            <?php
-                                $winWr = $player->win($scores, $year, true);
-                                $loseWr = $player->lose($scores, $year, true);
-                            ?>
-                            <?=$winWr?>勝<?=$loseWr?>敗<?=$player->draw($scores, $year, true)?>分
-                            <span class="percent">（勝率<strong><?=$this->MyForm->percent($winWr, $loseWr)?></strong>）</span>
+                            <?= $score->win_point_world ?>勝
+                            <?= $score->lose_point_world ?>敗
+                            <?= $score->draw_point_world ?>分
+                            <span class="percent">
+                                （勝率<strong>
+                                    <?= $this->MyForm->percent($score->win_point_world, $score->lose_point_world) ?>
+                                </strong>）
+                            </span>
                         </div>
                     </div>
                     <div class="box">
@@ -263,7 +265,7 @@
                                 ], [
                                     'data' => [
                                         'player_id' => $player->id,
-                                        'target_year' => $year,
+                                        'target_year' => $score->target_year,
                                         'modal' => true,
                                     ],
                                 ]) ?>

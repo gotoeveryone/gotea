@@ -20,7 +20,8 @@ class RetentionHistoriesTable extends AppTable
         parent::initialize($config);
 
         // タイトルマスタ
-        $this->belongsTo('Titles');
+        $this->belongsTo('Titles')
+            ->setJoinType('INNER');
         // 棋士マスタ
         $this->belongsTo('Players');
         // 段位マスタ

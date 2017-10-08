@@ -21,14 +21,13 @@ class TitlesTable extends AppTable
         parent::initialize($config);
 
         // タイトル保持情報
-        $this->hasMany('RetentionHistories', [
-            'order' => [
-                'id' => 'ASC',
+        $this->hasMany('RetentionHistories')
+            ->setSort([
                 'RetentionHistories.holding' => 'DESC'
-            ]
-        ]);
+            ]);
         // 所属国マスタ
-        $this->belongsTo('Countries');
+        $this->belongsTo('Countries')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -52,7 +51,7 @@ class TitlesTable extends AppTable
      * @param array $data
      * @return \Cake\ORM\Query 生成したクエリ
      */
-    public function findTitlesQuery($data = [])
+    public function findTitles($data = [])
     {
         $query = $this->find()->contain([
             'Countries',
