@@ -30,13 +30,28 @@ class RetentionHistory extends AppEntity
     }
 
     /**
-     * タイトル保持者を取得します。
+     * 団体戦判定結果を取得します。
      *
-     * @param bool $is_team
      * @return string
      */
-    public function getWinnerName($is_team = false)
+    protected function _getTeamLabel()
     {
-        return $is_team ? $this->win_group_name : "{$this->player->name} {$this->rank->name}";
+        return __($this->is_team ? '（団体）' : '（個人）');
+    }
+
+    /**
+     * タイトル保持者を取得します。
+     *
+     * @return string
+     */
+    protected function _getWinnerName()
+    {
+        if ($this->is_team) {
+            return $this->win_group_name;
+        }
+        if ($this->player_id && $this->rank_id) {
+            return "{$this->player->name} {$this->rank->name}";
+        }
+        return '';
     }
 }

@@ -22,7 +22,6 @@
                 ]
             ])?>
                 <?=$this->Form->hidden('id', ['value' => $title->id])?>
-                <?=$this->Form->hidden('optimistic_key', ['value' => $this->Date->format($title->modified, 'yyyyMMddHHmmss')])?>
                 <div class="category-row"><?='タイトル情報（ID：'.h($title->id).'）'?></div>
                 <ul class="boxes">
                     <li class="row">
@@ -117,8 +116,11 @@
                             <li class="row">
                                 <div class="box">
                                     <div class="input-row">
-                                        <?=h(__("{$retention->target_year}年 {$retention->holding}期 {$retention->name} "))?>
-                                        <?=h($retention->getWinnerName($title->is_team))?>
+                                        <span class="inner-column"><?= h($retention->target_year).'年' ?></span>
+                                        <span class="inner-column"><?= h($retention->holding).'期' ?></span>
+                                        <span class="inner-column"><?= h($retention->name) ?></span>
+                                        <span class="inner-column"><?= h($retention->team_label) ?></span>
+                                        <span class="inner-column"><?= h($retention->winner_name) ?></span>
                                     </div>
                                 </div>
                             </li>
@@ -132,8 +134,11 @@
                             <li class="row">
                                 <div class="box">
                                     <div class="input-row">
-                                        <?=h("{$history->target_year}年 {$history->holding}期 {$history->name} ")?>
-                                        <?=h($history->getWinnerName($title->is_team))?>
+                                        <span class="inner-column"><?= h($history->target_year).'年' ?></span>
+                                        <span class="inner-column"><?= h($history->holding).'期' ?></span>
+                                        <span class="inner-column"><?= h($history->name) ?></span>
+                                        <span class="inner-column"><?= h($history->team_label) ?></span>
+                                        <span class="inner-column"><?= h($history->winner_name) ?></span>
                                     </div>
                                 </div>
                             </li>

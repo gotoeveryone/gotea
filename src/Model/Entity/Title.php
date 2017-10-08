@@ -14,7 +14,7 @@ class Title extends AppEntity
      * タイトル獲得履歴を取得します。
      *
      * @param mixed $value
-     * @return \Cake\ORM\ResultSet|null タイトル獲得履歴
+     * @return mixed タイトル獲得履歴
      */
     protected function _getRetentionHistories($value)
     {
@@ -23,7 +23,7 @@ class Title extends AppEntity
         }
 
         if (!$this->id) {
-            return [];
+            return collection([]);
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);
@@ -33,7 +33,7 @@ class Title extends AppEntity
     /**
      * 現在の保持情報を取得します。
      *
-     * @return RetentionHistory|null
+     * @return \App\Model\Entity\RetentionHistory|null
      */
     protected function _getNowRetention()
     {
@@ -45,7 +45,7 @@ class Title extends AppEntity
     /**
      * 前期以前の取得履歴を取得します。
      *
-     * @return RetentionHistory|null
+     * @return \Cake\Collection\Collection
      */
     protected function _getHistories()
     {
@@ -76,7 +76,7 @@ class Title extends AppEntity
      */
     public function getWinnerName($isJp = true)
     {
-        if (!($history = $this->__getRetention())) {
+        if (!($history = $this->now_retention)) {
             return null;
         }
 
@@ -96,7 +96,7 @@ class Title extends AppEntity
      */
     public function isNewHistories() : bool
     {
-        if (!($history = $this->__getRetention())) {
+        if (!($history = $this->now_retention)) {
             return false;
         }
 
@@ -132,22 +132,5 @@ class Title extends AppEntity
             'htmlFileModified' => $this->html_file_modified->format('Y/m/d'),
             'isClosed' => $this->is_closed,
         ];
-    }
-
-    /**
-     * 期が一致するに該当するタイトル獲得履歴を1件取得します。
-     *
-     * @return RetentionHistory|null
-     */
-    private function __getRetention()
-    {
-        $histories = collection($this->retention_histories);
-        if ($histories->isEmpty()) {
-            return null;
-        }
-
-        return $histories->filter(function ($item, $key) {
-            return $item->holding === $this->holding;
-        })->first();
     }
 }

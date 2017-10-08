@@ -38,4 +38,14 @@ class Country extends AppEntity
     {
         return !$this->has_title;
     }
+
+    /**
+     * 表示用のラベルを取得します。
+     *
+     * @return string ラベル
+     */
+    protected function _getLabel()
+    {
+        return "（{$this->name}棋戦）";
+    }
 }
