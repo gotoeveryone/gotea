@@ -19,6 +19,19 @@ class AppEntity extends Entity
     ];
 
     /**
+     * {@inheritDoc}
+     */
+    public function &get($property)
+    {
+        $value = parent::get($property);
+        // 配列ならCollectionに変換
+        if (is_array($value)) {
+            $value = collection($value);
+        }
+        return $value;
+    }
+
+    /**
      * 所属國を取得します。
      *
      * @param mixed $value

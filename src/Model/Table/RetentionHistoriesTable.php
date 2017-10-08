@@ -3,6 +3,7 @@
 namespace App\Model\Table;
 
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
@@ -78,9 +79,9 @@ class RetentionHistoriesTable extends AppTable
      * 指定した棋士のタイトル履歴を取得します。
      *
      * @param int $playerId
-     * @return \Cake\ORM\ResultSet 履歴一覧
+     * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findHistoriesByPlayer(int $playerId)
+    public function findHistoriesByPlayer(int $playerId) : Query
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Titles.Countries'])
@@ -88,21 +89,21 @@ class RetentionHistoriesTable extends AppTable
                 'RetentionHistories.target_year' => 'DESC',
                 'Titles.country_id' => 'ASC',
                 'Titles.sort_order' => 'ASC'
-            ])->all();
+            ]);
     }
 
     /**
      * 指定したタイトルの履歴を取得します。
      *
      * @param int $titleId
-     * @return \Cake\ORM\ResultSet 履歴一覧
+     * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findHistoriesByTitle(int $titleId)
+    public function findHistoriesByTitle(int $titleId) : Query
     {
         return $this->findByTitleId($titleId)
             ->contain(['Titles'])
             ->order([
                 'RetentionHistories.target_year' => 'DESC',
-            ])->all();
+            ]);
     }
 }
