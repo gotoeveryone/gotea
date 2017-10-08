@@ -5,22 +5,16 @@ namespace App\Model\Table;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
-use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenDate;
 use Cake\Validation\Validator;
-use App\Model\Entity\Country;
-use App\Model\Entity\Player;
-use App\Utility\CalculatorTrait;
 
 /**
  * 棋士
  */
 class PlayersTable extends AppTable
 {
-    use CalculatorTrait;
-
     /**
      * {@inheritdoc}
      */
@@ -29,17 +23,23 @@ class PlayersTable extends AppTable
         parent::initialize($config);
 
         // 国
-        $this->belongsTo('Countries');
+        $this->belongsTo('Countries')
+            ->setJoinType('INNER');
         // 段位
-        $this->belongsTo('Ranks');
+        $this->belongsTo('Ranks')
+            ->setJoinType('INNER');
         // 組織
-        $this->belongsTo('Organizations');
+        $this->belongsTo('Organizations')
+            ->setJoinType('INNER');
         // 昇段情報
         $this->hasMany('PlayerRanks');
         // 棋士成績
         $this->hasMany('PlayerScores');
         // 保持履歴
         $this->hasMany('RetentionHistories');
+        // タイトル成績
+        $this->hasMany('TitleScoreDetails')
+            ->setFinder('scores');
     }
 
     /**
@@ -101,31 +101,18 @@ class PlayersTable extends AppTable
     }
 
     /**
-     * IDから棋士情報を1件取得します。
-     *
-     * @param int $id
-     * @return \App\Model\Entity\Player
-     */
-    public function findOne(int $id)
-    {
-        return $this->findById($id)
-            ->contain(['Countries', 'Ranks'])
-            ->firstOrFail();
-    }
-
-    /**
      * 指定条件に合致した棋士情報を取得します。
      *
-     * @param ServerRequest $request
+     * @param \Cake\Http\ServerRequest $request
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findPlayersQuery(ServerRequest $request) : Query
+    public function findPlayers(ServerRequest $request) : Query
     {
         // 棋士情報の取得
         $query = $this->find()->order([
             'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id'
         ])->contain([
-            'Ranks', 'Countries', 'Organizations'
+            'Ranks', 'Countries', 'Organizations', 'TitleScoreDetails',
         ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
@@ -192,119 +179,6 @@ class PlayersTable extends AppTable
     }
 
     /**
-     * ランキング集計データを取得します。
-     *
-     * @param Country $country
-     * @param int $targetYear
-     * @param int $offset
-     * @param bool $withJa
-     * @return \Cake\Collection\Collection ランキング
-     */
-    public function findRanking(Country $country, int $targetYear, int $offset, bool $withJa)
-    {
-        // 旧方式
-        if ($this->_isOldRanking($targetYear)) {
-            return $this->__findOldRanking($country, $targetYear, $offset, $withJa);
-        }
-
-        $query = $this->find();
-        $query->select([
-                'id', 'name', 'name_english', 'country_id', 'rank_id', 'sex',
-                'win' => 'win.cnt',
-                'lose' => $query->func()->coalesce(['lose.cnt' => 'identifier', 0 => 'literal']),
-                'draw' => $query->func()->coalesce(['draw.cnt' => 'identifier', 0 => 'literal']),
-            ])->select($this->Countries)->select($this->Ranks)
-            ->innerJoin(['win' => $this->__createSub($country, $targetYear, '勝')], ['id = win.player_id'])
-            ->leftJoin(['lose' => $this->__createSub($country, $targetYear, '敗')], ['id = lose.player_id'])
-            ->leftJoin(['draw' => $this->__createSub($country, $targetYear, '分')], ['id = draw.player_id'])
-            ->contain(['Countries', 'Ranks'])
-            ->where(['win.cnt >= ' =>
-                $this->query()->select([
-                    'cnt' => 'coalesce(sum(target.cnt), 1)'
-                ])->from(['target' => $this->__createSub($country, $targetYear, '勝')
-                ->orderDesc('cnt')->limit(1)->offset($offset - 1)])])
-            ->orderDesc('win')->order(['lose', 'joined']);
-
-        if (!$country->isWorlds()) {
-            $query->where(['country_id' => $country->id]);
-        }
-
-        return $this->__mapped($query->all(), $country->isWorlds(), $withJa);
-    }
-
-    /**
-     * ランキングモデルを配列に変換します。
-     *
-     * @param ResultSet $models
-     * @param bool $isWorlds 国際棋戦かどうか
-     * @param bool $withJa 日本語情報を表示するかどうか
-     * @return \Cake\Collection\Collection ランキング
-     */
-    private function __mapped(ResultSet $models, bool $isWorlds, bool $withJa)
-    {
-        $rank = 0;
-        $win = 0;
-
-        return $models->map(function ($item, $key) use ($isWorlds, $withJa, &$rank, &$win) {
-            $sum = $item->win + $item->lose;
-            if ($win !== $item->win) {
-                $rank = $key + 1;
-                $win = $item->win;
-            }
-
-            $row = [
-                'rank' => $rank,
-                'name' => $item->getRankingName($isWorlds, $withJa),
-                'win' => (int) $item->win,
-                'lose' => (int) $item->lose,
-                'draw' => (int) $item->draw,
-                'percentage' => $this->percent($item->win, $item->lose),
-            ];
-
-            // 日本語出力あり
-            if ($withJa) {
-                $row['id'] = $item->id;
-                $row['sex'] = $item->sex;
-            }
-
-            return $row;
-        });
-    }
-
-    /**
-     * サブクエリを作成します。
-     *
-     * @param Country $country
-     * @param int $targetYear
-     * @param string $division
-     * @return Query
-     */
-    private function __createSub(Country $country, int $targetYear, string $division)
-    {
-        $titleScoreDetails = TableRegistry::get('TitleScoreDetails');
-        $subQuery = $titleScoreDetails->find()
-                ->select(['player_id' => 'player_id', 'cnt' => 'count(*)'])
-                ->contain([
-                    'TitleScores' => function (Query $q) use ($country, $targetYear) {
-                        // タイトルがない所属国の場合、国際棋戦のみ対象とする
-                        if (!$country->has_title) {
-                            $q->where(['is_world' => true]);
-                        }
-                        return $q->where(['YEAR(started)' => $targetYear]);
-                    }
-                ])
-                ->where(['division' => $division])->group('player_id');
-
-        if (!$country->has_title) {
-            return $subQuery;
-        }
-
-        return $subQuery->innerJoinWith('Players', function (Query $q) use ($country) {
-            return $q->where(['Players.country_id' => $country->id]);
-        });
-    }
-
-    /**
      * LIKE検索用のWHERE句を生成します。
      *
      * @param string $fieldName
@@ -319,62 +193,5 @@ class PlayersTable extends AppTable
             array_push($whereClause, ["Players.{$fieldName} LIKE" => "%{$param}%"]);
         }
         return $whereClause;
-    }
-
-    /**
-     * ランキング集計データを取得します。
-     * ※2016年以前の集計です。
-     *
-     * @param Country $country
-     * @param int $targetYear
-     * @param int $offset
-     * @param bool $withJa
-     * @return \Cake\Collection\Collection
-     */
-    private function __findOldRanking(Country $country, int $targetYear, int $offset, bool $withJa)
-    {
-        $suffix = ($country->has_title ? '' : '_world');
-
-        // サブクエリ
-        $scores = TableRegistry::get('PlayerScores');
-        $subQuery = $scores->find()
-                ->select('PlayerScores.win_point'.$suffix)
-                ->innerJoinWith('Players')->innerJoinWith('Players.Countries')
-                ->where([
-                    'PlayerScores.target_year' => $targetYear,
-                ])->orderDesc('PlayerScores.win_point'.$suffix)->order('PlayerScores.lose_point'.$suffix)
-                ->limit(1)->offset($offset - 1);
-
-        if ($country->has_title) {
-            $subQuery->where(['Countries.id' => $country->id]);
-        }
-
-        $query = $this->find()
-            ->innerJoinWith('PlayerScores')
-            ->innerJoinWith('PlayerScores.Ranks')
-            ->select([
-                'Players.id', 'Players.name', 'Players.name_english', 'Players.sex',
-                'win' => 'PlayerScores.win_point'.$suffix,
-                'lose' => 'PlayerScores.lose_point'.$suffix,
-                'draw' => 'PlayerScores.draw_point'.$suffix,
-                'country_name' => 'Countries.name', 'country_name_english' => 'Countries.name_english',
-                'rank_name' => 'Ranks.name', 'rank_numeric' => 'Ranks.rank_numeric',
-            ])->contain([
-                'Countries',
-                'PlayerScores.Ranks'
-            ])->where(function ($exp, $q) use ($subQuery, $suffix) {
-                return $exp->gte('PlayerScores.win_point'.$suffix, $subQuery);
-            })->where([
-                'PlayerScores.target_year' => $targetYear,
-            ])->orderDesc('PlayerScores.win_point'.$suffix)
-            ->order('PlayerScores.lose_point'.$suffix)
-            ->orderDesc('Ranks.rank_numeric')
-            ->order('Players.joined');
-
-        if (!$country->isWorlds()) {
-            $query->where(['country_id' => $country->id]);
-        }
-
-        return $this->__mapped($query->all(), $country->isWorlds(), $withJa);
     }
 }

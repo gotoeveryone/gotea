@@ -58,7 +58,6 @@ class TitleScoresController extends AppController
             $this->Flash->warn(__($warning, $over, $count));
         } else {
             // 結果をセット
-            $titleScores = $this->TitleScores->findMatches($data);
             $this->set(compact('titleScores'));
         }
 

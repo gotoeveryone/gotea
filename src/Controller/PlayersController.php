@@ -48,7 +48,7 @@ class PlayersController extends AppController
         }
 
         // データを取得
-        $players = $this->Players->findPlayersQuery($this->request);
+        $players = $this->Players->findPlayers($this->request);
 
         // 件数が0件または多すぎる場合はメッセージを出力
         $over = 300;
@@ -59,8 +59,7 @@ class PlayersController extends AppController
             $this->Flash->warn(__($warning, $over, $count));
         } else {
             // 結果をセット
-            $scores = $this->TitleScores->findFromYear($players->extract('id')->toArray());
-            $this->set(compact('players', 'scores'));
+            $this->set(compact('players'));
         }
 
         return $this->_renderWith('棋士情報検索', 'index');
@@ -101,11 +100,19 @@ class PlayersController extends AppController
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($player = $this->_consumeBySession('player'))) {
-            $player = $this->Players->get($id);
+            $player = $this->Players->get($id, [
+                'contain' => [
+                    'Countries',
+                    'Ranks',
+                    'TitleScoreDetails',
+                    'PlayerRanks',
+                    'PlayerRanks.Ranks',
+                ],
+            ]);
         }
 
-        $scores = $this->TitleScores->findFromYear($player->id);
-        return $this->set(compact('player', 'scores'))->_renderWithDialog('detail');
+        return $this->set(compact('player'))
+            ->_renderWithDialog('detail');
     }
 
     /**

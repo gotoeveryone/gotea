@@ -140,22 +140,22 @@
                         <?=h($player->sex); ?>
                     </span>
                     <span class="point">
-                        <?= h($player->win($scores, null)); ?>
+                        <?= h($player->win(null)); ?>
                     </span>
                     <span class="point">
-                        <?= h($player->lose($scores, null)); ?>
+                        <?= h($player->lose(null)); ?>
                     </span>
                     <span class="point">
-                        <?= h($player->draw($scores, null)); ?>
+                        <?= h($player->draw(null)); ?>
                     </span>
                     <span class="point">
-                        <?= h($player->win($scores, null, true)); ?>
+                        <?= h($player->win(null, true)); ?>
                     </span>
                     <span class="point">
-                        <?= h($player->lose($scores, null, true)); ?>
+                        <?= h($player->lose(null, true)); ?>
                     </span>
                     <span class="point">
-                        <?= h($player->draw($scores, null, true)); ?>
+                        <?= h($player->draw(null, true)); ?>
                     </span>
                 </li>
                 <?php endforeach ?>

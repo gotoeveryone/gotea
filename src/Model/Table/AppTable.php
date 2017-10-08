@@ -6,6 +6,9 @@ use Cake\ORM\Table;
 
 /**
  * アプリケーションの共通テーブル
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \App\Model\Behavior\SaveUserBehavior
  */
 class AppTable extends Table
 {

@@ -6,6 +6,7 @@ use Cake\Controller\Controller;
 use Cake\Filesystem\File;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
+use Cake\ORM\Query;
 use App\Collection\Iterator\NewsIterator;
 use App\Collection\Iterator\TitlesIterator;
 
@@ -90,7 +91,9 @@ class ApiController extends Controller
 
         // IDの指定があれば1件取得して返却
         if ($id && is_numeric($id)) {
-            $player = $this->Players->findOne($id);
+            $player = $this->Players->get($id, [
+                'contain' => ['Countries', 'Ranks'],
+            ]);
             return $this->__renderJson($player->toArray());
         }
 
@@ -101,7 +104,7 @@ class ApiController extends Controller
         }
 
         // limit、offsetを指定して取得
-        $query = $this->Players->findPlayersQuery($this->request);
+        $query = $this->Players->findPlayers($this->request);
         $players = $query->limit($this->request->getData('limit', 100))
             ->offset($this->request->getData('offset', 0));
 
@@ -131,7 +134,7 @@ class ApiController extends Controller
             }
 
             // 検索
-            $titles = $this->Titles->findTitlesQuery($this->request->getQuery());
+            $titles = $this->Titles->findTitles($this->request->getQuery());
             return $this->__renderJson($titles->map(new TitlesIterator));
         }
 
@@ -166,7 +169,7 @@ class ApiController extends Controller
         $this->request->allowMethod(['post']);
 
         $this->loadModel('Titles');
-        $titles = $this->Titles->findTitlesQuery($this->request->getQuery())
+        $titles = $this->Titles->findTitles($this->request->getQuery())
             ->map(new NewsIterator);
 
         // ファイル作成
@@ -220,14 +223,13 @@ class ApiController extends Controller
      *
      * @param string $countryCode
      * @param int $year
-     * @param int $rank
+     * @param int $limit
      * @param bool $withJa
      * @return array
      */
-    private function __rankings(string $countryCode, int $year, int $rank, bool $withJa) : array
+    private function __rankings(string $countryCode, int $year, int $offset, bool $withJa) : array
     {
         // モデルのロード
-        $this->loadModel('Players');
         $this->loadModel('Countries');
         $this->loadModel('TitleScoreDetails');
 
@@ -235,7 +237,8 @@ class ApiController extends Controller
         $country = $this->Countries->findByCode($countryCode)->first();
 
         // ランキングデータの取得
-        $ranking = $this->Players->findRanking($country, $year, $rank, $withJa);
+        $ranking = $this->TitleScoreDetails->findRanking($country, $year, $offset)
+            ->mapRanking($country->isWorlds(), $withJa);
 
         // 最終更新日の取得
         $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year);

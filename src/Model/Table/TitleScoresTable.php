@@ -1,11 +1,8 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
-use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 
 /**
  * TitleScores Model
@@ -32,30 +29,20 @@ class TitleScoresTable extends AppTable
     {
         parent::initialize($config);
 
-        $this->belongsTo('Titles', [
-            'foreignKey' => 'title_id'
-        ]);
-        $this->belongsTo('Countries', [
-            'foreignKey' => 'country_id'
-        ]);
-        $this->hasMany('TitleScoreDetails', [
-            'joinType' => 'INNER',
-            'foreignKey' => 'title_score_id',
-        ]);
-        $this->hasOne('WinDetails', [
-            'className' => 'TitleScoreDetails',
-            'foreignKey' => 'title_score_id',
-            'conditions' => [
-                'WinDetails.division' => '勝'
-            ]
-        ]);
-        $this->hasOne('LoseDetails', [
-            'className' => 'TitleScoreDetails',
-            'foreignKey' => 'title_score_id',
-            'conditions' => [
-                'LoseDetails.division' => '敗'
-            ]
-        ]);
+        $this->belongsTo('Titles')
+            ->setJoinType('INNER');
+        $this->belongsTo('Countries')
+            ->setJoinType('INNER');
+        $this->hasOne('WinDetails', ['className' => 'TitleScoreDetails'])
+            ->setForeignKey('title_score_id')
+            ->setConditions([
+                'WinDetails.division' => '勝',
+            ]);
+        $this->hasOne('LoseDetails', ['className' => 'TitleScoreDetails'])
+            ->setForeignKey('title_score_id')
+            ->setConditions([
+                'LoseDetails.division' => '敗',
+            ]);
     }
 
     /**
@@ -103,85 +90,5 @@ class TitleScoresTable extends AppTable
         }
 
         return $query;
-    }
-
-    /**
-     * 指定した棋士の年度別成績を取得します。
-     *
-     * @param mixed $ids
-     * @param mixed $years
-     * @return \Cake\ORM\Query 生成クエリ
-     */
-    public function findFromYear($ids, $years = []) : Query
-    {
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
-        if (is_array($years) && count($years) === 0) {
-            $years = [FrozenDate::now()->year];
-        }
-        if (!is_array($years)) {
-            $years = [$years];
-        }
-        $q = $this->find()
-            ->select(['player_id' => 'TitleScoreDetails.player_id', 'target_year' => 'YEAR(started)', 'win_point' => 'coalesce(win.cnt, 0)',
-                'lose_point' => 'coalesce(lose.cnt, 0)', 'draw_point' => 'coalesce(draw.cnt, 0)',
-                'win_point_world' => 'coalesce(win_world.cnt, 0)', 'lose_point_world' => 'coalesce(lose_world.cnt, 0)',
-                'draw_point_world' => 'coalesce(draw_world.cnt, 0)'])
-            ->innerJoin(['TitleScoreDetails' => 'title_score_details'], ['TitleScoreDetails.title_score_id = TitleScores.id'])
-            ->leftJoin(['win' => $this->__createSub('勝', $years)], [
-                'YEAR(started) = win.target_year',
-                'TitleScoreDetails.player_id = win.player_id',
-            ])
-            ->leftJoin(['lose' => $this->__createSub('敗', $years)], [
-                'YEAR(started) = lose.target_year',
-                'TitleScoreDetails.player_id = lose.player_id',
-            ])
-            ->leftJoin(['draw' => $this->__createSub('分', $years)], [
-                'YEAR(started) = draw.target_year',
-                'TitleScoreDetails.player_id = draw.player_id',
-            ])
-            ->leftJoin(['win_world' => $this->__createSub('勝', $years, true)], [
-                'YEAR(started) = win_world.target_year',
-                'TitleScoreDetails.player_id = win_world.player_id',
-            ])
-            ->leftJoin(['lose_world' => $this->__createSub('敗', $years, true)], [
-                'YEAR(started) = lose_world.target_year',
-                'TitleScoreDetails.player_id = lose_world.player_id',
-            ])
-            ->leftJoin(['draw_world' => $this->__createSub('分', $years, true)], [
-                'YEAR(started) = draw_world.target_year',
-                'TitleScoreDetails.player_id = draw_world.player_id',
-            ])
-            ->where(['TitleScoreDetails.player_id IN ' => $ids])
-            ->group(['TitleScoreDetails.player_id', 'target_year', 'win_point', 'lose_point', 'draw_point', 'win_point_world', 'lose_point_world', 'draw_point_world'])
-            ->orderDesc('target_year');
-
-        if (!$years) {
-            return $q;
-        }
-
-        return $q->where(['YEAR(started) IN' => $years]);
-    }
-
-    /**
-     * サブクエリを作成します。
-     *
-     * @param string $division
-     * @param int|array $years
-     * @param bool $world
-     * @return \Cake\ORM\Query
-     */
-    private function __createSub(string $division, $years, $world = false) : Query
-    {
-        $titleScoreDetails = TableRegistry::get('TitleScoreDetails');
-        $sub = $titleScoreDetails->find()
-                ->select(['player_id' => 'player_id', 'target_year' => 'YEAR(started)', 'cnt' => 'count(*)'])
-                ->contain(['TitleScores'])
-                ->where(['division' => $division])
-                ->where(['YEAR(started) IN' => $years])
-                ->group(['player_id', 'target_year']);
-
-        return ($world ? $sub->where(['is_world' => true]) : $sub);
     }
 }
