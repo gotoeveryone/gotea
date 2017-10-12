@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use PDOException;
 use Cake\Datasource\ConnectionInterface;

@@ -1,6 +1,6 @@
 <template>
     <section class="titles">
-        <title-header :domain="domain" @add="addRow" @search="onSearch" @json="outputJson"></title-header>
+        <title-header @add="addRow" @search="onSearch" @json="outputJson"></title-header>
         <div class="search-results">
             <ul class="table-header">
                 <li class="table-row">
@@ -17,8 +17,7 @@
                 </li>
             </ul>
             <ul class="table-body" v-if="items.length">
-                <title-item v-for="(item, idx) in items" :key="idx"
-                    :domain="domain" :detail-url="detailUrl" :item="item"></title-item>
+                <title-item v-for="(item, idx) in items" :key="idx" :detail-url="detailUrl" :item="item"></title-item>
             </ul>
         </div>
     </section>
@@ -30,7 +29,6 @@ import Item from './Item.vue';
 
 export default {
     props: {
-        domain: String,
         detailUrl: String,
     },
     data: () => {
@@ -55,7 +53,7 @@ export default {
                 'is_closed': _params.type,
             };
 
-            this.$http.get(`${this.domain}api/titles`, { params: params })
+            this.$http.get(`/api/titles`, { params: params })
                 .then(res => {
                     this.items = res.body.response;
                 });
@@ -67,7 +65,7 @@ export default {
             });
         },
         outputJson() {
-            this.$http.post(`${this.domain}api/create-news`)
+            this.$http.post(`/api/create-news`)
                 .then(() => this.$store.dispatch('openDialog', {
                     messages: 'JSONを出力しました。',
                 })).catch(() => this.$store.dispatch('openDialog', {

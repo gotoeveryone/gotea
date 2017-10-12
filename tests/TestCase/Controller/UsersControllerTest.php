@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\TestCase\Controller;
+namespace Gotea\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestCase;
 

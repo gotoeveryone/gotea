@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model\Query;
+namespace Gotea\Model\Query;
 
 use Cake\ORM\Query;
-use App\Utility\CalculatorTrait;
+use Gotea\Utility\CalculatorTrait;
 
 class RankingQuery extends Query
 {

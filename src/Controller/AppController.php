@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Controller\Controller;
 
@@ -12,7 +12,7 @@ use Cake\Controller\Controller;
  *
  * @property \Cake\Controller\Component\FlashComponent $Flash
  * @property \Cake\Controller\Component\SecurityComponent $Security
- * @property \App\Controller\Component\MyAuthComponent $Auth
+ * @property \Gotea\Controller\Component\MyAuthComponent $Auth
  */
 class AppController extends Controller
 {

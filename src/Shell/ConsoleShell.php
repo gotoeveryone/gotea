@@ -12,7 +12,7 @@
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\Shell;
+namespace Gotea\Shell;
 
 use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;

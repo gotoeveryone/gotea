@@ -1,12 +1,12 @@
 <?php
-namespace App\Test\TestCase\Model\Table;
+namespace Gotea\Test\TestCase\Model\Table;
 
-use App\Model\Table\CountriesTable;
+use Gotea\Model\Table\CountriesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CountriesTable Test Case
+ * Gotea\Model\Table\CountriesTable Test Case
  */
 class CountriesTableTest extends TestCase
 {
@@ -14,7 +14,7 @@ class CountriesTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CountriesTable
+     * @var \Gotea\Model\Table\CountriesTable
      */
     public $Country;
 
@@ -59,7 +59,7 @@ class CountriesTableTest extends TestCase
     public function testFindAllHasCode()
     {
         $countries = $this->Countries->findAllHasCode(true);
-        $countries->each(function($item, $key) {
+        $countries->each(function ($item, $key) {
             $this->assertTrue($item->has_title);
         });
     }
@@ -72,7 +72,7 @@ class CountriesTableTest extends TestCase
     public function testFindAll()
     {
         $countries = $this->Countries->findAllHasCode();
-        $countries->each(function($item, $key) {
+        $countries->each(function ($item, $key) {
             $this->assertContains($item->has_title, [true, false]);
         });
     }

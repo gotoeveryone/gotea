@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shell;
+namespace Gotea\Shell;
 
 use Cake\Console\Shell;
 use Cake\Log\Log;

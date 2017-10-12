@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\Fixture;
+namespace Gotea\Test\Fixture;
 
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;

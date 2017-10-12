@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Entity;
+namespace Gotea\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -13,8 +13,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
- * @property \App\Model\Entity\Player $player
- * @property \App\Model\Entity\Rank $rank
+ * @property \Gotea\Model\Entity\Player $player
+ * @property \Gotea\Model\Entity\Rank $rank
  */
 class PlayerRank extends AppEntity
 {

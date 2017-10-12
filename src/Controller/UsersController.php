@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Event\Event;
-use App\Form\LoginForm;
+use Gotea\Form\LoginForm;
 
 /**
  * ログイン用コントローラ

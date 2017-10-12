@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 /**
  * 段位

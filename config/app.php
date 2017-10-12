@@ -36,7 +36,7 @@ return [
      *   paths for plugins, view templates and locale files respectively.
      */
     'App' => [
-        'namespace' => 'App',
+        'namespace' => 'Gotea',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'ja_JP'),
         'base' => false,
@@ -75,7 +75,7 @@ return [
      * enable timestamping regardless of debug value.
      */
     'Asset' => [
-        // 'timestamp' => true,
+        'timestamp' => true,
     ],
 
     /**
@@ -150,7 +150,7 @@ return [
      */
     'Error' => [
         'errorLevel' => E_ALL & ~E_DEPRECATED,
-        'exceptionRenderer' => 'App\Error\AppExceptionRenderer',
+        'exceptionRenderer' => 'Gotea\Error\AppExceptionRenderer',
         'skipLog' => [],
         'log' => true,
         'trace' => true,

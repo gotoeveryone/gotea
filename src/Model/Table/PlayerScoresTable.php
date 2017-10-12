@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
-use App\Model\Entity\Country;
-use App\Model\Query\RankingQuery;
+use Gotea\Model\Entity\Country;
+use Gotea\Model\Query\RankingQuery;
 
 /**
  * 棋士成績

@@ -1,5 +1,5 @@
 <?php
-namespace App\Mailer;
+namespace Gotea\Mailer;
 
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;

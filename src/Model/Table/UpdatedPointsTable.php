@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
-use App\Model\Entity\Country;
+use Gotea\Model\Entity\Country;
 
 /**
  * 成績更新
@@ -12,7 +12,7 @@ class UpdatedPointsTable extends AppTable
     /**
      * 所属国と対象年から最終更新日を取得します。
      *
-     * @param \App\Model\Entity\Country $country
+     * @param \Gotea\Model\Entity\Country $country
      * @param int $targetYear
      * @return string
      */

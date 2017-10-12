@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utility;
+namespace Gotea\Utility;
 
 use Cake\I18n\Number;
 

@@ -1,12 +1,12 @@
 <?php
-namespace App\Test\TestCase\Model\Table;
+namespace Gotea\Test\TestCase\Model\Table;
 
-use App\Model\Table\OrganizationsTable;
+use Gotea\Model\Table\OrganizationsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\OrganizationsTable Test Case
+ * Gotea\Model\Table\OrganizationsTable Test Case
  */
 class OrganizationsTableTest extends TestCase
 {
@@ -14,7 +14,7 @@ class OrganizationsTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\OrganizationsTable
+     * @var \Gotea\Model\Table\OrganizationsTable
      */
     public $Organizations;
 

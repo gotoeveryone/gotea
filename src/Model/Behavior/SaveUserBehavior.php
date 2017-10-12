@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Behavior;
+namespace Gotea\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;

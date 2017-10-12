@@ -1,13 +1,13 @@
 <?php
-namespace App\Controller;
+namespace Gotea\Controller;
 
-use App\Form\TitleScoreForm;
+use Gotea\Form\TitleScoreForm;
 
 /**
  * TitleScores Controller
  *
- * @property \App\Model\Table\TitleScoresTable $TitleScores
- * @property \App\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
+ * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
+ * @property \Gotea\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
  */
 class TitleScoresController extends AppController
 {

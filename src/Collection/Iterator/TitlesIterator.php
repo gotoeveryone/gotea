@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Collection\Iterator;
+namespace Gotea\Collection\Iterator;
 
-use App\Model\Entity\Title;
+use Gotea\Model\Entity\Title;
 
 /**
  * タイトルを処理するイテレータ

@@ -1,5 +1,5 @@
 <?php
-namespace App\View\Helper;
+namespace Gotea\View\Helper;
 
 use Cake\View\Helper\HtmlHelper;
 

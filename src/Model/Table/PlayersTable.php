@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;

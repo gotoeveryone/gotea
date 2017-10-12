@@ -1,12 +1,12 @@
 <?php
-namespace App\Test\TestCase\Model\Table;
+namespace Gotea\Test\TestCase\Model\Table;
 
-use App\Model\Table\PlayerRanksTable;
+use Gotea\Model\Table\PlayerRanksTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\PlayerRanksTable Test Case
+ * Gotea\Model\Table\PlayerRanksTable Test Case
  */
 class PlayerRanksTableTest extends TestCase
 {
@@ -14,7 +14,7 @@ class PlayerRanksTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\PlayerRanksTable
+     * @var \Gotea\Model\Table\PlayerRanksTable
      */
     public $PlayerRanks;
 

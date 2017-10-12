@@ -1,12 +1,12 @@
 <?php
-namespace App\Test\TestCase\Model\Table;
+namespace Gotea\Test\TestCase\Model\Table;
 
-use App\Model\Table\RanksTable;
+use Gotea\Model\Table\RanksTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\RanksTable Test Case
+ * Gotea\Model\Table\RanksTable Test Case
  */
 class RanksTableTest extends TestCase
 {
@@ -14,7 +14,7 @@ class RanksTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\RanksTable
+     * @var \Gotea\Model\Table\RanksTable
      */
     public $Ranks;
 
@@ -59,7 +59,7 @@ class RanksTableTest extends TestCase
     public function testFindProfessional()
     {
         $ranks = $this->Ranks->findProfessional();
-        $ranks->each(function($item, $key) {
+        $ranks->each(function ($item, $key) {
             $this->assertNotNull($item->rank_numeric);
         });
     }
@@ -74,7 +74,7 @@ class RanksTableTest extends TestCase
         $ranks = $this->Ranks->findProfessional();
 
         $number = 0;
-        $ranks->each(function($item, $key) use (&$number) {
+        $ranks->each(function ($item, $key) use (&$number) {
             if ($number) {
                 $this->assertLessThanOrEqual($number, $item->rank_numeric);
             }

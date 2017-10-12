@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Network\Exception\BadRequestException;
 
@@ -10,7 +10,7 @@ use Cake\Network\Exception\BadRequestException;
  * @author      Kazuki Kamizuru
  * @since       2015/07/25
  *
- * @property \App\Model\Table\TitlesTable $Titles
+ * @property \Gotea\Model\Table\TitlesTable $Titles
  */
 class TitlesController extends AppController
 {

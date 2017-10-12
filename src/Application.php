@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Gotea;
 
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;

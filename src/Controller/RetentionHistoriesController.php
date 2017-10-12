@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Network\Exception\BadRequestException;
 
@@ -10,7 +10,7 @@ use Cake\Network\Exception\BadRequestException;
  * @author      Kazuki Kamizuru
  * @since       2017/07/22
  *
- * @property \App\Model\Table\RetentionHistoriesTable $RetentionHistories
+ * @property \Gotea\Model\Table\RetentionHistoriesTable $RetentionHistories
  */
 class RetentionHistoriesController extends AppController
 {

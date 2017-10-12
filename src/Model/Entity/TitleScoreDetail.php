@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Entity;
+namespace Gotea\Model\Entity;
 
 /**
  * TitleScoreDetail Entity
@@ -11,8 +11,8 @@ namespace App\Model\Entity;
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
- * @property \App\Model\Entity\TitleScore $title_score
- * @property \App\Model\Entity\Player $player
+ * @property \Gotea\Model\Entity\TitleScore $title_score
+ * @property \Gotea\Model\Entity\Player $player
  */
 class TitleScoreDetail extends AppEntity
 {

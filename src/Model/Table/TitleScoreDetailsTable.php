@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
-use App\Model\Entity\Country;
-use App\Model\Query\RankingQuery;
+use Gotea\Model\Entity\Country;
+use Gotea\Model\Query\RankingQuery;
 
 /**
  * TitleScoreDetails Model
@@ -15,13 +15,13 @@ use App\Model\Query\RankingQuery;
  * @property \Cake\ORM\Association\BelongsTo $TitleScores
  * @property \Cake\ORM\Association\BelongsTo $Players
  *
- * @method \App\Model\Entity\TitleScoreDetail get($primaryKey, $options = [])
- * @method \App\Model\Entity\TitleScoreDetail newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\TitleScoreDetail[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\TitleScoreDetail|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\TitleScoreDetail patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\TitleScoreDetail[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\TitleScoreDetail findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail get($primaryKey, $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail newEntity($data = null, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail[] newEntities(array $data, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail[] patchEntities($entities, array $data, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScoreDetail findOrCreate($search, callable $callback = null, $options = [])
  */
 class TitleScoreDetailsTable extends AppTable
 {
@@ -45,7 +45,7 @@ class TitleScoreDetailsTable extends AppTable
             ->setJoinType('INNER');
         $this->belongsTo('Loser', ['className' => 'Players'])
             ->setForeignKey('player_id')
-            ->setJoinType('INNER');;
+            ->setJoinType('INNER');
     }
 
     /**
@@ -152,7 +152,7 @@ class TitleScoreDetailsTable extends AppTable
     /**
      * 最新データの対局日を取得します。
      *
-     * @param \App\Model\Entity\Country $country
+     * @param \Gotea\Model\Entity\Country $country
      * @param int $targetYear
      * @return string|null
      */

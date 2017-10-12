@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
@@ -9,16 +9,16 @@ use Cake\Validation\Validator;
 /**
  * PlayerRanks Model
  *
- * @property \App\Model\Table\PlayersTable|\Cake\ORM\Association\BelongsTo $Players
- * @property \App\Model\Table\RanksTable|\Cake\ORM\Association\BelongsTo $Ranks
+ * @property \Gotea\Model\Table\PlayersTable|\Cake\ORM\Association\BelongsTo $Players
+ * @property \Gotea\Model\Table\RanksTable|\Cake\ORM\Association\BelongsTo $Ranks
  *
- * @method \App\Model\Entity\PlayerRank get($primaryKey, $options = [])
- * @method \App\Model\Entity\PlayerRank newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\PlayerRank[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\PlayerRank|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\PlayerRank patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\PlayerRank[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\PlayerRank findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank get($primaryKey, $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank newEntity($data = null, array $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank[] newEntities(array $data, array $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank[] patchEntities($entities, array $data, array $options = [])
+ * @method \Gotea\Model\Entity\PlayerRank findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
