@@ -1,8 +1,9 @@
-# 棋戦情報管理システム
+# Gotea (ゴティー)
 
-[CakePHP](http://cakephp.org) 3.x を利用した[Go to Everyone!](https://gotoeveryone.k2ss.info)の管理システムです。
+[CakePHP](http://cakephp.org) 3.x を利用した[Go to Everyone!](https://gotoeveryone.k2ss.info)の情報管理ツールです。
 
 ## 前提
+
 以下がインストールされていること。
 
 - php7+
@@ -26,8 +27,6 @@ $ # Macの場合
 $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 ```
 
-## 注意事項
-
 ### フロントコード
 
 - webpack
@@ -36,6 +35,8 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 
 最終的なJS・CSSは`webpack`を利用して生成します。  
 `npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
+
+## その他
 
 ### ログ出力
 
