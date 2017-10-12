@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Network\Exception\BadRequestException;
 
 /**
  * 昇段情報コントローラ
  *
- * @author		Kazuki Kamizuru
- * @since		2017/07/22
+ * @author      Kazuki Kamizuru
+ * @since       2017/07/22
  *
- * @property \App\Model\Table\PlayerRanksTable $PlayerRanks
+ * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
  */
 class PlayerRanksController extends AppController
 {

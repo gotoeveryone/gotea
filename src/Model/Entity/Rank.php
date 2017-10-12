@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Gotea\Model\Entity;
 
 /**
  * 段位エンティティ

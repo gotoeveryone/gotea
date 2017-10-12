@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 use Cake\ORM\Table;
 
@@ -8,7 +8,7 @@ use Cake\ORM\Table;
  * アプリケーションの共通テーブル
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @mixin \App\Model\Behavior\SaveUserBehavior
+ * @mixin \Gotea\Model\Behavior\SaveUserBehavior
  */
 class AppTable extends Table
 {
@@ -20,7 +20,7 @@ class AppTable extends Table
         parent::initialize($config);
 
         // カスタムバリデータクラスに変更
-        $this->_validatorClass = '\App\Validation\MyValidator';
+        $this->_validatorClass = '\Gotea\Validation\MyValidator';
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('SaveUser');

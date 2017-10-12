@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Form;
+namespace Gotea\Form;
 
 use Cake\Form\Form;
 use Cake\Validation\Validator;
-use App\Validation\MyValidator;
+use Gotea\Validation\MyValidator;
 
 /**
  * 基底フォーム

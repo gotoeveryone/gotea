@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 use Cake\Validation\Validator;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
-use App\Model\Entity\Title;
+use Gotea\Model\Entity\Title;
 
 /**
  * タイトル
@@ -81,7 +81,7 @@ class TitlesTable extends AppTable
      * 配列からモデルデータを生成します。
      *
      * @param array $data
-     * @return \App\Model\Entity\Title
+     * @return \Gotea\Model\Entity\Title
      */
     public function createEntity($data = []) : Title
     {

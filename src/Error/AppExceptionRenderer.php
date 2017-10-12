@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Error;
+namespace Gotea\Error;
 
 use Cake\Error\ExceptionRenderer;
 
@@ -15,7 +15,7 @@ class AppExceptionRenderer extends ExceptionRenderer
     /**
      * {@inheritdoc}
      *
-     * @see \App\Controller\ErrorController
+     * @see \Gotea\Controller\ErrorController
      */
     public function render()
     {

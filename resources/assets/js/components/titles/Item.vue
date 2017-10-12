@@ -20,8 +20,7 @@
             <input type="text" @change="save" v-model="item.htmlFileName">
         </span>
         <span class="table-column modified">
-            <date-picker type="date" @change="saveDatepicker" v-model="item.htmlFileModified"
-                size="small" format="yyyy/MM/dd"></date-picker>
+            <date-picker type="date" @change="saveDatepicker" v-model="item.htmlFileModified" size="small" format="yyyy/MM/dd"></date-picker>
         </span>
         <span class="table-column closed">
             <input type="checkbox" @change="save" v-model="item.isClosed">
@@ -39,7 +38,6 @@ import 'element-ui/lib/theme-default/date-picker.css';
 
 export default {
     props: {
-        domain: String,
         detailUrl: String,
         item: Object,
     },
@@ -52,7 +50,7 @@ export default {
         },
         add() {
             // 登録処理
-            this.$http.post(`${this.domain}api/titles/`, this.item).then(res => {
+            this.$http.post(`/api/titles/`, this.item).then(res => {
                 this.item.id = res.body.response.id;
                 this.$store.dispatch('openDialog', {
                     messages: `タイトル【${this.item.titleNameJp}】を登録しました。`,
@@ -70,7 +68,7 @@ export default {
                 return;
             }
             // 更新処理
-            this.$http.put(`${this.domain}api/titles/${this.item.id}`, this.item).catch(res => {
+            this.$http.put(`/api/titles/${this.item.id}`, this.item).catch(res => {
                 const message = res.body.response.message;
                 this.$store.dispatch('openDialog', {
                     messages: (message || '更新に失敗しました…。'),

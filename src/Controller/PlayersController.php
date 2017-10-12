@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Network\Exception\BadRequestException;
-use App\Form\PlayerForm;
+use Gotea\Form\PlayerForm;
 
 /**
  * 棋士情報コントローラ
@@ -11,9 +11,9 @@ use App\Form\PlayerForm;
  * @author  Kazuki Kamizuru
  * @since   2015/07/20
  *
- * @property \App\Model\Table\PlayersTable $Players
- * @property \App\Model\Table\OrganizationsTable $Organizations
- * @property \App\Model\Table\TitleScoresTable $TitleScores
+ * @property \Gotea\Model\Table\PlayersTable $Players
+ * @property \Gotea\Model\Table\OrganizationsTable $Organizations
+ * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
  */
 class PlayersController extends AppController
 {

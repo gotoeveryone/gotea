@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Cell;
+namespace Gotea\View\Cell;
 
 use Cake\View\Cell;
 

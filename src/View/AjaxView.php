@@ -12,7 +12,7 @@
  * @since         3.0.4
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\View;
+namespace Gotea\View;
 
 use Cake\Event\EventManager;
 use Cake\Network\Request;

@@ -4,15 +4,13 @@
             <div>
                 <label>対象国：</label>
                 <select class="titles-country" v-model="select.country" @change="changeValue($event)">
-                    <option v-for="(country, idx) in countries" :key="idx"
-                        :value="country.value" v-text="country.text"></option>
+                    <option v-for="(country, idx) in countries" :key="idx" :value="country.value" v-text="country.text"></option>
                 </select>
             </div>
             <div>
                 <label>終了棋戦：</label>
                 <select class="titles-closed" v-model="select.type" @change="changeValue($event)">
-                    <option v-for="(type, idx) in types" :key="idx"
-                        :value="type.value" v-text="type.text"></option>
+                    <option v-for="(type, idx) in types" :key="idx" :value="type.value" v-text="type.text"></option>
                 </select>
             </div>
             <div class="button-wrap">
@@ -25,9 +23,6 @@
 
 <script>
 export default {
-    props: {
-        domain: String,
-    },
     data: () => {
         return {
             countries: [],
@@ -53,7 +48,7 @@ export default {
         },
     },
     mounted() {
-        this.$http.get(`${this.domain}api/countries/`)
+        this.$http.get(`/api/countries/`)
             .then(res => {
                 const countries = [];
                 const json = res.body.response;

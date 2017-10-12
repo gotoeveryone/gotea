@@ -1,11 +1,11 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace Gotea\Test\TestCase\Controller;
 
-use App\Controller\TitleScoresController;
+use Gotea\Controller\TitleScoresController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\TitleScoresController Test Case
+ * Gotea\Controller\TitleScoresController Test Case
  */
 class TitleScoresControllerTest extends IntegrationTestCase
 {

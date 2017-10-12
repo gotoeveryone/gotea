@@ -1,7 +1,6 @@
 <template>
     <section class="ranking">
-        <ranking-header :domain="domain" :lastUpdate="lastUpdate"
-            @search="onSearch" @json="outputJson"></ranking-header>
+        <ranking-header :lastUpdate="lastUpdate" @search="onSearch" @json="outputJson"></ranking-header>
         <ranking-items :items="items" :detail-url="detailUrl"></ranking-items>
     </section>
 </template>
@@ -12,7 +11,6 @@ import Items from './Items.vue';
 
 export default {
     props: {
-        domain: String,
         detailUrl: String,
     },
     data: () => {
@@ -27,7 +25,7 @@ export default {
     },
     methods: {
         onSearch(_params) {
-            this.$http.get(this.getUrl(_params), { params: {'withJa': '1'} }).then(res => {
+            this.$http.get(this.getUrl(_params), { params: { 'withJa': '1' } }).then(res => {
                 const json = res.body.response;
                 const dateObj = new Date(json.lastUpdate);
                 this.lastUpdate = `${dateObj.getFullYear()}年${(dateObj.getMonth() + 1)}月${dateObj.getDate()}日`;
@@ -45,7 +43,7 @@ export default {
                 }));
         },
         getUrl(_params) {
-            return `${this.domain}api/rankings/${_params.country}/${_params.year}/${_params.limit}`;
+            return `/api/rankings/${_params.country}/${_params.year}/${_params.limit}`;
         },
     },
 }

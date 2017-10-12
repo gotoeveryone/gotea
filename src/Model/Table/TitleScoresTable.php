@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Table;
+namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -10,13 +10,13 @@ use Cake\ORM\RulesChecker;
  * @property \Cake\ORM\Association\BelongsTo $Titles
  * @property \Cake\ORM\Association\HasMany $TitleScoreDetails
  *
- * @method \App\Model\Entity\TitleScore get($primaryKey, $options = [])
- * @method \App\Model\Entity\TitleScore newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\TitleScore[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\TitleScore|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\TitleScore patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\TitleScore[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\TitleScore findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Gotea\Model\Entity\TitleScore get($primaryKey, $options = [])
+ * @method \Gotea\Model\Entity\TitleScore newEntity($data = null, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScore[] newEntities(array $data, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScore|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Gotea\Model\Entity\TitleScore patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScore[] patchEntities($entities, array $data, array $options = [])
+ * @method \Gotea\Model\Entity\TitleScore findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */

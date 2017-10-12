@@ -1,12 +1,12 @@
 <?php
-namespace App\Test\TestCase\Model\Table;
+namespace Gotea\Test\TestCase\Model\Table;
 
-use App\Model\Table\TitleScoresTable;
+use Gotea\Model\Table\TitleScoresTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\TitleScoresTable Test Case
+ * Gotea\Model\Table\TitleScoresTable Test Case
  */
 class TitleScoresTableTest extends TestCase
 {
@@ -14,7 +14,7 @@ class TitleScoresTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TitleScoresTable
+     * @var \Gotea\Model\Table\TitleScoresTable
      */
     public $TitleScores;
 
@@ -43,7 +43,7 @@ class TitleScoresTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('TitleScores') ? [] : ['className' => 'App\Model\Table\TitleScoresTable'];
+        $config = TableRegistry::exists('TitleScores') ? [] : ['className' => 'Gotea\Model\Table\TitleScoresTable'];
         $this->TitleScores = TableRegistry::get('TitleScores', $config);
     }
 

@@ -3,8 +3,7 @@
         <li class="search-row">
             <label>対象国：</label>
             <select class="country" v-model="select.country" @change="changeValue($event)">
-                <option v-for="(country, idx) in countries" :key="idx"
-                    :value="country.value" v-text="country.text"></option>
+                <option v-for="(country, idx) in countries" :key="idx" :value="country.value" v-text="country.text"></option>
             </select>
         </li>
     </ul>
@@ -12,9 +11,6 @@
 
 <script>
 export default {
-    props: {
-        domain: String,
-    },
     data: () => {
         return {
             countries: [],
@@ -33,7 +29,7 @@ export default {
         },
     },
     mounted() {
-        this.$http.get(`${this.domain}api/countries/`, { params: { 'has_title': '1' } })
+        this.$http.get(`/api/countries/`, { params: { 'has_title': '1' } })
             .then(res => {
                 const countries = [];
                 const json = res.body.response;

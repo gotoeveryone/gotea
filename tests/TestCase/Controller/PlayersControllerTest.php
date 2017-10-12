@@ -12,7 +12,7 @@
  * @since         1.2.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\Test\TestCase\Controller;
+namespace Gotea\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestCase;

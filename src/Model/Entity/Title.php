@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Gotea\Model\Entity;
 
 use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
@@ -33,7 +33,7 @@ class Title extends AppEntity
     /**
      * 現在の保持情報を取得します。
      *
-     * @return \App\Model\Entity\RetentionHistory|null
+     * @return \Gotea\Model\Entity\RetentionHistory|null
      */
     protected function _getNowRetention()
     {

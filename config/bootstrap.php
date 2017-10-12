@@ -188,7 +188,8 @@ Type::build('timestamp')
     ->useImmutable();
 
 // デフォルトのバリデータを変更
-Validator::addDefaultProvider('default', new RulesProvider('App\Validation\MyValidation'));
+Validator::addDefaultProvider('default',
+    new RulesProvider('Gotea\Validation\MyValidation'));
 
 /*
 * Custom Inflector rules, can be set to correctly pluralize or singularize

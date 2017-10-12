@@ -5,8 +5,7 @@
             <div class="add-condition input-row">
                 <div class="box">
                     対象年：
-                    <input type="text" v-model="year" maxlength="4" class="year" name="target_year">
-                    期：
+                    <input type="text" v-model="year" maxlength="4" class="year" name="target_year"> 期：
                     <input type="text" v-model="holding" maxlength="4" class="holding" name="holding">
                 </div>
                 <div class="button-column">
@@ -57,7 +56,6 @@
 <script>
 export default {
     props: {
-        domain: String,
         isTeam: String,
     },
     data: () => {
@@ -85,7 +83,7 @@ export default {
                 return;
             }
 
-            this.$http.post(`${this.domain}api/players`, {
+            this.$http.post(`/api/players`, {
                 name: this.name,
             }).then(res => {
                 const players = res.body.response.results;

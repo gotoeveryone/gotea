@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validation;
+namespace Gotea\Validation;
 
 use Cake\Validation\Validator;
 
@@ -55,7 +55,7 @@ class MyValidator extends Validator
             if (isset($property['mode'])) {
                 // プロパティが存在しない
                 $property['message'] = $this->getMessage('required', __d('validation', $name));
-            } else if (isset($property['when'])) {
+            } elseif (isset($property['when'])) {
                 // プロパティが空欄
                 $property['message'] = $this->getMessage('notEmpty', __d('validation', $name));
             }
@@ -91,7 +91,7 @@ class MyValidator extends Validator
             return null;
         }
 
-        // see \App\Locale\{code}\validation.po
+        // see \Gotea\Locale\{code}\validation.po
         return __d('validation', $message, ...$args);
     }
 }

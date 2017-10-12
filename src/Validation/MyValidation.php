@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validation;
+namespace Gotea\Validation;
 
 use Cake\Validation\Validation;
 use Gotoeveryone\Validation\CustomValidationTrait;

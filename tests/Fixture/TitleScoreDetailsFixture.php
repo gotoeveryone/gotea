@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\Fixture;
+namespace Gotea\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 

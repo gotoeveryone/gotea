@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Component;
+namespace Gotea\Controller\Component;
 
 use Cake\Controller\Component\AuthComponent;
 use Cake\Log\Log;

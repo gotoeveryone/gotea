@@ -1,8 +1,8 @@
 <?php
-namespace App\View\Helper;
+namespace Gotea\View\Helper;
 
 use Cake\View\Helper\FormHelper;
-use App\Utility\CalculatorTrait;
+use Gotea\Utility\CalculatorTrait;
 
 /**
  * 独自にカスタマイズしたFormヘルパー

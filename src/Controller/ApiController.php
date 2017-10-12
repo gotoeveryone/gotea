@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace Gotea\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Filesystem\File;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
-use App\Collection\Iterator\NewsIterator;
-use App\Collection\Iterator\TitlesIterator;
+use Gotea\Collection\Iterator\NewsIterator;
+use Gotea\Collection\Iterator\TitlesIterator;
 
 /**
  * APIコントローラ
  *
- * @property \App\Controller\Component\JsonComponent $Json
+ * @property \Gotea\Controller\Component\JsonComponent $Json
  */
 class ApiController extends Controller
 {
@@ -109,7 +109,7 @@ class ApiController extends Controller
 
         return $this->__renderJson([
             'count' => $query->count(),
-            'results' => $players->map(function($item, $key) {
+            'results' => $players->map(function ($item, $key) {
                 return $item->toArray();
             }),
         ]);

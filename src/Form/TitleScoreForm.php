@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace Gotea\Form;
 
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
