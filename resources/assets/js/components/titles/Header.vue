@@ -41,14 +41,14 @@ export default {
             this.$emit('search', this.select);
         },
         add() {
-            this.$emit('add');
+            this.$emit('add', this.select);
         },
         json() {
             this.$emit('json', this.select);
         },
     },
     mounted() {
-        this.$http.get(`/api/countries/`)
+        this.$http.get('/api/countries/')
             .then(res => {
                 const countries = [];
                 const json = res.body.response;

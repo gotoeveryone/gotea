@@ -29,7 +29,7 @@ export default {
         },
     },
     mounted() {
-        this.$http.get(`/api/countries/`, { params: { 'has_title': '1' } })
+        this.$http.get('/api/countries/', { params: { 'has_title': '1' } })
             .then(res => {
                 const countries = [];
                 const json = res.body.response;

@@ -419,7 +419,7 @@
     }
 
     .name {
-        width: 18%;
+        width: 20%;
     }
 
     .winner {
@@ -436,11 +436,11 @@
     }
 
     .filename {
-        width: 9%;
+        width: 8%;
     }
 
     .modified {
-        width: 13%;
+        width: 10%;
     }
 
     .open-detail {
@@ -450,6 +450,10 @@
     .input-holding,
     .input-sortorder {
         text-align: right;
+    }
+
+    .input-modified {
+        text-align: center;
     }
 }
 

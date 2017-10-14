@@ -83,7 +83,7 @@ export default {
                 return;
             }
 
-            this.$http.post(`/api/players`, {
+            this.$http.post('/api/players', {
                 name: this.name,
             }).then(res => {
                 const players = res.body.response.results;
