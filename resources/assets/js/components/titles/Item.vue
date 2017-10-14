@@ -1,5 +1,5 @@
 <template>
-    <li class="table-row" :class="getRowClass()">
+    <li class="table-row" :class="rowClass">
         <span class="table-column name">
             <input type="text" @change="save" v-model="item.name">
         </span>
@@ -9,7 +9,7 @@
         <span class="table-column holding">
             <input type="text" class="input-holding" @change="save" v-model="item.holding">
         </span>
-        <span class="table-column winner" v-text="getWinnerName()"></span>
+        <span class="table-column winner" v-text="winnerName"></span>
         <span class="table-column order">
             <input type="text" class="input-sortorder" @change="save" v-model="item.sortOrder">
         </span>
@@ -20,51 +20,32 @@
             <input type="text" @change="save" v-model="item.htmlFileName">
         </span>
         <span class="table-column modified">
-            <date-picker type="date" @change="saveDatepicker" v-model="item.htmlFileModified" size="small" format="yyyy/MM/dd"></date-picker>
+            <input type="text" class="datepicker input-modified" @change="saveDatepicker($event)" v-model="item.htmlFileModified">
         </span>
         <span class="table-column closed">
-            <input type="checkbox" @change="save" v-model="item.isClosed">
+            <input type="checkbox" @change="save" v-model="item.isClosed" :disabled="!isSaved()">
         </span>
         <span class="table-column open-detail">
-            <a @click="add()" v-if="!item.id">登録</a>
-            <a @click="select()" v-if="item.id">開く</a>
+            <a @click="select()" v-text="label"></a>
         </span>
     </li>
 </template>
 
 <script>
-import { DatePicker } from 'element-ui';
-import 'element-ui/lib/theme-default/date-picker.css';
-
 export default {
     props: {
         detailUrl: String,
         item: Object,
     },
-    components: {
-        datePicker: DatePicker,
+    data: () => {
+        return {
+            label: String,
+        };
     },
     methods: {
-        getWinnerName() {
-            return this.item.winnerName || '';
-        },
-        add() {
-            // 登録処理
-            this.$http.post(`/api/titles/`, this.item).then(res => {
-                this.item.id = res.body.response.id;
-                this.$store.dispatch('openDialog', {
-                    messages: `タイトル【${this.item.titleNameJp}】を登録しました。`,
-                });
-            }).catch(res => {
-                const message = res.body.response.message;
-                this.$store.dispatch('openDialog', {
-                    messages: (message || '登録に失敗しました…。'),
-                    type: 'error',
-                });
-            });
-        },
         save() {
-            if (!this.item.id) {
+            // 未登録なら何もしない
+            if (!this.isSaved()) {
                 return;
             }
             // 更新処理
@@ -77,19 +58,53 @@ export default {
             });
         },
         select() {
-            this.$store.dispatch('openModal', {
-                url: `${this.detailUrl}/${this.item.id}`,
+            if (!this.isSaved()) {
+                this.add();
+            } else {
+                this.$store.dispatch('openModal', {
+                    url: `${this.detailUrl}/${this.item.id}`,
+                });
+            }
+        },
+        add() {
+            // 登録処理
+            this.$http.post('/api/titles/', this.item).then(res => {
+                this.item.id = res.body.response.id;
+                this.setLabel();
+                this.$store.dispatch('openDialog', {
+                    messages: `タイトル【${this.item.name}】を登録しました。`,
+                });
+            }).catch(res => {
+                const message = res.body.response.message;
+                this.$store.dispatch('openDialog', {
+                    messages: (message || '登録に失敗しました…。'),
+                    type: 'error',
+                });
             });
         },
-        saveDatepicker(value) {
-            if (this.item.htmlFileModified !== value) {
-                this.item.htmlFileModified = value;
+        saveDatepicker($event) {
+            if (this.item.htmlFileModified !== $event.target.value) {
+                this.item.htmlFileModified = $event.target.value;
                 this.save();
             }
         },
-        getRowClass() {
+        setLabel() {
+            this.label = this.isSaved() ? '開く' : '登録';
+        },
+        isSaved() {
+            return this.item.id !== null && this.item.id !== undefined;
+        },
+    },
+    computed: {
+        winnerName() {
+            return this.item.winnerName || '';
+        },
+        rowClass() {
             return this.item.isClosed ? 'table-row-closed' : '';
         },
+    },
+    mounted() {
+        this.setLabel();
     },
 }
 </script>

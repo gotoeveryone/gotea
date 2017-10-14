@@ -111,7 +111,7 @@
                                 <?php
                                 if (!$player->id) {
                                     echo $this->Form->text('joined', [
-                                        'class' => 'imeDisabled datepicker'
+                                        'class' => 'datepicker'
                                     ]);
                                 } else {
                                     echo $this->Date->formatJpValue($player->joined);

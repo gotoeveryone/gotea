@@ -34,12 +34,6 @@ export default {
     data: () => {
         return {
             items: [],
-            countries: [],
-            select: {
-                year: null,
-                country: null,
-                limit: null,
-            },
         }
     },
     components: {
@@ -53,19 +47,22 @@ export default {
                 'is_closed': _params.type,
             };
 
-            this.$http.get(`/api/titles`, { params: params })
+            this.$http.get('/api/titles', { params: params })
                 .then(res => {
                     this.items = res.body.response;
                 });
         },
-        addRow() {
+        addRow(_params) {
             this.items.push({
-                countryId: this.country,
-                sortOrder: this.items.length,
+                countryId: _params.country,
+                holding: 1,
+                sortOrder: this.items.length + 1,
+                htmlFileModified: '',
+                isClosed: false,
             });
         },
         outputJson() {
-            this.$http.post(`/api/create-news`)
+            this.$http.post('/api/create-news')
                 .then(() => this.$store.dispatch('openDialog', {
                     messages: 'JSONを出力しました。',
                 })).catch(() => this.$store.dispatch('openDialog', {

@@ -53,8 +53,8 @@ export default {
     mounted() {
         // 所属国
         Promise.all([
-            this.$http.get(`/api/countries`),
-            this.$http.get(`/api/years`),
+            this.$http.get('/api/countries'),
+            this.$http.get('/api/years'),
         ]).then(data => {
             data[0].body.response.forEach(obj => {
                 this.countries.push({

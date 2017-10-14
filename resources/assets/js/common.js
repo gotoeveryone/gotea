@@ -29,10 +29,17 @@ const pikadayOptions = (_element, _birthday) => {
     };
 };
 
-const datepicker = document.querySelectorAll('.datepicker');
-Array.prototype.slice.call(datepicker, 0).forEach(element => {
-    new Pikaday(pikadayOptions(element, element.classList.contains('birthday')));
-});
+// 日付選択のイベントを登録
+document.addEventListener('focus', event => {
+    const element = event.target;
+    if (element.classList && element.classList.contains('datepicker')
+        && !element.classList.contains('set-event')) {
+        element.classList.add('set-event');
+        new Pikaday(pikadayOptions(
+            element, element.classList.contains('birthday')
+        )).show();
+    }
+}, true);
 
 // タブ変更
 const changeTab = (_element) => {
