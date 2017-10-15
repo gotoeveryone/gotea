@@ -86,14 +86,6 @@ if (tabWrap) {
     }
 }
 
-// 戻るボタン
-const back = document.querySelector('.back');
-if (back) {
-    back.addEventListener('click', () => {
-        location.href = '/';
-    }, false);
-}
-
 // 引退フラグ・引退日
 const isRetired = document.querySelector('#retired');
 if (isRetired) {
