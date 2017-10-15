@@ -30,7 +30,6 @@
         <li class="row button-row">
             <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
             <?=$this->Form->button('クリア', ['type' => 'reset'])?>
-            <?=$this->Form->button('戻る', ['type' => 'button', 'class' => 'back'])?>
         </li>
     </ul>
 <?= $this->Form->end() ?>
