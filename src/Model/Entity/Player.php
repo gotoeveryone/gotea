@@ -94,7 +94,7 @@ class Player extends AppEntity
      * 誕生日を設定します。
      *
      * @param mixed $birthday
-     * @return FrozenDate
+     * @return \Cake\I18n\FrozenDate
      */
     protected function _setBirthday($birthday)
     {
@@ -148,10 +148,30 @@ class Player extends AppEntity
     }
 
     /**
+     * 男性かどうかを判定します。
+     *
+     * @return bool 男性ならtrue
+     */
+    public function isMale(): bool
+    {
+        return $this->sex === '男性';
+    }
+
+    /**
+     * 女性かどうかを判定します。
+     *
+     * @return bool 女性ならtrue
+     */
+    public function isFemale(): bool
+    {
+        return $this->sex === '女性';
+    }
+
+    /**
      * 勝数を取得します。
      *
      * @param int|null $year
-     * @param boolean $world
+     * @param bool $world
      * @return int|string 勝数
      */
     public function win($year = null, $world = false)
@@ -163,7 +183,7 @@ class Player extends AppEntity
      * 敗数を取得します。
      *
      * @param int|null $year
-     * @param boolean $world
+     * @param bool $world
      * @return int|string 敗数
      */
     public function lose($year = null, $world = false)
@@ -175,7 +195,7 @@ class Player extends AppEntity
      * 引分数を取得します。
      *
      * @param int|null $year
-     * @param boolean $world
+     * @param bool $world
      * @return int|string 引分数
      */
     public function draw($year = null, $world = false)

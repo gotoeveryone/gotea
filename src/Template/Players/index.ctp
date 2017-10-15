@@ -116,7 +116,7 @@
                         <?=h($player->id)?>
                     </span>
                     <span class="name">
-                        <a class="<?= ($player->sex === '女性' ? 'female' : 'blue') ?>"
+                        <a class="player-link<?= ($player->isFemale() ? ' female' : '') ?>"
                             @click="openModal('<?= $this->Url->build(['action' => 'detail', $player->id]) ?>')">
                             <?=h($player->name)?>
                         </a>
