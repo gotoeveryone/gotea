@@ -164,6 +164,15 @@
     height: 100%;
 }
 
+.player-link {
+    color: $c_blue;
+    text-decoration: underline;
+    cursor: pointer;
+    &.female {
+        color: $c_red;
+    }
+}
+
 /* -------------------------------------------
    検索エリア
  ------------------------------------------- */
@@ -266,17 +275,13 @@
         width: 7rem;
     }
     .search-results {
-        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 0.5rem); /* content - .search-header and margin */
+        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 1rem); /* content - .search-header and margin */
 
         .no, .percent {
             width: 13%;
         }
         .player {
             width: 40%;
-            &-link {
-                text-decoration: underline;
-                cursor: pointer;
-            }
         }
         .point {
             width: 10%;
