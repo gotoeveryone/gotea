@@ -1,0 +1,3 @@
+エラーが発生しました。<?= PHP_EOL ?>
+<?= PHP_EOL ?>
+<?= $messages ?>
