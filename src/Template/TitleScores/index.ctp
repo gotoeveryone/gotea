@@ -56,7 +56,7 @@
                 <?=!isset($isDialog) ? '<span class="operation">操作</span>' : ''?>
             </li>
         </ul>
-        <?php if (isset($titleScores)) : ?>
+        <?php if (!empty($titleScores) && $titleScores->count() > 0) : ?>
         <ul class="table-body">
             <?php foreach ($titleScores as $titleScore) : ?>
             <li class="table-row">

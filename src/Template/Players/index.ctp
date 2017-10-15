@@ -65,9 +65,9 @@
                         ]);
                     ?>
                 </div>
-                <?php if (!empty($players) && count($players) > 0) : ?>
+                <?php if (!empty($players) && $players->count() > 0) : ?>
                 <div class="result-count">
-                    <?=count($players).'件のレコードが該当しました。'?>
+                    <?= $players->count().'件のレコードが該当しました。'?>
                 </div>
                 <?php endif ?>
                 <div class="button-wrap">
@@ -108,7 +108,7 @@
                     </span>
                 </li>
             </ul>
-            <?php if (!empty($players) && count($players) > 0) : ?>
+            <?php if (!empty($players) && $players->count() > 0) : ?>
             <ul class="players table-body">
                 <?php foreach ($players as $player) : ?>
                 <li class="table-row<?= ($player->is_retired ? ' retired' : '') ?>">
