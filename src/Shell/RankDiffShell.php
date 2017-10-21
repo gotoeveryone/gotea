@@ -7,6 +7,7 @@ use Cake\Console\Shell;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
@@ -46,7 +47,7 @@ class RankDiffShell extends Shell
             });
 
             // メール送信
-            if (!$results->isEmpty()) {
+            if (!$results->unfold()->isEmpty()) {
                 $today = FrozenDate::now()->format('Ymd');
                 $subject = "【自動通知】${today}_棋士段位差分抽出";
                 $this->getMailer('User')->send('notification', [$subject, $results]);
@@ -68,12 +69,13 @@ class RankDiffShell extends Shell
      */
     private function __getDiff($countryId, $results)
     {
-        return $this->Players->findRanksCount($countryId)->filter(function ($item) use ($results) {
-            $web = count($results[$item->rank]) ?? 0;
-            return $web !== $item->count;
-        })->map(function ($item) use ($results) {
-            $web = count($results[$item->rank]) ?? 0;
-            return "　{$item->name} WEB: {$web} - DB: {$item->count}";
+        return $this->Players->findRanksCount($countryId)->map(function ($item) use ($results) {
+            $item->web_count = count($results[$item->rank]) ?? 0;
+            return $item;
+        })->filter(function ($item) {
+            return $item->web_count !== $item->count;
+        })->map(function ($item) {
+            return "　{$item->name} WEB: {$item->web_count} - DB: {$item->count}";
         })->toArray();
     }
 
@@ -104,12 +106,11 @@ class RankDiffShell extends Shell
                     ->filter('li')->each(function (Crawler $node) {
                         return str_replace('　', '', $node->text());
                     });
-                $rank = $ranks[$node->text()];
-                if (isset($results[$rank])) {
-                    $results[$rank] = array_merge($results[$rank], $players);
-                } else {
-                    $results[$rank] = $players;
+                $rank = Hash::get($ranks, $node->text());
+                if (Hash::check($results, $rank)) {
+                    $players = Hash::merge(Hash::get($results, $rank), $players);
                 }
+                $results[$rank] = $players;
             }
         });
 
