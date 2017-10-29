@@ -125,7 +125,7 @@
                         <div class="box">
                             <div class="label-row">性別</div>
                             <div class="input-row">
-                                <?= $this->MyForm->sexes(['class' => 'sex']) ?>
+                                <?= $this->MyForm->sexes(['value' => $player->sex, 'class' => 'sex']) ?>
                             </div>
                         </div>
                         <div class="box">
