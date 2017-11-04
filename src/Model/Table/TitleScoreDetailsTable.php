@@ -102,7 +102,7 @@ class TitleScoreDetailsTable extends AppTable
             'draw_point_world' => $query->func()->count("division = '分' and is_world = 1 or null"),
         ])->group([
             'player_id', 'target_year',
-        ]);
+        ])->orderDesc('target_year');
     }
 
     /**
