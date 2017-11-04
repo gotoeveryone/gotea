@@ -166,7 +166,7 @@ class PlayersTable extends AppTable
         }
 
         if ($countryName) {
-            $query->innerJoinWith('Countries', function(Query $q) use ($countryName) {
+            $query->innerJoinWith('Countries', function (Query $q) use ($countryName) {
                 return $q->where(['Countries.name' => $countryName]);
             });
         }
@@ -176,6 +176,28 @@ class PlayersTable extends AppTable
             'name' => 'Ranks.name',
             'count' => $query->func()->count('*')
         ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric');
+    }
+
+    /**
+     * IDに合致する棋士と関連データを取得します。
+     *
+     * @param int $id
+     * @return \Gotea\Model\Entity\Player 棋士と関連データ
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function findByIdWithRelation(int $id)
+    {
+        return $this->get($id, [
+            'contain' => [
+                'Countries',
+                'Ranks',
+                'TitleScoreDetails',
+                'PlayerRanks' => function (Query $q) {
+                    return $q->orderDesc('promoted');
+                },
+                'PlayerRanks.Ranks',
+            ],
+        ]);
     }
 
     /**

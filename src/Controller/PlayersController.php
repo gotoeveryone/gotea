@@ -100,15 +100,7 @@ class PlayersController extends AppController
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($player = $this->_consumeBySession('player'))) {
-            $player = $this->Players->get($id, [
-                'contain' => [
-                    'Countries',
-                    'Ranks',
-                    'TitleScoreDetails',
-                    'PlayerRanks',
-                    'PlayerRanks.Ranks',
-                ],
-            ]);
+            $player = $this->Players->findByIdWithRelation($id);
         }
 
         return $this->set(compact('player'))
