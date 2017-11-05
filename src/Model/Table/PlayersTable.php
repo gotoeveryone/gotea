@@ -191,7 +191,9 @@ class PlayersTable extends AppTable
             'contain' => [
                 'Countries',
                 'Ranks',
-                'TitleScoreDetails',
+                'TitleScoreDetails' => function (Query $q) {
+                    return $q->orderDesc('target_year');
+                },
                 'PlayerRanks' => function (Query $q) {
                     return $q->orderDesc('promoted');
                 },
