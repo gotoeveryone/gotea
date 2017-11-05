@@ -102,7 +102,7 @@ class TitleScoreDetailsTable extends AppTable
             'draw_point_world' => $query->func()->count("division = '分' and is_world = 1 or null"),
         ])->group([
             'player_id', 'target_year',
-        ])->orderDesc('target_year');
+        ]);
     }
 
     /**
@@ -165,8 +165,8 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         // 対局棋士の所属国が該当する・もしくは国際棋戦の最新であるデータの対局日を返却
-        $query = $this->findScores($this->query())
-            ->group([], true);
+        $query = $this->find()->contain('TitleScores')
+            ->where(['YEAR(TitleScores.ended)' => $targetYear]);
 
         if (!$country->isWorlds()) {
             $query->contain(['Players', 'Players.Countries'])
