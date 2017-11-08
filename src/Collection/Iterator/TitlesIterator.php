@@ -9,7 +9,14 @@ use Gotea\Model\Entity\Title;
  */
 class TitlesIterator
 {
-    public function __invoke(Title $item, $key)
+    /**
+     * 実行メソッド
+     *
+     * @param \Gotea\Model\Entity\Title $item タイトル
+     * @param string $key キー
+     * @return array
+     */
+    public function __invoke(Title $item, string $key)
     {
         return [
             'id' => $item->id,

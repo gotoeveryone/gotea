@@ -70,6 +70,7 @@ class AppController extends Controller
                 'username' => $user['userName'],
                 'admin' => ($user['role'] === '管理者'),
             ]);
+
             return true;
         }
 
@@ -78,9 +79,9 @@ class AppController extends Controller
     }
 
     /**
-     * タイトルタグに表示する値を設定します。
+     * 指定ビューをレンダリングします。
      *
-     * @param string $title
+     * @param string $title タイトルに設定する文字列
      * @param string|null $view View to use for rendering
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
@@ -105,8 +106,8 @@ class AppController extends Controller
     /**
      * エラーを設定します。
      *
-     * @param array|string $errors
-     * @param string $title
+     * @param array|string $errors エラー
+     * @param string $title タイトル
      * @param string|null $view View to use for rendering
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
@@ -117,39 +118,41 @@ class AppController extends Controller
     }
 
     /**
-     * タイトルタグに表示する値を設定します。
+     * 指定のURLへリダイレクトします。
      *
-     * @param array $options
+     * @param array $options オプション
      * @param string|array $url A string or array-based URL pointing to another location within the app,
      *     or an absolute URL
      * @param int $status HTTP status code (eg: 301)
      * @return \Cake\Http\Response|null
      */
-    protected function _redirectWith($options = [], string $url, $status = 302)
+    protected function _redirectWith($options, $url, $status = 302)
     {
         if ($options) {
             $this->set($options);
         }
+
         return $this->redirect($url, $status);
     }
 
     /**
      * セッションに書き込みます。
      *
-     * @param string $key
-     * @param mixed $value
+     * @param string $key キー
+     * @param mixed $value 値
      * @return \Cake\Controller\Controller
      */
     protected function _writeToSession($key, $value)
     {
         $this->request->session()->write($key, $value);
+
         return $this;
     }
 
     /**
      * 指定キーの値をセッションから取り出します。
      *
-     * @param string $key
+     * @param string $key キー
      * @return mixed
      */
     protected function _consumeBySession(string $key)
@@ -160,7 +163,7 @@ class AppController extends Controller
     /**
      * エラーを設定します。
      *
-     * @param array|string $errors
+     * @param array|string $errors エラー
      * @return \Cake\Controller\Controller
      */
     protected function _setErrors($errors)
@@ -169,22 +172,23 @@ class AppController extends Controller
     }
 
     /**
-     * エラーを設定します。
+     * メッセージを設定します。
      *
-     * @param array|string $messages
-     * @param string $type
+     * @param array|string $messages メッセージ
+     * @param string $type メッセージの種類
      * @return \Cake\Controller\Controller
      */
     protected function _setMessages($messages, $type = 'info')
     {
         $this->Flash->$type($messages);
+
         return $this;
     }
 
     /**
      * タイトルタグに表示する値を設定します。
      *
-     * @param string $title
+     * @param string $title タイトル
      * @return \Cake\Controller\Controller
      */
     protected function _setTitle(string $title)

@@ -33,6 +33,7 @@ class UsersController extends AppController
         if ($this->Auth->user()) {
             return $this->redirect($this->Auth->redirectUrl());
         }
+
         return $this->set('form', new LoginForm)->_renderWith('ログイン');
     }
 
@@ -51,6 +52,7 @@ class UsersController extends AppController
         $form = new LoginForm();
         if (!$form->validate($credentials)) {
             $this->Flash->error($form->errors());
+
             return $this->setAction('index');
         }
 
@@ -61,6 +63,7 @@ class UsersController extends AppController
 
         // ログイン失敗
         $this->Flash->error(__('認証に失敗しました。'));
+
         return $this->setAction('index');
     }
 

@@ -1,9 +1,9 @@
 <?php
 namespace Gotea\Test\TestCase\Model\Table;
 
-use Gotea\Model\Table\TitleScoreDetailsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Gotea\Model\Table\TitleScoreDetailsTable;
 
 /**
  * Gotea\Model\Table\TitleScoreDetailsTable Test Case

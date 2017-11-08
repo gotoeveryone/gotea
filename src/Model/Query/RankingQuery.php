@@ -33,9 +33,9 @@ class RankingQuery extends Query
             $row = [
                 'rank' => $item->win_rank,
                 'name' => $item->getRankingName($isWorlds, $withJa),
-                'win' => (int) $item->win_point,
-                'lose' => (int) $item->lose_point,
-                'draw' => (int) $item->draw_point,
+                'win' => (int)$item->win_point,
+                'lose' => (int)$item->lose_point,
+                'draw' => (int)$item->draw_point,
                 'percentage' => $this->percent($item->win_point, $item->lose_point),
             ];
 

@@ -28,13 +28,14 @@ class AppEntity extends Entity
         if (is_array($value)) {
             $value = collection($value);
         }
+
         return $value;
     }
 
     /**
      * 所属國を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 値
      * @return Country
      */
     protected function _getCountry($value)
@@ -44,13 +45,14 @@ class AppEntity extends Entity
         }
 
         $result = TableRegistry::get('Countries')->get($this->country_id);
+
         return $this->country = $result;
     }
 
     /**
      * 段位を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 値
      * @return Rank
      */
     protected function _getRank($value)
@@ -60,6 +62,7 @@ class AppEntity extends Entity
         }
 
         $result = TableRegistry::get('Ranks')->get($this->rank_id);
+
         return $this->rank = $result;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Gotea\Controller;
 
-use PDOException;
 use Cake\Datasource\ConnectionInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Log\Log;
+use PDOException;
 
 /**
  * 各種情報クエリ更新用コントローラ
@@ -15,24 +15,22 @@ use Cake\Log\Log;
  */
 class NativeQueryController extends AppController
 {
-	/**
-	 * 初期表示・更新処理
+    /**
+     * 初期表示・更新処理
      *
      * @return \Psr\Http\Message\ResponseInterface
-	 */
+     */
     public function index()
     {
         if ($this->request->isPost()) {
             // トリムし、改行・タブ・全角スペースがあれば除去
-            $updateText = str_replace(["\r", "\n", "\t", '　'], '',
-                    trim($this->request->getData('queries')));
+            $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->request->getData('queries')));
             // 「;」で分割
             $queries = explode(';', trim($updateText));
 
             $conn = ConnectionManager::get('default');
             try {
-                $count = $conn->transactional(function(ConnectionInterface $conn) use ($queries) {
-                    // クエリの実行
+                $count = $conn->transactional(function (ConnectionInterface $conn) use ($queries) {
                     return $this->__executeQueries($conn, $queries);
                 });
                 $this->Flash->info(__("{$count}件のクエリを実行しました。"));
@@ -48,10 +46,10 @@ class NativeQueryController extends AppController
     /**
      * クエリを実行し、件数を返します。
      *
-     * @param ConnectionInterface $conn
-     * @param array $queries
-     * @return int
-     * @throws PDOException
+     * @param \Cake\Datasource\ConnectionInterface $conn コネクション
+     * @param array $queries 実行クエリ
+     * @return int 更新件数
+     * @throws \PDOException
      */
     private function __executeQueries(ConnectionInterface $conn, $queries)
     {
@@ -68,6 +66,7 @@ class NativeQueryController extends AppController
             }
             $counter++;
         }
+
         return $counter;
     }
 }

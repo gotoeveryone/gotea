@@ -86,7 +86,7 @@ class TitleScoreDetailsTable extends AppTable
     /**
      * 成績情報のファインダーメソッド。
      *
-     * @param \Cake\ORM\Query $query
+     * @param \Cake\ORM\Query $query 生成クエリ
      * @return \Cake\ORM\Query
      */
     public function findScores(Query $query)
@@ -108,9 +108,9 @@ class TitleScoreDetailsTable extends AppTable
     /**
      * ランキング集計データを取得します。
      *
-     * @param Country $country
-     * @param int $targetYear
-     * @param int $offset
+     * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param int $targetYear 対象年度
+     * @param int $offset 取得開始行
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findRanking(Country $country, int $targetYear, int $offset)
@@ -118,6 +118,7 @@ class TitleScoreDetailsTable extends AppTable
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
             $playerScores = TableRegistry::get('PlayerScores');
+
             return $playerScores->findRanking($country, $targetYear, $offset);
         }
 
@@ -152,8 +153,8 @@ class TitleScoreDetailsTable extends AppTable
     /**
      * 最新データの対局日を取得します。
      *
-     * @param \Gotea\Model\Entity\Country $country
-     * @param int $targetYear
+     * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param int $targetYear 対象年度
      * @return string|null
      */
     public function findRecent(Country $country, int $targetYear)
@@ -161,6 +162,7 @@ class TitleScoreDetailsTable extends AppTable
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
             $points = TableRegistry::get('UpdatedPoints');
+
             return $points->findRecent($country, $targetYear);
         }
 

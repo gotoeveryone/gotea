@@ -12,8 +12,8 @@ class RanksCell extends Cell
     /**
      * 表示処理
      *
-     * @param bool $empty
-     * @param string $value
+     * @param bool $empty ブランクを設定するか
+     * @param string $value デフォルトの選択値
      * @return void
      */
     public function display($empty = false, $value = '')

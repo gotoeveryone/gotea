@@ -2,13 +2,13 @@
 
 namespace Gotea\Shell;
 
-use Exception;
 use Cake\Console\Shell;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use Exception;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
@@ -42,7 +42,8 @@ class RankDiffShell extends Shell
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $results = $countries->combine('name', function ($item) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
-                $method = '__getPlayerFrom'.Inflector::humanize($item->name_english);
+                $method = '__getPlayerFrom' . Inflector::humanize($item->name_english);
+
                 return $this->__getDiff($item->id, $this->$method());
             });
 
@@ -63,14 +64,15 @@ class RankDiffShell extends Shell
     /**
      * 差分データを設定します。
      *
-     * @param int $countryId
-     * @param array $results
+     * @param int $countryId 所属国ID
+     * @param array $results 抽出結果
      * @return array
      */
     private function __getDiff($countryId, $results)
     {
         return $this->Players->findRanksCount($countryId)->map(function ($item) use ($results) {
             $item->web_count = count($results[$item->rank]) ?? 0;
+
             return $item;
         })->filter(function ($item) {
             return $item->web_count !== $item->count;
@@ -159,6 +161,7 @@ class RankDiffShell extends Shell
                     if (preg_match('/(\s)/u', $text)) {
                         $text = preg_replace('/(\s)/u', '', $text);
                     }
+
                     return $text !== '';
                 })->toArray();
             }
@@ -194,13 +197,14 @@ class RankDiffShell extends Shell
     /**
      * URLからCrawlerオブジェクトを返却
      *
-     * @param string $url
-     * @return Crawler
+     * @param string $url URL
+     * @return \Symfony\Component\DomCrawler\Crawler
      */
     private function __getCrawler($url)
     {
         $client = new Client();
         $client->setClient(new GuzzleClient());
+
         return $client->request('GET', $url);
     }
 }

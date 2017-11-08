@@ -1,8 +1,8 @@
 <?php
 namespace Gotea\Test\TestCase\Controller;
 
-use Gotea\Controller\TitleScoresController;
 use Cake\TestSuite\IntegrationTestCase;
+use Gotea\Controller\TitleScoresController;
 
 /**
  * Gotea\Controller\TitleScoresController Test Case

@@ -27,13 +27,13 @@ class Player extends AppEntity
      */
     protected function _getNameWithRank()
     {
-        return $this->name.' '.$this->rank->name;
+        return "{$this->name} {$this->rank->name}";
     }
 
     /**
      * 棋士の昇段情報を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 設定値
      * @return \Cake\Collection\CollectionInterface 昇段情報
      */
     protected function _getPlayerRanks($value)
@@ -47,13 +47,14 @@ class Player extends AppEntity
         }
 
         $result = TableRegistry::get('PlayerRanks')->findRanks($this->id);
+
         return $this->player_ranks = $result;
     }
 
     /**
      * 棋士の成績（旧取得方式）を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 設定値
      * @return \Cake\Collection\CollectionInterface 昇段情報
      */
     protected function _getOldScores($value)
@@ -67,13 +68,14 @@ class Player extends AppEntity
         }
 
         $result = TableRegistry::get('PlayerScores')->findDescYears($this->id);
+
         return $this->old_scores = $result;
     }
 
     /**
      * 棋士のタイトル獲得履歴を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 設定値
      * @return \Cake\Collection\CollectionInterface タイトル獲得履歴
      */
     protected function _getRetentionHistories($value)
@@ -87,13 +89,14 @@ class Player extends AppEntity
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByPlayer($this->id);
+
         return $this->retention_histories = $result;
     }
 
     /**
      * 誕生日を設定します。
      *
-     * @param mixed $birthday
+     * @param mixed $birthday 設定値
      * @return \Cake\I18n\FrozenDate
      */
     protected function _setBirthday($birthday)
@@ -101,13 +104,14 @@ class Player extends AppEntity
         if ($birthday && !($birthday instanceof FrozenDate)) {
             return FrozenDate::parseDate($birthday, 'YYYY/MM/dd');
         }
+
         return $birthday;
     }
 
     /**
      * 入段日を設定します。
      *
-     * @param mixed $joined
+     * @param mixed $joined 設定値
      * @return string
      */
     protected function _setJoined($joined)
@@ -170,8 +174,8 @@ class Player extends AppEntity
     /**
      * 勝数を取得します。
      *
-     * @param int|null $year
-     * @param bool $world
+     * @param int|null $year 対象年度
+     * @param bool $world 対象が国際棋戦かどうか
      * @return int|string 勝数
      */
     public function win($year = null, $world = false)
@@ -182,8 +186,8 @@ class Player extends AppEntity
     /**
      * 敗数を取得します。
      *
-     * @param int|null $year
-     * @param bool $world
+     * @param int|null $year 対象年度
+     * @param bool $world 対象が国際棋戦かどうか
      * @return int|string 敗数
      */
     public function lose($year = null, $world = false)
@@ -194,8 +198,8 @@ class Player extends AppEntity
     /**
      * 引分数を取得します。
      *
-     * @param int|null $year
-     * @param bool $world
+     * @param int|null $year 対象年度
+     * @param bool $world 対象が国際棋戦かどうか
      * @return int|string 引分数
      */
     public function draw($year = null, $world = false)
@@ -206,9 +210,9 @@ class Player extends AppEntity
     /**
      * 指定された成績の値を取得します。
      *
-     * @param string $type
-     * @param int|null $year
-     * @param bool $world
+     * @param string $type 取得する成績の分類
+     * @param int|null $year 対象年度
+     * @param bool $world 対象が国際棋戦かどうか
      * @return int|string 対象数
      */
     private function __show($type, $year = null, $world = false)
@@ -218,8 +222,8 @@ class Player extends AppEntity
         }
         $scores = collection($this->title_score_details);
         $score = $scores->filter(function ($item, $key) use ($year) {
-            return (int) $item->player_id === $this->id
-                && (int) $item->target_year === $year;
+            return (int)$item->player_id === $this->id
+                && (int)$item->target_year === $year;
         })->first();
 
         // 該当年の対局がない
@@ -228,10 +232,12 @@ class Player extends AppEntity
             if ($this->is_retired && (!$this->retired || $year > $this->retired->year)) {
                 return '-';
             }
+
             return 0;
         }
 
         $propertyName = ($world) ? "${type}_point_world" : "${type}_point";
-        return (int) $score->$propertyName;
+
+        return (int)$score->$propertyName;
     }
 }

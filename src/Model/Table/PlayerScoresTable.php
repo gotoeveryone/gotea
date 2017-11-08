@@ -34,12 +34,12 @@ class PlayerScoresTable extends AppTable
     /**
      * 対象棋士の成績一覧を取得します。
      *
-     * @param int $id
+     * @param int $playerId 棋士ID
      * @return \Cake\ORM\ResultSet
      */
-    public function findDescYears(int $id)
+    public function findDescYears(int $playerId)
     {
-        return $this->findByPlayerId($id)
+        return $this->findByPlayerId($playerId)
             ->contain(['Ranks'])->orderDesc('target_year')->all();
     }
 
@@ -47,22 +47,24 @@ class PlayerScoresTable extends AppTable
      * ランキング集計データを取得します。
      * ※2016年以前の集計です。
      *
-     * @param Country $country
-     * @param int $targetYear
-     * @param int $offset
+     * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param int $targetYear 対象年度
+     * @param int $offset 取得開始行
      * @return \Cake\ORM\Query
      */
     public function findRanking(Country $country, int $targetYear, int $offset)
     {
         $suffix = ($country->has_title ? '' : '_world');
+        $winColumn = "PlayerScores.win_point${suffix}";
+        $loseColumn = "PlayerScores.lose_point${suffix}";
 
         // サブクエリ
         $subQuery = $this->find()
-                ->select('PlayerScores.win_point'.$suffix)
+                ->select($winColumn)
                 ->innerJoinWith('Players')->innerJoinWith('Players.Countries')
                 ->where([
                     'PlayerScores.target_year' => $targetYear,
-                ])->orderDesc('PlayerScores.win_point'.$suffix)->order('PlayerScores.lose_point'.$suffix)
+                ])->orderDesc($winColumn)->order($loseColumn)
                 ->limit(1)->offset($offset - 1);
 
         if ($country->has_title) {
@@ -73,11 +75,11 @@ class PlayerScoresTable extends AppTable
             ->contain([
                 'Ranks', 'Players', 'Players.Countries',
             ])->where(function ($exp, $q) use ($subQuery, $suffix) {
-                return $exp->gte('PlayerScores.win_point'.$suffix, $subQuery);
+                return $exp->gte($winColumn, $subQuery);
             })->where([
                 'PlayerScores.target_year' => $targetYear,
-            ])->orderDesc('PlayerScores.win_point'.$suffix)
-            ->order('PlayerScores.lose_point'.$suffix)
+            ])->orderDesc($winColumn)
+            ->order($loseColumn)
             ->orderDesc('Ranks.rank_numeric')
             ->order('Players.joined');
 

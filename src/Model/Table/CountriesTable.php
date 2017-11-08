@@ -18,7 +18,7 @@ class CountriesTable extends AppTable
     /**
      * コードが設定されている所属国一覧を取得します。
      *
-     * @param boolean $hasTitle
+     * @param bool $hasTitle タイトルを保持しているか
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findAllHasCode($hasTitle = false)

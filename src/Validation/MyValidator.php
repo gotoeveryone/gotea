@@ -16,7 +16,7 @@ class MyValidator extends Validator
      */
     private $_messages = [
         'required' => 'field {0} is required',
-        'notEmpty' =>'field {0} cannot be left empty',
+        'notEmpty' => 'field {0} cannot be left empty',
         'numeric' => 'field {0} is numeric value only',
         'alphaNumeric' => 'field {0} is alpha or numeric value only',
         'lengthBetween' => 'field {0} length is {1} - {2}',
@@ -42,6 +42,7 @@ class MyValidator extends Validator
             }
             $rule['message'] = $this->getMessage($key, $args);
         }
+
         return parent::add($field, $name, $rule);
     }
 
@@ -60,6 +61,7 @@ class MyValidator extends Validator
                 $property['message'] = $this->getMessage('notEmpty', __d('validation', $name));
             }
         }
+
         return $results;
     }
 
@@ -74,14 +76,15 @@ class MyValidator extends Validator
         }
         $args[] = implode('/', str_split($formats[0]));
         $message = $this->getMessage('invalidFormat', $args);
+
         return parent::date($field, $formats, $message, $when);
     }
 
     /**
      * メッセージのキーを取得します。
      *
-     * @param string $key
-     * @param null|array $args
+     * @param string $key メッセージのキー
+     * @param null|array $args メッセージに設定する値
      * @return string|null Translated string.
      */
     public function getMessage(string $key, ...$args)

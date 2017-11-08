@@ -20,14 +20,16 @@ class MyHtmlHelper extends HtmlHelper
      *     // ここにJS
      *   $this->MyHtml->scriptEnd();
      *
-     * @param string $script
-     * @param array $options
+     * @param string $script スクリプト文字列
+     * @param array $options オプション
+     * @return string|null 出力するスクリプト
      */
     public function scriptBlock($script, array $options = [])
     {
         // 開始・終了タグを除去しておく
         $s = preg_replace('{<script([\s\S]*?)>([\s\S]*?)</script>}', '$2', $script);
-        parent::scriptBlock($s, $options);
+
+        return parent::scriptBlock($s, $options);
     }
 
     /**
@@ -39,7 +41,7 @@ class MyHtmlHelper extends HtmlHelper
      */
     public function commonScript(string $path)
     {
-        return $this->script(env('ASSETS_URL').$path);
+        return $this->script(env('ASSETS_URL') . $path);
     }
 
     /**
@@ -50,6 +52,6 @@ class MyHtmlHelper extends HtmlHelper
      */
     public function commonCss(string $path)
     {
-        return $this->css(env('ASSETS_URL').$path);
+        return $this->css(env('ASSETS_URL') . $path);
     }
 }

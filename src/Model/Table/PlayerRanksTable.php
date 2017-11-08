@@ -95,7 +95,7 @@ class PlayerRanksTable extends AppTable
     /**
      * 棋士に該当する段位一覧を取得します。
      *
-     * @param int $playerId
+     * @param int $playerId 棋士ID
      * @return \Cake\ORM\ResultSet
      */
     public function findRanks(int $playerId)
