@@ -2,9 +2,10 @@
 
 namespace Gotea\Controller;
 
+use Cake\Controller\ErrorController as BaseErrorController;
+use Cake\Log\Log;
 use Exception;
 use PDOException;
-use Cake\Log\Log;
 
 /**
  * アプリの共通例外コントローラ
@@ -12,17 +13,18 @@ use Cake\Log\Log;
  * @author  Kazuki Kamizuru
  * @since   2016/12/28
  */
-class ErrorController extends AppController
+class ErrorController extends BaseErrorController
 {
-	/**
-	 * ロールバック処理を行います。
+    /**
+     * ロールバック処理を行います。
      *
-     * @param Exception $exception
+     * @param Exception $exception 例外
+     * @return void
      */
-    public function _rollback(Exception $exception)
+    public function rollback(Exception $exception)
     {
-        Log::error(__('Error Code: '.$exception->getCode()));
-        Log::error(__($exception->getMessage()));
+        Log::error("Error Code: {$exception->getCode()}");
+        Log::error($exception->getMessage());
 
         if ($exception instanceof PDOException) {
             $this->Flash->error(__("データの保存に失敗しました…。"));

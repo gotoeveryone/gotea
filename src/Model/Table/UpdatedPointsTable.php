@@ -12,8 +12,8 @@ class UpdatedPointsTable extends AppTable
     /**
      * 所属国と対象年から最終更新日を取得します。
      *
-     * @param \Gotea\Model\Entity\Country $country
-     * @param int $targetYear
+     * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param int $targetYear 対象年度
      * @return string
      */
     public function findRecent(Country $country, int $targetYear) : string

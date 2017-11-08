@@ -19,6 +19,7 @@ class AppForm extends Form
         if ($validator === null && empty($this->_validator)) {
             $validator = $this->_buildValidator(new MyValidator());
         }
+
         return parent::validator($validator);
     }
 }

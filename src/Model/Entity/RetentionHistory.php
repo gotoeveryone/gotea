@@ -12,7 +12,7 @@ class RetentionHistory extends AppEntity
     /**
      * 棋士を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 値
      * @return Player|null
      */
     protected function _getPlayer($value)
@@ -26,6 +26,7 @@ class RetentionHistory extends AppEntity
         }
 
         $result = TableRegistry::get('Players')->get($this->player_id);
+
         return $this->player = $result;
     }
 
@@ -52,6 +53,7 @@ class RetentionHistory extends AppEntity
         if ($this->player_id && $this->rank_id) {
             return "{$this->player->name} {$this->rank->name}";
         }
+
         return '';
     }
 }

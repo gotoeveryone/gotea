@@ -14,7 +14,7 @@ class MyFormHelper extends FormHelper
     /**
      * 性別一覧を取得します。
      *
-     * @param array $attributes
+     * @param array $attributes 追加属性
      * @return string Formatted SELECT element
      */
     public function sexes(array $attributes = [])
@@ -37,8 +37,9 @@ class MyFormHelper extends FormHelper
         // 年度プルダウン
         $years = [];
         for ($i = date('Y'); $i >= 2013; $i--) {
-            $years[$i] = $i.'年度';
+            $years[$i] = $i . '年度';
         }
+
         return $this->select('sex', $years, $attributes);
     }
 }

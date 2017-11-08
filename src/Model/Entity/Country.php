@@ -12,7 +12,7 @@ class Country extends AppEntity
     /**
      * 棋士の所属組織を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 値
      * @return \Cake\ORM\ResultSet|null 所属組織
      */
     protected function _getOrganizations($value)
@@ -26,13 +26,14 @@ class Country extends AppEntity
         }
 
         $result = TableRegistry::get('Organizations')->findByCountryId($this->id);
+
         return $this->organizations = $result;
     }
 
     /**
      * 国際棋戦かどうかを判定します。
      *
-     * @return boolean 国際棋戦ならtrue
+     * @return bool 国際棋戦ならtrue
      */
     public function isWorlds()
     {

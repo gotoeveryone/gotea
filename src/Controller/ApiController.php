@@ -26,8 +26,7 @@ class ApiController extends Controller
         $this->loadComponent('Json');
 
         // ヘッダのユーザIDをセッションに乗せる
-        $this->request->session()->write(
-            'Api-UserId', $this->request->getHeaderLine('X-Access-User'));
+        $this->request->session()->write('Api-UserId', $this->request->getHeaderLine('X-Access-User'));
 
         // 当アクションのレスポンスはすべてJSON形式
         $this->RequestHandler->renderAs($this, 'json');
@@ -46,6 +45,7 @@ class ApiController extends Controller
         for ($i = $nowYear; $i >= 2013; $i--) {
             $years[] = $i;
         }
+
         return $this->__renderJson($years);
     }
 
@@ -67,7 +67,7 @@ class ApiController extends Controller
     /**
      * カテゴリを取得します。
      *
-     * @param int $countryId
+     * @param int $countryId 所属国ID
      * @return \Cake\Http\Response 段位別棋士一覧
      */
     public function ranks(int $countryId)
@@ -93,12 +93,14 @@ class ApiController extends Controller
             $player = $this->Players->get($id, [
                 'contain' => ['Countries', 'Ranks'],
             ]);
+
             return $this->__renderJson($player->toArray());
         }
 
         // 以降は検索処理のためPOST以外は許可しない
         if (!$this->request->isPost()) {
-            $message = $this->request->getMethod().'リクエストは許可されていません。';
+            $message = "{$this->request->getMethod()}リクエストは許可されていません。";
+
             return $this->__renderError(405, $message);
         }
 
@@ -129,16 +131,19 @@ class ApiController extends Controller
             // IDの指定があれば1件取得して返却
             if ($id && is_numeric($id)) {
                 $title = $this->Titles->get($id);
+
                 return $this->__renderJson($title->toArray());
             }
 
             // 検索
             $titles = $this->Titles->findTitles($this->request->getQuery());
+
             return $this->__renderJson($titles->map(new TitlesIterator));
         }
 
         if (!$this->request->isPost() && !$this->request->isPut()) {
-            $message = $this->request->getMethod().'リクエストは許可されていません。';
+            $message = "{$this->request->getMethod()}リクエストは許可されていません。";
+
             return $this->__renderError(405, $message);
         }
 
@@ -151,6 +156,7 @@ class ApiController extends Controller
             foreach ($errors as $expr) {
                 $out[] = array_shift($expr);
             }
+
             return $this->__renderError(400, $out);
         }
 
@@ -172,8 +178,8 @@ class ApiController extends Controller
             ->map(new NewsIterator);
 
         // ファイル作成
-        $file = new File(env('JSON_OUTPUT_DIR').'news.json');
-        Log::info('JSONファイル出力：'.$file->path);
+        $file = new File(env('JSON_OUTPUT_DIR') . 'news.json');
+        Log::info("JSONファイル出力：{$file->path}");
 
         if (!$file->write(json_encode($titles))) {
             return $this->__renderError(500, 'JSON出力失敗');
@@ -185,9 +191,9 @@ class ApiController extends Controller
     /**
      * ランキングを取得します。
      *
-     * @param string $country
-     * @param int $year
-     * @param int $offset
+     * @param string $country 所属国
+     * @param int $year 対象年度
+     * @param int $offset 取得上限値
      * @return \Cake\Http\Response ランキング
      */
     public function rankings(string $country, int $year, int $offset)
@@ -205,9 +211,9 @@ class ApiController extends Controller
         // POSTの場合はファイル作成
         if ($this->request->isPost()) {
             $dir = $json['countryCode'];
-            $fileName = strtolower($json['countryName']).$json['year'];
-            $file = new File(env('JSON_OUTPUT_DIR')."ranking/${dir}/{$fileName}.json");
-            Log::info('JSONファイル出力：'.$file->path);
+            $fileName = strtolower($json['countryName']) . $json['year'];
+            $file = new File(env('JSON_OUTPUT_DIR') . "ranking/${dir}/{$fileName}.json");
+            Log::info("JSONファイル出力：{$file->path}");
 
             if (!$file->write(json_encode($json))) {
                 return $this->__renderError(500, 'JSON出力失敗');
@@ -220,10 +226,10 @@ class ApiController extends Controller
     /**
      * ランキングを取得します。
      *
-     * @param string $countryCode
-     * @param int $year
-     * @param int $offset
-     * @param bool $withJa
+     * @param string $countryCode 所属国コード
+     * @param int $year 対象年度
+     * @param int $offset 取得上限値
+     * @param bool $withJa 日本語情報を出力するか
      * @return array
      */
     private function __rankings(string $countryCode, int $year, int $offset, bool $withJa) : array
@@ -256,13 +262,14 @@ class ApiController extends Controller
     /**
      * エラーレスポンスを生成します。
      *
-     * @param int $code
-     * @param string $message
+     * @param int $code ステータスコード
+     * @param string $message メッセージ
      * @return \Cake\Http\Response
      */
     private function __renderError($code = 500, $message = 'Internal Error')
     {
         $this->response = $this->response->withStatus($code);
+
         return $this->__renderJson([
             'code' => $code,
             'message' => $message,
@@ -272,7 +279,7 @@ class ApiController extends Controller
     /**
      * JSONレスポンスを返却します。
      *
-     * @param array $json
+     * @param array $json JSONデータ
      * @return \Cake\Http\Response
      */
     private function __renderJson($json = [])

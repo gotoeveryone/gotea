@@ -58,7 +58,7 @@ class TitleScoresTable extends AppTable
     /**
      * タイトル勝敗を検索します。
      *
-     * @param array $data
+     * @param array $data パラメータ
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findMatches(array $data) : Query

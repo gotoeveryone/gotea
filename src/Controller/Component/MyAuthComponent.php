@@ -26,10 +26,12 @@ class MyAuthComponent extends AuthComponent
         // トークンが保存できなければログインエラー
         if (!($user = $this->__authenticate($credentials))) {
             Log::error(__('ログイン失敗（認証）'));
+
             return false;
         }
 
         Log::info(__("ユーザ：{$user['userName']}がログインしました。"));
+
         return $user;
     }
 
@@ -46,6 +48,7 @@ class MyAuthComponent extends AuthComponent
                 'Authorization' => "Bearer ${token}",
             ]);
         }
+
         return parent::logout();
     }
 
@@ -78,6 +81,7 @@ class MyAuthComponent extends AuthComponent
         $user['password'] = $credentials['password'];
         $user['access_token'] = $token;
         $this->setUser($user);
+
         return $user;
     }
 }

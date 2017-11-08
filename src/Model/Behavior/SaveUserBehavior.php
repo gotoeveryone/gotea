@@ -16,8 +16,9 @@ class SaveUserBehavior extends Behavior
      * 保存前処理
      * エンティティに管理項目を設定します。
      *
-     * @param Event $event
-     * @param EntityInterface $entity
+     * @param \Cake\Event\Event $event イベント
+     * @param \Cake\Datasource\EntityInterface $entity 対象のエンティティ
+     * @return void
      */
     public function beforeSave(Event $event, EntityInterface $entity)
     {
@@ -38,6 +39,7 @@ class SaveUserBehavior extends Behavior
     {
         $session = new Session();
         $userId = $session->read('Auth.User.userId');
+
         return !$userId ? $session->consume('Api-UserId') : $userId;
     }
 }

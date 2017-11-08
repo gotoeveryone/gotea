@@ -13,7 +13,7 @@ class Title extends AppEntity
     /**
      * タイトル獲得履歴を取得します。
      *
-     * @param mixed $value
+     * @param mixed $value 更新値
      * @return mixed タイトル獲得履歴
      */
     protected function _getRetentionHistories($value)
@@ -27,6 +27,7 @@ class Title extends AppEntity
         }
 
         $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);
+
         return $this->retention_histories = $result;
     }
 
@@ -57,7 +58,7 @@ class Title extends AppEntity
     /**
      * HTMLファイル修正日を設定します。
      *
-     * @param mixed $newValue
+     * @param mixed $newValue 更新値
      * @return \Cake\I18n\FrozenDate
      */
     protected function _setHtmlFileModified($newValue)
@@ -65,13 +66,14 @@ class Title extends AppEntity
         if ($newValue && !($newValue instanceof FrozenDate)) {
             return FrozenDate::parseDate($newValue, 'YYYY/MM/dd');
         }
+
         return $newValue;
     }
 
     /**
      * 現在の優勝者を取得します。
      *
-     * @param boolean $isJp
+     * @param bool $isJp 日本名を取得するか
      * @return string|null
      */
     public function getWinnerName($isJp = true)
@@ -92,7 +94,7 @@ class Title extends AppEntity
     /**
      * 保持者の最終登録日が指定日以内かどうかを判定する。
      *
-     * @return boolean
+     * @return bool
      */
     public function isNewHistories() : bool
     {
@@ -106,7 +108,7 @@ class Title extends AppEntity
     /**
      * 修正日が指定日以内かどうかを判定する。
      *
-     * @return boolean
+     * @return bool
      */
     public function isRecentModified() : bool
     {

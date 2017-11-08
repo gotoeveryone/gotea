@@ -116,6 +116,7 @@ class TitleScoresController extends AppController
         $this->TitleScores->delete($model);
 
         $this->Flash->info("ID【{$deleteId}】の成績情報を削除しました。");
+
         return $this->index();
     }
 }

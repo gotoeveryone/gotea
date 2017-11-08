@@ -19,7 +19,8 @@ class AppExceptionRenderer extends ExceptionRenderer
      */
     public function render()
     {
-        $this->_getController()->_rollback($this->error);
+        $this->_getController()->rollback($this->error);
+
         return parent::render();
     }
 }

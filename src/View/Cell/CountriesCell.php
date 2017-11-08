@@ -12,8 +12,8 @@ class CountriesCell extends Cell
     /**
      * 表示処理
      *
-     * @param boolean $hasTitle
-     * @param array $customOptions
+     * @param bool $hasTitle タイトル保持しているか
+     * @param array $customOptions 追加属性
      * @return void
      */
     public function display($hasTitle = false, $customOptions = [])

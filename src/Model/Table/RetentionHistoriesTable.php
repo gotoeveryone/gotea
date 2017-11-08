@@ -38,7 +38,7 @@ class RetentionHistoriesTable extends AppTable
             ->notEmpty(['target_year', 'name', 'holding'])
             ->numeric('target_year')
             ->numeric('holding')
-            ->allowEmpty('win_group_name', function($context) {
+            ->allowEmpty('win_group_name', function ($context) {
                 return $context['data']['is_team'] === '0';
             })
             ->maxLength('win_group_name', 30);
@@ -78,7 +78,7 @@ class RetentionHistoriesTable extends AppTable
     /**
      * 指定した棋士のタイトル履歴を取得します。
      *
-     * @param int $playerId
+     * @param int $playerId 棋士ID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findHistoriesByPlayer(int $playerId) : Query
@@ -95,7 +95,7 @@ class RetentionHistoriesTable extends AppTable
     /**
      * 指定したタイトルの履歴を取得します。
      *
-     * @param int $titleId
+     * @param int $titleId タイトルID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findHistoriesByTitle(int $titleId) : Query

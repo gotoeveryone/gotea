@@ -2,10 +2,10 @@
 
 namespace Gotea\Model\Table;
 
-use Cake\Validation\Validator;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
+use Cake\Validation\Validator;
 use Gotea\Model\Entity\Title;
 
 /**
@@ -48,7 +48,7 @@ class TitlesTable extends AppTable
     /**
      * タイトル情報を取得します。
      *
-     * @param array $data
+     * @param array $data パラメータ
      * @return \Cake\ORM\Query 生成したクエリ
      */
     public function findTitles($data = [])
@@ -80,7 +80,7 @@ class TitlesTable extends AppTable
     /**
      * 配列からモデルデータを生成します。
      *
-     * @param array $data
+     * @param array $data パラメータ
      * @return \Gotea\Model\Entity\Title
      */
     public function createEntity($data = []) : Title
@@ -94,8 +94,7 @@ class TitlesTable extends AppTable
         }
 
         if ($id) {
-            $title = $this->get($id);
-            return $this->patchEntity($title, $properties);
+            return $this->patchEntity($this->get($id), $properties);
         }
 
         return $this->newEntity($properties);

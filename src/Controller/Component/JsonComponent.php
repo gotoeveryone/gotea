@@ -17,11 +17,11 @@ class JsonComponent extends Component
     /**
      * APIをコールします。
      *
-     * @param string $path
-     * @param string $method
-     * @param array $data
-     * @param array $headers
-     * @param bool $assoc
+     * @param string $path パス
+     * @param string $method メソッド
+     * @param array $data データ
+     * @param array $headers ヘッダ
+     * @param bool $assoc オブジェクト出力するか
      * @return array|object
      */
     public function callApi(string $path, $method = 'get', $data = [], $headers = [], $assoc = true)
@@ -42,13 +42,14 @@ class JsonComponent extends Component
 
         // 失敗
         Log::error($body);
+
         return ['status' => $response->statusCode(), 'message' => "{$method}リクエストに失敗しました。"];
     }
 
     /**
      * APIサーバのURLを取得します。
      *
-     * @param string パス
+     * @param string $path パス
      * @return string 対象APIのURL
      */
     private function __getApiPath(string $path)
@@ -60,13 +61,13 @@ class JsonComponent extends Component
             $url .= '/';
         }
 
-        return $url.$path;
+        return $url . $path;
     }
 
     /**
      * 認可ヘッダを生成します。
      *
-     * @param array $headers
+     * @param array $optionHeaders ヘッダに追加設定する情報
      * @return string ヘッダ情報
      */
     private function __createHeaders($optionHeaders = [])

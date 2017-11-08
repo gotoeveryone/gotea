@@ -4,10 +4,10 @@ namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\FrozenDate;
 use Cake\Validation\Validator;
 
 /**
@@ -103,7 +103,7 @@ class PlayersTable extends AppTable
     /**
      * 指定条件に合致した棋士情報を取得します。
      *
-     * @param \Cake\Http\ServerRequest $request
+     * @param \Cake\Http\ServerRequest $request リクエストオブジェクト
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findPlayers(ServerRequest $request) : Query
@@ -153,8 +153,8 @@ class PlayersTable extends AppTable
     /**
      * 段位ごとの棋士数を取得します。
      *
-     * @param int|null $countryId
-     * @param string|null $countryName
+     * @param int|null $countryId 所属国ID
+     * @param string|null $countryName 所属国名
      * @return \Cake\ORM\Query 生成されたクエリ
      */
     public function findRanksCount($countryId = null, $countryName = null)
@@ -181,7 +181,7 @@ class PlayersTable extends AppTable
     /**
      * IDに合致する棋士と関連データを取得します。
      *
-     * @param int $id
+     * @param int $id 検索キー
      * @return \Gotea\Model\Entity\Player 棋士と関連データ
      * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
@@ -205,8 +205,8 @@ class PlayersTable extends AppTable
     /**
      * LIKE検索用のWHERE句を生成します。
      *
-     * @param string $fieldName
-     * @param string $input
+     * @param string $fieldName フィールド名
+     * @param string $input 入力値
      * @return array
      */
     private function __createLikeParams(string $fieldName, string $input)
@@ -216,6 +216,7 @@ class PlayersTable extends AppTable
         foreach ($params as $param) {
             array_push($whereClause, ["Players.{$fieldName} LIKE" => "%{$param}%"]);
         }
+
         return $whereClause;
     }
 }
