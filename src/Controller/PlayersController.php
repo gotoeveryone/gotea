@@ -96,7 +96,7 @@ class PlayersController extends AppController
      * @param int $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function view(int $id)
+    public function detail(int $id)
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($player = $this->_consumeBySession('player'))) {
