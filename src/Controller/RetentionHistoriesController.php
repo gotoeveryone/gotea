@@ -2,8 +2,6 @@
 
 namespace Gotea\Controller;
 
-use Cake\Network\Exception\BadRequestException;
-
 /**
  * タイトル保持履歴コントローラ
  *
@@ -17,20 +15,14 @@ class RetentionHistoriesController extends AppController
     /**
      * 登録処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param int $id タイトルID
+     * @return \Cake\Http\Response|null
      */
-    public function add()
+    public function create(int $id)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        // タイトルIDが取得できなければエラー
-        if (!($id = $this->request->getData('title_id'))) {
-            throw new BadRequestException(__('タイトルIDは必須です。'));
-        }
-
         // 保存
         $history = $this->RetentionHistories->newEntity($this->request->getParsedBody());
+        $history->title_id = $id;
         if (!$this->RetentionHistories->save($history)) {
             $this->_setErrors($history->errors());
         } else {
@@ -38,8 +30,7 @@ class RetentionHistoriesController extends AppController
         }
 
         return $this->redirect([
-            'controller' => 'Titles',
-            'action' => 'detail',
+            '_name' => 'view_title',
             '?' => ['tab' => 'histories'],
             $id,
         ]);

@@ -16,28 +16,36 @@ use PDOException;
 class NativeQueryController extends AppController
 {
     /**
-     * 初期表示・更新処理
+     * 初期表示処理
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function index()
     {
-        if ($this->request->isPost()) {
-            // トリムし、改行・タブ・全角スペースがあれば除去
-            $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->request->getData('queries')));
-            // 「;」で分割
-            $queries = explode(';', trim($updateText));
+        return $this->_renderWith('各種情報クエリ更新');
+    }
 
-            $conn = ConnectionManager::get('default');
-            try {
-                $count = $conn->transactional(function (ConnectionInterface $conn) use ($queries) {
-                    return $this->__executeQueries($conn, $queries);
-                });
-                $this->Flash->info(__("{$count}件のクエリを実行しました。"));
-            } catch (PDOException $e) {
-                Log::error($e);
-                $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
-            }
+    /**
+     * クエリ実行処理
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function execute()
+    {
+        // トリムし、改行・タブ・全角スペースがあれば除去
+        $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->request->getData('queries')));
+        // 「;」で分割
+        $queries = explode(';', trim($updateText));
+
+        $conn = ConnectionManager::get('default');
+        try {
+            $count = $conn->transactional(function (ConnectionInterface $conn) use ($queries) {
+                return $this->__executeQueries($conn, $queries);
+            });
+            $this->Flash->info(__("{$count}件のクエリを実行しました。"));
+        } catch (PDOException $e) {
+            Log::error($e);
+            $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
         }
 
         return $this->_renderWith('各種情報クエリ更新', 'index');

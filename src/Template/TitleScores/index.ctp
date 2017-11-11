@@ -4,8 +4,7 @@
         <?=$this->Form->create($form, [
             'id' => 'mainForm',
             'class' => 'main-form',
-            'type' => 'post',
-            'url' => ['action' => 'index'],
+            'url' => ['_name' => 'find_scores'],
             'templates' => [
                 'inputContainer' => '{{content}}',
                 'textFormGroup' => '{{input}}',
@@ -68,10 +67,10 @@
                 <?php if (!isset($isDialog)) : ?>
                 <span class="operation">
                     <?= $this->Form->postButton('勝敗変更', [
-                        'action' => 'change',
+                        '_name' => 'update_scores', $titleScore->id,
                     ], [
+                        'method' => 'put',
                         'data' => [
-                            'change_id' => $titleScore->id,
                             'name' => $this->request->getData('name'),
                             'country_id' => $this->request->getData('country_id'),
                             'target_year' => $this->request->getData('target_year'),
@@ -80,10 +79,10 @@
                         ],
                     ]) ?>
                     <?= $this->Form->postButton('削除', [
-                        'action' => 'delete',
+                        '_name' => 'update_scores', $titleScore->id,
                     ], [
+                        'method' => 'delete',
                         'data' => [
-                            'delete_id' => $titleScore->id,
                             'name' => $this->request->getData('name'),
                             'country_id' => $this->request->getData('country_id'),
                             'target_year' => $this->request->getData('target_year'),
@@ -101,10 +100,9 @@
     </div>
     <?php if (isset($isDialog)) : ?>
     <div class="button-row">
-        <?=$this->Html->link('戻る', [
-            'controller' => 'players', 'action' => 'detail',
-            '?' => ['tab' => 'scores'], $this->request->data('player_id')
-        ])?>
+        <?= $this->Html->link('戻る', [
+            '_name' => 'view_player', '?' => ['tab' => 'scores'], $this->request->data('player_id'),
+        ]) ?>
     </div>
     <?php endif ?>
 </section>

@@ -30,29 +30,28 @@
 
 <script>
 export default {
-    props: {
-        detailUrl: String,
-        items: Array,
+  props: {
+    items: Array
+  },
+  data: () => {
+    return {};
+  },
+  methods: {
+    getRank(_idx, _row) {
+      if (this.items[_idx - 1]) {
+        const beforeRank = this.items[_idx - 1].rank;
+        return _row.rank === beforeRank ? "" : `${_row.rank}`;
+      }
+      return _row.rank;
     },
-    data: () => {
-        return {}
+    getSexClass(_row) {
+      return _row.sex === "女性" ? "female" : "male";
     },
-    methods: {
-        getRank(_idx, _row) {
-            if (this.items[_idx - 1]) {
-                const beforeRank = this.items[_idx - 1].rank;
-                return (_row.rank === beforeRank) ? '' : `${_row.rank}`;
-            }
-            return _row.rank;
-        },
-        getSexClass(_row) {
-            return (_row.sex === '女性' ? 'female' : 'male');
-        },
-        select(_row) {
-            this.$store.dispatch('openModal', {
-                url: `${this.detailUrl}/${_row.id}`,
-            });
-        },
-    },
-}
+    select(_row) {
+      this.$store.dispatch("openModal", {
+        url: _row.url
+      });
+    }
+  }
+};
 </script>

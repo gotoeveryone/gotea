@@ -33,6 +33,7 @@ class TitleScoresTable extends AppTable
             ->setJoinType('INNER');
         $this->belongsTo('Countries')
             ->setJoinType('INNER');
+        $this->hasMany('TitleScoreDetails');
         $this->hasOne('WinDetails', ['className' => 'TitleScoreDetails'])
             ->setForeignKey('title_score_id')
             ->setConditions([

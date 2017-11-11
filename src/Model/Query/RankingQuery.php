@@ -3,6 +3,7 @@
 namespace Gotea\Model\Query;
 
 use Cake\ORM\Query;
+use Cake\Routing\Router;
 use Gotea\Utility\CalculatorTrait;
 
 class RankingQuery extends Query
@@ -43,6 +44,7 @@ class RankingQuery extends Query
             if ($withJa) {
                 $row['id'] = $item->player->id;
                 $row['sex'] = $item->player->sex;
+                $row['url'] = Router::url(['_name' => 'view_player', $item->player->id]);
             }
 
             return $row;

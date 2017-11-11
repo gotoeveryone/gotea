@@ -30,31 +30,24 @@ class TitlesController extends AppController
      * @param int $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function detail(int $id)
+    public function view(int $id)
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($title = $this->_consumeBySession('title'))) {
             $title = $this->Titles->get($id);
         }
 
-        return $this->set('title', $title)->_renderWithDialog('detail');
+        return $this->set('title', $title)->_renderWithDialog();
     }
 
     /**
-     * 保存処理
+     * 更新処理
      *
+     * @param int $id タイトルID
      * @return \Cake\Http\Response|null
      */
-    public function save()
+    public function update(int $id)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        // 現状は更新のみなので、IDが取得できなければエラー
-        if (!($id = $this->request->getData('id'))) {
-            throw new BadRequestException(__('IDは必須です。'));
-        }
-
         // データ取得
         $title = $this->Titles->get($id);
         $this->Titles->patchEntity($title, $this->request->getParsedBody());

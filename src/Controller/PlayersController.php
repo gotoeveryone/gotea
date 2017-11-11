@@ -29,18 +29,25 @@ class PlayersController extends AppController
     }
 
     /**
-     * 初期表示・検索処理
+     * 初期表示処理
      *
      * @return \Cake\Http\Response|null
      */
     public function index()
     {
-        $this->set('form', ($form = new PlayerForm));
+        $this->set('form', new PlayerForm);
 
-        // 初期表示
-        if (!$this->request->isPost()) {
-            return $this->_renderWith('棋士情報検索', 'index');
-        }
+        return $this->_renderWith('棋士情報検索');
+    }
+
+    /**
+     * 検索処理
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function search()
+    {
+        $this->set('form', ($form = new PlayerForm));
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
@@ -87,7 +94,7 @@ class PlayersController extends AppController
             ]);
         }
 
-        return $this->set('player', $player)->_renderWithDialog('detail');
+        return $this->set('player', $player)->_renderWithDialog('view');
     }
 
     /**
@@ -96,29 +103,25 @@ class PlayersController extends AppController
      * @param int $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function detail(int $id)
+    public function view(int $id)
     {
         // セッションから入力値が取得できなければIDで取得
         if (!($player = $this->_consumeBySession('player'))) {
             $player = $this->Players->findByIdWithRelation($id);
         }
 
-        return $this->set(compact('player'))
-            ->_renderWithDialog('detail');
+        return $this->set(compact('player'))->_renderWithDialog();
     }
 
     /**
      * 棋士マスタの登録・更新処理
      *
+     * @param int $id 対象の棋士ID（更新時のみ）
      * @return \Cake\Http\Response|null
      */
-    public function save()
+    public function save($id = null)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        // エンティティ取得
-        $id = $this->request->getData('id');
+        // エンティティ取得 or 生成
         $player = $this->Players->findOrNew(['id' => $id]);
 
         // 保存
@@ -137,7 +140,7 @@ class PlayersController extends AppController
             }
         }
 
-        return $this->setAction(($player->id ? 'detail' : 'new'), $player->id);
+        return $this->setAction(($player->id ? 'view' : 'new'), $player->id);
     }
 
     /**
@@ -148,15 +151,5 @@ class PlayersController extends AppController
     public function ranking()
     {
         return $this->_renderWith('棋士勝敗ランキング出力');
-    }
-
-    /**
-     * 段位別棋士数表示
-     *
-     * @return \Cake\Http\Response|null
-     */
-    public function viewRanks()
-    {
-        return $this->_renderWith("段位別棋士数表示");
     }
 }

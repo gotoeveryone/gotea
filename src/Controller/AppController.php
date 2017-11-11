@@ -34,16 +34,13 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',
             'loginAction' => [
-                'controller' => 'users',
-                'action' => 'index',
+                '_name' => 'top',
             ],
             'loginRedirect' => [
-                'controller' => 'players',
-                'action' => 'index',
+                '_name' => 'players',
             ],
             'logoutRedirect' => [
-                'controller' => 'users',
-                'action' => 'index',
+                '_name' => 'top',
             ],
             'authorize' => 'Controller',
         ]);
