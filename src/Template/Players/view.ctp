@@ -18,8 +18,7 @@
             <?=$this->Form->create($player, [
                 'id' => 'mainForm',
                 'class' => 'main-form',
-                'type' => 'post',
-                'url' => ['action' => 'save'],
+                'url' => $player->getSaveUrl(),
                 'novalidate' => 'novalidate',
                 'templates' => [
                     'inputContainer' => '{{content}}',
@@ -174,14 +173,13 @@
                 <?= $this->Form->create($player, [
                     'class' => 'rank-form',
                     'type' => 'post',
-                    'url' => ['controller' => 'player-ranks', 'action' => 'add'],
+                    'url' => ['_name' => 'create_ranks', $player->id],
                     'templates' => [
                         'inputContainer' => '{{content}}',
                         'textFormGroup' => '{{input}}',
                         'selectFormGroup' => '{{input}}',
                     ]
                 ]) ?>
-                    <?=$this->Form->hidden('player_id', ['value' => $player->id])?>
                     <ul class="boxes">
                         <li class="row">
                             <div class="box">
@@ -260,12 +258,10 @@
                             <div class="input-row">
                                 <div class="button-wrap">
                                     <?= $this->Form->postButton('タイトル成績へ', [
-                                        'controller' => 'TitleScores', 'action' => 'index',
+                                        '_name' => 'find_player_scores', $player->id,
                                     ], [
                                         'data' => [
-                                            'player_id' => $player->id,
                                             'target_year' => $score->target_year,
-                                            'modal' => true,
                                         ],
                                     ]) ?>
                                 </div>

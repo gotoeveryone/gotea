@@ -17,63 +17,65 @@
                 </li>
             </ul>
             <ul class="table-body" v-if="items.length">
-                <title-item v-for="(item, idx) in items" :key="idx" :detail-url="detailUrl" :item="item"></title-item>
+                <title-item v-for="(item, idx) in items" :key="idx" :item="item"></title-item>
             </ul>
         </div>
     </section>
 </template>
 
 <script>
-import Header from './Header.vue';
-import Item from './Item.vue';
+import Header from "./Header.vue";
+import Item from "./Item.vue";
 
 export default {
-    props: {
-        detailUrl: String,
-    },
-    data: () => {
-        return {
-            items: [],
-        }
-    },
-    components: {
-        titleHeader: Header,
-        titleItem: Item,
-    },
-    methods: {
-        onSearch(_params) {
-            const params = {
-                'country_id': _params.country,
-                'is_closed': _params.type,
-            };
+  data: () => {
+    return {
+      items: []
+    };
+  },
+  components: {
+    titleHeader: Header,
+    titleItem: Item
+  },
+  methods: {
+    onSearch(_params) {
+      const params = {
+        country_id: _params.country,
+        is_closed: _params.type
+      };
 
-            this.$http.get('/api/titles', { params: params })
-                .then(res => {
-                    this.items = res.body.response;
-                });
-        },
-        addRow(_params) {
-            this.items.push({
-                countryId: _params.country,
-                holding: 1,
-                sortOrder: this.items.length + 1,
-                htmlFileModified: '',
-                isClosed: false,
-            });
-        },
-        outputJson() {
-            this.$http.post('/api/create-news')
-                .then(() => this.$store.dispatch('openDialog', {
-                    messages: 'JSONを出力しました。',
-                })).catch(() => this.$store.dispatch('openDialog', {
-                    messages: 'JSON出力に失敗しました…。',
-                    type: 'error',
-                }));
-        },
-        changeValue($event) {
-            this.select[$event.target.name] = $event.target.value;
-            this.search();
-        },
+      this.$http.get("/api/titles", { params: params }).then(res => {
+        this.items = res.body.response;
+      });
     },
-}
+    addRow(_params) {
+      this.items.push({
+        countryId: _params.country,
+        holding: 1,
+        sortOrder: this.items.length + 1,
+        htmlFileModified: "",
+        isClosed: false
+      });
+    },
+    outputJson() {
+      this.$http
+        .post("/api/create-news")
+        .then(() =>
+          this.$store.dispatch("openDialog", {
+            messages: "JSONを出力しました。"
+          })
+        )
+        .catch(() =>
+          this.$store.dispatch("openDialog", {
+            messages: "JSON出力に失敗しました…。",
+            type: "error"
+          })
+        );
+    },
+    changeValue($event) {
+      this.select[$event.target.name] = $event.target.value;
+      this.search();
+    }
+  }
+};
 </script>

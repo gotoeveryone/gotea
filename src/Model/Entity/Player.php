@@ -4,6 +4,7 @@ namespace Gotea\Model\Entity;
 
 use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 
 /**
  * 棋士エンティティ
@@ -117,6 +118,20 @@ class Player extends AppEntity
     protected function _setJoined($joined)
     {
         return str_replace(['-', '/'], '', $joined);
+    }
+
+    /**
+     * 保存先のURLを取得します。
+     *
+     * @return string URL
+     */
+    public function getSaveUrl()
+    {
+        if ($this->isNew()) {
+            return Router::url(['_name' => 'create_player']);
+        }
+
+        return Router::url(['_name' => 'update_player', $this->id]);
     }
 
     /**

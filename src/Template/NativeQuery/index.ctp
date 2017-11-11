@@ -2,8 +2,7 @@
     <?=$this->Form->create(null, [
         'id' => 'mainForm',
         'class' => 'main-form',
-        'method' => 'post',
-        'url' => ['action' => 'index'],
+        'url' => ['_name' => 'execute_queries'],
         'templates' => [
             'inputContainer' => '{{content}}',
             'textFormGroup' => '{{input}}',

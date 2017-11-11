@@ -19,6 +19,7 @@
  */
 
 use Cake\Core\Plugin;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Gotoeveryone\Middleware\TraceMiddleware;
 use Gotoeveryone\Middleware\TransactionMiddleware;
@@ -43,42 +44,93 @@ use Gotoeveryone\Middleware\TransactionMiddleware;
  */
 Router::defaultRouteClass('DashedRoute');
 
-Router::scope('/', function ($routes) {
+Router::scope('/', function (RouteBuilder $routes) {
     // ミドルウェアの登録
     $routes->registerMiddleware('trace', new TraceMiddleware())
         ->registerMiddleware('transaction', new TransactionMiddleware())
         ->applyMiddleware('trace', 'transaction');
 
-    /**
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
-     */
-    $routes->connect('/', ['controller' => 'Users', 'action' => 'index']);
+    $routes->scope('/', ['controller' => 'Users'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'top');
+        $routes->post('/login', ['action' => 'login'], 'login');
+        $routes->get('/logout', ['action' => 'logout'], 'logout');
+    });
 
-    /**
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-    // $routes->extensions(['json', 'xml']);
-    // $routes->resources('Api');
+    $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'players');
+        $routes->post('/', ['action' => 'search'], 'find_players');
+        $routes->get('/new', ['action' => 'new'], 'new_player');
+        $routes->post('/save', ['action' => 'save'], 'create_player');
+        $routes->get('/:id', ['action' => 'view'], 'view_player')
+            ->setPatterns(['id' => '\d+'])->setPass(['id']);
+        $routes->put('/save/:id', ['action' => 'save'], 'update_player')
+            ->setPatterns(['id' => '\d+'])->setPass(['id']);
 
-    /**
-     * Connect catchall routes for all controllers.
-     *
-     * Using the argument `DashedRoute`, the `fallbacks` method is a shortcut for
-     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);`
-     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);`
-     *
-     * Any route class can be used with this method, such as:
-     * - DashedRoute
-     * - InflectedRoute
-     * - Route
-     * - Or your own route class
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
-    $routes->fallbacks('DashedRoute');
+        $routes->get('/ranking', ['action' => 'ranking'], 'ranking');
+    });
+
+    $routes->scope('/players', function (RouteBuilder $routes) {
+        $routes->post('/:id/scores', ['controller' => 'TitleScores', 'action' => 'searchByPlayer'],
+            'find_player_scores')->setPatterns(['id' => '\d+'])->setPass(['id']);
+        $routes->post('/:id/ranks', ['controller' => 'PlayerRanks', 'action' => 'create'],
+            'create_ranks')->setPatterns(['id' => '\d+'])->setPass(['id']);
+    });
+
+    $routes->scope('/ranks', ['controller' => 'PlayerRanks'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'ranks');
+    });
+
+    // タイトル
+    $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'titles');
+        $routes->get('/:id', ['action' => 'view'], 'view_title')
+            ->setPatterns(['id' => '\d+'])->setPass(['id']);
+        $routes->put('/:id', ['action' => 'update'], 'update_title')
+            ->setPatterns(['id' => '\d+'])->setPass(['id']);
+
+        // タイトル
+        $routes->scope('/:id/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
+            $routes->post('/', ['action' => 'create'], 'create_histories')
+                ->setPass(['id']);
+        });
+    });
+
+    // タイトル成績
+    $routes->scope('/scores', ['controller' => 'TitleScores'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'scores');
+        $routes->post('/', ['action' => 'search'], 'find_scores');
+        $routes->put('/:id', ['action' => 'update'], 'update_scores')
+            ->setPatterns(['id' => '\d+'])->setPass(['id']);
+        $routes->delete('/:id', ['action' => 'delete'], 'delete_scores')
+            ->setPatterns(['id' => '\d+'])->setPass(['id']);
+    });
+
+    // クエリ実行
+    $routes->scope('/queries', ['controller' => 'NativeQuery'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'queries');
+        $routes->post('/', ['action' => 'execute'], 'execute_queries');
+    });
+
+    $routes->scope('/api', ['controller' => 'Api'], function (RouteBuilder $routes) {
+        $routes->get('/years', ['action' => 'years'], 'api_years');
+        $routes->get('/countries', ['action' => 'countries'], 'api_countries');
+        $routes->get('/ranks/:country_id', ['action' => 'ranks'], 'api_ranks')
+            ->setPatterns(['country_id' => '\d+'])->setPass(['country_id']);
+        $routes->get('/titles', ['action' => 'titles'], 'api_titles');
+        $routes->post('/titles/:id', ['action' => 'titles'], 'api_create_titles');
+        $routes->put('/titles/:id', ['action' => 'titles'], 'api_update_titles');
+        $routes->post('/create-news', ['action' => 'createNews'], 'api_news');
+        $routes->post('/players', ['action' => 'players'], 'api_players');
+        $routes->get('/rankings/:country/:year/:offset', ['action' => 'rankings'], 'api_ranking')
+            ->setPatterns(['year' => '\d+', 'offset' => '\d+'])
+            ->setPass(['country', 'year', 'offset']);
+        $routes->post('/rankings/:country/:year/:offset', ['action' => 'rankings'], 'api_create_ranking')
+            ->setPatterns(['year' => '\d+', 'offset' => '\d+'])
+            ->setPass(['country', 'year', 'offset']);
+    });
+
+    // フォールバックメソッド
+    // $routes->fallbacks('DashedRoute');
 });
 
 /**

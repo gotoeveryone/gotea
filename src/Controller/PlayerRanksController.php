@@ -2,8 +2,6 @@
 
 namespace Gotea\Controller;
 
-use Cake\Network\Exception\BadRequestException;
-
 /**
  * 昇段情報コントローラ
  *
@@ -15,31 +13,34 @@ use Cake\Network\Exception\BadRequestException;
 class PlayerRanksController extends AppController
 {
     /**
+     * 段位別棋士数表示
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function index()
+    {
+        return $this->_renderWith("段位別棋士数表示");
+    }
+
+    /**
      * 登録処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param int $id 棋士ID
+     * @return \Cake\Http\Response|null
      */
-    public function add()
+    public function create(int $id)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        // タイトルIDが取得できなければエラー
-        if (!($id = $this->request->getData('player_id'))) {
-            throw new BadRequestException(__('棋士IDは必須です。'));
-        }
-
         // バリデーション
-        $ranks = $this->PlayerRanks->newEntity($this->request->getParsedBody());
-        if (!$this->PlayerRanks->save($ranks)) {
-            $this->_setErrors($ranks->errors());
+        $rank = $this->PlayerRanks->newEntity($this->request->getParsedBody());
+        $rank->player_id = $id;
+        if (!$this->PlayerRanks->save($rank)) {
+            $this->_setErrors($rank->errors());
         } else {
             $this->_setMessages(__("昇段情報を登録しました。"));
         }
 
         return $this->redirect([
-            'controller' => 'Players',
-            'action' => 'detail',
+            '_name' => 'view_player',
             '?' => ['tab' => 'ranks'],
             $id,
         ]);

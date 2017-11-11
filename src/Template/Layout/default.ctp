@@ -56,7 +56,7 @@
             <footer>
                 <?php if (isset($username)) : ?>
                 <div>
-                    <a href="<?=$this->Url->build(['controller' => 'users', 'action' => 'logout']); ?>">ログアウト</a>
+                    <?= $this->Html->link('ログアウト', ['_name' => 'logout']); ?>
                 </div>
                 <?php endif ?>
             </footer>

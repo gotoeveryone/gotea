@@ -170,9 +170,6 @@ class ApiController extends Controller
      */
     public function createNews()
     {
-        // POSTのみ許可
-        $this->request->allowMethod(['post']);
-
         $this->loadModel('Titles');
         $titles = $this->Titles->findTitles($this->request->getQuery())
             ->map(new NewsIterator);

@@ -6,39 +6,33 @@
 <nav class="nav">
     <?=
         $this->Html->link('棋士勝敗ランキング出力', [
-            'controller' => 'players',
-            'action' => 'ranking'
+            '_name' => 'ranking',
         ], ['class' => 'nav-menu']);
     ?>
     <?=
         $this->Html->link('タイトル勝敗検索', [
-            'controller' => 'titleScores',
-            'action' => 'index'
+            '_name' => 'scores',
         ], ['class' => 'nav-menu']);
     ?>
     <?=
         $this->Html->link('棋士情報検索', [
-            'controller' => 'players',
-            'action' => 'index'
+            '_name' => 'find_players',
         ], ['class' => 'nav-menu']);
     ?>
     <?=
         $this->Html->link('タイトル情報検索', [
-            'controller' => 'titles',
-            'action' => 'index'
+            '_name' => 'titles'
         ], ['class' => 'nav-menu']);
     ?>
     <?=
         $this->Html->link('段位別棋士数検索', [
-            'controller' => 'players',
-            'action' => 'view-ranks'
+            '_name' => 'ranks',
         ], ['class' => 'nav-menu']);
     ?>
     <?php if ($admin) : ?>
     <?=
         $this->Html->link('各種情報クエリ更新', [
-            'controller' => 'nativeQuery',
-            'action' => 'index'
+            '_name' => 'queries',
         ], ['class' => 'nav-menu']);
     ?>
     <?php endif ?>

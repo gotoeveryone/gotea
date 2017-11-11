@@ -12,8 +12,7 @@
             <?=$this->Form->create($title, [
                 'id' => 'mainForm',
                 'class' => 'main-form',
-                'type' => 'post',
-                'url' => ['action' => 'save'],
+                'url' => ['_name' => 'update_title', $title->id],
                 'novalidate' => 'novalidate',
                 'templates' => [
                     'inputContainer' => '{{content}}',
@@ -93,14 +92,13 @@
             <?=$this->Form->create(null, [
                 'id' => 'addHistoryForm',
                 'type' => 'post',
-                'url' => ['controller' => 'retention-histories', 'action' => 'add'],
+                'url' => ['_name' => 'create_histories', $title->id],
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
                     'selectFormGroup' => '{{input}}'
                 ]
             ])?>
-                <?=$this->Form->hidden('title_id', ['value' => $title->id])?>
                 <?=$this->Form->hidden('name', ['value' => $title->name])?>
                 <?=$this->Form->hidden('is_team', ['value' => $title->is_team])?>
                 <div class="category-row">保持情報</div>

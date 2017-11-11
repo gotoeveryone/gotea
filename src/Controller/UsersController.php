@@ -44,9 +44,6 @@ class UsersController extends AppController
      */
     public function login()
     {
-        // POSTのみ許可
-        $this->request->allowMethod(['post']);
-
         // ログイン
         $credentials = $this->request->getParsedBody();
         $form = new LoginForm();

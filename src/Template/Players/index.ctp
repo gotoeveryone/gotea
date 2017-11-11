@@ -2,8 +2,7 @@
     <?=$this->Form->create($form, [
         'id' => 'mainForm',
         'class' => 'main-form',
-        'type' => 'post',
-        'url' => ['action' => 'index'],
+        'url' => ['_name' => 'find_players'],
         'templates' => [
             'inputContainer' => '{{content}}',
             'textFormGroup' => '{{input}}',
@@ -72,7 +71,7 @@
                 <?php endif ?>
                 <div class="button-wrap">
                     <add-button :country-id="countryId" :changed="changed"
-                        :url="'<?= $this->Url->build(['action' => 'new']) ?>'"
+                        :url="'<?= $this->Url->build(['_name' => 'new_player']) ?>'"
                         :param-id="'<?= $this->request->getData('country_id') ?>'"></add-button>
                     <?=$this->Form->button('検索', ['type' => 'submit'])?>
                 </div>
@@ -117,7 +116,7 @@
                     </span>
                     <span class="name">
                         <a class="player-link<?= ($player->isFemale() ? ' female' : '') ?>"
-                            @click="openModal('<?= $this->Url->build(['action' => 'detail', $player->id]) ?>')">
+                            @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $player->id]) ?>')">
                             <?=h($player->name)?>
                         </a>
                     </span>

@@ -22,27 +22,29 @@ class TitleScoresController extends AppController
     }
 
     /**
-     * 初期表示、検索処理
+     * 初期表示処理
      *
      * @return \Cake\Http\Response|null
      */
     public function index()
     {
-        $this->set('form', ($form = new TitleScoreForm));
+        $this->set('form', new TitleScoreForm);
 
-        // 初期表示
-        if (!$this->request->isPost()) {
-            return $this->_renderWith('タイトル勝敗検索', 'index');
-        }
+        return $this->_renderWith('タイトル勝敗検索', 'index');
+    }
+
+    /**
+     * 検索処理
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function search()
+    {
+        $this->set('form', ($form = new TitleScoreForm));
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
             return $this->_renderWithErrors($form->errors(), 'タイトル勝敗検索', 'index');
-        }
-
-        // モーダル表示かどうか
-        if ($this->request->getData('modal')) {
-            $this->_enableDialogMode();
         }
 
         // リクエストから値を取得
@@ -65,17 +67,28 @@ class TitleScoresController extends AppController
     }
 
     /**
-     * 勝敗変更処理
+     * 対象棋士に該当する成績の検索処理
      *
+     * @param int $id 棋士ID
      * @return \Cake\Http\Response|null
      */
-    public function change()
+    public function searchByPlayer(int $id)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
+        $this->_enableDialogMode();
+        $this->request = $this->request->withData('player_id', $id);
 
-        $changeId = $this->request->getData('change_id');
-        $model = $this->TitleScores->findById($changeId)->contain(['TitleScoreDetails'])->first();
+        return $this->search();
+    }
+
+    /**
+     * 更新処理
+     *
+     * @param int $id 成績ID
+     * @return \Cake\Http\Response|null
+     */
+    public function update(int $id)
+    {
+        $model = $this->TitleScores->findById($id)->contain(['TitleScoreDetails'])->first();
         $changed = 0;
         foreach ($model->title_score_details as $detail) {
             switch ($detail->division) {
@@ -91,32 +104,29 @@ class TitleScoresController extends AppController
         }
 
         if ($changed === 2) {
-            $this->Flash->info("ID【{$changeId}】の勝敗を変更しました。");
+            $this->Flash->info("ID【{$id}】の勝敗を変更しました。");
         }
 
-        return $this->index();
+        return $this->search();
     }
 
     /**
      * 削除処理
      *
+     * @param int $id 成績ID
      * @return \Cake\Http\Response|null
      */
-    public function delete()
+    public function delete(int $id)
     {
-        // POST以外は許可しない
-        $this->request->allowMethod(['post']);
-
-        $deleteId = $this->request->getData('delete_id');
-        $model = $this->TitleScores->findById($deleteId)->contain(['TitleScoreDetails'])->first();
+        $model = $this->TitleScores->findById($id)->contain(['TitleScoreDetails'])->first();
 
         foreach ($model->title_score_details as $detail) {
             $this->TitleScoreDetails->delete($detail);
         }
         $this->TitleScores->delete($model);
 
-        $this->Flash->info("ID【{$deleteId}】の成績情報を削除しました。");
+        $this->Flash->info("ID【{$id}】の成績情報を削除しました。");
 
-        return $this->index();
+        return $this->search();
     }
 }

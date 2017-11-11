@@ -1,8 +1,6 @@
 <?= $this->Form->create($form, [
     'method' => 'post',
-    'url' => ['action' => 'login'.(
-        $this->request->getQuery('redirect') ? '?redirect='.$this->request->getQuery('redirect') : ''
-    )],
+    'url' => ['_name' => 'login'],
     'novalidate' => 'novalidate',
     'templates' => [
         'inputContainer' => '{{content}}',
@@ -28,6 +26,7 @@
             ?>
         </li>
         <li class="row button-row">
+            <?= $this->Form->hidden('redirect', ['value' => $this->request->getQuery('redirect')]) ?>
             <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
             <?=$this->Form->button('クリア', ['type' => 'reset'])?>
         </li>

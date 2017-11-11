@@ -2,6 +2,7 @@
 
 namespace Gotea\Collection\Iterator;
 
+use Cake\Routing\Router;
 use Gotea\Model\Entity\Title;
 
 /**
@@ -34,6 +35,7 @@ class TitlesIterator
             'isNewHistories' => $item->isNewHistories(),
             'isRecent' => $item->isRecentModified(),
             'isClosed' => $item->is_closed,
+            'url' => Router::url(['_name' => 'view_title', $item->id]),
         ];
     }
 }
