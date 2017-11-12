@@ -14,7 +14,7 @@ use Cake\Controller\Controller;
  * @property \Cake\Controller\Component\SecurityComponent $Security
  * @property \Gotea\Controller\Component\MyAuthComponent $Auth
  */
-class AppController extends Controller
+abstract class AppController extends Controller
 {
     /**
      * {@inheritDoc}

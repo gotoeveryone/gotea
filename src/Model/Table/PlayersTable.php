@@ -154,21 +154,14 @@ class PlayersTable extends AppTable
      * 段位ごとの棋士数を取得します。
      *
      * @param int|null $countryId 所属国ID
-     * @param string|null $countryName 所属国名
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanksCount($countryId = null, $countryName = null)
+    public function findRanksCount($countryId = null)
     {
         $query = $this->find()->contain('Ranks')->where(['is_retired' => false]);
 
         if ($countryId) {
             $query->where(['country_id' => $countryId]);
-        }
-
-        if ($countryName) {
-            $query->innerJoinWith('Countries', function (Query $q) use ($countryName) {
-                return $q->where(['Countries.name' => $countryName]);
-            });
         }
 
         return $query->select([

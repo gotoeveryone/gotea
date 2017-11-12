@@ -80,13 +80,12 @@ class TitlesTable extends AppTable
     /**
      * 配列からモデルデータを生成します。
      *
+     * @param int|null $id ID
      * @param array $data パラメータ
      * @return \Gotea\Model\Entity\Title
      */
-    public function createEntity($data = []) : Title
+    public function createEntity($id = null, $data = []) : Title
     {
-        $id = $data['id'] ?? null;
-
         $properties = [];
         foreach ($data as $key => $value) {
             $name = Inflector::underscore($key);

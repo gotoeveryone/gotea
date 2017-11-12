@@ -33,6 +33,19 @@ class AppEntity extends Entity
     }
 
     /**
+     * バリデーションエラー一覧を取得します。
+     * フォーマットが「フィールド => [定義 => メッセージ]」となっているため、メッセージのみ抽出
+     *
+     * @return array
+     */
+    public function getValidateErrors()
+    {
+        return array_values(collection($this->getErrors())->map(function ($error) {
+            return array_shift($error);
+        })->toArray());
+    }
+
+    /**
      * 所属國を取得します。
      *
      * @param mixed $value 値
