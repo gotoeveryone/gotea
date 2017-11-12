@@ -59,7 +59,7 @@ export default {
     },
     outputJson() {
       this.$http
-        .post("/api/create-news")
+        .post("/api/titles/news")
         .then(() =>
           this.$store.dispatch("openDialog", {
             messages: "JSONを出力しました。"

@@ -22,15 +22,13 @@ export default {
   },
   methods: {
     onSearch(_params) {
-      this.$http
-        .get(this.getUrl(_params), { params: { withJa: "1" } })
-        .then(res => {
-          const json = res.body.response;
-          const dateObj = new Date(json.lastUpdate);
-          this.lastUpdate = `${dateObj.getFullYear()}年${dateObj.getMonth() +
-            1}月${dateObj.getDate()}日`;
-          this.items = json.ranking;
-        });
+      this.$http.get(this.getUrl(_params)).then(res => {
+        const json = res.body.response;
+        const dateObj = new Date(json.lastUpdate);
+        this.lastUpdate = `${dateObj.getFullYear()}年${dateObj.getMonth() +
+          1}月${dateObj.getDate()}日`;
+        this.items = json.ranking;
+      });
     },
     outputJson(_params) {
       this.$http
@@ -48,7 +46,7 @@ export default {
         );
     },
     getUrl(_params) {
-      return `/api/rankings/${_params.country}/${_params.year}/${_params.limit}`;
+      return `/api/players/ranking/${_params.country}/${_params.year}/${_params.limit}`;
     }
   }
 };
