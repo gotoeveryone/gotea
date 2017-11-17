@@ -1,6 +1,1 @@
-# 対象チケットNo.
-
-
-# 概要
-
-- 
+merges <issues_no>
