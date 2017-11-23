@@ -30,7 +30,7 @@ class MyAuthComponent extends AuthComponent
             return false;
         }
 
-        Log::info(__("ユーザ：{$user['userName']}がログインしました。"));
+        Log::info(__("ユーザ：{$user['name']}がログインしました。"));
 
         return $user;
     }
@@ -42,7 +42,7 @@ class MyAuthComponent extends AuthComponent
      */
     public function logout()
     {
-        $token = $this->user('access_token');
+        $token = $this->user('accessToken');
         if ($token) {
             $this->Json->callApi('deauth', 'delete', [], [
                 'Authorization' => "Bearer ${token}",
@@ -62,7 +62,7 @@ class MyAuthComponent extends AuthComponent
     {
         // トークン発行
         $response = $this->Json->callApi('auth', 'post', $credentials);
-        $token = $response['access_token'] ?? null;
+        $token = $response['accessToken'] ?? null;
 
         if ($this->response->getStatusCode() !== 200) {
             return false;
@@ -79,7 +79,7 @@ class MyAuthComponent extends AuthComponent
 
         // セッションにユーザを保存
         $user['password'] = $credentials['password'];
-        $user['access_token'] = $token;
+        $user['accessToken'] = $token;
         $this->setUser($user);
 
         return $user;
