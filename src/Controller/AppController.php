@@ -63,8 +63,8 @@ abstract class AppController extends Controller
     {
         if ($user) {
             $this->set([
-                'userid' => $user['userId'],
-                'username' => $user['userName'],
+                'userid' => $user['account'],
+                'username' => $user['name'],
                 'admin' => ($user['role'] === '管理者'),
             ]);
 
