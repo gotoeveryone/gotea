@@ -38,7 +38,7 @@ class SaveUserBehavior extends Behavior
     private function __getLoginUserId() : string
     {
         $session = new Session();
-        $userId = $session->read('Auth.User.userId');
+        $userId = $session->read('Auth.User.account');
 
         return !$userId ? $session->consume('Api-UserId') : $userId;
     }
