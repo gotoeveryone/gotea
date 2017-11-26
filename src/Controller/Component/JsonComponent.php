@@ -36,7 +36,10 @@ class JsonComponent extends Component
         $body = $response->getBody();
 
         $this->response = $this->response->withStatus($response->getStatusCode());
-        if ($response->isOk()) {
+
+        // \Cake\Http\Client\Messsage には`200`～`202`の定義しかないため、
+        // \Cake\Http\Client\Responseのこのメソッドは`204`をOKとしていない
+        if ($response->isOk() || $response->getStatusCode() === 204) {
             return json_decode($body, $assoc);
         }
 
