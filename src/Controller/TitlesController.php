@@ -54,11 +54,11 @@ class TitlesController extends AppController
 
         // 保存
         if (!$this->Titles->save($title)) {
-            $this->_writeToSession('title', $title)->_setErrors($title->errors());
+            $this->_writeToSession('title', $title)->_setErrors($title->getErrors());
         } else {
             $this->_setMessages(__('[{0}: {1}] を保存しました。', $title->id, $title->name));
         }
 
-        return $this->setAction('detail', $title->id);
+        return $this->setAction('view', $title->id);
     }
 }
