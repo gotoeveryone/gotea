@@ -18,6 +18,7 @@ class TitleScoresControllerTest extends IntegrationTestCase
         'app.title_score_details',
         'app.players',
         'app.countries',
+        'app.ranks',
     ];
 
     /**
