@@ -16,7 +16,7 @@
                     <span v-text="getRank(idx, item)"></span>
                 </span>
                 <span class="left player">
-                    <a class="player-link" :class="getSexClass(item)" @click="select(item)"
+                    <a class="view-link" :class="getSexClass(item)" @click="select(item)"
                         v-text="item.name"></a>
                 </span>
                 <span class="point" v-text="item.win"></span>
