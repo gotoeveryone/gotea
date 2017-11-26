@@ -1,27 +1,41 @@
 <?php
-/**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @since         1.2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
+
 namespace Gotea\Test\TestCase\Controller;
 
-use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * PlayersControllerTest class
+ * 棋士コントローラのテスト
  */
 class PlayersControllerTest extends IntegrationTestCase
 {
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'app.countries',
+        'app.ranks',
+        'app.organizations',
+        'app.players',
+        'app.player_scores',
+        'app.player_ranks',
+        'app.titles',
+        'app.title_scores',
+        'app.title_score_details',
+        'app.retention_histories',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->__createSession();
+    }
+
     /**
      * 画面が見えるか
      *
@@ -31,8 +45,8 @@ class PlayersControllerTest extends IntegrationTestCase
     {
         $this->get('/players/');
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
     }
 
     /**
@@ -42,36 +56,111 @@ class PlayersControllerTest extends IntegrationTestCase
      */
     public function testMissingTemplate()
     {
-        Configure::write('debug', false);
-        $this->get('/players/search');
+        $this->get('/players/missing');
 
         $this->assertResponseError();
         $this->assertResponseContains('Error');
     }
 
     /**
-     * GETでアクセスできない
+     * 初期表示
      *
      * @return void
      */
-    public function testNoGetMethod()
+    public function testIndex()
     {
-        Configure::write('debug', false);
-        $this->get('/players/search');
+        $this->get('/players');
 
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
-    }
-
-    /**
-     * Test that missing template renders 404 page in production
-     *
-     * @return void
-     */
-    public function testDetail()
-    {
-        $this->get('/players/detail/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<html>');
+    }
+
+    /**
+     * 検索
+     *
+     * @return void
+     */
+    public function testSearch()
+    {
+        $this->enableCsrfToken();
+        $data = [
+            'sex' => '男性',
+            'country_id' => '1',
+            'joined_from' => '1987',
+        ];
+        $this->post('/players', $data);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<nav class="nav">');
+    }
+
+    /**
+     * 新規作成（パラメータ無し）
+     *
+     * @return void
+     */
+    public function testNewNotHasParameter()
+    {
+        $this->get('/players/new');
+        $this->assertResponseError();
+        $this->assertResponseCode(400);
+    }
+
+    /**
+     * 新規作成（パラメータ有り）
+     *
+     * @return void
+     */
+    public function testNewHasParameter()
+    {
+        $this->get('/players/new?country_id=1');
+        $this->assertResponseOk();
+
+        // 詳細画面はナビゲーション非表示
+        $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * 詳細（データ無し）
+     *
+     * @return void
+     */
+    public function testViewNotFound()
+    {
+        $this->get('/players/99999');
+        $this->assertResponseError();
+        $this->assertResponseCode(404);
+    }
+
+    /**
+     * 詳細（データ有り）
+     *
+     * @return void
+     */
+    public function testView()
+    {
+        $this->get('/players/1');
+        $this->assertResponseOk();
+
+        // 詳細画面はナビゲーション非表示
+        $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * セッションデータ生成
+     *
+     * @return void
+     */
+    private function __createSession()
+    {
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'account' => env('TEST_USER'),
+                    'name' => 'テスト',
+                    'role' => '管理者',
+                ],
+            ],
+        ]);
     }
 }

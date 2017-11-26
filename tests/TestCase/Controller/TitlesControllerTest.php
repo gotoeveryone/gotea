@@ -4,9 +4,9 @@ namespace Gotea\Test\TestCase\Controller;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * タイトル成績コントローラのテスト
+ * タイトルコントローラのテスト
  */
-class TitleScoresControllerTest extends IntegrationTestCase
+class TitlesControllerTest extends IntegrationTestCase
 {
     /**
      * Fixtures
@@ -14,10 +14,12 @@ class TitleScoresControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.title_scores',
-        'app.title_score_details',
+        'app.titles',
+        'app.retention_histories',
         'app.players',
         'app.countries',
+        'app.ranks',
+        'app.organizations',
     ];
 
     /**
@@ -36,7 +38,7 @@ class TitleScoresControllerTest extends IntegrationTestCase
      */
     public function testDisplay()
     {
-        $this->get('/scores/');
+        $this->get('/titles/');
         $this->assertResponseOk();
         $this->assertTemplate('index');
         $this->assertResponseContains('<nav class="nav">');
@@ -49,7 +51,7 @@ class TitleScoresControllerTest extends IntegrationTestCase
      */
     public function testMissingTemplate()
     {
-        $this->get('/scores/missing');
+        $this->get('/titles/missing');
 
         $this->assertResponseError();
         $this->assertResponseContains('Error');
@@ -62,27 +64,35 @@ class TitleScoresControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->get('/scores');
+        $this->get('/titles');
 
         $this->assertResponseOk();
     }
 
     /**
-     * 検索
+     * 詳細（データ無し）
      *
      * @return void
      */
-    public function testSearch()
+    public function testViewNotFound()
     {
-        $this->enableCsrfToken();
-        $data = [
-            'started' => '2017/01/01',
-            'ended' => '2017/12/31',
-        ];
-        $this->post('/scores', $data);
+        $this->get('/titles/99999');
+        $this->assertResponseError();
+        $this->assertResponseCode(404);
+    }
 
+    /**
+     * 詳細（データ有り）
+     *
+     * @return void
+     */
+    public function testView()
+    {
+        $this->get('/titles/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<nav class="nav">');
+
+        // 詳細画面はナビゲーション非表示
+        $this->assertResponseNotContains('<nav class="nav">');
     }
 
     /**
