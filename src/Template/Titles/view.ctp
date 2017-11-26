@@ -64,7 +64,7 @@
                         <div class="box">
                             <div class="label-row">修正日</div>
                             <div class="input-row">
-                                <?=$this->Form->text('html_file_modified', ['type' => 'date', 'class' => 'datepicker'])?>
+                                <?= $this->Form->text('html_file_modified', ['class' => 'datepicker']) ?>
                             </div>
                         </div>
                         <div class="box">
