@@ -49,9 +49,9 @@ class PlayerRanksFixture extends TestFixture
             'id' => 1,
             'player_id' => 1,
             'rank_id' => 1,
-            'promoted' => '2017-07-08',
-            'created' => '2017-07-08 15:11:26',
-            'modified' => '2017-07-08 15:11:26'
+            'promoted' => '2017-11-26',
+            'created' => '2017-11-26 15:09:51',
+            'modified' => '2017-11-26 15:09:51'
         ],
     ];
 }

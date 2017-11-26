@@ -2,14 +2,12 @@
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestCase;
-use Gotea\Controller\TitleScoresController;
 
 /**
- * Gotea\Controller\TitleScoresController Test Case
+ * タイトル成績コントローラのテスト
  */
 class TitleScoresControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -17,63 +15,93 @@ class TitleScoresControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.title_scores',
-        'app.titles',
-        'app.retention_histories',
+        'app.title_score_details',
         'app.players',
         'app.countries',
         'app.ranks',
-        'app.organizations',
-        'app.player_scores',
-        'app.title_score_details'
     ];
 
     /**
-     * Test index method
+     * {@inheritDoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->__createSession();
+    }
+
+    /**
+     * 画面が見えるか
+     *
+     * @return void
+     */
+    public function testDisplay()
+    {
+        $this->get('/scores/');
+        $this->assertResponseOk();
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
+    }
+
+    /**
+     * テンプレートが存在しない
+     *
+     * @return void
+     */
+    public function testMissingTemplate()
+    {
+        $this->get('/scores/missing');
+
+        $this->assertResponseError();
+        $this->assertResponseContains('Error');
+    }
+
+    /**
+     * 初期表示
      *
      * @return void
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/scores');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test view method
+     * 検索
      *
      * @return void
      */
-    public function testView()
+    public function testSearch()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->enableCsrfToken();
+        $data = [
+            'started' => '2017/01/01',
+            'ended' => '2017/12/31',
+        ];
+        $this->post('/scores', $data);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<nav class="nav">');
     }
 
     /**
-     * Test add method
+     * セッションデータ生成
      *
      * @return void
      */
-    public function testAdd()
+    private function __createSession()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'account' => env('TEST_USER'),
+                    'name' => 'テスト',
+                    'role' => '管理者',
+                ],
+            ],
+        ]);
     }
 }

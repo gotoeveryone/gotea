@@ -30,8 +30,7 @@ class UsersControllerTest extends IntegrationTestCase
     public function testLoginFailed()
     {
         $this->get('/players');
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'index',
-            'redirect' => '/players']);
+        $this->assertRedirect(['_name' => 'top', 'redirect' => '/players']);
 
         $invalidData = [
             // 未入力
@@ -58,7 +57,7 @@ class UsersControllerTest extends IntegrationTestCase
 
         $this->enableCsrfToken();
         foreach ($invalidData as $data) {
-            $this->post('/users/login', $data);
+            $this->post('/login', $data);
             $this->assertResponseError();
         }
     }
@@ -72,12 +71,12 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->enableCsrfToken();
         $data = [
-            'username' => env('TEST_USER'),
+            'account' => env('TEST_USER'),
             'password' => env('TEST_PASSWORD'),
         ];
 
-        $this->post('/users/login', $data);
-        $this->assertRedirect(['controller' => 'Players', 'action' => 'index']);
+        $this->post('/login', $data);
+        $this->assertRedirect(['_name' => 'players']);
     }
 
     /**
@@ -90,14 +89,14 @@ class UsersControllerTest extends IntegrationTestCase
         $this->__createSession();
 
         $this->get('/');
-        $this->assertRedirect(['controller' => 'Players', 'action' => 'index']);
+        $this->assertRedirect(['_name' => 'players']);
     }
 
     public function testLogout()
     {
         $this->__createSession();
 
-        $this->get('/users/logout');
+        $this->get('/logout');
         $this->assertResponseCode(302);
     }
 
@@ -112,7 +111,8 @@ class UsersControllerTest extends IntegrationTestCase
             'Auth' => [
                 'User' => [
                     'id' => 1,
-                    'userName' => 'テスト',
+                    'account' => env('TEST_USER'),
+                    'name' => 'テスト',
                     'role' => '管理者',
                 ],
             ],
