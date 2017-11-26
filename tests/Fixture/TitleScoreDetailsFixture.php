@@ -47,10 +47,30 @@ class TitleScoreDetailsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'title_score_id' => 1,
             'player_id' => 1,
-            'division' => 'Lorem ipsum dolor sit amet',
+            'division' => '勝',
+            'created' => '2017-11-26 15:09:50',
+            'modified' => '2017-11-26 15:09:50'
+        ],
+        [
+            'title_score_id' => 1,
+            'player_id' => 2,
+            'division' => '敗',
+            'created' => '2017-11-26 15:09:50',
+            'modified' => '2017-11-26 15:09:50'
+        ],
+        [
+            'title_score_id' => 2,
+            'player_id' => 2,
+            'division' => '勝',
+            'created' => '2017-11-26 15:09:50',
+            'modified' => '2017-11-26 15:09:50'
+        ],
+        [
+            'title_score_id' => 2,
+            'player_id' => 1,
+            'division' => '敗',
             'created' => '2017-11-26 15:09:50',
             'modified' => '2017-11-26 15:09:50'
         ],

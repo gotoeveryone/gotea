@@ -1,18 +1,20 @@
 <?php
 namespace Gotea\Test\TestCase\Model\Table;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Table\TitleScoresTable;
 
 /**
- * Gotea\Model\Table\TitleScoresTable Test Case
+ * タイトル成績モデルのテストケース
+ *
+ * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
  */
 class TitleScoresTableTest extends TestCase
 {
-
     /**
-     * Test subject
+     * タイトル成績
      *
      * @var \Gotea\Model\Table\TitleScoresTable
      */
@@ -25,14 +27,11 @@ class TitleScoresTableTest extends TestCase
      */
     public $fixtures = [
         'app.title_scores',
-        'app.titles',
-        'app.retention_histories',
+        'app.title_score_details',
         'app.players',
         'app.countries',
         'app.ranks',
         'app.organizations',
-        'app.player_scores',
-        'app.title_score_details'
     ];
 
     /**
@@ -60,32 +59,28 @@ class TitleScoresTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
+     * タイトル成績検索（データ有り）
      *
      * @return void
      */
-    public function testInitialize()
+    public function testFindMatches()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $scores = $this->TitleScores->findMatches([
+            'target_year' => FrozenDate::now()->year,
+        ]);
+        $this->assertGreaterThan(0, $scores->count());
     }
 
     /**
-     * Test validationDefault method
+     * タイトル成績検索（データ無し）
      *
      * @return void
      */
-    public function testValidationDefault()
+    public function testFindMatchesNoData()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $scores = $this->TitleScores->findMatches([
+            'target_year' => FrozenDate::now()->addYears(1)->year,
+        ]);
+        $this->assertEquals(0, $scores->count());
     }
 }

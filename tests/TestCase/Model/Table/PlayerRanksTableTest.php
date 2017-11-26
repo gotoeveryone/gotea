@@ -6,13 +6,15 @@ use Cake\TestSuite\TestCase;
 use Gotea\Model\Table\PlayerRanksTable;
 
 /**
- * Gotea\Model\Table\PlayerRanksTable Test Case
+ * 棋士昇段モデルのテストケース
+ *
+ * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
  */
 class PlayerRanksTableTest extends TestCase
 {
 
     /**
-     * Test subject
+     * 棋士昇段
      *
      * @var \Gotea\Model\Table\PlayerRanksTable
      */
@@ -28,20 +30,6 @@ class PlayerRanksTableTest extends TestCase
         'app.players',
         'app.countries',
         'app.ranks',
-        'app.organizations',
-        'app.player_scores',
-        'app.retention_histories',
-        'app.titles',
-        'app.win_details',
-        'app.title_scores',
-        'app.title_score_details',
-        'app.winner',
-        'app.lose_details',
-        'app.loser',
-        'app.draw_details',
-        'app.world_win_details',
-        'app.world_lose_details',
-        'app.world_draw_details'
     ];
 
     /**
@@ -69,32 +57,24 @@ class PlayerRanksTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
+     * 昇段情報取得（データ有り）
      *
      * @return void
      */
-    public function testInitialize()
+    public function testFindRanks()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $ranks = $this->PlayerRanks->findRanks(1);
+        $this->assertGreaterThan(0, $ranks->count());
     }
 
     /**
-     * Test validationDefault method
+     * 昇段情報取得（データ無し）
      *
      * @return void
      */
-    public function testValidationDefault()
+    public function testFindRanksNoData()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $ranks = $this->PlayerRanks->findRanks(2);
+        $this->assertEquals(0, $ranks->count());
     }
 }
