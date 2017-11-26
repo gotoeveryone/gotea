@@ -36,9 +36,7 @@ class MyAuthComponent extends AuthComponent
     }
 
     /**
-     * ログアウト処理を行います。
-     *
-     * @return string Normalized config `logoutRedirect`
+     * {@inheritDoc}
      */
     public function logout()
     {
