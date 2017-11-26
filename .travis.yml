@@ -15,12 +15,15 @@ before_install:
   - node --version
 
 before_script:
+  - mysql -uroot -e "create database gotea_test"
   - sh -c "composer require 'cakephp/cakephp-codesniffer:dev-master'"
+  - sh -c "cp .env.example .env"
   - phpenv rehash
   - npm install
 
 script:
   - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./webroot"
+  - sh -c "vendor/bin/phpunit tests/TestCase/Model/Table"
   - sh -c "npm run lint"
 
 notifications:
