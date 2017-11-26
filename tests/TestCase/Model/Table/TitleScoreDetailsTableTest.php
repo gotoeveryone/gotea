@@ -78,8 +78,7 @@ class TitleScoreDetailsTableTest extends TestCase
      */
     public function testFindScores()
     {
-        $scores = $this->TitleScoreDetails->findScores(
-            $this->TitleScoreDetails->query());
+        $scores = $this->TitleScoreDetails->findScores($this->TitleScoreDetails->query());
 
         $this->assertGreaterThanOrEqual(0, $scores->count());
     }

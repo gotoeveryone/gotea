@@ -3,8 +3,8 @@ namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Inflector;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Inflector;
 use Gotea\Model\Table\TitlesTable;
 
 /**

@@ -37,7 +37,7 @@ class PlayersTableTest extends TestCase
         'app.titles',
         'app.title_score_details',
         'app.title_scores',
-   ];
+    ];
 
     /**
      * setUp method
