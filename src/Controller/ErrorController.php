@@ -16,6 +16,16 @@ use PDOException;
 class ErrorController extends BaseErrorController
 {
     /**
+     * {@inheritDoc}
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadComponent('Flash');
+    }
+
+    /**
      * ロールバック処理を行います。
      *
      * @param Exception $exception 例外
@@ -27,7 +37,7 @@ class ErrorController extends BaseErrorController
         Log::error($exception->getMessage());
 
         if ($exception instanceof PDOException) {
-            $this->Flash->error(__("データの保存に失敗しました…。"));
+            $this->Flash->error(__('データ取得または保存に失敗しました。<br/>詳細はログを確認してください。'));
         }
     }
 }

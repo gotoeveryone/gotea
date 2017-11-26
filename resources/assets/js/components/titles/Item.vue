@@ -26,7 +26,7 @@
             <input type="checkbox" @change="save" v-model="item.isClosed" :disabled="!isSaved()">
         </span>
         <span class="table-column open-detail">
-            <a @click="select()" v-text="label"></a>
+            <a class="view-link" @click="select()" v-text="label"></a>
         </span>
     </li>
 </template>

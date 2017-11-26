@@ -55,6 +55,11 @@ class UsersController extends AppController
 
         // ログイン成功→リダイレクト
         if ($this->Auth->login($credentials)) {
+            $redirect = $this->Auth::QUERY_STRING_REDIRECT;
+            $this->request = $this->request->withQueryParams([
+                $redirect => $this->request->getData($redirect),
+            ]);
+
             return $this->redirect($this->Auth->redirectUrl());
         }
 
