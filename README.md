@@ -16,6 +16,34 @@
 2. プロジェクトルートで`composer install`を実行します。
 3. 同じくプロジェクトルートで`npm install`を実行します。
 
+### VSCodeを利用する場合
+
+プロジェクトルートに`.vscode/settings.json`を配置し、以下を記載します。
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9000
+        },
+        {
+            "name": "Listen for Docker XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9001,
+            "log": true,
+            "pathMappings": {
+                "/usr/share/nginx/html": "${workspaceRoot}"
+            }
+        }
+    ]
+}
+```
+
 ### Dockerを利用する場合
 
 以下コマンドを実行してください。
