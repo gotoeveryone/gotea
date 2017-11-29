@@ -1,24 +1,24 @@
 version: '2'
 services:
-  igoapp:
+  gotea:
     image: busybox
     volumes:
       - ../:/usr/share/nginx/html
 
-  nginx-igoapp:
+  nginx-gotea:
     build: ./nginx
-    volumes_from: [igoapp]
+    volumes_from: [gotea]
     ports:
       - 80:80
     links:
-      - php7-igoapp
+      - php7-gotea
 
-  php7-igoapp:
+  php7-gotea:
     build: ./php-fpm
-    volumes_from: [igoapp]
+    volumes_from: [gotea]
     expose:
       - 9000
     ports:
       - 9001:9001
     extra_hosts:
-      - dockerhost:${LOCAL_IP}
+     - dockerhost:${LOCAL_IP}
