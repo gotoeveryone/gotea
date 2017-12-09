@@ -37,7 +37,7 @@ class RetentionHistory extends AppEntity
      */
     protected function _getTeamLabel()
     {
-        return __($this->is_team ? '（団体）' : '（個人）');
+        return __($this->is_team ? '（団体戦）' : '（個人戦）');
     }
 
     /**

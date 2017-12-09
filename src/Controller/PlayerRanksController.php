@@ -34,9 +34,34 @@ class PlayerRanksController extends AppController
         $rank = $this->PlayerRanks->newEntity($this->request->getParsedBody());
         $rank->player_id = $id;
         if (!$this->PlayerRanks->save($rank)) {
-            $this->_setErrors($rank->errors());
+            $this->_setErrors($rank->getErrors());
         } else {
-            $this->_setMessages(__("昇段情報を登録しました。"));
+            $this->_setMessages(__('昇段情報を登録しました。'));
+        }
+
+        return $this->redirect([
+            '_name' => 'view_player',
+            '?' => ['tab' => 'ranks'],
+            $id,
+        ]);
+    }
+
+    /**
+     * 更新処理
+     *
+     * @param int $id 棋士ID
+     * @param int $rowId 昇段情報ID
+     * @return \Cake\Http\Response|null
+     */
+    public function update(int $id, int $rowId)
+    {
+        // バリデーション
+        $model = $this->PlayerRanks->get($rowId);
+        $this->PlayerRanks->patchEntity($model, $this->request->getParsedBody());
+        if (!$this->PlayerRanks->save($model)) {
+            $this->_setErrors($rank->getErrors());
+        } else {
+            $this->_setMessages(__('昇段情報を保存しました。'));
         }
 
         return $this->redirect([

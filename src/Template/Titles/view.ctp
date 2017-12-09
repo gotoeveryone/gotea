@@ -92,7 +92,7 @@
             <?=$this->Form->create(null, [
                 'id' => 'addHistoryForm',
                 'type' => 'post',
-                'url' => ['_name' => 'create_histories', $title->id],
+                'url' => ['_name' => 'save_histories', $title->id],
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
@@ -100,46 +100,48 @@
                 ]
             ])?>
                 <?=$this->Form->hidden('name', ['value' => $title->name])?>
-                <?=$this->Form->hidden('is_team', ['value' => $title->is_team])?>
                 <div class="category-row">保持情報</div>
                 <ul class="boxes">
-                    <add-history domain="<?= $this->Url->build('/') ?>" is-team="<?= $title->is_team ?>"></add-history>
+                    <add-history domain="<?= $this->Url->build('/') ?>" :history-id="historyId"
+                        is-team="<?= $title->is_team ?>" @cleared="clearHistory()"></add-history>
                     <?php if (!empty(($title->retention_histories))) : ?>
                         <?php if (($retention = $title->now_retention)) : ?>
-                            <li class="row">
-                                <div class="box">
-                                    <div class="label-row">現在の保持情報</div>
-                                </div>
-                            </li>
-                            <li class="row">
-                                <div class="box">
-                                    <div class="input-row">
-                                        <span class="inner-column"><?= h($retention->target_year).'年' ?></span>
-                                        <span class="inner-column"><?= h($retention->holding).'期' ?></span>
-                                        <span class="inner-column"><?= h($retention->name) ?></span>
-                                        <span class="inner-column"><?= h($retention->team_label) ?></span>
-                                        <span class="inner-column"><?= h($retention->winner_name) ?></span>
-                                    </div>
-                                </div>
-                            </li>
-                        <?php endif ?>
+                        <li class="label-row">現在の保持情報</li>
                         <li class="row">
                             <div class="box">
-                                <div class="label-row">保持情報（履歴）</div>
-                            </div>
-                        </li>
-                        <?php foreach ($title->histories as $history) : ?>
-                            <li class="row">
-                                <div class="box">
-                                    <div class="input-row">
-                                        <span class="inner-column"><?= h($history->target_year).'年' ?></span>
-                                        <span class="inner-column"><?= h($history->holding).'期' ?></span>
-                                        <span class="inner-column"><?= h($history->name) ?></span>
-                                        <span class="inner-column"><?= h($history->team_label) ?></span>
-                                        <span class="inner-column"><?= h($history->winner_name) ?></span>
+                                <div class="input-row">
+                                    <div class="box">
+                                        <span class="inner-column"><?= h($retention->target_year).'年' ?></span>
+                                        <span class="inner-column"><?= h($retention->holding).'期' ?></span>
+                                        <span class="inner-column"><label>タイトル名：</label><?= h($retention->name) ?></span>
+                                        <span class="inner-column"><?= h($retention->team_label) ?></span>
+                                        <span class="inner-column"><label>優勝者：</label><?= h($retention->winner_name) ?></span>
+                                    </div>
+                                    <div class="button-column">
+                                        <button type="button" value="edit" @click="select('<?= $retention->id ?>')">編集</button>
                                     </div>
                                 </div>
-                            </li>
+                            </div>
+                        </li>
+                        <?php endif ?>
+                        <li class="label-row">保持情報（履歴）</li>
+                        <?php foreach ($title->histories as $history) : ?>
+                        <li class="row">
+                            <div class="box">
+                                <div class="input-row">
+                                    <div class="box">
+                                        <span class="inner-column"><?= h($history->target_year).'年' ?></span>
+                                        <span class="inner-column"><?= h($history->holding).'期' ?></span>
+                                        <span class="inner-column"><label>タイトル名：</label><?= h($history->name) ?></span>
+                                        <span class="inner-column"><?= h($history->team_label) ?></span>
+                                        <span class="inner-column"><label>優勝者：</label><?= h($history->winner_name) ?></span>
+                                    </div>
+                                    <div class="button-column">
+                                        <button type="button" value="edit" @click="select('<?= $history->id ?>')">編集</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         <?php endforeach ?>
                     <?php endif ?>
                 </ul>

@@ -27,7 +27,7 @@ class AppTable extends Table
     }
 
     /**
-     * 指定された条件でテーブルを検索し、存在しなければ条件を生成したモデルを返却します。
+     * 指定された条件でテーブルを検索し、存在しなければ条件で生成したモデルを返却します。
      *
      * @param array $options オプション
      * @return \Cake\Datasource\EntityInterface

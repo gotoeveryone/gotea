@@ -107,7 +107,7 @@
 .input-row {
     @extend %row;
     margin: 0;
-    padding: .3rem .7rem;
+    padding: .5rem .7rem;
     min-height: 3rem;
 
     &-label {
@@ -265,6 +265,30 @@
                     flex-grow: 2;
                 }
             }
+        }
+    }
+}
+
+.rank-form {
+    width: 100%;
+
+    .rank-input-box {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+    }
+
+    .rank-input {
+        width: 200px;
+
+        &:not(:first-child) {
+            margin-left: 10px;
+        }
+
+        &.checkbox-wrap {
+            margin-left: auto;
+            text-align: right;
         }
     }
 }

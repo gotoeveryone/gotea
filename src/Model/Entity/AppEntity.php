@@ -18,6 +18,14 @@ class AppEntity extends Entity
         'modified' => false,
     ];
 
+    // 出力しないフィールド
+    protected $_hidden = [
+        'created',
+        'created_by',
+        'modified',
+        'modified_by',
+    ];
+
     /**
      * {@inheritDoc}
      */

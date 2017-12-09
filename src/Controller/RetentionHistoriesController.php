@@ -13,20 +13,24 @@ namespace Gotea\Controller;
 class RetentionHistoriesController extends AppController
 {
     /**
-     * 登録処理
+     * 登録・更新処理
      *
      * @param int $id タイトルID
      * @return \Cake\Http\Response|null
      */
-    public function create(int $id)
+    public function save(int $id)
     {
-        // 保存
-        $history = $this->RetentionHistories->newEntity($this->request->getParsedBody());
+        // エンティティ取得 or 生成
+        $historyId = $this->request->getData('id');
+        $history = $this->RetentionHistories->findOrNew(['id' => $historyId]);
+        $this->RetentionHistories->patchEntity($history, $this->request->getParsedBody());
         $history->title_id = $id;
+
+        // 保存
         if (!$this->RetentionHistories->save($history)) {
             $this->_setErrors($history->errors());
         } else {
-            $this->_setMessages(__("保持履歴を登録しました。"));
+            $this->_setMessages(__('タイトル履歴を保存しました。'));
         }
 
         return $this->redirect([
