@@ -105,8 +105,8 @@ class PlayersTableTest extends TestCase
         $this->assertNotNull($player);
         $this->assertNotNull($player->country);
         $this->assertNotNull($player->rank);
-        $this->assertGreaterThan(0, iterator_count($player->player_ranks));
-        $this->assertGreaterThan(0, iterator_count($player->title_score_details));
+        $this->assertGreaterThan(0, count($player->player_ranks));
+        $this->assertGreaterThan(0, count($player->title_score_details));
     }
 
     /**

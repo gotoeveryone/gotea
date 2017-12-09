@@ -21,16 +21,16 @@ class AppEntity extends Entity
     /**
      * {@inheritDoc}
      */
-    public function &get($property)
-    {
-        $value = parent::get($property);
-        // 配列ならCollectionに変換
-        if (is_array($value)) {
-            $value = collection($value);
-        }
+    // public function &get($property)
+    // {
+    //     $value = parent::get($property);
+    //     // 配列ならCollectionに変換
+    //     if (is_array($value)) {
+    //         $value = collection($value);
+    //     }
 
-        return $value;
-    }
+    //     return $value;
+    // }
 
     /**
      * バリデーションエラー一覧を取得します。

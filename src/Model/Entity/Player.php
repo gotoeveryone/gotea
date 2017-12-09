@@ -12,6 +12,42 @@ use Cake\Routing\Router;
 class Player extends AppEntity
 {
     /**
+     * 入力フォーム用の入段日を取得します。
+     *
+     * @return array 入力フォーム用の入段日
+     */
+    protected function _getInputJoined()
+    {
+        $value = $this->joined;
+        $res = [];
+        if (strlen($value) >= 4) {
+            $res['year'] = substr($value, 0, 4);
+        }
+        if (strlen($value) >= 6) {
+            $res['month'] = substr($value, 4, 2);
+        }
+        if (strlen($value) >= 8) {
+            $res['day'] = substr($value, 6, 2);
+        }
+
+        return $res;
+    }
+
+    /**
+     * 入段日を日付フォーマットに変更して取得します。
+     *
+     * @return array 入段日
+     */
+    protected function _getFormatJoined()
+    {
+        $joined = collection($this->input_joined)->reject(function ($item) {
+            return $item === '' || $item === null;
+        })->toArray();
+
+        return implode('/', $joined);
+    }
+
+    /**
      * 年齢を取得します。
      *
      * @return int|null 年齢
@@ -115,9 +151,20 @@ class Player extends AppEntity
      * @param mixed $joined 設定値
      * @return string
      */
-    protected function _setJoined($joined)
+    protected function _setInputJoined($joined)
     {
-        return str_replace(['-', '/'], '', $joined);
+        $value = '';
+        if (isset($joined['year'])) {
+            $value .= $joined['year'];
+        }
+        if (!empty($joined['month'])) {
+            $value .= $joined['month'];
+        }
+        if (!empty($joined['day']) && strlen($value) === 6) {
+            $value .= $joined['day'];
+        }
+
+        return $this->joined = $value;
     }
 
     /**

@@ -9,7 +9,7 @@
         <?= $this->Html->charset() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            <?='棋士情報管理システム - '.h($cakeDescription ?? '') ?>
+            <?='Gotea - '.h($cakeDescription ?? '') ?>
         </title>
         <?= $this->Html->meta('icon') ?>
 
@@ -23,9 +23,9 @@
             <!-- ヘッダー -->
             <?php if (!isset($isDialog)) : ?>
             <header class="header">
-                <div class="system-name">棋士情報管理システム</div>
+                <div class="system-name"><?= isset($username) ? 'Gotea' : '' ?></div>
                 <!-- 見出し -->
-                <h1 class="page-title"><?=h($cakeDescription ?? '')?></h1>
+                <h1 class="page-title"><?=h($cakeDescription ?? 'Gotea')?></h1>
                 <div class="other">
                     <?php if (isset($username)) : ?>
                         <span class="username">ユーザ：<?=h($username)?></span>

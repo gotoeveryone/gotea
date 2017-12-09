@@ -70,10 +70,16 @@ Router::scope('/', function (RouteBuilder $routes) {
     });
 
     $routes->scope('/players', function (RouteBuilder $routes) {
-        $routes->post('/:id/scores', ['controller' => 'TitleScores', 'action' => 'searchByPlayer'],
-            'find_player_scores')->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
-        $routes->post('/:id/ranks', ['controller' => 'PlayerRanks', 'action' => 'create'],
-            'create_ranks')->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->post(
+            '/:id/scores',
+            ['controller' => 'TitleScores', 'action' => 'searchByPlayer'],
+            'find_player_scores'
+        )->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->post(
+            '/:id/ranks',
+            ['controller' => 'PlayerRanks', 'action' => 'create'],
+            'create_ranks'
+        )->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
     });
 
     $routes->scope('/ranks', ['controller' => 'PlayerRanks'], function (RouteBuilder $routes) {

@@ -123,24 +123,29 @@ class PlayersController extends AppController
     {
         // エンティティ取得 or 生成
         $player = $this->Players->findOrNew(['id' => $id]);
-
-        // 保存
         $this->Players->patchEntity($player, $this->request->getParsedBody());
+
+        // 失敗
         if (!$this->Players->save($player)) {
             $this->_writeToSession('player', $player)->_setErrors($player->errors());
-        } else {
-            $this->_setMessages(__('[{0}: {1}] を保存しました。', $player->id, $player->name));
 
-            // 連続作成の場合は新規登録画面へリダイレクト
-            if (!$id && $this->request->getData('is_continue')) {
-                return $this->redirect([
-                    'action' => 'new',
-                    '?' => ['country_id' => $player->country_id],
-                ]);
-            }
+            return $this->setAction(($player->id ? 'view' : 'new'), $player->id);
         }
 
-        return $this->setAction(($player->id ? 'view' : 'new'), $player->id);
+        // 成功
+        $this->_setMessages(__('[{0}: {1}] を保存しました。', $player->id, $player->name));
+        // 連続作成の場合は新規登録画面へリダイレクト
+        if (!$id && $this->request->getData('is_continue')) {
+            return $this->redirect([
+                '_name' => 'new_player',
+                '?' => ['country_id' => $player->country_id],
+            ]);
+        }
+
+        return $this->redirect([
+            '_name' => ($player->id ? 'view_player' : 'new_player'),
+            $player->id,
+        ]);
     }
 
     /**

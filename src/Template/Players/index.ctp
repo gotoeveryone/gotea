@@ -124,7 +124,7 @@
                         <?=h($player->name_english); ?>
                     </span>
                     <span class="enrollment">
-                        <?=$this->Date->formatJoinDelimiterValue($player->joined, '/'); ?>
+                        <?= $player->format_joined ?>
                     </span>
                     <span class="country">
                         <?=h($player->country->name); ?>

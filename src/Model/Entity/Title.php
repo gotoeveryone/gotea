@@ -38,7 +38,7 @@ class Title extends AppEntity
      */
     protected function _getNowRetention()
     {
-        return $this->retention_histories->filter(function ($item, $key) {
+        return collection($this->retention_histories)->filter(function ($item, $key) {
             return $item->holding === $this->holding;
         })->first();
     }
@@ -50,7 +50,7 @@ class Title extends AppEntity
      */
     protected function _getHistories()
     {
-        return $this->retention_histories->filter(function ($item, $key) {
+        return collection($this->retention_histories)->filter(function ($item, $key) {
             return $item->holding < $this->holding;
         });
     }
