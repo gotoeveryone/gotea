@@ -80,6 +80,13 @@ Router::scope('/', function (RouteBuilder $routes) {
             ['controller' => 'PlayerRanks', 'action' => 'create'],
             'create_ranks'
         )->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->put(
+            '/:id/ranks/:rowId',
+            ['controller' => 'PlayerRanks', 'action' => 'update'],
+            'update_ranks'
+        )->setPatterns([
+            'id' => RouteBuilder::ID, 'rowId' => RouteBuilder::ID,
+        ])->setPass(['id', 'rowId']);
     });
 
     $routes->scope('/ranks', ['controller' => 'PlayerRanks'], function (RouteBuilder $routes) {
