@@ -96,7 +96,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         // タイトル
         $routes->scope('/:id/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
-            $routes->post('/', ['action' => 'create'], 'create_histories')
+            $routes->post('/', ['action' => 'save'], 'save_histories')
                 ->setPass(['id']);
         });
     });
@@ -142,6 +142,11 @@ Router::scope('/', function (RouteBuilder $routes) {
             $routes->put('//:id', ['action' => 'update'], 'api_update_titles')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
             $routes->post('/news', ['action' => 'createNews'], 'api_news');
+        });
+
+        $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
+            $routes->get('/:id', ['action' => 'view'], 'api_history')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
     });
 

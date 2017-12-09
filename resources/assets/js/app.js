@@ -17,6 +17,7 @@ window.App = new Vue({
     data: {
         countryId: '',
         changed: false,
+        historyId: 0,
     },
     components: {
         modal: Modal,
@@ -47,6 +48,12 @@ window.App = new Vue({
                 messages: _messages,
                 type: _type,
             });
+        },
+        select(_historyId) {
+            this.historyId = parseInt(_historyId, 10)
+        },
+        clearHistory() {
+            this.historyId = 0;
         },
     },
     computed: {
