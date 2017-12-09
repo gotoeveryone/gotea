@@ -107,16 +107,28 @@
                         <div class="box">
                             <div class="label-row">入段日</div>
                             <div class="input-row">
-                                <?php
-                                if (!$player->id) {
-                                    echo $this->Form->text('joined', [
-                                        'class' => 'datepicker'
-                                    ]);
-                                } else {
-                                    echo $this->Date->formatJpValue($player->joined);
-                                    echo $this->Form->hidden('joined');
-                                }
-                                ?>
+                                <?= $this->Form->date('input_joined', [
+                                    'empty' => [
+                                        'year' => false,
+                                        'month' => ['' => '-'],
+                                        'day' => ['' => '-'],
+                                    ],
+                                    'year' => [
+                                        'start' => '1920',
+                                        'end' => date('Y'),
+                                        'class' => 'joined',
+                                        'suffix' => '年',
+                                    ],
+                                    'month' => [
+                                        'class' => 'joined',
+                                        'suffix' => '月',
+                                    ],
+                                    'day' => [
+                                        'class' => 'joined',
+                                        'suffix' => '日',
+                                    ],
+                                    'monthNames' => false,
+                                ]); ?>
                             </div>
                         </div>
                     </li>

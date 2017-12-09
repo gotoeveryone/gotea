@@ -40,7 +40,8 @@
     .system-name {
         width: 15%;
         min-width: 200px;
-        font-size: 130%;
+        color: #e2d14b;
+        font-size: 180%;
         font-weight: bold;
     }
     .page-title {
@@ -152,6 +153,10 @@
     .year {
         width: 4rem;
         text-align: right;
+    }
+
+    .joined {
+        width: 80px;
     }
 
     .remarks {
