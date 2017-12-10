@@ -95,15 +95,16 @@ abstract class AppController extends Controller
     /**
      * エラーを設定します。
      *
+     * @param int $code ステータスコード
      * @param array|string $errors エラー
      * @param string $title タイトル
      * @param string|null $view View to use for rendering
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function _renderWithErrors($errors, $title, $view = null, $layout = null)
+    protected function _renderWithErrors(int $code, $errors, $title, $view = null, $layout = null)
     {
-        return $this->_setErrors($errors)->_renderWith($title, $view, $layout);
+        return $this->_setErrors($code, $errors)->_renderWith($title, $view, $layout);
     }
 
     /**
@@ -129,7 +130,7 @@ abstract class AppController extends Controller
      *
      * @param string $key キー
      * @param mixed $value 値
-     * @return \Cake\Controller\Controller
+     * @return \Gotea\Controller\AppController
      */
     protected function _writeToSession($key, $value)
     {
@@ -152,11 +153,14 @@ abstract class AppController extends Controller
     /**
      * エラーを設定します。
      *
+     * @param int $code ステータスコード
      * @param array|string $errors エラー
-     * @return \Cake\Controller\Controller
+     * @return \Gotea\Controller\AppController
      */
-    protected function _setErrors($errors)
+    protected function _setErrors(int $code, $errors)
     {
+        $this->response = $this->response->withStatus($code);
+
         return $this->_setMessages($errors, 'error');
     }
 
@@ -165,7 +169,7 @@ abstract class AppController extends Controller
      *
      * @param array|string $messages メッセージ
      * @param string $type メッセージの種類
-     * @return \Cake\Controller\Controller
+     * @return \Gotea\Controller\AppController
      */
     protected function _setMessages($messages, $type = 'info')
     {
@@ -178,17 +182,17 @@ abstract class AppController extends Controller
      * タイトルタグに表示する値を設定します。
      *
      * @param string $title タイトル
-     * @return \Cake\Controller\Controller
+     * @return \Gotea\Controller\AppController
      */
     protected function _setTitle(string $title)
     {
-        return $this->set('cakeDescription', $title);
+        return $this->set('title', $title);
     }
 
     /**
      * ダイアログ表示を設定します。
      *
-     * @return \Cake\Controller\Controller
+     * @return \Gotea\Controller\AppController
      */
     protected function _enableDialogMode()
     {

@@ -51,7 +51,7 @@ class PlayersController extends AppController
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
-            return $this->_renderWithErrors($form->errors(), '棋士情報検索', 'index');
+            return $this->_renderWithErrors(400, $form->errors(), '棋士情報検索', 'index');
         }
 
         // データを取得
@@ -127,7 +127,8 @@ class PlayersController extends AppController
 
         // 失敗
         if (!$this->Players->save($player)) {
-            $this->_writeToSession('player', $player)->_setErrors($player->errors());
+            $this->_writeToSession('player', $player)
+                ->_setErrors(400, $player->getErrors());
 
             return $this->setAction(($player->id ? 'view' : 'new'), $player->id);
         }

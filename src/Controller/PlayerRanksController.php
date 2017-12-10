@@ -34,7 +34,7 @@ class PlayerRanksController extends AppController
         $rank = $this->PlayerRanks->newEntity($this->request->getParsedBody());
         $rank->player_id = $id;
         if (!$this->PlayerRanks->save($rank)) {
-            $this->_setErrors($rank->getErrors());
+            $this->_setErrors(400, $rank->getErrors());
         } else {
             $this->_setMessages(__('昇段情報を登録しました。'));
         }
@@ -59,7 +59,7 @@ class PlayerRanksController extends AppController
         $model = $this->PlayerRanks->get($rowId);
         $this->PlayerRanks->patchEntity($model, $this->request->getParsedBody());
         if (!$this->PlayerRanks->save($model)) {
-            $this->_setErrors($rank->getErrors());
+            $this->_setErrors(400, $rank->getErrors());
         } else {
             $this->_setMessages(__('昇段情報を保存しました。'));
         }

@@ -82,8 +82,9 @@ class PlayerRanksControllerTest extends AppTestCase
     {
         $this->enableCsrfToken();
         $data = [
+            'id' => 1,
             'player_id' => 1,
-            'rank_id' => 1,
+            'rank_id' => 3,
             'promoted' => '2017/12/10',
         ];
         $this->put(['_name' => 'update_ranks', 1, 1], $data);
