@@ -6,7 +6,7 @@
 
 以下がインストールされていること。
 
-- php7+
+- php7.1.3+
 - composer
 - nodejs
 

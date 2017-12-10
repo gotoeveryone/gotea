@@ -18,19 +18,14 @@ use Gotea\Event\LoggedUser;
  */
 abstract class AppController extends Controller
 {
+    use SecureTrait;
+
     /**
      * {@inheritDoc}
      */
     public function initialize()
     {
-        // ローカル以外はSSLを強制
-        if (env('CAKE_ENV', 'local') !== 'local') {
-            $this->loadComponent('Security', [
-                'blackHoleCallback' => 'forceSSL',
-                'validatePost' => false,
-            ]);
-            $this->Security->requireSecure();
-        }
+        $this->forceSSL();
 
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
@@ -51,16 +46,6 @@ abstract class AppController extends Controller
         if (($user = $this->Auth->user())) {
             EventManager::instance()->on(new LoggedUser($user));
         }
-    }
-
-    /**
-     * SSLを強制する
-     *
-     * @return \Cake\Http\Response|null
-     */
-    public function forceSSL()
-    {
-        return $this->redirect('https://' . env('SERVER_NAME') . $this->request->here());
     }
 
     /**

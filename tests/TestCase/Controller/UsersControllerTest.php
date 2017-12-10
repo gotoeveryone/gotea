@@ -53,6 +53,9 @@ class UsersControllerTest extends AppTestCase
      */
     public function testLoginFailedLength()
     {
+        if (!env('API_URL')) {
+            $this->markTestSkipped('Environment variable `API_URL` is not set.');
+        }
         $this->enableCsrfToken();
         $this->post('/login', [
             'account' => 'aaaa',
@@ -69,6 +72,9 @@ class UsersControllerTest extends AppTestCase
      */
     public function testLoginFailedInvalidAccount()
     {
+        if (!env('API_URL')) {
+            $this->markTestSkipped('Environment variable `API_URL` is not set.');
+        }
         $this->enableCsrfToken();
         $this->post('/login', [
             'account' => 'aaaaaaaa',
@@ -85,6 +91,9 @@ class UsersControllerTest extends AppTestCase
      */
     public function testLoginFailedInvalidPassword()
     {
+        if (!env('API_URL')) {
+            $this->markTestSkipped('Environment variable `API_URL` is not set.');
+        }
         $this->enableCsrfToken();
         $this->post('/login', [
             'account' => env('TEST_USER'),
