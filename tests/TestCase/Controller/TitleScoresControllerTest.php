@@ -1,12 +1,10 @@
 <?php
 namespace Gotea\Test\TestCase\Controller;
 
-use Cake\TestSuite\IntegrationTestCase;
-
 /**
  * タイトル成績コントローラのテスト
  */
-class TitleScoresControllerTest extends IntegrationTestCase
+class TitleScoresControllerTest extends AppTestCase
 {
     /**
      * Fixtures
@@ -27,20 +25,7 @@ class TitleScoresControllerTest extends IntegrationTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->__createSession();
-    }
-
-    /**
-     * 画面が見えるか
-     *
-     * @return void
-     */
-    public function testDisplay()
-    {
-        $this->get('/scores/');
-        $this->assertResponseOk();
-        $this->assertTemplate('index');
-        $this->assertResponseContains('<nav class="nav">');
+        $this->_createSession();
     }
 
     /**
@@ -57,15 +42,16 @@ class TitleScoresControllerTest extends IntegrationTestCase
     }
 
     /**
-     * 初期表示
+     * 画面が見えるか
      *
      * @return void
      */
     public function testIndex()
     {
-        $this->get('/scores');
-
+        $this->get('/scores/');
         $this->assertResponseOk();
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
     }
 
     /**
@@ -83,25 +69,37 @@ class TitleScoresControllerTest extends IntegrationTestCase
         $this->post('/scores', $data);
 
         $this->assertResponseOk();
+        $this->assertTemplate('index');
         $this->assertResponseContains('<nav class="nav">');
     }
 
     /**
-     * セッションデータ生成
+     * 更新
      *
      * @return void
      */
-    private function __createSession()
+    public function testUpdate()
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'account' => env('TEST_USER'),
-                    'name' => 'テスト',
-                    'role' => '管理者',
-                ],
-            ],
-        ]);
+        $this->enableCsrfToken();
+        $this->put('/scores/1');
+
+        $this->assertResponseOk();
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
+    }
+
+    /**
+     * 削除
+     *
+     * @return void
+     */
+    public function testDelete()
+    {
+        $this->enableCsrfToken();
+        $this->delete('/scores/1');
+
+        $this->assertResponseOk();
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
     }
 }

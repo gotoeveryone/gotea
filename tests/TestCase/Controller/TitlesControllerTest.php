@@ -1,12 +1,11 @@
 <?php
-namespace Gotea\Test\TestCase\Controller;
 
-use Cake\TestSuite\IntegrationTestCase;
+namespace Gotea\Test\TestCase\Controller;
 
 /**
  * タイトルコントローラのテスト
  */
-class TitlesControllerTest extends IntegrationTestCase
+class TitlesControllerTest extends AppTestCase
 {
     /**
      * Fixtures
@@ -28,20 +27,7 @@ class TitlesControllerTest extends IntegrationTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->__createSession();
-    }
-
-    /**
-     * 画面が見えるか
-     *
-     * @return void
-     */
-    public function testDisplay()
-    {
-        $this->get('/titles/');
-        $this->assertResponseOk();
-        $this->assertTemplate('index');
-        $this->assertResponseContains('<nav class="nav">');
+        $this->_createSession();
     }
 
     /**
@@ -58,15 +44,16 @@ class TitlesControllerTest extends IntegrationTestCase
     }
 
     /**
-     * 初期表示
+     * 画面が見えるか
      *
      * @return void
      */
     public function testIndex()
     {
-        $this->get('/titles');
-
+        $this->get('/titles/');
         $this->assertResponseOk();
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
     }
 
     /**
@@ -90,27 +77,9 @@ class TitlesControllerTest extends IntegrationTestCase
     {
         $this->get('/titles/1');
         $this->assertResponseOk();
+        $this->assertTemplate('view');
 
         // 詳細画面はナビゲーション非表示
         $this->assertResponseNotContains('<nav class="nav">');
-    }
-
-    /**
-     * セッションデータ生成
-     *
-     * @return void
-     */
-    private function __createSession()
-    {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'account' => env('TEST_USER'),
-                    'name' => 'テスト',
-                    'role' => '管理者',
-                ],
-            ],
-        ]);
     }
 }

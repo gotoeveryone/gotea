@@ -4,6 +4,7 @@ namespace Gotea\Controller\Api;
 
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
+use Gotea\Controller\SecureTrait;
 use Gotea\Event\LoggedUser;
 
 /**
@@ -11,12 +12,16 @@ use Gotea\Event\LoggedUser;
  */
 abstract class ApiController extends Controller
 {
+    use SecureTrait;
+
     /**
      * {@inheritDoc}
      */
     public function initialize()
     {
         parent::initialize();
+
+        $this->forceSSL();
         $this->loadComponent('RequestHandler');
 
         // 当アクションのレスポンスはすべてJSON形式

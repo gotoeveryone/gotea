@@ -88,7 +88,10 @@ class TitleScoresController extends AppController
      */
     public function update(int $id)
     {
-        $model = $this->TitleScores->findById($id)->contain(['TitleScoreDetails'])->first();
+        $model = $this->TitleScores->get($id, [
+            'contain' => 'TitleScoreDetails',
+        ]);
+
         $changed = 0;
         foreach ($model->title_score_details as $detail) {
             switch ($detail->division) {
@@ -118,7 +121,9 @@ class TitleScoresController extends AppController
      */
     public function delete(int $id)
     {
-        $model = $this->TitleScores->findById($id)->contain(['TitleScoreDetails'])->first();
+        $model = $this->TitleScores->get($id, [
+            'contain' => 'TitleScoreDetails',
+        ]);
 
         foreach ($model->title_score_details as $detail) {
             $this->TitleScoreDetails->delete($detail);

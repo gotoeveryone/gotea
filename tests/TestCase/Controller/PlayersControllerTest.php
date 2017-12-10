@@ -2,13 +2,22 @@
 
 namespace Gotea\Test\TestCase\Controller;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\ORM\TableRegistry;
 
 /**
  * 棋士コントローラのテスト
+ *
+ * @property \Gotea\Model\Table\PlayersTable $Players
  */
-class PlayersControllerTest extends IntegrationTestCase
+class PlayersControllerTest extends AppTestCase
 {
+    /**
+     * 棋士モデル
+     *
+     * @var \Gotea\Model\Table\PlayersTable
+     */
+    public $Players;
+
     /**
      * Fixtures
      *
@@ -33,20 +42,8 @@ class PlayersControllerTest extends IntegrationTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->__createSession();
-    }
-
-    /**
-     * 画面が見えるか
-     *
-     * @return void
-     */
-    public function testDisplay()
-    {
-        $this->get('/players/');
-        $this->assertResponseOk();
-        $this->assertTemplate('index');
-        $this->assertResponseContains('<nav class="nav">');
+        $this->Players = TableRegistry::get('Players');
+        $this->_createSession();
     }
 
     /**
@@ -63,15 +60,16 @@ class PlayersControllerTest extends IntegrationTestCase
     }
 
     /**
-     * 初期表示
+     * 画面が見えるか
      *
      * @return void
      */
     public function testIndex()
     {
-        $this->get('/players');
-
+        $this->get(['_name' => 'players']);
         $this->assertResponseOk();
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
     }
 
     /**
@@ -90,6 +88,7 @@ class PlayersControllerTest extends IntegrationTestCase
         $this->post('/players', $data);
 
         $this->assertResponseOk();
+        $this->assertTemplate('index');
         $this->assertResponseContains('<nav class="nav">');
     }
 
@@ -114,6 +113,7 @@ class PlayersControllerTest extends IntegrationTestCase
     {
         $this->get('/players/new?country_id=1');
         $this->assertResponseOk();
+        $this->assertTemplate('view');
 
         // 詳細画面はナビゲーション非表示
         $this->assertResponseNotContains('<nav class="nav">');
@@ -140,27 +140,104 @@ class PlayersControllerTest extends IntegrationTestCase
     {
         $this->get('/players/1');
         $this->assertResponseOk();
+        $this->assertTemplate('view');
 
         // 詳細画面はナビゲーション非表示
         $this->assertResponseNotContains('<nav class="nav">');
     }
 
     /**
-     * セッションデータ生成
+     * 新規作成
      *
      * @return void
      */
-    private function __createSession()
+    public function testCreate()
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'account' => env('TEST_USER'),
-                    'name' => 'テスト',
-                    'role' => '管理者',
-                ],
+        $this->enableCsrfToken();
+        $name = '棋士新規作成' . date('YmdHis');
+        $data = [
+            'name' => $name,
+            'name_english' => 'test',
+            'rank_id' => 1,
+            'country_id' => 1,
+            'organization_id' => 1,
+            'sex' => '男性',
+            'joined' => [
+                'year' => date('Y'),
+                'month' => date('m'),
+                'day' => date('d'),
             ],
-        ]);
+            'birthday' => date('Y/m/d'),
+        ];
+        $this->post(['_name' => 'create_player'], $data);
+        $this->assertResponseSuccess();
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(1, $this->Players->findByName($name)->count());
+    }
+
+    /**
+     * 新規作成（引き続き作成）
+     *
+     * @return void
+     */
+    public function testCreateWithContinue()
+    {
+        $this->enableCsrfToken();
+        $name = '棋士新規作成' . date('YmdHis');
+        $data = [
+            'name' => $name,
+            'name_english' => 'test',
+            'rank_id' => 1,
+            'country_id' => 1,
+            'organization_id' => 1,
+            'sex' => '男性',
+            'joined' => [
+                'year' => date('Y'),
+                'month' => date('m'),
+                'day' => date('d'),
+            ],
+            'birthday' => date('Y/m/d'),
+            'is_continue' => true,
+        ];
+        $this->post(['_name' => 'create_player'], $data);
+        $this->assertRedirect(['_name' => 'new_player', 'country_id' => 1]);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(1, $this->Players->findByName($name)->count());
+    }
+
+    /**
+     * 更新
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $this->enableCsrfToken();
+        $before = $this->Players->get(1);
+        $name = '棋士更新' . date('YmdHis');
+        $data = [
+            'id' => 1,
+            'name' => $name,
+            'name_english' => 'test',
+            'rank_id' => 1,
+            'country_id' => 1,
+            'organization_id' => 1,
+            'joined' => [
+                'year' => date('Y'),
+                'month' => date('m'),
+                'day' => date('d'),
+            ],
+            'birthday' => date('Y/m/d'),
+        ];
+        $this->put('/players/save/1', $data);
+        $this->assertRedirect(['_name' => 'view_player', 1]);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(1, $this->Players->findByName($name)->count());
     }
 }
