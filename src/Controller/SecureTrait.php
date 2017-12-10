@@ -6,6 +6,8 @@ use Cake\Core\Configure;
 
 /**
  * SSLへのリダイレクトを管理する。
+ *
+ * @property \Cake\Controller\Component\SecurityComponent $Security
  */
 trait SecureTrait
 {

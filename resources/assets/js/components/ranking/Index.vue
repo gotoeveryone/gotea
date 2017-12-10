@@ -22,7 +22,12 @@ export default {
   },
   methods: {
     onSearch(_params) {
-      this.$http.get(this.getUrl(_params)).then(res => {
+      const params = {
+        from: _params.from || "",
+        to: _params.to || ""
+      };
+
+      this.$http.get(this.createUrl(_params), { params: params }).then(res => {
         const json = res.body.response;
         const dateObj = new Date(json.lastUpdate);
         this.lastUpdate = `${dateObj.getFullYear()}年${dateObj.getMonth() +
@@ -31,8 +36,13 @@ export default {
       });
     },
     outputJson(_params) {
+      const params = {
+        from: _params.from || "",
+        to: _params.to || ""
+      };
+
       this.$http
-        .post(this.getUrl(_params))
+        .post(this.createUrl(_params), params)
         .then(() =>
           this.$store.dispatch("openDialog", {
             messages: "JSONを出力しました。"
@@ -45,7 +55,7 @@ export default {
           })
         );
     },
-    getUrl(_params) {
+    createUrl(_params) {
       return `/api/players/ranking/${_params.country}/${_params.year}/${_params.limit}`;
     }
   }

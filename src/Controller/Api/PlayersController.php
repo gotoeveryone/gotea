@@ -49,13 +49,23 @@ class PlayersController extends ApiController
      *
      * @param string $country 所属国
      * @param int $year 対象年度
-     * @param int $offset 取得上限値
+     * @param int $limit 取得上限値
      * @return \Cake\Http\Response ランキング
      */
-    public function searchRanking(string $country, int $year, int $offset)
+    public function searchRanking(string $country, int $year, int $limit)
     {
+        $from = $this->request->getQuery('from');
+        $to = $this->request->getQuery('to');
+
         // ランキングデータ取得
-        $json = $this->__ranking($country, $year, $offset, true);
+        $json = $this->__ranking([
+            'country' => $country,
+            'year' => $year,
+            'limit' => $limit,
+            'from' => $from,
+            'to' => $to,
+            'ja' => true,
+        ]);
 
         if (!$json) {
             return $this->_renderJson($json);
@@ -69,13 +79,22 @@ class PlayersController extends ApiController
      *
      * @param string $country 所属国
      * @param int $year 対象年度
-     * @param int $offset 取得上限値
+     * @param int $limit 取得上限値
      * @return \Cake\Http\Response ランキング
      */
-    public function createRanking(string $country, int $year, int $offset)
+    public function createRanking(string $country, int $year, int $limit)
     {
+        $from = $this->request->getData('from');
+        $to = $this->request->getData('to');
+
         // ランキングデータ取得
-        $json = $this->__ranking($country, $year, $offset);
+        $json = $this->__ranking([
+            'country' => $country,
+            'year' => $year,
+            'limit' => $limit,
+            'from' => $from,
+            'to' => $to,
+        ]);
 
         if (!$json) {
             return $this->_renderJson($json);
@@ -97,14 +116,19 @@ class PlayersController extends ApiController
     /**
      * ランキングを取得します。
      *
-     * @param string $countryCode 所属国コード
-     * @param int $year 対象年度
-     * @param int $offset 取得上限値
-     * @param bool $withJa 日本語情報を出力するか
+     * @param array $params パラメータ
      * @return array
      */
-    private function __ranking(string $countryCode, int $year, int $offset, bool $withJa = false) : array
+    private function __ranking(array $params) : array
     {
+        // パラメータ取得
+        $countryCode = $params['country'] ?? null;
+        $year = $params['year'] ?? null;
+        $limit = $params['limit'] ?? null;
+        $from = $params['from'] ?? null;
+        $to = $params['to'] ?? null;
+        $withJa = $params['ja'] ?? false;
+
         // モデルのロード
         $this->loadModel('Countries');
         $this->loadModel('TitleScoreDetails');
@@ -113,11 +137,12 @@ class PlayersController extends ApiController
         $country = $this->Countries->findByCode($countryCode)->first();
 
         // ランキングデータの取得
-        $ranking = $this->TitleScoreDetails->findRanking($country, $year, $offset)
+        $ranking = $this->TitleScoreDetails
+            ->findRanking($country, $year, $limit, $from, $to)
             ->mapRanking($country->isWorlds(), $withJa);
 
         // 最終更新日の取得
-        $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year);
+        $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year, $from, $to);
 
         // JSON生成
         return [

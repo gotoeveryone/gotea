@@ -111,9 +111,11 @@ class TitleScoreDetailsTable extends AppTable
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param int $targetYear 対象年度
      * @param int $offset 取得開始行
+     * @param string|null $started 対局日FROM
+     * @param string|null $ended 対局日TO
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanking(Country $country, int $targetYear, int $offset)
+    public function findRanking(Country $country, int $targetYear, int $offset, $started = null, $ended = null)
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
@@ -142,6 +144,15 @@ class TitleScoreDetailsTable extends AppTable
             $sub->where(['TitleScores.is_world' => true]);
         }
 
+        if ($started) {
+            $query->where(['TitleScores.started >= ' => $started]);
+            $sub->where(['TitleScores.started >= ' => $started]);
+        }
+        if ($ended) {
+            $query->where(['TitleScores.ended <= ' => $ended]);
+            $sub->where(['TitleScores.ended <= ' => $ended]);
+        }
+
         return $query
             ->where(['YEAR(started)' => $targetYear])
             ->having(['win_point >= ' => $sub])
@@ -155,9 +166,11 @@ class TitleScoreDetailsTable extends AppTable
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param int $targetYear 対象年度
+     * @param string|null $started 対局日FROM
+     * @param string|null $ended 対局日TO
      * @return string|null
      */
-    public function findRecent(Country $country, int $targetYear)
+    public function findRecent(Country $country, int $targetYear, $started = null, $ended = null)
     {
         // 旧方式
         if ($this->_isOldRanking($targetYear)) {
@@ -175,6 +188,13 @@ class TitleScoreDetailsTable extends AppTable
                 ->where(['Countries.id' => $country->id]);
         } else {
             $query->where(['TitleScores.is_world' => true]);
+        }
+
+        if ($started) {
+            $query->where(['TitleScores.started >= ' => $started]);
+        }
+        if ($ended) {
+            $query->where(['TitleScores.ended <= ' => $ended]);
         }
 
         return $query->select([

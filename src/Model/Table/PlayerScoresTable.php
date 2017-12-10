@@ -74,7 +74,7 @@ class PlayerScoresTable extends AppTable
         $query = $this->find()
             ->contain([
                 'Ranks', 'Players', 'Players.Countries',
-            ])->where(function ($exp, $q) use ($subQuery, $suffix) {
+            ])->where(function ($exp, $q) use ($winColumn, $subQuery) {
                 return $exp->gte($winColumn, $subQuery);
             })->where([
                 'PlayerScores.target_year' => $targetYear,

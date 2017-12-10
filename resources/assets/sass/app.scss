@@ -299,12 +299,24 @@
 .ranking {
     margin-top: 0;
     width: 30rem;
-    select {
-        margin-right: .4rem;
-        width: 7rem;
+
+    .search-header {
+        height: $h_ranking_header;
     }
+
+    &_label {
+        width: 90px;
+    }
+    &_year, &_country, &_limit {
+        margin-right: .4rem;
+        width: 100px;
+    }
+    &_date {
+        width: 110px;
+    }
+
     .search-results {
-        height: calc(100% - #{(($rowPadding * 2) + $minRowHeight) * 2} - 1rem); /* content - .search-header and margin */
+        height: calc(100% - #{$h_ranking_header} - 1rem); /* content - .search-header and margin */
 
         .no, .percent {
             width: 13%;
@@ -390,7 +402,7 @@
         }
     }
     .search-results {
-        height: calc(100% - $h_players_header - 10px); /* content - .search-header and padding */
+        height: calc(100% - #{$h_players_header} - 10px); /* content - .search-header and padding */
         .score {
             padding: 0;
             width: 9%;
