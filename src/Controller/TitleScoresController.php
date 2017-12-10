@@ -44,7 +44,7 @@ class TitleScoresController extends AppController
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
-            return $this->_renderWithErrors(400, $form->errors(), 'タイトル勝敗検索', 'index');
+            return $this->_setErrors(400, $form->errors())->setAction('index');
         }
 
         // リクエストから値を取得

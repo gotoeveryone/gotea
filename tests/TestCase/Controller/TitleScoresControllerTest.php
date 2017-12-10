@@ -59,6 +59,25 @@ class TitleScoresControllerTest extends AppTestCase
      *
      * @return void
      */
+    public function testSearchInvalid()
+    {
+        $this->enableCsrfToken();
+        $data = [
+            'started' => 'testtest',
+            'ended' => 'testtest',
+        ];
+        $this->post('/scores', $data);
+
+        $this->assertResponseCode(400);
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
+    }
+
+    /**
+     * 検索
+     *
+     * @return void
+     */
     public function testSearch()
     {
         $this->enableCsrfToken();

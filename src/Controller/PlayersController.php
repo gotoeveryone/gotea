@@ -51,7 +51,7 @@ class PlayersController extends AppController
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
-            return $this->_renderWithErrors(400, $form->errors(), '棋士情報検索', 'index');
+            return $this->_setErrors(400, $form->errors())->setAction('index');
         }
 
         // データを取得

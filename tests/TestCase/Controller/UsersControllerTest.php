@@ -35,7 +35,7 @@ class UsersControllerTest extends AppTestCase
      *
      * @return void
      */
-    public function testLoginFailedNoInput()
+    public function testLoginNoInput()
     {
         $this->enableCsrfToken();
         $this->post('/login', [
@@ -47,59 +47,40 @@ class UsersControllerTest extends AppTestCase
     }
 
     /**
-     * ログイン（失敗）
+     * ログイン（失敗・バリデーションエラー）
      *
      * @return void
      */
-    public function testLoginFailedLength()
+    public function testLogin400()
     {
         if (!env('API_URL')) {
             $this->markTestSkipped('Environment variable `API_URL` is not set.');
         }
         $this->enableCsrfToken();
         $this->post('/login', [
-            'account' => 'aaaa',
-            'password' => 'bbbb',
+            'account' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'password' => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
         ]);
-        $this->assertResponseError();
+        $this->assertResponseCode(400);
         $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
     }
 
     /**
-     * ログイン（失敗）
+     * ログイン（失敗・バリデーションエラー）
      *
      * @return void
      */
-    public function testLoginFailedInvalidAccount()
+    public function testLogin401()
     {
         if (!env('API_URL')) {
             $this->markTestSkipped('Environment variable `API_URL` is not set.');
         }
         $this->enableCsrfToken();
         $this->post('/login', [
-            'account' => 'aaaaaaaa',
-            'password' => env('TEST_PASSWORD'),
+            'account' => 'baduser',
+            'password' => 'badpassword',
         ]);
-        $this->assertResponseError();
-        $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
-    }
-
-    /**
-     * ログイン（失敗）
-     *
-     * @return void
-     */
-    public function testLoginFailedInvalidPassword()
-    {
-        if (!env('API_URL')) {
-            $this->markTestSkipped('Environment variable `API_URL` is not set.');
-        }
-        $this->enableCsrfToken();
-        $this->post('/login', [
-            'account' => env('TEST_USER'),
-            'password' => 'bbbbbbbb',
-        ]);
-        $this->assertResponseError();
+        $this->assertResponseCode(401);
         $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
     }
 
