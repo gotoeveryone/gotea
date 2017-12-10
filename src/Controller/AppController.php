@@ -3,6 +3,8 @@
 namespace Gotea\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventManager;
+use Gotea\Event\LoggedUser;
 
 /**
  * アプリの共通コントローラ
@@ -44,6 +46,11 @@ abstract class AppController extends Controller
             ],
             'authorize' => 'Controller',
         ]);
+
+        // 操作ユーザ記録イベントを設定
+        if (($user = $this->Auth->user())) {
+            EventManager::instance()->on(new LoggedUser($user));
+        }
     }
 
     /**
