@@ -9,6 +9,8 @@ use Gotea\Event\LoggedUser;
 
 /**
  * API基底コントローラ
+ *
+ * @property \Cake\Controller\Component\RequestHandlerComponent $RequestHandler
  */
 abstract class ApiController extends Controller
 {

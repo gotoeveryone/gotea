@@ -13,7 +13,6 @@ use Gotea\Event\LoggedUser;
  * @since   2015/07/26
  *
  * @property \Cake\Controller\Component\FlashComponent $Flash
- * @property \Cake\Controller\Component\SecurityComponent $Security
  * @property \Gotea\Controller\Component\MyAuthComponent $Auth
  */
 abstract class AppController extends Controller
@@ -25,8 +24,9 @@ abstract class AppController extends Controller
      */
     public function initialize()
     {
-        $this->forceSSL();
+        parent::initialize();
 
+        $this->forceSSL();
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'className' => 'MyAuth',

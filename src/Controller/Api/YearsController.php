@@ -19,7 +19,10 @@ class YearsController extends ApiController
         $nowYear = FrozenDate::now()->year;
         $years = [];
         for ($i = $nowYear; $i >= 2013; $i--) {
-            $years[] = $i;
+            $years[] = [
+                'year' => $i,
+                'old' => ($i < 2017),
+            ];
         }
 
         return $this->_renderJson($years);
