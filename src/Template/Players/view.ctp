@@ -260,6 +260,7 @@
                 <div class="category-row">勝敗</div>
 
                 <?php // 2017年以降 ?>
+                <?php if (!empty($player->title_score_details)) : ?>
                 <?php foreach ($player->title_score_details as $score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
@@ -305,6 +306,7 @@
                     </li>
                 </ul>
                 <?php endforeach ?>
+                <?php endif ?>
 
                 <?php // 2016年以前 ?>
                 <?php foreach ($player->old_scores as $key => $score) : ?>

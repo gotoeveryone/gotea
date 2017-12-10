@@ -54,11 +54,16 @@ class TitlesController extends AppController
 
         // 保存
         if (!$this->Titles->save($title)) {
-            $this->_writeToSession('title', $title)->_setErrors($title->getErrors());
+            return $this->_writeToSession('title', $title)
+                ->_setErrors(400, $title->getErrors())
+                ->setAction('view', $title->id);
         } else {
             $this->_setMessages(__('[{0}: {1}] を保存しました。', $title->id, $title->name));
         }
 
-        return $this->setAction('view', $title->id);
+        return $this->redirect([
+            '_name' => 'view_title',
+            $title->id,
+        ]);
     }
 }

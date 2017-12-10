@@ -147,6 +147,37 @@ class PlayersControllerTest extends AppTestCase
     }
 
     /**
+     * 新規作成（失敗）
+     *
+     * @return void
+     */
+    public function testCreateFailed()
+    {
+        $this->enableCsrfToken();
+        $name = '棋士新規作成' . date('YmdHis');
+        $data = [
+            'name' => $name,
+            'name_english' => '',
+            'rank_id' => 1,
+            'country_id' => 1,
+            'organization_id' => 1,
+            'sex' => '男性',
+            'joined' => [
+                'year' => date('Y'),
+                'month' => date('m'),
+                'day' => date('d'),
+            ],
+            'birthday' => '',
+        ];
+        $this->post(['_name' => 'create_player'], $data);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(0, $this->Players->findByName($name)->count());
+    }
+
+    /**
      * 新規作成
      *
      * @return void
@@ -207,6 +238,38 @@ class PlayersControllerTest extends AppTestCase
 
         // データが存在すること
         $this->assertEquals(1, $this->Players->findByName($name)->count());
+    }
+
+    /**
+     * 更新
+     *
+     * @return void
+     */
+    public function testUpdateFailed()
+    {
+        $this->enableCsrfToken();
+        $before = $this->Players->get(1);
+        $name = '棋士更新' . date('YmdHis');
+        $data = [
+            'id' => 1,
+            'name' => $name,
+            'name_english' => '',
+            'rank_id' => 1,
+            'country_id' => 1,
+            'organization_id' => 1,
+            'joined' => [
+                'year' => date('Y'),
+                'month' => date('m'),
+                'day' => date('d'),
+            ],
+            'birthday' => '',
+        ];
+        $this->put('/players/save/1', $data);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(0, $this->Players->findByName($name)->count());
     }
 
     /**

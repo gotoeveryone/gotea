@@ -2,11 +2,22 @@
 
 namespace Gotea\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * タイトルコントローラのテスト
+ *
+ * @property \Gotea\Model\Table\TitlesTable $Titles
  */
 class TitlesControllerTest extends AppTestCase
 {
+    /**
+     * タイトルモデル
+     *
+     * @var \Gotea\Model\Table\TitlesTable
+     */
+    public $Titles;
+
     /**
      * Fixtures
      *
@@ -27,6 +38,7 @@ class TitlesControllerTest extends AppTestCase
     public function setUp()
     {
         parent::setUp();
+        $this->Titles = TableRegistry::get('Titles');
         $this->_createSession();
     }
 
@@ -81,5 +93,61 @@ class TitlesControllerTest extends AppTestCase
 
         // 詳細画面はナビゲーション非表示
         $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * 更新
+     *
+     * @return void
+     */
+    public function testSaveFailed()
+    {
+        $this->enableCsrfToken();
+        $before = $this->Titles->get(1);
+        $name = 'タイトル更新' . date('YmdHis');
+        $data = [
+            'id' => 1,
+            'country_id' => 1,
+            'name' => $name,
+            'name_english' => '',
+            'holding' => 1,
+            'sort_order' => 1,
+            'html_file_name' => '',
+            'html_file_modified' => '',
+        ];
+        $this->put(['_name' => 'update_title', 1], $data);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(0, $this->Titles->findByName($name)->count());
+    }
+
+    /**
+     * 更新
+     *
+     * @return void
+     */
+    public function testSave()
+    {
+        $this->enableCsrfToken();
+        $before = $this->Titles->get(1);
+        $name = 'タイトル更新' . date('YmdHis');
+        $data = [
+            'id' => 1,
+            'country_id' => 1,
+            'name' => $name,
+            'name_english' => 'Test',
+            'holding' => 1,
+            'sort_order' => 1,
+            'html_file_name' => 'test',
+            'html_file_modified' => date('Y/m/d'),
+        ];
+        $this->put(['_name' => 'update_title', 1], $data);
+        $this->assertRedirect(['_name' => 'view_title', 1]);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $this->assertEquals(1, $this->Titles->findByName($name)->count());
     }
 }

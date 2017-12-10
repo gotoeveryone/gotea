@@ -44,7 +44,7 @@ class TitleScoresController extends AppController
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
-            return $this->_renderWithErrors($form->errors(), 'タイトル勝敗検索', 'index');
+            return $this->_renderWithErrors(400, $form->errors(), 'タイトル勝敗検索', 'index');
         }
 
         // リクエストから値を取得
@@ -77,7 +77,7 @@ class TitleScoresController extends AppController
         $this->_enableDialogMode();
         $this->request = $this->request->withData('player_id', $id);
 
-        return $this->search();
+        return $this->setAction('search');
     }
 
     /**
@@ -110,7 +110,7 @@ class TitleScoresController extends AppController
             $this->Flash->info("ID【{$id}】の勝敗を変更しました。");
         }
 
-        return $this->search();
+        return $this->setAction('search');
     }
 
     /**
@@ -132,6 +132,6 @@ class TitleScoresController extends AppController
 
         $this->Flash->info("ID【{$id}】の成績情報を削除しました。");
 
-        return $this->search();
+        return $this->setAction('search');
     }
 }

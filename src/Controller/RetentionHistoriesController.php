@@ -28,7 +28,7 @@ class RetentionHistoriesController extends AppController
 
         // 保存
         if (!$this->RetentionHistories->save($history)) {
-            $this->_setErrors($history->errors());
+            $this->_setErrors(400, $history->getErrors());
         } else {
             $this->_setMessages(__('タイトル履歴を保存しました。'));
         }

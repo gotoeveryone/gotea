@@ -35,18 +35,22 @@ class JsonComponent extends Component
         $response = $http->$callMethod($url, $data, $headers);
         $body = $response->getBody();
 
-        $this->response = $this->response->withStatus($response->getStatusCode());
-
         // \Cake\Http\Client\Messsage には`200`～`202`の定義しかないため、
         // \Cake\Http\Client\Responseのこのメソッドは`204`をOKとしていない
         if ($response->isOk() || $response->getStatusCode() === 204) {
-            return json_decode($body, $assoc);
+            return [
+                'status' => $response->getStatusCode(),
+                'content' => json_decode($body, $assoc),
+            ];
         }
 
-        // 失敗
+        Log::error("StatusCode: {$response->getStatusCode()}");
         Log::error($body);
 
-        return ['status' => $response->statusCode(), 'message' => "{$method}リクエストに失敗しました。"];
+        return [
+            'status' => $response->getStatusCode(),
+            'message' => "{$method}リクエストに失敗しました。",
+        ];
     }
 
     /**

@@ -390,16 +390,16 @@
         },
         {
             "name": "gotoeveryone/cake-parts",
-            "version": "v0.0.6",
+            "version": "v0.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gotoeveryone/cake-parts.git",
-                "reference": "e2fec3a961965633db18c6e436c15628328ae5f3"
+                "reference": "3d52c62fc7887fd3b8ee91d2136cf87b3198b74a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gotoeveryone/cake-parts/zipball/e2fec3a961965633db18c6e436c15628328ae5f3",
-                "reference": "e2fec3a961965633db18c6e436c15628328ae5f3",
+                "url": "https://api.github.com/repos/gotoeveryone/cake-parts/zipball/3d52c62fc7887fd3b8ee91d2136cf87b3198b74a",
+                "reference": "3d52c62fc7887fd3b8ee91d2136cf87b3198b74a",
                 "shasum": ""
             },
             "require": {
@@ -423,7 +423,7 @@
                 }
             ],
             "description": "Custom parts using CakePHP3",
-            "time": "2017-12-09T14:41:33+00:00"
+            "time": "2017-12-10T11:15:47+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
