@@ -93,6 +93,27 @@ class PlayersControllerTest extends AppTestCase
     }
 
     /**
+     * 検索
+     *
+     * @return void
+     */
+    public function testSearchInvalid()
+    {
+        $this->enableCsrfToken();
+        $data = [
+            'name_english' => 'あああああ',
+            'country_id' => '1',
+            'joined_from' => 'testtest',
+            'joined_to' => 'testtest',
+        ];
+        $this->post('/players', $data);
+
+        $this->assertResponseCode(400);
+        $this->assertTemplate('index');
+        $this->assertResponseContains('<nav class="nav">');
+    }
+
+    /**
      * 新規作成（パラメータ無し）
      *
      * @return void

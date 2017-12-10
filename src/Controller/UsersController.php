@@ -48,9 +48,7 @@ class UsersController extends AppController
         $credentials = $this->request->getParsedBody();
         $form = new LoginForm();
         if (!$form->validate($credentials)) {
-            $this->Flash->error($form->errors());
-
-            return $this->setAction('index');
+            return $this->_setErrors(400, $form->errors())->setAction('index');
         }
 
         // ログイン成功→リダイレクト
@@ -64,9 +62,7 @@ class UsersController extends AppController
         }
 
         // ログイン失敗
-        $this->Flash->error(__('認証に失敗しました。'));
-
-        return $this->setAction('index');
+        return $this->_setErrors(401, __('認証に失敗しました。'))->setAction('index');
     }
 
     /**
