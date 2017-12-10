@@ -67,7 +67,7 @@ class PlayerRanksController extends AppController
         return $this->redirect([
             '_name' => 'view_player',
             '?' => ['tab' => 'ranks'],
-            $id, $rowId,
+            $id,
         ]);
     }
 }
