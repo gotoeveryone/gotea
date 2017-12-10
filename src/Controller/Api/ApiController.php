@@ -3,6 +3,8 @@
 namespace Gotea\Controller\Api;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventManager;
+use Gotea\Event\LoggedUser;
 
 /**
  * API基底コントローラ
@@ -17,12 +19,16 @@ abstract class ApiController extends Controller
         parent::initialize();
         $this->loadComponent('RequestHandler');
 
-        // ヘッダのユーザIDをセッションに乗せる
-        $this->request->session()->write('Api-UserId', $this->request->getHeaderLine('X-Access-User'));
-
         // 当アクションのレスポンスはすべてJSON形式
         $this->response->type('application/json');
         $this->RequestHandler->renderAs($this, 'json');
+
+        // 操作ユーザ記録イベントを設定
+        if (($user = $this->request->getHeaderLine('X-Access-User'))) {
+            EventManager::instance()->on(new LoggedUser([
+                'account' => $user,
+            ]));
+        }
     }
 
     /**

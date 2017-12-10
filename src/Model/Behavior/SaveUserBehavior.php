@@ -2,9 +2,9 @@
 
 namespace Gotea\Model\Behavior;
 
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\Network\Session;
 use Cake\ORM\Behavior;
 
 /**
@@ -18,28 +18,16 @@ class SaveUserBehavior extends Behavior
      *
      * @param \Cake\Event\Event $event イベント
      * @param \Cake\Datasource\EntityInterface $entity 対象のエンティティ
+     * @param \ArrayObject $options オプション
      * @return void
      */
-    public function beforeSave(Event $event, EntityInterface $entity)
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
-        // 新規登録時は登録日時を設定
-        $userId = $this->__getLoginUserId();
+        // ユーザIDを取得
+        $userId = $options['account'] ?? null;
         if ($entity->isNew()) {
             $entity->created_by = $userId;
         }
         $entity->modified_by = $userId;
-    }
-
-    /**
-     * ログインユーザIDを取得する。
-     *
-     * @return string ログインユーザID
-     */
-    private function __getLoginUserId() : string
-    {
-        $session = new Session();
-        $userId = $session->read('Auth.User.account');
-
-        return !$userId ? $session->consume('Api-UserId') : $userId;
     }
 }

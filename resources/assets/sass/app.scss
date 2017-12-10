@@ -374,7 +374,7 @@
         }
     }
     .search-header {
-        height: 130px;
+        height: $h_players_header;
 
         .result-count {
             margin-left: 5px;
@@ -390,7 +390,7 @@
         }
     }
     .search-results {
-        height: calc(100% - 130px - 10px); /* content - .search-header and padding */
+        height: calc(100% - $h_players_header - 10px); /* content - .search-header and padding */
         .score {
             padding: 0;
             width: 9%;
