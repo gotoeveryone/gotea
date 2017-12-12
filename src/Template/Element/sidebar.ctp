@@ -29,7 +29,7 @@
             '_name' => 'ranks',
         ], ['class' => 'nav-menu']);
     ?>
-    <?php if ($admin) : ?>
+    <?php if ($this->isAdmin()) : ?>
     <?=
         $this->Html->link('各種情報クエリ更新', [
             '_name' => 'queries',

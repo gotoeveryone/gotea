@@ -56,10 +56,7 @@
                 <div>
                     <label>引退者：</label>
                     <?=
-                        $this->Form->select('is_retired', [
-                            '0' => '検索しない',
-                            '1' => '検索する'
-                        ], [
+                        $this->MyForm->filters('is_retired', [
                             'class' => 'excluded'
                         ]);
                     ?>

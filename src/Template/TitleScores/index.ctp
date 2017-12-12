@@ -44,7 +44,7 @@
     </div>
     <?php endif ?>
 
-    <div class="search-results<?=(isset($isDialog) ? ' modal' : '')?>">
+    <div class="search-results<?= ($this->isDialogMode() ? ' modal' : '') ?>">
         <ul class="table-header">
             <li class="table-row">
                 <span class="id">ID</span>
@@ -52,7 +52,9 @@
                 <span class="date">日付</span>
                 <span class="name">勝者</span>
                 <span class="name">敗者</span>
-                <?=!isset($isDialog) ? '<span class="operation">操作</span>' : ''?>
+                <?php if (!$this->isDialogMode()) : ?>
+                <span class="operation">操作</span>
+                <?php endif ?>
             </li>
         </ul>
         <?php if (!empty($titleScores) && $titleScores->count() > 0) : ?>
@@ -64,7 +66,7 @@
                 <span class="date"><?= h($titleScore->date) ?></span>
                 <span class="name"><?= $titleScore->getWinner($this->request->getData('player_id')) ?></span>
                 <span class="name"><?= $titleScore->getLoser($this->request->getData('player_id')) ?></span>
-                <?php if (!isset($isDialog)) : ?>
+                <?php if (!$this->isDialogMode()) : ?>
                 <span class="operation">
                     <?= $this->Form->postButton('勝敗変更', [
                         '_name' => 'update_scores', $titleScore->id,
@@ -98,7 +100,7 @@
         </ul>
         <?php endif ?>
     </div>
-    <?php if (isset($isDialog)) : ?>
+    <?php if ($this->isDialogMode()) : ?>
     <div class="button-row">
         <?= $this->Html->link('戻る', [
             '_name' => 'view_player', '?' => ['tab' => 'scores'], $this->request->data('player_id'),
