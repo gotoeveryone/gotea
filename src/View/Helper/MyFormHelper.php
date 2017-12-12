@@ -26,6 +26,21 @@ class MyFormHelper extends FormHelper
     }
 
     /**
+     * 検索フィルタを取得します。
+     *
+     * @param string $name 名前
+     * @param array $attributes 追加属性
+     * @return string Formatted SELECT element
+     */
+    public function filters(string $name, array $attributes = [])
+    {
+        return $this->select($name, [
+            '0' => '検索しない',
+            '1' => '検索する'
+        ], $attributes);
+    }
+
+    /**
      * 管理年度一覧を取得します。
      *
      * @param string $name プロパティ名

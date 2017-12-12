@@ -20,15 +20,14 @@
         "cakephp/plugin-installer": "^1.0",
         "vlucas/phpdotenv": "^2.4",
         "fabpot/goutte": "^3.2",
-        "gotoeveryone/cake-parts": "0.0.*",
-        "cakephp/cakephp-codesniffer": "^3.0"
+        "gotoeveryone/cake-parts": "0.0.*"
     },
     "require-dev": {
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "~3.0",
         "cakephp/bake": "~1.1",
         "phpunit/phpunit": "^6.1",
-        "squizlabs/php_codesniffer": "^3.1"
+        "cakephp/cakephp-codesniffer": "^3.0"
     },
     "suggest": {
         "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",

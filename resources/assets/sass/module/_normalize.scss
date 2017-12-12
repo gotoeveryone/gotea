@@ -23,12 +23,12 @@ main > section {
 
 nav + main {
     width: 70%;
-    min-width: calc(100% - 220px);
+    min-width: calc(100% - #{$w_nav});
 }
 
 nav {
     width: 30%;
-    max-width: 220px;
+    max-width: #{$w_nav};
 }
 
 strong {

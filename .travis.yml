@@ -10,22 +10,31 @@ php:
   - 7.1
   - 7.2
 
+matrix:
+  fast_finish: true
+
+  include:
+    - php: 7.1
+      env: PHPCS=1
+
 before_install:
-  - nvm install node
-  - nvm alias default node
-  - node --version
+  - if [[ $PHPCS != 1 ]]; then nvm install node; fi
+  - if [[ $PHPCS != 1 ]]; then nvm alias default node; fi
+  - if [[ $PHPCS != 1 ]]; then node --version; fi
 
 before_script:
-  - mysql -uroot -e "create database gotea_test"
-  - sh -c "composer require 'cakephp/cakephp-codesniffer:dev-master'"
-  - sh -c "cp .env.example .env"
-  - phpenv rehash
-  - npm install
+  - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:~3.0; fi
+  - if [[ $PHPCS != 1 ]]; then mysql -uroot -e "create database gotea_test"; fi
+  - if [[ $PHPCS != 1 ]]; then cp .env.example .env; fi
+  - if [[ $PHPCS != 1 ]]; then composer install; fi
+  - if [[ $PHPCS != 1 ]]; then composer require phpunit/phpunit:"^5.7|^6.0"; fi
+  - if [[ $PHPCS != 1 ]]; then composer run-script post-install-cmd --no-interaction; fi
+  - if [[ $PHPCS != 1 ]]; then npm install; fi
 
 script:
-  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
-  - sh -c "vendor/bin/phpunit --colors"
-  - sh -c "npm run lint"
+  - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests; fi
+  - if [[ $PHPCS != 1 ]]; then vendor/bin/phpunit; fi
+  - if [[ $PHPCS != 1 ]]; then npm run lint; fi
 
 notifications:
   email: false
