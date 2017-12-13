@@ -41,11 +41,6 @@
                 <?php endif ?>
                 <main class="main">
                     <?=$this->fetch('content')?>
-                    <!-- モーダルコンテンツ -->
-                    <modal :options="modal"></modal>
-                    <!-- ダイアログ -->
-                    <app-dialog :options="dialog"></app-dialog>
-                    <?= $this->Flash->render() ?>
                 </main>
             </div>
 
@@ -63,12 +58,15 @@
             <div class="main-content-modal">
                 <main class="main">
                     <?=$this->fetch('content')?>
-                    <!-- ダイアログ -->
-                    <app-dialog :options="dialog"></app-dialog>
-                    <?= $this->Flash->render() ?>
                 </main>
             </div>
             <?php endif ?>
+
+            <!-- モーダルコンテンツ -->
+            <modal :options="modal"></modal>
+            <!-- ダイアログ -->
+            <app-dialog :options="dialog"></app-dialog>
+            <?= $this->Flash->render() ?>
         </div>
 
         <?php if ($this->isAuth()) : ?>
