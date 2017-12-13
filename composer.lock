@@ -345,21 +345,24 @@
         },
         {
             "name": "gotoeveryone/cake-parts",
-            "version": "v0.0.7",
+            "version": "v0.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gotoeveryone/cake-parts.git",
-                "reference": "3d52c62fc7887fd3b8ee91d2136cf87b3198b74a"
+                "reference": "d20fc29b8c889ddcb9f6ad38642cc4128462b94b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gotoeveryone/cake-parts/zipball/3d52c62fc7887fd3b8ee91d2136cf87b3198b74a",
-                "reference": "3d52c62fc7887fd3b8ee91d2136cf87b3198b74a",
+                "url": "https://api.github.com/repos/gotoeveryone/cake-parts/zipball/d20fc29b8c889ddcb9f6ad38642cc4128462b94b",
+                "reference": "d20fc29b8c889ddcb9f6ad38642cc4128462b94b",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "3.5.*",
                 "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^3.0"
             },
             "type": "library",
             "autoload": {
@@ -378,7 +381,7 @@
                 }
             ],
             "description": "Custom parts using CakePHP3",
-            "time": "2017-12-10T11:15:47+00:00"
+            "time": "2017-12-13T14:13:00+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1620,21 +1623,21 @@
         },
         {
             "name": "cakephp/cakephp-codesniffer",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp-codesniffer.git",
-                "reference": "2c7b5724d2221d509e4cb060952838d0612d0063"
+                "reference": "4d13930311794f3b2a663c082bc29c146ecc9add"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/2c7b5724d2221d509e4cb060952838d0612d0063",
-                "reference": "2c7b5724d2221d509e4cb060952838d0612d0063",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/4d13930311794f3b2a663c082bc29c146ecc9add",
+                "reference": "4d13930311794f3b2a663c082bc29c146ecc9add",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4",
-                "squizlabs/php_codesniffer": "^3.0.0"
+                "squizlabs/php_codesniffer": "~3.0.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "<6.0"
@@ -1661,7 +1664,7 @@
                 "codesniffer",
                 "framework"
             ],
-            "time": "2017-07-28T01:42:31+00:00"
+            "time": "2017-12-12T18:49:26+00:00"
         },
         {
             "name": "cakephp/debug_kit",
@@ -3908,16 +3911,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.1.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "d667e245d5dcd4d7bf80f26f2c947d476b66213e"
+                "reference": "c7594a88ae75401e8f8d0bd4deb8431b39045c51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d667e245d5dcd4d7bf80f26f2c947d476b66213e",
-                "reference": "d667e245d5dcd4d7bf80f26f2c947d476b66213e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/c7594a88ae75401e8f8d0bd4deb8431b39045c51",
+                "reference": "c7594a88ae75401e8f8d0bd4deb8431b39045c51",
                 "shasum": ""
             },
             "require": {
@@ -3927,7 +3930,7 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+                "phpunit/phpunit": "~4.0"
             },
             "bin": [
                 "bin/phpcs",
@@ -3955,7 +3958,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-10-16T22:40:25+00:00"
+            "time": "2017-07-18T01:12:32+00:00"
         },
         {
             "name": "symfony/finder",
