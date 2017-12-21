@@ -56,9 +56,9 @@ class PlayerRanksController extends AppController
     public function update(int $id, int $rowId)
     {
         // バリデーション
-        $model = $this->PlayerRanks->get($rowId);
-        $this->PlayerRanks->patchEntity($model, $this->request->getParsedBody());
-        if (!$this->PlayerRanks->save($model)) {
+        $rank = $this->PlayerRanks->get($rowId);
+        $this->PlayerRanks->patchEntity($rank, $this->request->getParsedBody());
+        if (!$this->PlayerRanks->save($rank)) {
             $this->_setErrors(400, $rank->getErrors());
         } else {
             $this->_setMessages(__('昇段情報を保存しました。'));

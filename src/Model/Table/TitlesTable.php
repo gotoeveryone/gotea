@@ -37,12 +37,12 @@ class TitlesTable extends AppTable
     {
         return $validator
             ->notEmpty(['name', 'name_english', 'holding',
-                'sort_order', 'html_flle_name', 'html_file_modified'])
+                'sort_order', 'html_file_name', 'html_file_modified'])
             ->alphaNumeric('name_english')
             ->numeric('holding')
             ->numeric('sort_order')
             ->alphaNumeric('html_file_name')
-            ->date('html_file_modified', 'ymd');
+            ->date('html_file_modified', 'y/m/d');
     }
 
     /**

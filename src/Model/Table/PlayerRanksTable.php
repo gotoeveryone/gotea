@@ -52,7 +52,7 @@ class PlayerRanksTable extends AppTable
 
         $validator
             ->notEmpty('promoted')
-            ->date('promoted', 'ymd')
+            ->date('promoted', 'y/m/d')
             ->requirePresence('promoted', 'create');
 
         return $validator;
