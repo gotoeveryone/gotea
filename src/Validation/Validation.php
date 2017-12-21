@@ -2,13 +2,13 @@
 
 namespace Gotea\Validation;
 
-use Cake\Validation\Validation;
+use Cake\Validation\Validation as BaseValidation;
 use Gotoeveryone\Validation\CustomValidationTrait;
 
 /**
  * カスタムのバリデーションクラスです。
  */
-class MyValidation extends Validation
+class Validation extends BaseValidation
 {
     use CustomValidationTrait;
 }

@@ -13,14 +13,18 @@ use Cake\ORM\Table;
 class AppTable extends Table
 {
     /**
+     * カスタムバリデータクラス.
+     *
+     * @var string
+     */
+    protected $_validatorClass = '\Gotea\Validation\Validator';
+
+    /**
      * {@inheritdoc}
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
-        // カスタムバリデータクラスに変更
-        $this->_validatorClass = '\Gotea\Validation\MyValidator';
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('SaveUser');

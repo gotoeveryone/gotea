@@ -2,13 +2,23 @@
 
 namespace Gotea\Validation;
 
-use Cake\Validation\Validator;
+use Cake\Validation\RulesProvider;
+use Cake\Validation\Validator as BaseValidator;
 
 /**
  * カスタムバリデータクラス
  */
-class MyValidator extends Validator
+class Validator extends BaseValidator
 {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setProvider('default', new RulesProvider('Gotea\Validation\Validation'));
+    }
+
     /**
      * メッセージ
      *
@@ -31,16 +41,15 @@ class MyValidator extends Validator
      */
     public function add($field, $name, $rule = [])
     {
-        // メッセージが存在しなければデフォルトのメッセージを取得
-        if (!isset($rule['message']) || $rule['message'] === '') {
-            $key = $name;
+        // メッセージが存在しなければ、ルールに該当するメッセージを定義から取得
+        if (empty($rule['message'])) {
             $args = [__d('validation', $field)];
             if (isset($rule['rule']) && is_array($rule['rule'])) {
                 $rules = $rule['rule'];
                 array_shift($rules);
                 $args = array_merge($args, $rules);
             }
-            $rule['message'] = $this->getMessage($key, $args);
+            $rule['message'] = $this->getMessage($name, $args);
         }
 
         return parent::add($field, $name, $rule);
@@ -52,13 +61,18 @@ class MyValidator extends Validator
     protected function _convertValidatorToArray($fieldName, $defaults = [], $settings = [])
     {
         $results = parent::_convertValidatorToArray($fieldName, $defaults, $settings);
-        foreach ($results as $name => &$property) {
+        foreach ($results as $name => $property) {
+            // すでにメッセージがあれば何もしない
+            if (!empty($property['message'])) {
+                continue;
+            }
+
             if (isset($property['mode'])) {
-                // プロパティが存在しない
-                $property['message'] = $this->getMessage('required', __d('validation', $name));
+                // $propertyに`mode`があるのは`requirePresence()`利用時
+                $results[$name]['message'] = $this->getMessage('required', __d('validation', $name));
             } elseif (isset($property['when'])) {
-                // プロパティが空欄
-                $property['message'] = $this->getMessage('notEmpty', __d('validation', $name));
+                // $propertyに`when`があるのは`allowEmpty()`および`notEmpty()`利用時
+                $results[$name]['message'] = $this->getMessage('notEmpty', __d('validation', $name));
             }
         }
 
@@ -70,12 +84,21 @@ class MyValidator extends Validator
      */
     public function date($field, $formats = ['ymd'], $message = null, $when = null)
     {
-        $args = [__d('validation', $field)];
         if (!is_array($formats)) {
             $formats = [$formats];
         }
-        $args[] = implode('/', str_split($formats[0]));
+
+        // 日付フォーマットをメッセージに渡す
+        $args = [
+            __d('validation', $field),
+            implode(', ', $formats)
+        ];
         $message = $this->getMessage('invalidFormat', $args);
+
+        // フォーマットから「y」「M」「m」「d」以外を消し去る
+        foreach ($formats as $key => $value) {
+            $formats[$key] = preg_replace('/([^d|^m|^y|^M])/', '', $value);
+        }
 
         return parent::date($field, $formats, $message, $when);
     }
