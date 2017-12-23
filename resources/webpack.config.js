@@ -4,12 +4,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = [
     {
         entry: {
-            app: './resources/assets/js/app',
-            common: './resources/assets/js/common',
+            app: path.join(__dirname, 'assets/js/app'),
+            common: path.join(__dirname, 'assets/js/common'),
         },
         output: {
             publicPath: 'js/',
-            path: path.join(__dirname, 'webroot/js'),
+            path: path.join(__dirname, '../webroot/js'),
             filename: '[name].js',
         },
         resolve: {
@@ -25,8 +25,8 @@ module.exports = [
                     loader: 'vue-loader',
                     options: {
                         loaders: {
-                            js: 'buble-loader'
-                        }
+                            js: 'buble-loader',
+                        },
                     },
                 },
                 {
@@ -39,17 +39,17 @@ module.exports = [
                 },
                 {
                     test: /\.css$/,
-                    loader: 'style-loader!css-loader'
+                    loader: 'style-loader!css-loader',
                 },
                 {
                     test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-                    loader: 'file-loader'
+                    loader: 'file-loader',
                 },
                 {
                     test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
                     loader: 'file-loader',
                     query: {
-                        name: '[name].[ext]?[hash]'
+                        name: '[name].[ext]?[hash]',
                     },
                 },
             ],
@@ -57,10 +57,10 @@ module.exports = [
     },
     {
         entry: {
-            app: './resources/assets/sass/app.scss',
+            app: path.join(__dirname, 'assets/sass/app.scss'),
         },
         output: {
-            path: path.join(__dirname, 'webroot/css'),
+            path: path.join(__dirname, '../webroot/css'),
             filename: '[name].css',
         },
         resolve: {

@@ -1,7 +1,6 @@
 {
     "extends": [
-        "eslint:recommended",
-        "plugin:vue/recommended"
+        "plugin:vue/essential"
     ],
     "globals": {
         "Vue": true,
@@ -9,6 +8,10 @@
         "App": true
     },
     "rules": {
+        "indent": [
+            "error",
+            4
+        ],
         "comma-dangle": [
             "error",
             "always-multiline"
