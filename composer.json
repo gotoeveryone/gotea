@@ -46,7 +46,9 @@
     },
     "scripts": {
         "post-install-cmd": "Gotea\\Console\\Installer::postInstall",
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump"
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "phpcs": "phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "phpunit": "phpunit"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
