@@ -15,26 +15,26 @@ matrix:
 
   include:
     - php: 7.1
-      env: PHPCS=1
+      env: CS=1
 
 before_install:
-  - if [[ $PHPCS != 1 ]]; then nvm install node; fi
-  - if [[ $PHPCS != 1 ]]; then nvm alias default node; fi
-  - if [[ $PHPCS != 1 ]]; then node --version; fi
+  - if [[ $CS = 1 ]]; then nvm install node; fi
+  - if [[ $CS = 1 ]]; then nvm alias default node; fi
+  - if [[ $CS = 1 ]]; then node --version; fi
 
 before_script:
-  - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:~3.0; fi
-  - if [[ $PHPCS != 1 ]]; then mysql -uroot -e "create database gotea_test"; fi
-  - if [[ $PHPCS != 1 ]]; then cp .env.example .env; fi
-  - if [[ $PHPCS != 1 ]]; then composer install; fi
-  - if [[ $PHPCS != 1 ]]; then composer require phpunit/phpunit:"^5.7|^6.0"; fi
-  - if [[ $PHPCS != 1 ]]; then composer run-script post-install-cmd --no-interaction; fi
-  - if [[ $PHPCS != 1 ]]; then npm install; fi
+  - if [[ $CS = 1 ]]; then composer require cakephp/cakephp-codesniffer:~3.0; fi
+  - if [[ $CS = 1 ]]; then npm install; fi
+  - if [[ $CS != 1 ]]; then mysql -uroot -e "create database gotea_test"; fi
+  - if [[ $CS != 1 ]]; then cp .env.example .env; fi
+  - if [[ $CS != 1 ]]; then composer install; fi
+  - if [[ $CS != 1 ]]; then composer require phpunit/phpunit:"^5.7|^6.0"; fi
+  - if [[ $CS != 1 ]]; then composer run-script post-install-cmd --no-interaction; fi
 
 script:
-  - if [[ $PHPCS = 1 ]]; then composer phpcs; fi
-  - if [[ $PHPCS != 1 ]]; then composer phpunit; fi
-  - if [[ $PHPCS != 1 ]]; then npm run lint; fi
+  - if [[ $CS = 1 ]]; then composer phpcs; fi
+  - if [[ $CS = 1 ]]; then npm run lint; fi
+  - if [[ $CS != 1 ]]; then composer phpunit; fi
 
 notifications:
   email: false

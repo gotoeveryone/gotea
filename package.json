@@ -4,15 +4,15 @@
     "description": "igoapp front development tools configuration",
     "main": "index.js",
     "scripts": {
-        "webpack": "webpack --colors --config=./webpack.config.js",
+        "webpack": "webpack --colors --config=./resources/webpack.config.js",
         "dev": "npm run webpack -- -w",
         "prod": "cross-env NODE_ENV=production npm run webpack -- -p",
         "lint": "npm run eslint & npm run sasslint",
-        "eslint": "eslint resources/assets/js/**/*.*",
-        "sasslint": "sass-lint -c .sass-lint.yml -v -q"
+        "eslint": "eslint -c ./resources/.eslintrc.json resources/assets/js/**/*.*",
+        "sasslint": "sass-lint -c ./resources/.sass-lint.yml -v -q"
     },
     "author": "Kazuki Kamizuru",
-    "license": "ISC",
+    "license": "MIT",
     "private": true,
     "dependencies": {},
     "devDependencies": {
@@ -22,7 +22,7 @@
         "css-loader": "^0.28.7",
         "eslint": "^4.10.0",
         "eslint-loader": "^1.9.0",
-        "eslint-plugin-vue": "^3.13.1",
+        "eslint-plugin-vue": "^4.0.0-beta.4",
         "extract-text-webpack-plugin": "^3.0.2",
         "file-loader": "^1.1.5",
         "node-sass": "^4.6.0",

@@ -33,87 +33,87 @@
 
 <script>
 export default {
-  props: {
-    lastUpdate: String
-  },
-  data: () => {
-    return {
-      countries: [],
-      years: [],
-      select: {
-        year: null,
-        country: null,
-        limit: null,
-        from: "",
-        to: ""
-      }
-    };
-  },
-  methods: {
-    changeValue($event) {
-      this.select[$event.target.name] = $event.target.value;
-      this.search();
+    props: {
+        lastUpdate: String,
     },
-    search() {
-      this.$emit("search", this.select);
-    },
-    clearDate() {
-      this.select.from = "";
-      this.select.to = "";
-      this.search();
-    },
-    json() {
-      this.$emit("json", this.select);
-    },
-    useInputDate() {
-      const selected = this.years.find(
-        y => y.value === parseInt(this.select.year, 10)
-      );
-      return selected ? !selected.old : false;
-    }
-  },
-  mounted() {
-    // 所属国
-    Promise.all([
-      this.$http.get("/api/countries"),
-      this.$http.get("/api/years")
-    ])
-      .then(data => {
-        data[0].body.response.forEach(obj => {
-          this.countries.push({
-            value: obj.code,
-            text: `${obj.name}棋戦`
-          });
-        });
-
-        data[1].body.response.forEach(obj => {
-          this.years.push({
-            value: obj.year,
-            text: `${obj.year}年度`,
-            old: obj.old
-          });
-        });
-      })
-      .then(() => {
-        this.select = {
-          year: this.years[0].value,
-          country: this.countries[0].value || "",
-          limit: this.limits[0].value
+    data: () => {
+        return {
+            countries: [],
+            years: [],
+            select: {
+                year: null,
+                country: null,
+                limit: null,
+                from: '',
+                to: '',
+            },
         };
-        this.search();
-      });
-  },
-  computed: {
-    limits() {
-      const limits = [];
-      for (let l = 20; l <= 50; l = l + 10) {
-        limits.push({
-          value: l,
-          text: `～${l}位`
-        });
-      }
-      return limits;
-    }
-  }
+    },
+    methods: {
+        changeValue($event) {
+            this.select[$event.target.name] = $event.target.value;
+            this.search();
+        },
+        search() {
+            this.$emit('search', this.select);
+        },
+        clearDate() {
+            this.select.from = '';
+            this.select.to = '';
+            this.search();
+        },
+        json() {
+            this.$emit('json', this.select);
+        },
+        useInputDate() {
+            const selected = this.years.find(
+                y => y.value === parseInt(this.select.year, 10)
+            );
+            return selected ? !selected.old : false;
+        },
+    },
+    mounted() {
+    // 所属国
+        Promise.all([
+            this.$http.get('/api/countries'),
+            this.$http.get('/api/years'),
+        ])
+            .then(data => {
+                data[0].body.response.forEach(obj => {
+                    this.countries.push({
+                        value: obj.code,
+                        text: `${obj.name}棋戦`,
+                    });
+                });
+
+                data[1].body.response.forEach(obj => {
+                    this.years.push({
+                        value: obj.year,
+                        text: `${obj.year}年度`,
+                        old: obj.old,
+                    });
+                });
+            })
+            .then(() => {
+                this.select = {
+                    year: this.years[0].value,
+                    country: this.countries[0].value || '',
+                    limit: this.limits[0].value,
+                };
+                this.search();
+            });
+    },
+    computed: {
+        limits() {
+            const limits = [];
+            for (let l = 20; l <= 50; l = l + 10) {
+                limits.push({
+                    value: l,
+                    text: `～${l}位`,
+                });
+            }
+            return limits;
+        },
+    },
 };
 </script>
