@@ -10,10 +10,8 @@
         <!-- マスタ -->
         <section data-contentname="title" class="tab-contents">
             <?=$this->Form->create($title, [
-                'id' => 'mainForm',
                 'class' => 'main-form',
                 'url' => ['_name' => 'update_title', $title->id],
-                'novalidate' => 'novalidate',
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
@@ -23,7 +21,7 @@
                 <?=$this->Form->hidden('id', ['value' => $title->id])?>
                 <div class="category-row"><?='タイトル情報（ID：'.h($title->id).'）'?></div>
                 <ul class="boxes">
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">タイトル名</div>
                             <div class="input-row"><?=$this->Form->text('name', ['maxlength' => 20])?></div>
@@ -37,7 +35,7 @@
                             <div class="input-row"><?=($title->country->name).'棋戦'?></div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">期</div>
                             <div class="input-row"><?=$this->Form->text('holding', ['maxlength' => 3, 'class' => 'holding'])?></div>
@@ -54,7 +52,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">HTMLファイル名</div>
                             <div class="input-row">
@@ -72,7 +70,7 @@
                             <div class="input-row"><?=$this->Date->formatToDateTime($title->modified)?></div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">その他備考</div>
                             <div class="input-row">
@@ -107,7 +105,7 @@
                     <?php if (!empty(($title->retention_histories))) : ?>
                         <?php if (($retention = $title->now_retention)) : ?>
                         <li class="label-row">現在の保持情報</li>
-                        <li class="row">
+                        <li class="detail-row">
                             <div class="box">
                                 <div class="input-row">
                                     <div class="box">
@@ -126,7 +124,7 @@
                         <?php endif ?>
                         <li class="label-row">保持情報（履歴）</li>
                         <?php foreach ($title->histories as $history) : ?>
-                        <li class="row">
+                        <li class="detail-row">
                             <div class="box">
                                 <div class="input-row">
                                     <div class="box">

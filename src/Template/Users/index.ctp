@@ -1,7 +1,6 @@
 <?= $this->Form->create($form, [
     'method' => 'post',
     'url' => ['_name' => 'login'],
-    'novalidate' => 'novalidate',
     'templates' => [
         'inputContainer' => '{{content}}',
         'textFormGroup' => '{{input}}',

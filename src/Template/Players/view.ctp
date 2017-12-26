@@ -16,10 +16,8 @@
         <!-- 棋士成績 -->
         <section data-contentname="player" class="tab-contents">
             <?=$this->Form->create($player, [
-                'id' => 'mainForm',
                 'class' => 'main-form',
                 'url' => $player->getSaveUrl(),
-                'novalidate' => 'novalidate',
                 'templates' => [
                     'inputContainer' => '{{content}}',
                     'textFormGroup' => '{{input}}',
@@ -30,7 +28,7 @@
                 <?=$this->Form->hidden('country_id')?>
                 <div class="category-row">棋士情報<?=($player->id ? '（ID：'.h($player->id).'）' : "")?></div>
                 <ul class="boxes">
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">所属国</div>
                             <div class="input-row">
@@ -65,7 +63,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">棋士名</div>
                             <div class="input-row">
@@ -92,7 +90,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">生年月日</div>
                             <div class="input-row">
@@ -132,7 +130,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">性別</div>
                             <div class="input-row">
@@ -158,7 +156,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">その他備考</div>
                             <div class="input-row">
@@ -184,7 +182,7 @@
                 <div class="category-row">昇段情報</div>
                 <ul class="boxes">
                     <li class="label-row">新規登録</li>
-                    <li class="row">
+                    <li class="detail-row">
                         <?= $this->Form->create($player, [
                             'class' => 'rank-form',
                             'type' => 'post',
@@ -219,7 +217,7 @@
                     </li>
                     <li class="label-row">昇段履歴</li>
                     <?php foreach ($player->player_ranks as $player_rank) : ?>
-                    <li class="row">
+                    <li class="detail-row">
                         <?= $this->Form->create($player, [
                             'class' => 'rank-form',
                             'type' => 'put',
@@ -264,7 +262,7 @@
                 <?php foreach ($player->title_score_details as $score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
@@ -312,7 +310,7 @@
                 <?php foreach ($player->old_scores as $key => $score) : ?>
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
-                    <li class="row">
+                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">

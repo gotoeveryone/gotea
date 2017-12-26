@@ -2,13 +2,13 @@
     <ul class="search-header">
         <li class="search-row">
             <div>
-                <label>対象国：</label>
+                <label class="search-row_label">対象国</label>
                 <select class="titles-country" v-model="select.country" @change="changeValue($event)">
                     <option v-for="(country, idx) in countries" :key="idx" :value="country.value" v-text="country.text"></option>
                 </select>
             </div>
             <div>
-                <label>終了棋戦：</label>
+                <label class="search-row_label">終了棋戦</label>
                 <select class="titles-closed" v-model="select.type" @change="changeValue($event)">
                     <option v-for="(type, idx) in types" :key="idx" :value="type.value" v-text="type.text"></option>
                 </select>

@@ -1,5 +1,5 @@
 <template>
-    <li class="row">
+    <li class="detail-row">
         <input type="hidden" :value="historyId" name="id">
         <input type="hidden" v-model="teamTitle" name="is_team">
         <div class="box">
@@ -96,18 +96,18 @@ export default {
                 .then(res => {
                     const players = res.body.response.results;
                     switch (players.length) {
-                    case 0:
-                        this.$store.dispatch('openDialog', {
-                            messages: '検索結果が0件でした。',
-                            type: 'warning',
-                        });
-                        break;
-                    case 1:
-                        this.select(players[0]);
-                        break;
-                    default:
-                        this.players = players;
-                        break;
+                        case 0:
+                            this.$store.dispatch('openDialog', {
+                                messages: '検索結果が0件でした。',
+                                type: 'warning',
+                            });
+                            break;
+                        case 1:
+                            this.select(players[0]);
+                            break;
+                        default:
+                            this.players = players;
+                            break;
                     }
                 })
                 .catch(res => {

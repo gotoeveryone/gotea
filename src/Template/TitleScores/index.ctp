@@ -2,7 +2,6 @@
     <?php if (!isset($isDialog)) : ?>
     <div>
         <?=$this->Form->create($form, [
-            'id' => 'mainForm',
             'class' => 'main-form',
             'url' => ['_name' => 'find_scores'],
             'templates' => [
@@ -14,15 +13,15 @@
             <ul class="search-header">
                 <li class="search-row">
                     <div>
-                        <label>棋士名：</label>
+                        <label class="search-row_label">棋士名：</label>
                         <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20]);?>
                     </div>
                     <div>
-                        <label>対象棋戦：</label>
+                        <label class="search-row_label">対象棋戦：</label>
                         <?= $this->cell('Countries')->render() ?>
                     </div>
                     <div>
-                        <label>対局年：</label>
+                        <label class="search-row_label">対局年：</label>
                         <?=
                             $this->MyForm->years('target_year', [
                                 'class' => 'year', 'empty' => true,
@@ -30,7 +29,7 @@
                         ?>
                     </div>
                     <div>
-                        <label>対局日：</label>
+                        <label class="search-row_label">対局日：</label>
                         <?=$this->Form->text('started', ['class' => 'date datepicker'])?>
                         <span>～</span>
                         <?=$this->Form->text('ended', ['class' => 'date datepicker'])?>
@@ -47,13 +46,13 @@
     <div class="search-results<?= ($this->isDialogMode() ? ' modal' : '') ?>">
         <ul class="table-header">
             <li class="table-row">
-                <span class="id">ID</span>
-                <span class="country">対象国</span>
-                <span class="date">日付</span>
-                <span class="name">勝者</span>
-                <span class="name">敗者</span>
+                <span class="table-column_id">ID</span>
+                <span class="table-column_country">対象国</span>
+                <span class="table-column_date">日付</span>
+                <span class="table-column_name">勝者</span>
+                <span class="table-column_name">敗者</span>
                 <?php if (!$this->isDialogMode()) : ?>
-                <span class="operation">操作</span>
+                <span class="table-column_operation">操作</span>
                 <?php endif ?>
             </li>
         </ul>
@@ -61,13 +60,13 @@
         <ul class="table-body">
             <?php foreach ($titleScores as $titleScore) : ?>
             <li class="table-row">
-                <span class="id"><?= h($titleScore->id) ?></span>
-                <span class="country"><?= h($titleScore->country->name.'棋戦') ?></span>
-                <span class="date"><?= h($titleScore->date) ?></span>
-                <span class="name"><?= $titleScore->getWinner($this->request->getData('player_id')) ?></span>
-                <span class="name"><?= $titleScore->getLoser($this->request->getData('player_id')) ?></span>
+                <span class="table-column_id"><?= h($titleScore->id) ?></span>
+                <span class="table-column_country"><?= h($titleScore->country->name.'棋戦') ?></span>
+                <span class="table-column_date"><?= h($titleScore->date) ?></span>
+                <span class="table-column_name"><?= $titleScore->getWinner($this->request->getData('player_id')) ?></span>
+                <span class="table-column_name"><?= $titleScore->getLoser($this->request->getData('player_id')) ?></span>
                 <?php if (!$this->isDialogMode()) : ?>
-                <span class="operation">
+                <span class="table-column_operation">
                     <?= $this->Form->postButton('勝敗変更', [
                         '_name' => 'update_scores', $titleScore->id,
                     ], [
