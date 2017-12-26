@@ -36,4 +36,6 @@
         ], ['class' => 'nav-menu']);
     ?>
     <?php endif ?>
+
+    <?= $this->cell('Navigation')->render() ?>
 </nav>
