@@ -23,7 +23,7 @@
                     <div>
                         <label class="search-row_label">対局年：</label>
                         <?=
-                            $this->MyForm->years('target_year', [
+                            $this->Form->years('target_year', [
                                 'class' => 'year', 'empty' => true,
                             ]);
                         ?>

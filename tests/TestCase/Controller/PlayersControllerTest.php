@@ -2,6 +2,7 @@
 
 namespace Gotea\Test\TestCase\Controller;
 
+use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -175,7 +176,8 @@ class PlayersControllerTest extends AppTestCase
     public function testCreateFailed()
     {
         $this->enableCsrfToken();
-        $name = '棋士新規作成' . date('YmdHis');
+        $now = Date::now();
+        $name = '棋士新規作成' . $now->format('YmdHis');
         $data = [
             'name' => $name,
             'name_english' => '',
@@ -183,10 +185,10 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'joined' => [
-                'year' => date('Y'),
-                'month' => date('m'),
-                'day' => date('d'),
+            'input_joined' => [
+                'year' => $now->year,
+                'month' => $now->month,
+                'day' => $now->day,
             ],
             'birthday' => '',
         ];
@@ -206,7 +208,8 @@ class PlayersControllerTest extends AppTestCase
     public function testCreate()
     {
         $this->enableCsrfToken();
-        $name = '棋士新規作成' . date('YmdHis');
+        $now = Date::now();
+        $name = '棋士新規作成' . $now->format('YmdHis');
         $data = [
             'name' => $name,
             'name_english' => 'test',
@@ -214,12 +217,12 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'joined' => [
-                'year' => date('Y'),
-                'month' => date('m'),
-                'day' => date('d'),
+            'input_joined' => [
+                'year' => $now->year,
+                'month' => $now->month,
+                'day' => $now->day,
             ],
-            'birthday' => date('Y/m/d'),
+            'birthday' => $now->format('Y/m/d'),
         ];
         $this->post(['_name' => 'create_player'], $data);
         $this->assertResponseSuccess();
@@ -237,7 +240,8 @@ class PlayersControllerTest extends AppTestCase
     public function testCreateWithContinue()
     {
         $this->enableCsrfToken();
-        $name = '棋士新規作成' . date('YmdHis');
+        $now = Date::now();
+        $name = '棋士新規作成' . $now->format('YmdHis');
         $data = [
             'name' => $name,
             'name_english' => 'test',
@@ -245,16 +249,21 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'joined' => [
-                'year' => date('Y'),
-                'month' => date('m'),
-                'day' => date('d'),
+            'input_joined' => [
+                'year' => $now->year,
+                'month' => $now->month,
+                'day' => $now->day,
             ],
             'birthday' => date('Y/m/d'),
             'is_continue' => true,
         ];
         $this->post(['_name' => 'create_player'], $data);
-        $this->assertRedirect(['_name' => 'new_player', 'country_id' => 1]);
+        $this->assertRedirect([
+            '_name' => 'new_player',
+            'country_id' => 1,
+            'sex' => '男性',
+            'joined' => $now->format('Ymd'),
+        ]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること
@@ -270,7 +279,8 @@ class PlayersControllerTest extends AppTestCase
     {
         $this->enableCsrfToken();
         $before = $this->Players->get(1);
-        $name = '棋士更新' . date('YmdHis');
+        $now = Date::now();
+        $name = '棋士更新' . $now->format('YmdHis');
         $data = [
             'id' => 1,
             'name' => $name,
@@ -278,10 +288,10 @@ class PlayersControllerTest extends AppTestCase
             'rank_id' => 1,
             'country_id' => 1,
             'organization_id' => 1,
-            'joined' => [
-                'year' => date('Y'),
-                'month' => date('m'),
-                'day' => date('d'),
+            'input_joined' => [
+                'year' => $now->year,
+                'month' => $now->month,
+                'day' => $now->day,
             ],
             'birthday' => '',
         ];
@@ -302,7 +312,8 @@ class PlayersControllerTest extends AppTestCase
     {
         $this->enableCsrfToken();
         $before = $this->Players->get(1);
-        $name = '棋士更新' . date('YmdHis');
+        $now = Date::now();
+        $name = '棋士更新' . $now->format('YmdHis');
         $data = [
             'id' => 1,
             'name' => $name,
@@ -310,10 +321,10 @@ class PlayersControllerTest extends AppTestCase
             'rank_id' => 1,
             'country_id' => 1,
             'organization_id' => 1,
-            'joined' => [
-                'year' => date('Y'),
-                'month' => date('m'),
-                'day' => date('d'),
+            'input_joined' => [
+                'year' => $now->year,
+                'month' => $now->month,
+                'day' => $now->day,
             ],
             'birthday' => date('Y/m/d'),
         ];

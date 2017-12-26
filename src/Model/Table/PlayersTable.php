@@ -49,14 +49,18 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
-            ->notEmpty(['name', 'name_english', 'joined'])
+            ->notEmpty([
+                'country_id', 'rank_id', 'organization_id',
+                'name', 'name_english', 'joined', 'sex',
+            ])
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
             ->alphaNumeric('name_english')
             ->maxLength('name_other', 20)
+            ->naturalNumber('joined')
+            ->lengthBetween('joined', [4, 8])
             ->date('birthday', 'y/m/d')
-            ->date('retired', 'y/m/d')
-            ->date('joined', 'y/m/d', null, 'create');
+            ->date('retired', 'y/m/d');
     }
 
     /**

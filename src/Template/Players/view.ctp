@@ -105,28 +105,15 @@
                         <div class="box">
                             <div class="label-row">入段日</div>
                             <div class="input-row">
-                                <?= $this->Form->date('input_joined', [
-                                    'empty' => [
-                                        'year' => false,
-                                        'month' => ['' => '-'],
-                                        'day' => ['' => '-'],
-                                    ],
-                                    'year' => [
-                                        'start' => '1920',
-                                        'end' => date('Y'),
-                                        'class' => 'joined',
-                                        'suffix' => '年',
-                                    ],
-                                    'month' => [
-                                        'class' => 'joined',
-                                        'suffix' => '月',
-                                    ],
-                                    'day' => [
-                                        'class' => 'joined',
-                                        'suffix' => '日',
-                                    ],
-                                    'monthNames' => false,
-                                ]); ?>
+                                <?=
+                                    $this->Form->selectDate('input_joined', [
+                                        'empty' => [
+                                            'year' => false,
+                                            'month' => ['' => '-'],
+                                            'day' => ['' => '-'],
+                                        ],
+                                    ]);
+                                ?>
                             </div>
                         </div>
                     </li>
@@ -134,7 +121,7 @@
                         <div class="box">
                             <div class="label-row">性別</div>
                             <div class="input-row">
-                                <?= $this->MyForm->sexes(['value' => $player->sex, 'class' => 'sex']) ?>
+                                <?= $this->Form->sexes(['value' => $player->sex, 'class' => 'sex']) ?>
                             </div>
                         </div>
                         <div class="box">
@@ -269,7 +256,7 @@
                                 <?= $score->win_point ?>勝<?= $score->lose_point ?>敗<?= $score->draw_point ?>分
                                 <span class="percent">
                                     （勝率<strong>
-                                        <?= $this->MyForm->percent($score->win_point, $score->lose_point)?>
+                                        <?= $this->Form->percent($score->win_point, $score->lose_point)?>
                                     </strong>）
                                 </span>
                             </div>
@@ -282,7 +269,7 @@
                                 <?= $score->draw_point_world ?>分
                                 <span class="percent">
                                     （勝率<strong>
-                                        <?= $this->MyForm->percent($score->win_point_world, $score->lose_point_world) ?>
+                                        <?= $this->Form->percent($score->win_point_world, $score->lose_point_world) ?>
                                     </strong>）
                                 </span>
                             </div>
@@ -315,14 +302,14 @@
                             <div class="label-row">勝敗（国内）</div>
                             <div class="input-row">
                                 <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point, $score->lose_point)?></strong>）</span>
+                                <span class="percent">（勝率<strong><?=$this->Form->percent($score->win_point, $score->lose_point)?></strong>）</span>
                             </div>
                         </div>
                         <div class="box">
                             <div class="label-row">勝敗（国際）</div>
                             <div class="input-row">
                                 <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
-                                <span class="percent">（勝率<strong><?=$this->MyForm->percent($score->win_point_world, $score->lose_point_world)?></strong>）</span>
+                                <span class="percent">（勝率<strong><?=$this->Form->percent($score->win_point_world, $score->lose_point_world)?></strong>）</span>
                             </div>
                         </div>
                         <div class="box">

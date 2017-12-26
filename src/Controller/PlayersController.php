@@ -86,12 +86,23 @@ class PlayersController extends AppController
                 throw new BadRequestException(__('所属国を指定してください。'));
             }
 
-            // モデルを生成し、所属国と所属組織を設定
+            // モデルを生成し、パラメータを設定
             $organization = $this->Organizations->findByCountryId($countryId)->firstOrFail();
-            $player = $this->Players->newEntity([
+            $params = [
                 'country_id' => $countryId,
                 'organization_id' => $organization->id,
-            ]);
+            ];
+            if (($sex = $this->request->getQuery('sex'))) {
+                $params['sex'] = $sex;
+            }
+            if (($joined = $this->request->getQuery('joined'))) {
+                $params['joined'] = $joined;
+            }
+            $player = $this->Players->newEntity($params);
+            // エラーあり
+            if (($errors = $player->getErrors())) {
+                $this->_setErrors(400, $errors);
+            }
         }
 
         return $this->set('player', $player)->_renderWithDialog('view');
@@ -139,7 +150,11 @@ class PlayersController extends AppController
         if (!$id && $this->request->getData('is_continue')) {
             return $this->redirect([
                 '_name' => 'new_player',
-                '?' => ['country_id' => $player->country_id],
+                '?' => [
+                    'country_id' => $player->country_id,
+                    'sex' => $player->sex,
+                    'joined' => $player->joined,
+                ],
             ]);
         }
 

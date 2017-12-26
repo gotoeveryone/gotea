@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <label class="search-row_label">性別：</label>
-                    <?= $this->MyForm->sexes(['class' => 'sex', 'empty' => true]) ?>
+                    <?= $this->Form->sexes(['class' => 'sex', 'empty' => true]) ?>
                 </div>
                 <div>
                     <label class="search-row_label">入段年：</label>
@@ -54,7 +54,7 @@
             <li class="search-row">
                 <div>
                     <label class="search-row_label">引退者：</label>
-                    <?= $this->MyForm->filters('is_retired', ['class' => 'excluded']) ?>
+                    <?= $this->Form->filters('is_retired', ['class' => 'excluded']) ?>
                 </div>
                 <?php if (!empty($players)) : ?>
                 <div class="result-count">
