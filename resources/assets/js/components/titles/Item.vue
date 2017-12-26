@@ -1,31 +1,31 @@
 <template>
     <li class="table-row" :class="rowClass">
-        <span class="table-column name">
+        <span class="table-column table-column_name">
             <input type="text" @change="save" v-model="item.name">
         </span>
-        <span class="table-column name">
+        <span class="table-column table-column_name">
             <input type="text" @change="save" v-model="item.nameEnglish">
         </span>
-        <span class="table-column holding">
-            <input type="text" class="input-holding" @change="save" v-model="item.holding">
+        <span class="table-column table-column_holding">
+            <input type="text" class="table-column_holding-input" @change="save" v-model="item.holding">
         </span>
-        <span class="table-column winner" v-text="winnerName"></span>
-        <span class="table-column order">
-            <input type="text" class="input-sortorder" @change="save" v-model="item.sortOrder">
+        <span class="table-column table-column_winner" v-text="winnerName"></span>
+        <span class="table-column table-column_order">
+            <input type="text" class="table-column_order-input" @change="save" v-model="item.sortOrder">
         </span>
-        <span class="table-column team">
+        <span class="table-column table-column_team">
             <input type="checkbox" @change="save" v-model="item.isTeam">
         </span>
-        <span class="table-column filename">
+        <span class="table-column table-column_filename">
             <input type="text" @change="save" v-model="item.htmlFileName">
         </span>
-        <span class="table-column modified">
-            <input type="text" class="datepicker input-modified" @change="saveDatepicker($event)" v-model="item.htmlFileModified">
+        <span class="table-column table-column_modified">
+            <input type="text" class="datepicker table-column_modified-input" @change="saveDatepicker($event)" v-model="item.htmlFileModified">
         </span>
-        <span class="table-column closed">
+        <span class="table-column table-column_closed">
             <input type="checkbox" @change="save" v-model="item.isClosed" :disabled="!isSaved()">
         </span>
-        <span class="table-column open-detail">
+        <span class="table-column table-column_open-detail">
             <a class="view-link" @click="select()" v-text="label"></a>
         </span>
     </li>

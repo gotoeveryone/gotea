@@ -1,7 +1,7 @@
 <template>
     <ul class="search-header">
         <li class="search-row">
-            <label class="ranking_label">抽出対象：</label>
+            <label class="search-row_label ranking_label">抽出対象</label>
             <select v-model="select.year" name="year" class="ranking_year" @change="changeValue($event)">
                 <option v-for="(year, idx) in years" :key="idx" :value="year.value" v-text="year.text"></option>
             </select>
@@ -13,15 +13,15 @@
             </select>
         </li>
         <li class="search-row">
-            <label class="ranking_label">対局日：</label>
+            <label class="search-row_label ranking_label">対局日</label>
             <input type="text" name="from" class="ranking_date datepicker"
                 v-model="select.from" @change="changeValue($event)" :disabled="!useInputDate()">
-            <span>～</span>
+            <span class="ranking_date-duration">～</span>
             <input type="text" name="to" class="ranking_date datepicker"
                 v-model="select.to" @change="changeValue($event)" :disabled="!useInputDate()">
         </li>
         <li class="search-row">
-            <label class="ranking_label">最終更新日：</label>
+            <label class="search-row_label ranking_label">最終更新日</label>
             <span class="lastUpdate" v-text="lastUpdate"></span>
             <div class="button-wrap">
                 <button type="button" @click="clearDate()">日付をクリア</button>
@@ -73,7 +73,7 @@ export default {
         },
     },
     mounted() {
-    // 所属国
+        // 所属国
         Promise.all([
             this.$http.get('/api/countries'),
             this.$http.get('/api/years'),
