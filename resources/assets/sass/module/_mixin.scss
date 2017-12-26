@@ -16,6 +16,11 @@
     }
 }
 
+@mixin not-liststyle() {
+    padding: 0;
+    list-style: none;
+}
+
 /* アニメーション */
 @mixin fade($second, $fadeClass) {
     animation: show #{$second}s ease-in-out;
