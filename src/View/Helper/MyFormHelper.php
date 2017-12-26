@@ -1,6 +1,7 @@
 <?php
 namespace Gotea\View\Helper;
 
+use Cake\I18n\Date;
 use Cake\View\Helper\FormHelper;
 use Gotea\Utility\CalculatorTrait;
 
@@ -10,6 +11,34 @@ use Gotea\Utility\CalculatorTrait;
 class MyFormHelper extends FormHelper
 {
     use CalculatorTrait;
+
+    /**
+     * 入段日を取得します。
+     *
+     * @param string $name フィールド名
+     * @param array $attributes オプション
+     * @return string Generated set of select boxes for time formats chosen.
+     */
+    public function selectDate(string $name, array $attributes)
+    {
+        return $this->date($name, [
+            'year' => [
+                'start' => '1920',
+                'end' => Date::now()->addYears(1)->year,
+                'class' => 'joined',
+                'suffix' => '年',
+            ],
+            'month' => [
+                'class' => 'joined',
+                'suffix' => '月',
+            ],
+            'day' => [
+                'class' => 'joined',
+                'suffix' => '日',
+            ],
+            'monthNames' => false,
+        ] + $attributes);
+    }
 
     /**
      * 性別一覧を取得します。

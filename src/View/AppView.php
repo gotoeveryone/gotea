@@ -10,6 +10,18 @@ use Cake\View\View;
 class AppView extends View
 {
     /**
+     * {@inheritDoc}
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadHelper('Form', [
+            'className' => 'MyForm',
+        ]);
+    }
+
+    /**
      * 認証済みかを判定
      *
      * @return bool

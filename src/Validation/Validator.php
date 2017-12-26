@@ -34,6 +34,7 @@ class Validator extends BaseValidator
         'maxLength' => 'field {0} length is under the {1}',
         'range' => 'field {0} range is {1} - {2}',
         'invalidFormat' => 'field {0} is {1} format only',
+        'naturalNumber' => 'field {0} is natural number only',
     ];
 
     /**
