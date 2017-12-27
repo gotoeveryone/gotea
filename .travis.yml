@@ -9,6 +9,7 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache
+    - node_modules
 
 php:
   - 7.1
@@ -37,7 +38,8 @@ before_script:
 
 script:
   - if [[ $CS = 1 ]]; then composer phpcs; fi
-  - if [[ $CS = 1 ]]; then npm run lint; fi
+  - if [[ $CS = 1 ]]; then npm run eslint; fi
+  - if [[ $CS = 1 ]]; then npm run sasslint; fi
   - if [[ $CS != 1 ]]; then composer phpunit; fi
 
 notifications:
