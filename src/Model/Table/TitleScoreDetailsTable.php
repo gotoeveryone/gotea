@@ -36,14 +36,11 @@ class TitleScoreDetailsTable extends AppTable
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('TitleScores')
-            ->setJoinType('INNER');
+        $this->belongsTo('TitleScores');
         $this->belongsTo('Players')
-            ->setJoinType('INNER');
-        $this->belongsTo('Winner', ['className' => 'Players'])
-            ->setForeignKey('player_id');
-        $this->belongsTo('Loser', ['className' => 'Players'])
-            ->setForeignKey('player_id');
+            ->setJoinType(Query::JOIN_TYPE_INNER);
+        $this->belongsTo('Ranks')
+            ->setJoinType(Query::JOIN_TYPE_INNER);
     }
 
     /**

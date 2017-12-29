@@ -7,12 +7,15 @@ namespace Gotea\Model\Entity;
  * @property int $id
  * @property int $title_score_id
  * @property int $player_id
+ * @property string $player_name
+ * @property int $rank_id
  * @property string $division
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
  * @property \Gotea\Model\Entity\TitleScore $title_score
  * @property \Gotea\Model\Entity\Player $player
+ * @property \Gotea\Model\Entity\Rank $rank
  */
 class TitleScoreDetail extends AppEntity
 {
