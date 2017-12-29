@@ -3,11 +3,14 @@ namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 /**
  * TitleScores Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Titles
+ * @property \Cake\ORM\Association\BelongsTo $Countries
  * @property \Cake\ORM\Association\HasMany $TitleScoreDetails
  *
  * @method \Gotea\Model\Entity\TitleScore get($primaryKey, $options = [])
@@ -34,16 +37,6 @@ class TitleScoresTable extends AppTable
         $this->belongsTo('Countries')
             ->setJoinType('INNER');
         $this->hasMany('TitleScoreDetails');
-        $this->hasOne('WinDetails', ['className' => 'TitleScoreDetails'])
-            ->setForeignKey('title_score_id')
-            ->setConditions([
-                'WinDetails.division' => '勝',
-            ]);
-        $this->hasOne('LoseDetails', ['className' => 'TitleScoreDetails'])
-            ->setForeignKey('title_score_id')
-            ->setConditions([
-                'LoseDetails.division' => '敗',
-            ]);
     }
 
     /**
@@ -67,26 +60,36 @@ class TitleScoresTable extends AppTable
         $query = $this->find()
                 ->contain([
                     'Countries',
-                    'WinDetails', 'WinDetails.Winner', 'WinDetails.Winner.Ranks',
-                    'LoseDetails', 'LoseDetails.Loser', 'LoseDetails.Loser.Ranks'])
+                    'TitleScoreDetails',
+                    'TitleScoreDetails.Players',
+                    'TitleScoreDetails.Ranks',
+                ])
                 ->orderDesc('started')->orderDesc('TitleScores.id');
 
-        if (($id = $data['player_id'] ?? '')) {
-            $query->where(['Winner.id' => $id])->orWhere(['Loser.id' => $id]);
+        if (($id = Hash::get($data, 'player_id'))) {
+            $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($id) {
+                return $q->innerJoinWith('Players', function (Query $q) use ($id) {
+                    return $q->where(['TitleScoreDetails.player_id' => $id]);
+                });
+            });
         }
-        if (($name = trim($data['name'] ?? ''))) {
-            $query->where(['Winner.name like ' => "%{$name}%"])->orWhere(['Loser.name like ' => "%{$name}%"]);
+        if (($name = Hash::get($data, 'name'))) {
+            $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
+                return $q->innerJoinWith('Players', function (Query $q) use ($name) {
+                    return $q->where(['Players.name like' => "%$name%"]);
+                });
+            });
         }
-        if (($year = $data['target_year'] ?? '')) {
+        if (($year = Hash::get($data, 'target_year'))) {
             $query->where(['YEAR(TitleScores.started)' => $year])->where(['YEAR(TitleScores.ended)' => $year]);
         }
-        if (($countryId = $data['country_id'] ?? '')) {
+        if (($countryId = Hash::get($data, 'country_id'))) {
             $query->where(['TitleScores.country_id' => $countryId]);
         }
-        if (($started = $data['started'] ?? 0)) {
+        if (($started = Hash::get($data, 'started', 0)) > 0) {
             $query->where(['TitleScores.started >= ' => $started]);
         }
-        if (($ended = $data['ended'] ?? 0)) {
+        if (($ended = Hash::get($data, 'ended', 0)) > 0) {
             $query->where(['TitleScores.ended <= ' => $ended]);
         }
 

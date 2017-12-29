@@ -84,6 +84,6 @@ class MyFormHelper extends FormHelper
             $years[$i] = $i . '年度';
         }
 
-        return $this->select('sex', $years, $attributes);
+        return $this->select($name, $years, $attributes);
     }
 }

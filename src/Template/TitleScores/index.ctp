@@ -59,12 +59,21 @@
         <?php if (!empty($titleScores) && $titleScores->count() > 0) : ?>
         <ul class="table-body">
             <?php foreach ($titleScores as $titleScore) : ?>
+            <?php $selectId = $this->request->getData('player_id'); ?>
             <li class="table-row">
                 <span class="table-column_id"><?= h($titleScore->id) ?></span>
                 <span class="table-column_country"><?= h($titleScore->country->name.'棋戦') ?></span>
                 <span class="table-column_date"><?= h($titleScore->date) ?></span>
-                <span class="table-column_name"><?= $titleScore->getWinner($this->request->getData('player_id')) ?></span>
-                <span class="table-column_name"><?= $titleScore->getLoser($this->request->getData('player_id')) ?></span>
+                <span class="table-column_name">
+                    <span <?= $titleScore->isSelected($titleScore->winner, $selectId) ? 'class="selected"' : '' ?>>
+                        <?= h($titleScore->getWinnerName()) ?>
+                    </span>
+                </span>
+                <span class="table-column_name">
+                    <span <?= $titleScore->isSelected($titleScore->loser, $selectId) ? 'class="selected"' : '' ?>>
+                        <?= h($titleScore->getLoserName()) ?>
+                    </span>
+                </span>
                 <?php if (!$this->isDialogMode()) : ?>
                 <span class="table-column_operation">
                     <?= $this->Form->postButton('勝敗変更', [

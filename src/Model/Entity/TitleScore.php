@@ -14,24 +14,36 @@ namespace Gotea\Model\Entity;
  * @property \Cake\I18n\Time $modified
  *
  * @property \Gotea\Model\Entity\Title $title
+ * @property \Gotea\Model\Entity\Country $country
  * @property \Gotea\Model\Entity\TitleScoreDetail[] $title_score_details
  */
 class TitleScore extends AppEntity
 {
     /**
+     * 指定した棋士に合致するかを判定します。
+     *
+     * @param \Gotea\Model\Entity\Player|null $player 棋士
+     * @param string|null $id 棋士ID
+     * @return 判定結果
+     */
+    public function isSelected($player, $id = null)
+    {
+        if (!$player || !$id) {
+            return false;
+        }
+
+        return $player->id === (int)$id;
+    }
+
+    /**
      * 勝者名を取得します。
      *
-     * @param int|null $id 棋士ID
      * @return string 勝者名
      */
-    public function getWinner($id = null)
+    public function getWinnerName()
     {
-        if (($detail = $this->win_detail) && ($winner = $detail->winner)) {
-            if ($winner->id == $id) {
-                return '<span class="selected">' . h($winner->name_with_rank) . '</span>';
-            }
-
-            return $winner->name_with_rank;
+        if (($detail = $this->win_detail)) {
+            return $detail->player_name . ' ' . $detail->rank->name;
         }
 
         return '';
@@ -40,20 +52,59 @@ class TitleScore extends AppEntity
     /**
      * 敗者名を取得します。
      *
-     * @param int|null $id 棋士ID
      * @return string 敗者名
      */
-    public function getLoser($id = null)
+    public function getLoserName()
     {
-        if (($detail = $this->lose_detail) && ($loser = $detail->loser)) {
-            if ($loser->id == $id) {
-                return '<span class="selected">' . h($loser->name_with_rank) . '</span>';
-            }
-
-            return $loser->name_with_rank;
+        if (($detail = $this->lose_detail)) {
+            return $detail->player_name . ' ' . $detail->rank->name;
         }
 
         return '';
+    }
+
+    /**
+     * 勝者を取得します。
+     *
+     * @return \Gotea\Model\Entity\TitleScoreDetail|null
+     */
+    protected function _getWinDetail()
+    {
+        return collection($this->title_score_details)->filter(function ($item) {
+            return $item->division === '勝';
+        })->first();
+    }
+
+    /**
+     * 敗者を取得します。
+     *
+     * @return \Gotea\Model\Entity\TitleScoreDetail|null
+     */
+    protected function _getLoseDetail()
+    {
+        return collection($this->title_score_details)->filter(function ($item) {
+            return $item->division === '敗';
+        })->first();
+    }
+
+    /**
+     * 勝者を取得します。
+     *
+     * @return \Gotea\Model\Entity\Player|null
+     */
+    protected function _getWinner()
+    {
+        return $this->win_detail ? $this->win_detail->player : null;
+    }
+
+    /**
+     * 敗者を取得します。
+     *
+     * @return \Gotea\Model\Entity\Player|null
+     */
+    protected function _getLoser()
+    {
+        return $this->lose_detail ? $this->lose_detail->player : null;
     }
 
     /**
