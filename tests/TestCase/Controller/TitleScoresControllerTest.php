@@ -17,6 +17,7 @@ class TitleScoresControllerTest extends AppTestCase
         'app.players',
         'app.countries',
         'app.ranks',
+        'app.player_ranks',
     ];
 
     /**

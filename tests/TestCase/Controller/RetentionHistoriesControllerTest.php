@@ -30,6 +30,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
         'app.countries',
         'app.ranks',
         'app.organizations',
+        'app.player_ranks',
     ];
 
     /**
