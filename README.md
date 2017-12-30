@@ -1,5 +1,8 @@
 # Gotea (ゴティー)
 
+[![Build Status](https://travis-ci.org/gotoeveryone/gotea.svg?branch=master)](https://travis-ci.org/cicatrice/travis-test)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)
+
 [CakePHP](http://cakephp.org) 3.x を利用した[Go to Everyone!](https://gotoeveryone.k2ss.info)の情報管理ツールです。
 
 ## 前提
