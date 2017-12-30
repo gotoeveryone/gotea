@@ -2,17 +2,13 @@
 
 namespace Gotea\Controller\Component;
 
-use Cake\Controller\Component;
 use Cake\Http\Client;
 use Cake\Log\Log;
 
 /**
- * JSON連携用コンポーネント
- *
- * @author      Kazuki Kamizuru
- * @since       2016/05/05
+ * APIコールを行うためのトレイト
  */
-class JsonComponent extends Component
+trait ApiTrait
 {
     /**
      * APIをコールします。
@@ -32,16 +28,17 @@ class JsonComponent extends Component
         $headers = $this->__createHeaders($headers);
 
         $http = new Client();
-        $response = $http->$callMethod($url, $data, $headers);
-        $body = $response->getBody();
+        if (method_exists($http, $callMethod)) {
+            $response = $http->$callMethod($url, $data, $headers);
+            $body = $response->getBody();
 
-        // \Cake\Http\Client\Messsage には`200`～`202`の定義しかないため、
-        // \Cake\Http\Client\Responseのこのメソッドは`204`をOKとしていない
-        if ($response->isOk() || $response->getStatusCode() === 204) {
-            return [
-                'status' => $response->getStatusCode(),
-                'content' => json_decode($body, $assoc),
-            ];
+            // ステータスコードが200～204なら正常終了とみなす
+            if ($response->isOk()) {
+                return [
+                    'status' => $response->getStatusCode(),
+                    'content' => json_decode($body, $assoc),
+                ];
+            }
         }
 
         Log::error("StatusCode: {$response->getStatusCode()}");
@@ -49,7 +46,7 @@ class JsonComponent extends Component
 
         return [
             'status' => $response->getStatusCode(),
-            'message' => "{$method}リクエストに失敗しました。",
+            'message' => "${method}リクエストに失敗しました。",
         ];
     }
 

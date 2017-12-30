@@ -53,9 +53,9 @@ class TitleScoresController extends AppController
 
         // 件数が0件または多すぎる場合はメッセージを出力
         $over = 500;
-        if (!$titleScores->count()) {
+        if (!($count = $titleScores->count())) {
             $this->Flash->warn(__("検索結果が0件でした。"));
-        } elseif (($count = $titleScores->count()) > $over) {
+        } elseif ($count > $over) {
             $warning = '検索結果が{0}件を超えています（{1}件）。<br/>条件を絞って再検索してください。';
             $this->Flash->warn(__($warning, $over, $count));
         } else {

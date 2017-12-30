@@ -13,7 +13,7 @@ use Cake\Log\Log;
  */
 class MyAuthComponent extends AuthComponent
 {
-    public $components = ['Json', 'Flash'];
+    use ApiTrait;
 
     /**
      * ログイン処理を行います。
@@ -41,7 +41,7 @@ class MyAuthComponent extends AuthComponent
     {
         $token = $this->user('accessToken');
         if ($token) {
-            $this->Json->callApi('deauth', 'delete', [], [
+            $this->callApi('deauth', 'delete', [], [
                 'Authorization' => "Bearer ${token}",
             ]);
         }
@@ -58,7 +58,7 @@ class MyAuthComponent extends AuthComponent
     private function __authenticate(array $credentials)
     {
         // トークン発行
-        $response = $this->Json->callApi('auth', 'post', $credentials);
+        $response = $this->callApi('auth', 'post', $credentials);
 
         if ($response['status'] !== 200) {
             return false;
@@ -66,7 +66,7 @@ class MyAuthComponent extends AuthComponent
 
         // ユーザ取得
         $token = $response['content']['accessToken'] ?? null;
-        $response = $this->Json->callApi('users', 'get', [], [
+        $response = $this->callApi('users', 'get', [], [
             'Authorization' => "Bearer ${token}",
         ]);
 
