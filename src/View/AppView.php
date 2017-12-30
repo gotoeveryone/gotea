@@ -16,8 +16,14 @@ class AppView extends View
     {
         parent::initialize();
 
+        $this->loadHelper('Flash', [
+            'className' => 'MyFlash',
+        ]);
         $this->loadHelper('Form', [
             'className' => 'MyForm',
+        ]);
+        $this->loadHelper('Html', [
+            'className' => 'MyHtml',
         ]);
     }
 

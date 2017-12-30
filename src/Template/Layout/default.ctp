@@ -13,7 +13,7 @@
         </title>
         <?= $this->Html->meta('icon') ?>
 
-        <?= $this->MyHtml->commonCss('css/common.css') ?>
+        <?= $this->Html->commonCss('css/common.css') ?>
         <?= $this->Html->css('app') ?>
         <?= $this->fetch('css') ?>
     </head>
@@ -77,7 +77,7 @@
             };
         </script>
         <?php endif ?>
-        <?= $this->MyHtml->commonScript('js/common.js') ?>
+        <?= $this->Html->commonScript('js/common.js') ?>
         <?= $this->Html->script(['app', 'common']) ?>
         <?= $this->fetch('script') ?>
     </body>

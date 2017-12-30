@@ -27,7 +27,7 @@ abstract class ApiController extends Controller
         $this->loadComponent('RequestHandler');
 
         // 当アクションのレスポンスはすべてJSON形式
-        $this->response->type('application/json');
+        $this->response = $this->response->withType('application/json');
         $this->RequestHandler->renderAs($this, 'json');
 
         // 操作ユーザ記録イベントを設定

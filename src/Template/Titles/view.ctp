@@ -67,7 +67,7 @@
                         </div>
                         <div class="box">
                             <div class="label-row">更新日時</div>
-                            <div class="input-row"><?=$this->Date->formatToDateTime($title->modified)?></div>
+                            <div class="input-row"><?= h($this->Date->formatToDateTime($title->modified)) ?></div>
                         </div>
                     </li>
                     <li class="detail-row">

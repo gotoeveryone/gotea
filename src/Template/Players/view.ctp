@@ -136,9 +136,11 @@
                         <div class="box">
                             <div class="label-row">最終更新日時</div>
                             <div class="input-row">
-                                <?=$player->modified ? $this->Date->formatToDateTime($player->modified) : ''?>
+                                <?= h($this->Date->formatToDateTime($player->modified)) ?>
                                 <?=
-                                    $this->Form->hidden('modified', ['value' => $this->Date->format($player->modified, 'yyyyMMddHHmmss')])
+                                    $this->Form->hidden('modified', [
+                                        'value' => $this->Date->format($player->modified, 'yyyyMMddHHmmss'),
+                                    ])
                                 ?>
                             </div>
                         </div>
