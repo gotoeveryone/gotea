@@ -1,9 +1,12 @@
 # Gotea (ゴティー)
 
 [![Build Status](https://travis-ci.org/gotoeveryone/gotea.svg?branch=master)](https://travis-ci.org/cicatrice/travis-test)
+[![Dependency Status](https://beta.gemnasium.com/badges/github.com/gotoeveryone/gotea.svg)](https://beta.gemnasium.com/projects/github.com/gotoeveryone/gotea)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)
+[![GitHub version](https://badge.fury.io/gh/gotoeveryone%2Fgotea.svg)](https://badge.fury.io/gh/gotoeveryone%2Fgotea)
 
-[CakePHP](http://cakephp.org) 3.x を利用した[Go to Everyone!](https://gotoeveryone.k2ss.info)の情報管理ツールです。
+囲碁のプロ棋士・棋戦情報を管理します。  
+[CakePHP](http://cakephp.org) 3.x を利用しています。
 
 ## 前提
 
