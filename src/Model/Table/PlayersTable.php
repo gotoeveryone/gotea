@@ -49,7 +49,7 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
-            ->notEmpty([
+            ->requirePresence([
                 'country_id', 'rank_id', 'organization_id',
                 'name', 'name_english', 'joined', 'sex',
             ])
@@ -157,22 +157,23 @@ class PlayersTable extends AppTable
     /**
      * 段位ごとの棋士数を取得します。
      *
-     * @param int|null $countryId 所属国ID
+     * @param int $countryId 所属国ID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanksCount($countryId = null)
+    public function findRanksCount(int $countryId)
     {
-        $query = $this->find()->contain('Ranks')->where(['is_retired' => false]);
+        $query = $this->find();
 
-        if ($countryId) {
-            $query->where(['country_id' => $countryId]);
-        }
-
-        return $query->select([
-            'rank' => 'Ranks.rank_numeric',
-            'name' => 'Ranks.name',
-            'count' => $query->func()->count('*')
-        ])->group('Ranks.name')->orderDesc('Ranks.rank_numeric');
+        return $query
+            ->contain('Ranks')
+            ->where(['country_id' => $countryId])
+            ->where(['is_retired' => false])->select([
+                'rank' => 'Ranks.rank_numeric',
+                'name' => 'Ranks.name',
+                'count' => $query->func()->count('*')
+            ])
+            ->group('Ranks.name')
+            ->orderDesc('Ranks.rank_numeric');
     }
 
     /**

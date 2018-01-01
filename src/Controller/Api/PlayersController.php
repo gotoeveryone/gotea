@@ -68,7 +68,7 @@ class PlayersController extends ApiController
         ]);
 
         if (!$json) {
-            return $this->_renderJson($json);
+            return $this->_renderError(404);
         }
 
         return $this->_renderJson($json);
@@ -97,7 +97,7 @@ class PlayersController extends ApiController
         ]);
 
         if (!$json) {
-            return $this->_renderJson($json);
+            return $this->_renderError(404);
         }
 
         // ファイル作成
@@ -135,6 +135,9 @@ class PlayersController extends ApiController
 
         // 集計対象国の取得
         $country = $this->Countries->findByCode($countryCode)->first();
+        if (!$country) {
+            return [];
+        }
 
         // ランキングデータの取得
         $ranking = $this->TitleScoreDetails
