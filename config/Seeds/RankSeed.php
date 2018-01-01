@@ -22,42 +22,62 @@ class RankSeed extends AbstractSeed
             [
                 'name' => '九段',
                 'rank_numeric' => 9,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '八段',
                 'rank_numeric' => 8,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '七段',
                 'rank_numeric' => 7,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '六段',
                 'rank_numeric' => 6,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '五段',
                 'rank_numeric' => 5,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '四段',
                 'rank_numeric' => 4,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '三段',
                 'rank_numeric' => 3,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '二段',
                 'rank_numeric' => 2,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => '初段',
                 'rank_numeric' => 1,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
             [
                 'name' => 'アマ',
                 'rank_numeric' => 0,
+                'created' => '2017-12-24 20:24:24',
+                'modified' => '2017-12-24 20:24:24',
             ],
         ];
 
