@@ -66,7 +66,7 @@ class TitleScoresTableTest extends TestCase
     public function testFindMatches()
     {
         $scores = $this->TitleScores->findMatches([
-            'target_year' => FrozenDate::now()->year,
+            'target_year' => 2017,
         ]);
         $this->assertGreaterThan(0, $scores->count());
     }
@@ -79,7 +79,7 @@ class TitleScoresTableTest extends TestCase
     public function testFindMatchesNoData()
     {
         $scores = $this->TitleScores->findMatches([
-            'target_year' => FrozenDate::now()->addYears(1)->year,
+            'target_year' => 2018,
         ]);
         $this->assertEquals(0, $scores->count());
     }
