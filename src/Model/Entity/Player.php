@@ -155,13 +155,13 @@ class Player extends AppEntity
     {
         $value = '';
         if (isset($joined['year'])) {
-            $value .= $joined['year'];
+            $value .= sprintf('%04d', $joined['year']);
         }
         if (!empty($joined['month'])) {
-            $value .= $joined['month'];
+            $value .= sprintf('%02d', $joined['month']);
         }
         if (!empty($joined['day']) && strlen($value) === 6) {
-            $value .= $joined['day'];
+            $value .= sprintf('%02d', $joined['day']);
         }
 
         return $this->joined = $value;

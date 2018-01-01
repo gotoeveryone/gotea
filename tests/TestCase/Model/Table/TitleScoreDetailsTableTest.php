@@ -91,7 +91,7 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testFindRanking()
     {
         $country = $this->Countries->get(1);
-        $ranking = $this->TitleScoreDetails->findRanking($country, FrozenDate::now()->year, 1);
+        $ranking = $this->TitleScoreDetails->findRanking($country, 2017, 1);
 
         $this->assertGreaterThan(0, $ranking->count());
     }
@@ -104,7 +104,7 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testFindRankingNoData()
     {
         $country = $this->Countries->get(1);
-        $ranking = $this->TitleScoreDetails->findRanking($country, FrozenDate::now()->addYears(1)->year, 1);
+        $ranking = $this->TitleScoreDetails->findRanking($country, 2018, 1);
 
         $this->assertEquals(0, $ranking->count());
     }
@@ -117,7 +117,7 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testRecent()
     {
         $country = $this->Countries->get(1);
-        $recent = $this->TitleScoreDetails->findRecent($country, FrozenDate::now()->year);
+        $recent = $this->TitleScoreDetails->findRecent($country, 2017);
 
         $this->assertNotEquals('', $recent);
     }
@@ -130,7 +130,7 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testRecentNoData()
     {
         $country = $this->Countries->get(1);
-        $recent = $this->TitleScoreDetails->findRecent($country, FrozenDate::now()->addYears(1)->year);
+        $recent = $this->TitleScoreDetails->findRecent($country, 2018);
 
         $this->assertEquals('', $recent);
     }
