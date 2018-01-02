@@ -36,12 +36,16 @@ class TitlesTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->requirePresence(['name', 'name_english', 'holding',
-                'sort_order', 'html_file_name', 'html_file_modified'])
+            ->requirePresence([
+                'country_id', 'name', 'name_english', 'holding',
+                'sort_order', 'html_file_name', 'html_file_modified',
+            ])
+            ->integer('holding')
+            ->integer('sort_order')
             ->alphaNumeric('name_english')
-            ->numeric('holding')
-            ->numeric('sort_order')
             ->alphaNumeric('html_file_name')
+            ->maxLength('name', 30)
+            ->maxLength('name_english', 30)
             ->date('html_file_modified', 'y/m/d');
     }
 

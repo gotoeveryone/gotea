@@ -3,11 +3,11 @@
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\Http\ServerRequest;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -49,17 +49,28 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
-            ->requirePresence(['country_id', 'organization_id'])
-            ->requirePresence([
-                'rank_id', 'name', 'name_english', 'joined', 'sex',
-            ], function ($context) {
-                return empty($context['data']['new']);
+            ->requirePresence('joined', function ($context) {
+                return empty($context['data']['input_joined']);
             })
+            ->requirePresence([
+                'country_id', 'organization_id', 'rank_id',
+                'name', 'name_english', 'sex',
+            ], 'create')
+            ->notEmpty('joined', function ($context) {
+                return empty($context['data']['input_joined']);
+            })
+            ->notEmpty([
+                'country_id', 'organization_id', 'rank_id',
+                'name', 'name_english', 'sex',
+            ])
+            ->integer('country_id')
+            ->integer('organization_id')
+            ->integer('rank_id')
+            ->alphaNumeric('name_english')
+            ->naturalNumber('joined')
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
-            ->alphaNumeric('name_english')
             ->maxLength('name_other', 20)
-            ->naturalNumber('joined')
             ->lengthBetween('joined', [4, 8])
             ->date('birthday', 'y/m/d')
             ->date('retired', 'y/m/d');
@@ -72,7 +83,7 @@ class PlayersTable extends AppTable
     {
         $rules->add($rules->isUnique(
             ['country_id', 'name', 'birthday'],
-            '棋士情報がすでに存在します。'
+            __('This player already exists')
         ));
 
         return $rules;
@@ -92,7 +103,7 @@ class PlayersTable extends AppTable
         // 新規作成時には昇段情報も登録
         if ($save && $entity->isNew()) {
             // 入段日を登録時段位の昇段日として設定
-            $promoted = FrozenDate::parseDate($entity->joined, 'yyyyMMdd');
+            $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
 
             // 棋士昇段情報へ登録
             $playerRanks = TableRegistry::get('PlayerRanks');
@@ -109,10 +120,10 @@ class PlayersTable extends AppTable
     /**
      * 指定条件に合致した棋士情報を取得します。
      *
-     * @param \Cake\Http\ServerRequest $request リクエストオブジェクト
+     * @param array $data パラメータ
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findPlayers(ServerRequest $request) : Query
+    public function findPlayers(array $data) : Query
     {
         // 棋士情報の取得
         $query = $this->find()->order([
@@ -122,34 +133,34 @@ class PlayersTable extends AppTable
         ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (is_numeric($countryId = $request->getData('country_id'))) {
+        if (($countryId = Hash::get($data, 'country_id')) > 0) {
             $query->where(['Countries.id' => $countryId]);
         }
-        if (is_numeric($organizationId = $request->getData('organization_id'))) {
+        if (($organizationId = Hash::get($data, 'organization_id')) > 0) {
             $query->where(['Organizations.id' => $organizationId]);
         }
-        if (is_numeric($rankId = $request->getData('rank_id'))) {
+        if (($rankId = Hash::get($data, 'rank_id')) > 0) {
             $query->where(['Ranks.id' => $rankId]);
         }
-        if (($sex = $request->getData('sex'))) {
+        if (($sex = Hash::get($data, 'sex'))) {
             $query->where(['Players.sex' => $sex]);
         }
-        if (($name = trim($request->getData('name')))) {
+        if (($name = trim(Hash::get($data, 'name')))) {
             $query->where(['OR' => $this->__createLikeParams('name', $name)]);
         }
-        if (($nameEnglish = trim($request->getData('name_english')))) {
+        if (($nameEnglish = trim(Hash::get($data, 'name_english')))) {
             $query->where(['OR' => $this->__createLikeParams('name_english', $nameEnglish)]);
         }
-        if (($nameOther = trim($request->getData('name_other')))) {
+        if (($nameOther = trim(Hash::get($data, 'name_other')))) {
             $query->where(['OR' => $this->__createLikeParams('name_other', $nameOther)]);
         }
-        if (is_numeric(($joinedFrom = $request->getData('joined_from')))) {
+        if (($joinedFrom = Hash::get($data, 'joined_from')) > 0) {
             $query->where(['SUBSTR(Players.joined, 1, 4) >=' => sprintf('%04d', $joinedFrom)]);
         }
-        if (is_numeric(($joinedTo = $request->getData('joined_to')))) {
+        if (($joinedTo = Hash::get($data, 'joined_to')) > 0) {
             $query->where(['SUBSTR(Players.joined, 1, 4) <=' => sprintf('%04d', $joinedTo)]);
         }
-        if (!($request->getData('is_retired', false))) {
+        if (!(Hash::get($data, 'is_retired', false))) {
             $query->where(['Players.is_retired' => 0]);
         }
 

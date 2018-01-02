@@ -34,12 +34,23 @@ class RetentionHistoriesTable extends AppTable
      */
     public function validationDefault(Validator $validator)
     {
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
         return $validator
-            ->notEmpty(['target_year', 'name', 'holding'])
-            ->numeric('target_year')
-            ->numeric('holding')
-            ->allowEmpty('win_group_name', function ($context) {
-                return $context['data']['is_team'] === '0';
+            ->requirePresence([
+                'title_id', 'holding', 'target_year', 'name',
+            ])
+            ->integer('player_id')
+            ->integer('rank_id')
+            ->integer('holding')
+            ->integer('target_year')
+            ->requirePresence(['player_id', 'rank_id'], function ($context) {
+                return empty($context['data']['is_team']);
+            })
+            ->requirePresence('win_group_name', function ($context) {
+                return !empty($context['data']['is_team']);
             })
             ->maxLength('win_group_name', 30);
     }

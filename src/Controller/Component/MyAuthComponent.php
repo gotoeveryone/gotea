@@ -27,8 +27,6 @@ class MyAuthComponent extends AuthComponent
         if ($this->__authenticate($credentials)) {
             return true;
         }
-
-        Log::error(__('ログイン失敗（認証）'));
         $this->response = $this->response->withStatus(401);
 
         return false;
@@ -80,7 +78,7 @@ class MyAuthComponent extends AuthComponent
         $user['accessToken'] = $token;
         $this->setUser($user);
 
-        Log::info(__("ユーザ：{$user['name']}がログインしました。"));
+        Log::info(__('User {0} is logged', $user['account']));
 
         return $user;
     }

@@ -60,6 +60,95 @@ class TitlesTableTest extends TestCase
     }
 
     /**
+     * バリデーション
+     *
+     * @return void
+     */
+    public function testValidationDefault()
+    {
+        $params = [
+            'country_id' => 1,
+            'name' => '12345678901234567890',
+            'name_english' => '123456789012345678901234567890',
+            'holding' => 1,
+            'sort_order' => 1,
+            'html_file_name' => 'test',
+            'html_file_modified' => '2018/01/01',
+        ];
+
+        // success
+        $result = $this->Titles->newEntity($params);
+        $this->assertEmpty($result->errors());
+        $this->assertEmpty($result->getErrors());
+
+        // requirePresence
+        foreach ($params as $name => $value) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // integer
+        $names = ['holding', 'sort_order'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '1a';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = '0.5';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // alphaNumeric
+        $names = ['name_english', 'html_file_name'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = 'テスト';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // maxLength
+        // name
+        $data = $params;
+        $data['name'] = '1234567890123456789012345678901';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+
+        // name_english
+        $data = $params;
+        $data['name_english'] = '1234567890123456789012345678901';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+
+        // date
+        // html_file_modified
+        $data = $params;
+        $data['html_file_modified'] = '20180101';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+        $data['html_file_modified'] = 'testtest';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+    }
+
+    /**
      * タイトル検索（データ有り）
      *
      * @return void

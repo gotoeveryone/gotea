@@ -1,10 +1,14 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright 2016 Kazuki_Kamizuru <webmaster@k2ss.info>
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
+"Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2016-02-29 21:46+0900\n"
-"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
-"Last-Translator: NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2018-01-02 20:47+0900\n"
+"Last-Translator: Kazuki_Kamizuru <webmaster@k2ss.info>\n"
+"Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -72,6 +76,9 @@ msgstr "{0}は空欄にできません。"
 
 msgid "field {0} is numeric value only"
 msgstr "{0}は数値のみで入力してください。"
+
+msgid "field {0} is integer value only"
+msgstr "{0}は整数値のみで入力してください。"
 
 msgid "field {0} is alpha or numeric value only"
 msgstr "{0}は英数字のみで入力してください。"

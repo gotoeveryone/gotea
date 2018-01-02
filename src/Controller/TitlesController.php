@@ -58,7 +58,7 @@ class TitlesController extends AppController
                 ->_setErrors(400, $title->getErrors())
                 ->setAction('view', $title->id);
         } else {
-            $this->_setMessages(__('[{0}: {1}] を保存しました。', $title->id, $title->name));
+            $this->_setMessages(__('The title {0} - {1} is saved', $title->id, $title->name));
         }
 
         return $this->redirect([

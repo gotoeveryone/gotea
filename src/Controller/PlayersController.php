@@ -2,7 +2,6 @@
 
 namespace Gotea\Controller;
 
-use Cake\Network\Exception\BadRequestException;
 use Gotea\Form\PlayerForm;
 
 /**
@@ -12,6 +11,7 @@ use Gotea\Form\PlayerForm;
  * @since   2015/07/20
  *
  * @property \Gotea\Model\Table\PlayersTable $Players
+ * @property \Gotea\Model\Table\CountriesTable $Countries
  * @property \Gotea\Model\Table\OrganizationsTable $Organizations
  * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
  */
@@ -24,6 +24,7 @@ class PlayersController extends AppController
     {
         parent::initialize();
 
+        $this->loadModel('Countries');
         $this->loadModel('Organizations');
         $this->loadModel('TitleScores');
     }
@@ -55,15 +56,18 @@ class PlayersController extends AppController
         }
 
         // データを取得
-        $players = $this->Players->findPlayers($this->request);
+        $players = $this->Players->findPlayers($this->request->getParsedBody());
 
         // 件数が0件または多すぎる場合はメッセージを出力
         $over = 300;
         if (!($count = $players->count())) {
-            $this->Flash->warn(__('検索結果が0件でした。'));
+            $this->Flash->warn(__('No matches found'));
         } elseif ($count > $over) {
-            $warning = '検索結果が{0}件を超えています（{1}件）。<br/>条件を絞って再検索してください。';
-            $this->Flash->warn(__($warning, $over, $count));
+            $this->Flash->warn(__(
+                'Matched rows more than {0} ({1} row matched).<br/>Please filtering conditions and reexecute.',
+                $over,
+                $count
+            ));
         } else {
             // 結果をセット
             $this->set(compact('players'));
@@ -81,29 +85,30 @@ class PlayersController extends AppController
     {
         // セッションから棋士情報が取得できない場合はデフォルト値の表示
         if (!($player = $this->_consumeBySession('player'))) {
-            // 所属国IDが取得出来なければエラー
-            if (!($countryId = $this->request->getQuery('country_id'))) {
-                throw new BadRequestException(__('所属国を指定してください。'));
-            }
+            $params = [];
+            // 所属国
+            if (($countryId = $this->request->getQuery('country_id'))) {
+                $params['country_id'] = $countryId;
 
-            // モデルを生成し、パラメータを設定
-            $organization = $this->Organizations->findByCountryId($countryId)->firstOrFail();
-            $params = [
-                'new' => true,
-                'country_id' => $countryId,
-                'organization_id' => $organization->id,
-            ];
+                if (is_numeric($countryId) && $this->Countries->exists(['id' => $countryId])) {
+                    // 所属組織
+                    $organization = $this->Organizations->findByCountryId($countryId)->first();
+                    if ($organization) {
+                        $params['organization_id'] = $organization->id;
+                    }
+                }
+            }
+            // 性別
             if (($sex = $this->request->getQuery('sex'))) {
                 $params['sex'] = $sex;
             }
+            // 入段日
             if (($joined = $this->request->getQuery('joined'))) {
                 $params['joined'] = $joined;
             }
-            $player = $this->Players->newEntity($params);
-            // エラーあり
-            if (($errors = $player->getErrors())) {
-                $this->_setErrors(400, $errors);
-            }
+            $player = $this->Players->newEntity($params, [
+                'validate' => false,
+            ]);
         }
 
         return $this->set('player', $player)->_renderWithDialog('view');
@@ -126,29 +131,27 @@ class PlayersController extends AppController
     }
 
     /**
-     * 棋士マスタの登録・更新処理
+     * 棋士の登録処理
      *
-     * @param int $id 対象の棋士ID（更新時のみ）
      * @return \Cake\Http\Response|null
      */
-    public function save($id = null)
+    public function create()
     {
-        // エンティティ取得 or 生成
-        $player = $this->Players->findOrNew(['id' => $id]);
-        $this->Players->patchEntity($player, $this->request->getParsedBody());
+        // エンティティ生成
+        $data = $this->request->getData();
+        $player = $this->Players->newEntity($data);
 
         // 失敗
         if (!$this->Players->save($player)) {
-            $this->_writeToSession('player', $player)
-                ->_setErrors(400, $player->getErrors());
+            $this->set('player', $player);
 
-            return $this->setAction(($player->id ? 'view' : 'new'), $player->id);
+            return $this->_renderWithDialogErrors(400, $player->getErrors(), 'view');
         }
 
-        // 成功
-        $this->_setMessages(__('[{0}: {1}] を保存しました。', $player->id, $player->name));
+        $this->_setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
+
         // 連続作成の場合は新規登録画面へリダイレクト
-        if (!$id && $this->request->getData('is_continue')) {
+        if ($this->request->getData('is_continue')) {
             return $this->redirect([
                 '_name' => 'new_player',
                 '?' => [
@@ -159,10 +162,32 @@ class PlayersController extends AppController
             ]);
         }
 
-        return $this->redirect([
-            '_name' => ($player->id ? 'view_player' : 'new_player'),
-            $player->id,
-        ]);
+        return $this->redirect(['_name' => 'view_player', $player->id]);
+    }
+
+    /**
+     * 棋士の更新処理
+     *
+     * @param int $id 対象の棋士ID
+     * @return \Cake\Http\Response|null
+     */
+    public function update(int $id)
+    {
+        // エンティティ取得
+        $data = $this->request->getData();
+        $player = $this->Players->get($id);
+        $this->Players->patchEntity($player, $data);
+
+        // 失敗
+        if (!$this->Players->save($player)) {
+            $this->set('player', $player);
+
+            return $this->_renderWithDialogErrors(400, $player->getErrors(), 'view');
+        }
+
+        $this->_setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
+
+        return $this->redirect(['_name' => 'view_player', $player->id]);
     }
 
     /**

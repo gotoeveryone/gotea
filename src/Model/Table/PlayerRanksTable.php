@@ -51,9 +51,10 @@ class PlayerRanksTable extends AppTable
             ->allowEmpty('id', 'create');
 
         $validator
-            ->notEmpty('promoted')
-            ->date('promoted', 'y/m/d')
-            ->requirePresence('promoted', 'create');
+            ->requirePresence(['player_id', 'rank_id', 'promoted'])
+            ->integer('player_id')
+            ->integer('rank_id')
+            ->date('promoted', 'y/m/d');
 
         return $validator;
     }

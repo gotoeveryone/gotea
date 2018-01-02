@@ -26,13 +26,13 @@ class LoginForm extends AppForm
     {
         // ユーザID
         $validator
-            ->notEmpty('account')
+            ->requirePresence('account')
             ->maxLength('account', 10)
             ->alphaNumeric('account');
 
         // パスワード
         $validator
-            ->notEmpty('password')
+            ->requirePresence('password')
             ->maxLength('password', 20)
             ->alphaNumeric('password');
 

@@ -72,6 +72,64 @@ class TitleScoreDetailsTableTest extends TestCase
     }
 
     /**
+     * バリデーション
+     *
+     * @return void
+     */
+    public function testValidationDefault()
+    {
+        $params = [
+            'title_score_id' => 1,
+            'player_id' => 1,
+            'rank_id' => 1,
+            'division' => 'win',
+        ];
+
+        // success
+        $result = $this->TitleScoreDetails->newEntity($params);
+        $this->assertEmpty($result->errors());
+        $this->assertEmpty($result->getErrors());
+
+        // requirePresence
+        foreach ($params as $name => $value) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->TitleScoreDetails->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // integer
+        $names = ['title_score_id', 'player_id', 'rank_id'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '1a';
+            $result = $this->TitleScoreDetails->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->TitleScoreDetails->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = '0.5';
+            $result = $this->TitleScoreDetails->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // allowEmpty
+        // id
+        $data = $params;
+        $data['id'] = '';
+        $exist = $this->TitleScoreDetails->get(1);
+        $result = $this->TitleScoreDetails->patchEntity($exist, $data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+    }
+
+    /**
      * タイトル成績検索
      *
      * @return void

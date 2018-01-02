@@ -52,12 +52,15 @@ class TitleScoresController extends AppController
         $titleScores = $this->TitleScores->findMatches($data);
 
         // 件数が0件または多すぎる場合はメッセージを出力
-        $over = 500;
+        $over = 300;
         if (!($count = $titleScores->count())) {
-            $this->Flash->warn(__("検索結果が0件でした。"));
+            $this->Flash->warn(__('No matches found'));
         } elseif ($count > $over) {
-            $warning = '検索結果が{0}件を超えています（{1}件）。<br/>条件を絞って再検索してください。';
-            $this->Flash->warn(__($warning, $over, $count));
+            $this->Flash->warn(__(
+                'Matched rows more than {0} ({1} row matched).<br/>Please filtering conditions and reexecute.',
+                $over,
+                $count
+            ));
         } else {
             // 結果をセット
             $this->set(compact('titleScores'));

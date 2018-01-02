@@ -28,6 +28,7 @@ class Validator extends BaseValidator
         'required' => 'field {0} is required',
         'notEmpty' => 'field {0} cannot be left empty',
         'numeric' => 'field {0} is numeric value only',
+        'integer' => 'field {0} is integer value only',
         'alphaNumeric' => 'field {0} is alpha or numeric value only',
         'lengthBetween' => 'field {0} length is {1} - {2}',
         'minLength' => 'field {0} length is over the {1}',
