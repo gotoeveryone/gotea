@@ -57,6 +57,75 @@ class PlayerRanksTableTest extends TestCase
     }
 
     /**
+     * バリデーション
+     *
+     * @return void
+     */
+    public function testValidationDefault()
+    {
+        $params = [
+            'player_id' => 1,
+            'rank_id' => 1,
+            'promoted' => '2018/01/01',
+        ];
+
+        // success
+        $result = $this->PlayerRanks->newEntity($params);
+        $this->assertEmpty($result->errors());
+        $this->assertEmpty($result->getErrors());
+
+        // requirePresence
+        foreach ($params as $name => $value) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->PlayerRanks->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // integer
+        $names = ['player_id', 'rank_id'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '1a';
+            $result = $this->PlayerRanks->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->PlayerRanks->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = '0.5';
+            $result = $this->PlayerRanks->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // date
+        // promoted
+        $data = $params;
+        $data['promoted'] = '20180101';
+        $result = $this->PlayerRanks->newEntity($data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+        $data['promoted'] = 'testtest';
+        $result = $this->PlayerRanks->newEntity($data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+
+        // allowEmpty
+        // id
+        $data = $params;
+        $data['id'] = '';
+        $exist = $this->PlayerRanks->get(1);
+        $result = $this->PlayerRanks->patchEntity($exist, $data);
+        $this->assertNotEmpty($result->errors());
+        $this->assertNotEmpty($result->getErrors());
+    }
+
+    /**
      * 昇段情報取得（データ有り）
      *
      * @return void

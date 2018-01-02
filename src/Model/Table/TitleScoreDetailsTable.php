@@ -53,8 +53,12 @@ class TitleScoreDetailsTable extends AppTable
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('division', 'create')
-            ->notEmpty('division');
+            ->requirePresence([
+                'title_score_id', 'player_id', 'rank_id', 'division',
+            ])
+            ->integer('title_score_id')
+            ->integer('player_id')
+            ->integer('rank_id');
 
         return $validator;
     }
