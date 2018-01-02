@@ -49,10 +49,12 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
+            ->requirePresence(['country_id', 'organization_id'])
             ->requirePresence([
-                'country_id', 'rank_id', 'organization_id',
-                'name', 'name_english', 'joined', 'sex',
-            ])
+                'rank_id', 'name', 'name_english', 'joined', 'sex',
+            ], function ($context) {
+                return empty($context['data']['new']);
+            })
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
             ->alphaNumeric('name_english')
