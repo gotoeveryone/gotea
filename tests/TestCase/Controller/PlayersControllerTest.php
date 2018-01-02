@@ -288,6 +288,7 @@ class PlayersControllerTest extends AppTestCase
             'rank_id' => 1,
             'country_id' => 1,
             'organization_id' => 1,
+            'sex' => '男性',
             'input_joined' => [
                 'year' => $now->year,
                 'month' => $now->month,
@@ -321,6 +322,7 @@ class PlayersControllerTest extends AppTestCase
             'rank_id' => 1,
             'country_id' => 1,
             'organization_id' => 1,
+            'sex' => '男性',
             'input_joined' => [
                 'year' => $now->year,
                 'month' => $now->month,

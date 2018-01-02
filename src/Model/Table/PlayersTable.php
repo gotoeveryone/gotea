@@ -49,10 +49,11 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
+            ->requirePresence(['country_id', 'organization_id'])
             ->requirePresence([
-                'country_id', 'rank_id', 'organization_id',
-                'name', 'name_english', 'joined', 'sex',
-            ])
+                'rank_id', 'name', 'name_english', 'joined', 'sex',
+            ], 'create')
+            ->notEmpty(['rank_id', 'name', 'name_english', 'joined', 'sex'])
             ->alphaNumeric('name_english')
             ->naturalNumber('joined')
             ->maxLength('name', 20)

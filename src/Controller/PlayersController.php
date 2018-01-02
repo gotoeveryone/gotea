@@ -89,6 +89,7 @@ class PlayersController extends AppController
             // モデルを生成し、パラメータを設定
             $organization = $this->Organizations->findByCountryId($countryId)->firstOrFail();
             $params = [
+                'new' => true,
                 'country_id' => $countryId,
                 'organization_id' => $organization->id,
             ];
