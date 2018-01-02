@@ -49,11 +49,23 @@ class PlayersTable extends AppTable
     {
         return $validator
             ->allowEmpty(['name_other', 'birthday'])
-            ->requirePresence(['country_id', 'organization_id'])
+            ->requirePresence('joined', function ($context) {
+                return empty($context['data']['input_joined']);
+            })
             ->requirePresence([
-                'rank_id', 'name', 'name_english', 'joined', 'sex',
+                'country_id', 'organization_id', 'rank_id',
+                'name', 'name_english', 'sex',
             ], 'create')
-            ->notEmpty(['rank_id', 'name', 'name_english', 'joined', 'sex'])
+            ->notEmpty('joined', function ($context) {
+                return empty($context['data']['input_joined']);
+            })
+            ->notEmpty([
+                'country_id', 'organization_id', 'rank_id',
+                'name', 'name_english', 'sex',
+            ])
+            ->integer('country_id')
+            ->integer('organization_id')
+            ->integer('rank_id')
             ->alphaNumeric('name_english')
             ->naturalNumber('joined')
             ->maxLength('name', 20)
@@ -71,7 +83,7 @@ class PlayersTable extends AppTable
     {
         $rules->add($rules->isUnique(
             ['country_id', 'name', 'birthday'],
-            '棋士情報がすでに存在します。'
+            __('This player already exists')
         ));
 
         return $rules;

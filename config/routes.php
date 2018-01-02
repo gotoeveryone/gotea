@@ -60,10 +60,10 @@ Router::scope('/', function (RouteBuilder $routes) {
         $routes->get('/', ['action' => 'index'], 'players');
         $routes->post('/', ['action' => 'search'], 'find_players');
         $routes->get('/new', ['action' => 'new'], 'new_player');
-        $routes->post('/save', ['action' => 'save'], 'create_player');
+        $routes->post('/new', ['action' => 'create'], 'create_player');
         $routes->get('/:id', ['action' => 'view'], 'view_player')
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
-        $routes->put('/save/:id', ['action' => 'save'], 'update_player')
+        $routes->put('/:id', ['action' => 'update'], 'update_player')
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
 
         $routes->get('/ranking', ['action' => 'ranking'], 'ranking');

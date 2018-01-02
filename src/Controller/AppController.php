@@ -81,7 +81,7 @@ abstract class AppController extends Controller
     }
 
     /**
-     * タイトルタグに表示する値を設定します。
+     * 指定ビューをレンダリングします（ダイアログ表示）。
      *
      * @param string|null $view View to use for rendering
      * @param string|null $layout Layout to use
@@ -105,6 +105,20 @@ abstract class AppController extends Controller
     protected function _renderWithErrors(int $code, $errors, $title, $view = null, $layout = null)
     {
         return $this->_setErrors($code, $errors)->_renderWith($title, $view, $layout);
+    }
+
+    /**
+     * エラーを設定します（ダイアログ表示）。
+     *
+     * @param int $code ステータスコード
+     * @param array|string $errors エラー
+     * @param string|null $view View to use for rendering
+     * @param string|null $layout Layout to use
+     * @return \Cake\Http\Response|null
+     */
+    protected function _renderWithDialogErrors(int $code, $errors, $view = null, $layout = null)
+    {
+        return $this->_setErrors($code, $errors)->_renderWithDialog($view, $layout);
     }
 
     /**

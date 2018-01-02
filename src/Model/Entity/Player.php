@@ -19,6 +19,10 @@ class Player extends AppEntity
     protected function _getInputJoined()
     {
         $value = $this->joined;
+        if (is_array($value)) {
+            return $value;
+        }
+
         $res = [];
         if (strlen($value) >= 4) {
             $res['year'] = substr($value, 0, 4);
@@ -153,6 +157,10 @@ class Player extends AppEntity
      */
     protected function _setInputJoined($joined)
     {
+        if (!is_array($joined)) {
+            return $this->joined = $joined;
+        }
+
         $value = '';
         if (isset($joined['year'])) {
             $value .= sprintf('%04d', $joined['year']);

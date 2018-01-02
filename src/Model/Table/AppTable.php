@@ -33,17 +33,23 @@ class AppTable extends Table
     /**
      * 指定された条件でテーブルを検索し、存在しなければ条件で生成したモデルを返却します。
      *
+     * @param array $data データ
      * @param array $options オプション
      * @return \Cake\Datasource\EntityInterface
      */
-    public function findOrNew(array $options)
+    public function findOrNew(array $data, array $options = [])
     {
-        $model = $this->find()->where($options)->first();
+        $model = $this->find()->where($data)->first();
         if ($model !== null) {
             return $model;
         }
 
-        return $this->newEntity($options);
+        // ここで生成するエンティティはバリデーションしない
+        if (!isset($options['validate'])) {
+            $options['validate'] = false;
+        }
+
+        return $this->newEntity($data, $options);
     }
 
     /**

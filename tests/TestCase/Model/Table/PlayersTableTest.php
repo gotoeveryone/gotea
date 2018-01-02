@@ -95,6 +95,26 @@ class PlayersTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
+        // integer
+        $names = ['country_id', 'rank_id', 'organization_id'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '1a';
+            $result = $this->Players->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->Players->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = '0.5';
+            $result = $this->Players->newEntity($data);
+            $this->assertNotEmpty($result->errors());
+            $this->assertNotEmpty($result->getErrors());
+        }
+
         // alphaNumeric
         $names = ['name_english'];
         foreach ($names as $name) {

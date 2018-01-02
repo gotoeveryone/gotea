@@ -86,7 +86,7 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => '1',
             'joined_from' => '1987',
         ];
-        $this->post('/players', $data);
+        $this->post(['_name' => 'find_players'], $data);
 
         $this->assertResponseOk();
         $this->assertTemplate('index');
@@ -107,7 +107,7 @@ class PlayersControllerTest extends AppTestCase
             'joined_from' => 'testtest',
             'joined_to' => 'testtest',
         ];
-        $this->post('/players', $data);
+        $this->post(['_name' => 'find_players'], $data);
 
         $this->assertResponseCode(400);
         $this->assertTemplate('index');
@@ -121,9 +121,12 @@ class PlayersControllerTest extends AppTestCase
      */
     public function testNewNotHasParameter()
     {
-        $this->get('/players/new');
-        $this->assertResponseError();
-        $this->assertResponseCode(400);
+        $this->get(['_name' => 'new_player']);
+        $this->assertResponseOk();
+        $this->assertTemplate('view');
+
+        // 詳細画面はナビゲーション非表示
+        $this->assertResponseNotContains('<nav class="nav">');
     }
 
     /**
@@ -133,7 +136,7 @@ class PlayersControllerTest extends AppTestCase
      */
     public function testNewHasParameter()
     {
-        $this->get('/players/new?country_id=1');
+        $this->get(['_name' => 'new_player', '?' => ['country_id' => '1']]);
         $this->assertResponseOk();
         $this->assertTemplate('view');
 
@@ -148,7 +151,7 @@ class PlayersControllerTest extends AppTestCase
      */
     public function testViewNotFound()
     {
-        $this->get('/players/99999');
+        $this->get(['_name' => 'view_player', 99999]);
         $this->assertResponseError();
         $this->assertResponseCode(404);
     }
@@ -160,7 +163,7 @@ class PlayersControllerTest extends AppTestCase
      */
     public function testView()
     {
-        $this->get('/players/1');
+        $this->get(['_name' => 'view_player', 1]);
         $this->assertResponseOk();
         $this->assertTemplate('view');
 
@@ -296,7 +299,7 @@ class PlayersControllerTest extends AppTestCase
             ],
             'birthday' => '',
         ];
-        $this->put('/players/save/1', $data);
+        $this->put(['_name' => 'update_player', 1], $data);
         $this->assertResponseCode(400);
         $this->assertResponseNotContains('<nav class="nav">');
 
@@ -330,7 +333,7 @@ class PlayersControllerTest extends AppTestCase
             ],
             'birthday' => date('Y/m/d'),
         ];
-        $this->put('/players/save/1', $data);
+        $this->put(['_name' => 'update_player', 1], $data);
         $this->assertRedirect(['_name' => 'view_player', 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
