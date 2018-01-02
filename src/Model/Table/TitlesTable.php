@@ -36,7 +36,7 @@ class TitlesTable extends AppTable
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty(['name', 'name_english', 'holding',
+            ->requirePresence(['name', 'name_english', 'holding',
                 'sort_order', 'html_file_name', 'html_file_modified'])
             ->alphaNumeric('name_english')
             ->numeric('holding')

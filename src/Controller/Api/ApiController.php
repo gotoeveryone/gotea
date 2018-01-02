@@ -42,12 +42,16 @@ abstract class ApiController extends Controller
      * エラーレスポンスを生成します。
      *
      * @param int $code ステータスコード
-     * @param string $message メッセージ
+     * @param string|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    protected function _renderError($code = 500, $message = 'Internal Error')
+    protected function _renderError($code = 500, $message = null)
     {
         $this->response = $this->response->withStatus($code);
+
+        if (!$message) {
+            $message = $this->response->getReasonPhrase();
+        }
 
         return $this->_renderJson([
             'code' => $code,
