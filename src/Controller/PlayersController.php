@@ -55,7 +55,7 @@ class PlayersController extends AppController
         }
 
         // データを取得
-        $players = $this->Players->findPlayers($this->request);
+        $players = $this->Players->findPlayers($this->request->getParsedBody());
 
         // 件数が0件または多すぎる場合はメッセージを出力
         $over = 300;

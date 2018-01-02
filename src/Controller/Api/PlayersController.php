@@ -19,7 +19,7 @@ class PlayersController extends ApiController
     public function search()
     {
         // limit、offsetを指定して取得
-        $query = $this->Players->findPlayers($this->request);
+        $query = $this->Players->findPlayers($this->request->getParsedBody());
         $players = $query->limit($this->request->getData('limit', 100))
             ->offset($this->request->getData('offset', 0));
 
