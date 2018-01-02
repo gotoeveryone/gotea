@@ -35,7 +35,14 @@ class PlayerForm extends AppForm
     protected function _buildValidator(Validator $validator)
     {
         return $validator
-            ->allowEmpty(['name', 'name_english', 'name_other', 'joined_from', 'joined_to'])
+            ->allowEmpty([
+                'country_id', 'organization_id', 'rank_id', 'is_retired', 'sex',
+                'name', 'name_english', 'name_other', 'joined_from', 'joined_to',
+            ])
+            ->numeric('country_id')
+            ->numeric('rank_id')
+            ->numeric('organization_id')
+            ->numeric('is_retired')
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
             ->alphaNumeric('name_english')

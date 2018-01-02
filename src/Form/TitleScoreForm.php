@@ -37,6 +37,9 @@ class TitleScoreForm extends AppForm
     {
         return $validator
             ->allowEmpty(['name', 'country_id', 'target_year', 'started', 'ended'])
+            ->numeric('country_id')
+            ->numeric('target_year')
+            ->range('target_year', [1, 9999])
             ->maxLength('name', 20)
             ->date('started', 'y/m/d')
             ->date('ended', 'y/m/d');
