@@ -42,10 +42,10 @@ class NativeQueryController extends AppController
             $count = $conn->transactional(function (ConnectionInterface $conn) use ($queries) {
                 return $this->__executeQueries($conn, $queries);
             });
-            $this->Flash->info(__("{$count}件のクエリを実行しました。"));
+            $this->Flash->info(__('Executed {0} queries', $count));
         } catch (PDOException $e) {
             Log::error($e);
-            $this->Flash->error(__("レコードの更新に失敗しました…。<br>ログを確認してください。"));
+            $this->Flash->error(__('Executing query failed.<br/>Please confirm logfile.'));
         }
 
         return $this->_renderWith('各種情報クエリ更新', 'index');
@@ -70,7 +70,7 @@ class NativeQueryController extends AppController
             // 更新
             $cnt = $conn->execute($query)->count();
             if ($cnt !== 1) {
-                throw new PDOException(__("レコードの更新エラー"));
+                throw new PDOException(__('Updated record count more than {0}', 1));
             }
             $counter++;
         }

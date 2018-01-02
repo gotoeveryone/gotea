@@ -36,7 +36,7 @@ class PlayerRanksController extends AppController
         if (!$this->PlayerRanks->save($rank)) {
             $this->_setErrors(400, $rank->getErrors());
         } else {
-            $this->_setMessages(__('昇段情報を登録しました。'));
+            $this->_setMessages(__('The rank history is saved'));
         }
 
         return $this->redirect([
@@ -61,7 +61,7 @@ class PlayerRanksController extends AppController
         if (!$this->PlayerRanks->save($rank)) {
             $this->_setErrors(400, $rank->getErrors());
         } else {
-            $this->_setMessages(__('昇段情報を保存しました。'));
+            $this->_setMessages(__('The rank history is saved'));
         }
 
         return $this->redirect([

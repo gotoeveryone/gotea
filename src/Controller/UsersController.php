@@ -62,7 +62,7 @@ class UsersController extends AppController
         }
 
         // ログイン失敗
-        return $this->_setErrors(401, __('認証に失敗しました。'))->setAction('index');
+        return $this->_setErrors(401, __('Authentication failed'))->setAction('index');
     }
 
     /**

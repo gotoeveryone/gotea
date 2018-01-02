@@ -37,7 +37,7 @@ class ErrorController extends BaseErrorController
         Log::error($exception->getMessage());
 
         if ($exception instanceof PDOException) {
-            $this->Flash->error(__('データ取得または保存に失敗しました。<br/>詳細はログを確認してください。'));
+            $this->Flash->error(__('Executing query failed.<br/>Please confirm logfile.'));
         }
     }
 }
