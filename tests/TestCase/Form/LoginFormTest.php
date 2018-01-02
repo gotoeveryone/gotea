@@ -41,92 +41,57 @@ class LoginFormTest extends TestCase
     }
 
     /**
-     * Test validation fail
+     * Test validation
      *
      * @return void
      */
-    public function testValidateFail()
+    public function testValidate()
     {
-        // requirePresence
-        $data = [
-            'password' => 'password',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        $data = [
-            'account' => 'test',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        // requirePresence with notEmpty
-        $data = [
-            'account' => '',
-            'password' => 'password',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        $data = [
-            'account' => 'test',
-            'password' => '',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        // maxLength
-        $data = [
-            'account' => '12345678901',
-            'password' => 'password'
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        $data = [
-            'account' => 'test',
-            'password' => '123456789012345678901',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        // alphaNumeric
-        $data = [
-            'account' => 'テスト',
-            'password' => 'password',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-
-        $data = [
-            'account' => 'test',
-            'password' => 'テスト',
-        ];
-        $result = $this->Login->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
-    }
-
-    /**
-     * Test validation success
-     *
-     * @return void
-     */
-    public function testValidateSuccess()
-    {
-        $data = [
+        $params = [
             'account' => '1234567890',
             'password' => '12345678901234567890',
         ];
-        $result = $this->Login->validate($data);
+
+        // success
+        $result = $this->Login->validate($params);
         $this->assertTrue($result);
         $this->assertEmpty($this->Login->errors());
+
+        // requirePresence
+        foreach ($params as $name => $value) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->Login->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Login->errors());
+
+            $data[$name] = '';
+            $result = $this->Login->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Login->errors());
+        }
+
+        // alphaNumeric
+        $names = ['account', 'password'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = 'テスト';
+            $result = $this->Login->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Login->errors());
+        }
+
+        // maxLength
+        $data = $params;
+        $data['account'] = '12345678901';
+        $result = $this->Login->validate($data);
+        $this->assertFalse($result);
+        $this->assertNotEmpty($this->Login->errors());
+
+        $data = $params;
+        $data['password'] = '123456789012345678901';
+        $result = $this->Login->validate($data);
+        $this->assertFalse($result);
+        $this->assertNotEmpty($this->Login->errors());
     }
 }

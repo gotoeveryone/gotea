@@ -41,81 +41,81 @@ class PlayerFormTest extends TestCase
     }
 
     /**
-     * Test validation fail
+     * Test validation
      *
      * @return void
      */
-    public function testValidateFail()
+    public function testValidate()
     {
+        $params = [
+            'name' => 'test',
+            'name_english' => 'test',
+            'name_other' => '',
+            'joined_from' => '',
+            'joined_to' => '',
+        ];
+
+        // success
+        $result = $this->Player->validate($params);
+        $this->assertTrue($result);
+        $this->assertEmpty($this->Player->errors());
+
+        $params['joined_from'] = 2001;
+        $params['joined_to'] = 2017;
+        $result = $this->Player->validate($params);
+        $this->assertTrue($result);
+        $this->assertEmpty($this->Player->errors());
+
+        // integer
+        $names = [
+            'country_id', 'rank_id', 'organization_id',
+            'is_retired', 'joined_from', 'joined_to',
+        ];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '1a';
+            $result = $this->Player->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Player->errors());
+
+            $data[$name] = 'test';
+            $result = $this->Player->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Player->errors());
+
+            $data[$name] = '0.5';
+            $result = $this->Player->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Player->errors());
+        }
+
         // alphaNumeric
-        $data = [
-            'name_english' => 'テスト',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
-
-        // numeric
-        $data = [
-            'country_id' => '1a',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
-
-        $data = [
-            'rank_id' => '1a',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
-
-        $data = [
-            'organization_id' => '1a',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
-
-        $data = [
-            'is_retired' => '1a',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $names = ['name_english'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = 'テスト';
+            $result = $this->Player->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Player->errors());
+        }
 
         // maxLength
         $data = [
-            'name' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'name' => '123456789012345678901',
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
         $this->assertNotEmpty($this->Player->errors());
 
         $data = [
-            'name_english' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'name_english' => '12345678901234567890123456789012345678901',
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
         $this->assertNotEmpty($this->Player->errors());
 
         $data = [
-            'name_other' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
-
-        // numeric
-        $data = [
-            'joined_from' => 'test',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
-
-        $data = [
-            'joined_to' => 'test',
+            'name_other' => '123456789012345678901',
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
@@ -124,43 +124,30 @@ class PlayerFormTest extends TestCase
         // range
         $data = [
             'joined_from' => 0,
-            'joined_to' => 2007,
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
         $this->assertNotEmpty($this->Player->errors());
 
         $data = [
-            'joined_from' => 2001,
+            'joined_from' => 10000,
+        ];
+        $result = $this->Player->validate($data);
+        $this->assertFalse($result);
+        $this->assertNotEmpty($this->Player->errors());
+
+        $data = [
+            'joined_to' => 0,
+        ];
+        $result = $this->Player->validate($data);
+        $this->assertFalse($result);
+        $this->assertNotEmpty($this->Player->errors());
+
+        $data = [
             'joined_to' => 10000,
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
         $this->assertNotEmpty($this->Player->errors());
-    }
-
-    /**
-     * Test validation success
-     *
-     * @return void
-     */
-    public function testValidateSuccess()
-    {
-        $data = [
-            'name' => 'test',
-            'name_english' => 'test',
-            'name_other' => '',
-            'joined_from' => '',
-            'joined_to' => '',
-        ];
-        $result = $this->Player->validate($data);
-        $this->assertTrue($result);
-        $this->assertEmpty($this->Player->errors());
-
-        $data['joined_from'] = 2001;
-        $data['joined_to'] = 2017;
-        $result = $this->Player->validate($data);
-        $this->assertTrue($result);
-        $this->assertEmpty($this->Player->errors());
     }
 }

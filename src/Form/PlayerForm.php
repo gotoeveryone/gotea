@@ -39,17 +39,15 @@ class PlayerForm extends AppForm
                 'country_id', 'organization_id', 'rank_id', 'is_retired', 'sex',
                 'name', 'name_english', 'name_other', 'joined_from', 'joined_to',
             ])
-            ->numeric('country_id')
-            ->numeric('rank_id')
-            ->numeric('organization_id')
-            ->numeric('is_retired')
+            ->integer('country_id')
+            ->integer('rank_id')
+            ->integer('organization_id')
+            ->integer('is_retired')
+            ->alphaNumeric('name_english')
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
-            ->alphaNumeric('name_english')
             ->maxLength('name_other', 20)
-            ->numeric('joined_from')
             ->range('joined_from', [1, 9999])
-            ->numeric('joined_to')
             ->range('joined_to', [1, 9999]);
     }
 }
