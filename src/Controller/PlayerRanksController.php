@@ -2,6 +2,8 @@
 
 namespace Gotea\Controller;
 
+use Cake\Utility\Hash;
+
 /**
  * 昇段情報コントローラ
  *
@@ -25,14 +27,15 @@ class PlayerRanksController extends AppController
     /**
      * 登録処理
      *
-     * @param int $id 棋士ID
+     * @param int $playerId 棋士ID
      * @return \Cake\Http\Response|null
      */
-    public function create(int $id)
+    public function create(int $playerId)
     {
-        // バリデーション
-        $rank = $this->PlayerRanks->newEntity($this->request->getParsedBody());
-        $rank->player_id = $id;
+        $data = Hash::insert($this->request->getData(), 'player_id', $playerId);
+        $rank = $this->PlayerRanks->newEntity($data);
+
+        // 保存
         if (!$this->PlayerRanks->save($rank)) {
             $this->_setErrors(400, $rank->getErrors());
         } else {
@@ -42,22 +45,24 @@ class PlayerRanksController extends AppController
         return $this->redirect([
             '_name' => 'view_player',
             '?' => ['tab' => 'ranks'],
-            $id,
+            $playerId,
         ]);
     }
 
     /**
      * 更新処理
      *
-     * @param int $id 棋士ID
-     * @param int $rowId 昇段情報ID
+     * @param int $playerId 棋士ID
+     * @param int $id 昇段情報ID
      * @return \Cake\Http\Response|null
      */
-    public function update(int $id, int $rowId)
+    public function update(int $playerId, int $id)
     {
-        // バリデーション
-        $rank = $this->PlayerRanks->get($rowId);
-        $this->PlayerRanks->patchEntity($rank, $this->request->getParsedBody());
+        $data = Hash::insert($this->request->getData(), 'player_id', $playerId);
+        $rank = $this->PlayerRanks->get($id);
+        $this->PlayerRanks->patchEntity($rank, $data);
+
+        // 保存
         if (!$this->PlayerRanks->save($rank)) {
             $this->_setErrors(400, $rank->getErrors());
         } else {
@@ -67,7 +72,7 @@ class PlayerRanksController extends AppController
         return $this->redirect([
             '_name' => 'view_player',
             '?' => ['tab' => 'ranks'],
-            $id,
+            $playerId,
         ]);
     }
 }

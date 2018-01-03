@@ -89,7 +89,7 @@ class PlayerRanksTable extends AppTable
             $players = TableRegistry::get('Players');
             $player = $players->get($entity->player_id);
             $player->rank_id = $entity->rank_id;
-            $players->save($player);
+            $players->save($player, $options);
         }
 
         return $save;

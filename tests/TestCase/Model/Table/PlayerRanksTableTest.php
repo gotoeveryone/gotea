@@ -126,6 +126,50 @@ class PlayerRanksTableTest extends TestCase
     }
 
     /**
+     * 保存
+     *
+     * @return void
+     */
+    public function testSave()
+    {
+        $rank = $this->PlayerRanks->newEntity([
+            'player_id' => 3,
+            'rank_id' => 3,
+            'promoted' => '2018/01/03',
+        ]);
+
+        $save = $this->PlayerRanks->save($rank, [
+            'account' => env('TEST_USER'),
+        ]);
+        $this->assertNotEquals(false, $save);
+
+        // 棋士情報の段位とは一致しない
+        $saveRank = $this->PlayerRanks->get($save->id, [
+            'contain' => 'Players',
+        ]);
+        $this->assertNotEquals($saveRank->rank_id, $saveRank->player->rank_id);
+
+        // 最新として登録
+        $rank = $this->PlayerRanks->newEntity([
+            'player_id' => 3,
+            'rank_id' => 4,
+            'promoted' => '2018/01/03',
+            'newest' => true,
+        ]);
+
+        $save = $this->PlayerRanks->save($rank, [
+            'account' => env('TEST_USER'),
+        ]);
+        $this->assertNotEquals(false, $save);
+
+        // 棋士情報の段位と一致
+        $saveRank = $this->PlayerRanks->get($save->id, [
+            'contain' => 'Players',
+        ]);
+        $this->assertEquals($saveRank->rank_id, $saveRank->player->rank_id);
+    }
+
+    /**
      * 昇段情報取得（データ有り）
      *
      * @return void
