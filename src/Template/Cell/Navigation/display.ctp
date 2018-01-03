@@ -9,7 +9,15 @@
     </li>
     <?php foreach ($recent as $row) : ?>
     <li class="recent-ranks-data-row">
-        <p><?= h($row->player->name) ?> <?= h($row->rank->name) ?>に昇段</p>
+        <p>
+            <a class="view-link<?= ($row->player->isFemale() ? ' female' : '') ?>"
+                @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $row->player->id]) ?>')">
+                <?= h($row->player->name) ?>
+            </a>
+            <span class="recent-ranks-data-row-text">
+                <?= h($row->rank->name) ?>に昇段
+            </span>
+        </p>
     </li>
     <?php endforeach ?>
     <?php endforeach ?>

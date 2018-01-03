@@ -1,7 +1,6 @@
 <?php
 namespace Gotea\View\Cell;
 
-use Cake\I18n\Date;
 use Cake\View\Cell;
 
 /**
@@ -25,13 +24,16 @@ class NavigationCell extends Cell
     public function display()
     {
         $this->loadModel('PlayerRanks');
-        $recents = $this->PlayerRanks->find()
-            ->contain(['Players', 'Ranks'])
-            ->where(['promoted >=' => Date::now()->addMonths(-1)])
-            ->orderDesc('promoted')
+        $recents = $this->PlayerRanks
+            ->findRecentPromoted()
+            ->reject(function ($item) {
+                // 入段日と昇段日が同じ（＝入段時点の段位の）場合は除外
+                return $item->player->joined === $item->promoted->format('Ymd');
+            })
             ->groupBy(function ($item) {
                 return $item->promoted->format('Y/m/d');
             });
+
         $this->set('recents', $recents);
     }
 }

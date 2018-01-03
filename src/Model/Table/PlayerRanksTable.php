@@ -2,6 +2,8 @@
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
+use Cake\I18n\Date;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
@@ -103,5 +105,23 @@ class PlayerRanksTable extends AppTable
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Ranks'])->orderDesc('Ranks.rank_numeric')->all();
+    }
+
+    /**
+     * 最近の昇段者を取得します。
+     *
+     * @return \Cake\ORM\Query 生成されたクエリ
+     */
+    public function findRecentPromoted()
+    {
+        return $this->find()
+            ->contain([
+                'Players',
+                'Ranks' => function (Query $q) {
+                    return $q->where(['rank_numeric >' => 1]);
+                },
+            ])
+            ->where(['promoted >=' => Date::now()->addMonths(-1)])
+            ->orderDesc('promoted');
     }
 }

@@ -146,4 +146,17 @@ class PlayerRanksTableTest extends TestCase
         $ranks = $this->PlayerRanks->findRanks(2);
         $this->assertEquals(0, $ranks->count());
     }
+
+    /**
+     * 最近の昇段者取得
+     *
+     * @return void
+     */
+    public function testFindRecentPromoted()
+    {
+        $ranks = $this->PlayerRanks->findRecentPromoted();
+        $ranks->each(function ($item) {
+            $this->assertGreaterThan(1, $item->rank->rank_numeric);
+        });
+    }
 }
