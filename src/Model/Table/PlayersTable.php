@@ -98,10 +98,11 @@ class PlayersTable extends AppTable
         if (!$entity->is_retired) {
             $entity->retired = null;
         }
+        $new = $entity->isNew();
         $save = parent::save($entity, $options);
 
         // 新規作成時には昇段情報も登録
-        if ($save && $entity->isNew()) {
+        if ($save && $new) {
             // 入段日を登録時段位の昇段日として設定
             $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
 
