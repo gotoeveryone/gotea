@@ -31,6 +31,18 @@ class NavigationCellTest extends TestCase
     public $Navigation;
 
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'app.player_ranks',
+        'app.players',
+        'app.countries',
+        'app.ranks',
+    ];
+
+    /**
      * setUp method
      *
      * @return void
@@ -63,6 +75,13 @@ class NavigationCellTest extends TestCase
     public function testDisplay()
     {
         $this->Navigation->display();
-        $this->assertNotNull($this->Navigation->viewVars['recents']);
+        $recents = $this->Navigation->viewVars['recents'];
+        $this->assertNotNull($recents);
+        foreach ($recents as $items) {
+            foreach ($items as $item) {
+                $this->assertGreaterThan(1, $item->rank->rank_numeric);
+                $this->assertNotEquals($item->player->joined, $item->promoted->format('Ymd'));
+            }
+        }
     }
 }

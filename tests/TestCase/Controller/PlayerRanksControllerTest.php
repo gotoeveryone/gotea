@@ -57,20 +57,48 @@ class PlayerRanksControllerTest extends AppTestCase
      *
      * @return void
      */
+    public function testCreateFailed()
+    {
+        $this->enableCsrfToken();
+        $conditions = [
+            'player_id' => 1,
+            'rank_id' => 2,
+        ];
+        // データがすでに存在すること
+        $this->assertEquals(1, $this->PlayerRanks->find()->where($conditions)->count());
+
+        $data = $conditions;
+        $data['promoted'] = '2017/12/10';
+        $this->post(['_name' => 'create_ranks', 1], $data);
+        $this->assertRedirect(['_name' => 'view_player', 'tab' => 'ranks', 1]);
+
+        // 1件のまま
+        $this->assertEquals(1, $this->PlayerRanks->find()->where($conditions)->count());
+    }
+
+    /**
+     * Test create method
+     *
+     * @return void
+     */
     public function testCreate()
     {
         $this->enableCsrfToken();
-        $data = [
+        $conditions = [
             'player_id' => 1,
-            'rank_id' => 2,
-            'promoted' => '2017/12/10',
+            'rank_id' => 4,
         ];
+        // データが存在しないこと
+        $this->assertEquals(0, $this->PlayerRanks->find()->where($conditions)->count());
+
+        $data = $conditions;
+        $data['promoted'] = '2017/12/10';
         $this->post(['_name' => 'create_ranks', 1], $data);
         $this->assertRedirect(['_name' => 'view_player', 'tab' => 'ranks', 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること
-        $this->assertEquals(1, $this->PlayerRanks->find()->where($data)->count());
+        $this->assertEquals(1, $this->PlayerRanks->find()->where($conditions)->count());
     }
 
     /**
@@ -80,18 +108,16 @@ class PlayerRanksControllerTest extends AppTestCase
      */
     public function testUpdate()
     {
+        // データが存在すること
+        $rank = $this->PlayerRanks->get(1);
+        $this->assertNotNull($rank);
+
         $this->enableCsrfToken();
-        $data = [
-            'id' => 1,
-            'player_id' => 1,
-            'rank_id' => 3,
-            'promoted' => '2017/12/10',
-        ];
-        $this->put(['_name' => 'update_ranks', 1, 1], $data);
+        $this->put(['_name' => 'update_ranks', $rank->player_id, $rank->id], $rank->toArray());
         $this->assertRedirect(['_name' => 'view_player', 'tab' => 'ranks', 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること
-        $this->assertEquals(1, $this->PlayerRanks->find()->where($data)->count());
+        $this->assertEquals(1, $this->PlayerRanks->find()->where($rank->toArray())->count());
     }
 }
