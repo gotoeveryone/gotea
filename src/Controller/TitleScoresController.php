@@ -70,17 +70,21 @@ class TitleScoresController extends AppController
     }
 
     /**
-     * 対象棋士に該当する成績の検索処理
+     * 指定した棋士・年度に該当する成績の取得処理
      *
      * @param int $id 棋士ID
+     * @param int $year 対象年度
      * @return \Cake\Http\Response|null
      */
-    public function searchByPlayer(int $id)
+    public function searchByPlayer(int $id, int $year)
     {
-        $this->_enableDialogMode();
-        $this->request = $this->request->withData('player_id', $id);
+        $titleScores = $this->TitleScores->findMatches([
+            'player_id' => $id,
+            'target_year' => $year,
+        ]);
+        $this->set(compact('id'))->set(compact('titleScores'));
 
-        return $this->setAction('search');
+        return $this->_renderWithDialog('player');
     }
 
     /**

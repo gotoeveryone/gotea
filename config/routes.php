@@ -70,11 +70,13 @@ Router::scope('/', function (RouteBuilder $routes) {
     });
 
     $routes->scope('/players', function (RouteBuilder $routes) {
-        $routes->post(
-            '/:id/scores',
+        $routes->get(
+            '/:id/scores/:year',
             ['controller' => 'TitleScores', 'action' => 'searchByPlayer'],
             'find_player_scores'
-        )->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        )->setPatterns([
+            'id' => RouteBuilder::ID, 'year' => RouteBuilder::ID,
+        ])->setPass(['id', 'year']);
         $routes->post(
             '/:id/ranks',
             ['controller' => 'PlayerRanks', 'action' => 'create'],

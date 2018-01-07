@@ -280,12 +280,10 @@
                             <div class="label-row"></div>
                             <div class="input-row">
                                 <div class="button-wrap">
-                                    <?= $this->Form->postButton('タイトル成績へ', [
-                                        '_name' => 'find_player_scores', $player->id,
+                                    <?= $this->Html->link('タイトル成績へ', [
+                                        '_name' => 'find_player_scores', $player->id, $score->target_year,
                                     ], [
-                                        'data' => [
-                                            'target_year' => $score->target_year,
-                                        ],
+                                        'class' => 'layout-button',
                                     ]) ?>
                                 </div>
                             </div>

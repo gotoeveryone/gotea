@@ -67,7 +67,7 @@ class TitleScoresControllerTest extends AppTestCase
             'started' => 'testtest',
             'ended' => 'testtest',
         ];
-        $this->post('/scores', $data);
+        $this->post(['_name' => 'scores'], $data);
 
         $this->assertResponseCode(400);
         $this->assertTemplate('index');
@@ -86,11 +86,38 @@ class TitleScoresControllerTest extends AppTestCase
             'started' => '2017/01/01',
             'ended' => '2017/12/31',
         ];
-        $this->post('/scores', $data);
+        $this->post(['_name' => 'scores'], $data);
 
         $this->assertResponseOk();
         $this->assertTemplate('index');
         $this->assertResponseContains('<nav class="nav">');
+    }
+
+    /**
+     * 棋士・年を絞った抽出処理
+     *
+     * @return void
+     */
+    public function testSearchByPlayer()
+    {
+        $id = 1;
+        $year = 2017;
+
+        $this->enableCsrfToken();
+        $this->get(['_name' => 'find_player_scores', $id, $year]);
+
+        $this->assertResponseOk();
+        $this->assertTemplate('player');
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        $scores = $this->viewVariable('titleScores');
+        $this->assertNotNull($scores);
+        foreach ($scores as $score) {
+            $this->assertTrue($score->win_detail->player->id === $id
+                || $score->lose_detail->player->id === $id);
+            $this->assertEquals($year, $score->started->format('Y'));
+            $this->assertEquals($year, $score->ended->format('Y'));
+        }
     }
 
     /**
@@ -101,7 +128,7 @@ class TitleScoresControllerTest extends AppTestCase
     public function testUpdate()
     {
         $this->enableCsrfToken();
-        $this->put('/scores/1');
+        $this->put(['_name' => 'update_scores', 1]);
 
         $this->assertResponseOk();
         $this->assertTemplate('index');
@@ -116,7 +143,7 @@ class TitleScoresControllerTest extends AppTestCase
     public function testDelete()
     {
         $this->enableCsrfToken();
-        $this->delete('/scores/1');
+        $this->delete(['_name' => 'delete_scores', 1]);
 
         $this->assertResponseOk();
         $this->assertTemplate('index');
