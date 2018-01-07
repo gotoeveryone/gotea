@@ -23,6 +23,7 @@ class PlayersControllerTest extends ApiTestCase
         'app.title_scores',
         'app.title_score_details',
         'app.updated_points',
+        'app.player_ranks',
     ];
 
     /**
