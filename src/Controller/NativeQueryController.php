@@ -22,7 +22,7 @@ class NativeQueryController extends AppController
      */
     public function index()
     {
-        return $this->_renderWith('各種情報クエリ更新');
+        return $this->renderWith('各種情報クエリ更新');
     }
 
     /**
@@ -40,7 +40,7 @@ class NativeQueryController extends AppController
         $conn = ConnectionManager::get('default');
         try {
             $count = $conn->transactional(function (ConnectionInterface $conn) use ($queries) {
-                return $this->__executeQueries($conn, $queries);
+                return $this->executeQueries($conn, $queries);
             });
             $this->Flash->info(__('Executed {0} queries', $count));
         } catch (PDOException $e) {
@@ -48,7 +48,7 @@ class NativeQueryController extends AppController
             $this->Flash->error(__('Executing query failed.<br/>Please confirm logfile.'));
         }
 
-        return $this->_renderWith('各種情報クエリ更新', 'index');
+        return $this->renderWith('各種情報クエリ更新', 'index');
     }
 
     /**
@@ -59,7 +59,7 @@ class NativeQueryController extends AppController
      * @return int 更新件数
      * @throws \PDOException
      */
-    private function __executeQueries(ConnectionInterface $conn, $queries)
+    private function executeQueries(ConnectionInterface $conn, $queries)
     {
         $counter = 0;
         foreach ($queries as $query) {

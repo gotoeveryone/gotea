@@ -21,7 +21,7 @@ class TitlesController extends AppController
      */
     public function index()
     {
-        return $this->_renderWith('タイトル情報検索');
+        return $this->renderWith('タイトル情報検索');
     }
 
     /**
@@ -32,12 +32,9 @@ class TitlesController extends AppController
      */
     public function view(int $id)
     {
-        // セッションから入力値が取得できなければIDで取得
-        if (!($title = $this->_consumeBySession('title'))) {
-            $title = $this->Titles->get($id);
-        }
+        $title = $this->Titles->findByIdWithRelation($id);
 
-        return $this->set('title', $title)->_renderWithDialog();
+        return $this->set(compact('title'))->renderWithDialog();
     }
 
     /**
@@ -49,16 +46,16 @@ class TitlesController extends AppController
     public function update(int $id)
     {
         // データ取得
-        $title = $this->Titles->get($id);
+        $title = $this->Titles->findByIdWithRelation($id);
         $this->Titles->patchEntity($title, $this->request->getParsedBody());
 
         // 保存
         if (!$this->Titles->save($title)) {
-            return $this->_writeToSession('title', $title)
-                ->_setErrors(400, $title->getErrors())
-                ->setAction('view', $title->id);
+            $this->set('title', $title);
+
+            return $this->renderWithDialogErrors(400, $title->getErrors(), 'view');
         } else {
-            $this->_setMessages(__('The title {0} - {1} is saved', $title->id, $title->name));
+            $this->setMessages(__('The title {0} - {1} is saved', $title->id, $title->name));
         }
 
         return $this->redirect([

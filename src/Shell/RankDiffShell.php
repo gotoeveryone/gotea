@@ -42,9 +42,9 @@ class RankDiffShell extends Shell
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $results = $countries->combine('name', function ($item) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
-                $method = '__getPlayerFrom' . Inflector::humanize($item->name_english);
+                $method = 'getPlayerFrom' . Inflector::humanize($item->name_english);
 
-                return $this->__getDiff($item->id, $this->$method());
+                return $this->getDiff($item->id, $this->$method());
             });
 
             // メール送信
@@ -68,7 +68,7 @@ class RankDiffShell extends Shell
      * @param array $results 抽出結果
      * @return array
      */
-    private function __getDiff($countryId, $results)
+    private function getDiff($countryId, $results)
     {
         return $this->Players->findRanksCount($countryId)->map(function ($item) use ($results) {
             $item->web_count = count($results[$item->rank]) ?? 0;
@@ -86,13 +86,13 @@ class RankDiffShell extends Shell
      *
      * @return array 段位と棋士の一覧
      */
-    private function __getPlayerFromJapan()
+    private function getPlayerFromJapan()
     {
         $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
         $results = [];
 
         // 日本棋院
-        $crawler = $this->__getCrawler(env('DIFF_JAPAN_URL'));
+        $crawler = $this->getCrawler(env('DIFF_JAPAN_URL'));
         $crawler->filter('#content h2')->each(function (Crawler $node) use (&$results, $ranks) {
             if ($node->text() === 'タイトル者') {
                 $node->nextAll()->filter('.ul_players')->first()
@@ -117,7 +117,7 @@ class RankDiffShell extends Shell
         });
 
         // 関西棋院
-        $crawler = $this->__getCrawler(env('DIFF_KANSAI_URL'));
+        $crawler = $this->getCrawler(env('DIFF_KANSAI_URL'));
         $rank = null;
         $crawler->filter('.free table')->first()->filter('tr')
             ->each(function (Crawler $row) use (&$results, &$rank, $ranks) {
@@ -143,10 +143,10 @@ class RankDiffShell extends Shell
      *
      * @return array 段位と棋士の一覧
      */
-    private function __getPlayerFromKorea()
+    private function getPlayerFromKorea()
     {
         $results = [];
-        $crawler = $this->__getCrawler(env('DIFF_KOREA_URL'));
+        $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
         $crawler->filter('#content .facetop')->each(function (Crawler $node) use (&$results) {
             $src = $node->filter('img')->attr('src');
             if (preg_match('/list_([1-9])dan/', $src, $matches)) {
@@ -156,7 +156,7 @@ class RankDiffShell extends Shell
                     return $node->text();
                 });
 
-                $results[$rank] = collection($players)->filter(function ($item, $key) {
+                $results[$rank] = collection($players)->filter(function ($item) {
                     $text = $item;
                     if (preg_match('/(\s)/u', $text)) {
                         $text = preg_replace('/(\s)/u', '', $text);
@@ -175,10 +175,10 @@ class RankDiffShell extends Shell
      *
      * @return array 段位と棋士の一覧
      */
-    private function __getPlayerFromTaiwan()
+    private function getPlayerFromTaiwan()
     {
         $results = [];
-        $crawler = $this->__getCrawler(env('DIFF_TAIWAN_URL'));
+        $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
         $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
             $img = $node->filter('img')->first();
             if ($img->count() && count($src = $img->attr('src'))
@@ -200,7 +200,7 @@ class RankDiffShell extends Shell
      * @param string $url URL
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    private function __getCrawler($url)
+    private function getCrawler($url)
     {
         $client = new Client();
         $client->setClient(new GuzzleClient());

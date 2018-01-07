@@ -9,26 +9,8 @@ use Cake\ORM\TableRegistry;
  */
 class RetentionHistory extends AppEntity
 {
-    /**
-     * 棋士を取得します。
-     *
-     * @param mixed $value 値
-     * @return Player|null
-     */
-    protected function _getPlayer($value)
-    {
-        if ($value) {
-            return $value;
-        }
-
-        if (!$this->player_id) {
-            return null;
-        }
-
-        $result = TableRegistry::get('Players')->get($this->player_id);
-
-        return $this->player = $result;
-    }
+    use PlayerTrait;
+    use RankTrait;
 
     /**
      * 団体戦判定結果を取得します。

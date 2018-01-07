@@ -18,4 +18,6 @@ use Cake\ORM\Entity;
  */
 class PlayerRank extends AppEntity
 {
+    use PlayerTrait;
+    use RankTrait;
 }

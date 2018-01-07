@@ -10,26 +10,7 @@ use Cake\ORM\TableRegistry;
  */
 class Title extends AppEntity
 {
-    /**
-     * タイトル獲得履歴を取得します。
-     *
-     * @param mixed $value 更新値
-     * @return mixed タイトル獲得履歴
-     */
-    protected function _getRetentionHistories($value)
-    {
-        if ($value) {
-            return $value;
-        }
-
-        if (!$this->id) {
-            return collection([]);
-        }
-
-        $result = TableRegistry::get('RetentionHistories')->findHistoriesByTitle($this->id);
-
-        return $this->retention_histories = $result;
-    }
+    use CountryTrait;
 
     /**
      * 現在の保持情報を取得します。
@@ -38,7 +19,7 @@ class Title extends AppEntity
      */
     protected function _getNowRetention()
     {
-        return collection($this->retention_histories)->filter(function ($item, $key) {
+        return collection($this->retention_histories)->filter(function ($item) {
             return $item->holding === $this->holding;
         })->first();
     }
@@ -50,7 +31,7 @@ class Title extends AppEntity
      */
     protected function _getHistories()
     {
-        return collection($this->retention_histories)->filter(function ($item, $key) {
+        return collection($this->retention_histories)->filter(function ($item) {
             return $item->holding < $this->holding;
         });
     }
@@ -59,9 +40,9 @@ class Title extends AppEntity
      * HTMLファイル修正日を設定します。
      *
      * @param mixed $newValue 更新値
-     * @return \Cake\I18n\FrozenDate
+     * @return \Cake\I18n\FrozenDate|null
      */
-    protected function _setHtmlFileModified($newValue)
+    protected function _setHtmlFileModified($newValue = null)
     {
         if ($newValue && !($newValue instanceof FrozenDate)) {
             return FrozenDate::parseDate($newValue, 'YYYY/MM/dd');

@@ -25,6 +25,6 @@ class YearsController extends ApiController
             ];
         }
 
-        return $this->_renderJson($years);
+        return $this->renderJson($years);
     }
 }

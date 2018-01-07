@@ -30,7 +30,7 @@ class TitleScoresController extends AppController
     {
         $this->set('form', new TitleScoreForm);
 
-        return $this->_renderWith('タイトル勝敗検索', 'index');
+        return $this->renderWith('タイトル勝敗検索', 'index');
     }
 
     /**
@@ -44,7 +44,7 @@ class TitleScoresController extends AppController
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
-            return $this->_setErrors(400, $form->errors())->setAction('index');
+            return $this->setErrors(400, $form->errors())->setAction('index');
         }
 
         // リクエストから値を取得
@@ -66,7 +66,7 @@ class TitleScoresController extends AppController
             $this->set(compact('titleScores'));
         }
 
-        return $this->_renderWith('タイトル勝敗検索', 'index');
+        return $this->renderWith('タイトル勝敗検索', 'index');
     }
 
     /**
@@ -84,7 +84,7 @@ class TitleScoresController extends AppController
         ]);
         $this->set(compact('id'))->set(compact('titleScores'));
 
-        return $this->_renderWithDialog('player');
+        return $this->renderWithDialog('player');
     }
 
     /**

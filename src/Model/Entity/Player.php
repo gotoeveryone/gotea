@@ -11,6 +11,9 @@ use Cake\Routing\Router;
  */
 class Player extends AppEntity
 {
+    use CountryTrait;
+    use RankTrait;
+
     /**
      * 入力フォーム用の入段日を取得します。
      *
@@ -229,7 +232,7 @@ class Player extends AppEntity
      */
     public function win($year = null, $world = false)
     {
-        return $this->__show('win', $year, $world);
+        return $this->show('win', $year, $world);
     }
 
     /**
@@ -241,7 +244,7 @@ class Player extends AppEntity
      */
     public function lose($year = null, $world = false)
     {
-        return $this->__show('lose', $year, $world);
+        return $this->show('lose', $year, $world);
     }
 
     /**
@@ -253,7 +256,7 @@ class Player extends AppEntity
      */
     public function draw($year = null, $world = false)
     {
-        return $this->__show('draw', $year, $world);
+        return $this->show('draw', $year, $world);
     }
 
     /**
@@ -264,13 +267,13 @@ class Player extends AppEntity
      * @param bool $world 対象が国際棋戦かどうか
      * @return int|string 対象数
      */
-    private function __show($type, $year = null, $world = false)
+    private function show($type, $year = null, $world = false)
     {
         if ($year === null) {
             $year = FrozenDate::now()->year;
         }
         $scores = collection($this->title_score_details);
-        $score = $scores->filter(function ($item, $key) use ($year) {
+        $score = $scores->filter(function ($item) use ($year) {
             return (int)$item->player_id === $this->id
                 && (int)$item->target_year === $year;
         })->first();

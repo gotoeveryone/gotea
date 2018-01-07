@@ -7,4 +7,5 @@ namespace Gotea\Model\Entity;
  */
 class UpdatedPoint extends AppEntity
 {
+    use CountryTrait;
 }

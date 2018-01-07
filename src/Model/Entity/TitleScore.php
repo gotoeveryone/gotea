@@ -19,6 +19,8 @@ namespace Gotea\Model\Entity;
  */
 class TitleScore extends AppEntity
 {
+    use CountryTrait;
+
     /**
      * 指定した棋士に合致するかを判定します。
      *

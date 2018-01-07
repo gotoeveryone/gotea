@@ -28,9 +28,9 @@ class RetentionHistoriesController extends AppController
 
         // 保存
         if (!$this->RetentionHistories->save($history)) {
-            $this->_setErrors(400, $history->getErrors());
+            $this->setErrors(400, $history->getErrors());
         } else {
-            $this->_setMessages(__('The retention history is saved'));
+            $this->setMessages(__('The retention history is saved'));
         }
 
         return $this->redirect([
