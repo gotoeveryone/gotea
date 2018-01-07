@@ -4,12 +4,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = [
     {
         entry: {
-            app: path.join(__dirname, 'assets/js/app'),
-            common: path.join(__dirname, 'assets/js/common'),
+            app: path.join(__dirname, 'resources/assets/js/app'),
+            common: path.join(__dirname, 'resources/assets/js/common'),
         },
         output: {
             publicPath: 'js/',
-            path: path.join(__dirname, '../webroot/js'),
+            path: path.join(__dirname, 'webroot/js'),
             filename: '[name].js',
         },
         resolve: {
@@ -57,10 +57,10 @@ module.exports = [
     },
     {
         entry: {
-            app: path.join(__dirname, 'assets/sass/app.scss'),
+            app: path.join(__dirname, 'resources/assets/sass/app.scss'),
         },
         output: {
-            path: path.join(__dirname, '../webroot/css'),
+            path: path.join(__dirname, 'webroot/css'),
             filename: '[name].css',
         },
         resolve: {
