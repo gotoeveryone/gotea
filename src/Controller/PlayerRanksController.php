@@ -21,7 +21,7 @@ class PlayerRanksController extends AppController
      */
     public function index()
     {
-        return $this->_renderWith("段位別棋士数表示");
+        return $this->renderWith("段位別棋士数表示");
     }
 
     /**
@@ -37,9 +37,9 @@ class PlayerRanksController extends AppController
 
         // 保存
         if (!$this->PlayerRanks->save($rank)) {
-            $this->_setErrors(400, $rank->getErrors());
+            $this->setErrors(400, $rank->getErrors());
         } else {
-            $this->_setMessages(__('The rank history is saved'));
+            $this->setMessages(__('The rank history is saved'));
         }
 
         return $this->redirect([
@@ -64,9 +64,9 @@ class PlayerRanksController extends AppController
 
         // 保存
         if (!$this->PlayerRanks->save($rank)) {
-            $this->_setErrors(400, $rank->getErrors());
+            $this->setErrors(400, $rank->getErrors());
         } else {
-            $this->_setMessages(__('The rank history is saved'));
+            $this->setMessages(__('The rank history is saved'));
         }
 
         return $this->redirect([

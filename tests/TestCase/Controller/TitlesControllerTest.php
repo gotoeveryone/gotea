@@ -40,7 +40,7 @@ class TitlesControllerTest extends AppTestCase
     {
         parent::setUp();
         $this->Titles = TableRegistry::get('Titles');
-        $this->_createSession();
+        $this->createSession();
     }
 
     /**

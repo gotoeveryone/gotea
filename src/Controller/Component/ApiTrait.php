@@ -23,9 +23,9 @@ trait ApiTrait
     public function callApi(string $path, $method = 'get', $data = [], $headers = [], $assoc = true)
     {
         $callMethod = strtolower($method);
-        $url = $this->__getApiPath($path);
+        $url = $this->getApiPath($path);
         $data = (count($data) > 0 ? json_encode($data) : $data);
-        $headers = $this->__createHeaders($headers);
+        $headers = $this->createHeaders($headers);
 
         $http = new Client();
         if (method_exists($http, $callMethod)) {
@@ -56,7 +56,7 @@ trait ApiTrait
      * @param string $path パス
      * @return string 対象APIのURL
      */
-    private function __getApiPath(string $path)
+    private function getApiPath(string $path)
     {
         $url = env('API_URL', 'http://localhost/');
         $length = strlen($url);
@@ -74,7 +74,7 @@ trait ApiTrait
      * @param array $optionHeaders ヘッダに追加設定する情報
      * @return string ヘッダ情報
      */
-    private function __createHeaders($optionHeaders = [])
+    private function createHeaders($optionHeaders = [])
     {
         $headers = [
             'Content-Type' => 'application/json',

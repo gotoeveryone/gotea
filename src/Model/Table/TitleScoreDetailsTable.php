@@ -117,7 +117,7 @@ class TitleScoreDetailsTable extends AppTable
     public function findRanking(Country $country, int $limit, Date $started, Date $ended)
     {
         // 旧方式
-        if ($this->__isOldRanking($started->year)) {
+        if ($this->isOldRanking($started->year)) {
             $playerScores = TableRegistry::get('PlayerScores');
 
             return $playerScores->findRanking($country, $started->year, $limit);
@@ -180,7 +180,7 @@ class TitleScoreDetailsTable extends AppTable
     public function findRecent(Country $country, Date $started, Date $ended)
     {
         // 旧方式
-        if ($this->__isOldRanking($started->year)) {
+        if ($this->isOldRanking($started->year)) {
             $points = TableRegistry::get('UpdatedPoints');
 
             return $points->findRecent($country, $started->year);
@@ -209,7 +209,7 @@ class TitleScoreDetailsTable extends AppTable
      * @param int $targetYear 対象年度
      * @return bool
      */
-    private function __isOldRanking(int $targetYear) : bool
+    private function isOldRanking(int $targetYear) : bool
     {
         return ($targetYear < 2017);
     }

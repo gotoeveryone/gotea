@@ -13,7 +13,7 @@ abstract class AppTestCase extends IntegrationTestCase
      *
      * @return void
      */
-    protected function _createSession()
+    protected function createSession()
     {
         $this->session([
             'Auth' => [

@@ -13,7 +13,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      *
      * @var array
      */
-    private $__emptyResponse = [
+    private $emptyResponse = [
         'response' => [],
     ];
 
@@ -22,7 +22,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      *
      * @var array
      */
-    private $__notFoundResponse = [
+    private $notFoundResponse = [
         'response' => [
             'code' => 404,
             'message' => 'Not Found',
@@ -53,7 +53,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      */
     public function getEmptyResponse()
     {
-        return $this->getCompareJsonResponse($this->__emptyResponse);
+        return $this->getCompareJsonResponse($this->emptyResponse);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      */
     public function getNotFoundResponse()
     {
-        return $this->getCompareJsonResponse($this->__notFoundResponse);
+        return $this->getCompareJsonResponse($this->notFoundResponse);
     }
 
     /**

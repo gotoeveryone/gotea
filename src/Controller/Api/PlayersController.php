@@ -24,7 +24,7 @@ class PlayersController extends ApiController
         $players = $query->limit($this->request->getData('limit', 100))
             ->offset($this->request->getData('offset', 0));
 
-        return $this->_renderJson([
+        return $this->renderJson([
             'count' => $query->count(),
             'results' => $players->map(function ($item, $key) {
                 return $item->toArray();
@@ -42,7 +42,7 @@ class PlayersController extends ApiController
     {
         $ranks = $this->Players->findRanksCount($countryId);
 
-        return $this->_renderJson($ranks);
+        return $this->renderJson($ranks);
     }
 
     /**
@@ -59,7 +59,7 @@ class PlayersController extends ApiController
         $to = $this->request->getQuery('to');
 
         // ランキングデータ取得
-        $json = $this->__ranking([
+        $json = $this->getRankingData([
             'country' => $country,
             'year' => $year,
             'limit' => $limit,
@@ -69,10 +69,10 @@ class PlayersController extends ApiController
         ]);
 
         if (!$json) {
-            return $this->_renderError(404);
+            return $this->renderError(404);
         }
 
-        return $this->_renderJson($json);
+        return $this->renderJson($json);
     }
 
     /**
@@ -89,7 +89,7 @@ class PlayersController extends ApiController
         $to = $this->request->getData('to');
 
         // ランキングデータ取得
-        $json = $this->__ranking([
+        $json = $this->getRankingData([
             'country' => $country,
             'year' => $year,
             'limit' => $limit,
@@ -98,7 +98,7 @@ class PlayersController extends ApiController
         ]);
 
         if (!$json) {
-            return $this->_renderError(404);
+            return $this->renderError(404);
         }
 
         // ファイル作成
@@ -108,19 +108,19 @@ class PlayersController extends ApiController
         Log::info("JSONファイル出力：{$file->path}");
 
         if (!$file->write(json_encode($json))) {
-            return $this->_renderError(500, 'JSON出力失敗');
+            return $this->renderError(500, 'JSON出力失敗');
         }
 
-        return $this->_renderJson($json);
+        return $this->renderJson($json);
     }
 
     /**
      * ランキングを取得します。
      *
      * @param array $params パラメータ
-     * @return array
+     * @return array ランキングデータ
      */
-    private function __ranking(array $params) : array
+    private function getRankingData(array $params) : array
     {
         // モデルのロード
         $this->loadModel('Countries');

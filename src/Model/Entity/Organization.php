@@ -7,4 +7,5 @@ namespace Gotea\Model\Entity;
  */
 class Organization extends AppEntity
 {
+    use CountryTrait;
 }

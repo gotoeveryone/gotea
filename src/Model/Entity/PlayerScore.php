@@ -7,6 +7,9 @@ namespace Gotea\Model\Entity;
  */
 class PlayerScore extends AppEntity
 {
+    use PlayerTrait;
+    use RankTrait;
+
     /**
      * ランキング表示用の名前を取得します。
      *

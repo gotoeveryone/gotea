@@ -45,7 +45,7 @@ abstract class ApiController extends Controller
      * @param string|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    protected function _renderError($code = 500, $message = null)
+    protected function renderError($code = 500, $message = null)
     {
         $this->response = $this->response->withStatus($code);
 
@@ -53,7 +53,7 @@ abstract class ApiController extends Controller
             $message = $this->response->getReasonPhrase();
         }
 
-        return $this->_renderJson([
+        return $this->renderJson([
             'code' => $code,
             'message' => $message,
         ]);
@@ -65,7 +65,7 @@ abstract class ApiController extends Controller
      * @param array $json JSONデータ
      * @return \Cake\Http\Response
      */
-    protected function _renderJson($json = [])
+    protected function renderJson($json = [])
     {
         return $this->set([
             'response' => $json,

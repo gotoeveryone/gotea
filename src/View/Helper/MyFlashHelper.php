@@ -8,9 +8,6 @@ use Cake\View\Helper\FlashHelper;
  */
 class MyFlashHelper extends FlashHelper
 {
-    private $_prefix = '<li>';
-    private $_suffix = '</li>';
-
     /**
      * エラーメッセージ単位に配列形式で取得する。
      *
@@ -30,6 +27,5 @@ class MyFlashHelper extends FlashHelper
         }
 
         return h(json_encode($out));
-        // return $this->_prefix.implode($this->_suffix.$this->_prefix, $out).$this->_suffix;
     }
 }

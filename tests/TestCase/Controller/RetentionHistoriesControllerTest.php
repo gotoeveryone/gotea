@@ -40,7 +40,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
     {
         parent::setUp();
         $this->RetentionHistories = TableRegistry::get('RetentionHistories');
-        $this->_createSession();
+        $this->createSession();
     }
 
     /**

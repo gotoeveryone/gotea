@@ -44,7 +44,7 @@ class PlayersControllerTest extends AppTestCase
     {
         parent::setUp();
         $this->Players = TableRegistry::get('Players');
-        $this->_createSession();
+        $this->createSession();
     }
 
     /**

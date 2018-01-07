@@ -147,13 +147,13 @@ class PlayersTable extends AppTable
             $query->where(['Players.sex' => $sex]);
         }
         if (($name = trim(Hash::get($data, 'name')))) {
-            $query->where(['OR' => $this->__createLikeParams('name', $name)]);
+            $query->where(['OR' => $this->createLikeParams('name', $name)]);
         }
         if (($nameEnglish = trim(Hash::get($data, 'name_english')))) {
-            $query->where(['OR' => $this->__createLikeParams('name_english', $nameEnglish)]);
+            $query->where(['OR' => $this->createLikeParams('name_english', $nameEnglish)]);
         }
         if (($nameOther = trim(Hash::get($data, 'name_other')))) {
-            $query->where(['OR' => $this->__createLikeParams('name_other', $nameOther)]);
+            $query->where(['OR' => $this->createLikeParams('name_other', $nameOther)]);
         }
         if (($joinedFrom = Hash::get($data, 'joined_from')) > 0) {
             $query->where(['SUBSTR(Players.joined, 1, 4) >=' => sprintf('%04d', $joinedFrom)]);
@@ -221,7 +221,7 @@ class PlayersTable extends AppTable
      * @param string $input 入力値
      * @return array
      */
-    private function __createLikeParams(string $fieldName, string $input)
+    private function createLikeParams(string $fieldName, string $input)
     {
         $whereClause = [];
         $params = explode(" ", $input);

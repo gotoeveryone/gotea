@@ -75,9 +75,9 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function _renderWith(string $title, $view = null, $layout = null)
+    protected function renderWith(string $title, $view = null, $layout = null)
     {
-        return $this->_setTitle($title)->render($view, $layout);
+        return $this->setTitle($title)->render($view, $layout);
     }
 
     /**
@@ -87,9 +87,9 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function _renderWithDialog($view = null, $layout = null)
+    protected function renderWithDialog($view = null, $layout = null)
     {
-        return $this->_enableDialogMode()->render($view, $layout);
+        return $this->enableDialogMode()->render($view, $layout);
     }
 
     /**
@@ -102,9 +102,9 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function _renderWithErrors(int $code, $errors, $title, $view = null, $layout = null)
+    protected function renderWithErrors(int $code, $errors, $title, $view = null, $layout = null)
     {
-        return $this->_setErrors($code, $errors)->_renderWith($title, $view, $layout);
+        return $this->setErrors($code, $errors)->renderWith($title, $view, $layout);
     }
 
     /**
@@ -116,52 +116,9 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function _renderWithDialogErrors(int $code, $errors, $view = null, $layout = null)
+    protected function renderWithDialogErrors(int $code, $errors, $view = null, $layout = null)
     {
-        return $this->_setErrors($code, $errors)->_renderWithDialog($view, $layout);
-    }
-
-    /**
-     * 指定のURLへリダイレクトします。
-     *
-     * @param array $options オプション
-     * @param string|array $url A string or array-based URL pointing to another location within the app,
-     *     or an absolute URL
-     * @param int $status HTTP status code (eg: 301)
-     * @return \Cake\Http\Response|null
-     */
-    protected function _redirectWith($options, $url, $status = 302)
-    {
-        if ($options) {
-            $this->set($options);
-        }
-
-        return $this->redirect($url, $status);
-    }
-
-    /**
-     * セッションに書き込みます。
-     *
-     * @param string $key キー
-     * @param mixed $value 値
-     * @return \Gotea\Controller\AppController
-     */
-    protected function _writeToSession($key, $value)
-    {
-        $this->request->session()->write($key, $value);
-
-        return $this;
-    }
-
-    /**
-     * 指定キーの値をセッションから取り出します。
-     *
-     * @param string $key キー
-     * @return mixed
-     */
-    protected function _consumeBySession(string $key)
-    {
-        return $this->request->session()->consume($key);
+        return $this->setErrors($code, $errors)->renderWithDialog($view, $layout);
     }
 
     /**
@@ -171,11 +128,11 @@ abstract class AppController extends Controller
      * @param array|string $errors エラー
      * @return \Gotea\Controller\AppController
      */
-    protected function _setErrors(int $code, $errors)
+    protected function setErrors(int $code, $errors)
     {
         $this->response = $this->response->withStatus($code);
 
-        return $this->_setMessages($errors, 'error');
+        return $this->setMessages($errors, 'error');
     }
 
     /**
@@ -185,7 +142,7 @@ abstract class AppController extends Controller
      * @param string $type メッセージの種類
      * @return \Gotea\Controller\AppController
      */
-    protected function _setMessages($messages, $type = 'info')
+    protected function setMessages($messages, $type = 'info')
     {
         $this->Flash->$type($messages);
 
@@ -198,7 +155,7 @@ abstract class AppController extends Controller
      * @param string $title タイトル
      * @return \Gotea\Controller\AppController
      */
-    protected function _setTitle(string $title)
+    protected function setTitle(string $title)
     {
         return $this->set('title', $title);
     }
@@ -208,7 +165,7 @@ abstract class AppController extends Controller
      *
      * @return \Gotea\Controller\AppController
      */
-    protected function _enableDialogMode()
+    protected function enableDialogMode()
     {
         return $this->set('isDialog', true);
     }

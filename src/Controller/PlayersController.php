@@ -38,7 +38,7 @@ class PlayersController extends AppController
     {
         $this->set('form', new PlayerForm);
 
-        return $this->_renderWith('棋士情報検索');
+        return $this->renderWith('棋士情報検索');
     }
 
     /**
@@ -52,7 +52,7 @@ class PlayersController extends AppController
 
         // バリデーション
         if (!$form->validate($this->request->getParsedBody())) {
-            return $this->_setErrors(400, $form->errors())->setAction('index');
+            return $this->setErrors(400, $form->errors())->setAction('index');
         }
 
         // データを取得
@@ -73,7 +73,7 @@ class PlayersController extends AppController
             $this->set(compact('players'));
         }
 
-        return $this->_renderWith('棋士情報検索', 'index');
+        return $this->renderWith('棋士情報検索', 'index');
     }
 
     /**
@@ -108,7 +108,7 @@ class PlayersController extends AppController
             'validate' => false,
         ]);
 
-        return $this->set(compact('player'))->_renderWithDialog('view');
+        return $this->set(compact('player'))->renderWithDialog('view');
     }
 
     /**
@@ -121,7 +121,7 @@ class PlayersController extends AppController
     {
         $player = $this->Players->findByIdWithRelation($id);
 
-        return $this->set(compact('player'))->_renderWithDialog();
+        return $this->set(compact('player'))->renderWithDialog();
     }
 
     /**
@@ -139,10 +139,10 @@ class PlayersController extends AppController
         if (!$this->Players->save($player)) {
             $this->set(compact('player'));
 
-            return $this->_renderWithDialogErrors(400, $player->getErrors(), 'view');
+            return $this->renderWithDialogErrors(400, $player->getErrors(), 'view');
         }
 
-        $this->_setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
+        $this->setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
 
         // 連続作成の場合は新規登録画面へリダイレクト
         if ($this->request->getData('is_continue')) {
@@ -176,10 +176,10 @@ class PlayersController extends AppController
         if (!$this->Players->save($player)) {
             $this->set('player', $player);
 
-            return $this->_renderWithDialogErrors(400, $player->getErrors(), 'view');
+            return $this->renderWithDialogErrors(400, $player->getErrors(), 'view');
         }
 
-        $this->_setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
+        $this->setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
 
         return $this->redirect(['_name' => 'view_player', $player->id]);
     }
@@ -191,6 +191,6 @@ class PlayersController extends AppController
      */
     public function ranking()
     {
-        return $this->_renderWith('棋士勝敗ランキング出力');
+        return $this->renderWith('棋士勝敗ランキング出力');
     }
 }

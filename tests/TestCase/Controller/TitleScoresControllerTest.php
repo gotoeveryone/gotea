@@ -26,7 +26,7 @@ class TitleScoresControllerTest extends AppTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_createSession();
+        $this->createSession();
     }
 
     /**

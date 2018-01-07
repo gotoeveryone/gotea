@@ -19,7 +19,7 @@ class RetentionHistoriesController extends ApiController
             'contain' => ['Players', 'Ranks'],
         ]);
 
-        return $this->_renderJson([
+        return $this->renderJson([
             'id' => $history->id,
             'titleId' => $history->title_id,
             'holding' => $history->holding,

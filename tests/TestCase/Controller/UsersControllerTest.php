@@ -109,7 +109,7 @@ class UsersControllerTest extends AppTestCase
      */
     public function testLoggedTop()
     {
-        $this->_createSession();
+        $this->createSession();
         $this->get('/');
         $this->assertRedirect(['_name' => 'players']);
     }
@@ -121,7 +121,7 @@ class UsersControllerTest extends AppTestCase
      */
     public function testLogout()
     {
-        $this->_createSession();
+        $this->createSession();
         $this->get('/logout');
         $this->assertResponseCode(302);
     }

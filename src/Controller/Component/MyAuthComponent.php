@@ -24,7 +24,7 @@ class MyAuthComponent extends AuthComponent
     public function login(array $credentials)
     {
         // 認証
-        if ($this->__authenticate($credentials)) {
+        if ($this->authenticate($credentials)) {
             return true;
         }
         $this->response = $this->response->withStatus(401);
@@ -53,7 +53,7 @@ class MyAuthComponent extends AuthComponent
      * @param array $credentials 認証情報
      * @return array|false 認証に成功すればそのオブジェクト、失敗すればfalse
      */
-    private function __authenticate(array $credentials)
+    private function authenticate(array $credentials)
     {
         // トークン発行
         $response = $this->callApi('auth', 'post', $credentials);

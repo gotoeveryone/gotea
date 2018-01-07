@@ -23,6 +23,7 @@ class TitlesTable extends AppTable
         // タイトル保持情報
         $this->hasMany('RetentionHistories')
             ->setSort([
+                'RetentionHistories.target_year' => 'DESC',
                 'RetentionHistories.holding' => 'DESC'
             ]);
         // 所属国マスタ
@@ -47,6 +48,23 @@ class TitlesTable extends AppTable
             ->maxLength('name', 30)
             ->maxLength('name_english', 30)
             ->date('html_file_modified', 'y/m/d');
+    }
+
+    /**
+     * IDに合致する棋士と関連データを取得します。
+     *
+     * @param int $id 検索キー
+     * @return \Gotea\Model\Entity\Title 棋士と関連データ
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function findByIdWithRelation(int $id)
+    {
+        return $this->get($id, [
+            'contain' => [
+                'Countries',
+                'RetentionHistories',
+            ],
+        ]);
     }
 
     /**

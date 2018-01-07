@@ -22,7 +22,7 @@ class TitlesController extends ApiController
         // 検索
         $titles = $this->Titles->findTitles($this->request->getQuery());
 
-        return $this->_renderJson($titles->map(new TitlesIterator));
+        return $this->renderJson($titles->map(new TitlesIterator));
     }
 
     /**
@@ -36,10 +36,10 @@ class TitlesController extends ApiController
         $title = $this->Titles->createEntity(null, $input);
 
         if (!$this->Titles->save($title)) {
-            return $this->_renderError(400, $title->getValidateErrors());
+            return $this->renderError(400, $title->getValidateErrors());
         }
 
-        return $this->_renderJson($title->toArray());
+        return $this->renderJson($title->toArray());
     }
 
     /**
@@ -54,10 +54,10 @@ class TitlesController extends ApiController
         $title = $this->Titles->createEntity($id, $input);
 
         if (!$this->Titles->save($title)) {
-            return $this->_renderError(400, $title->getValidateErrors());
+            return $this->renderError(400, $title->getValidateErrors());
         }
 
-        return $this->_renderJson($title->toArray());
+        return $this->renderJson($title->toArray());
     }
 
     /**
@@ -75,9 +75,9 @@ class TitlesController extends ApiController
         Log::info("JSONファイル出力：{$file->path}");
 
         if (!$file->write(json_encode($titles))) {
-            return $this->_renderError(500, 'JSON出力失敗');
+            return $this->renderError(500, 'JSON出力失敗');
         }
 
-        return $this->_renderJson($titles->toArray());
+        return $this->renderJson($titles->toArray());
     }
 }
