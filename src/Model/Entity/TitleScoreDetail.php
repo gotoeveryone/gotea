@@ -43,9 +43,12 @@ class TitleScoreDetail extends AppEntity
         }
 
         // 上記以外は段位を表示
-        $rankName = $this->player->rank->name;
-        $rankNumeric = $this->player->rank->rank_numeric;
+        $rank = $this->player->rank;
+        if ($this->player->player_ranks) {
+            $rank = collection($this->player->player_ranks)
+                ->sortBy('rank_numeric', SORT_DESC, SORT_NUMERIC)->first()->rank;
+        }
 
-        return $name . ($showJp ? " ${rankName}" : "(${rankNumeric} dan)");
+        return $name . ($showJp ? " {$rank->name}" : "({$rank->rank_numeric} dan)");
     }
 }

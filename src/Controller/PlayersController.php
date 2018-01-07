@@ -83,35 +83,32 @@ class PlayersController extends AppController
      */
     public function new()
     {
-        // セッションから棋士情報が取得できない場合はデフォルト値の表示
-        if (!($player = $this->_consumeBySession('player'))) {
-            $params = [];
-            // 所属国
-            if (($countryId = $this->request->getQuery('country_id'))) {
-                $params['country_id'] = $countryId;
+        $params = [];
+        // 所属国
+        if (($countryId = $this->request->getQuery('country_id'))) {
+            $params['country_id'] = $countryId;
 
-                if (is_numeric($countryId) && $this->Countries->exists(['id' => $countryId])) {
-                    // 所属組織
-                    $organization = $this->Organizations->findByCountryId($countryId)->first();
-                    if ($organization) {
-                        $params['organization_id'] = $organization->id;
-                    }
+            if (is_numeric($countryId) && $this->Countries->exists(['id' => $countryId])) {
+                // 所属組織
+                $organization = $this->Organizations->findByCountryId($countryId)->first();
+                if ($organization) {
+                    $params['organization_id'] = $organization->id;
                 }
             }
-            // 性別
-            if (($sex = $this->request->getQuery('sex'))) {
-                $params['sex'] = $sex;
-            }
-            // 入段日
-            if (($joined = $this->request->getQuery('joined'))) {
-                $params['joined'] = $joined;
-            }
-            $player = $this->Players->newEntity($params, [
-                'validate' => false,
-            ]);
         }
+        // 性別
+        if (($sex = $this->request->getQuery('sex'))) {
+            $params['sex'] = $sex;
+        }
+        // 入段日
+        if (($joined = $this->request->getQuery('joined'))) {
+            $params['joined'] = $joined;
+        }
+        $player = $this->Players->newEntity($params, [
+            'validate' => false,
+        ]);
 
-        return $this->set('player', $player)->_renderWithDialog('view');
+        return $this->set(compact('player'))->_renderWithDialog('view');
     }
 
     /**
@@ -122,10 +119,7 @@ class PlayersController extends AppController
      */
     public function view(int $id)
     {
-        // セッションから入力値が取得できなければIDで取得
-        if (!($player = $this->_consumeBySession('player'))) {
-            $player = $this->Players->findByIdWithRelation($id);
-        }
+        $player = $this->Players->findByIdWithRelation($id);
 
         return $this->set(compact('player'))->_renderWithDialog();
     }
@@ -143,7 +137,7 @@ class PlayersController extends AppController
 
         // 失敗
         if (!$this->Players->save($player)) {
-            $this->set('player', $player);
+            $this->set(compact('player'));
 
             return $this->_renderWithDialogErrors(400, $player->getErrors(), 'view');
         }
@@ -175,7 +169,7 @@ class PlayersController extends AppController
     {
         // エンティティ取得
         $data = $this->request->getData();
-        $player = $this->Players->get($id);
+        $player = $this->Players->findByIdWithRelation($id);
         $this->Players->patchEntity($player, $data);
 
         // 失敗

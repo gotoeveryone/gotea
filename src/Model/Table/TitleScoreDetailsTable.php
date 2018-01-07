@@ -2,6 +2,7 @@
 
 namespace Gotea\Model\Table;
 
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -108,31 +109,49 @@ class TitleScoreDetailsTable extends AppTable
      * ランキング集計データを取得します。
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
-     * @param int $targetYear 対象年度
-     * @param int $offset 取得開始行
-     * @param string|null $started 対局日FROM
-     * @param string|null $ended 対局日TO
+     * @param int $limit 取得順位の上限
+     * @param \Cake\I18n\Date $started 対局日FROM
+     * @param \Cake\I18n\Date $ended 対局日TO
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanking(Country $country, int $targetYear, int $offset, $started = null, $ended = null)
+    public function findRanking(Country $country, int $limit, Date $started, Date $ended)
     {
         // 旧方式
-        if ($this->_isOldRanking($targetYear)) {
+        if ($this->__isOldRanking($started->year)) {
             $playerScores = TableRegistry::get('PlayerScores');
 
-            return $playerScores->findRanking($country, $targetYear, $offset);
+            return $playerScores->findRanking($country, $started->year, $limit);
         }
 
         $query = $this->findScores($this->query())
-            ->contain(['Players', 'Players.Countries', 'Players.Ranks'])
+            ->contain([
+                'Players', 'Players.Countries', 'Players.Ranks',
+                'Players.PlayerRanks' => function ($q) use ($ended) {
+                    // 抽出期間TOよりも前の段位を取得
+                    return $q->where(['PlayerRanks.promoted <=' => $ended])
+                        ->orderDesc('PlayerRanks.promoted');
+                },
+                'Players.PlayerRanks.Ranks' => function ($q) {
+                    // 昇段情報が不足しているケースがあるため、初段は含めない
+                    return $q->where(['Ranks.rank_numeric !=' => 1]);
+                },
+            ])
             ->select($this->Players)
             ->select($this->Players->Countries)
-            ->select($this->Players->Ranks);
+            ->select($this->Players->Ranks)
+            ->where([
+                'TitleScores.started >= ' => $started,
+                'TitleScores.ended <= ' => $ended,
+            ]);
 
         $sub = $this->findScores($this->query());
         $sub->select(['win_point' => $sub->func()->count("division = '勝' or null")], true)
-            ->group(['player_id', 'YEAR(started)'], true)
-            ->orderDesc('win_point')->limit(1)->offset($offset - 1);
+            ->where([
+                'TitleScores.started >= ' => $started,
+                'TitleScores.ended <= ' => $ended,
+            ])
+            ->group(['player_id'], true)
+            ->orderDesc('win_point')->limit(1)->offset($limit - 1);
 
         if (!$country->isWorlds()) {
             $query->where(['Countries.id' => $country->id]);
@@ -143,18 +162,8 @@ class TitleScoreDetailsTable extends AppTable
             $sub->where(['TitleScores.is_world' => true]);
         }
 
-        if ($started) {
-            $query->where(['TitleScores.started >= ' => $started]);
-            $sub->where(['TitleScores.started >= ' => $started]);
-        }
-        if ($ended) {
-            $query->where(['TitleScores.ended <= ' => $ended]);
-            $sub->where(['TitleScores.ended <= ' => $ended]);
-        }
-
         return $query
-            ->where(['YEAR(started)' => $targetYear])
-            ->having(['win_point >= ' => $sub])
+            ->having(["win_point >= COALESCE(({$sub->sql()}), 0)"])
             ->orderDesc('win_point')
             ->order(['lose_point', 'Players.joined'])
             ->orderDesc('Ranks.rank_numeric');
@@ -164,23 +173,23 @@ class TitleScoreDetailsTable extends AppTable
      * 最新データの対局日を取得します。
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
-     * @param int $targetYear 対象年度
-     * @param string|null $started 対局日FROM
-     * @param string|null $ended 対局日TO
+     * @param \Cake\I18n\Date $started 対局日FROM
+     * @param \Cake\I18n\Date $ended 対局日TO
      * @return string|null
      */
-    public function findRecent(Country $country, int $targetYear, $started = null, $ended = null)
+    public function findRecent(Country $country, Date $started, Date $ended)
     {
         // 旧方式
-        if ($this->_isOldRanking($targetYear)) {
+        if ($this->__isOldRanking($started->year)) {
             $points = TableRegistry::get('UpdatedPoints');
 
-            return $points->findRecent($country, $targetYear);
+            return $points->findRecent($country, $started->year);
         }
 
         // 対局棋士の所属国が該当する・もしくは国際棋戦の最新であるデータの対局日を返却
         $query = $this->find()->contain('TitleScores')
-            ->where(['YEAR(TitleScores.ended)' => $targetYear]);
+            ->where(['TitleScores.started >= ' => $started])
+            ->where(['TitleScores.ended <= ' => $ended]);
 
         if (!$country->isWorlds()) {
             $query->contain(['Players', 'Players.Countries'])
@@ -189,15 +198,19 @@ class TitleScoreDetailsTable extends AppTable
             $query->where(['TitleScores.is_world' => true]);
         }
 
-        if ($started) {
-            $query->where(['TitleScores.started >= ' => $started]);
-        }
-        if ($ended) {
-            $query->where(['TitleScores.ended <= ' => $ended]);
-        }
-
         return $query->select([
             'max' => $query->func()->max('ended'),
         ], true)->first()->max;
+    }
+
+    /**
+     * ランキングデータの取得方法を判定します。
+     *
+     * @param int $targetYear 対象年度
+     * @return bool
+     */
+    private function __isOldRanking(int $targetYear) : bool
+    {
+        return ($targetYear < 2017);
     }
 }
