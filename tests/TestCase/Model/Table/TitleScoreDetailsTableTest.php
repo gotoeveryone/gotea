@@ -1,7 +1,7 @@
 <?php
 namespace Gotea\Test\TestCase\Model\Table;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Table\TitleScoreDetailsTable;
@@ -42,6 +42,7 @@ class TitleScoreDetailsTableTest extends TestCase
         'app.player_scores',
         'app.countries',
         'app.ranks',
+        'app.player_ranks',
     ];
 
     /**
@@ -149,9 +150,26 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testFindRanking()
     {
         $country = $this->Countries->get(1);
-        $ranking = $this->TitleScoreDetails->findRanking($country, 2017, 1);
+        $from = Date::createFromDate(2017, 1, 1);
+        $to = Date::createFromDate(2017, 12, 31);
+        $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to);
 
         $this->assertGreaterThan(0, $ranking->count());
+
+        $win = 0;
+        $lose = 0;
+        $ranking->each(function ($item) use ($win, $lose) {
+            if (!$win) {
+                $this->assertGreaterThanOrEqual($win, $item->win_point);
+                // 勝数が同じ場合、敗数は昇順
+                if ($win === $item->win_point) {
+                    $this->assertLessThanOrEqual($lose, $item->lose_point);
+                }
+            }
+            $win = $item->win_point;
+            $lose = $item->lose_point;
+            $this->assertEquals(2017, $item->target_year);
+        });
     }
 
     /**
@@ -162,7 +180,9 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testFindRankingNoData()
     {
         $country = $this->Countries->get(1);
-        $ranking = $this->TitleScoreDetails->findRanking($country, 2018, 1);
+        $from = Date::createFromDate(2018, 1, 1);
+        $to = Date::createFromDate(2018, 12, 31);
+        $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to);
 
         $this->assertEquals(0, $ranking->count());
     }
@@ -175,7 +195,9 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testRecent()
     {
         $country = $this->Countries->get(1);
-        $recent = $this->TitleScoreDetails->findRecent($country, 2017);
+        $from = Date::createFromDate(2017, 1, 1);
+        $to = Date::createFromDate(2017, 12, 31);
+        $recent = $this->TitleScoreDetails->findRecent($country, $from, $to);
 
         $this->assertNotEquals('', $recent);
     }
@@ -188,7 +210,9 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testRecentNoData()
     {
         $country = $this->Countries->get(1);
-        $recent = $this->TitleScoreDetails->findRecent($country, 2018);
+        $from = Date::createFromDate(2018, 1, 1);
+        $to = Date::createFromDate(2018, 12, 31);
+        $recent = $this->TitleScoreDetails->findRecent($country, $from, $to);
 
         $this->assertEquals('', $recent);
     }

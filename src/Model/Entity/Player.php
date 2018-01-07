@@ -72,27 +72,6 @@ class Player extends AppEntity
     }
 
     /**
-     * 棋士の昇段情報を取得します。
-     *
-     * @param mixed $value 設定値
-     * @return \Cake\Collection\CollectionInterface 昇段情報
-     */
-    protected function _getPlayerRanks($value)
-    {
-        if ($value) {
-            return $value;
-        }
-
-        if (!$this->id) {
-            return collection([]);
-        }
-
-        $result = TableRegistry::get('PlayerRanks')->findRanks($this->id);
-
-        return $this->player_ranks = $result;
-    }
-
-    /**
      * 棋士の成績（旧取得方式）を取得します。
      *
      * @param mixed $value 設定値

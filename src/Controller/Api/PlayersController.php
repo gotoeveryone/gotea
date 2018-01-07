@@ -3,8 +3,9 @@
 namespace Gotea\Controller\Api;
 
 use Cake\Filesystem\File;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\Log\Log;
+use Cake\Utility\Hash;
 
 /**
  * API・棋士コントローラ
@@ -121,31 +122,35 @@ class PlayersController extends ApiController
      */
     private function __ranking(array $params) : array
     {
-        // パラメータ取得
-        $countryCode = $params['country'] ?? null;
-        $year = $params['year'] ?? null;
-        $limit = $params['limit'] ?? null;
-        $from = $params['from'] ?? null;
-        $to = $params['to'] ?? null;
-        $withJa = $params['ja'] ?? false;
-
         // モデルのロード
         $this->loadModel('Countries');
         $this->loadModel('TitleScoreDetails');
 
         // 集計対象国の取得
+        $countryCode = Hash::get($params, 'country');
         $country = $this->Countries->findByCode($countryCode)->first();
         if (!$country) {
             return [];
         }
 
+        // パラメータ取得
+        $year = Hash::get($params, 'year');
+        $limit = Hash::get($params, 'limit');
+        $from = Hash::get($params, 'from');
+        $to = Hash::get($params, 'to');
+        $withJa = Hash::get($params, 'ja', false);
+
+        // 開始日・終了日の補填
+        $from = $from ? Date::parse($from) : Date::createFromDate($year, 1, 1);
+        $to = $to ? Date::parse($to) : Date::createFromDate($year, 12, 31);
+
         // ランキングデータの取得
         $ranking = $this->TitleScoreDetails
-            ->findRanking($country, $year, $limit, $from, $to)
+            ->findRanking($country, $limit, $from, $to)
             ->mapRanking($country->isWorlds(), $withJa);
 
         // 最終更新日の取得
-        $lastUpdate = $this->TitleScoreDetails->findRecent($country, $year, $from, $to);
+        $lastUpdate = $this->TitleScoreDetails->findRecent($country, $from, $to);
 
         // JSON生成
         return [

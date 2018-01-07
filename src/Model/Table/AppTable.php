@@ -51,15 +51,4 @@ class AppTable extends Table
 
         return $this->newEntity($data, $options);
     }
-
-    /**
-     * ランキングデータの取得方法を判定します。
-     *
-     * @param int $targetYear 対象年度
-     * @return bool
-     */
-    protected function _isOldRanking(int $targetYear) : bool
-    {
-        return ($targetYear < 2017);
-    }
 }
