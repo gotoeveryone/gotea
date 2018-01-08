@@ -2,6 +2,7 @@
 namespace Gotea\Shell;
 
 use Cake\Console\Shell;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\Utility\Inflector;
 use Gotea\Model\Entity\PlayerRank;
@@ -54,51 +55,53 @@ class PlayerRankShell extends Shell
      */
     public function main()
     {
-        $this->out($this->OptionParser->help());
-
-        return true;
-    }
-
-    /**
-     * main() method.
-     *
-     * @param string|null $code コード
-     * @return bool|int|null Success or error code.
-     */
-    public function add(string $code = null)
-    {
-        if (empty($this->args['code'])) {
+        if (empty($this->args)) {
             $this->out($this->OptionParser->help());
 
             return false;
         }
+        $code = $this->args[0];
+
+        Log::info('昇段情報の取り込みを開始します。');
 
         // 段位一覧を抽出
         $ranks = $this->Ranks->findProfessional();
         $results = [];
 
-        $country = $this->Countries->findByCode($this->args['code'])->first();
-        $method = 'getPlayerFrom' . Inflector::humanize($item->name_english);
-        if (method_exists($this, $method)) {
-            $results = $this->$method();
+        // 対象国を決定
+        $country = $this->Countries->findByCode($code)->first();
+        $target = Inflector::humanize($country->name_english);
+
+        // 取得
+        $getMethod = 'getPlayerFrom' . $target;
+        if (!method_exists($this, $getMethod)) {
+            $this->err('Method not implemented.');
+
+            return false;
+        }
+        $results = $this->$getMethod();
+
+        // 保存
+        $saveMethod = 'savePlayerRanksTo' . $target;
+        if (!method_exists($this, $saveMethod)) {
+            $this->err('Method not implemented.');
+
+            return false;
         }
 
-        $saveMethod = 'savePlayerRanksTo' . Inflector::humanize($item->name_english);
-        if (method_exists($this, $saveMethod)) {
-            $allCount = 0;
-
-            foreach ($results as $result) {
-                $res = $this->$saveMethod($country->id, $result, $ranks);
-                if ($res === false) {
-                    $this->out('失敗');
-                }
-
-                $allCount = $allCount + count($res);
+        $allCount = 0;
+        foreach ($results as $result) {
+            $res = $this->$saveMethod($country->id, $result, $ranks);
+            if ($res === false) {
+                $this->out('失敗');
             }
 
-            $count = count($results);
-            $this->out("${count}人の昇段情報（全${allCount}件）を登録しました。");
+            $allCount = $allCount + count($res);
         }
+
+        $count = count($results);
+        Log::info("${count}人の昇段情報（全${allCount}件）を登録しました。");
+        Log::info('昇段情報の取り込みを終了します。');
 
         return true;
     }
@@ -137,12 +140,12 @@ class PlayerRankShell extends Shell
      * @param \Cake\ORM\Query $ranks 段位一覧
      * @return array|false 保存結果
      */
-    private function savePlayerRanks(int $countryId, string $url, Query $ranks)
+    private function savePlayerRanksToKorea(int $countryId, string $url, Query $ranks)
     {
         $crawler = $this->getCrawler("http://www.baduk.or.kr/info/${url}");
         $name = $crawler->filter('.faceinfo .r strong')->first()->text();
 
-        // 1단  / 1958.10.
+        // 段位と昇段日を抜き出す
         $text = $crawler->filter('.profile')->first()->text();
         if (!preg_match_all('/([1-9])단  \/ ([0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}) /', $text, $matches)) {
             return [];
