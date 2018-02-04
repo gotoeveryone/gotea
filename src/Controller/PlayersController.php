@@ -25,6 +25,7 @@ class PlayersController extends AppController
         parent::initialize();
 
         $this->loadModel('Countries');
+        $this->loadModel('Ranks');
         $this->loadModel('Organizations');
         $this->loadModel('TitleScores');
     }
@@ -38,7 +39,7 @@ class PlayersController extends AppController
     {
         $this->set('form', new PlayerForm);
 
-        return $this->renderWith('棋士情報検索');
+        return $this->withRanks()->renderWith('棋士情報検索');
     }
 
     /**
@@ -73,7 +74,7 @@ class PlayersController extends AppController
             $this->set(compact('players'));
         }
 
-        return $this->renderWith('棋士情報検索', 'index');
+        return $this->withRanks()->renderWith('棋士情報検索', 'index');
     }
 
     /**
@@ -108,7 +109,7 @@ class PlayersController extends AppController
             'validate' => false,
         ]);
 
-        return $this->set(compact('player'))->renderWithDialog('view');
+        return $this->set(compact('player'))->withRanks()->renderWithDialog('view');
     }
 
     /**
@@ -121,7 +122,7 @@ class PlayersController extends AppController
     {
         $player = $this->Players->findByIdWithRelation($id);
 
-        return $this->set(compact('player'))->renderWithDialog();
+        return $this->set(compact('player'))->withRanks()->renderWithDialog();
     }
 
     /**
@@ -139,7 +140,7 @@ class PlayersController extends AppController
         if (!$this->Players->save($player)) {
             $this->set(compact('player'));
 
-            return $this->renderWithDialogErrors(400, $player->getErrors(), 'view');
+            return $this->withRanks()->renderWithDialogErrors(400, $player->getErrors(), 'view');
         }
 
         $this->setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
@@ -176,7 +177,7 @@ class PlayersController extends AppController
         if (!$this->Players->save($player)) {
             $this->set('player', $player);
 
-            return $this->renderWithDialogErrors(400, $player->getErrors(), 'view');
+            return $this->withRanks()->renderWithDialogErrors(400, $player->getErrors(), 'view');
         }
 
         $this->setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
@@ -192,5 +193,17 @@ class PlayersController extends AppController
     public function ranking()
     {
         return $this->renderWith('棋士勝敗ランキング出力');
+    }
+
+    /**
+     * 段位一覧に表示する値を設定します。
+     *
+     * @return \Gotea\Controller\PlayersController
+     */
+    private function withRanks()
+    {
+        $ranks = $this->Ranks->findProfessional()->combine('id', 'name');
+
+        return $this->set(compact('ranks'));
     }
 }

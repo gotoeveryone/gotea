@@ -24,7 +24,10 @@
                 </div>
                 <div>
                     <label class="search-row_label">段位：</label>
-                    <?= $this->cell('Ranks', ['empty' => true])->render() ?>
+                    <?= $this->Form->select('rank_id', $ranks, [
+                        'class' => 'rank',
+                        'empty' => true,
+                    ]); ?>
                 </div>
                 <div>
                     <label class="search-row_label">性別：</label>
