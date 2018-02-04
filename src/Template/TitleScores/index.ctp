@@ -27,6 +27,8 @@
                             ]);
                         ?>
                     </div>
+                </li>
+                <li class="search-row">
                     <div>
                         <label class="search-row_label">対局日：</label>
                         <?=$this->Form->text('started', ['class' => 'date datepicker'])?>

@@ -127,10 +127,11 @@
                         <div class="box">
                             <div class="label-row">段位</div>
                             <div class="input-row">
-                                <?= $this->cell('Ranks', [
-                                    'empty' => false,
+                                <?= $this->Form->select('rank_id', $ranks, [
                                     'value' => ($player->rank_id ? $player->rank_id : '1'),
-                                ])->render() ?>
+                                    'class' => 'rank',
+                                    'empty' => false,
+                                ]); ?>
                             </div>
                         </div>
                         <div class="box">
@@ -185,10 +186,11 @@
                         <div class="input-row">
                             <div class="rank-input-box">
                                 <div class="rank-input">
-                                    <?= $this->cell('Ranks', [
-                                        'empty' => false,
+                                    <?= $this->Form->select('rank_id', $ranks, [
                                         'value' => $player->rank_id,
-                                    ])->render() ?>
+                                        'class' => 'rank',
+                                        'empty' => false,
+                                    ]); ?>
                                 </div>
                                 <div class="rank-input">
                                     昇段日：<?= $this->Form->text('promoted', ['class' => 'datepicker']) ?>
@@ -220,10 +222,11 @@
                             <div class="input-row">
                                 <div class="rank-input-box">
                                     <div class="rank-input">
-                                        <?= $this->cell('Ranks', [
-                                            'empty' => false,
+                                        <?= $this->Form->select('rank_id', $ranks, [
                                             'value' => $player_rank->rank_id,
-                                        ])->render() ?>
+                                            'class' => 'rank',
+                                            'empty' => false,
+                                        ]); ?>
                                     </div>
                                     <div class="rank-input">
                                         昇段日：<?= $this->Form->text('promoted', [
