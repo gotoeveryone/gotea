@@ -1,64 +1,70 @@
 <section class="players">
-    <?=$this->Form->create($form, [
-        'class' => 'main-form',
-        'url' => ['_name' => 'find_players'],
-        'templates' => [
-            'inputContainer' => '{{content}}',
-            'textFormGroup' => '{{input}}',
-            'selectFormGroup' => '{{input}}'
-        ]
-    ])?>
+    <?= $this->Form->create($form, ['class' => 'main-form', 'url' => ['_name' => 'find_players']]) ?>
         <ul class="search-header">
             <li class="search-row">
-                <div>
-                    <label class="search-row_label">所属国：</label>
-                    <?= $this->cell('Countries', ['hasTitle' => true,
-                        'customOptions' => [
+                <?php
+                    echo $this->cell('Countries', [
+                        'hasTitleOnly' => true,
+                        [
+                            'label' => ['class' => 'search-row_label', 'text' => '所属国'],
+                            'class' => 'aaaaa',
                             '@change' => 'changeCountry($event)',
                         ],
-                    ])->render() ?>
-                </div>
-                <div>
-                    <label class="search-row_label">所属組織：</label>
-                    <?= $this->cell('Organizations', ['empty' => true])->render() ?>
-                </div>
-                <div>
-                    <label class="search-row_label">段位：</label>
-                    <?= $this->Form->select('rank_id', $ranks, [
+                    ])->render();
+                    echo $this->cell('Organizations', [
+                        [
+                            'label' => ['class' => 'search-row_label', 'text' => '所属組織'],
+                            'class' => 'organization',
+                            'empty' => true,
+                        ]
+                    ])->render();
+                    echo $this->Form->control('ranks', [
+                        'label' => ['class' => 'search-row_label', 'text' => '段位'],
+                        'options' => $ranks,
                         'class' => 'rank',
                         'empty' => true,
-                    ]); ?>
-                </div>
+                    ]);
+                    echo $this->Form->sexes([
+                        'label' => ['class' => 'search-row_label', 'text' => '性別'],
+                        'class' => 'sex',
+                        'empty' => true,
+                    ]);
+                ?>
                 <div>
-                    <label class="search-row_label">性別：</label>
-                    <?= $this->Form->sexes(['class' => 'sex', 'empty' => true]) ?>
-                </div>
-                <div>
-                    <label class="search-row_label">入段年：</label>
-                    <?=$this->Form->number('joined_from', ['class' => 'joined', 'maxlength' => 4])?>
-                    ～
-                    <?=$this->Form->number('joined_to', ['class' => 'joined', 'maxlength' => 4])?>
+                    <?php
+                        echo $this->Form->label('joined_from', '入段年', ['class' => 'search-row_label']);
+                        echo $this->Form->number('joined_from', ['class' => 'joined joined-from', 'maxlength' => 4]);
+                        echo $this->form->label('joined_to', '～');
+                        echo $this->Form->number('joined_to', ['class' => 'joined joined-to', 'maxlength' => 4]);
+                    ?>
                 </div>
             </li>
             <li class="search-row">
-                <div>
-                    <label class="search-row_label">棋士名：</label>
-                    <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20])?>
-                </div>
-                <div>
-                    <label class="search-row_label">（英語）：</label>
-                    <?=$this->Form->text('name_english', ['class' => 'name', 'maxlength' => 40]);?>
-                </div>
-                <div>
-                    <label class="search-row_label">（その他）：</label>
-                    <?=$this->Form->text('name_other', ['class' => 'name', 'maxlength' => 20]);?>
-                </div>
+                <?php
+                    echo $this->Form->control('name', [
+                        'label' => ['class' => 'search-row_label', 'text' => '棋士名'],
+                        'class' => 'name',
+                        'maxlength' => 20,
+                    ]);
+                    echo $this->Form->control('name_english', [
+                        'label' => ['class' => 'search-row_label', 'text' => '（英語）'],
+                        'class' => 'name',
+                        'maxlength' => 40,
+                    ]);
+                    echo $this->Form->control('name_other', [
+                        'label' => ['class' => 'search-row_label', 'text' => '（その他）'],
+                        'class' => 'name',
+                        'maxlength' => 20,
+                    ]);
+                ?>
             </li>
             <li class="search-row">
-                <div>
-                    <label class="search-row_label">引退者：</label>
-                    <?= $this->Form->filters('is_retired', ['class' => 'excluded']) ?>
-                </div>
+                <?php
+                    echo $this->Form->filters('is_retired', [
+                        'label' => ['class' => 'search-row_label', 'text' => '引退者'],
+                        'class' => 'excluded',
+                    ]);
+                ?>
                 <?php if (!empty($players)) : ?>
                 <div class="result-count">
                     <?= h("{$players->count()}件のレコードが該当しました。") ?>

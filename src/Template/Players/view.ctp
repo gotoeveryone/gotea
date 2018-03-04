@@ -1,3 +1,4 @@
+<?= $this->Html->css('view', ['block' => true]) ?>
 <div class="detail-dialog">
     <!-- タブ -->
     <ul class="tabs" data-selecttab="<?= $this->request->getQuery('tab') ?>">
@@ -15,79 +16,80 @@
     <div class="detail">
         <!-- 棋士成績 -->
         <section data-contentname="player" class="tab-contents">
-            <?=$this->Form->create($player, [
-                'class' => 'main-form',
-                'url' => $player->getSaveUrl(),
-                'templates' => [
-                    'inputContainer' => '{{content}}',
-                    'textFormGroup' => '{{input}}',
-                    'selectFormGroup' => '{{input}}'
-                ]
-            ])?>
+            <?= $this->Form->create($player, ['class' => 'main-form', 'url' => $player->getSaveUrl()]) ?>
                 <?=$this->Form->hidden('id', ['value' => $player->id])?>
                 <?=$this->Form->hidden('country_id')?>
                 <div class="category-row">棋士情報<?=($player->id ? '（ID：'.h($player->id).'）' : "")?></div>
                 <ul class="boxes">
                     <li class="detail-row">
                         <div class="box">
-                            <div class="label-row">所属国</div>
-                            <div class="input-row">
-                                <?=
-                                    $this->cell('Countries', [
-                                        'hasTitle' => true,
-                                        'customOptions' => [
-                                            'empty' => false,
-                                            'value' => $player->country_id,
-                                        ],
-                                    ])->render()
-                                ?>
-                            </div>
+                            <?php
+                                echo $this->cell('Countries', [
+                                    'hasTitleOnly' => true,
+                                    [
+                                        'label' => ['class' => 'label-row', 'text' => '所属国'],
+                                        'empty' => false,
+                                        'value' => $player->country_id,
+                                    ],
+                                ])->render()
+                            ?>
                         </div>
                         <div class="box">
-                            <div class="label-row"><span>所属組織</span></div>
-                            <div class="input-row">
-                                <?=
-                                    $this->cell('Organizations', [
+                            <?php
+                                echo $this->cell('Organizations', [
+                                    [
+                                        'label' => ['class' => 'label-row', 'text' => '所属組織'],
                                         'empty' => false,
                                         'value' => ($player->organization_id ? $player->organization_id : '1'),
-                                    ])->render()
-                                ?>
-                            </div>
+                                    ],
+                                ])->render()
+                            ?>
                         </div>
                         <div class="box">
                             <div class="label-row">引退フラグ</div>
                             <div class="input-row">
-                                <?= $this->Form->checkbox('is_retired', ['id' => 'retired']) ?>
-                                <?= $this->Form->label('retired', '引退しました', ['class' => 'checkbox-label']) ?>
-                                <?= $this->Form->text('retired', ['class' => 'datepicker', 'disabled']) ?>
+                                <?php
+                                    echo $this->Form->control('is_retired', [
+                                        'label' => ['class' => 'checkbox-label', 'text' => '引退しました'],
+                                    ]);
+                                    echo $this->Form->control('retired', [
+                                        'label' => false,
+                                        'type' => 'text',
+                                        'class' => 'datepicker',
+                                        'disabled' => true,
+                                        'placeholder' => '引退日',
+                                    ])
+                                ?>
                             </div>
                         </div>
                     </li>
                     <li class="detail-row">
                         <div class="box">
-                            <div class="label-row">棋士名</div>
-                            <div class="input-row">
-                                <?=
-                                    $this->Form->text('name', [
-                                        'class' => 'name',
-                                        'maxlength' => 20
-                                    ]);
-                                ?>
-                                <span class="input-row-label">英語</span>
-                                <?=
-                                    $this->Form->text('name_english', [
-                                        'class' => 'name',
-                                        'maxlength' => 40
-                                    ]);
-                                ?>
-                                <span class="input-row-label">その他</span>
-                                <?=
-                                    $this->Form->text('name_other', [
-                                        'class' => 'name',
-                                        'maxlength' => 20
-                                    ]);
-                                ?>
-                            </div>
+                            <?php
+                                echo $this->Form->control('name', [
+                                    'label' => ['class' => 'label-row', 'text' => '棋士名'],
+                                    'class' => 'input-row name',
+                                    'maxlength' => 20,
+                                ]);
+                            ?>
+                        </div>
+                        <div class="box">
+                            <?php
+                                echo $this->Form->control('name_english', [
+                                    'label' => ['class' => 'label-row', 'text' => '棋士名（英語）'],
+                                    'class' => 'input-row name',
+                                    'maxlength' => 40,
+                                ]);
+                            ?>
+                        </div>
+                        <div class="box">
+                            <?php
+                                echo $this->Form->control('name_other', [
+                                    'label' => ['class' => 'label-row', 'text' => '棋士名（その他）'],
+                                    'class' => 'input-row name',
+                                    'maxlength' => 20,
+                                ]);
+                            ?>
                         </div>
                     </li>
                     <li class="detail-row">
@@ -103,64 +105,67 @@
                             </div>
                         </div>
                         <div class="box">
-                            <div class="label-row">入段日</div>
-                            <div class="input-row">
-                                <?=
-                                    $this->Form->selectDate('input_joined', [
-                                        'empty' => [
-                                            'year' => false,
-                                            'month' => ['' => '-'],
-                                            'day' => ['' => '-'],
-                                        ],
-                                    ]);
-                                ?>
-                            </div>
+                            <?php
+                                echo $this->Form->selectDate('input_joined', [
+                                    'label' => ['class' => 'label-row', 'text' => '入段日'],
+                                    'class' => 'input-row',
+                                    'empty' => [
+                                        'year' => false,
+                                        'month' => ['' => '-'],
+                                        'day' => ['' => '-'],
+                                    ],
+                                ]);
+                            ?>
                         </div>
                     </li>
                     <li class="detail-row">
                         <div class="box">
-                            <div class="label-row">性別</div>
-                            <div class="input-row">
-                                <?= $this->Form->sexes(['value' => $player->sex, 'class' => 'sex']) ?>
-                            </div>
+                            <?php
+                                echo $this->Form->sexes([
+                                    'label' => ['class' => 'label-row', 'text' => '性別'],
+                                    'value' => $player->sex,
+                                    'class' => 'input-row sex',
+                                ]);
+                            ?>
                         </div>
                         <div class="box">
-                            <div class="label-row">段位</div>
-                            <div class="input-row">
-                                <?= $this->Form->select('rank_id', $ranks, [
-                                    'value' => ($player->rank_id ? $player->rank_id : '1'),
-                                    'class' => 'rank',
+                            <?php
+                                echo $this->Form->control('rank_id', [
+                                    'options' => $ranks,
+                                    'label' => ['class' => 'label-row', 'text' => '段位'],
+                                    'class' => 'input-row rank',
                                     'empty' => false,
-                                ]); ?>
-                            </div>
+                                ]);
+                            ?>
                         </div>
                         <div class="box">
                             <div class="label-row">最終更新日時</div>
                             <div class="input-row">
                                 <?= h($this->Date->formatToDateTime($player->modified)) ?>
-                                <?=
-                                    $this->Form->hidden('modified', [
-                                        'value' => $this->Date->format($player->modified, 'yyyyMMddHHmmss'),
-                                    ])
-                                ?>
+                                <?= $this->Form->hidden('modified') ?>
                             </div>
                         </div>
                     </li>
                     <li class="detail-row">
                         <div class="box">
-                            <div class="label-row">その他備考</div>
-                            <div class="input-row">
-                                <?=$this->Form->textarea('remarks', ['class' => 'remarks'])?>
-                            </div>
+                            <?= $this->Form->control('remarks', [
+                                'label' => ['class' => 'label-row', 'text' => 'その他備考'],
+                                'type' => 'textarea',
+                                'class' => 'input-row',
+                            ]) ?>
                         </div>
                     </li>
                     <li class="button-row">
                         <?php // 新規登録時は続けて登録チェックボックス表示 ?>
-                        <?php if (!$player->id) : ?>
-                            <?= $this->Form->checkbox('is_continue', ['id' => 'continue', 'checked']) ?>
-                            <?= $this->Form->label('continue', '続けて登録', ['class' => 'checkbox-label']) ?>
+                        <?php if ($player->isNew()) : ?>
+                            <?php
+                                echo $this->Form->control('is_continue', [
+                                    'label' => ['class' => 'checkbox-label', 'text' => '続けて登録'],
+                                    'checked' => true,
+                                ]);
+                            ?>
                         <?php endif ?>
-                        <?= $this->Form->button(($player->id ? '更新' : '登録')) ?>
+                        <?= $this->Form->button('保存') ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>
@@ -177,31 +182,31 @@
                             'class' => 'rank-form',
                             'type' => 'post',
                             'url' => ['_name' => 'create_ranks', $player->id],
-                            'templates' => [
-                                'inputContainer' => '{{content}}',
-                                'textFormGroup' => '{{input}}',
-                                'selectFormGroup' => '{{input}}',
-                            ]
                         ]) ?>
                         <div class="input-row">
-                            <div class="rank-input-box">
-                                <div class="rank-input">
-                                    <?= $this->Form->select('rank_id', $ranks, [
-                                        'value' => $player->rank_id,
+                            <div class="input-box">
+                                <?php
+                                    echo $this->Form->control('rank_id', [
+                                        'label' => ['class' => 'label', 'text' => '段位'],
+                                        'options' => $ranks,
                                         'class' => 'rank',
                                         'empty' => false,
-                                    ]); ?>
-                                </div>
-                                <div class="rank-input">
-                                    昇段日：<?= $this->Form->text('promoted', ['class' => 'datepicker']) ?>
-                                </div>
-                                <div class="rank-input checkbox-wrap">
-                                    <?= $this->Form->checkbox('newest', ['id' => 'newest', 'checked']) ?>
-                                    <?= $this->Form->label('newest', '最新として登録', ['class' => 'checkbox-label']) ?>
-                                </div>
+                                    ]);
+                                    echo $this->Form->control('promoted',[
+                                        'label' => ['class' => 'label', 'text' => '昇段日'],
+                                        'type' => 'text',
+                                        'class' => 'datepicker',
+                                    ]);
+                                ?>
                             </div>
-                            <div class="button-wrap">
-                                <?= $this->Form->button('登録', ['class' => 'add-ranks']) ?>
+                            <div class="right-column">
+                                <?php
+                                    echo $this->Form->control('newest', [
+                                        'label' => ['class' => 'label', 'text' => '最新として登録'],
+                                        'checked' => true,
+                                    ]);
+                                    echo $this->Form->button('登録', ['class' => 'add-ranks']);
+                                ?>
                             </div>
                         </div>
                         <?= $this->Form->end() ?>
@@ -209,33 +214,28 @@
                     <li class="label-row">昇段履歴</li>
                     <?php foreach ($player->player_ranks as $player_rank) : ?>
                     <li class="detail-row">
-                        <?= $this->Form->create($player, [
+                        <?= $this->Form->create($player_rank, [
                             'class' => 'rank-form',
                             'type' => 'put',
-                            'url' => ['_name' => 'update_ranks', $player->id, $player_rank->id],
-                            'templates' => [
-                                'inputContainer' => '{{content}}',
-                                'textFormGroup' => '{{input}}',
-                                'selectFormGroup' => '{{input}}',
-                            ]
+                            'url' => ['_name' => 'update_ranks', $player_rank->player_id, $player_rank->id],
                         ]) ?>
                             <div class="input-row">
-                                <div class="rank-input-box">
-                                    <div class="rank-input">
-                                        <?= $this->Form->select('rank_id', $ranks, [
-                                            'value' => $player_rank->rank_id,
+                                <div class="input-box">
+                                    <?php
+                                        echo $this->Form->control('rank_id', [
+                                            'label' => ['class' => 'label', 'text' => '段位'],
+                                            'options' => $ranks,
                                             'class' => 'rank',
                                             'empty' => false,
-                                        ]); ?>
-                                    </div>
-                                    <div class="rank-input">
-                                        昇段日：<?= $this->Form->text('promoted', [
+                                        ]);
+                                        echo $this->Form->control('promoted',[
+                                            'label' => ['class' => 'label', 'text' => '昇段日'],
+                                            'type' => 'text',
                                             'class' => 'datepicker',
-                                            'value' => $player_rank->promoted,
-                                        ]) ?>
-                                    </div>
+                                        ]);
+                                    ?>
                                 </div>
-                                <div class="button-wrap">
+                                <div class="right-column">
                                     <?= $this->Form->button('更新', ['class' => 'add-ranks']) ?>
                                 </div>
                             </div>
@@ -281,14 +281,12 @@
                         </div>
                         <div class="box">
                             <div class="label-row"></div>
-                            <div class="input-row">
-                                <div class="button-wrap">
-                                    <?= $this->Html->link('タイトル成績へ', [
-                                        '_name' => 'find_player_scores', $player->id, $score->target_year,
-                                    ], [
-                                        'class' => 'layout-button',
-                                    ]) ?>
-                                </div>
+                            <div class="input-row button-wrap">
+                                <?= $this->Html->link('タイトル成績へ', [
+                                    '_name' => 'find_player_scores', $player->id, $score->target_year,
+                                ], [
+                                    'class' => 'layout-button',
+                                ]) ?>
                             </div>
                         </div>
                     </li>

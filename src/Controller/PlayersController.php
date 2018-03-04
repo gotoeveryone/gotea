@@ -84,7 +84,6 @@ class PlayersController extends AppController
      */
     public function new()
     {
-        $params = [];
         // 所属国
         if (($countryId = $this->request->getQuery('country_id'))) {
             $params['country_id'] = $countryId;
@@ -108,6 +107,9 @@ class PlayersController extends AppController
         $player = $this->Players->newEntity($params, [
             'validate' => false,
         ]);
+
+        // 初段固定
+        $player->rank = $this->Ranks->findByRankNumeric(1)->first();
 
         return $this->set(compact('player'))->withRanks()->renderWithDialog('view');
     }

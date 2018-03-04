@@ -40,6 +40,10 @@ class TitlesTable extends AppTable
             ->requirePresence([
                 'country_id', 'name', 'name_english', 'holding',
                 'sort_order', 'html_file_name', 'html_file_modified',
+            ], 'create')
+            ->notEmpty([
+                'name', 'name_english', 'holding',
+                'html_file_name', 'html_file_modified',
             ])
             ->integer('holding')
             ->integer('sort_order')
