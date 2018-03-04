@@ -109,6 +109,9 @@ class PlayersController extends AppController
             'validate' => false,
         ]);
 
+        // 初段固定
+        $player->rank = $this->Ranks->findByRankNumeric(1)->first();
+
         return $this->set(compact('player'))->withRanks()->renderWithDialog('view');
     }
 

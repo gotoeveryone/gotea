@@ -1,45 +1,41 @@
 <section class="title-scores">
     <div>
-        <?=$this->Form->create($form, [
-            'class' => 'main-form',
-            'url' => ['_name' => 'find_scores'],
-            'templates' => [
-                'inputContainer' => '{{content}}',
-                'textFormGroup' => '{{input}}',
-                'selectFormGroup' => '{{input}}'
-            ]
-        ])?>
-            <ul class="search-header">
-                <li class="search-row">
-                    <div>
-                        <label class="search-row_label">棋士名：</label>
-                        <?=$this->Form->text('name', ['class' => 'name', 'maxlength' => 20]);?>
-                    </div>
-                    <div>
-                        <label class="search-row_label">対象棋戦：</label>
-                        <?= $this->cell('Countries')->render() ?>
-                    </div>
-                    <div>
-                        <label class="search-row_label">対局年：</label>
-                        <?=
-                            $this->Form->years('target_year', [
-                                'class' => 'year', 'empty' => true,
-                            ]);
-                        ?>
-                    </div>
-                </li>
-                <li class="search-row">
-                    <div>
-                        <label class="search-row_label">対局日：</label>
-                        <?=$this->Form->text('started', ['class' => 'date datepicker'])?>
-                        <span>～</span>
-                        <?=$this->Form->text('ended', ['class' => 'date datepicker'])?>
-                    </div>
-                    <div class="button-wrap">
-                        <?=$this->Form->button('検索', ['type' => 'submit'])?>
-                    </div>
-                </li>
-            </ul>
+        <?= $this->Form->create($form, ['class' => 'main-form', 'url' => ['_name' => 'find_scores']]) ?>
+        <ul class="search-header">
+            <li class="search-row">
+                <?php
+                    echo $this->Form->control('name', [
+                        'label' => ['class' => 'search-row_label', 'text' => '棋士名'],
+                        'class' => 'name',
+                        'maxlength' => 20,
+                    ]);
+                    echo $this->cell('Countries', [
+                        'hasTitleOnly' => false,
+                        [
+                            'label' => ['class' => 'search-row_label', 'text' => '対象棋戦'],
+                        ],
+                    ]);
+                    echo $this->Form->years('target_year', [
+                        'label' => ['class' => 'search-row_label', 'text' => '対局年'],
+                        'class' => 'year',
+                        'empty' => true,
+                    ]);
+                ?>
+            </li>
+            <li class="search-row">
+                <div>
+                    <?php
+                        echo $this->Form->label('started', '入段年', ['class' => 'search-row_label']);
+                        echo $this->Form->text('started', ['class' => 'started datepicker']);
+                        echo $this->form->label('ended', '～');
+                        echo $this->Form->text('ended', ['class' => 'ended datepicker']);
+                    ?>
+                </div>
+                <div class="button-wrap">
+                    <?=$this->Form->button('検索', ['type' => 'submit'])?>
+                </div>
+            </li>
+        </ul>
         <?=$this->Form->end()?>
     </div>
 

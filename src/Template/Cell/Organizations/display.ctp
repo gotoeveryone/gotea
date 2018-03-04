@@ -1,8 +1,8 @@
 <?=
-    $this->Form->select('organization_id', $organizations, [
-        'value' => $value,
+    $this->Form->control('organization_id', [
+        'type' => 'select',
+        'options' => $organizations,
         'data-id' => 'organization',
         'class' => 'organization',
-        'empty' => $empty,
-    ]);
+    ] + $attributes);
 ?>

@@ -15,7 +15,7 @@ module.exports = [
         resolve: {
             extensions: ['.webpack.js', '.vue', '.js'],
             alias: {
-                'vue$': 'vue/dist/vue.common',
+                vue$: 'vue/dist/vue.common',
             },
         },
         module: {
@@ -32,10 +32,7 @@ module.exports = [
                 {
                     test: /\.js$/,
                     exclude: /node_modules/,
-                    loaders: [
-                        'buble-loader',
-                        'eslint-loader',
-                    ],
+                    loaders: ['buble-loader', 'eslint-loader'],
                 },
                 {
                     test: /\.css$/,
@@ -58,6 +55,7 @@ module.exports = [
     {
         entry: {
             app: path.join(__dirname, 'resources/assets/sass/app.scss'),
+            view: path.join(__dirname, 'resources/assets/sass/view.scss'),
         },
         output: {
             path: path.join(__dirname, 'webroot/css'),

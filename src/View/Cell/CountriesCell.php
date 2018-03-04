@@ -12,14 +12,15 @@ class CountriesCell extends Cell
     /**
      * 表示処理
      *
-     * @param bool $hasTitle タイトル保持しているか
-     * @param array $customOptions 追加属性
+     * @param bool $hasTitleOnly タイトルを保持している国のみ表示するか
+     * @param array $attributes 属性
      * @return void
      */
-    public function display($hasTitle = false, $customOptions = [])
+    public function display($hasTitleOnly = true, $attributes = [])
     {
-        $countries = $this->loadModel('Countries');
-        $this->set('countries', $countries->findAllHasCode($hasTitle)->combine('id', 'name'))
-            ->set('customOptions', $customOptions);
+        $this->loadModel('Countries');
+        $countries = $this->Countries->findAllHasCode($hasTitleOnly)
+            ->combine('id', 'name');
+        $this->set(compact('countries', 'attributes'));
     }
 }

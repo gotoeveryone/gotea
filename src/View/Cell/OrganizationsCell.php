@@ -12,15 +12,13 @@ class OrganizationsCell extends Cell
     /**
      * 表示処理
      *
-     * @param bool $empty ブランクを設定するか
-     * @param string $value デフォルトの選択値
+     * @param array $attributes 属性
      * @return void
      */
-    public function display($empty = false, $value = '')
+    public function display($attributes = [])
     {
-        $organizations = $this->loadModel('Organizations');
-        $this->set('empty', $empty)
-            ->set('value', ($req = $this->request->getData('organization_id')) ? $req : $value)
-            ->set('organizations', $organizations->findSorted());
+        $this->loadModel('Organizations');
+        $organizations = $this->Organizations->findSorted();
+        $this->set(compact('organizations', 'attributes'));
     }
 }

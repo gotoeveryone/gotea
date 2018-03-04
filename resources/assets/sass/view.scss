@@ -1,3 +1,7 @@
+@import 'module/_variables.scss';
+@import 'module/_normalize.scss';
+@import 'module/_mixin.scss';
+
 /* -------------------------------------------
    詳細表示エリア
  ------------------------------------------- */
@@ -16,7 +20,7 @@
             border: 0.1rem solid $c_black;
             border-bottom: none;
             border-radius: 0.5rem 0.5rem 0 0;
-            transition: font-weight .3s, color .3s, background-color .3s;
+            transition: font-weight 0.3s, color 0.3s, background-color 0.3s;
             &.selectTab {
                 font-weight: bold;
                 color: $c_black;
@@ -35,7 +39,7 @@
         background-color: $c_white;
 
         .tab-contents {
-            @include fade(.5, 'not-select');
+            @include fade(0.5, 'not-select');
         }
 
         .boxes {
@@ -56,20 +60,13 @@
     @extend %row;
     margin: 0 auto;
     padding: 0;
-    align-items: flex-start;
+    align-items: stretch;
     .box {
         flex-grow: 1;
     }
     .box2 {
         flex-grow: 2;
     }
-}
-
-.button-row {
-    display: flex;
-    margin: .5em auto;
-    align-items: center;
-    justify-content: center;
 }
 
 .category-row {
@@ -100,86 +97,104 @@
     font-weight: bold;
 }
 
-.input-row {
-    @extend %row;
-    margin: 0;
-    padding: .5rem .7rem;
-    min-height: 3rem;
+.input-row,
+.country,
+.organization {
+    display: flex;
+    margin: 0.5rem 1rem;
+    width: calc(100% - (1rem * 2));
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 2rem;
 
-    &-label {
-        margin-right: 5px;
-        margin-left: 15px;
+    &.button-wrap {
+        justify-content: flex-end;
     }
 
-    select {
-        width: 100%;
+    .checkbox {
+        margin-right: 0.5rem;
     }
 
-    .inner-column {
-        margin: auto 5px;
-    }
+    &.joined {
+        display: inline-block;
+        margin: 0.5rem 0.3rem;
+        width: auto;
 
-    .button-wrap {
-        margin-left: auto;
-    }
-
-    .checkbox-label {
-        margin-right: 10px;
-        margin-left: 5px;
-    }
-
-    .name {
-        width: 160px;
-    }
-
-    .point {
-        width: 2.5rem;
-        text-align: right;
-    }
-
-    .holding {
-        width: 3rem;
-        text-align: right;
-    }
-
-    .datepicker {
-        width: 9rem;
-    }
-
-    .year {
-        width: 4rem;
-        text-align: right;
-    }
-
-    .joined {
-        width: 80px;
-    }
-
-    .remarks {
-        width: 100%;
+        &:first-of-type {
+            margin: 0.5rem 0.3rem 0.5rem 1rem;
+        }
     }
 }
 
-.rank-form {
+.rank-form,
+.add-condition-form {
     width: 100%;
 
-    .rank-input-box {
+    .input-box {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         width: 100%;
     }
 
-    .rank-input {
-        width: 200px;
+    .right-column {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-left: auto;
 
+        .checkbox {
+            text-align: right;
+        }
+    }
+
+    .input {
         &:not(:first-child) {
             margin-left: 10px;
         }
 
-        &.checkbox-wrap {
-            margin-left: auto;
-            text-align: right;
+        .label {
+            margin-right: 0.5rem;
         }
+
+        .rank {
+            width: 150px;
+        }
+
+        .year,
+        .holding {
+            width: 80px;
+        }
+    }
+}
+
+/* -------------------------------------------
+   棋士詳細
+ ------------------------------------------- */
+.rank-form {
+    .input {
+        width: 200px;
+    }
+}
+
+/* -------------------------------------------
+   タイトル詳細
+ ------------------------------------------- */
+.retentions {
+    margin: 5px auto;
+    width: 85%;
+    max-width: 750px;
+    max-height: 200px;
+
+    &-name {
+        width: 25%;
+    }
+    &-country,
+    &-rank,
+    &-sex {
+        width: 10%;
+    }
+    &-select {
+        width: 20%;
     }
 }
