@@ -3,6 +3,7 @@ namespace Gotea\View\Helper;
 
 use Cake\I18n\Date;
 use Cake\View\Helper\FormHelper;
+use Cake\View\View;
 use Gotea\Utility\CalculatorTrait;
 
 /**
@@ -13,6 +14,19 @@ class MyFormHelper extends FormHelper
     use CalculatorTrait;
 
     /**
+     * {@inheritDoc}
+     */
+    public function __construct(View $View, array $config = [])
+    {
+        // エラーメッセージは個別に出力しない
+        $this->setTemplates([
+            // Error message wrapper elements.
+            'error' => false,
+        ]);
+        parent::__construct($View, $config);
+    }
+
+    /**
      * 入段日を取得します。
      *
      * @param string $name フィールド名
@@ -21,19 +35,20 @@ class MyFormHelper extends FormHelper
      */
     public function selectDate(string $name, array $attributes)
     {
-        return $this->date($name, [
+        return $this->control($name, [
+            'type' => 'date',
             'year' => [
                 'start' => '1920',
                 'end' => Date::now()->addYears(1)->year,
-                'class' => 'joined',
+                'class' => 'input-row joined',
                 'suffix' => '年',
             ],
             'month' => [
-                'class' => 'joined',
+                'class' => 'input-row joined',
                 'suffix' => '月',
             ],
             'day' => [
-                'class' => 'joined',
+                'class' => 'input-row joined',
                 'suffix' => '日',
             ],
             'monthNames' => false,
@@ -48,10 +63,13 @@ class MyFormHelper extends FormHelper
      */
     public function sexes(array $attributes = [])
     {
-        return $this->select('sex', [
-            '男性' => '男性',
-            '女性' => '女性'
-        ], $attributes);
+        return $this->control('sex', [
+            'type' => 'select',
+            'options' => [
+                '男性' => '男性',
+                '女性' => '女性',
+            ],
+        ] + $attributes);
     }
 
     /**
@@ -63,10 +81,13 @@ class MyFormHelper extends FormHelper
      */
     public function filters(string $name, array $attributes = [])
     {
-        return $this->select($name, [
-            '0' => '検索しない',
-            '1' => '検索する'
-        ], $attributes);
+        return $this->control($name, [
+            'type' => 'select',
+            'options' => [
+                '0' => '検索しない',
+                '1' => '検索する',
+            ],
+        ] + $attributes);
     }
 
     /**
@@ -84,6 +105,8 @@ class MyFormHelper extends FormHelper
             $years[$i] = $i . '年度';
         }
 
-        return $this->select($name, $years, $attributes);
+        return $this->control($name, [
+            'options' => $years,
+        ] + $attributes);
     }
 }

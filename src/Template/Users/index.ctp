@@ -1,25 +1,26 @@
 <?= $this->Form->create($form, [
     'method' => 'post',
     'url' => ['_name' => 'login'],
-    'templates' => [
-        'inputContainer' => '{{content}}',
-        'textFormGroup' => '{{input}}',
-        'passwordFormGroup' => '{{input}}'
-    ]
 ]) ?>
     <ul class="login">
         <li class="row">
-            <label>ID</label>
             <?=
                 $this->Form->control('account', [
+                    'label' => [
+                        'class' => 'label',
+                        'text' => 'ID',
+                    ],
                     'maxlength' => 10,
                 ]);
             ?>
         </li>
         <li class="row">
-            <label>Password</label>
             <?=
                 $this->Form->control('password', [
+                    'label' => [
+                        'class' => 'label',
+                        'text' => 'Password',
+                    ],
                     'maxlength' => 20,
                 ]);
             ?>

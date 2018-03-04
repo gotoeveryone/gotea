@@ -1,59 +1,79 @@
 <template>
-    <li class="detail-row">
-        <input type="hidden" :value="historyId" name="id">
-        <input type="hidden" v-model="teamTitle" name="is_team">
-        <div class="box">
-            <div class="label-row" v-text="text"></div>
-            <div class="add-condition input-row">
-                <div class="box">
-                    対象年：
-                    <input type="text" v-model="year" maxlength="4" class="year" name="target_year"> 期：
-                    <input type="text" v-model="holding" maxlength="4" class="holding" name="holding">
-                </div>
-                <div class="button-column">
-                    <input type="checkbox" id="newest" name="newest" checked :disabled="required()" v-if="!edit" />
-                    <label for="newest" class="checkbox-label" v-if="!edit">最新として登録</label>
-                    <button type="button" @click="clearData()" v-if="edit">編集をやめる</button>
-                    <button type="submit" :disabled="required()">保存</button>
+    <ul class="boxes">
+        <li class="label-row" v-text="text"></li>
+        <li class="detail-row">
+            <input type="hidden" :value="historyId" name="id">
+            <input type="hidden" v-model="teamTitle" name="is_team">
+            <div class="input-row">
+                <div class="input-box">
+                    <div class="input number">
+                        <label for="target-year" class="label">対象年度</label>
+                        <input type="number" v-model="year" id="target-year" maxlength="4" class="year" name="target_year">
+                    </div>
+                    <div class="input number">
+                        <label for="holding" class="label">期</label>
+                        <input type="number" v-model="holding" maxlength="4" class="holding" name="holding">
+                    </div>
+                    <div class="right-column">
+                        <div class="input checkbox">
+                            <input name="newest" value="0" type="hidden">
+                            <label for="newest" class="label" v-if="!edit">
+                                <input type="checkbox" id="newest" name="newest" checked="checked"
+                                    :disabled="required()" v-if="!edit" />
+                                最新として登録
+                            </label>
+                        </div>
+                        <button type="button" @click="clearData()" v-if="edit">編集をやめる</button>
+                        <button type="submit" :disabled="required()">保存</button>
+                    </div>
                 </div>
             </div>
-            <div class="add-condition input-row">
-                <div class="box" v-if="teamTitle">
-                    優勝団体名：<input type="text" name="win_group_name" v-model="teamName" maxlength="30" />
+        </li>
+        <li class="detail-row">
+            <div class="input-row">
+                <div class="input-box" v-if="teamTitle">
+                    <div class="input text">
+                        <label for="win-group-name" class="label">優勝団体名</label>
+                        <input type="text" id="win-group-name" name="win_group_name" v-model="teamName" maxlength="30" />
+                    </div>
                 </div>
-                <div class="box" v-else>
-                    設定棋士名：
+                <div class="input-box" v-else>
+                    <span>設定棋士名</span>
                     <strong v-text="viewName"></strong>
                     <input type="hidden" name="player_id" v-model="playerId" />
                     <input type="hidden" name="rank_id" v-model="rankId" />
                 </div>
             </div>
-            <div class="box" v-if="!teamTitle">
-                <div class="label-row">棋士検索</div>
-                <div class="input-row">
-                    <div class="box">
-                        棋士名：
-                        <input type="text" v-model="name" class="name">
-                    </div>
-                    <div class="button-column">
-                        <button type="button" @click="search()">検索</button>
+        </li>
+        <li class="label-row" v-if="!teamTitle">棋士検索</li>
+        <li class="detail-row" v-if="!teamTitle">
+            <div class="input-row">
+                <div class="input-box">
+                    <div class="input text">
+                        <label for="name" class="label">棋士名</label>
+                        <input type="text" id="name" v-model="name" class="name">
                     </div>
                 </div>
-                <ul class="table-body retentions" v-if="players.length">
-                    <li class="table-row" v-for="(player, idx) in players" :key="idx">
-                        <span class="retentions-name" v-text="getName(player)"></span>
-                        <span class="retentions-name" v-text="player.nameEnglish"></span>
-                        <span class="retentions-country" v-text="player.countryName"></span>
-                        <span class="retentions-rank" v-text="player.rankName"></span>
-                        <span class="retentions-sex" v-text="player.sex"></span>
-                        <span class="retentions-select">
-                            <button type="button" @click="select(player)">選択</button>
-                        </span>
-                    </li>
-                </ul>
+                <div class="right-column">
+                    <button type="button" @click="search()">検索</button>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+        <li v-if="players.length">
+            <ul class="table-body retentions">
+                <li class="table-row" v-for="(player, idx) in players" :key="idx">
+                    <span class="retentions-name" v-text="getName(player)"></span>
+                    <span class="retentions-name" v-text="player.nameEnglish"></span>
+                    <span class="retentions-country" v-text="player.countryName"></span>
+                    <span class="retentions-rank" v-text="player.rankName"></span>
+                    <span class="retentions-sex" v-text="player.sex"></span>
+                    <span class="retentions-select">
+                        <button type="button" @click="select(player)">選択</button>
+                    </span>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </template>
 
 <script>
