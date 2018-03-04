@@ -19,11 +19,11 @@ class TitleScoreForm extends AppForm
     protected function _buildSchema(Schema $schema)
     {
         return $schema->addFields([
-            'name' => ['type' => 'text'],
+            'name' => 'string',
             'country_id' => 'string',
             'target_year' => 'string',
-            'started', ['type' => 'text'],
-            'ended', ['type' => 'text']
+            'started' => 'string',
+            'ended' => 'string',
         ]);
     }
 

@@ -5,7 +5,7 @@
 
 * {
     font-family: 'Sawarabi Gothic';
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 
 body {
@@ -13,7 +13,8 @@ body {
     background-color: $c_white;
 }
 
-main, nav {
+main,
+nav {
     padding: 5px 10px;
 }
 
@@ -39,7 +40,13 @@ strong {
     margin: 0 0.3rem;
 }
 
-input, textarea, select {
+label {
+    font-weight: normal;
+}
+
+input,
+textarea,
+select {
     max-width: 100%;
     &:focus {
         background-color: #ffc;
