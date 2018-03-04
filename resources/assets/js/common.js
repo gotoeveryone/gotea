@@ -4,15 +4,36 @@ import 'pikaday/css/pikaday.css';
 // 日付選択オプション
 const pikadayOptions = (_element, _birthday) => {
     const nowYear = new Date().getFullYear();
-    const startYear = (_birthday ? 1920 : nowYear - 10);
-    const endYear = (_birthday ? nowYear - 5 : nowYear + 1);
+    const startYear = _birthday ? 1920 : nowYear - 10;
+    const endYear = _birthday ? nowYear - 5 : nowYear + 1;
     return {
         field: _element,
         i18n: {
             previousMonth: '前の月',
             nextMonth: '次の月',
-            months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-            weekdays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+            months: [
+                '1月',
+                '2月',
+                '3月',
+                '4月',
+                '5月',
+                '6月',
+                '7月',
+                '8月',
+                '9月',
+                '10月',
+                '11月',
+                '12月',
+            ],
+            weekdays: [
+                '日曜日',
+                '月曜日',
+                '火曜日',
+                '水曜日',
+                '木曜日',
+                '金曜日',
+                '土曜日',
+            ],
             weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
         },
         closeText: '閉じる',
@@ -30,19 +51,26 @@ const pikadayOptions = (_element, _birthday) => {
 };
 
 // 日付選択のイベントを登録
-document.addEventListener('focus', event => {
-    const element = event.target;
-    if (element.classList && element.classList.contains('datepicker')
-        && !element.classList.contains('set-event')) {
-        element.classList.add('set-event');
-        new Pikaday(pikadayOptions(
-            element, element.classList.contains('birthday')
-        )).show();
-    }
-}, true);
+document.addEventListener(
+    'focus',
+    event => {
+        const element = event.target;
+        if (
+            element.classList &&
+            element.classList.contains('datepicker') &&
+            !element.classList.contains('set-event')
+        ) {
+            element.classList.add('set-event');
+            new Pikaday(
+                pikadayOptions(element, element.classList.contains('birthday'))
+            ).show();
+        }
+    },
+    true
+);
 
 // タブ変更
-const changeTab = (_element) => {
+const changeTab = _element => {
     // タブ・コンテンツを非表示
     const tabs = document.querySelectorAll('.tabs .tab');
     Array.prototype.slice.call(tabs, 0).forEach(element => {
@@ -56,7 +84,9 @@ const changeTab = (_element) => {
     // 選択したコンテンツを表示
     _element.classList.add('selectTab');
     const selectTab = _element.getAttribute('data-tabname');
-    const selectContents = document.querySelector(`[data-contentname=${selectTab}]`);
+    const selectContents = document.querySelector(
+        `[data-contentname=${selectTab}]`
+    );
     if (selectContents) {
         selectContents.classList.remove('not-select');
     }
@@ -68,15 +98,21 @@ if (tabWrap) {
     const tabs = tabWrap.querySelectorAll('.tab');
     // イベントの設定
     Array.prototype.slice.call(tabs, 0).forEach(element => {
-        element.addEventListener('click', (event) => {
-            changeTab(event.target);
-        }, false);
+        element.addEventListener(
+            'click',
+            event => {
+                changeTab(event.target);
+            },
+            false
+        );
     });
 
     // 初期表示タブの指定があればそのタブを表示
     const selectTabName = tabWrap.getAttribute('data-selecttab');
     if (selectTabName) {
-        const selectTab = document.querySelector(`[data-tabname=${selectTabName}]`);
+        const selectTab = document.querySelector(
+            `[data-tabname=${selectTabName}]`
+        );
         if (selectTab) {
             changeTab(selectTab);
         }
@@ -87,11 +123,11 @@ if (tabWrap) {
 }
 
 // 引退フラグ・引退日
-const isRetired = document.querySelector('#retired');
+const isRetired = document.querySelector('#is-retired');
 if (isRetired) {
     // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
-    const setRetired = function () {
-        var isRetired = document.querySelector('#retired');
+    const setRetired = () => {
+        var isRetired = document.querySelector('#is-retired');
         if (isRetired) {
             var retired = document.querySelector('[name=retired]');
             if (isRetired.checked) {
@@ -103,45 +139,66 @@ if (isRetired) {
         }
     };
     setRetired();
-    isRetired.addEventListener('click', () => {
-        setRetired();
-    }, false);
+    isRetired.addEventListener('click', () => setRetired(), false);
 }
 
 // クエリ整形
 const inputQueries = document.querySelector('#input-queries');
 if (inputQueries) {
-    inputQueries.addEventListener('blur', (event) => {
-        // クエリを整形
-        // 前後の空白をトリムして、空行を削除
-        event.target.value = event.target.value.trim().replace(/;[\t]/g, ';\n').replace(/\u3000/g, '')
-            .replace(/[\t]/g, '').replace(new RegExp(/^\r/gm), '').replace(new RegExp(/^\n/gm), '');
-    }, false);
+    inputQueries.addEventListener(
+        'blur',
+        event => {
+            // クエリを整形
+            // 前後の空白をトリムして、空行を削除
+            event.target.value = event.target.value
+                .trim()
+                .replace(/;[\t]/g, ';\n')
+                .replace(/\u3000/g, '')
+                .replace(/[\t]/g, '')
+                .replace(new RegExp(/^\r/gm), '')
+                .replace(new RegExp(/^\n/gm), '');
+        },
+        false
+    );
 }
 
 // クエリ更新
-const updateQuery = document.querySelector('[data-button-type=execute-queries]');
+const updateQuery = document.querySelector(
+    '[data-button-type=execute-queries]'
+);
 if (updateQuery) {
-    updateQuery.addEventListener('click', (event) => {
-        const inputQueries = document.querySelector('#input-queries');
-        if (!inputQueries.value) {
-            event.preventDefault();
-            App.openDialog(null, '更新対象が1件も存在しません。', 'warning');
-            window.unblock();
-            return;
-        }
+    updateQuery.addEventListener(
+        'click',
+        event => {
+            const inputQueries = document.querySelector('#input-queries');
+            if (!inputQueries.value) {
+                event.preventDefault();
+                App.openDialog(
+                    null,
+                    '更新対象が1件も存在しません。',
+                    'warning'
+                );
+                window.unblock();
+                return;
+            }
 
-        if (!confirm('更新します。よろしいですか？')) {
-            event.preventDefault();
-        }
-    }, false);
+            if (!confirm('更新します。よろしいですか？')) {
+                event.preventDefault();
+            }
+        },
+        false
+    );
 }
 
 // クエリクリア
 const clearQuery = document.querySelector('[data-button-type=clear-queries]');
 if (clearQuery) {
-    clearQuery.addEventListener('click', () => {
-        const textarea = document.querySelector('#input-queries');
-        textarea.value = '';
-    }, false);
+    clearQuery.addEventListener(
+        'click',
+        () => {
+            const textarea = document.querySelector('#input-queries');
+            textarea.value = '';
+        },
+        false
+    );
 }

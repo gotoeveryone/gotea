@@ -21,11 +21,11 @@ class PlayerForm extends AppForm
             'rank_id' => 'string',
             'sex' => 'string',
             'is_retired' => 'string',
-            'name' => ['type' => 'text'],
-            'name_english' => ['type' => 'text'],
-            'name_other' => ['type' => 'text'],
-            'joined_from', ['type' => 'text'],
-            'joined_to', ['type' => 'text']
+            'name' => 'string',
+            'name_english' => 'string',
+            'name_other' => 'string',
+            'joined_from', 'integer',
+            'joined_to', 'integer'
         ]);
     }
 

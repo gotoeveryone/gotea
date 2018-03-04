@@ -1,7 +1,6 @@
 @import 'module/_variables.scss';
 @import 'module/_normalize.scss';
 @import 'module/_mixin.scss';
-@import 'module/_view.scss';
 
 /* -------------------------------------------
    共通レイアウト
@@ -104,7 +103,7 @@
     overflow-y: auto;
 
     * {
-        font-size: .8rem;
+        font-size: 0.8rem;
     }
 
     &-header {
@@ -123,8 +122,23 @@
     }
 }
 
+.button-row {
+    display: flex;
+    margin: 0.5em auto;
+    align-items: center;
+    justify-content: center;
+}
+
 .layout-button {
     @include button-link(#bbb);
+}
+
+.label {
+    display: inline-block;
+}
+
+.datepicker {
+    width: 120px;
 }
 
 /* -------------------------------------------
@@ -159,24 +173,29 @@
         text-align: right;
     }
 
-    &_year, &_country, &_limit {
-        margin-right: .4rem;
+    &_year,
+    &_country,
+    &_limit {
+        margin-right: 0.4rem;
         width: 100px;
     }
 
     &_date {
         width: 110px;
         &-duration {
-            margin: auto .4rem;
+            margin: auto 0.4rem;
         }
     }
 
     .search-results {
-        height: calc(100% - #{$h_ranking_header} - 1rem); /* content - .search-header and margin */
+        height: calc(
+            100% - #{$h_ranking_header} - 1rem
+        ); /* content - .search-header and margin */
     }
 
     .table-column {
-        &_no, &_percent {
+        &_no,
+        &_percent {
             width: 13%;
         }
 
@@ -197,22 +216,18 @@
     .search-header {
         height: $h_scores_header;
 
-        .name {
-            width: 12em;
+        .started {
+            margin-right: 0.5rem;
         }
-        .country {
-            width: 6em;
-        }
-        .year {
-            width: 8em;
-        }
-        .date {
-            width: 8em;
+        .ended {
+            margin-left: 0.5rem;
         }
     }
 
     .search-results {
-        height: calc(100% - #{$h_scores_header} - 10px); /* content - .search-header and padding */
+        height: calc(
+            100% - #{$h_scores_header} - 10px
+        ); /* content - .search-header and padding */
 
         &.modal {
             height: calc(100% - 3rem);
@@ -224,7 +239,8 @@
             width: 6%;
         }
 
-        &_country, &_date {
+        &_country,
+        &_date {
             width: 12%;
         }
 
@@ -263,13 +279,17 @@
             width: 180px;
         }
         .joined {
-            margin-right: .3rem;
-            margin-left: .3rem;
+            margin-right: 0.3rem;
             width: 70px;
+            &.joined-to {
+                margin-left: 0.3rem;
+            }
         }
     }
     .search-results {
-        height: calc(100% - #{$h_players_header} - 10px); /* content - .search-header and padding */
+        height: calc(
+            100% - #{$h_players_header} - 10px
+        ); /* content - .search-header and padding */
     }
 
     .table-row-retired {
@@ -293,7 +313,8 @@
             width: 10%;
         }
 
-        &_rank, &_sex {
+        &_rank,
+        &_sex {
             width: 5%;
         }
 
@@ -342,14 +363,16 @@
             width: 15%;
         }
 
-        &_holding, &_order {
+        &_holding,
+        &_order {
             width: 5%;
             &-input {
                 text-align: right;
             }
         }
 
-        &_team, &_closed {
+        &_team,
+        &_closed {
             width: 5%;
             text-align: center;
         }
@@ -368,26 +391,6 @@
         &_open-detail {
             padding-left: 10px;
         }
-    }
-}
-
-/* -------------------------------------------
-   タイトル情報詳細
- ------------------------------------------- */
-.retentions {
-    margin: 5px auto;
-    width: 85%;
-    max-width: 750px;
-    max-height: 200px;
-
-    &-name {
-        width: 25%;
-    }
-    &-country, &-rank, &-sex {
-        width: 10%;
-    }
-    &-select {
-        width: 20%;
     }
 }
 
