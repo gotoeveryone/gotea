@@ -18,7 +18,7 @@
                             'empty' => true,
                         ]
                     ])->render();
-                    echo $this->Form->control('ranks', [
+                    echo $this->Form->control('rank_id', [
                         'label' => ['class' => 'search-row_label', 'text' => '段位'],
                         'options' => $ranks,
                         'class' => 'rank',
