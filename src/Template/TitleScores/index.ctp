@@ -12,7 +12,7 @@
                     echo $this->cell('Countries', [
                         'hasTitleOnly' => false,
                         [
-                            'label' => ['class' => 'search-row_label', 'text' => '対象棋戦'],
+                            'label' => ['class' => 'search-row_label', 'text' => '棋戦分類'],
                         ],
                     ]);
                     echo $this->Form->years('target_year', [
@@ -25,7 +25,7 @@
             <li class="search-row">
                 <div>
                     <?php
-                        echo $this->Form->label('started', '入段年', ['class' => 'search-row_label']);
+                        echo $this->Form->label('started', '対局日', ['class' => 'search-row_label']);
                         echo $this->Form->text('started', ['class' => 'started datepicker']);
                         echo $this->form->label('ended', '～');
                         echo $this->Form->text('ended', ['class' => 'ended datepicker']);
@@ -43,8 +43,8 @@
         <ul class="table-header">
             <li class="table-row">
                 <span class="table-column_id">ID</span>
-                <span class="table-column_country">対象国</span>
-                <span class="table-column_date">日付</span>
+                <span class="table-column_country">棋戦分類</span>
+                <span class="table-column_date">対局日</span>
                 <span class="table-column_name">勝者</span>
                 <span class="table-column_name">敗者</span>
                 <span class="table-column_operation">操作</span>
