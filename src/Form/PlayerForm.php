@@ -16,14 +16,14 @@ class PlayerForm extends AppForm
     protected function _buildSchema(Schema $schema)
     {
         return $schema->addFields([
-            'country_id' => 'string',
-            'organization_id' => 'string',
-            'rank_id' => 'string',
+            'country_id' => 'integer',
+            'organization_id' => 'integer',
+            'rank_id' => 'integer',
             'sex' => 'string',
-            'is_retired' => 'string',
-            'name' => 'string',
-            'name_english' => 'string',
-            'name_other' => 'string',
+            'is_retired' => 'boolean',
+            'name' => ['type' => 'string', 'length' => 20],
+            'name_english' => ['type' => 'string', 'length' => 40],
+            'name_other' => ['type' => 'string', 'length' => 20],
             'joined_from', 'integer',
             'joined_to', 'integer'
         ]);

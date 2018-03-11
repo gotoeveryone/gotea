@@ -15,8 +15,11 @@ class LoginForm extends AppForm
      */
     protected function _buildSchema(Schema $schema)
     {
-        return $schema->addField('account', ['type' => 'string'])
-            ->addField('password', ['type' => 'password']);
+        return $schema->addField('account', [
+            'type' => 'string', 'length' => 10,
+        ])->addField('password', [
+            'type' => 'password', 'length' => 20,
+        ]);
     }
 
     /**

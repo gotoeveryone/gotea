@@ -7,7 +7,6 @@
                     echo $this->Form->control('name', [
                         'label' => ['class' => 'search-row_label', 'text' => '棋士名'],
                         'class' => 'name',
-                        'maxlength' => 20,
                     ]);
                     echo $this->cell('Countries', [
                         'hasTitleOnly' => false,

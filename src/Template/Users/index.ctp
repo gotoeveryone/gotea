@@ -10,7 +10,6 @@
                         'class' => 'label',
                         'text' => 'ID',
                     ],
-                    'maxlength' => 10,
                 ]);
             ?>
         </li>
@@ -21,7 +20,6 @@
                         'class' => 'label',
                         'text' => 'Password',
                     ],
-                    'maxlength' => 20,
                 ]);
             ?>
         </li>
