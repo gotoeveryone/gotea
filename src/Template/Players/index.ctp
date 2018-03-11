@@ -33,9 +33,17 @@
                 <div>
                     <?php
                         echo $this->Form->label('joined_from', '入段年', ['class' => 'search-row_label']);
-                        echo $this->Form->number('joined_from', ['class' => 'joined joined-from', 'maxlength' => 4]);
+                        echo $this->Form->number('joined_from', [
+                            'class' => 'joined joined-from',
+                            'min' => 1,
+                            'max' => 9999,
+                        ]);
                         echo $this->form->label('joined_to', '～');
-                        echo $this->Form->number('joined_to', ['class' => 'joined joined-to', 'maxlength' => 4]);
+                        echo $this->Form->number('joined_to', [
+                            'class' => 'joined joined-to',
+                            'min' => 1,
+                            'max' => 9999,
+                        ]);
                     ?>
                 </div>
             </li>
@@ -44,17 +52,14 @@
                     echo $this->Form->control('name', [
                         'label' => ['class' => 'search-row_label', 'text' => '棋士名'],
                         'class' => 'name',
-                        'maxlength' => 20,
                     ]);
                     echo $this->Form->control('name_english', [
                         'label' => ['class' => 'search-row_label', 'text' => '（英語）'],
                         'class' => 'name',
-                        'maxlength' => 40,
                     ]);
                     echo $this->Form->control('name_other', [
                         'label' => ['class' => 'search-row_label', 'text' => '（その他）'],
                         'class' => 'name',
-                        'maxlength' => 20,
                     ]);
                 ?>
             </li>
