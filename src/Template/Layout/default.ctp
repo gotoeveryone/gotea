@@ -28,7 +28,7 @@
                 <h1 class="page-title"><?= h($this->hasTitle() ? $title : 'Gotea') ?></h1>
                 <div class="other">
                     <?php if ($this->isAuth()) : ?>
-                        <span class="username">ユーザ：<?= h($this->getUser('account')) ?></span>
+                        <span class="username">ユーザ：<?= h($this->getUser('name')) ?></span>
                     <?php endif ?>
                     <span><?=date('Y年m月d日 H時i分s秒')?></span>
                 </div>
