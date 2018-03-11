@@ -117,8 +117,6 @@
                                 ]);
                             ?>
                         </div>
-                    </li>
-                    <li class="detail-row">
                         <div class="box">
                             <?php
                                 echo $this->Form->sexes([

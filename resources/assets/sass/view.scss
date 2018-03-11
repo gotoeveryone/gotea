@@ -1,5 +1,4 @@
 @import 'module/_variables.scss';
-@import 'module/_normalize.scss';
 @import 'module/_mixin.scss';
 
 /* -------------------------------------------
@@ -102,10 +101,10 @@
 .organization {
     display: flex;
     margin: 0.5rem 1rem;
-    width: calc(100% - (1rem * 2));
     align-items: center;
     justify-content: flex-start;
     min-height: 2rem;
+    width: calc(100% - (1rem * 2));
 
     &.button-wrap {
         justify-content: flex-end;
@@ -123,6 +122,14 @@
         &:first-of-type {
             margin: 0.5rem 0.3rem 0.5rem 1rem;
         }
+    }
+
+    &.input-short {
+        width: 80px;
+    }
+
+    &.datepicker {
+        width: 120px;
     }
 }
 

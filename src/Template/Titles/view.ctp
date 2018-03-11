@@ -54,7 +54,7 @@
                             <?php
                                 echo $this->Form->control('holding', [
                                     'label' => ['class' => 'label-row', 'text' => '期'],
-                                    'class' => 'input-row',
+                                    'class' => 'input-row input-short',
                                     'maxlength' => 3,
                                 ]);
                             ?>
@@ -81,12 +81,10 @@
                                 ]);
                             ?>
                         </div>
-                    </li>
-                    <li class="detail-row">
                         <div class="box">
                             <div class="label-row">最終更新日時</div>
                             <div class="input-row">
-                                <?= h($this->Date->formatToDateTime($player->modified)) ?>
+                                <?= h($this->Date->formatToDateTime($title->modified)) ?>
                                 <?= $this->Form->hidden('modified') ?>
                             </div>
                         </div>
