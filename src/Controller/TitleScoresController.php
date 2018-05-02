@@ -18,6 +18,7 @@ class TitleScoresController extends AppController
     {
         parent::initialize();
 
+        $this->loadModel('Players');
         $this->loadModel('TitleScoreDetails');
     }
 
@@ -78,11 +79,13 @@ class TitleScoresController extends AppController
      */
     public function searchByPlayer(int $id, int $year)
     {
+        $player = $this->Players->get($id);
         $titleScores = $this->TitleScores->findMatches([
             'player_id' => $id,
             'target_year' => $year,
         ]);
-        $this->set(compact('id'))->set(compact('titleScores'));
+        $detail = $this->TitleScoreDetails->findByPlayerAtYear($id, $year);
+        $this->set(compact('player', 'year', 'titleScores', 'detail'));
 
         return $this->renderWithDialog('player');
     }

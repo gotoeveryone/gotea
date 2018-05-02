@@ -146,9 +146,9 @@
 
     .right-column {
         display: flex;
+        margin-left: auto;
         justify-content: flex-end;
         align-items: center;
-        margin-left: auto;
 
         .checkbox {
             text-align: right;
