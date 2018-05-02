@@ -20,6 +20,7 @@ class TitleScoreForm extends AppForm
     {
         return $schema->addFields([
             'name' => ['type' => 'string', 'length' => 20],
+            'title_name' => ['type' => 'string', 'length' => 20],
             'country_id' => 'integer',
             'target_year' => 'integer',
             'started' => 'string',
@@ -36,10 +37,11 @@ class TitleScoreForm extends AppForm
     protected function _buildValidator(Validator $validator)
     {
         return $validator
-            ->allowEmpty(['name', 'country_id', 'target_year', 'started', 'ended'])
+            ->allowEmpty(['name', 'title_name', 'country_id', 'target_year', 'started', 'ended'])
             ->integer('country_id')
             ->range('target_year', [1, 9999])
             ->maxLength('name', 20)
+            ->maxLength('title_name', 20)
             ->date('started', 'y/m/d')
             ->date('ended', 'y/m/d');
     }

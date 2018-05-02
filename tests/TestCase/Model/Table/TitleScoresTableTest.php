@@ -65,10 +65,39 @@ class TitleScoresTableTest extends TestCase
      */
     public function testFindMatches()
     {
+        // 対局年
+        $year = 2017;
         $scores = $this->TitleScores->findMatches([
-            'target_year' => 2017,
+            'target_year' => $year,
         ]);
         $this->assertGreaterThan(0, $scores->count());
+        $scores->each(function($item) use ($year) {
+            $this->assertEquals($item->started->year, $year);
+            $this->assertEquals($item->ended->year, $year);
+        });
+
+        // タイトル名
+        $name = 'World';
+        $scores = $this->TitleScores->findMatches([
+            'title_name' => $name,
+        ]);
+        $this->assertGreaterThan(0, $scores->count());
+        $scores->each(function($item) use ($name) {
+            $this->assertContains($name, $item->name);
+        });
+
+        // 対局日
+        $start = '2017/12/01';
+        $end = '2017/12/31';
+        $scores = $this->TitleScores->findMatches([
+            'started' => $start,
+            'ended' => $end,
+        ]);
+        $this->assertGreaterThan(0, $scores->count());
+        $scores->each(function($item) use ($start, $end) {
+            $this->assertGreaterThanOrEqual($start, $item->started->format('Y/m/d'));
+            $this->assertLessThanOrEqual($end, $item->started->format('Y/m/d'));
+        });
     }
 
     /**
@@ -79,7 +108,7 @@ class TitleScoresTableTest extends TestCase
     public function testFindMatchesNoData()
     {
         $scores = $this->TitleScores->findMatches([
-            'target_year' => 2018,
+            'target_year' => 9999,
         ]);
         $this->assertEquals(0, $scores->count());
     }

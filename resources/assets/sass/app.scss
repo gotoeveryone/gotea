@@ -236,16 +236,20 @@
 
     .table-column {
         &_id {
-            width: 6%;
+            width: 5%;
+        }
+
+        &_title {
+            width: 15%
         }
 
         &_country,
         &_date {
-            width: 12%;
+            width: 10%;
         }
 
         &_name {
-            width: 25%;
+            width: 20%;
 
             .selected {
                 color: #04d;
@@ -259,6 +263,32 @@
             justify-content: center;
             form {
                 width: 40%;
+            }
+        }
+    }
+
+    .modal {
+        .table-column {
+            &_id {
+                width: 10%;
+            }
+
+            &_title {
+                width: 30%
+            }
+
+            &_country,
+            &_date {
+                width: 10%;
+            }
+
+            &_name {
+                width: 20%;
+
+                .selected {
+                    color: #04d;
+                    font-weight: bold;
+                }
             }
         }
     }

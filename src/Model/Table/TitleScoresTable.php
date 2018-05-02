@@ -76,9 +76,12 @@ class TitleScoresTable extends AppTable
         if (($name = Hash::get($data, 'name'))) {
             $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
                 return $q->innerJoinWith('Players', function (Query $q) use ($name) {
-                    return $q->where(['Players.name like' => "%$name%"]);
+                    return $q->where(['Players.name like' => "%${name}%"]);
                 });
             });
+        }
+        if (($titleName = Hash::get($data, 'title_name'))) {
+            $query->where(['TitleScores.name like' => "%${titleName}%"]);
         }
         if (($year = Hash::get($data, 'target_year'))) {
             $query->where(['YEAR(TitleScores.started)' => $year])->where(['YEAR(TitleScores.ended)' => $year]);
