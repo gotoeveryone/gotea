@@ -8,6 +8,14 @@
                         'label' => ['class' => 'search-row_label', 'text' => '棋士名'],
                         'class' => 'name',
                     ]);
+                    echo $this->Form->control('title_name', [
+                        'label' => ['class' => 'search-row_label', 'text' => 'タイトル名'],
+                        'class' => 'title_name',
+                    ]);
+                ?>
+            </li>
+            <li class="search-row">
+                <?php
                     echo $this->cell('Countries', [
                         'hasTitleOnly' => false,
                         [
@@ -20,8 +28,6 @@
                         'empty' => true,
                     ]);
                 ?>
-            </li>
-            <li class="search-row">
                 <div>
                     <?php
                         echo $this->Form->label('started', '対局日', ['class' => 'search-row_label']);
@@ -43,6 +49,7 @@
             <li class="table-row">
                 <span class="table-column_id">ID</span>
                 <span class="table-column_country">棋戦分類</span>
+                <span class="table-column_title">タイトル名</span>
                 <span class="table-column_date">対局日</span>
                 <span class="table-column_name">勝者</span>
                 <span class="table-column_name">敗者</span>
@@ -55,6 +62,7 @@
             <li class="table-row">
                 <span class="table-column_id"><?= h($titleScore->id) ?></span>
                 <span class="table-column_country"><?= h($titleScore->country->name.'棋戦') ?></span>
+                <span class="table-column_title"><?= h($titleScore->name) ?></span>
                 <span class="table-column_date"><?= h($titleScore->date) ?></span>
                 <span class="table-column_name"><?= h($titleScore->getWinnerName()) ?></span>
                 <span class="table-column_name"><?= h($titleScore->getLoserName()) ?></span>

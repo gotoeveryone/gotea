@@ -56,6 +56,9 @@ msgstr "修正日"
 msgid "promoted"
 msgstr "昇段日"
 
+msgid "title_name"
+msgstr "タイトル名"
+
 msgid "target_year"
 msgstr "対象年度"
 
