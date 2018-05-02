@@ -130,11 +130,13 @@ if (isRetired) {
         var isRetired = document.querySelector('#is-retired');
         if (isRetired) {
             var retired = document.querySelector('[name=retired]');
-            if (isRetired.checked) {
-                retired.disabled = false;
-            } else {
-                retired.disabled = true;
-                retired.value = '';
+            if (retired) {
+                if (isRetired.checked) {
+                    retired.disabled = false;
+                } else {
+                    retired.disabled = true;
+                    retired.value = '';
+                }
             }
         }
     };
