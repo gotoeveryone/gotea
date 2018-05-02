@@ -51,9 +51,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
     public function testMissingTemplate()
     {
         $this->get('/histories/missing');
-
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
+        $this->assertContainsError();
     }
 
     /**

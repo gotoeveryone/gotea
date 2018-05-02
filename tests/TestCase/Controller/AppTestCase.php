@@ -1,6 +1,7 @@
 <?php
 namespace Gotea\Test\TestCase\Controller;
 
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -8,6 +9,21 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 abstract class AppTestCase extends IntegrationTestCase
 {
+    /**
+     * レスポンスがエラーになったかを確認します。
+     *
+     * @return void
+     */
+    protected function assertContainsError()
+    {
+        $this->assertResponseError();
+        if (Configure::read('debug')) {
+            $this->assertResponseContains('Error');
+        } else {
+            $this->assertResponseContains('見つかりません');
+        }
+    }
+
     /**
      * セッションデータ生成
      *

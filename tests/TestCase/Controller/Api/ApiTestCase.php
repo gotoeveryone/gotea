@@ -30,12 +30,27 @@ abstract class ApiTestCase extends IntegrationTestCase
     ];
 
     /**
+     * Asserts content does not exist in the response body.
+     *
+     * @param mixed $content The content to check for.
+     * @param string $message The failure message that will be appended to the generated message.
+     * @return void
+     */
+    public function assertResponseNotEquals($content, $message = '')
+    {
+        if (!$this->_response) {
+            $this->fail('No response set, cannot assert content. ' . $message);
+        }
+        $this->assertNotEquals($content, $this->_getBodyAsString(), $message);
+    }
+
+    /**
      * APIユーザのヘッダを設定します。
      *
      * @param string $username ユーザ名
      * @return \Gotea\Test\TestCase\Controller\Api\ApiTestCase
      */
-    public function enableApiUser(string $username = 'test')
+    protected function enableApiUser(string $username = 'test')
     {
         $this->configRequest([
             'headers' => [
@@ -51,7 +66,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      *
      * @return string
      */
-    public function getEmptyResponse()
+    protected function getEmptyResponse()
     {
         return $this->getCompareJsonResponse($this->emptyResponse);
     }
@@ -61,7 +76,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      *
      * @return string
      */
-    public function getNotFoundResponse()
+    protected function getNotFoundResponse()
     {
         return $this->getCompareJsonResponse($this->notFoundResponse);
     }
@@ -72,7 +87,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      * @param array $data
      * @return string
      */
-    public function getCompareJsonResponse(array $data) : string
+    protected function getCompareJsonResponse(array $data) : string
     {
         return json_encode($data, JSON_PRETTY_PRINT);
     }

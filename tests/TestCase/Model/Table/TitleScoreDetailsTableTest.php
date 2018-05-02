@@ -88,7 +88,6 @@ class TitleScoreDetailsTableTest extends TestCase
 
         // success
         $result = $this->TitleScoreDetails->newEntity($params);
-        $this->assertEmpty($result->errors());
         $this->assertEmpty($result->getErrors());
 
         // requirePresence
@@ -96,7 +95,6 @@ class TitleScoreDetailsTableTest extends TestCase
             $data = $params;
             unset($data[$name]);
             $result = $this->TitleScoreDetails->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -106,17 +104,14 @@ class TitleScoreDetailsTableTest extends TestCase
             $data = $params;
             $data[$name] = '1a';
             $result = $this->TitleScoreDetails->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = 'test';
             $result = $this->TitleScoreDetails->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->TitleScoreDetails->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -126,7 +121,6 @@ class TitleScoreDetailsTableTest extends TestCase
         $data['id'] = '';
         $exist = $this->TitleScoreDetails->get(1);
         $result = $this->TitleScoreDetails->patchEntity($exist, $data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
     }
 

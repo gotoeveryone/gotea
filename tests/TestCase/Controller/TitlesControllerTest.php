@@ -51,9 +51,7 @@ class TitlesControllerTest extends AppTestCase
     public function testMissingTemplate()
     {
         $this->get('/titles/missing');
-
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
+        $this->assertContainsError();
     }
 
     /**

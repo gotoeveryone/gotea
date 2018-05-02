@@ -83,7 +83,7 @@ class Title extends AppEntity
             return false;
         }
 
-        return $history->created->wasWithinLast(20);
+        return $history->created->wasWithinLast('20 days');
     }
 
     /**

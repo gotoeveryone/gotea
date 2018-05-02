@@ -12,7 +12,7 @@ class CountriesTable extends AppTable
      */
     public function initialize(array $config)
     {
-        $this->displayField('name');
+        $this->setDisplayField('name');
     }
 
     /**

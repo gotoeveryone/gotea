@@ -33,10 +33,6 @@ class TitleScoreDetailsTable extends AppTable
     {
         parent::initialize($config);
 
-        $this->table('title_score_details');
-        $this->displayField('id');
-        $this->primaryKey('id');
-
         $this->belongsTo('TitleScores');
         $this->belongsTo('Players')
             ->setJoinType(Query::JOIN_TYPE_INNER);

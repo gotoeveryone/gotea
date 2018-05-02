@@ -3,7 +3,6 @@
 namespace Gotea\Form;
 
 use Cake\Form\Form;
-use Cake\Validation\Validator as BaseValidator;
 use Gotea\Validation\Validator;
 
 /**
@@ -12,14 +11,9 @@ use Gotea\Validation\Validator;
 class AppForm extends Form
 {
     /**
-     * {@inheritDoc}
+     * Validator class.
+     *
+     * @var string
      */
-    public function validator(BaseValidator $validator = null)
-    {
-        if ($validator === null && empty($this->_validator)) {
-            $validator = $this->_buildValidator(new Validator());
-        }
-
-        return parent::validator($validator);
-    }
+    protected $_validatorClass = Validator::class;
 }
