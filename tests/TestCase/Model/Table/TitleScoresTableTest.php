@@ -71,7 +71,7 @@ class TitleScoresTableTest extends TestCase
             'target_year' => $year,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function($item) use ($year) {
+        $scores->each(function ($item) use ($year) {
             $this->assertEquals($item->started->year, $year);
             $this->assertEquals($item->ended->year, $year);
         });
@@ -82,7 +82,7 @@ class TitleScoresTableTest extends TestCase
             'title_name' => $name,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function($item) use ($name) {
+        $scores->each(function ($item) use ($name) {
             $this->assertContains($name, $item->name);
         });
 
@@ -94,7 +94,7 @@ class TitleScoresTableTest extends TestCase
             'ended' => $end,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function($item) use ($start, $end) {
+        $scores->each(function ($item) use ($start, $end) {
             $this->assertGreaterThanOrEqual($start, $item->started->format('Y/m/d'));
             $this->assertLessThanOrEqual($end, $item->started->format('Y/m/d'));
         });
