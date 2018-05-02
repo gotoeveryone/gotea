@@ -71,7 +71,6 @@ class PlayerRanksTableTest extends TestCase
 
         // success
         $result = $this->PlayerRanks->newEntity($params);
-        $this->assertEmpty($result->errors());
         $this->assertEmpty($result->getErrors());
 
         // requirePresence
@@ -79,7 +78,6 @@ class PlayerRanksTableTest extends TestCase
             $data = $params;
             unset($data[$name]);
             $result = $this->PlayerRanks->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -89,17 +87,14 @@ class PlayerRanksTableTest extends TestCase
             $data = $params;
             $data[$name] = '1a';
             $result = $this->PlayerRanks->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = 'test';
             $result = $this->PlayerRanks->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->PlayerRanks->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -108,11 +103,9 @@ class PlayerRanksTableTest extends TestCase
         $data = $params;
         $data['promoted'] = '20180101';
         $result = $this->PlayerRanks->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
         $data['promoted'] = 'testtest';
         $result = $this->PlayerRanks->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // allowEmpty
@@ -121,7 +114,6 @@ class PlayerRanksTableTest extends TestCase
         $data['id'] = '';
         $exist = $this->PlayerRanks->get(1);
         $result = $this->PlayerRanks->patchEntity($exist, $data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
     }
 

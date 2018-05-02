@@ -55,9 +55,7 @@ class PlayersControllerTest extends AppTestCase
     public function testMissingTemplate()
     {
         $this->get('/players/missing');
-
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
+        $this->assertContainsError();
     }
 
     /**

@@ -30,7 +30,7 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles');
         $this->assertResponseSuccess();
-        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->body());
+        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
     }
 
     /**

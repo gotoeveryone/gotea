@@ -78,7 +78,6 @@ class TitlesTableTest extends TestCase
 
         // success
         $result = $this->Titles->newEntity($params);
-        $this->assertEmpty($result->errors());
         $this->assertEmpty($result->getErrors());
 
         // requirePresence
@@ -86,7 +85,6 @@ class TitlesTableTest extends TestCase
             $data = $params;
             unset($data[$name]);
             $result = $this->Titles->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -96,17 +94,14 @@ class TitlesTableTest extends TestCase
             $data = $params;
             $data[$name] = '1a';
             $result = $this->Titles->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = 'test';
             $result = $this->Titles->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->Titles->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -116,7 +111,6 @@ class TitlesTableTest extends TestCase
             $data = $params;
             $data[$name] = 'テスト';
             $result = $this->Titles->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -125,14 +119,12 @@ class TitlesTableTest extends TestCase
         $data = $params;
         $data['name'] = '1234567890123456789012345678901';
         $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // name_english
         $data = $params;
         $data['name_english'] = '1234567890123456789012345678901';
         $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // date
@@ -140,11 +132,9 @@ class TitlesTableTest extends TestCase
         $data = $params;
         $data['html_file_modified'] = '20180101';
         $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
         $data['html_file_modified'] = 'testtest';
         $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
     }
 

@@ -79,7 +79,6 @@ class RetentionHistoriesTableTest extends TestCase
 
         // success
         $result = $this->RetentionHistories->newEntity($params);
-        $this->assertEmpty($result->errors());
         $this->assertEmpty($result->getErrors());
 
         // requirePresence
@@ -87,7 +86,6 @@ class RetentionHistoriesTableTest extends TestCase
             $data = $params;
             unset($data[$name]);
             $result = $this->RetentionHistories->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -97,17 +95,14 @@ class RetentionHistoriesTableTest extends TestCase
             $data = $params;
             $data[$name] = '1a';
             $result = $this->RetentionHistories->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = 'test';
             $result = $this->RetentionHistories->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->RetentionHistories->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -116,14 +111,12 @@ class RetentionHistoriesTableTest extends TestCase
         $data = $params;
         $data['player_id'] = '';
         $result = $this->RetentionHistories->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // rank_id
         $data = $params;
         $data['rank_id'] = '';
         $result = $this->RetentionHistories->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // win_group_name
@@ -131,7 +124,6 @@ class RetentionHistoriesTableTest extends TestCase
         $data['is_team'] = '1';
         $data['win_group_name'] = '';
         $result = $this->RetentionHistories->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // allowEmpty
@@ -140,7 +132,6 @@ class RetentionHistoriesTableTest extends TestCase
         $data['id'] = '';
         $exist = $this->RetentionHistories->get(1);
         $result = $this->RetentionHistories->patchEntity($exist, $data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
     }
 

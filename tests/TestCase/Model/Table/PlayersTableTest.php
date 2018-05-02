@@ -82,7 +82,6 @@ class PlayersTableTest extends TestCase
 
         // success
         $result = $this->Players->newEntity($params);
-        $this->assertEmpty($result->errors());
         $this->assertEmpty($result->getErrors());
 
         // requirePresence
@@ -91,7 +90,6 @@ class PlayersTableTest extends TestCase
             $data = $params;
             unset($data[$name]);
             $result = $this->Players->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -101,17 +99,14 @@ class PlayersTableTest extends TestCase
             $data = $params;
             $data[$name] = '1a';
             $result = $this->Players->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = 'test';
             $result = $this->Players->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->Players->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -121,7 +116,6 @@ class PlayersTableTest extends TestCase
             $data = $params;
             $data[$name] = 'テスト';
             $result = $this->Players->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -131,7 +125,6 @@ class PlayersTableTest extends TestCase
             $data = $params;
             $data[$name] = 'test';
             $result = $this->Players->newEntity($data);
-            $this->assertNotEmpty($result->errors());
             $this->assertNotEmpty($result->getErrors());
         }
 
@@ -140,21 +133,18 @@ class PlayersTableTest extends TestCase
         $data = $params;
         $data['name'] = '123456789012345678901';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // name_english
         $data = $params;
         $data['name_english'] = '12345678901234567890123456789012345678901';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // name_other
         $data = $params;
         $data['name_other'] = '123456789012345678901';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // lengthBetween
@@ -162,11 +152,9 @@ class PlayersTableTest extends TestCase
         $data = $params;
         $data['joined'] = '201';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
         $data['joined'] = '201801010';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // date
@@ -174,11 +162,9 @@ class PlayersTableTest extends TestCase
         $data = $params;
         $data['birthday'] = '20180101';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
         $data['birthday'] = 'testtest';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
 
         // date
@@ -186,11 +172,9 @@ class PlayersTableTest extends TestCase
         $data = $params;
         $data['retired'] = '20180101';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
         $data['retired'] = 'testtest';
         $result = $this->Players->newEntity($data);
-        $this->assertNotEmpty($result->errors());
         $this->assertNotEmpty($result->getErrors());
     }
 

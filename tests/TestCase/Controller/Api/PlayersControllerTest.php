@@ -46,7 +46,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranks/0');
         $this->assertResponseSuccess();
-        $this->assertEquals($this->getEmptyResponse(), $this->_response->body());
+        $this->assertResponseEquals($this->getEmptyResponse());
     }
 
     /**
@@ -58,7 +58,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranks/1');
         $this->assertResponseSuccess();
-        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->body());
+        $this->assertResponseNotEquals($this->getEmptyResponse());
     }
 
     /**
@@ -71,7 +71,7 @@ class PlayersControllerTest extends ApiTestCase
         // 所属国
         $this->get('/api/players/ranking/testtest/2017/20');
         $this->assertResponseCode(404);
-        $this->assertEquals($this->getNotFoundResponse(), $this->_response->body());
+        $this->assertResponseEquals($this->getNotFoundResponse());
     }
 
     /**
@@ -108,14 +108,16 @@ class PlayersControllerTest extends ApiTestCase
         // 順位
         $this->get('/api/players/ranking/jp/2000/20');
         $this->assertResponseCode(200);
-        $this->assertNotEquals($this->getCompareJsonResponse([
-            'countryCode' => 'jp',
-            'countryName' => 'Japan',
-            'year' => 2000,
-            'lastUpdate' => '',
-            'count' => 0,
-            'ranking' => [],
-        ]), $this->_response->body());
+        $this->assertResponseEquals($this->getCompareJsonResponse([
+            'response' => [
+                'countryCode' => 'jp',
+                'countryName' => 'Japan',
+                'year' => 2000,
+                'lastUpdate' => '',
+                'count' => 0,
+                'ranking' => [],
+            ],
+        ]));
     }
 
     /**
@@ -128,13 +130,15 @@ class PlayersControllerTest extends ApiTestCase
         // 順位
         $this->get('/api/players/ranking/jp/2017/20');
         $this->assertResponseCode(200);
-        $this->assertNotEquals($this->getCompareJsonResponse([
-            'countryCode' => 'jp',
-            'countryName' => 'Japan',
-            'year' => 2017,
-            'lastUpdate' => '',
-            'count' => 0,
-            'ranking' => [],
-        ]), $this->_response->body());
+        $this->assertResponseNotEquals($this->getCompareJsonResponse([
+            'response' => [
+                'countryCode' => 'jp',
+                'countryName' => 'Japan',
+                'year' => 2017,
+                'lastUpdate' => '',
+                'count' => 0,
+                'ranking' => [],
+            ],
+        ]));
     }
 }
