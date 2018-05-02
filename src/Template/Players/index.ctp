@@ -7,7 +7,8 @@
                         'hasTitleOnly' => true,
                         [
                             'label' => ['class' => 'search-row_label', 'text' => '所属国'],
-                            'class' => 'aaaaa',
+                            'class' => 'country',
+                            'empty' => true,
                             '@change' => 'changeCountry($event)',
                         ],
                     ])->render();

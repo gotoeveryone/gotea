@@ -102,6 +102,21 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
+     * 対象年・対象棋士の成績を取得します。
+     *
+     * @param int $playerId 棋士ID
+     * @param int $targetYear 年
+     * @return \Gotea\Model\Entity\TitleScoreDetail|null
+     */
+    public function findByPlayerAtYear(int $playerId, int $targetYear)
+    {
+        return $this->findScores($this->query())->where([
+            'player_id' => $playerId,
+            'year(started)' => $targetYear,
+        ])->first();
+    }
+
+    /**
      * ランキング集計データを取得します。
      *
      * @param \Gotea\Model\Entity\Country $country 所属国

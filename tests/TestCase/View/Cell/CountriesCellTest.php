@@ -2,12 +2,12 @@
 namespace Gotea\Test\TestCase\View\Cell;
 
 use Cake\TestSuite\TestCase;
-use Gotea\View\Cell\NavigationCell;
+use Gotea\View\Cell\CountriesCell;
 
 /**
- * Gotea\View\Cell\NavigationCell Test Case
+ * Gotea\View\Cell\CountriesCell Test Case
  */
-class NavigationCellTest extends TestCase
+class CountriesCellTest extends TestCase
 {
     /**
      * Request mock
@@ -26,9 +26,9 @@ class NavigationCellTest extends TestCase
     /**
      * Test subject
      *
-     * @var \Gotea\View\Cell\NavigationCell
+     * @var \Gotea\View\Cell\CountriesCell
      */
-    public $Navigation;
+    public $Countries;
 
     /**
      * Fixtures
@@ -36,10 +36,7 @@ class NavigationCellTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.player_ranks',
-        'app.players',
         'app.countries',
-        'app.ranks',
     ];
 
     /**
@@ -52,7 +49,7 @@ class NavigationCellTest extends TestCase
         parent::setUp();
         $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
         $this->response = $this->getMockBuilder('Cake\Http\Response')->getMock();
-        $this->Navigation = new NavigationCell($this->request, $this->response);
+        $this->Countries = new CountriesCell($this->request, $this->response);
     }
 
     /**
@@ -62,26 +59,22 @@ class NavigationCellTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Navigation);
+        unset($this->Countries);
 
         parent::tearDown();
     }
 
     /**
-     * ビュー変数にデータが設定されていること
+     * Test display method
      *
      * @return void
      */
     public function testDisplay()
     {
-        $this->Navigation->display();
-        $recents = $this->Navigation->viewVars['recents'];
-        $this->assertNotNull($recents);
-        foreach ($recents as $items) {
-            foreach ($items as $item) {
-                $this->assertGreaterThan(1, $item->rank->rank_numeric);
-                $this->assertNotEquals($item->player->joined, $item->promoted->format('Ymd'));
-            }
-        }
+        $this->Countries->display();
+        $countries = $this->Countries->viewVars['countries'];
+        $attributes = $this->Countries->viewVars['attributes'];
+        $this->assertNotEmpty($countries);
+        $this->assertEmpty($attributes);
     }
 }
