@@ -28,6 +28,7 @@
         "moment": "^2.22.1",
         "node-sass": "^4.6.1",
         "pikaday": "^1.7.0",
+        "request": "^2.85.0",
         "sass-lint": "^1.12.1",
         "sass-loader": "^7.0.1",
         "style-loader": "^0.21.0",
