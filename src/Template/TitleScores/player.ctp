@@ -1,4 +1,8 @@
 <section class="title-scores">
+    <div class="detail-point">
+        <?= h($player->name_with_rank) ?>の成績
+        （<?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗）
+    </div>
     <div class="search-results modal">
         <ul class="table-header">
             <li class="table-row">
@@ -17,12 +21,12 @@
                 <span class="table-column_country"><?= h($titleScore->country->name.'棋戦') ?></span>
                 <span class="table-column_date"><?= h($titleScore->date) ?></span>
                 <span class="table-column_name">
-                    <span <?= $titleScore->isSelected($titleScore->winner, $id) ? 'class="selected"' : '' ?>>
+                    <span <?= $titleScore->isSelected($titleScore->winner, $player->id) ? 'class="selected"' : '' ?>>
                         <?= h($titleScore->getWinnerName()) ?>
                     </span>
                 </span>
                 <span class="table-column_name">
-                    <span <?= $titleScore->isSelected($titleScore->loser, $id) ? 'class="selected"' : '' ?>>
+                    <span <?= $titleScore->isSelected($titleScore->loser, $player->id) ? 'class="selected"' : '' ?>>
                         <?= h($titleScore->getLoserName()) ?>
                     </span>
                 </span>
@@ -33,7 +37,7 @@
     </div>
     <div class="button-row">
         <?= $this->Html->link('戻る', [
-            '_name' => 'view_player', '?' => ['tab' => 'scores'], $id,
+            '_name' => 'view_player', '?' => ['tab' => 'scores'], $player->id,
         ], [
             'class' => 'layout-button',
         ]) ?>

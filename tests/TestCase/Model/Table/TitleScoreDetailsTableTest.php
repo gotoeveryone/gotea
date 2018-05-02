@@ -137,6 +137,24 @@ class TitleScoreDetailsTableTest extends TestCase
     }
 
     /**
+     * 棋士・年指定検索
+     *
+     * @return void
+     */
+    public function testFindByPlayerAtYear()
+    {
+        // 対象なし
+        $detail = $this->TitleScoreDetails->findByPlayerAtYear(1, 9999);
+        $this->assertNull($detail);
+
+        // 対象あり
+        $detail = $this->TitleScoreDetails->findByPlayerAtYear(1, 2017);
+        $this->assertNotNull($detail);
+        $this->assertEquals(1, $detail->player_id);
+        $this->assertEquals(2017, $detail->target_year);
+    }
+
+    /**
      * ランキングデータ取得（データ有り）
      *
      * @return void
