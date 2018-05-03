@@ -12,17 +12,17 @@
 
 以下がインストールされていること。
 
-- php7.1.3+
-- composer
-- nodejs
+*   php7.1.3+
+*   composer
+*   nodejs
 
 ## セットアップ
 
-1. `.env.example`を参考にプロジェクトルートに`.env`ファイルを生成します。
-2. プロジェクトルートで`composer install`を実行します。
-3. 同じくプロジェクトルートで`npm install`を実行します。
+1.  `.env.example`を参考にプロジェクトルートに`.env`ファイルを生成します。
+2.  プロジェクトルートで`composer install`を実行します。
+3.  同じくプロジェクトルートで`npm install`を実行します。
 
-### VSCodeを利用する場合
+### VSCode を利用する場合
 
 プロジェクトルートに`.vscode/settings.json`を配置し、以下を記載します。
 
@@ -43,14 +43,14 @@
             "port": 9001,
             "log": true,
             "pathMappings": {
-                "/usr/share/nginx/html": "${workspaceRoot}"
+                "/usr/share/nginx/html": "${workspaceFolder}"
             }
         }
     ]
 }
 ```
 
-### Dockerを利用する場合
+### Docker を利用する場合
 
 以下コマンドを実行してください。
 
@@ -63,11 +63,11 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 
 ### フロントコード
 
-- webpack
-- Vue.js
-- Sass
+*   webpack
+*   Vue.js
+*   Sass
 
-最終的なJS・CSSは`webpack`を利用して生成します。  
+最終的な JS・CSS は`webpack`を利用して生成します。  
 `npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
 
 ## その他
@@ -76,7 +76,7 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 
 環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合はプロジェクトルートの`logs`ディレクトリ）。
 
-- igoapp-access.log（アクセスログ）
-- igoapp-error.log（エラーログ）
-- igoapp-cli-debug.log（CLIデバッグログ）
-- igoapp-cli-error.log（CLIエラーログ）
+*   igoapp-access.log（アクセスログ）
+*   igoapp-error.log（エラーログ）
+*   igoapp-cli-debug.log（CLI デバッグログ）
+*   igoapp-cli-error.log（CLI エラーログ）
