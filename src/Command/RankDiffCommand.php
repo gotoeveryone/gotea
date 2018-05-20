@@ -1,8 +1,10 @@
 <?php
 
-namespace Gotea\Shell;
+namespace Gotea\Command;
 
-use Cake\Console\Shell;
+use Cake\Console\Arguments;
+use Cake\Console\Command;
+use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
@@ -14,9 +16,9 @@ use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * 段位の差分を抽出するシェル
+ * 段位の差分を抽出するコマンド
  */
-class RankDiffShell extends Shell
+class RankDiffCommand extends Command
 {
     use MailerAwareTrait;
 
@@ -32,11 +34,13 @@ class RankDiffShell extends Shell
     }
 
     /**
-     * シェルのメイン処理
+     * メイン処理
      *
-     * @return void
+     * @param \Cake\Console\Arguments $args 引数
+     * @param \Cake\Console\ConsoleIo $io 入出力
+     * @return int Success or error code.
      */
-    public function main()
+    public function execute(Arguments $args, ConsoleIo $io)
     {
         $mailer = $this->getMailer('User');
         $today = FrozenDate::now()->format('Ymd');
@@ -54,10 +58,14 @@ class RankDiffShell extends Shell
                 $subject = "【自動通知】${today}_棋士段位差分抽出";
                 $mailer->send('notification', [$subject, $results]);
             }
+
+            return self::CODE_SUCCESS;
         } catch (Exception $ex) {
             Log::error($ex);
             $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
             $mailer->send('error', [$subject, $ex]);
+
+            return self::CODE_ERROR;
         }
     }
 
