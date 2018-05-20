@@ -25,7 +25,7 @@ trait PlayerTrait
             return null;
         }
 
-        $result = TableRegistry::get('Players')->get($this->player_id);
+        $result = TableRegistry::getTableLocator()->get('Players')->get($this->player_id);
 
         return $this->player = $result;
     }

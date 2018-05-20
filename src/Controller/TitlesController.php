@@ -2,8 +2,6 @@
 
 namespace Gotea\Controller;
 
-use Cake\Network\Exception\BadRequestException;
-
 /**
  * タイトル情報コントローラ
  *
@@ -47,7 +45,7 @@ class TitlesController extends AppController
     {
         // データ取得
         $title = $this->Titles->findByIdWithRelation($id);
-        $this->Titles->patchEntity($title, $this->request->getParsedBody());
+        $this->Titles->patchEntity($title, $this->getRequest()->getParsedBody());
 
         // 保存
         if (!$this->Titles->save($title)) {

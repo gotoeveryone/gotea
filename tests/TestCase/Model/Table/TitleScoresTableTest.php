@@ -42,8 +42,8 @@ class TitleScoresTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('TitleScores') ? [] : ['className' => 'Gotea\Model\Table\TitleScoresTable'];
-        $this->TitleScores = TableRegistry::get('TitleScores', $config);
+        $config = TableRegistry::getTableLocator()->exists('TitleScores') ? [] : ['className' => 'Gotea\Model\Table\TitleScoresTable'];
+        $this->TitleScores = TableRegistry::getTableLocator()->get('TitleScores', $config);
     }
 
     /**

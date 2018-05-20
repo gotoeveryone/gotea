@@ -21,9 +21,9 @@ class RetentionHistoriesController extends AppController
     public function save(int $id)
     {
         // エンティティ取得 or 生成
-        $historyId = $this->request->getData('id');
+        $historyId = $this->getRequest()->getData('id');
         $history = $this->RetentionHistories->findOrNew(['id' => $historyId]);
-        $this->RetentionHistories->patchEntity($history, $this->request->getParsedBody());
+        $this->RetentionHistories->patchEntity($history, $this->getRequest()->getParsedBody());
         $history->title_id = $id;
 
         // 保存

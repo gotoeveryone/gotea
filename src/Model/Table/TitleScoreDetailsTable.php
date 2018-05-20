@@ -129,7 +129,7 @@ class TitleScoreDetailsTable extends AppTable
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
-            $playerScores = TableRegistry::get('PlayerScores');
+            $playerScores = TableRegistry::getTableLocator()->get('PlayerScores');
 
             return $playerScores->findRanking($country, $started->year, $limit);
         }
@@ -192,7 +192,7 @@ class TitleScoreDetailsTable extends AppTable
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
-            $points = TableRegistry::get('UpdatedPoints');
+            $points = TableRegistry::getTableLocator()->get('UpdatedPoints');
 
             return $points->findRecent($country, $started->year);
         }

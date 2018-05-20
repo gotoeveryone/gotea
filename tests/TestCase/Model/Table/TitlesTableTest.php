@@ -43,8 +43,8 @@ class TitlesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Titles') ? [] : ['className' => TitlesTable::class];
-        $this->Titles = TableRegistry::get('Titles', $config);
+        $config = TableRegistry::getTableLocator()->exists('Titles') ? [] : ['className' => TitlesTable::class];
+        $this->Titles = TableRegistry::getTableLocator()->get('Titles', $config);
     }
 
     /**

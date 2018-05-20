@@ -38,6 +38,8 @@ class RankDiffShell extends Shell
      */
     public function main()
     {
+        $mailer = $this->getMailer('User');
+        $today = FrozenDate::now()->format('Ymd');
         try {
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $results = $countries->combine('name', function ($item) {
@@ -49,15 +51,13 @@ class RankDiffShell extends Shell
 
             // メール送信
             if (!$results->unfold()->isEmpty()) {
-                $today = FrozenDate::now()->format('Ymd');
                 $subject = "【自動通知】${today}_棋士段位差分抽出";
-                $this->getMailer('User')->send('notification', [$subject, $results]);
+                $mailer->send('notification', [$subject, $results]);
             }
         } catch (Exception $ex) {
             Log::error($ex);
-            $today = FrozenDate::now()->format('Ymd');
             $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
-            $this->getMailer('User')->send('error', [$subject, $ex]);
+            $mailer->send('error', [$subject, $ex]);
         }
     }
 
@@ -181,7 +181,7 @@ class RankDiffShell extends Shell
         $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
         $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
             $img = $node->filter('img')->first();
-            if ($img->count() && count($src = $img->attr('src'))
+            if ($img->count() && ($src = $img->attr('src'))
                 && preg_match('/dan([0-9]{2})/', $src, $matches)) {
                 $rank = intval($matches[1]);
                 $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');

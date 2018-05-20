@@ -39,7 +39,7 @@ class TitlesControllerTest extends AppTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Titles = TableRegistry::get('Titles');
+        $this->Titles = TableRegistry::getTableLocator()->get('Titles');
         $this->createSession();
     }
 

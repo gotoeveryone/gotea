@@ -40,7 +40,7 @@ class AddNameWithRankIdToTitleScoreDetails extends AbstractMigration
             new QueryExpression('player_name = (select name from players where id = player_id)'),
             new QueryExpression('rank_id = (select rank_id from players where id = player_id)'),
         ];
-        $details = TableRegistry::get('title_score_details');
+        $details = TableRegistry::getTableLocator()->get('title_score_details');
         $details->updateAll($exp, []);
 
         // 参照キー追加

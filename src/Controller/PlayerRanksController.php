@@ -2,8 +2,6 @@
 
 namespace Gotea\Controller;
 
-use Cake\Utility\Hash;
-
 /**
  * 昇段情報コントローラ
  *
@@ -32,7 +30,7 @@ class PlayerRanksController extends AppController
      */
     public function create(int $playerId)
     {
-        $data = Hash::insert($this->request->getData(), 'player_id', $playerId);
+        $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->newEntity($data);
 
         // 保存
@@ -58,7 +56,7 @@ class PlayerRanksController extends AppController
      */
     public function update(int $playerId, int $id)
     {
-        $data = Hash::insert($this->request->getData(), 'player_id', $playerId);
+        $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->get($id);
         $this->PlayerRanks->patchEntity($rank, $data);
 

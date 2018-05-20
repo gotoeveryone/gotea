@@ -25,8 +25,8 @@
         </li>
         <li class="row button-row">
             <?= $this->Form->hidden('redirect', ['value' => $this->request->getQuery('redirect')]) ?>
-            <?=$this->Form->button('ログイン', ['type' => 'submit'])?>
-            <?=$this->Form->button('クリア', ['type' => 'reset'])?>
+            <?= $this->Form->button('ログイン', ['type' => 'submit']) ?>
+            <?= $this->Form->button('クリア', ['type' => 'reset']) ?>
         </li>
     </ul>
 <?= $this->Form->end() ?>

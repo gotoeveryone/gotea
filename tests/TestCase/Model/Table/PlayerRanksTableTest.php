@@ -40,8 +40,8 @@ class PlayerRanksTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('PlayerRanks') ? [] : ['className' => PlayerRanksTable::class];
-        $this->PlayerRanks = TableRegistry::get('PlayerRanks', $config);
+        $config = TableRegistry::getTableLocator()->exists('PlayerRanks') ? [] : ['className' => PlayerRanksTable::class];
+        $this->PlayerRanks = TableRegistry::getTableLocator()->get('PlayerRanks', $config);
     }
 
     /**

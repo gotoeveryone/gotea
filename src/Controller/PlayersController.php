@@ -52,12 +52,13 @@ class PlayersController extends AppController
         $this->set('form', ($form = new PlayerForm));
 
         // バリデーション
-        if (!$form->validate($this->request->getParsedBody())) {
+        $data = $this->getRequest()->getParsedBody();
+        if (!$form->validate($data)) {
             return $this->setErrors(400, $form->errors())->setAction('index');
         }
 
         // データを取得
-        $players = $this->Players->findPlayers($this->request->getParsedBody());
+        $players = $this->Players->findPlayers($data);
 
         // 件数が0件または多すぎる場合はメッセージを出力
         $over = 300;
@@ -86,7 +87,7 @@ class PlayersController extends AppController
     {
         $params = [];
         // 所属国
-        if (($countryId = $this->request->getQuery('country_id'))) {
+        if (($countryId = $this->getRequest()->getQuery('country_id'))) {
             $params['country_id'] = $countryId;
 
             if (is_numeric($countryId) && $this->Countries->exists(['id' => $countryId])) {
@@ -98,11 +99,11 @@ class PlayersController extends AppController
             }
         }
         // 性別
-        if (($sex = $this->request->getQuery('sex'))) {
+        if (($sex = $this->getRequest()->getQuery('sex'))) {
             $params['sex'] = $sex;
         }
         // 入段日
-        if (($joined = $this->request->getQuery('joined'))) {
+        if (($joined = $this->getRequest()->getQuery('joined'))) {
             $params['joined'] = $joined;
         }
         $player = $this->Players->newEntity($params, [
@@ -136,7 +137,7 @@ class PlayersController extends AppController
     public function create()
     {
         // エンティティ生成
-        $data = $this->request->getData();
+        $data = $this->getRequest()->getParsedBody();
         $player = $this->Players->newEntity($data);
 
         // 失敗
@@ -149,7 +150,7 @@ class PlayersController extends AppController
         $this->setMessages(__('The player {0} - {1} is saved', $player->id, $player->name));
 
         // 連続作成の場合は新規登録画面へリダイレクト
-        if ($this->request->getData('is_continue')) {
+        if (!empty($data['is_continue'])) {
             return $this->redirect([
                 '_name' => 'new_player',
                 '?' => [
@@ -172,7 +173,7 @@ class PlayersController extends AppController
     public function update(int $id)
     {
         // エンティティ取得
-        $data = $this->request->getData();
+        $data = $this->getRequest()->getParsedBody();
         $player = $this->Players->findByIdWithRelation($id);
         $this->Players->patchEntity($player, $data);
 

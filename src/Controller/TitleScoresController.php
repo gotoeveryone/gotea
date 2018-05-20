@@ -44,12 +44,12 @@ class TitleScoresController extends AppController
         $this->set('form', ($form = new TitleScoreForm));
 
         // バリデーション
-        if (!$form->validate($this->request->getParsedBody())) {
+        $data = $this->getRequest()->getParsedBody();
+        if (!$form->validate($data)) {
             return $this->setErrors(400, $form->errors())->setAction('index');
         }
 
         // リクエストから値を取得
-        $data = $this->request->getParsedBody();
         $titleScores = $this->TitleScores->findMatches($data);
 
         // 件数が0件または多すぎる場合はメッセージを出力

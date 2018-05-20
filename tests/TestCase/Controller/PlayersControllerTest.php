@@ -43,7 +43,7 @@ class PlayersControllerTest extends AppTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Players = TableRegistry::get('Players');
+        $this->Players = TableRegistry::getTableLocator()->get('Players');
         $this->createSession();
     }
 

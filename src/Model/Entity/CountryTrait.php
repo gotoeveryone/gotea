@@ -25,7 +25,7 @@ trait CountryTrait
             return null;
         }
 
-        $result = TableRegistry::get('Countries')->get($this->country_id);
+        $result = TableRegistry::getTableLocator()->get('Countries')->get($this->country_id);
 
         return $this->country = $result;
     }

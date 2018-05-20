@@ -86,7 +86,7 @@ class PlayerRanksTable extends AppTable
 
         // 最新の昇段情報として登録する場合は棋士情報を更新
         if ($save && $entity->newest) {
-            $players = TableRegistry::get('Players');
+            $players = TableRegistry::getTableLocator()->get('Players');
             $player = $players->get($entity->player_id);
             $player->rank_id = $entity->rank_id;
             $players->save($player, $options);

@@ -20,7 +20,7 @@ class TitlesController extends ApiController
     public function index()
     {
         // 検索
-        $titles = $this->Titles->findTitles($this->request->getQuery());
+        $titles = $this->Titles->findTitles($this->getRequest()->getQueryParams());
 
         return $this->renderJson($titles->map(new TitlesIterator));
     }
@@ -32,8 +32,7 @@ class TitlesController extends ApiController
      */
     public function create()
     {
-        $input = $this->request->getParsedBody();
-        $title = $this->Titles->createEntity(null, $input);
+        $title = $this->Titles->createEntity(null, $this->getRequest()->getParsedBody());
 
         if (!$this->Titles->save($title)) {
             return $this->renderError(400, $title->getValidateErrors());
@@ -50,8 +49,7 @@ class TitlesController extends ApiController
      */
     public function update(int $id)
     {
-        $input = $this->request->getParsedBody();
-        $title = $this->Titles->createEntity($id, $input);
+        $title = $this->Titles->createEntity($id, $this->getRequest()->getParsedBody());
 
         if (!$this->Titles->save($title)) {
             return $this->renderError(400, $title->getValidateErrors());
@@ -67,7 +65,7 @@ class TitlesController extends ApiController
      */
     public function createNews()
     {
-        $titles = $this->Titles->findTitles($this->request->getQuery())
+        $titles = $this->Titles->findTitles($this->getRequest()->getQueryParams())
             ->map(new NewsIterator);
 
         // ファイル作成

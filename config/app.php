@@ -97,7 +97,7 @@ return [
          */
         '_cake_core_' => [
             'className' => 'File',
-            'prefix' => 'myapp_cake_core_',
+            'prefix' => 'gotea_cake_core_',
             'path' => CACHE . 'persistent/',
             'serialize' => true,
             'duration' => '+1 years',
@@ -112,7 +112,7 @@ return [
          */
         '_cake_model_' => [
             'className' => 'File',
-            'prefix' => 'myapp_cake_model_',
+            'prefix' => 'gotea_cake_model_',
             'path' => CACHE . 'models/',
             'serialize' => true,
             'duration' => '+1 years',
@@ -144,7 +144,7 @@ return [
      * - `skipLog` - array - List of exceptions to skip for logging. Exceptions that
      *   extend one of the listed exceptions will also be skipped for logging.
      *   E.g.:
-     *   `'skipLog' => ['Cake\Network\Exception\NotFoundException', 'Cake\Network\Exception\UnauthorizedException']`
+     *   `'skipLog' => ['Cake\Http\Exception\NotFoundException', 'Cake\Http\Exception\UnauthorizedException']`
      * - `extraFatalErrorMemory` - int - The number of megabytes to increase
      *   the memory limit by when a fatal error is encountered. This allows
      *   breathing room to complete logging or error handling.
@@ -204,7 +204,7 @@ return [
      * Delivery profiles allow you to predefine various properties about email
      * messages from your application and give the settings a name. This saves
      * duplication across your application and makes maintenance and development
-     * easier. Each profile accepts a number of keys. See `Cake\Network\Email\Email`
+     * easier. Each profile accepts a number of keys. See `Cake\Mailer\Email`
      * for more information.
      */
     'Email' => [
@@ -213,6 +213,7 @@ return [
             'from' => [
                 env('EMAIL_FROM') => env('EMAIL_FROM_USER'),
             ],
+            'to' => env('EMAIL_TO'),
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
@@ -296,7 +297,7 @@ return [
         'debug' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'igoapp-access',
+            'file' => 'gotea-access',
             'url' => env('LOG_DEBUG_URL', null),
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
@@ -304,7 +305,7 @@ return [
         'error' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'igoapp-error',
+            'file' => 'gotea-error',
             'url' => env('LOG_ERROR_URL', null),
             'scopes' => false,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
@@ -313,7 +314,7 @@ return [
         'queries' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'igoapp-query',
+            'file' => 'gotea-query',
             'url' => env('LOG_QUERIES_URL', null),
             'scopes' => ['queriesLog'],
         ],
@@ -359,6 +360,6 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
-        'timeout' => 10,
+        'timeout' => 30,
     ],
 ];

@@ -2,6 +2,7 @@
 
 namespace Gotea\Form;
 
+use Cake\Event\Event;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
@@ -32,9 +33,9 @@ class PlayerForm extends AppForm
     /**
      * {@inheritdoc}
      */
-    protected function _buildValidator(Validator $validator)
+    public function buildValidator(Event $event, Validator $validator, $name)
     {
-        return $validator
+        $validator
             ->allowEmpty([
                 'country_id', 'organization_id', 'rank_id', 'is_retired', 'sex',
                 'name', 'name_english', 'name_other', 'joined_from', 'joined_to',

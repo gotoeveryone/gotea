@@ -35,7 +35,7 @@ class PlayerRanksControllerTest extends AppTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->PlayerRanks = TableRegistry::get('PlayerRanks');
+        $this->PlayerRanks = TableRegistry::getTableLocator()->get('PlayerRanks');
         $this->createSession();
     }
 

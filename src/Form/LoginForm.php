@@ -2,6 +2,7 @@
 
 namespace Gotea\Form;
 
+use Cake\Event\Event;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
@@ -23,7 +24,7 @@ class LoginForm extends AppForm
     /**
      * {@inheritdoc}
      */
-    protected function _buildValidator(Validator $validator)
+    public function buildValidator(Event $event, Validator $validator, $name)
     {
         // ユーザID
         $validator
@@ -36,7 +37,5 @@ class LoginForm extends AppForm
             ->requirePresence('password')
             ->maxLength('password', 20)
             ->alphaNumeric('password');
-
-        return $validator;
     }
 }

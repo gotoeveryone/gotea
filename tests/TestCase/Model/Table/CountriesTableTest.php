@@ -35,8 +35,8 @@ class CountriesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Countries') ? [] : ['className' => CountriesTable::class];
-        $this->Countries = TableRegistry::get('Countries', $config);
+        $config = TableRegistry::getTableLocator()->exists('Countries') ? [] : ['className' => CountriesTable::class];
+        $this->Countries = TableRegistry::getTableLocator()->get('Countries', $config);
     }
 
     /**

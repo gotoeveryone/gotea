@@ -3,7 +3,6 @@
 namespace Gotea\Model\Entity;
 
 use Cake\I18n\FrozenDate;
-use Cake\ORM\TableRegistry;
 
 /**
  * タイトルエンティティ

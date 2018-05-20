@@ -45,7 +45,7 @@ class UsersController extends AppController
     public function login()
     {
         // ログイン
-        $credentials = $this->request->getParsedBody();
+        $credentials = $this->getRequest()->getParsedBody();
         $form = new LoginForm();
         if (!$form->validate($credentials)) {
             return $this->setErrors(400, $form->errors())->setAction('index');
@@ -54,9 +54,9 @@ class UsersController extends AppController
         // ログイン成功→リダイレクト
         if ($this->Auth->login($credentials)) {
             $redirect = $this->Auth::QUERY_STRING_REDIRECT;
-            $this->request = $this->request->withQueryParams([
-                $redirect => $this->request->getData($redirect),
-            ]);
+            $this->setRequest($this->getRequest()->withQueryParams([
+                $redirect => $this->getRequest()->getData($redirect),
+            ]));
 
             return $this->redirect($this->Auth->redirectUrl());
         }
