@@ -45,8 +45,8 @@ class RetentionHistoriesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('RetentionHistories') ? [] : ['className' => RetentionHistoriesTable::class];
-        $this->RetentionHistories = TableRegistry::get('RetentionHistories', $config);
+        $config = TableRegistry::getTableLocator()->exists('RetentionHistories') ? [] : ['className' => RetentionHistoriesTable::class];
+        $this->RetentionHistories = TableRegistry::getTableLocator()->get('RetentionHistories', $config);
     }
 
     /**

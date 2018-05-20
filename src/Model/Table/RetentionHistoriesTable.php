@@ -77,7 +77,7 @@ class RetentionHistoriesTable extends AppTable
 
         // 最新を登録する場合はタイトルマスタも更新
         if ($save && $entity->newest) {
-            $table = TableRegistry::get('Titles');
+            $table = TableRegistry::getTableLocator()->get('Titles');
             $title = $table->get($entity->title_id);
             $title->holding = $entity->holding;
             $table->save($title);

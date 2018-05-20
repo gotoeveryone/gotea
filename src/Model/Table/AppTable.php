@@ -3,6 +3,7 @@
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Table;
+use Gotea\Validation\Validator;
 
 /**
  * アプリケーションの共通テーブル
@@ -17,7 +18,7 @@ class AppTable extends Table
      *
      * @var string
      */
-    protected $_validatorClass = '\Gotea\Validation\Validator';
+    protected $_validatorClass = Validator::class;
 
     /**
      * {@inheritdoc}

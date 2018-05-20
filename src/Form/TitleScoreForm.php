@@ -2,6 +2,7 @@
 
 namespace Gotea\Form;
 
+use Cake\Event\Event;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
@@ -30,13 +31,10 @@ class TitleScoreForm extends AppForm
 
     /**
      * {@inheritdoc}
-     *
-     * @param Validator $validator
-     * @return type
      */
-    protected function _buildValidator(Validator $validator)
+    public function buildValidator(Event $event, Validator $validator, $name)
     {
-        return $validator
+        $validator
             ->allowEmpty(['name', 'title_name', 'country_id', 'target_year', 'started', 'ended'])
             ->integer('country_id')
             ->range('target_year', [1, 9999])

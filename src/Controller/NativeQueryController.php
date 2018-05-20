@@ -33,7 +33,7 @@ class NativeQueryController extends AppController
     public function execute()
     {
         // トリムし、改行・タブ・全角スペースがあれば除去
-        $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->request->getData('queries')));
+        $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->getRequest()->getData('queries')));
         // 「;」で分割
         $queries = explode(';', trim($updateText));
 

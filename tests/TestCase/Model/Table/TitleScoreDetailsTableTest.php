@@ -53,11 +53,11 @@ class TitleScoreDetailsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Countries') ? [] : ['className' => 'Gotea\Model\Table\CountriesTable'];
-        $this->Countries = TableRegistry::get('Countries', $config);
+        $config = TableRegistry::getTableLocator()->exists('Countries') ? [] : ['className' => 'Gotea\Model\Table\CountriesTable'];
+        $this->Countries = TableRegistry::getTableLocator()->get('Countries', $config);
 
-        $config = TableRegistry::exists('TitleScoreDetails') ? [] : ['className' => 'Gotea\Model\Table\TitleScoreDetailsTable'];
-        $this->TitleScoreDetails = TableRegistry::get('TitleScoreDetails', $config);
+        $config = TableRegistry::getTableLocator()->exists('TitleScoreDetails') ? [] : ['className' => 'Gotea\Model\Table\TitleScoreDetailsTable'];
+        $this->TitleScoreDetails = TableRegistry::getTableLocator()->get('TitleScoreDetails', $config);
     }
 
     /**

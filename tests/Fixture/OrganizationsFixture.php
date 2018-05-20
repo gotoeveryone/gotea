@@ -2,7 +2,6 @@
 namespace Gotea\Test\Fixture;
 
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -44,36 +43,29 @@ class OrganizationsFixture extends TestFixture
      */
     public function init()
     {
-        // $countries = TableRegistry::get('Contries');
         $organizations = [
             [
                 'country_id' => 1,
-                // 'country_id' => $countries->findByName('日本')->first()->id,
                 'name' => '日本棋院',
             ],
             [
                 'country_id' => 1,
-                // 'country_id' => $countries->findByName('日本')->first()->id,
                 'name' => '関西棋院',
             ],
             [
                 'country_id' => 2,
-                // 'country_id' => $countries->findByName('韓国')->first()->id,
                 'name' => '韓国棋院',
             ],
             [
                 'country_id' => 3,
-                // 'country_id' => $countries->findByName('中国')->first()->id,
                 'name' => '中国棋院',
             ],
             [
                 'country_id' => 4,
-                // 'country_id' => $countries->findByName('台湾')->first()->id,
                 'name' => '台湾棋院',
             ],
             [
                 'country_id' => 4,
-                // 'country_id' => $countries->findByName('台湾')->first()->id,
                 'name' => '中国囲棋協会',
             ],
         ];

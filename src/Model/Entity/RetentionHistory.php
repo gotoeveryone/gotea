@@ -2,8 +2,6 @@
 
 namespace Gotea\Model\Entity;
 
-use Cake\ORM\TableRegistry;
-
 /**
  * 保持履歴エンティティ
  */

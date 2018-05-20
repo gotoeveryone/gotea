@@ -1,8 +1,10 @@
 <?php
 
-namespace Gotea\Shell;
+namespace Gotea\Command;
 
-use Cake\Console\Shell;
+use Cake\Console\Arguments;
+use Cake\Console\Command;
+use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
@@ -14,9 +16,9 @@ use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * 段位の差分を抽出するシェル
+ * 段位の差分を抽出するコマンド
  */
-class RankDiffShell extends Shell
+class RankDiffCommand extends Command
 {
     use MailerAwareTrait;
 
@@ -32,12 +34,16 @@ class RankDiffShell extends Shell
     }
 
     /**
-     * シェルのメイン処理
+     * メイン処理
      *
-     * @return void
+     * @param \Cake\Console\Arguments $args 引数
+     * @param \Cake\Console\ConsoleIo $io 入出力
+     * @return int Success or error code.
      */
-    public function main()
+    public function execute(Arguments $args, ConsoleIo $io)
     {
+        $mailer = $this->getMailer('User');
+        $today = FrozenDate::now()->format('Ymd');
         try {
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $results = $countries->combine('name', function ($item) {
@@ -49,15 +55,17 @@ class RankDiffShell extends Shell
 
             // メール送信
             if (!$results->unfold()->isEmpty()) {
-                $today = FrozenDate::now()->format('Ymd');
                 $subject = "【自動通知】${today}_棋士段位差分抽出";
-                $this->getMailer('User')->send('notification', [$subject, $results]);
+                $mailer->send('notification', [$subject, $results]);
             }
+
+            return self::CODE_SUCCESS;
         } catch (Exception $ex) {
             Log::error($ex);
-            $today = FrozenDate::now()->format('Ymd');
             $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
-            $this->getMailer('User')->send('error', [$subject, $ex]);
+            $mailer->send('error', [$subject, $ex]);
+
+            return self::CODE_ERROR;
         }
     }
 
@@ -181,7 +189,7 @@ class RankDiffShell extends Shell
         $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
         $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
             $img = $node->filter('img')->first();
-            if ($img->count() && count($src = $img->attr('src'))
+            if ($img->count() && ($src = $img->attr('src'))
                 && preg_match('/dan([0-9]{2})/', $src, $matches)) {
                 $rank = intval($matches[1]);
                 $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');

@@ -36,7 +36,9 @@ trait SecureTrait
      */
     public function redirectSecure()
     {
-        $url = 'https://' . env('SERVER_NAME') . $this->request->getRequestTarget();
+        $host = $this->getRequest()->getUri()->getHost();
+        $path = $this->getRequest()->getRequestTarget();
+        $url = 'https://' . $host . $path;
 
         return $this->redirect($url);
     }

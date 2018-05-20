@@ -47,8 +47,8 @@ class PlayersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Players') ? [] : ['className' => PlayersTable::class];
-        $this->Players = TableRegistry::get('Players', $config);
+        $config = TableRegistry::getTableLocator()->exists('Players') ? [] : ['className' => PlayersTable::class];
+        $this->Players = TableRegistry::getTableLocator()->get('Players', $config);
     }
 
     /**

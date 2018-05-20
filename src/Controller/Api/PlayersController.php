@@ -20,9 +20,10 @@ class PlayersController extends ApiController
     public function search()
     {
         // limit、offsetを指定して取得
-        $query = $this->Players->findPlayers($this->request->getParsedBody());
-        $players = $query->limit($this->request->getData('limit', 100))
-            ->offset($this->request->getData('offset', 0));
+        $request = $this->getRequest();
+        $query = $this->Players->findPlayers($request->getParsedBody());
+        $players = $query->limit($request->getData('limit', 100))
+            ->offset($request->getData('offset', 0));
 
         return $this->renderJson([
             'count' => $query->count(),
@@ -55,8 +56,9 @@ class PlayersController extends ApiController
      */
     public function searchRanking(string $country, int $year, int $limit)
     {
-        $from = $this->request->getQuery('from');
-        $to = $this->request->getQuery('to');
+        $request = $this->getRequest();
+        $from = $request->getQuery('from');
+        $to = $request->getQuery('to');
 
         // ランキングデータ取得
         $json = $this->getRankingData([
@@ -85,8 +87,9 @@ class PlayersController extends ApiController
      */
     public function createRanking(string $country, int $year, int $limit)
     {
-        $from = $this->request->getData('from');
-        $to = $this->request->getData('to');
+        $request = $this->getRequest();
+        $from = $request->getQuery('from');
+        $to = $request->getQuery('to');
 
         // ランキングデータ取得
         $json = $this->getRankingData([

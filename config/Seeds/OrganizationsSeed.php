@@ -19,7 +19,7 @@ class OrganizationsSeed extends AbstractSeed
      */
     public function run()
     {
-        $countries = TableRegistry::get('Countries');
+        $countries = TableRegistry::getTableLocator()->get('Countries');
         $data = [
             [
                 'country_id' => $countries->findByName('日本')->first()->id,

@@ -14,7 +14,7 @@ class CountriesController extends ApiController
      */
     public function index()
     {
-        $hasTitle = ($this->request->getQuery('has_title') === '1');
+        $hasTitle = ($this->getRequest()->getQuery('has_title') === '1');
 
         $countries = $this->Countries->findAllHasCode($hasTitle);
 

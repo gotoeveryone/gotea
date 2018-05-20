@@ -107,7 +107,7 @@ class PlayersTable extends AppTable
             $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
 
             // 棋士昇段情報へ登録
-            $playerRanks = TableRegistry::get('PlayerRanks');
+            $playerRanks = TableRegistry::getTableLocator()->get('PlayerRanks');
             $playerRanks->save($playerRanks->newEntity([
                 'player_id' => $entity->id,
                 'rank_id' => $entity->rank_id,

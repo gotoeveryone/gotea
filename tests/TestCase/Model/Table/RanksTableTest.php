@@ -35,8 +35,8 @@ class RanksTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Ranks') ? [] : ['className' => RanksTable::class];
-        $this->Ranks = TableRegistry::get('Ranks', $config);
+        $config = TableRegistry::getTableLocator()->exists('Ranks') ? [] : ['className' => RanksTable::class];
+        $this->Ranks = TableRegistry::getTableLocator()->get('Ranks', $config);
     }
 
     /**

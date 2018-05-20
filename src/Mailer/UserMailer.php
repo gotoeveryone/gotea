@@ -7,7 +7,7 @@ use Cake\Mailer\Mailer;
 use Exception;
 
 /**
- * メーラー
+ * ユーザへの通知メーラー
  */
 class UserMailer extends Mailer
 {
@@ -19,7 +19,7 @@ class UserMailer extends Mailer
     static public $name = 'User';
 
     /**
-     * 通知メール送信
+     * 通知メール送信情報を設定
      *
      * @param string $subject 件名
      * @param \Cake\Collection\Collection $messages 本文を設定したコレクション
@@ -27,22 +27,14 @@ class UserMailer extends Mailer
      */
     public function notification(string $subject, Collection $messages)
     {
-        // 宛先
-        $to = env('EMAIL_TO');
-        if (strpos($to, ',') !== false) {
-            $to = explode(',', $to);
-        }
-
-        // メール送信
-        $this->addTo($to)
-            ->setSubject($subject)
+        $this->setSubject($subject)
             ->set(['messages' => $messages]);
 
         Log::info('メールを送信します。');
     }
 
     /**
-     * 通知メール送信
+     * 異常通知メール送信情報を設定
      *
      * @param string $subject 件名
      * @param \Exception $exception 例外
@@ -50,15 +42,7 @@ class UserMailer extends Mailer
      */
     public function error(string $subject, Exception $exception)
     {
-        // 宛先
-        $to = env('EMAIL_TO');
-        if (strpos($to, ',') !== false) {
-            $to = explode(',', $to);
-        }
-
-        // メール送信
-        $this->addTo($to)
-            ->setSubject($subject)
+        $this->setSubject($subject)
             ->set(['messages' => $exception->getMessage()]);
 
         Log::error('異常通知メールを送信します。');

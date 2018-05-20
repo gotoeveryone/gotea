@@ -25,7 +25,7 @@ class Country extends AppEntity
             return [];
         }
 
-        $result = TableRegistry::get('Organizations')->findByCountryId($this->id);
+        $result = TableRegistry::getTableLocator()->get('Organizations')->findByCountryId($this->id);
 
         return $this->organizations = $result;
     }

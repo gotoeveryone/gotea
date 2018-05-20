@@ -90,7 +90,7 @@ class Player extends AppEntity
             return collection([]);
         }
 
-        $result = TableRegistry::get('PlayerScores')->findDescYears($this->id);
+        $result = TableRegistry::getTableLocator()->get('PlayerScores')->findDescYears($this->id);
 
         return $this->old_scores = $result;
     }
@@ -111,7 +111,7 @@ class Player extends AppEntity
             return collection([]);
         }
 
-        $result = TableRegistry::get('RetentionHistories')->findHistoriesByPlayer($this->id);
+        $result = TableRegistry::getTableLocator()->get('RetentionHistories')->findHistoriesByPlayer($this->id);
 
         return $this->retention_histories = $result;
     }

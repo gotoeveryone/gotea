@@ -1,7 +1,10 @@
 <?php
-namespace Gotea\Shell;
+namespace Gotea\Command;
 
-use Cake\Console\Shell;
+use Cake\Console\Arguments;
+use Cake\Console\Command;
+use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\Utility\Inflector;
@@ -11,11 +14,10 @@ use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * AddPlayerRank shell command.
+ * 昇段履歴を追加するコマンド
  */
-class PlayerRankShell extends Shell
+class PlayerRankCommand extends Command
 {
-
     /**
      * {@inheritDoc}
      */
@@ -29,16 +31,10 @@ class PlayerRankShell extends Shell
     }
 
     /**
-     * Manage the available sub-commands along with their arguments and help
-     *
-     * @see http://book.cakephp.org/3.0/en/console-and-shells.html#configuring-options-and-generating-help
-     *
-     * @return \Cake\Console\ConsoleOptionParser
+     * ${@inheritDoc}
      */
-    public function getOptionParser()
+    public function buildOptionParser(ConsoleOptionParser $parser)
     {
-        $parser = parent::getOptionParser();
-
         $parser->addArgument('code', [
             'help' => 'country code',
             'required' => true,
@@ -49,20 +45,16 @@ class PlayerRankShell extends Shell
     }
 
     /**
-     * main() method.
+     * メイン処理
      *
-     * @return bool|int|null Success or error code.
+     * @param \Cake\Console\Arguments $args 引数
+     * @param \Cake\Console\ConsoleIo $io 入出力
+     * @return int Success or error code.
      */
-    public function main()
+    public function execute(Arguments $args, ConsoleIo $io)
     {
-        if (empty($this->args)) {
-            $this->out($this->OptionParser->help());
-
-            return false;
-        }
-        $code = $this->args[0];
-
         Log::info('昇段情報の取り込みを開始します。');
+        $code = $args->getArgumentAt(0);
 
         // 段位一覧を抽出
         $ranks = $this->Ranks->findProfessional();
@@ -75,25 +67,25 @@ class PlayerRankShell extends Shell
         // 取得
         $getMethod = 'getPlayerFrom' . $target;
         if (!method_exists($this, $getMethod)) {
-            $this->err('Method not implemented.');
+            $io->err('Method not implemented.');
 
-            return false;
+            return self::CODE_ERROR;
         }
         $results = $this->$getMethod();
 
         // 保存
         $saveMethod = 'savePlayerRanksTo' . $target;
         if (!method_exists($this, $saveMethod)) {
-            $this->err('Method not implemented.');
+            $io->err('Method not implemented.');
 
-            return false;
+            return self::CODE_ERROR;
         }
 
         $allCount = 0;
         foreach ($results as $result) {
-            $res = $this->$saveMethod($country->id, $result, $ranks);
+            $res = $this->$saveMethod($io, $country->id, $result, $ranks);
             if ($res === false) {
-                $this->out('失敗');
+                $io->out('失敗');
             }
 
             $allCount = $allCount + count($res);
@@ -103,7 +95,7 @@ class PlayerRankShell extends Shell
         Log::info("${count}人の昇段情報（全${allCount}件）を登録しました。");
         Log::info('昇段情報の取り込みを終了します。');
 
-        return true;
+        return self::CODE_SUCCESS;
     }
 
     /**
@@ -135,12 +127,13 @@ class PlayerRankShell extends Shell
     /**
      * 棋士の昇段情報を取得します。
      *
+     * @param \Cake\Console\ConsoleIo $io 入出力
      * @param int $countryId 所属国ID
      * @param string $url URL
      * @param \Cake\ORM\Query $ranks 段位一覧
      * @return array|false 保存結果
      */
-    private function savePlayerRanksToKorea(int $countryId, string $url, Query $ranks)
+    private function savePlayerRanksToKorea(ConsoleIo $io, int $countryId, string $url, Query $ranks)
     {
         $crawler = $this->getCrawler("http://www.baduk.or.kr/info/${url}");
         $name = $crawler->filter('.faceinfo .r strong')->first()->text();
@@ -156,7 +149,7 @@ class PlayerRankShell extends Shell
             'name_other' => $name,
         ])->first();
         if (!$player) {
-            $this->err('棋士名が見つからない！ ' . $name);
+            $io->err('棋士名が見つからない！ ' . $name);
 
             return false;
         }

@@ -25,7 +25,7 @@ trait RankTrait
             return null;
         }
 
-        $result = TableRegistry::get('Ranks')->get($this->rank_id);
+        $result = TableRegistry::getTableLocator()->get('Ranks')->get($this->rank_id);
 
         return $this->rank = $result;
     }
