@@ -78,7 +78,7 @@
         </script>
         <?php endif ?>
         <?= $this->Html->commonScript('js/common.js') ?>
-        <?= $this->Html->script(['app', 'common']) ?>
+        <?= $this->Html->script('app') ?>
         <?= $this->fetch('script') ?>
     </body>
 </html>

@@ -18,8 +18,8 @@ declare var window: any
  * アプリケーションのVueインスタンス
  */
 window.App = new Vue({
-  store,
-  el: '.container',
+    store,
+    el: '.container',
     data: {
         countryId: '',
         changed: false,

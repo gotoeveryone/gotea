@@ -5,8 +5,8 @@
     "main": "resources/ts/main.ts",
     "scripts": {
         "webpack": "webpack --colors --config=./webpack.config.js",
-        "dev": "yarn run webpack -- -w",
-        "prod": "cross-env NODE_ENV=production yarn run webpack -- -p",
+        "dev": "yarn run webpack -w",
+        "prod": "cross-env NODE_ENV=production yarn run webpack -p",
         "lint": "yarn run tslint & yarn run sasslint",
         "tslint": "tslint -c ./tslint.json resources/assets/ts/**/*.ts",
         "sasslint": "sass-lint -c ./.sass-lint.yml -v -q"
