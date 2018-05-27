@@ -5,43 +5,48 @@
     </section>
 </template>
 
-<script>
-import Header from './Header.vue';
-import Items from './Items.vue';
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
+import moment from 'moment'
 
-export default {
+import RankingHeader from './Header.vue'
+import RankingItems from './Items.vue'
+
+export default Vue.extend({
     data: () => {
         return {
-            lastUpdate: null,
-            items: [],
-        };
+            lastUpdate: '',
+            items: Array(),
+        }
     },
     components: {
-        rankingHeader: Header,
-        rankingItems: Items,
+        rankingHeader: RankingHeader,
+        rankingItems: RankingItems,
     },
     methods: {
-        onSearch(_params) {
+        onSearch(_params: any) {
             const params = {
                 from: _params.from || '',
                 to: _params.to || '',
-            };
+            }
 
-            this.$http.get(this.createUrl(_params), { params: params }).then(res => {
-                const json = res.body.response;
-                const dateObj = new Date(json.lastUpdate);
-                this.lastUpdate = `${dateObj.getFullYear()}年${dateObj.getMonth() +
-                    1}月${dateObj.getDate()}日`;
-                this.items = json.ranking;
-            });
+            axios.get(this.createUrl(_params), { params: params }).then(res => {
+                const json = res.data.response
+                if (json.lastUpdate) {
+                    const dateObj = moment(json.lastUpdate)
+                    this.lastUpdate = `${dateObj.year()}年${dateObj.month() + 1}月${dateObj.date()}日`
+                }
+                this.items = json.ranking
+            })
         },
-        outputJson(_params) {
+        outputJson(_params: any) {
             const params = {
                 from: _params.from || '',
                 to: _params.to || '',
-            };
+            }
 
-            this.$http
+            axios
                 .post(this.createUrl(_params), params)
                 .then(() =>
                     this.$store.dispatch('openDialog', {
@@ -53,11 +58,11 @@ export default {
                         messages: 'JSON出力に失敗しました…。',
                         type: 'error',
                     })
-                );
+                )
         },
-        createUrl(_params) {
-            return `/api/players/ranking/${_params.country}/${_params.year}/${_params.limit}`;
+        createUrl(_params: any) {
+            return `/api/players/ranking/${_params.country}/${_params.year}/${_params.limit}`
         },
     },
-};
+})
 </script>

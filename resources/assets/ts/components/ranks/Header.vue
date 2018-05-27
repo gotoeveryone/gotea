@@ -9,44 +9,41 @@
     </ul>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
+
+export default Vue.extend({
     data: () => {
         return {
-            countries: [],
+            countries: Array(),
             select: {
-                country: null,
+                country: '',
             },
         }
     },
     methods: {
-        changeValue($event) {
-            this.select[$event.target.name] = $event.target.value;
-            this.search();
+        changeValue($event: any) {
+            this.select[$event.target.name] = $event.target.value
+            this.search()
         },
         search() {
-            this.$emit('search', this.select);
+            this.$emit('search', this.select)
         },
     },
     mounted() {
-        this.$http.get('/api/countries/', { params: { 'has_title': '1' } })
-            .then(res => {
-                const countries = [];
-                const json = res.body.response;
-                json.forEach(obj => {
-                    countries.push({
-                        value: obj.id,
-                        text: obj.name,
-                    });
-                });
-                return countries;
-            }).then(countries => {
+        axios.get('/api/countries/', { params: { 'has_title': '1' } })
+            .then(res => res.data.response.map((obj: any) => ({
+                value: obj.id,
+                text: obj.name,
+            })))
+            .then(countries => {
                 this.countries = countries;
                 this.select = {
                     country: this.countries[0].value || '',
                 };
                 this.search();
-            });
+            })
     },
-}
+})
 </script>

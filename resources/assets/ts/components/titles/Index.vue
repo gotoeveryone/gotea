@@ -23,42 +23,44 @@
     </section>
 </template>
 
-<script>
-import Header from './Header.vue';
-import Item from './Item.vue';
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
 
-export default {
+import Header from './Header.vue'
+import Item from './Item.vue'
+
+export default Vue.extend({
     data: () => {
         return {
-            items: [],
-        };
+            items: Array(),
+        }
     },
     components: {
         titleHeader: Header,
         titleItem: Item,
     },
     methods: {
-        onSearch(_params) {
+        onSearch(_params: any) {
             const params = {
                 country_id: _params.country,
                 is_closed: _params.type,
-            };
+            }
 
-            this.$http.get('/api/titles', { params: params }).then(res => {
-                this.items = res.body.response;
-            });
+            axios.get('/api/titles', { params: params })
+                .then(res => this.items = res.data.response)
         },
-        addRow(_params) {
+        addRow(_params: any) {
             this.items.push({
                 countryId: _params.country,
                 holding: 1,
                 sortOrder: this.items.length + 1,
                 htmlFileModified: '',
                 isClosed: false,
-            });
+            })
         },
         outputJson() {
-            this.$http
+            axios
                 .post('/api/titles/news')
                 .then(() =>
                     this.$store.dispatch('openDialog', {
@@ -70,12 +72,8 @@ export default {
                         messages: 'JSON出力に失敗しました…。',
                         type: 'error',
                     })
-                );
+                )
         },
-        changeValue($event) {
-            this.select[$event.target.name] = $event.target.value;
-            this.search();
-        },
-    },
-};
+    }
+})
 </script>

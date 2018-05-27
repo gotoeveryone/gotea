@@ -20,51 +20,50 @@
     </transition>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
     props: {
         options: Object,
         servType: String,
-        servMessages: {
-            type: Array,
-            required: false,
-        },
+        servMessages: Array as () => string[],
     },
     directives: {
         focus: {
             inserted: (el) => {
-                el.focus();
+                el.focus()
             },
         },
     },
     methods: {
         close() {
-            this.$store.dispatch('closeDialog');
+            this.$store.dispatch('closeDialog')
         },
-        isShow() {
+        isShow(): boolean {
             return this.messages.length > 0 &&
-                ((this.isServ() && this.options.server) || (!this.isServ() && !this.options.server));
+                ((this.isServ() && this.options.server) || (!this.isServ() && !this.options.server))
         },
-        isServ() {
-            return (this.servMessages && this.servMessages.length);
+        isServ(): boolean {
+            return (this.servMessages && this.servMessages.length > 0)
         },
     },
     computed: {
-        title() {
-            return this.options.title || 'メッセージ';
+        title(): string {
+            return this.options.title || 'メッセージ'
         },
-        messages() {
-            const m = this.options.messages;
+        messages(): string[] {
+            const m = this.options.messages
             if (!Array.isArray(m)) {
-                return m ? [m] : [];
+                return m ? [m] : []
             }
-            return m;
+            return m
         },
-        messageClass() {
+        messageClass(): string {
             if (this.options.type) {
-                return `message-${this.options.type}`;
+                return `message-${this.options.type}`
             }
-            return 'message-info';
+            return 'message-info'
         },
     },
     mounted() {
@@ -75,17 +74,17 @@ export default {
                 messages: this.servMessages,
                 type: this.servType,
                 server: true,
-            });
+            })
         }
     },
-}
+})
 </script>
 
-<style>
+<style scoped>
 .dialog-enter-active, .dialog-leave-active {
-    transition: opacity .5s;
+    transition: opacity .5s
 }
 .dialog-enter, .dialog-leave-to {
-    opacity: 0;
+    opacity: 0
 }
 </style>

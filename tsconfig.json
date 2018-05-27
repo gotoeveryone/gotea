@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "es2015", "es2015.promise"],
+        "module": "es2015",
+        "moduleResolution": "node",
+        "baseUrl": "./resources/assets/",
+        "paths": {
+            "*": ["ts/*"]
+        },
+        "isolatedModules": false,
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "removeComments": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["./**/*.ts"],
+    "exclude": ["node_modules", "typings"],
+    "compileOnSave": false
+}

@@ -15,15 +15,17 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
     props: {
         items: Array,
     },
     methods: {
-        count(_item) {
-            return `${_item.count}人`;
+        count(_item: any) {
+            return `${_item.count}人`
         },
     },
-}
+})
 </script>

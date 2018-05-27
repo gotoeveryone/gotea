@@ -11,35 +11,37 @@
     </transition>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
     props: {
         options: Object,
     },
     methods: {
         close() {
-            this.$store.dispatch('closeModal');
+            this.$store.dispatch('closeModal')
         },
         isShow() {
-            return (this.options.url !== '');
+            return (this.options.url !== '')
         },
     },
     computed: {
-        height() {
-            return this.options.height || '90%';
+        height(): string {
+            return this.options.height || '90%'
         },
-        width() {
-            return this.options.width || '90%';
+        width(): string {
+            return this.options.width || '90%'
         },
     },
-}
+})
 </script>
 
-<style>
+<style scoped>
 .modal-enter-active, .modal-leave-active {
-    transition: opacity .5s;
+    transition: opacity .5s
 }
 .modal-enter, .modal-leave-to {
-    opacity: 0;
+    opacity: 0
 }
 </style>

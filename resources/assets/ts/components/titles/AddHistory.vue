@@ -76,8 +76,11 @@
     </ul>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
+
+export default Vue.extend({
     props: {
         isTeam: String,
         historyId: Number,
@@ -94,107 +97,107 @@ export default {
             teamName: null,
             teamTitle: false,
             players: [],
-        };
+        }
     },
     methods: {
         required() {
-            return !this.year || !this.holding || !this.key;
+            return !this.year || !this.holding || !this.key
         },
         search() {
             if (this.name === '') {
                 this.$store.dispatch('openDialog', {
                     messages: '棋士名は必須です。',
                     type: 'error',
-                });
-                return;
+                })
+                return
             }
 
-            this.$http
+            axios
                 .post('/api/players', {
                     name: this.name,
                 })
                 .then(res => {
-                    const players = res.body.response.results;
+                    const players = res.data.response.results
                     switch (players.length) {
                         case 0:
                             this.$store.dispatch('openDialog', {
                                 messages: '検索結果が0件でした。',
                                 type: 'warning',
-                            });
-                            break;
+                            })
+                            break
                         case 1:
-                            this.select(players[0]);
-                            break;
+                            this.select(players[0])
+                            break
                         default:
-                            this.players = players;
-                            break;
+                            this.players = players
+                            break
                     }
                 })
                 .catch(res => {
-                    const message = res.body.response.message;
+                    const message = res.data.response.message
                     this.$store.dispatch('openDialog', {
                         messages: message || '更新に失敗しました…。',
                         type: 'error',
-                    });
-                });
+                    })
+                })
         },
-        getName(_player) {
+        getName(_player: any) {
             if (_player.nameOther) {
-                return `${_player.name} [${_player.nameOther}]`;
+                return `${_player.name} [${_player.nameOther}]`
             }
-            return _player.name;
+            return _player.name
         },
-        select(_player) {
-            this.playerId = _player.id;
-            this.rankId = _player.rankId;
-            this.viewName = `${_player.name} ${_player.rankName}`;
-            this.name = '';
-            this.players = [];
+        select(_player: any) {
+            this.playerId = _player.id
+            this.rankId = _player.rankId
+            this.viewName = `${_player.name} ${_player.rankName}`
+            this.name = ''
+            this.players = []
         },
         isNew() {
-            return !this.historyId;
+            return !this.historyId
         },
         clearData() {
-            this.viewName = '（検索エリアから棋士を検索してください。）';
-            this.year = null;
-            this.holding = null;
-            this.name = '';
-            this.playerId = null;
-            this.rankId = null;
-            this.teamName = null;
-            this.teamTitle = this.isTeam;
-            this.players = [];
-            this.edit = false;
-            this.$emit('cleared');
+            this.viewName = '（検索エリアから棋士を検索してください。）'
+            this.year = null
+            this.holding = null
+            this.name = ''
+            this.playerId = null
+            this.rankId = null
+            this.teamName = null
+            this.teamTitle = Boolean(this.isTeam)
+            this.players = []
+            this.edit = false
+            this.$emit('cleared')
         },
-    },
-    mounted() {
-        this.teamTitle = this.isTeam;
     },
     computed: {
-        key() {
-            return this.isTeam ? this.teamName : this.playerId;
+        key(): any {
+            return this.isTeam ? this.teamName : this.playerId
         },
-        text() {
-            return this.edit ? '編集' : '新規登録';
+        text(): string {
+            return this.edit ? '編集' : '新規登録'
         },
     },
     watch: {
-        historyId(_value) {
+        historyId(_value: number) {
             if (_value) {
-                this.$http.get(`/api/histories/${_value}`).then(r => {
-                    const json = r.body.response;
-                    this.teamTitle = json.isTeam;
-                    this.playerId = json.playerId;
-                    this.holding = json.holding;
-                    this.rankId = json.rankId;
-                    this.year = json.targetYear;
-                    this.viewName = `${json.winPlayerName} ${json.winRankName}`;
-                    this.teamName = json.winGroupName;
-                    this.edit = true;
-                });
+                axios.get(`/api/histories/${_value}`).then(res => {
+                    const json = res.data.response
+                    this.teamTitle = Boolean(json.isTeam)
+                    this.playerId = json.playerId
+                    this.holding = json.holding
+                    this.rankId = json.rankId
+                    this.year = json.targetYear
+                    this.viewName = `${json.winPlayerName} ${json.winRankName}`
+                    this.teamName = json.winGroupName
+                    this.edit = true
+                })
             }
         },
     },
-};
+    mounted() {
+        this.teamTitle = Boolean(this.isTeam)
+    },
+})
 </script>
