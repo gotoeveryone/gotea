@@ -3,8 +3,10 @@
         @click="newPlayer()">新規作成</button>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
     props: {
         url: String,
         countryId: String,
@@ -15,19 +17,19 @@ export default {
         newPlayer() {
             this.$store.dispatch('openModal', {
                 url: `${this.url}?country_id=${this.targetId}`,
-            });
+            })
         },
         isDisable() {
-            return this.targetId === '';
+            return this.targetId === ''
         },
     },
     computed: {
-        targetId() {
+        targetId(): string {
             if (!this.changed) {
-                return this.paramId;
+                return this.paramId
             }
-            return this.countryId;
+            return this.countryId
         },
     },
-}
+})
 </script>

@@ -5,26 +5,28 @@
     </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
+
 import Header from './Header.vue';
 import Items from './Items.vue';
 
-export default {
+export default Vue.extend({
     data: () => {
         return {
-            items: [],
-        };
+            items: Array(),
+        }
     },
     components: {
         ranksHeader: Header,
         ranksItems: Items,
     },
     methods: {
-        onSearch(_params) {
-            this.$http.get(`/api/players/ranks/${_params.country}`).then(res => {
-                this.items = res.body.response;
-            });
+        onSearch(_params: any) {
+            axios.get(`/api/players/ranks/${_params.country}`)
+                .then(res => this.items = res.data.response)
         },
     },
-};
+})
 </script>

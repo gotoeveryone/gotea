@@ -26,10 +26,11 @@ before_install:
   - if [[ $CS = 1 ]]; then nvm install node; fi
   - if [[ $CS = 1 ]]; then nvm alias default node; fi
   - if [[ $CS = 1 ]]; then node --version; fi
+  - if [[ $CS = 1 ]]; then npm i -g yarn; fi
 
 before_script:
   - if [[ $CS = 1 ]]; then composer require cakephp/cakephp-codesniffer:~3.0; fi
-  - if [[ $CS = 1 ]]; then npm install; fi
+  - if [[ $CS = 1 ]]; then yarn; fi
   - if [[ $CS != 1 ]]; then mysql -uroot -e "create database gotea_test"; fi
   - if [[ $CS != 1 ]]; then cp .env.example .env; fi
   - if [[ $CS != 1 ]]; then composer install; fi
@@ -38,8 +39,8 @@ before_script:
 
 script:
   - if [[ $CS = 1 ]]; then composer phpcs; fi
-  - if [[ $CS = 1 ]]; then npm run eslint; fi
-  - if [[ $CS = 1 ]]; then npm run sasslint; fi
+  - if [[ $CS = 1 ]]; then yarn run tslint; fi
+  - if [[ $CS = 1 ]]; then yarn run sasslint; fi
   - if [[ $CS != 1 ]]; then composer phpunit; fi
 
 notifications:

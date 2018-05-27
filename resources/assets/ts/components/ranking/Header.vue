@@ -31,89 +31,88 @@
     </ul>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
+
+import Header from './Header.vue'
+import Items from './Items.vue'
+
+export default Vue.extend({
     props: {
         lastUpdate: String,
     },
     data: () => {
         return {
-            countries: [],
-            years: [],
+            countries: Array(),
+            years: Array(),
             select: {
-                year: null,
-                country: null,
-                limit: null,
+                year: '',
+                country: '',
+                limit: 0,
                 from: '',
                 to: '',
             },
-        };
+        }
     },
     methods: {
-        changeValue($event) {
-            this.select[$event.target.name] = $event.target.value;
-            this.search();
+        changeValue($event: any) {
+            this.select[$event.target.name] = $event.target.value
+            this.search()
         },
         search() {
-            this.$emit('search', this.select);
+            this.$emit('search', this.select)
         },
         clearDate() {
-            this.select.from = '';
-            this.select.to = '';
-            this.search();
+            this.select.from = ''
+            this.select.to = ''
+            this.search()
         },
         json() {
-            this.$emit('json', this.select);
+            this.$emit('json', this.select)
         },
         useInputDate() {
             const selected = this.years.find(
                 y => y.value === parseInt(this.select.year, 10)
-            );
-            return selected ? !selected.old : false;
+            )
+            return selected ? !selected.old : false
         },
     },
     mounted() {
         // 所属国
         Promise.all([
-            this.$http.get('/api/countries'),
-            this.$http.get('/api/years'),
+            axios.get('/api/countries'),
+            axios.get('/api/years'),
         ])
-            .then(data => {
-                data[0].body.response.forEach(obj => {
-                    this.countries.push({
-                        value: obj.code,
-                        text: `${obj.name}棋戦`,
-                    });
-                });
-
-                data[1].body.response.forEach(obj => {
-                    this.years.push({
-                        value: obj.year,
-                        text: `${obj.year}年度`,
-                        old: obj.old,
-                    });
-                });
+            .then(res => {
+                this.countries = res[0].data.response.map((obj: any) => ({
+                    value: obj.code,
+                    text: `${obj.name}棋戦`,
+                }))
+                this.years = res[1].data.response.map((obj: any) => ({
+                    value: obj.year,
+                    text: `${obj.year}年度`,
+                    old: obj.old,
+                }))
             })
             .then(() => {
-                this.select = {
-                    year: this.years[0].value,
-                    country: this.countries[0].value || '',
-                    limit: this.limits[0].value,
-                };
-                this.search();
-            });
+                this.select.year = this.years[0].value,
+                this.select.country = this.countries[0].value || '',
+                this.select.limit = this.limits[0].value,
+                this.search()
+            })
     },
     computed: {
         limits() {
-            const limits = [];
+            const limits = []
             for (let l = 20; l <= 50; l = l + 10) {
                 limits.push({
                     value: l,
                     text: `～${l}位`,
-                });
+                })
             }
-            return limits;
+            return limits
         },
     },
-};
+})
 </script>

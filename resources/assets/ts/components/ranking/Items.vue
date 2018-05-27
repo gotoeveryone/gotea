@@ -28,30 +28,29 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
     props: {
-        items: Array,
-    },
-    data: () => {
-        return {};
+        items: Array as () => any[],
     },
     methods: {
-        getRank(_idx, _row) {
+        getRank(_idx: number, _row: any) {
             if (this.items[_idx - 1]) {
-                const beforeRank = this.items[_idx - 1].rank;
-                return _row.rank === beforeRank ? '' : `${_row.rank}`;
+                const beforeRank = this.items[_idx - 1].rank
+                return _row.rank === beforeRank ? '' : `${_row.rank}`
             }
-            return _row.rank;
+            return _row.rank
         },
-        getSexClass(_row) {
-            return _row.sex === '女性' ? 'female' : 'male';
+        getSexClass(_row: any) {
+            return _row.sex === '女性' ? 'female' : 'male'
         },
-        select(_row) {
+        select(_row: any) {
             this.$store.dispatch('openModal', {
                 url: _row.url,
-            });
+            })
         },
     },
-};
+})
 </script>

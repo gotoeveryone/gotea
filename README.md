@@ -1,26 +1,37 @@
 # Gotea (ゴティー)
 
 [![Build Status](https://travis-ci.org/gotoeveryone/gotea.svg?branch=master)](https://travis-ci.org/cicatrice/travis-test)
-[![Dependency Status](https://beta.gemnasium.com/badges/github.com/gotoeveryone/gotea.svg)](https://beta.gemnasium.com/projects/github.com/gotoeveryone/gotea)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)
 [![GitHub version](https://badge.fury.io/gh/gotoeveryone%2Fgotea.svg)](https://badge.fury.io/gh/gotoeveryone%2Fgotea)
 
 囲碁のプロ棋士・棋戦情報を管理します。  
 [CakePHP](http://cakephp.org) 3.x を利用しています。
 
-## 前提
-
-以下がインストールされていること。
+## Requirements
 
 *   php7.1.3+
 *   composer
 *   nodejs
+*   yarn
 
-## セットアップ
+## Setup
 
-1.  `.env.example`を参考にプロジェクトルートに`.env`ファイルを生成します。
-2.  プロジェクトルートで`composer install`を実行します。
-3.  同じくプロジェクトルートで`npm install`を実行します。
+```console
+$ cd <project_root>
+$ cp .env.example .env
+$ composer install
+$ yarn
+```
+
+## Run
+
+```console
+$ # frontend
+$ yarn run dev
+$
+$ # backend
+$ ./bin/cake server
+```
 
 ### VSCode を利用する場合
 
@@ -54,7 +65,7 @@
 
 以下コマンドを実行してください。
 
-```
+```console
 $ cd ./docker
 $ LOCAL_IP=<your local ip> docker-compose up
 $ # Macの場合
@@ -76,7 +87,7 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 
 環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合はプロジェクトルートの`logs`ディレクトリ）。
 
-*   igoapp-access.log（アクセスログ）
-*   igoapp-error.log（エラーログ）
-*   igoapp-cli-debug.log（CLI デバッグログ）
-*   igoapp-cli-error.log（CLI エラーログ）
+*   gotea-access.log（アクセスログ）
+*   gotea-error.log（エラーログ）
+*   gotea-cli-debug.log（CLI デバッグログ）
+*   gotea-cli-error.log（CLI エラーログ）

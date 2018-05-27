@@ -5,28 +5,28 @@
     </ul>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
     props: {
-        tabs: Array,
-        id: Number,
-        hasHistories: Boolean,
+        tabs: Array as () => string[],
     },
     data: () => {
         return {
             selectTab: '',
-        };
+        }
     },
     methods: {
-        select(_tab) {
-            this.selectTab = _tab;
+        select(tab: string) {
+            this.selectTab = tab
         },
-        isSelect(_tab) {
-            return this.selectTab === _tab;
+        isSelect(tab: string) {
+            return this.selectTab === tab
         },
     },
     mounted() {
-        this.selectTab = this.tabs[0];
+        this.selectTab = this.tabs[0]
     },
-}
+})
 </script>

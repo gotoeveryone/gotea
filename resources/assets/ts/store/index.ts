@@ -1,6 +1,9 @@
-import Vuex from 'vuex';
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-export const store = new Vuex.Store({
+Vue.use(Vuex)
+
+export default new Vuex.Store({
     state: {
         modal: {
             url: '',
@@ -16,45 +19,47 @@ export const store = new Vuex.Store({
     },
     getters: {
         modalOptions: (state) => () => {
-            return state.modal;
+            return state.modal
         },
         dialogOptions: (state) => () => {
-            return state.dialog;
+            return state.dialog
         },
     },
     mutations: {
         openModal(state, _modal) {
-            state.modal = _modal;
+            state.modal = _modal
         },
         closeModal(state) {
             state.modal = {
                 url: '',
                 width: '',
                 height: '',
-            };
+            }
         },
         openDialog(state, _dialog) {
-            state.dialog = _dialog;
+            state.dialog = _dialog
         },
         closeDialog(state) {
             state.dialog = {
                 title: '',
                 messages: '',
-            };
+                type: 'info',
+                server: false,
+            }
         },
     },
     actions: {
         openModal(context, _modal) {
-            context.commit('openModal', _modal);
+            context.commit('openModal', _modal)
         },
         closeModal(context) {
-            context.commit('closeModal');
+            context.commit('closeModal')
         },
         openDialog(context, _dialog) {
-            context.commit('openDialog', _dialog);
+            context.commit('openDialog', _dialog)
         },
         closeDialog(context) {
-            context.commit('closeDialog');
+            context.commit('closeDialog')
         },
     },
-});
+})

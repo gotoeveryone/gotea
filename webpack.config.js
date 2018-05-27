@@ -4,11 +4,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = {
     entry: {
-        'js/app.js': path.resolve(__dirname, 'resources/assets/js/app.js'),
-        'js/common.js': path.resolve(
-            __dirname,
-            'resources/assets/js/common.js'
-        ),
+        'js/app.js': path.resolve(__dirname, 'resources/assets/ts/main.ts'),
         'css/app.css': path.resolve(
             __dirname,
             'resources/assets/sass/app.scss'
@@ -23,7 +19,7 @@ module.exports = {
         filename: '[name]',
     },
     resolve: {
-        extensions: ['.webpack.js', '.vue', '.js', '.scss', 'css'],
+        extensions: ['.ts', '.vue', '.js', '.scss', 'css'],
         alias: {
             vue$: 'vue/dist/vue.common',
         },
@@ -40,6 +36,14 @@ module.exports = {
     module: {
         loaders: [
             {
+                test: /\.ts$/,
+                exclude: /node_modules|vue\/src/,
+                loader: 'ts-loader',
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                },
+            },
+            {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
@@ -49,24 +53,8 @@ module.exports = {
                 },
             },
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loaders: ['buble-loader', 'eslint-loader'],
-            },
-            {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader',
-            },
-            {
-                test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-                loader: 'file-loader',
-            },
-            {
-                test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-                loader: 'file-loader',
-                query: {
-                    name: '[name].[ext]?[hash]',
-                },
             },
             {
                 test: /\.scss$/,

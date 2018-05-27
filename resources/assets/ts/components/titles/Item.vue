@@ -31,82 +31,86 @@
     </li>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
+
+export default Vue.extend({
     props: {
         item: Object,
     },
     data: () => {
         return {
-            label: String,
-        };
+            label: '',
+        }
     },
     methods: {
         save() {
             // 未登録なら何もしない
             if (!this.isSaved()) {
-                return;
+                return
             }
             // 更新処理
-            this.$http.put(`/api/titles/${this.item.id}`, this.item).catch(res => {
-                const message = res.body.response.message;
-                this.$store.dispatch('openDialog', {
-                    messages: message || '更新に失敗しました…。',
-                    type: 'error',
-                });
-            });
+            axios.put(`/api/titles/${this.item.id}`, this.item)
+                .catch(res => {
+                    const message = res.data.response.message
+                    this.$store.dispatch('openDialog', {
+                        messages: message || '更新に失敗しました…。',
+                        type: 'error',
+                    })
+            })
         },
         select() {
             if (!this.isSaved()) {
-                this.add();
+                this.add()
             } else {
                 this.$store.dispatch('openModal', {
                     url: this.item.url,
-                });
+                })
             }
         },
         add() {
             // 登録処理
-            this.$http
+            axios
                 .post('/api/titles/', this.item)
                 .then(res => {
-                    this.item.id = res.body.response.id;
-                    this.setLabel();
+                    this.item.id = res.data.response.id
+                    this.setLabel()
                     this.$store.dispatch('openDialog', {
                         messages: `タイトル【${this.item.name}】を登録しました。`,
-                    });
+                    })
                 })
                 .catch(res => {
-                    const message = res.body.response.message;
+                    const message = res.data.response.message
                     this.$store.dispatch('openDialog', {
                         messages: message || '登録に失敗しました…。',
                         type: 'error',
-                    });
-                });
+                    })
+                })
         },
-        saveDatepicker($event) {
+        saveDatepicker($event: any) {
             if (this.item.htmlFileModified !== $event.target.value) {
-                this.item.htmlFileModified = $event.target.value;
-                this.save();
+                this.item.htmlFileModified = $event.target.value
+                this.save()
             }
         },
         setLabel() {
-            this.label = this.isSaved() ? '開く' : '登録';
+            this.label = this.isSaved() ? '開く' : '登録'
         },
         isSaved() {
-            return this.item.id !== null && this.item.id !== undefined;
+            return this.item.id !== null && this.item.id !== undefined
         },
     },
     computed: {
-        winnerName() {
-            return this.item.winnerName || '';
+        winnerName(): string {
+            return this.item.winnerName || ''
         },
-        rowClass() {
-            return this.item.isClosed ? 'table-row-closed' : '';
-        },
+        rowClass(): string {
+            return this.item.isClosed ? 'table-row-closed' : ''
+        }
     },
     mounted() {
-        this.setLabel();
+        this.setLabel()
     },
-};
+})
 </script>
