@@ -1,5 +1,3 @@
-import './util'
-
 import Vue from 'vue'
 
 import store from './store'
@@ -13,6 +11,7 @@ import AddHistory from './components/titles/AddHistory.vue'
 import Ranks from './components/ranks/Index.vue'
 
 declare var window: any
+declare var require: any
 
 /**
  * アプリケーションのVueインスタンス
@@ -70,4 +69,7 @@ window.App = new Vue({
             return this.$store.getters.dialogOptions()
         },
     },
+    mounted() {
+        require('./util')
+    }
 })
