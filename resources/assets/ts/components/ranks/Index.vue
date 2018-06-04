@@ -9,8 +9,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-import Header from './Header.vue';
-import Items from './Items.vue';
+import Header from '@/components/ranks/Header.vue';
+import Items from '@/components/ranks/Items.vue';
 
 export default Vue.extend({
     data: () => {

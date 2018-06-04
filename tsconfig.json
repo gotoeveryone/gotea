@@ -4,9 +4,9 @@
         "lib": ["dom", "es2015", "es2015.promise"],
         "module": "es2015",
         "moduleResolution": "node",
-        "baseUrl": "./resources/assets/",
+        "baseUrl": "resources/assets",
         "paths": {
-            "*": ["ts/*"]
+            "@/*": ["ts/*"]
         },
         "isolatedModules": false,
         "experimentalDecorators": true,
