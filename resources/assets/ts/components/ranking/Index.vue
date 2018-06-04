@@ -10,8 +10,8 @@ import Vue from 'vue'
 import axios from 'axios'
 import moment from 'moment'
 
-import RankingHeader from './Header.vue'
-import RankingItems from './Items.vue'
+import RankingHeader from '@/components/ranking/Header.vue'
+import RankingItems from '@/components/ranking/Items.vue'
 
 export default Vue.extend({
     data: () => {

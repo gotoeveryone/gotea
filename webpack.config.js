@@ -21,7 +21,8 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.vue', '.js', '.scss', 'css'],
         alias: {
-            vue$: 'vue/dist/vue.common',
+            'vue$': 'vue/dist/vue.common',
+            '@': path.resolve('resources/assets/ts'),
         },
     },
     stats: 'minimal',

@@ -27,8 +27,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-import Header from './Header.vue'
-import Item from './Item.vue'
+import Header from '@/components/titles/Header.vue'
+import Item from '@/components/titles/Item.vue'
 
 export default Vue.extend({
     data: () => {
