@@ -1,6 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
     entry: {
@@ -18,6 +19,9 @@ module.exports = {
         path: path.join(__dirname, 'webroot'),
         filename: '[name]',
     },
+    performance: {
+        hints: false,
+    },
     resolve: {
         extensions: ['.ts', '.vue', '.js', '.scss', 'css'],
         alias: {
@@ -27,6 +31,7 @@ module.exports = {
     },
     stats: 'minimal',
     plugins: [
+        new VueLoaderPlugin(),
         new ExtractTextPlugin({
             filename: '[name]',
             disable: false,
@@ -35,7 +40,7 @@ module.exports = {
         new FriendlyErrorsWebpackPlugin(),
     ],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.ts$/,
                 exclude: /node_modules|vue\/src/,
@@ -47,11 +52,6 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {
-                    loaders: {
-                        js: 'buble-loader',
-                    },
-                },
             },
             {
                 test: /\.css$/,
