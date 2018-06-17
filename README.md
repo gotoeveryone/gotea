@@ -79,7 +79,7 @@ $ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
 *   Sass
 
 最終的な JS・CSS は`webpack`を利用して生成します。  
-`npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
+`yarn run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
 
 ## その他
 
