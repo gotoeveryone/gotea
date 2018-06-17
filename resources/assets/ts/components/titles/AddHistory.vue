@@ -95,7 +95,7 @@ export default Vue.extend({
             playerId: null,
             rankId: null,
             teamName: null,
-            teamTitle: false,
+            teamTitle: '',
             players: [],
         }
     },
@@ -165,7 +165,7 @@ export default Vue.extend({
             this.playerId = null
             this.rankId = null
             this.teamName = null
-            this.teamTitle = Boolean(this.isTeam)
+            this.teamTitle = this.isTeam || ''
             this.players = []
             this.edit = false
             this.$emit('cleared')
@@ -184,7 +184,7 @@ export default Vue.extend({
             if (_value) {
                 axios.get(`/api/histories/${_value}`).then(res => {
                     const json = res.data.response
-                    this.teamTitle = Boolean(json.isTeam)
+                    this.teamTitle = json.isTeam || ''
                     this.playerId = json.playerId
                     this.holding = json.holding
                     this.rankId = json.rankId
@@ -197,7 +197,7 @@ export default Vue.extend({
         },
     },
     mounted() {
-        this.teamTitle = Boolean(this.isTeam)
+        this.teamTitle = this.isTeam || ''
     },
 })
 </script>
