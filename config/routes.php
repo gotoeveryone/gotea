@@ -18,7 +18,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Gotoeveryone\Middleware\TraceMiddleware;
@@ -162,9 +161,3 @@ Router::scope('/', function (RouteBuilder $routes) {
     // フォールバックメソッド
     // $routes->fallbacks('DashedRoute');
 });
-
-/**
- * Load all plugin routes.  See the Plugin documentation on
- * how to customize the loading of plugin routes.
- */
-Plugin::routes();
