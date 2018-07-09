@@ -127,6 +127,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     // API
     $routes->prefix('Api', function (RouteBuilder $routes) {
+        $routes->setExtensions(['json']);
 
         $routes->get('/years', ['controller' => 'Years', 'action' => 'index'], 'api_years');
 
