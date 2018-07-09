@@ -67,9 +67,7 @@ $ ./bin/cake server
 
 ```console
 $ cd ./docker
-$ LOCAL_IP=<your local ip> docker-compose up
-$ # Macの場合
-$ LOCAL_IP=$(ipconfig getifaddr en1) docker-compose up
+$ LOCAL_IP=<your local ip> docker-compose up -d
 ```
 
 ### フロントコード
