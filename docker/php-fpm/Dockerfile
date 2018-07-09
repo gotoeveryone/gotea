@@ -1,5 +1,5 @@
 FROM php:7-fpm
-MAINTAINER Kazuki_Kamizuru<kamizuru@k2ss.info>
+LABEL maintainer="Kazuki_Kamizuru<kamizuru@k2ss.info>"
 
 RUN apt-get update \
     && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev \
