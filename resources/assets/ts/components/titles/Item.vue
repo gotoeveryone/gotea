@@ -64,7 +64,7 @@ export default Vue.extend({
             if (!this.isSaved()) {
                 this.add()
             } else {
-                this.$store.dispatch('openModal', {
+                this.$emit('openModal', {
                     url: this.item.url,
                 })
             }
