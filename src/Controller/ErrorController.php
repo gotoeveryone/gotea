@@ -15,6 +15,8 @@ use PDOException;
  */
 class ErrorController extends BaseErrorController
 {
+    use JsonResponseTrait;
+
     /**
      * {@inheritDoc}
      */

@@ -19,7 +19,12 @@ class AppExceptionRenderer extends ExceptionRenderer
      */
     public function render()
     {
-        $this->_getController()->rollback($this->error);
+        $this->controller->rollback($this->error);
+
+        // JSONリクエストの場合
+        if ($this->controller->getRequest()->is('json')) {
+            return $this->controller->renderError($this->error->getCode());
+        }
 
         return parent::render();
     }

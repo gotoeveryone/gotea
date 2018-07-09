@@ -25,12 +25,16 @@ trait JsonResponseTrait
     /**
      * エラーレスポンスを生成します。
      *
-     * @param int $code ステータスコード
+     * @param int|null $code ステータスコード
      * @param string|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    public function renderError($code = 500, $message = null)
+    public function renderError(?int $code = 500, ?string $message = null)
     {
+        if ($code === 0) {
+            $code = 500;
+        }
+
         $this->setResponse($this->getResponse()->withStatus($code));
 
         if (!$message) {
