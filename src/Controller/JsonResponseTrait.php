@@ -26,10 +26,10 @@ trait JsonResponseTrait
      * エラーレスポンスを生成します。
      *
      * @param int|null $code ステータスコード
-     * @param string|null $message メッセージ
+     * @param string|array|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    public function renderError(?int $code = 500, ?string $message = null)
+    public function renderError(?int $code = 500, $message = null)
     {
         if ($code === 0) {
             $code = 500;
