@@ -9,6 +9,7 @@ export default new Vuex.Store({
             url: '',
             height: '',
             width: '',
+            callback: null,
         },
         dialog: {
             title: '',
@@ -34,6 +35,7 @@ export default new Vuex.Store({
                 url: '',
                 width: '',
                 height: '',
+                callback: null,
             }
         },
         openDialog(state, _dialog) {

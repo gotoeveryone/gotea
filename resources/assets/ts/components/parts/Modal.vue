@@ -21,6 +21,11 @@ export default Vue.extend({
     methods: {
         close() {
             this.$store.dispatch('closeModal')
+                .then(() => {
+                    if (typeof this.options.callback === 'function') {
+                        this.options.callback();
+                    }
+                })
         },
         isShow() {
             return (this.options.url !== '')

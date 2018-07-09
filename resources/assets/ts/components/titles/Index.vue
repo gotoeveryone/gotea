@@ -17,7 +17,7 @@
                 </li>
             </ul>
             <ul class="table-body" v-if="items.length">
-                <title-item v-for="(item, idx) in items" :key="idx" :item="item"></title-item>
+                <title-item v-for="(item, idx) in items" :key="idx" :item="item" @openModal="openWithCallback"></title-item>
             </ul>
         </div>
     </section>
@@ -33,6 +33,10 @@ import Item from '@/components/titles/Item.vue'
 export default Vue.extend({
     data: () => {
         return {
+            params: {
+                country_id: null,
+                is_closed: null,
+            },
             items: Array(),
         }
     },
@@ -42,12 +46,12 @@ export default Vue.extend({
     },
     methods: {
         onSearch(_params: any) {
-            const params = {
+            this.params = {
                 country_id: _params.country,
                 is_closed: _params.type,
             }
 
-            axios.get('/api/titles', { params: params })
+            axios.get('/api/titles', { params: this.params })
                 .then(res => this.items = res.data.response)
         },
         addRow(_params: any) {
@@ -74,6 +78,12 @@ export default Vue.extend({
                     })
                 )
         },
+        openWithCallback(options: Object) {
+            this.$store.dispatch('openModal', Object.assign(options, {
+                callback: () => axios.get('/api/titles', { params: this.params })
+                    .then(res => this.items = res.data.response),
+            }))
+        }
     }
 })
 </script>
