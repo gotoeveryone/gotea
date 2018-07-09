@@ -9,7 +9,7 @@ services:
     build: ./nginx
     volumes_from: [gotea]
     ports:
-      - 80:80
+      - 8080:80
     links:
       - php7-gotea
 

@@ -1,5 +1,5 @@
 FROM nginx:latest
-MAINTAINER Kazuki_Kamizuru<kamizuru@k2ss.info>
+LABEL maintainer="Kazuki_Kamizuru<kamizuru@k2ss.info>"
 
 COPY ./default.conf /etc/nginx/conf.d/
 
