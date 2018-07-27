@@ -110,6 +110,7 @@ class PlayersController extends ApiController
         $folder = new Folder(JSON . 'ranking' . DS . $dir, true, 0755);
         if ($folder->errors()) {
             Log::error($folder->errors());
+
             return $this->renderError(500, 'JSON出力失敗');
         }
 
