@@ -82,6 +82,16 @@ abstract class ApiTestCase extends IntegrationTestCase
     }
 
     /**
+     * レスポンスを配列に変換して返却します。
+     *
+     * @return array
+     */
+    protected function getResponseArray() : array
+    {
+        return json_decode($this->_getBodyAsString(), true);
+    }
+
+    /**
      * 比較用のJSONレスポンスを取得します。
      *
      * @param array $data

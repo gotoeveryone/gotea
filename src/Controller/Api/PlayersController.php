@@ -88,8 +88,8 @@ class PlayersController extends ApiController
     public function createRanking(string $country, int $year, int $limit)
     {
         $request = $this->getRequest();
-        $from = $request->getQuery('from');
-        $to = $request->getQuery('to');
+        $from = $request->getData('from');
+        $to = $request->getData('to');
 
         // ランキングデータ取得
         $json = $this->getRankingData([
