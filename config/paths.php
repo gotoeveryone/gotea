@@ -88,3 +88,8 @@ define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'vendor' . DS . 'cakephp' . DS . 'c
  */
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
+
+/**
+ * Output json directory.
+ */
+define('JSON', env('JSON_OUTPUT_DIR', TMP));
