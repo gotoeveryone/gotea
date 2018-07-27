@@ -54,6 +54,7 @@ return [
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
+        'jsonDir' => env('JSON_OUTPUT_DIR', WWW_ROOT),
     ],
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Gotea\Controller\Api;
 
+use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
 use Cake\I18n\Date;
@@ -107,7 +108,7 @@ class PlayersController extends ApiController
 
         // フォルダ作成
         $dir = $json['countryCode'];
-        $folder = new Folder(JSON . 'ranking' . DS . $dir, true, 0755);
+        $folder = new Folder(Configure::read('App.jsonDir') . 'ranking' . DS . $dir, true, 0755);
         if ($folder->errors()) {
             Log::error($folder->errors());
 
