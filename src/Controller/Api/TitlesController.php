@@ -2,6 +2,7 @@
 
 namespace Gotea\Controller\Api;
 
+use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Log\Log;
 use Gotea\Collection\Iterator\NewsIterator;
@@ -69,7 +70,7 @@ class TitlesController extends ApiController
             ->map(new NewsIterator);
 
         // ファイル作成
-        $file = new File(JSON . 'news.json');
+        $file = new File(Configure::read('App.jsonDir') . 'news.json');
         Log::info("JSONファイル出力：{$file->path}");
 
         if (!$file->write(json_encode($titles))) {
