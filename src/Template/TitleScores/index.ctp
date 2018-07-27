@@ -73,6 +73,7 @@
                         'method' => 'put',
                         'data' => [
                             'name' => $this->request->getData('name'),
+                            'title_name' => $this->request->getData('title_name'),
                             'country_id' => $this->request->getData('country_id'),
                             'target_year' => $this->request->getData('target_year'),
                             'started' => $this->request->getData('started'),
@@ -85,6 +86,7 @@
                         'method' => 'delete',
                         'data' => [
                             'name' => $this->request->getData('name'),
+                            'title_name' => $this->request->getData('title_name'),
                             'country_id' => $this->request->getData('country_id'),
                             'target_year' => $this->request->getData('target_year'),
                             'started' => $this->request->getData('started'),
