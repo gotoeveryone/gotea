@@ -3,6 +3,7 @@
 namespace Gotea\Controller\Api;
 
 use Cake\Filesystem\File;
+use Cake\Filesystem\Folder;
 use Cake\I18n\Date;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
@@ -104,10 +105,17 @@ class PlayersController extends ApiController
             return $this->renderError(404);
         }
 
-        // ファイル作成
+        // フォルダ作成
         $dir = $json['countryCode'];
+        $folder = new Folder(JSON . 'ranking' . DS . $dir, true, 0755);
+        if ($folder->errors()) {
+            Log::error($folder->errors());
+            return $this->renderError(500, 'JSON出力失敗');
+        }
+
+        // ファイル作成
         $fileName = strtolower($json['countryName']) . $json['year'];
-        $file = new File(env('JSON_OUTPUT_DIR') . "ranking/${dir}/{$fileName}.json");
+        $file = new File($folder->pwd() . DS . "{$fileName}.json");
         Log::info("JSONファイル出力：{$file->path}");
 
         if (!$file->write(json_encode($json))) {

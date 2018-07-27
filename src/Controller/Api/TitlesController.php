@@ -69,7 +69,7 @@ class TitlesController extends ApiController
             ->map(new NewsIterator);
 
         // ファイル作成
-        $file = new File(env('JSON_OUTPUT_DIR') . 'news.json');
+        $file = new File(JSON . 'news.json');
         Log::info("JSONファイル出力：{$file->path}");
 
         if (!$file->write(json_encode($titles))) {
