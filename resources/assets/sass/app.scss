@@ -141,6 +141,10 @@
     width: 120px;
 }
 
+.table-column {
+    font-size: .8rem;
+}
+
 /* -------------------------------------------
    検索エリア
  ------------------------------------------- */
@@ -379,19 +383,22 @@
         width: 100px;
     }
 
-    .table-row-closed {
-        background-color: $c_gray;
+    .table-row {
+        width: 100%;
+        &-closed {
+            background-color: $c_gray;
+        }
     }
 
     .table-column {
         padding: 0 5px;
 
         &_name {
-            width: 20%;
+            width: 18%;
         }
 
         &_winner {
-            width: 15%;
+            width: 12%;
         }
 
         &_holding,
@@ -403,7 +410,8 @@
         }
 
         &_team,
-        &_closed {
+        &_closed,
+        &_menu {
             width: 5%;
             text-align: center;
         }
@@ -413,14 +421,15 @@
         }
 
         &_modified {
-            width: 10%;
+            width: 12%;
             &-input {
                 text-align: center;
             }
         }
 
         &_open-detail {
-            padding-left: 10px;
+            width: 7%;
+            overflow-x: hidden;
         }
     }
 }

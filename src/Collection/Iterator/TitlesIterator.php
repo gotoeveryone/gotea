@@ -35,6 +35,7 @@ class TitlesIterator
             'isNewHistories' => $item->isNewHistories(),
             'isRecent' => $item->isRecentModified(),
             'isClosed' => $item->is_closed,
+            'hasMenu' => $item->has_menu,
             'url' => Router::url(['_name' => 'view_title', $item->id]),
         ];
     }

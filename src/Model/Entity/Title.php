@@ -113,6 +113,7 @@ class Title extends AppEntity
             'htmlFileName' => $this->html_file_name,
             'htmlFileModified' => $this->html_file_modified->format('Y/m/d'),
             'isClosed' => $this->is_closed,
+            'hasMenu' => $this->has_menu,
         ];
     }
 }
