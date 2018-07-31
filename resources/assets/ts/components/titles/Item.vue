@@ -25,6 +25,9 @@
         <span class="table-column table-column_closed">
             <input type="checkbox" @change="save" v-model="item.isClosed" :disabled="!isSaved()">
         </span>
+        <span class="table-column table-column_menu">
+            <input type="checkbox" @change="save" v-model="item.hasMenu" :disabled="!isSaved()">
+        </span>
         <span class="table-column table-column_open-detail">
             <a class="view-link" @click="select()" v-text="label"></a>
         </span>
