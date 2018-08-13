@@ -2,13 +2,82 @@
 @import 'module/_normalize.scss';
 @import 'module/_mixin.scss';
 
+
+/* -------------------------------------------
+   ログイン
+ ------------------------------------------- */
+.login-container {
+    @include flex-center();
+
+    .login-content {
+        border: 1px solid $c_black;
+        border-radius: 5px;
+        width: 40%;
+        max-width: 300px;
+    }
+
+    .login-title {
+        width: 100%;
+        background-color: $c_title;
+        color: $c_white;
+        font-family: 'Maitree', serif;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .login-main {
+        padding: 1rem;
+    }
+
+    .login-row {
+        margin: 1rem auto;
+    }
+
+    .login-account,
+    .login-password {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    @include flex-side-between();
+    height: $h_header;
+    background-color: $c_header;
+}
+
+.footer {
+    @include flex-center();
+    height: $h_footer;
+    background-color: $c_footer;
+}
+
+.page-title {
+    color: $c_title;
+    font-size: 1.5rem;
+}
+
+.main-content {
+    height: calc(100% - #{$h_header} - #{$h_footer});
+}
+
 .nav {
     margin: 0;
     padding: 0;
     background-color: $c_nav;
+    overflow-y: auto;
+}
+
+.main {
+    background-color: $c_main;
     overflow-y: auto;
 }
 
@@ -35,9 +104,6 @@
         color: #e2d14b;
         font-size: 180%;
         font-weight: bold;
-    }
-    .page-title {
-        width: 70%;
     }
     .other {
         width: 15%;
@@ -92,7 +158,6 @@
 }
 
 .recent-ranks-data {
-    @include not-liststyle();
     margin: 0 auto 10px;
     width: 90%;
     border: 1px solid $c_black;
@@ -129,6 +194,10 @@
     justify-content: center;
 }
 
+.button-wrap {
+    margin-left: auto;
+}
+
 .layout-button {
     @include button-link(#bbb);
 }
@@ -142,7 +211,22 @@
 }
 
 .table-column {
-    font-size: .8rem;
+    padding: .1rem .3rem;
+}
+
+.button {
+    &-primary {
+        @include button(lighten(rgb(22, 22, 190), 10%));
+        color: $c_white;
+    }
+    &-secondary {
+        @include button(lighten(rgb(16, 119, 16), 10%));
+        color: $c_white;
+    }
+    &-danger {
+        @include button(lighten(rgb(197, 13, 13), 10%));
+        color: $c_white;
+    }
 }
 
 /* -------------------------------------------
@@ -150,30 +234,98 @@
  ------------------------------------------- */
 .search-header {
     position: relative;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem;
     padding: $rowPadding;
     background-color: $c_white;
     border: 0.2rem solid #bbb;
     border-radius: 0.4rem;
 }
 
+.search-row {
+    @include flex-side-start();
+    padding: .3rem .5rem;
+}
+
 .search-row_label {
-    padding: 0 5px 0 15px;
+    padding: 0 5px;
     font-weight: normal;
+}
+
+/* -------------------------------------------
+   ページネーション
+ ------------------------------------------- */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: .4rem auto;
+
+    &-item {
+        margin: 0;
+        padding: 0;
+    }
+
+    .result-count {
+        padding-left: .3rem;
+        color: $c_red;
+    }
+
+    &-pager {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        li {
+            background-color: $c_gray;
+            margin: auto .1rem;
+            padding: .1rem .4rem .2rem;
+
+            &.active {
+                font-weight: bold;
+                background-color: darken($c_gray, 10%);
+            }
+
+            &.disabled {
+                a {
+                    cursor: initial;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+/* -------------------------------------------
+   一覧エリア
+ ------------------------------------------- */
+.table-header,
+.table-body {
+    margin: 0;
+    padding: 0;
+    border: 1px solid $c_black;
+}
+
+.table-header {
+    background-color: $c_gray;
+}
+
+.table-body {
+    margin-bottom: .5rem;
+    border-top: none;
+}
+
+.table-row {
+    @include flex-side-start();
+    padding: .3rem .5rem;
 }
 
 /* -------------------------------------------
    勝敗ランキング画面
  ------------------------------------------- */
 .ranking {
-    width: 30rem;
-
-    .search-header {
-        height: $h_ranking_header;
-    }
+    width: 500px;
 
     &_label {
-        width: 90px;
+        width: 6rem;
         text-align: right;
     }
 
@@ -191,24 +343,24 @@
         }
     }
 
-    .search-results {
-        height: calc(
-            100% - #{$h_ranking_header} - 1rem
-        ); /* content - .search-header and margin */
-    }
-
     .table-column {
-        &_no,
+        &_no {
+            width: 10%;
+            text-align: center;
+        }
+
         &_percent {
-            width: 13%;
+            width: 15%;
+            text-align: center;
         }
 
         &_player {
-            width: 40%;
+            width: 45%;
         }
 
         &_point {
             width: 10%;
+            text-align: center;
         }
     }
 }
@@ -224,8 +376,6 @@
     }
 
     .search-header {
-        height: $h_scores_header;
-
         .started {
             margin-right: 0.5rem;
         }
@@ -235,10 +385,6 @@
     }
 
     .search-results {
-        height: calc(
-            100% - #{$h_scores_header} - 10px
-        ); /* content - .search-header and padding */
-
         &.modal {
             height: calc(100% - 3rem - 2rem);
         }
@@ -247,6 +393,7 @@
     .table-column {
         &_id {
             width: 5%;
+            text-align: center;
         }
 
         &_title {
@@ -266,9 +413,6 @@
             display: flex;
             width: 20%;
             justify-content: center;
-            form {
-                width: 40%;
-            }
         }
     }
 
@@ -304,12 +448,6 @@
  ------------------------------------------- */
 .players {
     .search-header {
-        height: $h_players_header;
-
-        .result-count {
-            margin-left: 5px;
-            color: $c_red;
-        }
         .name {
             width: 180px;
         }
@@ -321,11 +459,6 @@
             }
         }
     }
-    .search-results {
-        height: calc(
-            100% - #{$h_players_header} - 10px
-        ); /* content - .search-header and padding */
-    }
 
     .table-row-retired {
         background-color: $c_gray;
@@ -334,6 +467,7 @@
     .table-column {
         &_id {
             width: 6%;
+            text-align: center;
         }
 
         &_name {
@@ -342,6 +476,7 @@
 
         &_country {
             width: 6%;
+            text-align: center;
         }
 
         &_enrollment {
@@ -351,15 +486,20 @@
         &_rank,
         &_sex {
             width: 5%;
+            text-align: center;
         }
 
         &_organization {
-            width: 8%;
+            width: 9%;
+            text-align: center;
         }
 
         &_score {
             padding: 0;
             width: 9%;
+            &-summary {
+                text-align: center;
+            }
             &-point {
                 display: flex;
                 justify-content: space-around;
@@ -368,6 +508,7 @@
 
         &_point {
             width: 3%;
+            text-align: center;
         }
     }
 }
@@ -384,21 +525,18 @@
     }
 
     .table-row {
-        width: 100%;
         &-closed {
             background-color: $c_gray;
         }
     }
 
     .table-column {
-        padding: 0 5px;
-
         &_name {
             width: 18%;
         }
 
         &_winner {
-            width: 12%;
+            width: 15%;
         }
 
         &_holding,
@@ -410,18 +548,17 @@
         }
 
         &_team,
-        &_closed,
-        &_menu {
+        &_closed {
             width: 5%;
             text-align: center;
         }
 
         &_filename {
-            width: 8%;
+            width: 9%;
         }
 
         &_modified {
-            width: 12%;
+            width: 13%;
             &-input {
                 text-align: center;
             }
@@ -429,7 +566,7 @@
 
         &_open-detail {
             width: 7%;
-            overflow-x: hidden;
+            text-align: center;
         }
     }
 }
@@ -438,14 +575,16 @@
    段位別棋士数検索
  ------------------------------------------- */
 .categories {
-    width: 15em;
+    width: 12rem;
     .table-column {
         &_rank {
             width: 40%;
+            text-align: right;
         }
 
         &_count {
             width: 60%;
+            text-align: right;
         }
     }
 }

@@ -78,13 +78,12 @@ class PlayersControllerTest extends AppTestCase
      */
     public function testSearch()
     {
-        $this->enableCsrfToken();
         $data = [
             'sex' => '男性',
             'country_id' => '1',
             'joined_from' => '1987',
         ];
-        $this->post(['_name' => 'find_players'], $data);
+        $this->get(['_name' => 'find_players', '?' => $data]);
 
         $this->assertResponseOk();
         $this->assertTemplate('index');
@@ -98,14 +97,13 @@ class PlayersControllerTest extends AppTestCase
      */
     public function testSearchInvalid()
     {
-        $this->enableCsrfToken();
         $data = [
             'name_english' => 'あああああ',
             'country_id' => '1',
             'joined_from' => 'testtest',
             'joined_to' => 'testtest',
         ];
-        $this->post(['_name' => 'find_players'], $data);
+        $this->get(['_name' => 'find_players', '?' => $data]);
 
         $this->assertResponseCode(400);
         $this->assertTemplate('index');

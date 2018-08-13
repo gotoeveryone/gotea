@@ -34,6 +34,8 @@ class UsersController extends AppController
             return $this->redirect($this->Auth->redirectUrl());
         }
 
+        $this->viewBuilder()->setLayout('login');
+
         return $this->set('form', new LoginForm)->render();
     }
 

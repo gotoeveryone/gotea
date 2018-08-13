@@ -111,12 +111,17 @@ class TitleScore extends AppEntity
 
     /**
      * 対局日を取得します。
-     * 複数日にまたがった場合、from-toという表示になります。
+     * 複数日にまたがった場合、fromとtoを返却します。
      *
-     * @return string
+     * @return array
      */
-    protected function _getDate()
+    protected function _getDates()
     {
-        return $this->started . ($this->started == $this->ended ? '' : '-' . $this->ended->format('d'));
+        $dates = [$this->started];
+        if ($this->ended->diffInDays($this->started, false) < 0) {
+            $dates[] = $this->ended;
+        }
+
+        return $dates;
     }
 }

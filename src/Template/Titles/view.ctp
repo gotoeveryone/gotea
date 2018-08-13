@@ -99,7 +99,7 @@
                         </div>
                     </li>
                     <li class="button-row">
-                        <?= $this->Form->button('保存') ?>
+                        <?= $this->Form->button('保存', ['class' => 'button button-primary']) ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>
@@ -131,7 +131,7 @@
                                         <span class="inner-column"><label>優勝者：</label><?= h($retention->winner_name) ?></span>
                                     </div>
                                     <div class="button-column">
-                                        <button type="button" value="edit" @click="select('<?= $retention->id ?>')">編集</button>
+                                        <button type="button" class="button button-secondary" value="edit" @click="select('<?= $retention->id ?>')">編集</button>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
                                         <span class="inner-column"><label>優勝者：</label><?= h($history->winner_name) ?></span>
                                     </div>
                                     <div class="button-column">
-                                        <button type="button" value="edit" @click="select('<?= $history->id ?>')">編集</button>
+                                        <button type="button" class="button button-secondary" value="edit" @click="select('<?= $history->id ?>')">編集</button>
                                     </div>
                                 </div>
                             </div>

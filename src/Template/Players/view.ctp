@@ -163,7 +163,7 @@
                                 ]);
                             ?>
                         <?php endif ?>
-                        <?= $this->Form->button('保存') ?>
+                        <?= $this->Form->button('保存', ['class' => 'button button-primary']) ?>
                     </li>
                 </ul>
             <?=$this->Form->end()?>
@@ -182,7 +182,7 @@
                             'url' => ['_name' => 'create_ranks', $player->id],
                         ]) ?>
                         <div class="input-row">
-                            <div class="input-box">
+                            <div class="box box-start">
                                 <?php
                                     echo $this->Form->control('rank_id', [
                                         'label' => ['class' => 'label', 'text' => '段位'],
@@ -197,11 +197,12 @@
                                     ]);
                                 ?>
                             </div>
-                            <div class="right-column">
+                            <div class="box box-end">
                                 <?php
                                     echo $this->Form->control('newest', [
-                                        'label' => ['class' => 'label', 'text' => '最新として登録'],
+                                        'label' => ['class' => 'checkbox-label', 'text' => '最新として登録'],
                                         'checked' => true,
+                                        'class' => 'checkbox-with-label',
                                     ]);
                                     echo $this->Form->button('登録', ['class' => 'add-ranks']);
                                 ?>
@@ -218,7 +219,7 @@
                             'url' => ['_name' => 'update_ranks', $player_rank->player_id, $player_rank->id],
                         ]) ?>
                             <div class="input-row">
-                                <div class="input-box">
+                                <div class="box box-start">
                                     <?php
                                         echo $this->Form->control('rank_id', [
                                             'label' => ['class' => 'label', 'text' => '段位'],
@@ -233,7 +234,7 @@
                                         ]);
                                     ?>
                                 </div>
-                                <div class="right-column">
+                                <div class="box box-end">
                                     <?= $this->Form->button('更新', ['class' => 'add-ranks']) ?>
                                 </div>
                             </div>

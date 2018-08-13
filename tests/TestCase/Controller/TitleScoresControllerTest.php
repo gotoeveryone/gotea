@@ -47,7 +47,7 @@ class TitleScoresControllerTest extends AppTestCase
      */
     public function testIndex()
     {
-        $this->get('/scores/');
+        $this->get(['_name' => 'scores']);
         $this->assertResponseOk();
         $this->assertTemplate('index');
         $this->assertResponseContains('<nav class="nav">');
@@ -60,12 +60,11 @@ class TitleScoresControllerTest extends AppTestCase
      */
     public function testSearchInvalid()
     {
-        $this->enableCsrfToken();
         $data = [
             'started' => 'testtest',
             'ended' => 'testtest',
         ];
-        $this->post(['_name' => 'scores'], $data);
+        $this->get(['_name' => 'find_scores', '?' => $data]);
 
         $this->assertResponseCode(400);
         $this->assertTemplate('index');
@@ -79,12 +78,11 @@ class TitleScoresControllerTest extends AppTestCase
      */
     public function testSearch()
     {
-        $this->enableCsrfToken();
         $data = [
             'started' => '2017/01/01',
             'ended' => '2017/12/31',
         ];
-        $this->post(['_name' => 'scores'], $data);
+        $this->get(['_name' => 'find_scores', '?' => $data]);
 
         $this->assertResponseOk();
         $this->assertTemplate('index');
@@ -128,9 +126,8 @@ class TitleScoresControllerTest extends AppTestCase
         $this->enableCsrfToken();
         $this->put(['_name' => 'update_scores', 1]);
 
-        $this->assertResponseOk();
-        $this->assertTemplate('index');
-        $this->assertResponseContains('<nav class="nav">');
+        $this->assertRedirect(['_name' => 'find_scores']);
+        $this->assertResponseNotContains('<nav class="nav">');
     }
 
     /**
@@ -143,8 +140,7 @@ class TitleScoresControllerTest extends AppTestCase
         $this->enableCsrfToken();
         $this->delete(['_name' => 'delete_scores', 1]);
 
-        $this->assertResponseOk();
-        $this->assertTemplate('index');
-        $this->assertResponseContains('<nav class="nav">');
+        $this->assertRedirect(['_name' => 'find_scores']);
+        $this->assertResponseNotContains('<nav class="nav">');
     }
 }

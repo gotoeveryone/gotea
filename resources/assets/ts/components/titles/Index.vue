@@ -13,7 +13,6 @@
                     <span class="table-column table-column_filename">ファイル名</span>
                     <span class="table-column table-column_modified">修正日</span>
                     <span class="table-column table-column_closed">終了<br>棋戦</span>
-                    <span class="table-column table-column_menu">メニュー</span>
                     <span class="table-column table-column_open-detail">詳細</span>
                 </li>
             </ul>

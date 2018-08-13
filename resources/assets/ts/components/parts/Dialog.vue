@@ -1,8 +1,8 @@
 <template>
     <transition name="dialog">
-        <div class="dialog" v-if="isShow()">
+        <div class="dialog" v-if="isShow()" :style="{backgroundColor: modalColor}">
             <div class="dialog-content">
-                <div class="dialog-content-header">
+                <div class="dialog-content-header" :style="{backgroundColor: headerColor}">
                     <div class="dialog-content-title" v-text="title"></div>
                 </div>
                 <div class="dialog-content-body">
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="dialog-content-footer">
-                    <button v-focus @click="close()">閉じる</button>
+                    <button class="dialog-content-button" v-focus @click="close()">閉じる</button>
                 </div>
             </div>
         </div>
@@ -49,6 +49,12 @@ export default Vue.extend({
         },
     },
     computed: {
+        modalColor(): string {
+            return this.options.modalColor || 'rgba(204, 204, 204, 0.6)';
+        },
+        headerColor(): string {
+            return this.options.headerColor || '#4ba';
+        },
         title(): string {
             return this.options.title || 'メッセージ'
         },
@@ -80,9 +86,87 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.dialog {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+    &.hide {
+        display: none;
+    }
+}
+.dialog-content {
+    position: fixed;
+    width: auto;
+    height: auto;
+    margin: auto;
+    max-width: 400px;
+    min-height: 200px;
+    max-height: 200px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+    box-shadow: 3px 3px 5px 3px $c_gray;
+    z-index: 10;
+
+    &-header {
+        @include flex-center();
+        height: 35px;
+        border-radius: 5px 5px 0 0;
+    }
+    &-title {
+        margin-left: 10px;
+        color: $c_white;
+        font-size: 15px;
+        font-weight: bold;
+    }
+    &-body {
+        padding: 1rem;
+        height: calc(100% - 30px - 40px);
+        overflow-y: auto;
+        font-size: 15px;
+        background-color: #eee;
+        border-bottom: 1px solid #aaa;
+    }
+    &-text {
+        margin: 10px;
+    }
+    &-footer {
+        @include flex-side-end();
+        height: 50px;
+        background-color: #eee;
+        border-radius: 0 0 5px 5px;
+    }
+    &-button {
+        font-size: 15px;
+        cursor: pointer;
+    }
+}
+
+.message {
+    margin: 0;
+}
+.message-info {
+    color: #000;
+}
+.message-warning {
+    color: #00f;
+}
+.message-error {
+    color: #f00;
+}
+
+
 .dialog-enter-active, .dialog-leave-active {
-    transition: opacity .5s
+    transition: opacity 0.5s
 }
 .dialog-enter, .dialog-leave-to {
     opacity: 0

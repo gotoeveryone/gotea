@@ -16,7 +16,7 @@
     ?>
     <?=
         $this->Html->link('棋士情報検索', [
-            '_name' => 'find_players',
+            '_name' => 'players',
         ], ['class' => 'nav-menu']);
     ?>
     <?=

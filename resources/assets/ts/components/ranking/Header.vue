@@ -25,7 +25,7 @@
             <span class="lastUpdate" v-text="lastUpdate"></span>
             <div class="button-wrap">
                 <button type="button" @click="clearDate()">日付をクリア</button>
-                <button type="button" @click="json()">JSON出力</button>
+                <button type="button" @click="json()" class="button button-primary">JSON出力</button>
             </div>
         </li>
     </ul>

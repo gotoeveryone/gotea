@@ -1,6 +1,6 @@
 <template>
-    <button type="button" :disabled="isDisable()" country="country"
-        @click="newPlayer()">新規作成</button>
+    <button type="button" :disabled="isDisable()"
+        country="country" class="button button-secondary" @click="newPlayer()">新規作成</button>
 </template>
 
 <script lang="ts">

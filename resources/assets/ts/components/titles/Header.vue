@@ -14,8 +14,8 @@
                 </select>
             </div>
             <div class="button-wrap">
-                <button type="button" @click="add()">行追加</button>
-                <button type="button" @click="json()">JSON出力</button>
+                <button type="button" @click="add()" class="button button-secondary">行追加</button>
+                <button type="button" @click="json()" class="button button-primary">JSON出力</button>
             </div>
         </li>
     </ul>

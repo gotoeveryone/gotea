@@ -20,6 +20,8 @@ class TitleScoresController extends AppController
 
         $this->loadModel('Players');
         $this->loadModel('TitleScoreDetails');
+
+        $this->loadComponent('Paginator');
     }
 
     /**
@@ -44,24 +46,17 @@ class TitleScoresController extends AppController
         $this->set('form', ($form = new TitleScoreForm));
 
         // バリデーション
-        $data = $this->getRequest()->getParsedBody();
+        $data = $this->getRequest()->getQueryParams();
         if (!$form->validate($data)) {
             return $this->setErrors(400, $form->errors())->setAction('index');
         }
 
         // リクエストから値を取得
-        $titleScores = $this->TitleScores->findMatches($data);
+        $titleScores = $this->paginate($this->TitleScores->findMatches($data));
 
-        // 件数が0件または多すぎる場合はメッセージを出力
-        $over = 300;
-        if (!($count = $titleScores->count())) {
+        // 件数が0件の場合はメッセージを出力
+        if (!$titleScores->count()) {
             $this->Flash->warn(__('No matches found'));
-        } elseif ($count > $over) {
-            $this->Flash->warn(__(
-                'Matched rows more than {0} ({1} row matched).<br/>Please filtering conditions and reexecute.',
-                $over,
-                $count
-            ));
         } else {
             // 結果をセット
             $this->set(compact('titleScores'));
@@ -120,7 +115,10 @@ class TitleScoresController extends AppController
             $this->Flash->info("ID【{$id}】の勝敗を変更しました。");
         }
 
-        return $this->setAction('search');
+        return $this->redirect([
+            '_name' => 'find_scores',
+            '?' => $this->getRequest()->getParsedBody(),
+        ]);
     }
 
     /**
@@ -142,6 +140,9 @@ class TitleScoresController extends AppController
 
         $this->Flash->info("ID【{$id}】の成績情報を削除しました。");
 
-        return $this->setAction('search');
+        return $this->redirect([
+            '_name' => 'find_scores',
+            '?' => $this->getRequest()->getParsedBody(),
+        ]);
     }
 }

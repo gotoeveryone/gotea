@@ -1,7 +1,9 @@
 import Vue from 'vue'
+import axios from 'axios'
 
 import store from '@/store'
 
+import BlockUI from '@/components/parts/BlockUI.vue'
 import Dialog from '@/components/parts/Dialog.vue'
 import Modal from '@/components/parts/Modal.vue'
 import AddButton from '@/components/players/Button.vue'
@@ -23,8 +25,10 @@ window.App = new Vue({
         countryId: '',
         changed: false,
         historyId: 0,
+        hide: true,
     },
     components: {
+        blocked: BlockUI,
         modal: Modal,
         appDialog: Dialog,
         addButton: AddButton,
@@ -71,5 +75,38 @@ window.App = new Vue({
     },
     mounted() {
         require('./util')
+
+        // リクエスト
+        axios.interceptors.request.use(
+            config => {
+                config.headers = {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': window.Cake.csrfToken,
+                }
+                if (window.Cake.accessUser) {
+                    config.headers['X-Access-User'] = window.Cake.accessUser
+                }
+                this.hide = true
+                return config
+            },
+            error => {
+                this.hide = false
+                return Promise.reject(error)
+            }
+        )
+
+        // レスポンス
+        axios.interceptors.response.use(
+            response => {
+                this.hide = false
+                return response
+            },
+            error => {
+                this.hide = false
+                return Promise.reject(error.response)
+            }
+        )
+
+        this.hide = false
     }
 })
