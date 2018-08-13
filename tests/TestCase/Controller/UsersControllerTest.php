@@ -16,7 +16,7 @@ class UsersControllerTest extends AppTestCase
     {
         $this->get('/');
         $this->assertResponseOk();
-        $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
+        $this->assertResponseContains('<h1 class="login-title">Gotea</h1>');
     }
 
     /**
@@ -43,7 +43,7 @@ class UsersControllerTest extends AppTestCase
             'password' => '',
         ]);
         // $this->assertResponseError();
-        $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
+        $this->assertResponseContains('<h1 class="login-title">Gotea</h1>');
     }
 
     /**
@@ -62,7 +62,7 @@ class UsersControllerTest extends AppTestCase
             'password' => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
         ]);
         $this->assertResponseCode(400);
-        $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
+        $this->assertResponseContains('<h1 class="login-title">Gotea</h1>');
     }
 
     /**
@@ -81,7 +81,7 @@ class UsersControllerTest extends AppTestCase
             'password' => 'badpassword',
         ]);
         $this->assertResponseCode(401);
-        $this->assertResponseContains('<h1 class="page-title">Gotea</h1>');
+        $this->assertResponseContains('<h1 class="login-title">Gotea</h1>');
     }
 
     /**

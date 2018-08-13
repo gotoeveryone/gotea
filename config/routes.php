@@ -57,7 +57,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
         $routes->get('/', ['action' => 'index'], 'players');
-        $routes->post('/', ['action' => 'search'], 'find_players');
+        $routes->get('/search', ['action' => 'search'], 'find_players');
         $routes->get('/new', ['action' => 'new'], 'new_player');
         $routes->post('/new', ['action' => 'create'], 'create_player');
         $routes->get('/:id', ['action' => 'view'], 'view_player')
@@ -112,7 +112,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     // タイトル成績
     $routes->scope('/scores', ['controller' => 'TitleScores'], function (RouteBuilder $routes) {
         $routes->get('/', ['action' => 'index'], 'scores');
-        $routes->post('/', ['action' => 'search'], 'find_scores');
+        $routes->get('/search', ['action' => 'search'], 'find_scores');
         $routes->put('/:id', ['action' => 'update'], 'update_scores')
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         $routes->delete('/:id', ['action' => 'delete'], 'delete_scores')

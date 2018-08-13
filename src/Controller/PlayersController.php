@@ -28,6 +28,8 @@ class PlayersController extends AppController
         $this->loadModel('Ranks');
         $this->loadModel('Organizations');
         $this->loadModel('TitleScores');
+
+        $this->loadComponent('Paginator');
     }
 
     /**
@@ -52,24 +54,17 @@ class PlayersController extends AppController
         $this->set('form', ($form = new PlayerForm));
 
         // バリデーション
-        $data = $this->getRequest()->getParsedBody();
+        $data = $this->getRequest()->getQueryParams();
         if (!$form->validate($data)) {
             return $this->setErrors(400, $form->errors())->setAction('index');
         }
 
         // データを取得
-        $players = $this->Players->findPlayers($data);
+        $players = $this->paginate($this->Players->findPlayers($data));
 
-        // 件数が0件または多すぎる場合はメッセージを出力
-        $over = 300;
-        if (!($count = $players->count())) {
+        // 件数が0件の場合はメッセージを出力
+        if (!$players->count()) {
             $this->Flash->warn(__('No matches found'));
-        } elseif ($count > $over) {
-            $this->Flash->warn(__(
-                'Matched rows more than {0} ({1} row matched).<br/>Please filtering conditions and reexecute.',
-                $over,
-                $count
-            ));
         } else {
             // 結果をセット
             $this->set(compact('players'));

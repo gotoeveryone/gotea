@@ -4,8 +4,6 @@ import 'pikaday/css/pikaday.css'
 import moment from 'moment'
 import 'moment/locale/ja'
 
-import axios from 'axios'
-
 // ロケールを設定
 moment.locale('ja')
 
@@ -14,37 +12,6 @@ declare var document: any
 
 // APIコールの設定
 window.Cake = window.Cake || {}
-
-// リクエスト
-axios.interceptors.request.use(
-    config => {
-        config.headers = {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': window.Cake.csrfToken,
-        }
-        if (window.Cake.accessUser) {
-            config.headers['X-Access-User'] = window.Cake.accessUser
-        }
-        document.querySelector('.block-ui').classList.add('blocked')
-        return config
-    },
-    error => {
-        document.querySelector('.block-ui').classList.remove('blocked')
-        return Promise.reject(error)
-    }
-)
-
-// レスポンス
-axios.interceptors.response.use(
-    response => {
-        document.querySelector('.block-ui').classList.remove('blocked')
-        return response
-    },
-    error => {
-        document.querySelector('.block-ui').classList.remove('blocked')
-        return Promise.reject(error.response)
-    }
-)
 
 // 日付選択オプション
 const pikadayOptions = (element: any, birthday: boolean) => {
@@ -221,7 +188,6 @@ if (updateQuery) {
                     ['更新対象が1件も存在しません。'],
                     'warning'
                 )
-                window.unblock()
                 return
             }
 
