@@ -6,7 +6,7 @@
         <?=
             $this->Form->control('account', [
                 'label' => [
-                    'class' => 'label',
+                    'class' => 'login-label',
                     'text' => 'ID',
                 ],
                 'class' => 'login-account',
@@ -17,7 +17,7 @@
         <?=
             $this->Form->control('password', [
                 'label' => [
-                    'class' => 'label',
+                    'class' => 'login-label',
                     'text' => 'Password',
                 ],
                 'class' => 'login-password',

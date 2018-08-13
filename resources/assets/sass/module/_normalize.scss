@@ -3,7 +3,6 @@
  ------------------------------------------- */
 @import url('https://fonts.googleapis.com/earlyaccess/sawarabimincho.css');
 @import url('https://fonts.googleapis.com/css?family=Maitree');
-@import url('http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css');
 
 * {
     font-family: 'Sawarabi Mincho';
@@ -18,8 +17,8 @@
 
 html,
 body {
-    // margin: 0;
-    // padding: 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
 }
@@ -44,6 +43,33 @@ nav {
     max-width: #{$w_nav};
 }
 
+ol,
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+p {
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+fieldset {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset,
+img {
+    border: none;
+}
+
 input,
 textarea,
 select {
@@ -55,6 +81,11 @@ select {
         background-color: #ffd;
         box-shadow: 0 0 5px 1px $c_gray;
     }
+}
+
+input[type=checkbox] {
+    min-width: 18px;
+    min-height: 18px;
 }
 
 button {
