@@ -26,11 +26,16 @@
     }
 
     .login-main {
-        padding: 1rem;
+        padding: .8rem 1rem;
     }
 
     .login-row {
         margin: 1rem auto;
+    }
+
+    .login-label {
+        display: block;
+        margin-bottom: .5rem;
     }
 
     .login-account,
@@ -50,8 +55,27 @@
 
 .header {
     @include flex-side-between();
+    flex-wrap: wrap;
     height: $h_header;
     background-color: $c_header;
+    padding: 0 10px;
+    .system-name {
+        min-width: 200px;
+        color: #e2d14b;
+        font-size: 180%;
+        font-weight: bold;
+    }
+    .other {
+        min-width: 200px;
+        text-align: right;
+        & > * {
+            display: flex;
+            height: 50%;
+            flex-flow: wrap;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    }
 }
 
 .footer {
@@ -77,6 +101,7 @@
 }
 
 .main {
+    height: 100%;
     background-color: $c_main;
     overflow-y: auto;
 }
@@ -94,29 +119,6 @@
     font-size: 140%;
     text-align: center;
     text-decoration: none;
-}
-
-.header {
-    padding: 0 10px;
-    .system-name {
-        width: 15%;
-        min-width: 200px;
-        color: #e2d14b;
-        font-size: 180%;
-        font-weight: bold;
-    }
-    .other {
-        width: 15%;
-        min-width: 200px;
-        text-align: right;
-        & > * {
-            display: flex;
-            height: 50%;
-            flex-flow: wrap;
-            align-items: center;
-            justify-content: flex-end;
-        }
-    }
 }
 
 .main-content {
@@ -200,10 +202,6 @@
 
 .layout-button {
     @include button-link(#bbb);
-}
-
-.label {
-    display: inline-block;
 }
 
 .datepicker {
@@ -518,10 +516,10 @@
  ------------------------------------------- */
 .titles {
     &-country {
-        width: 90px;
+        width: 100px;
     }
     &-closed {
-        width: 100px;
+        width: 120px;
     }
 
     .table-row {
@@ -542,6 +540,7 @@
         &_holding,
         &_order {
             width: 5%;
+            text-align: center;
             &-input {
                 text-align: right;
             }
@@ -559,6 +558,7 @@
 
         &_modified {
             width: 13%;
+            text-align: center;
             &-input {
                 text-align: center;
             }

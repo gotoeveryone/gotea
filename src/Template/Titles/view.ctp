@@ -105,7 +105,7 @@
             <?=$this->Form->end()?>
         </section>
 
-        <!-- タイトル保持履歴 -->
+        <!-- タイトル取得履歴 -->
         <section data-contentname="histories" class="tab-contents">
             <?=$this->Form->create(null, [
                 'class' => 'add-condition-form',
