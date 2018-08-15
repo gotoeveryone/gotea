@@ -9,11 +9,18 @@
     height: 100%;
     .tabs {
         display: flex;
-        height: 30px;
+        align-items: stretch;
+        justify-content: flex-start;
+        height: $h_tab;
         .tab {
+            @include sp() {
+                font-size: .6rem;
+            }
+            @include flex-center();
             padding: 0.4rem 1rem;
             font-size: 1rem;
             color: $c_white;
+            white-space: nowrap;
             background-color: $c_black;
             border: 0.1rem solid $c_black;
             border-bottom: none;
@@ -30,7 +37,7 @@
         }
     }
     .detail {
-        height: calc(100% - 30px);
+        height: calc(100% - #{$h_tab});
         overflow-y: auto;
         border: 0.1rem solid $c_black;
         background-color: $c_white;
@@ -42,35 +49,91 @@
 }
 
 %row {
-    display: flex;
+    @include flex-horizontal-start();
     padding: 0.2rem;
-    align-items: center;
-    justify-content: flex-start;
     min-height: #{$minRowHeight};
 }
 
 .detail-row {
     @extend %row;
+    @include sp() {
+        flex-wrap: wrap;
+    }
     margin: 0 auto;
     padding: 0;
-    align-items: stretch;
-    .box {
-        flex-grow: 1;
-    }
-    .box2 {
-        flex-grow: 2;
+    &-result {
+        margin: auto 1rem;
+        padding: 1rem 0;
     }
     .box-start {
-        @include flex-side-start();
+        @include flex-horizontal-start();
     }
     .box-end {
-        @include flex-side-end();
+        @include flex-horizontal-end();
         .input {
             text-align: right;
         }
     }
     .box-between {
-        @include flex-side-between();
+        @include flex-horizontal-between();
+    }
+}
+
+.detail-box {
+    @include sp() {
+        @include flex-horizontal-start();
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    &-row {
+        @include flex-horizontal-start();
+        margin: 0.5rem 1rem;
+        flex-wrap: wrap;
+        & > .input {
+            width: 100%;
+        }
+    }
+    &-checkbox-row {
+        & > .input {
+            width: auto;
+            padding-right: 0.5rem;
+        }
+    }
+    &-button-row {
+        @include flex-horizontal-end();
+        margin: 0.5rem 1rem;
+    }
+    &-right {
+        @include sp() {
+            justify-content: flex-end;
+        }
+        margin-top: auto;
+        margin-left: auto;
+    }
+    &_label {
+        display: block;
+        margin-right: .3rem;
+    }
+    .input {
+        @include sp() {
+            width: 100%;
+        }
+        .label-row,
+        .input-row:not(textarea) {
+            height: 2.2rem;
+        }
+        .checkbox-label {
+            @include flex-horizontal-start();
+            input[type=checkbox] {
+                width: auto;
+            }
+        }
+    }
+    &.box1 {
+        flex-grow: 1;
+    }
+    &.box2 {
+        flex-grow: 2;
     }
 }
 
@@ -96,79 +159,19 @@
 .label-row {
     @extend %row;
     margin: 0 auto;
-    min-height: 2.2rem;
+    height: 2.2rem;
     text-indent: 0.7rem;
     background-color: #fed;
     font-weight: bold;
 }
 
-.input-row,
-.country,
-.organization {
-    display: flex;
-    margin: 0.5rem 1rem;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 2rem;
-    width: calc(100% - (1rem * 2));
-
-    &.button-wrap {
-        justify-content: flex-end;
-    }
-
-    .checkbox {
-        margin-right: 0.5rem;
-    }
-
+.input-row {
+    @include flex-horizontal-start();
+    margin: 0.5rem .7rem;
+    width: calc(100% - (.7rem * 2));
     &.joined {
         display: inline-block;
-        margin: 0.5rem 0.3rem;
         width: auto;
-
-        &:first-of-type {
-            margin: 0.5rem 0.3rem 0.5rem 1rem;
-        }
-    }
-
-    &.input-short {
-        width: 80px;
-    }
-
-    &.datepicker {
-        width: 120px;
-    }
-}
-
-.rank-form,
-.add-condition-form {
-    width: 100%;
-
-    .input {
-        &:not(:first-child) {
-            margin-left: 10px;
-        }
-
-        .label {
-            margin-right: 0.5rem;
-        }
-
-        .rank {
-            width: 120px;
-        }
-
-        .year,
-        .holding {
-            width: 80px;
-        }
-    }
-}
-
-/* -------------------------------------------
-   棋士詳細
- ------------------------------------------- */
-.rank-form {
-    .input {
-        width: 200px;
     }
 }
 

@@ -3,6 +3,5 @@
         'type' => 'select',
         'options' => $countries,
         'data-id' => 'country',
-        'class' => 'country',
     ] + $attributes);
 ?>

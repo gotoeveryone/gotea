@@ -1,6 +1,6 @@
 @import 'module/_variables.scss';
-@import 'module/_normalize.scss';
 @import 'module/_mixin.scss';
+@import 'module/_normalize.scss';
 
 
 /* -------------------------------------------
@@ -12,8 +12,8 @@
     .login-content {
         border: 1px solid $c_black;
         border-radius: 5px;
-        width: 40%;
-        max-width: 300px;
+        width: 300px;
+        max-width: 80%;
     }
 
     .login-title {
@@ -54,11 +54,11 @@
 }
 
 .header {
-    @include flex-side-between();
-    flex-wrap: wrap;
-    height: $h_header;
-    background-color: $c_header;
+    @include flex-horizontal-between();
     padding: 0 10px;
+    height: $h_header;
+    flex-wrap: wrap;
+    background-color: $c_header;
     .system-name {
         min-width: 200px;
         color: #e2d14b;
@@ -107,6 +107,9 @@
 }
 
 .nav-menu {
+    @include sp() {
+        font-size: .6rem;
+    }
     @include navi($c_nav);
     display: flex;
     margin: 0;
@@ -116,7 +119,7 @@
     align-items: center;
     border-bottom: 1px solid $c_gray;
     color: $c_white;
-    font-size: 140%;
+    font-size: 120%;
     text-align: center;
     text-decoration: none;
 }
@@ -129,6 +132,9 @@
 .main-content-modal {
     padding: 1rem;
     height: 100%;
+    .main {
+        overflow-y: hidden;
+    }
 }
 
 .main-form {
@@ -146,6 +152,9 @@
 }
 
 .recent-ranks-title {
+    @include sp() {
+        display: none;
+    }
     margin: 10px auto 0;
     padding: 5px;
     width: 90%;
@@ -160,6 +169,9 @@
 }
 
 .recent-ranks-data {
+    @include sp() {
+        display: none;
+    }
     margin: 0 auto 10px;
     width: 90%;
     border: 1px solid $c_black;
@@ -196,20 +208,8 @@
     justify-content: center;
 }
 
-.button-wrap {
-    margin-left: auto;
-}
-
 .layout-button {
     @include button-link(#bbb);
-}
-
-.datepicker {
-    width: 120px;
-}
-
-.table-column {
-    padding: .1rem .3rem;
 }
 
 .button {
@@ -231,31 +231,63 @@
    検索エリア
  ------------------------------------------- */
 .search-header {
+    @include flex-horizontal-start();
     position: relative;
     margin-bottom: .5rem;
     padding: $rowPadding;
+    flex-wrap: wrap;
     background-color: $c_white;
     border: 0.2rem solid #bbb;
     border-radius: 0.4rem;
 }
 
 .search-row {
-    @include flex-side-start();
-    padding: .3rem .5rem;
+    @include sp() {
+        display: block;
+    }
+    @include flex-searcharea();
+    width: 100%;
 }
 
-.search-row_label {
-    padding: 0 5px;
-    font-weight: normal;
+.search-box {
+    @include sp() {
+        margin: .3rem;
+    }
+    @include flex-horizontal-start();
+    margin-top: .3rem;
+    margin-bottom: .3rem;
+    margin-left: 1rem;
+    flex-wrap: wrap;
+
+    &_label {
+        display: block;
+        margin-right: .3rem;
+        width: 100%;
+    }
+
+    &-right {
+        @include sp() {
+            justify-content: flex-end;
+        }
+        margin-left: auto;
+    }
+
+    .input {
+        @include sp() {
+            width: 100%;
+        }
+    }
 }
 
 /* -------------------------------------------
    ページネーション
  ------------------------------------------- */
 .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include sp() {
+        @include flex-center();
+        flex-wrap: wrap;
+    }
+    @include flex-horizontal-between();
     margin: .4rem auto;
 
     &-item {
@@ -295,6 +327,15 @@
 /* -------------------------------------------
    一覧エリア
  ------------------------------------------- */
+.search-results {
+    @include sp() {
+        &, & * {
+            font-size: .6rem;
+            word-wrap: break-word;
+        }
+    }
+}
+
 .table-header,
 .table-body {
     margin: 0;
@@ -312,8 +353,12 @@
 }
 
 .table-row {
-    @include flex-side-start();
+    @include flex-horizontal-start();
     padding: .3rem .5rem;
+}
+
+.table-column {
+    padding: .1rem .3rem;
 }
 
 /* -------------------------------------------
@@ -322,20 +367,14 @@
 .ranking {
     width: 500px;
 
-    &_label {
-        width: 6rem;
-        text-align: right;
-    }
-
     &_year,
     &_country,
     &_limit {
         margin-right: 0.4rem;
-        width: 100px;
+        width: calc(33% - 0.4rem);
     }
 
     &_date {
-        width: 110px;
         &-duration {
             margin: auto 0.4rem;
         }
@@ -368,7 +407,7 @@
  ------------------------------------------- */
 .title-scores {
     .detail-point {
-        height: 2rem;
+        height: 40px;
         font-size: 1.2rem;
         font-weight: bold;
     }
@@ -376,15 +415,11 @@
     .search-header {
         .started {
             margin-right: 0.5rem;
+            width: 120px;
         }
         .ended {
             margin-left: 0.5rem;
-        }
-    }
-
-    .search-results {
-        &.modal {
-            height: calc(100% - 3rem - 2rem);
+            width: 120px;
         }
     }
 
@@ -395,7 +430,7 @@
         }
 
         &_title {
-            width: 15%
+            width: 15%;
         }
 
         &_country,
@@ -421,7 +456,7 @@
             }
 
             &_title {
-                width: 30%
+                width: 30%;
             }
 
             &_country,
@@ -446,12 +481,9 @@
  ------------------------------------------- */
 .players {
     .search-header {
-        .name {
-            width: 180px;
-        }
         .joined {
             margin-right: 0.3rem;
-            width: 70px;
+            width: 100px;
             &.joined-to {
                 margin-left: 0.3rem;
             }
@@ -469,30 +501,48 @@
         }
 
         &_name {
+            @include sp() {
+                width: 23%;
+            }
             width: 20%;
         }
 
         &_country {
+            @include sp() {
+                width: 8%;
+            }
             width: 6%;
             text-align: center;
         }
 
         &_enrollment {
+            @include sp() {
+                width: 13%;
+            }
             width: 10%;
         }
 
         &_rank,
         &_sex {
+            @include sp() {
+                width: 7%;
+            }
             width: 5%;
             text-align: center;
         }
 
         &_organization {
-            width: 9%;
+            @include sp() {
+                width: 13%;
+            }
+            width: 10%;
             text-align: center;
         }
 
         &_score {
+            @include sp() {
+                display: none;
+            }
             padding: 0;
             width: 9%;
             &-summary {
@@ -505,6 +555,9 @@
         }
 
         &_point {
+            @include sp() {
+                display: none;
+            }
             width: 3%;
             text-align: center;
         }
@@ -515,13 +568,6 @@
    タイトル情報検索
  ------------------------------------------- */
 .titles {
-    &-country {
-        width: 100px;
-    }
-    &-closed {
-        width: 120px;
-    }
-
     .table-row {
         &-closed {
             background-color: $c_gray;
@@ -575,7 +621,10 @@
    段位別棋士数検索
  ------------------------------------------- */
 .categories {
-    width: 12rem;
+    @include sp() {
+        width: 100%;
+    }
+    width: 200px;
     .table-column {
         &_rank {
             width: 40%;

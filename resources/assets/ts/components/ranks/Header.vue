@@ -1,10 +1,12 @@
 <template>
     <ul class="search-header">
         <li class="search-row">
-            <label class="search-row_label">対象国</label>
-            <select class="country" v-model="select.country" @change="changeValue($event)">
-                <option v-for="(country, idx) in countries" :key="idx" :value="country.value" v-text="country.text"></option>
-            </select>
+            <fieldset class="search-box">
+                <label class="search-box_label">対象国</label>
+                <select class="country" v-model="select.country" @change="changeValue($event)">
+                    <option v-for="(country, idx) in countries" :key="idx" :value="country.value" v-text="country.text"></option>
+                </select>
+            </fieldset>
         </li>
     </ul>
 </template>

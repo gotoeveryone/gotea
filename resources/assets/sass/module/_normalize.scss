@@ -5,6 +5,9 @@
 @import url('https://fonts.googleapis.com/css?family=Maitree');
 
 * {
+    @include sp() {
+        font-size: 0.8rem;
+    }
     font-family: 'Sawarabi Mincho';
     font-size: 0.9rem;
     letter-spacing: .1rem;
@@ -29,18 +32,34 @@ body {
 }
 
 main > section {
+    position: relative;
     padding: 5px 10px;
     height: 100%;
+    max-width: 100%;
 }
 
 nav + main {
-    width: 70%;
-    min-width: calc(100% - #{$w_nav});
+    @include pc() {
+        width: 70%;
+        min-width: calc(100% - #{$w_nav});
+    }
+    @include sp() {
+        padding-top: $h_nav-sp;
+        width: 100%;
+    }
 }
 
 nav {
-    width: 30%;
-    max-width: #{$w_nav};
+    @include pc() {
+        width: 30%;
+        max-width: #{$w_nav};
+    }
+    @include sp() {
+        @include flex-horizontal-between();
+        @include fixed-row();
+        height: $h_nav-sp;
+        top: $h_header;
+    }
 }
 
 ol,
@@ -73,8 +92,9 @@ img {
 input,
 textarea,
 select {
-    max-width: 100%;
     padding: .3rem .4rem;
+    width: 100%;
+    max-width: 100%;
     border: 1px solid $c_gray;
     border-radius: 5px;
     &:focus {

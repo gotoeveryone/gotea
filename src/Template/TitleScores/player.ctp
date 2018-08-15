@@ -1,7 +1,7 @@
 <section class="title-scores">
     <div class="detail-point">
-        <?= h($player->name_with_rank) ?>の成績
-        （<?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗）
+        <div><?= h($player->name_with_rank) ?>の成績</div>
+        <div><?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗）</div>
     </div>
     <div class="search-results modal">
         <ul class="table-header">
@@ -21,7 +21,11 @@
                 <span class="table-column_id"><?= h($titleScore->id) ?></span>
                 <span class="table-column_country"><?= h($titleScore->country->name.'棋戦') ?></span>
                 <span class="table-column_title"><?= h($titleScore->name) ?></span>
-                <span class="table-column_date"><?= h($titleScore->date) ?></span>
+                <span class="table-column_date">
+                    <?php foreach ($titleScore->dates as $idx => $date) : ?>
+                    <?php if ($idx > 0) : ?><br/>〜<?php endif ?><?= h($date) ?>
+                    <?php endforeach ?>
+                </span>
                 <span class="table-column_name">
                     <span <?= $titleScore->isSelected($titleScore->winner, $player->id) ? 'class="selected"' : '' ?>>
                         <?= h($titleScore->getWinnerName()) ?>

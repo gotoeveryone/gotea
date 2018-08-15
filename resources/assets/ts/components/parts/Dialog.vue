@@ -106,7 +106,8 @@ export default Vue.extend({
     width: auto;
     height: auto;
     margin: auto;
-    max-width: 400px;
+    width: 400px;
+    max-width: 80%;
     min-height: 200px;
     max-height: 200px;
     top: 0;
@@ -140,7 +141,7 @@ export default Vue.extend({
         margin: 10px;
     }
     &-footer {
-        @include flex-side-end();
+        @include flex-horizontal-end();
         height: 50px;
         background-color: #eee;
         border-radius: 0 0 5px 5px;
