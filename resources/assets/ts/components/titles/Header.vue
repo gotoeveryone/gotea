@@ -1,22 +1,22 @@
 <template>
     <ul class="search-header">
         <li class="search-row">
-            <div>
-                <label class="search-row_label">対象国</label>
+            <fieldset class="search-box">
+                <label class="search-box_label">対象国</label>
                 <select class="titles-country" v-model="select.country" @change="changeValue($event)">
                     <option v-for="(country, idx) in countries" :key="idx" :value="country.value" v-text="country.text"></option>
                 </select>
-            </div>
-            <div>
-                <label class="search-row_label">終了棋戦</label>
+            </fieldset>
+            <fieldset class="search-box">
+                <label class="search-box_label">終了棋戦</label>
                 <select class="titles-closed" v-model="select.type" @change="changeValue($event)">
                     <option v-for="(type, idx) in types" :key="idx" :value="type.value" v-text="type.text"></option>
                 </select>
-            </div>
-            <div class="button-wrap">
+            </fieldset>
+                <fieldset class="search-box search-box-right">
                 <button type="button" @click="add()" class="button button-secondary">行追加</button>
                 <button type="button" @click="json()" class="button button-primary">JSON出力</button>
-            </div>
+            </fieldset>
         </li>
     </ul>
 </template>

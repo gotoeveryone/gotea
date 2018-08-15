@@ -2,91 +2,101 @@
     <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_players']]) ?>
         <ul class="search-header">
             <li class="search-row">
-                <?php
-                    echo $this->cell('Countries', [
+                <fieldset class="search-box">
+                    <?= $this->Form->control('name', [
+                        'label' => ['class' => 'search-box_label', 'text' => '棋士名'],
+                        'class' => 'name',
+                        'value' => $this->request->getQuery('name'),
+                    ]) ?>
+                </fieldset>
+                <fieldset class="search-box">
+                    <?= $this->Form->control('name_english', [
+                        'label' => ['class' => 'search-box_label', 'text' => '（英語）'],
+                        'class' => 'name',
+                        'value' => $this->request->getQuery('name_english'),
+                    ]) ?>
+                </fieldset>
+                <fieldset class="search-box">
+                    <?= $this->Form->control('name_other', [
+                        'label' => ['class' => 'search-box_label', 'text' => '（その他）'],
+                        'class' => 'name',
+                        'value' => $this->request->getQuery('name_other'),
+                    ]) ?>
+                </fieldset>
+            </li>
+            <li class="search-row">
+                <fieldset class="search-box">
+                    <?= $this->cell('Countries', [
                         'hasTitleOnly' => true,
                         [
-                            'label' => ['class' => 'search-row_label', 'text' => '所属国'],
+                            'label' => ['class' => 'search-box_label', 'text' => '所属国'],
                             'class' => 'country',
                             'empty' => true,
                             'value' => $this->request->getQuery('country_id'),
                             '@change' => 'changeCountry($event)',
                         ],
-                    ])->render();
-                    echo $this->cell('Organizations', [
+                    ])->render() ?>
+                </fieldset>
+                <fieldset class="search-box">
+                    <?= $this->cell('Organizations', [
                         [
-                            'label' => ['class' => 'search-row_label', 'text' => '所属組織'],
+                            'label' => ['class' => 'search-box_label', 'text' => '所属組織'],
                             'class' => 'organization',
                             'empty' => true,
                             'value' => $this->request->getQuery('organization_id'),
                         ]
-                    ])->render();
-                    echo $this->Form->control('rank_id', [
-                        'label' => ['class' => 'search-row_label', 'text' => '段位'],
+                    ])->render() ?>
+                </fieldset>
+                <fieldset class="search-box">
+                    <?= $this->Form->control('rank_id', [
+                        'label' => ['class' => 'search-box_label', 'text' => '段位'],
                         'options' => $ranks,
                         'class' => 'rank',
                         'empty' => true,
                         'value' => $this->request->getQuery('rank_id'),
-                    ]);
-                    echo $this->Form->sexes([
-                        'label' => ['class' => 'search-row_label', 'text' => '性別'],
+                    ]) ?>
+                </fieldset>
+                <fieldset class="search-box">
+                    <?= $this->Form->sexes([
+                        'label' => ['class' => 'search-box_label', 'text' => '性別'],
                         'class' => 'sex',
                         'empty' => true,
                         'value' => $this->request->getQuery('sex'),
-                    ]);
-                ?>
-                <div>
-                    <?php
-                        echo $this->Form->label('joined_from', '入段年', ['class' => 'search-row_label']);
-                        echo $this->Form->number('joined_from', [
-                            'class' => 'joined joined-from',
-                            'min' => 1,
-                            'max' => 9999,
-                            'value' => $this->request->getQuery('joined_from'),
-                        ]);
-                        echo $this->form->label('joined_to', '～');
-                        echo $this->Form->number('joined_to', [
-                            'class' => 'joined joined-to',
-                            'min' => 1,
-                            'max' => 9999,
-                            'value' => $this->request->getQuery('joined_to'),
-                        ]);
-                    ?>
-                </div>
-            </li>
-            <li class="search-row">
-                <?php
-                    echo $this->Form->control('name', [
-                        'label' => ['class' => 'search-row_label', 'text' => '棋士名'],
-                        'class' => 'name',
-                        'value' => $this->request->getQuery('name'),
-                    ]);
-                    echo $this->Form->control('name_english', [
-                        'label' => ['class' => 'search-row_label', 'text' => '（英語）'],
-                        'class' => 'name',
-                        'value' => $this->request->getQuery('name_english'),
-                    ]);
-                    echo $this->Form->control('name_other', [
-                        'label' => ['class' => 'search-row_label', 'text' => '（その他）'],
-                        'class' => 'name',
-                        'value' => $this->request->getQuery('name_other'),
-                    ]);
-                ?>
-            </li>
-            <li class="search-row">
-                <?php
-                    echo $this->Form->filters('is_retired', [
-                        'label' => ['class' => 'search-row_label', 'text' => '引退者'],
+                    ]) ?>
+                </fieldset>
+                <fieldset class="search-box">
+                    <div>
+                        <?php
+                            echo $this->Form->label('joined_from', '入段年', ['class' => 'search-box_label']);
+                            echo $this->Form->number('joined_from', [
+                                'class' => 'joined joined-from',
+                                'min' => 1,
+                                'max' => 9999,
+                                'value' => $this->request->getQuery('joined_from'),
+                            ]);
+                            echo $this->form->label('joined_to', '～');
+                            echo $this->Form->number('joined_to', [
+                                'class' => 'joined joined-to',
+                                'min' => 1,
+                                'max' => 9999,
+                                'value' => $this->request->getQuery('joined_to'),
+                            ]);
+                        ?>
+                    </div>
+                </fieldset>
+                <fieldset class="search-box">
+                    <?= $this->Form->filters('is_retired', [
+                        'label' => ['class' => 'search-box_label', 'text' => '引退者'],
                         'class' => 'excluded',
                         'value' => $this->request->getQuery('is_retired'),
-                    ]);
-                ?>
-                <div class="button-wrap">
+                    ]) ?>
+                </fieldset>
+                <fieldset class="search-box search-box-right">
                     <add-button :country-id="countryId" :changed="changed"
                         :url="'<?= $this->Url->build(['_name' => 'new_player']) ?>'"
                         :param-id="'<?= $this->request->getData('country_id') ?>'"></add-button>
-                    <?=$this->Form->button('検索', ['type' => 'submit', 'class' => 'button button-primary'])?>
-                </div>
+                    <?= $this->Form->button('検索', ['type' => 'submit', 'class' => 'button button-primary']) ?>
+                </fieldset>
             </li>
         </ul>
 

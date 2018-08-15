@@ -1,5 +1,5 @@
 <?= $this->Html->css('view', ['block' => true]) ?>
-<div class="detail-dialog">
+<fieldset class="detail-dialog">
     <!-- タブ -->
     <ul class="tabs" data-selecttab="<?= $this->request->getQuery('tab') ?>">
         <li class="tab" data-tabname="player">棋士情報</li>
@@ -13,7 +13,7 @@
     </ul>
 
     <!-- 詳細 -->
-    <div class="detail">
+    <fieldset class="detail">
         <!-- 棋士成績 -->
         <section data-contentname="player" class="tab-contents">
             <?= $this->Form->create($player, ['class' => 'main-form', 'url' => $player->getSaveUrl()]) ?>
@@ -22,7 +22,7 @@
                 <div class="category-row">棋士情報<?=($player->id ? '（ID：'.h($player->id).'）' : "")?></div>
                 <ul class="boxes">
                     <li class="detail-row">
-                        <div class="box">
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->cell('Countries', [
                                     'hasTitleOnly' => true,
@@ -30,41 +30,43 @@
                                         'label' => ['class' => 'label-row', 'text' => '所属国'],
                                         'empty' => false,
                                         'value' => $player->country_id,
+                                        'class' => 'input-row',
                                     ],
                                 ])->render()
                             ?>
-                        </div>
-                        <div class="box">
+                        </fieldset>
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->cell('Organizations', [
                                     [
                                         'label' => ['class' => 'label-row', 'text' => '所属組織'],
                                         'empty' => false,
                                         'value' => ($player->organization_id ? $player->organization_id : '1'),
+                                        'class' => 'input-row',
                                     ],
                                 ])->render()
                             ?>
-                        </div>
-                        <div class="box">
-                            <div class="label-row">引退フラグ</div>
-                            <div class="input-row">
-                                <?php
-                                    echo $this->Form->control('is_retired', [
+                        </fieldset>
+                        <fieldset class="detail-box box1">
+                            <div class="input">
+                                <div class="label-row">引退フラグ</div>
+                                <fieldset class="detail-box-row detail-box-checkbox-row">
+                                    <?= $this->Form->control('is_retired', [
                                         'label' => ['class' => 'checkbox-label', 'text' => '引退しました'],
-                                    ]);
-                                    echo $this->Form->control('retired', [
+                                    ]) ?>
+                                    <?= $this->Form->control('retired', [
                                         'label' => false,
                                         'type' => 'text',
                                         'class' => 'datepicker',
                                         'disabled' => true,
                                         'placeholder' => '引退日',
-                                    ])
-                                ?>
+                                    ]) ?>
+                                </fieldset>
                             </div>
-                        </div>
+                        </fieldset>
                     </li>
                     <li class="detail-row">
-                        <div class="box">
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->Form->control('name', [
                                     'label' => ['class' => 'label-row', 'text' => '棋士名'],
@@ -72,8 +74,8 @@
                                     'maxlength' => 20,
                                 ]);
                             ?>
-                        </div>
-                        <div class="box">
+                        </fieldset>
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->Form->control('name_english', [
                                     'label' => ['class' => 'label-row', 'text' => '棋士名（英語）'],
@@ -81,8 +83,8 @@
                                     'maxlength' => 40,
                                 ]);
                             ?>
-                        </div>
-                        <div class="box">
+                        </fieldset>
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->Form->control('name_other', [
                                     'label' => ['class' => 'label-row', 'text' => '棋士名（その他）'],
@@ -90,21 +92,30 @@
                                     'maxlength' => 20,
                                 ]);
                             ?>
-                        </div>
+                        </fieldset>
                     </li>
                     <li class="detail-row">
-                        <div class="box">
-                            <div class="label-row">生年月日</div>
-                            <div class="input-row">
-                                <?=
-                                    $this->Form->text('birthday', [
-                                        'class' => 'datepicker birthday'
-                                    ]);
-                                ?>
-                                <span class="age">（<?=(is_numeric($player->age) ? $player->age.'歳' : '不明')?>）</span>
+                        <fieldset class="detail-box box1">
+                            <div class="input">
+                                <div class="label-row">生年月日</div>
+                                <div class="input-row">
+                                    <?= $this->Form->text('birthday', [
+                                        'class' => 'birthday datepicker'
+                                    ]) ?>
+                                </div>
                             </div>
-                        </div>
-                        <div class="box">
+                        </fieldset>
+                        <fieldset class="detail-box box1">
+                            <div class="input">
+                                <div class="label-row">年齢</div>
+                                <div class="input-row">
+                                    <span class="age">
+                                        <?= (is_numeric($player->age) ? $player->age.'歳' : '不明') ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->Form->selectDate('input_joined', [
                                     'label' => ['class' => 'label-row', 'text' => '入段日'],
@@ -116,8 +127,10 @@
                                     ],
                                 ]);
                             ?>
-                        </div>
-                        <div class="box">
+                        </fieldset>
+                    </li>
+                    <li class="detail-row">
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->Form->sexes([
                                     'label' => ['class' => 'label-row', 'text' => '性別'],
@@ -125,8 +138,8 @@
                                     'class' => 'input-row sex',
                                 ]);
                             ?>
-                        </div>
-                        <div class="box">
+                        </fieldset>
+                        <fieldset class="detail-box box1">
                             <?php
                                 echo $this->Form->control('rank_id', [
                                     'options' => $ranks,
@@ -135,23 +148,25 @@
                                     'empty' => false,
                                 ]);
                             ?>
-                        </div>
-                        <div class="box">
-                            <div class="label-row">最終更新日時</div>
-                            <div class="input-row">
-                                <?= h($this->Date->formatToDateTime($player->modified)) ?>
-                                <?= $this->Form->hidden('modified') ?>
+                        </fieldset>
+                        <fieldset class="detail-box box1">
+                            <div class="input">
+                                <div class="label-row">最終更新日時</div>
+                                <div class="input-row">
+                                    <?= h($this->Date->formatToDateTime($player->modified)) ?>
+                                    <?= $this->Form->hidden('modified') ?>
+                                </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </li>
                     <li class="detail-row">
-                        <div class="box">
+                        <fieldset class="detail-box box1">
                             <?= $this->Form->control('remarks', [
                                 'label' => ['class' => 'label-row', 'text' => 'その他備考'],
                                 'type' => 'textarea',
                                 'class' => 'input-row',
                             ]) ?>
-                        </div>
+                        </fieldset>
                     </li>
                     <li class="button-row">
                         <?php // 新規登録時は続けて登録チェックボックス表示 ?>
@@ -175,68 +190,82 @@
                 <div class="category-row">昇段情報</div>
                 <ul class="boxes">
                     <li class="label-row">新規登録</li>
-                    <li class="detail-row">
+                    <li>
                         <?= $this->Form->create($player, [
                             'class' => 'rank-form',
                             'type' => 'post',
                             'url' => ['_name' => 'create_ranks', $player->id],
                         ]) ?>
-                        <div class="input-row">
-                            <div class="box box-start">
-                                <?php
-                                    echo $this->Form->control('rank_id', [
-                                        'label' => ['class' => 'label', 'text' => '段位'],
+                        <div class="detail-row">
+                            <fieldset class="detail-box box1">
+                                <fieldset class="detail-box-row">
+                                    <?= $this->Form->control('rank_id', [
+                                        'label' => ['class' => 'detail-box_label', 'text' => '段位'],
                                         'options' => $ranks,
                                         'class' => 'rank',
                                         'empty' => false,
-                                    ]);
-                                    echo $this->Form->control('promoted',[
-                                        'label' => ['class' => 'label', 'text' => '昇段日'],
+                                    ]) ?>
+                                </fieldset>
+                            </fieldset>
+                            <fieldset class="detail-box box1">
+                                <fieldset class="detail-box-row">
+                                    <?= $this->Form->control('promoted',[
+                                        'label' => ['class' => 'detail-box_label', 'text' => '昇段日'],
                                         'type' => 'text',
                                         'class' => 'datepicker',
-                                    ]);
-                                ?>
-                            </div>
-                            <div class="box box-end">
-                                <?php
-                                    echo $this->Form->control('newest', [
+                                    ]) ?>
+                                </fieldset>
+                            </fieldset>
+                            <fieldset class="detail-box box1">
+                                <fieldset class="detail-box-row">
+                                    <?= $this->Form->control('newest', [
                                         'label' => ['class' => 'checkbox-label', 'text' => '最新として登録'],
                                         'checked' => true,
                                         'class' => 'checkbox-with-label',
-                                    ]);
-                                    echo $this->Form->button('登録', ['class' => 'add-ranks']);
-                                ?>
-                            </div>
+                                    ]) ?>
+                                </fieldset>
+                            </fieldset>
+                            <fieldset class="detail-box detail-box-right">
+                                <fieldset class="detail-box-button-row">
+                                    <?= $this->Form->button('登録', ['class' => 'button button-primary']) ?>
+                                </fieldset>
+                            </fieldset>
                         </div>
                         <?= $this->Form->end() ?>
                     </li>
                     <li class="label-row">昇段履歴</li>
                     <?php foreach ($player->player_ranks as $player_rank) : ?>
-                    <li class="detail-row">
+                    <li>
                         <?= $this->Form->create($player_rank, [
                             'class' => 'rank-form',
                             'type' => 'put',
                             'url' => ['_name' => 'update_ranks', $player_rank->player_id, $player_rank->id],
                         ]) ?>
-                            <div class="input-row">
-                                <div class="box box-start">
-                                    <?php
-                                        echo $this->Form->control('rank_id', [
-                                            'label' => ['class' => 'label', 'text' => '段位'],
+                            <div class="detail-row">
+                                <fieldset class="detail-box box1">
+                                    <fieldset class="detail-box-row">
+                                        <?= $this->Form->control('rank_id', [
+                                            'label' => ['class' => 'detail-box_label', 'text' => '段位'],
                                             'options' => $ranks,
                                             'class' => 'rank',
                                             'empty' => false,
-                                        ]);
-                                        echo $this->Form->control('promoted',[
-                                            'label' => ['class' => 'label', 'text' => '昇段日'],
+                                        ]) ?>
+                                    </fieldset>
+                                </fieldset>
+                                <fieldset class="detail-box box1">
+                                    <fieldset class="detail-box-row">
+                                        <?= $this->Form->control('promoted',[
+                                            'label' => ['class' => 'detail-box_label', 'text' => '昇段日'],
                                             'type' => 'text',
                                             'class' => 'datepicker',
-                                        ]);
-                                    ?>
-                                </div>
-                                <div class="box box-end">
-                                    <?= $this->Form->button('更新', ['class' => 'add-ranks']) ?>
-                                </div>
+                                        ]) ?>
+                                    </fieldset>
+                                </fieldset>
+                                <fieldset class="detail-box detail-box-right">
+                                    <fieldset class="detail-box-button-row">
+                                        <?= $this->Form->button('更新', ['class' => 'button button-primary']) ?>
+                                    </fieldset>
+                                </fieldset>
                             </div>
                         <?= $this->Form->end() ?>
                     </li>
@@ -254,40 +283,35 @@
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
                     <li class="detail-row">
-                        <div class="box">
-                            <div class="label-row">勝敗（国内）</div>
-                            <div class="input-row">
-                                <?= $score->win_point ?>勝<?= $score->lose_point ?>敗<?= $score->draw_point ?>分
-                                <span class="percent">
-                                    （勝率<strong>
-                                        <?= $this->Form->percent($score->win_point, $score->lose_point)?>
-                                    </strong>）
-                                </span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row">勝敗（国際）</div>
-                            <div class="input-row">
-                                <?= $score->win_point_world ?>勝
-                                <?= $score->lose_point_world ?>敗
-                                <?= $score->draw_point_world ?>分
-                                <span class="percent">
-                                    （勝率<strong>
-                                        <?= $this->Form->percent($score->win_point_world, $score->lose_point_world) ?>
-                                    </strong>）
-                                </span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row"></div>
-                            <div class="input-row button-wrap">
+                        <fieldset class="detail-box box1">
+                            <fieldset class="detail-box-row">
+                                <div class="input">
+                                    国内：<?= h($score->win_point) ?>勝<?= h($score->lose_point) ?>敗<?= h($score->draw_point) ?>分
+                                    <span class="percent">
+                                        （勝率<strong><?= $this->Form->percent($score->win_point, $score->lose_point)?></strong>）
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset class="detail-box box1">
+                            <fieldset class="detail-box-row">
+                                <div class="input">
+                                    国際：<?= h($score->win_point_world) ?>勝<?= h($score->lose_point_world) ?>敗<?= h($score->draw_point_world) ?>分
+                                    <span class="percent">
+                                        （勝率<strong><?= $this->Form->percent($score->win_point_world, $score->lose_point_world) ?></strong>）
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset class="detail-box detail-box-right">
+                            <fieldset class="detail-box-button-row">
                                 <?= $this->Html->link('タイトル成績へ', [
                                     '_name' => 'find_player_scores', $player->id, $score->target_year,
                                 ], [
                                     'class' => 'layout-button',
                                 ]) ?>
-                            </div>
-                        </div>
+                            </fieldset>
+                        </fieldset>
                     </li>
                 </ul>
                 <?php endforeach ?>
@@ -298,24 +322,33 @@
                 <ul class="boxes">
                     <li class="genre-row"><?=h($score->target_year).'年度'?></li>
                     <li class="detail-row">
-                        <div class="box">
-                            <div class="label-row">勝敗（国内）</div>
-                            <div class="input-row">
-                                <?=h($score->win_point)?>勝<?=h($score->lose_point)?>敗<?=h($score->draw_point)?>分
-                                <span class="percent">（勝率<strong><?=$this->Form->percent($score->win_point, $score->lose_point)?></strong>）</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row">勝敗（国際）</div>
-                            <div class="input-row">
-                                <?=$score->win_point_world?>勝<?=$score->lose_point_world?>敗<?=$score->draw_point_world?>分
-                                <span class="percent">（勝率<strong><?=$this->Form->percent($score->win_point_world, $score->lose_point_world)?></strong>）</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="label-row">段位</div>
-                            <div class="input-row"><?=h($score->rank->name)?></div>
-                        </div>
+                        <fieldset class="detail-box box1">
+                            <fieldset class="detail-box-row">
+                                <div class="input">
+                                    国内：<?= h($score->win_point) ?>勝<?= h($score->lose_point) ?>敗<?= h($score->draw_point) ?>分
+                                    <span class="percent">
+                                        （勝率<strong><?=$this->Form->percent($score->win_point, $score->lose_point)?></strong>）
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset class="detail-box box1">
+                            <fieldset class="detail-box-row">
+                                <div class="input">
+                                    国際：<?= h($score->win_point_world) ?>勝<?= h($score->lose_point_world) ?>敗<?= h($score->draw_point_world) ?>分
+                                    <span class="percent">
+                                        （勝率<strong><?=$this->Form->percent($score->win_point_world, $score->lose_point_world)?></strong>）
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset class="detail-box box1">
+                            <fieldset class="detail-box-row">
+                                <div class="input">
+                                    段位：<?= h($score->rank->name) ?>
+                                </div>
+                            </fieldset>
+                        </fieldset>
                     </li>
                 </ul>
                 <?php endforeach ?>

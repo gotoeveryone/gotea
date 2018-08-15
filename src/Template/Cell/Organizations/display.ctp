@@ -3,6 +3,5 @@
         'type' => 'select',
         'options' => $organizations,
         'data-id' => 'organization',
-        'class' => 'organization',
     ] + $attributes);
 ?>

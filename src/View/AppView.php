@@ -85,6 +85,6 @@ class AppView extends View
      */
     public function hasTitle()
     {
-        return !empty($this->get('title', ''));
+        return !empty($this->get('pageTitle', ''));
     }
 }

@@ -1,3 +1,23 @@
+@mixin sp() {
+    @media screen and (max-width: ($breakpoint)) {
+        @content;
+    }
+}
+
+@mixin pc() {
+    @media screen and (min-width: $breakpoint) {
+        @content;
+    }
+}
+
+@mixin fixed-row() {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+}
+
 @mixin display-center() {
     position: fixed;
     top: 0;
@@ -14,22 +34,40 @@
     justify-content: center;
 }
 
-@mixin flex-side-start() {
+@mixin flex-horizontal-start() {
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
 
-@mixin flex-side-between() {
+@mixin flex-horizontal-between() {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-@mixin flex-side-end() {
+@mixin flex-horizontal-end() {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+@mixin flex-vertical-top() {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+@mixin flex-vertical-bottom() {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+@mixin flex-searcharea() {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
 }
 
 @mixin navi($color) {

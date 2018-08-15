@@ -10,7 +10,7 @@
         <?= $this->Html->charset() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            <?='Gotea'.h($this->hasTitle() ? " - ${title}" : '') ?>
+            <?='Gotea'.h($this->hasTitle() ? " - ${pageTitle}" : '') ?>
         </title>
         <?= $this->Html->meta('icon') ?>
         <?= $this->Html->css('app') ?>
@@ -24,7 +24,7 @@
             <!-- ヘッダー -->
             <header class="header">
                 <!-- 見出し -->
-                <h1 class="page-title"><?= h($this->hasTitle() ? $title : 'Gotea') ?></h1>
+                <h1 class="page-title"><?= h($this->hasTitle() ? $pageTitle : 'Gotea') ?></h1>
                 <div class="other">
                     <?php if ($this->isAuth()) : ?>
                         <span class="username">ユーザ：<?= h($this->getUser('name')) ?></span>

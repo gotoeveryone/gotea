@@ -157,7 +157,7 @@ abstract class AppController extends Controller
      */
     protected function setTitle(string $title)
     {
-        return $this->set('title', $title);
+        return $this->set('pageTitle', $title);
     }
 
     /**
