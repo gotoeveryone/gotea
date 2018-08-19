@@ -19,7 +19,7 @@
     <body>
         <div class="container">
             <!-- blockUI -->
-            <blocked :hide="hide"></blocked>
+            <app-block :hide="hide"></app-block>
             <?php if (!$this->isDialogMode()) : ?>
             <!-- ヘッダー -->
             <header class="header">
@@ -62,9 +62,8 @@
             <?php endif ?>
 
             <!-- モーダルコンテンツ -->
-            <modal :options="modal"></modal>
+            <app-modal :options="modal"></app-modal>
             <!-- ダイアログ -->
-            <app-dialog :options="dialog"></app-dialog>
             <?= $this->Flash->render() ?>
         </div>
 

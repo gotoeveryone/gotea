@@ -7,7 +7,7 @@
     </ul>
 
     <!-- 詳細 -->
-    <fieldset class="detail">
+    <div class="detail">
         <!-- マスタ -->
         <section data-contentname="title" class="tab-contents">
             <?= $this->Form->create($title, ['class' => 'main-form', 'url' => ['_name' => 'update_title', $title->id]]) ?>
@@ -160,7 +160,7 @@
                         <?php endforeach ?>
                     <?php endif ?>
                 </ul>
-            </section>
-        <?=$this->Form->end()?>
+            <?=$this->Form->end()?>
+        </section>
     </div>
 </div>
