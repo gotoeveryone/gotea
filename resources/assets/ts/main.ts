@@ -28,8 +28,8 @@ window.App = new Vue({
         hide: true,
     },
     components: {
-        blocked: BlockUI,
-        modal: Modal,
+        appBlock: BlockUI,
+        appModal: Modal,
         appDialog: Dialog,
         addButton: AddButton,
         addHistory: AddHistory,

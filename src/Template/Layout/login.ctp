@@ -23,7 +23,6 @@
                 </main>
             </section>
             <!-- ダイアログ -->
-            <app-dialog :options="dialog"></app-dialog>
             <?= $this->Flash->render() ?>
         </div>
         <?= $this->Html->script('app') ?>
