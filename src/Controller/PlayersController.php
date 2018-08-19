@@ -80,7 +80,9 @@ class PlayersController extends AppController
      */
     public function new()
     {
-        $params = [];
+        $params = [
+            'rank_id' => $this->Ranks->findByRank()->id,
+        ];
         // 所属国
         if (($countryId = $this->getRequest()->getQuery('country_id'))) {
             $params['country_id'] = $countryId;
