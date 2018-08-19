@@ -217,8 +217,8 @@ class PlayersTable extends AppTable
     /**
      * 名前・所属国IDに該当する棋士データを1件取得します。
      *
-     * @param array $names
-     * @param int $countryId
+     * @param array $names 名前
+     * @param int $countryId 所属国ID
      * @return \Gotea\Model\Entity\Player
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
@@ -243,7 +243,7 @@ class PlayersTable extends AppTable
     private function createLikeParams(string $fieldName, string $input)
     {
         return collection(explode(' ', $input))
-            ->map(function($param) use ($fieldName) {
+            ->map(function ($param) use ($fieldName) {
                 return ["Players.{$fieldName} LIKE" => "%{$param}%"];
             })->toArray();
     }
