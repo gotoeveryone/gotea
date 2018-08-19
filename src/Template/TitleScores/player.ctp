@@ -1,7 +1,7 @@
 <section class="title-scores">
     <div class="detail-point">
         <div><?= h($player->name_with_rank) ?>の成績</div>
-        <div><?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗）</div>
+        <div><?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗</div>
     </div>
     <div class="search-results modal">
         <ul class="table-header">
