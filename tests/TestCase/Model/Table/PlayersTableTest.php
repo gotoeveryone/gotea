@@ -237,4 +237,30 @@ class PlayersTableTest extends TestCase
             $this->assertTrue($e instanceof RecordNotFoundException);
         }
     }
+
+    /**
+     * 棋士名・所属国から棋士1件取得
+     *
+     * @return void
+     */
+    public function testFindRankByNamesAndCountries()
+    {
+        $player = $this->Players->findRankByNamesAndCountries(['Test Player 1', 'Test Player 111'], 1);
+        $this->assertContains('Test Player 1', $player->name);
+        $this->assertNotContains('Test Player 2', $player->name);
+    }
+
+    /**
+     * 棋士名・所属国から棋士1件取得（データなし）
+     *
+     * @return void
+     */
+    public function testFindRankByNamesAndCountriesNoData()
+    {
+        try {
+            $this->Players->findRankByNamesAndCountries(['Test', 'Player 555'], 1);
+        } catch (\Exception $e) {
+            $this->assertTrue($e instanceof RecordNotFoundException);
+        }
+    }
 }

@@ -11,6 +11,7 @@ use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Exception;
+use Gotea\Model\Entity\Country;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
@@ -49,8 +50,12 @@ class RankDiffCommand extends Command
             $results = $countries->combine('name', function ($item) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
                 $method = 'getPlayerFrom' . Inflector::humanize($item->name_english);
+                $diffs = $this->$method($item);
+                if (!count($diffs)) {
+                    return [];
+                }
 
-                return $this->getDiff($item->id, $this->$method());
+                return $this->getDiff($item->id, $diffs);
             });
 
             // メール送信
@@ -92,23 +97,23 @@ class RankDiffCommand extends Command
     /**
      * 日本棋士の段位と棋士数を取得
      *
+     * @param \Gotea\Model\Entity\Country $country 所属国
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromJapan()
+    private function getPlayerFromJapan(Country $country)
     {
         $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
         $results = [];
 
         // 日本棋院
         $crawler = $this->getCrawler(env('DIFF_JAPAN_URL'));
-        $crawler->filter('#content h2')->each(function (Crawler $node) use (&$results, $ranks) {
+        $crawler->filter('#content h2')->each(function (Crawler $node) use (&$results, $country, $ranks) {
             if ($node->text() === 'タイトル者') {
                 $node->nextAll()->filter('.ul_players')->first()
-                    ->filter('li')->each(function (Crawler $node) use (&$results) {
+                    ->filter('li')->each(function (Crawler $node) use (&$results, $country) {
                         $name = str_replace('　', '', $node->text());
-                        $player = $this->Players->findByName($name)
-                            ->contain('Ranks')->select(['rank_num' => 'Ranks.rank_numeric'])->first();
-                        $results[$player->rank_num][] = $name;
+                        $player = $this->Players->findRankByNamesAndCountries([$name, $node->text()], $country->id);
+                        $results[$player->rank->rank_numeric][] = $name;
                     });
             }
             if (preg_match('/(.*)段/', $node->text())) {
@@ -149,9 +154,10 @@ class RankDiffCommand extends Command
     /**
      * 韓国棋士の段位と棋士数を取得
      *
+     * @param \Gotea\Model\Entity\Country $country 所属国
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromKorea()
+    private function getPlayerFromKorea(Country $country)
     {
         $results = [];
         $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
@@ -181,9 +187,10 @@ class RankDiffCommand extends Command
     /**
      * 台湾棋士の段位と棋士数を取得
      *
+     * @param \Gotea\Model\Entity\Country $country 所属国
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromTaiwan()
+    private function getPlayerFromTaiwan(Country $country)
     {
         $results = [];
         $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
