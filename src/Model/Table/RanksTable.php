@@ -27,4 +27,16 @@ class RanksTable extends AppTable
             'rank_numeric IS NOT' => null
         ])->order('rank_numeric DESC')->select(['id', 'name', 'rank_numeric']);
     }
+
+    /**
+     * 対象段位に該当する段位情報を取得します。
+     *
+     * @param int $rank 段位
+     * @return \Gotea\Model\Entity\Rank
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function findByRank($rank = 1)
+    {
+        return $this->findByRankNumeric($rank)->firstOrFail();
+    }
 }

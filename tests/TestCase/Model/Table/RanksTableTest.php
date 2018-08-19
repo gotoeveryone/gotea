@@ -81,4 +81,19 @@ class RanksTableTest extends TestCase
             $number = $item->rank_numeric;
         });
     }
+
+    /**
+     * 指定段位のデータが取得できるかのテスト
+     *
+     * @return void
+     */
+    public function testFindByRank()
+    {
+        $rank = $this->Ranks->findByRank(5);
+        $this->assertEquals(5, $rank->rank_numeric);
+
+        // 段位指定なしの場合は初段
+        $rank = $this->Ranks->findByRank();
+        $this->assertEquals(1, $rank->rank_numeric);
+    }
 }
