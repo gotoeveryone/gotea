@@ -281,7 +281,7 @@
                 <?php if (!empty($player->title_score_details)) : ?>
                 <?php foreach ($player->title_score_details as $score) : ?>
                 <ul class="boxes">
-                    <li class="genre-row"><?=h($score->target_year).'年度'?></li>
+                    <li class="genre-row"><?= __('{0}年度', $score->target_year) ?></li>
                     <li class="detail-row">
                         <fieldset class="detail-box box1">
                             <fieldset class="detail-box-row">
@@ -320,7 +320,7 @@
                 <?php // 2016年以前 ?>
                 <?php foreach ($player->old_scores as $key => $score) : ?>
                 <ul class="boxes">
-                    <li class="genre-row"><?=h($score->target_year).'年度'?></li>
+                    <li class="genre-row"><?= __('{0}年度', $score->target_year) ?></li>
                     <li class="detail-row">
                         <fieldset class="detail-box box1">
                             <fieldset class="detail-box-row">
@@ -360,11 +360,10 @@
                 <div class="category-row">タイトル取得履歴</div>
                 <?php $histories = $player->groupByYearFromHistories(); ?>
                 <?php foreach ($histories as $key => $items) : ?>
-                    <div class="genre-row"><?=h($key).'年度'?></div>
+                    <div class="genre-row"><?= __('{0}年度', $key) ?></div>
                     <?php foreach ($items as $item) : ?>
                     <div class="input-row">
-                        <span class="inner-column"><?= h($item->target_year).'年' ?></span>
-                        <span class="inner-column"><?= h($item->holding).'期' ?></span>
+                        <span class="inner-column"><?= __('{0}期', $item->holding) ?></span>
                         <span class="inner-column"><?= h($item->name) ?></span>
                         <span class="inner-column"><?= h($item->title->country->label) ?></span>
                     </div>
