@@ -33,7 +33,7 @@ class RanksTable extends AppTable
      *
      * @param int $rank 段位
      * @return \Gotea\Model\Entity\Rank
-     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function findByRank($rank = 1)
     {

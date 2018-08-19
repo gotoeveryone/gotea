@@ -220,7 +220,7 @@ class PlayersTable extends AppTable
      * @param array $names
      * @param int $countryId
      * @return \Gotea\Model\Entity\Player
-     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function findRankByNamesAndCountries(array $names, int $countryId)
     {
