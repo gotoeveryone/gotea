@@ -1,5 +1,5 @@
 <?= $this->Html->css('view', ['block' => true]) ?>
-<fieldset class="detail-dialog">
+<div class="detail-dialog">
     <!-- タブ -->
     <ul class="tabs" data-selecttab="<?= $this->request->getQuery('tab') ?>">
         <li class="tab" data-tabname="player">棋士情報</li>
@@ -13,7 +13,7 @@
     </ul>
 
     <!-- 詳細 -->
-    <fieldset class="detail">
+    <div class="detail">
         <!-- 棋士成績 -->
         <section data-contentname="player" class="tab-contents">
             <?= $this->Form->create($player, ['class' => 'main-form', 'url' => $player->getSaveUrl()]) ?>
