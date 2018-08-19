@@ -209,7 +209,7 @@
 }
 
 .layout-button {
-    @include button-link(#bbb);
+    @include button-link(#eee);
 }
 
 .button {
@@ -334,17 +334,17 @@
             word-wrap: break-word;
         }
     }
+    border: 1px solid $c_black;
 }
 
 .table-header,
 .table-body {
     margin: 0;
     padding: 0;
-    border: 1px solid $c_black;
 }
 
 .table-header {
-    background-color: $c_gray;
+    background-color: $c_table-header;
 }
 
 .table-body {
@@ -406,12 +406,6 @@
    タイトル勝敗検索
  ------------------------------------------- */
 .title-scores {
-    .detail-point {
-        height: 40px;
-        font-size: 1.2rem;
-        font-weight: bold;
-    }
-
     .search-header {
         .started {
             margin-right: 0.5rem;
@@ -449,7 +443,29 @@
         }
     }
 
-    .modal {
+    .player-scores-header {
+        @include flex-horizontal-between();
+        height: 40px;
+        .score-detail {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    }
+
+    .player-scores-results {
+        height: calc(100% - 40px);
+        border: 1px solid $c_black;
+
+        .table-header {
+            .table-row {
+                height: 35px;
+            }
+        }
+        .table-body {
+            height: calc(100% - 35px);
+            overflow-y: auto;
+        }
+
         .table-column {
             &_id {
                 width: 10%;

@@ -1,9 +1,18 @@
 <section class="title-scores">
-    <div class="detail-point">
-        <div><?= h($player->name_with_rank) ?>の成績</div>
-        <div><?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗</div>
+    <div class="player-scores-header">
+        <div class="score-detail">
+            <div><?= h($player->name_with_rank) ?>の成績</div>
+            <div><?= h($year) ?>年: <?= h($detail->win_point) ?>勝<?= h($detail->lose_point) ?>敗</div>
+        </div>
+        <div class="back-detail">
+            <?= $this->Html->link('<< 戻る', [
+                '_name' => 'view_player', '?' => ['tab' => 'scores'], $player->id,
+            ], [
+                'class' => 'layout-button',
+            ]) ?>
+        </div>
     </div>
-    <div class="search-results modal">
+    <div class="player-scores-results">
         <ul class="table-header">
             <li class="table-row">
                 <span class="table-column_id">ID</span>
@@ -40,12 +49,5 @@
             <?php endforeach ?>
         </ul>
         <?php endif ?>
-    </div>
-    <div class="button-row">
-        <?= $this->Html->link('戻る', [
-            '_name' => 'view_player', '?' => ['tab' => 'scores'], $player->id,
-        ], [
-            'class' => 'layout-button',
-        ]) ?>
     </div>
 </section>
