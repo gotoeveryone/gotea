@@ -215,6 +215,25 @@ class PlayersTable extends AppTable
     }
 
     /**
+     * 名前・所属国IDに該当する棋士データを1件取得します。
+     *
+     * @param array $names
+     * @param int $countryId
+     * @return \Gotea\Model\Entity\Player
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function findRankByNamesAndCountries(array $names, int $countryId)
+    {
+        return $this->find()
+            ->contain('Ranks')
+            ->where([
+                'Players.name in' => $names,
+                'Players.country_id' => $countryId,
+            ])
+            ->firstOrFail();
+    }
+
+    /**
      * LIKE検索用のWHERE句を生成します。
      *
      * @param string $fieldName フィールド名
@@ -223,12 +242,9 @@ class PlayersTable extends AppTable
      */
     private function createLikeParams(string $fieldName, string $input)
     {
-        $whereClause = [];
-        $params = explode(" ", $input);
-        foreach ($params as $param) {
-            array_push($whereClause, ["Players.{$fieldName} LIKE" => "%{$param}%"]);
-        }
-
-        return $whereClause;
+        return collection(explode(' ', $input))
+            ->map(function($param) use ($fieldName) {
+                return ["Players.{$fieldName} LIKE" => "%{$param}%"];
+            })->toArray();
     }
 }
