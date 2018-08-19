@@ -1,6 +1,6 @@
 <template>
-    <button type="button" :disabled="isDisable()"
-        country="country" class="button button-secondary" @click="newPlayer()">新規作成</button>
+    <button type="button" country="country"
+        class="button button-secondary" @click="newPlayer()">新規作成</button>
 </template>
 
 <script lang="ts">
@@ -18,9 +18,6 @@ export default Vue.extend({
             this.$store.dispatch('openModal', {
                 url: `${this.url}?country_id=${this.targetId}`,
             })
-        },
-        isDisable() {
-            return this.targetId === ''
         },
     },
     computed: {
