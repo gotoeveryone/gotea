@@ -299,25 +299,40 @@
         padding-left: .3rem;
         color: $c_red;
     }
+}
+.pager {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    &-item {
+        background-color: $c_gray;
+        margin: auto .15rem;
 
-    &-pager {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        li {
-            background-color: $c_gray;
-            margin: auto .1rem;
-            padding: .1rem .4rem .2rem;
+        &-link {
+            display: block;
+            padding: .1rem .5rem .2rem;
+            color: $c_black;
+            text-decoration: none;
 
-            &.active {
-                font-weight: bold;
+            &:hover {
                 background-color: darken($c_gray, 10%);
+                transition: background-color .3s ease-in-out;
             }
+        }
 
-            &.disabled {
-                a {
-                    cursor: initial;
-                    text-decoration: none;
+        &.active {
+            font-weight: bold;
+        }
+
+        &.active,
+        &.disabled {
+            background-color: darken($c_gray, 10%);
+
+            .pager-item-link {
+                cursor: initial;
+
+                &:hover {
+                    background-color: inherit;
                 }
             }
         }
