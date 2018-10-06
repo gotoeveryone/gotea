@@ -75,11 +75,11 @@ document.addEventListener(
         ) {
             element.classList.add('set-event')
             new Pikaday(
-                pikadayOptions(element, element.classList.contains('birthday'))
+                pikadayOptions(element, element.classList.contains('birthday')),
             ).show()
         }
     },
-    true
+    true,
 )
 
 // タブ変更
@@ -98,7 +98,7 @@ const changeTab = (element: any) => {
     element.classList.add('selectTab')
     const selectTab = element.getAttribute('data-tabname')
     const selectContents = document.querySelector(
-        `[data-contentname=${selectTab}]`
+        `[data-contentname=${selectTab}]`,
     )
     if (selectContents) {
         selectContents.classList.remove('not-select')
@@ -114,7 +114,7 @@ if (tabWrap) {
         element.addEventListener(
             'click',
             (event: any) => changeTab(event.target),
-            false
+            false,
         )
     })
 
@@ -122,7 +122,7 @@ if (tabWrap) {
     const selectTabName = tabWrap.getAttribute('data-selecttab')
     if (selectTabName) {
         const selectTab = document.querySelector(
-            `[data-tabname=${selectTabName}]`
+            `[data-tabname=${selectTabName}]`,
         )
         if (selectTab) {
             changeTab(selectTab)
@@ -168,13 +168,13 @@ if (inputQueries) {
                 .replace(new RegExp(/^\r/gm), '')
                 .replace(new RegExp(/^\n/gm), '')
         },
-        false
+        false,
     )
 }
 
 // クエリ更新
 const updateQuery = document.querySelector(
-    '[data-button-type=execute-queries]'
+    '[data-button-type=execute-queries]',
 )
 if (updateQuery) {
     updateQuery.addEventListener(
@@ -186,7 +186,7 @@ if (updateQuery) {
                 window.App.openDialog(
                     null,
                     ['更新対象が1件も存在しません。'],
-                    'warning'
+                    'warning',
                 )
                 return
             }
@@ -195,7 +195,7 @@ if (updateQuery) {
                 event.preventDefault()
             }
         },
-        false
+        false,
     )
 }
 
@@ -208,6 +208,6 @@ if (clearQuery) {
             const textarea = document.querySelector('#input-queries')
             textarea.value = ''
         },
-        false
+        false,
     )
 }
