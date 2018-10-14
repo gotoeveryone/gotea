@@ -121,7 +121,9 @@ class PlayerRanksTable extends AppTable
                     return $q->where(['rank_numeric >' => 1]);
                 },
             ])
-            ->where(['promoted >=' => Date::now()->addMonths(-1)])
-            ->orderDesc('promoted');
+            ->where(['PlayerRanks.promoted >=' => Date::now()->addMonths(-2)])
+            ->orderDesc('PlayerRanks.promoted')
+            ->order('Players.country_id')
+            ->orderDesc('Ranks.rank_numeric');
     }
 }
