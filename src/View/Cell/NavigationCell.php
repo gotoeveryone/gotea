@@ -5,6 +5,8 @@ use Cake\View\Cell;
 
 /**
  * ナビゲーションに表示する情報
+ *
+ * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
  */
 class NavigationCell extends Cell
 {
