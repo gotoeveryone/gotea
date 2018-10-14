@@ -64,6 +64,7 @@
             <!-- モーダルコンテンツ -->
             <app-modal :options="modal"></app-modal>
             <!-- ダイアログ -->
+            <app-dialog :options="dialog"></app-dialog>
             <?= $this->Flash->render() ?>
         </div>
 
