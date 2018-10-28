@@ -64,6 +64,12 @@
     justify-content: center;
 }
 
+@mixin flex-vertical-stretch() {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
 @mixin flex-searcharea() {
     display: flex;
     align-items: flex-end;

@@ -305,8 +305,8 @@
     align-items: center;
     justify-content: flex-end;
     &-item {
-        background-color: $c_gray;
         margin: auto .15rem;
+        background-color: $c_gray;
 
         &-link {
             display: block;
@@ -575,13 +575,18 @@
                 display: none;
             }
             padding: 0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
             width: 9%;
             &-summary {
+                width: 100%;
                 text-align: center;
             }
             &-point {
-                display: flex;
-                justify-content: space-around;
+                padding: 0;
+                min-width: 20%;
+                text-align: center;
             }
         }
 
