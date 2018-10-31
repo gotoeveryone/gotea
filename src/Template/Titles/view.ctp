@@ -125,7 +125,7 @@
                 <?=$this->Form->hidden('name', ['value' => $title->name])?>
                 <div class="category-row">保持情報</div>
                 <add-history domain="<?= $this->Url->build('/') ?>" :history-id="historyId"
-                    is-team="<?= $title->is_team ?>" @cleared="clearHistory()"></add-history>
+                    @cleared="clearHistory()" <?= $title->is_team ? ':is-team="true"' : '' ?>></add-history>
                 <ul class="boxes">
                     <?php if (!empty(($title->retention_histories))) : ?>
                         <?php if (($retention = $title->now_retention)) : ?>
