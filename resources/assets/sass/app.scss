@@ -2,55 +2,18 @@
 @import 'module/_mixin.scss';
 @import 'module/_normalize.scss';
 
-
-/* -------------------------------------------
-   ログイン
- ------------------------------------------- */
-.login-container {
-    @include flex-center();
-
-    .login-content {
-        border: 1px solid $c_black;
-        border-radius: 5px;
-        width: 300px;
-        max-width: 80%;
-    }
-
-    .login-title {
-        width: 100%;
-        background-color: $c_title;
-        color: $c_white;
-        font-family: 'Maitree', serif;
-        font-size: 2rem;
-        text-align: center;
-    }
-
-    .login-main {
-        padding: .8rem 1rem;
-    }
-
-    .login-row {
-        margin: 1rem auto;
-    }
-
-    .login-label {
-        display: block;
-        margin-bottom: .5rem;
-    }
-
-    .login-account,
-    .login-password {
-        width: 100%;
-        max-width: 100%;
-    }
-}
-
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
 .container {
     width: 100%;
     height: 100%;
+}
+
+.datepicker {
+    @include pc() {
+        width: 150px;
+    }
 }
 
 .header {
@@ -267,7 +230,7 @@
 
     &-right {
         @include sp() {
-            justify-content: flex-end;
+            @include flex-horizontal-end();
         }
         margin-left: auto;
     }
@@ -374,6 +337,49 @@
 
 .table-column {
     padding: .1rem .3rem;
+}
+
+
+/* -------------------------------------------
+   ログイン
+ ------------------------------------------- */
+.login-container {
+    @include flex-center();
+
+    .login-content {
+        border: 1px solid $c_black;
+        border-radius: 5px;
+        width: 300px;
+        max-width: 80%;
+    }
+
+    .login-title {
+        width: 100%;
+        background-color: $c_title;
+        color: $c_white;
+        font-family: 'Maitree', serif;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .login-main {
+        padding: .8rem 1rem;
+    }
+
+    .login-row {
+        margin: 1rem auto;
+    }
+
+    .login-label {
+        display: block;
+        margin-bottom: .5rem;
+    }
+
+    .login-account,
+    .login-password {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 /* -------------------------------------------
@@ -574,8 +580,8 @@
             @include sp() {
                 display: none;
             }
-            padding: 0;
             display: flex;
+            padding: 0;
             justify-content: space-around;
             flex-wrap: wrap;
             width: 9%;
