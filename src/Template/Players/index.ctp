@@ -117,19 +117,15 @@
                     <span class="table-column table-column_sex">性別</span>
                     <span class="table-column table-column_score">
                         <div class="table-column table-column_score-summary"><?= date('Y') ?>年国内</div>
-                        <div class="table-column_score-point">
-                            <span class="table-column">勝</span>
-                            <span class="table-column">敗</span>
-                            <span class="table-column">分</span>
-                        </div>
+                        <span class="table-column table-column_score-point">勝</span>
+                        <span class="table-column table-column_score-point">敗</span>
+                        <span class="table-column table-column_score-point">分</span>
                     </span>
                     <span class="table-column table-column_score">
                         <div class="table-column table-column_score-summary"><?= date('Y') ?>年国際</div>
-                        <div class="table-column_score-point">
-                            <span class="table-column">勝</span>
-                            <span class="table-column">敗</span>
-                            <span class="table-column">分</span>
-                        </div>
+                        <span class="table-column table-column_score-point">勝</span>
+                        <span class="table-column table-column_score-point">敗</span>
+                        <span class="table-column table-column_score-point">分</span>
                     </span>
                 </li>
             </ul>
@@ -137,7 +133,7 @@
             <ul class="players table-body">
                 <?php foreach ($players as $player) : ?>
                 <li class="table-row<?= ($player->is_retired ? ' table-row-retired' : '') ?>">
-                    <span class="table-column_id">
+                    <span class="table-column table-column_id">
                         <?= h($player->id) ?>
                     </span>
                     <span class="table-column table-column_name">
@@ -164,23 +160,27 @@
                     <span class="table-column table-column_sex">
                         <?= h($player->sex) ?>
                     </span>
-                    <span class="table-column table-column_point">
-                        <?= h($player->win(null)) ?>
+                    <span class="table-column table-column_score">
+                        <span class="table-column table-column_score-point">
+                            <?= h($player->win(null)) ?>
+                        </span>
+                        <span class="table-column table-column_score-point">
+                            <?= h($player->lose(null)) ?>
+                        </span>
+                        <span class="table-column table-column_score-point">
+                            <?= h($player->draw(null)) ?>
+                        </span>
                     </span>
-                    <span class="table-column table-column_point">
-                        <?= h($player->lose(null)) ?>
-                    </span>
-                    <span class="table-column table-column_point">
-                        <?= h($player->draw(null)) ?>
-                    </span>
-                    <span class="table-column table-column_point">
-                        <?= h($player->win(null, true)) ?>
-                    </span>
-                    <span class="table-column table-column_point">
-                        <?= h($player->lose(null, true)) ?>
-                    </span>
-                    <span class="table-column table-column_point">
-                        <?= h($player->draw(null, true)) ?>
+                    <span class="table-column table-column_score">
+                        <span class="table-column table-column_score-point">
+                            <?= h($player->win(null, true)) ?>
+                        </span>
+                        <span class="table-column table-column_score-point">
+                            <?= h($player->lose(null, true)) ?>
+                        </span>
+                        <span class="table-column table-column_score-point">
+                            <?= h($player->draw(null, true)) ?>
+                        </span>
                     </span>
                 </li>
                 <?php endforeach ?>

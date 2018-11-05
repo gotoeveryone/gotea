@@ -206,8 +206,6 @@
                                         'empty' => false,
                                     ]) ?>
                                 </fieldset>
-                            </fieldset>
-                            <fieldset class="detail-box box1">
                                 <fieldset class="detail-box-row">
                                     <?= $this->Form->control('promoted',[
                                         'label' => ['class' => 'detail-box_label', 'text' => '昇段日'],
@@ -216,7 +214,7 @@
                                     ]) ?>
                                 </fieldset>
                             </fieldset>
-                            <fieldset class="detail-box box1">
+                            <fieldset class="detail-box detail-box-right">
                                 <fieldset class="detail-box-row">
                                     <?= $this->Form->control('newest', [
                                         'label' => ['class' => 'checkbox-label', 'text' => '最新として登録'],
@@ -224,8 +222,6 @@
                                         'class' => 'checkbox-with-label',
                                     ]) ?>
                                 </fieldset>
-                            </fieldset>
-                            <fieldset class="detail-box detail-box-right">
                                 <fieldset class="detail-box-button-row">
                                     <?= $this->Form->button('登録', ['class' => 'button button-primary']) ?>
                                 </fieldset>
@@ -251,8 +247,6 @@
                                             'empty' => false,
                                         ]) ?>
                                     </fieldset>
-                                </fieldset>
-                                <fieldset class="detail-box box1">
                                     <fieldset class="detail-box-row">
                                         <?= $this->Form->control('promoted',[
                                             'label' => ['class' => 'detail-box_label', 'text' => '昇段日'],

@@ -45,20 +45,26 @@
         .tab-contents {
             @include fade(0.5, 'not-select');
         }
+
+        .checkbox-label {
+            @include flex-horizontal-start();
+            input[type=checkbox] {
+                width: auto;
+            }
+        }
     }
 }
 
 %row {
     @include flex-horizontal-start();
     padding: 0.2rem;
-    min-height: #{$minRowHeight};
 }
 
 .detail-row {
-    @extend %row;
     @include sp() {
         flex-wrap: wrap;
     }
+    @include flex-vertical-stretch();
     margin: 0 auto;
     padding: 0;
     &-result {
@@ -81,10 +87,11 @@
 
 .detail-box {
     @include sp() {
-        @include flex-horizontal-start();
         width: 100%;
         flex-wrap: wrap;
     }
+    @include flex-horizontal-start();
+
     &-row {
         @include flex-horizontal-start();
         margin: 0.5rem 1rem;
@@ -94,6 +101,7 @@
         }
     }
     &-checkbox-row {
+        flex-wrap: nowrap;
         & > .input {
             width: auto;
             padding-right: 0.5rem;
@@ -107,7 +115,6 @@
         @include sp() {
             justify-content: flex-end;
         }
-        margin-top: auto;
         margin-left: auto;
     }
     &_label {
@@ -115,18 +122,11 @@
         margin-right: .3rem;
     }
     .input {
-        @include sp() {
-            width: 100%;
-        }
+        width: 100%;
+        height: 100%;
         .label-row,
         .input-row:not(textarea) {
             height: 2.2rem;
-        }
-        .checkbox-label {
-            @include flex-horizontal-start();
-            input[type=checkbox] {
-                width: auto;
-            }
         }
     }
     &.box1 {
