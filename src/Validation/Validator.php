@@ -10,6 +10,8 @@ use Cake\Validation\Validator as BaseValidator;
  */
 class Validator extends BaseValidator
 {
+    const DEFAULT_MESSAGE = 'field {0} is invalid';
+
     /**
      * Constructor
      */
@@ -51,7 +53,7 @@ class Validator extends BaseValidator
                 array_shift($rules);
                 $args = array_merge($args, $rules);
             }
-            $rule['message'] = $this->getMessage($name, $args);
+            $rule['message'] = $this->getMessage((is_array($name) ? $name[0] : $name), $args);
         }
 
         return parent::add($field, $name, $rule);
@@ -116,7 +118,7 @@ class Validator extends BaseValidator
     {
         $message = $this->_messages[$key] ?? null;
         if (!$message) {
-            return null;
+            $message = self::DEFAULT_MESSAGE;
         }
 
         // see \Gotea\Locale\{code}\validation.po
