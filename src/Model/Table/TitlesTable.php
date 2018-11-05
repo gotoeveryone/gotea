@@ -48,9 +48,11 @@ class TitlesTable extends AppTable
             ->integer('holding')
             ->integer('sort_order')
             ->alphaNumeric('name_english')
-            ->add('html_file_name', function ($value) {
-                return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\/\s]+$/', $value);
-            })
+            ->add('html_file_name', 'custom', [
+                'rule' => function ($value) {
+                    return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\/\s]+$/', $value);
+                },
+            ])
             ->maxLength('name', 30)
             ->maxLength('name_english', 30)
             ->date('html_file_modified', 'y/m/d');

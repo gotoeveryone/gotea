@@ -72,7 +72,7 @@ class TitlesTableTest extends TestCase
             'name_english' => '123456789012345678901234567890',
             'holding' => 1,
             'sort_order' => 1,
-            'html_file_name' => 'test',
+            'html_file_name' => 'test/1',
             'html_file_modified' => '2018/01/01',
         ];
 
@@ -106,13 +106,20 @@ class TitlesTableTest extends TestCase
         }
 
         // alphaNumeric
-        $names = ['name_english', 'html_file_name'];
-        foreach ($names as $name) {
-            $data = $params;
-            $data[$name] = 'テスト';
-            $result = $this->Titles->newEntity($data);
-            $this->assertNotEmpty($result->getErrors());
-        }
+        $data = $params;
+        $data['name_english'] = 'テスト';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        $data['name_english'] = 'test/1';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // custom (ascii value only)
+        $data = $params;
+        $data['html_file_name'] = 'テスト';
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
 
         // maxLength
         // name
