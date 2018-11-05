@@ -71,6 +71,9 @@ msgstr "対局日（FROM）"
 msgid "ended"
 msgstr "対局日（TO）"
 
+msgid "field {0} is invalid"
+msgstr "{0}に入力された値が不正です。"
+
 msgid "field {0} is required"
 msgstr "{0}は必須入力です。"
 
