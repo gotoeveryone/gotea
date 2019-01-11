@@ -40,15 +40,15 @@ class MyFormHelper extends FormHelper
             'year' => [
                 'start' => '1920',
                 'end' => Date::now()->addYears(1)->year,
-                'class' => 'input-row joined',
+                'class' => 'input-row dropdowns',
                 'suffix' => '年',
             ],
             'month' => [
-                'class' => 'input-row joined',
+                'class' => 'input-row dropdowns',
                 'suffix' => '月',
             ],
             'day' => [
-                'class' => 'input-row joined',
+                'class' => 'input-row dropdowns',
                 'suffix' => '日',
             ],
             'monthNames' => false,
