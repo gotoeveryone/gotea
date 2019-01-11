@@ -173,6 +173,19 @@
 
 .layout-button {
     @include button-link(#eee);
+
+    &.button-primary {
+        @include button-link(lighten(rgb(22, 22, 190), 10%));
+        color: $c_white;
+    }
+    &.button-secondary {
+        @include button-link(lighten(rgb(16, 119, 16), 10%));
+        color: $c_white;
+    }
+    &.button-danger {
+        @include button-link(lighten(rgb(197, 13, 13), 10%));
+        color: $c_white;
+    }
 }
 
 .button {
@@ -691,5 +704,46 @@
         font-size: 12px;
         overflow-y: auto;
         border: 1px solid $c_black;
+    }
+}
+
+/* -------------------------------------------
+   お知らせ
+ ------------------------------------------- */
+.notifications {
+    padding: 10px;
+
+    .table-row {
+        padding-top: .7rem;
+    }
+
+    .table-column {
+        &_title {
+            width: 15%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        &_content {
+            width: 40%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        &_status {
+            width: 5%;
+        }
+
+        &_published {
+            width: 25%;
+            text-align: center;
+        }
+
+        &_actions {
+            width: 15%;
+            text-align: center;
+        }
     }
 }

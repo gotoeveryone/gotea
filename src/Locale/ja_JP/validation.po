@@ -71,6 +71,18 @@ msgstr "対局日（FROM）"
 msgid "ended"
 msgstr "対局日（TO）"
 
+msgid "title"
+msgstr "タイトル"
+
+msgid "content"
+msgstr "本文"
+
+msgid "published"
+msgstr "公開日時"
+
+msgid "is_draft"
+msgstr "下書き"
+
 msgid "field {0} is invalid"
 msgstr "{0}に入力された値が不正です。"
 

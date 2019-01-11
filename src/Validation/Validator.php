@@ -117,8 +117,12 @@ class Validator extends BaseValidator
     public function getMessage(string $key, ...$args)
     {
         $message = $this->_messages[$key] ?? null;
-        if (!$message) {
-            $message = self::DEFAULT_MESSAGE;
+        if ($message === null) {
+            if (isset($args[0][0])) {
+                return __d('validation', self::DEFAULT_MESSAGE, $args[0][0]);
+            }
+
+            return __d('validation', self::DEFAULT_MESSAGE);
         }
 
         // see \Gotea\Locale\{code}\validation.po

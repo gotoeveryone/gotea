@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -125,6 +126,19 @@ Router::scope('/', function (RouteBuilder $routes) {
         $routes->post('/', ['action' => 'execute'], 'execute_queries');
     });
 
+    // お知らせ
+    $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'notifications');
+        $routes->get('/new', ['action' => 'new'], 'new_notification');
+        $routes->post('/', ['action' => 'create'], 'create_notification');
+        $routes->get('/:id', ['action' => 'edit'], 'edit_notification')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->put('/:id', ['action' => 'update'], 'update_notification')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->delete('/:id', ['action' => 'delete'], 'delete_notification')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+    });
+
     // API
     $routes->prefix('Api', function (RouteBuilder $routes) {
         $routes->setExtensions(['json']);
@@ -155,7 +169,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
             $routes->get('/:id', ['action' => 'view'], 'api_history')
-            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
     });
 

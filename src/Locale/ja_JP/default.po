@@ -67,3 +67,5 @@ msgstr "ユーザ [{0}] がログインしました。"
 msgid "This player already exists"
 msgstr "棋士情報がすでに存在します。"
 
+msgid "Are you sure you want to delete # {0}?"
+msgstr "ID {0} を削除します。よろしいですか。"
