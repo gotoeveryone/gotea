@@ -5,6 +5,8 @@ namespace Gotea\Command;
 use Cake\Console\Arguments;
 use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
+use Cake\Core\Configure;
+use Cake\Http\Exception\HttpException;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
@@ -58,10 +60,19 @@ class RankDiffCommand extends Command
                 return $this->getDiff($item->id, $diffs);
             });
 
-            // メール送信
-            if (!$results->unfold()->isEmpty()) {
-                $subject = "【自動通知】${today}_棋士段位差分抽出";
-                $mailer->send('notification', [$subject, $results]);
+            if (!Configure::read('debug')) {
+                // メール送信
+                if (!$results->unfold()->isEmpty()) {
+                    $subject = "【自動通知】${today}_棋士段位差分抽出";
+                    $mailer->send('notification', [$subject, $results]);
+                }
+            } else {
+                $results->filter(function ($item) {
+                    return count($item) > 0;
+                })->each(function ($item, $key) {
+                    Log::info($key);
+                    Log::info($item);
+                });
             }
 
             return self::CODE_SUCCESS;
@@ -159,29 +170,18 @@ class RankDiffCommand extends Command
      */
     private function getPlayerFromKorea(Country $country)
     {
-        $results = [];
         $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
-        $crawler->filter('#content .facetop')->each(function (Crawler $node) use (&$results) {
-            $src = $node->filter('img')->attr('src');
-            if (preg_match('/list_([1-9])dan/', $src, $matches)) {
-                $rank = $matches[1];
-                $playerNodes = $node->nextAll()->filter('table')->first()->filter('td');
-                $players = $playerNodes->each(function ($node) {
-                    return $node->text();
-                });
 
-                $results[$rank] = collection($players)->filter(function ($item) {
-                    $text = $item;
-                    if (preg_match('/(\s)/u', $text)) {
-                        $text = preg_replace('/(\s)/u', '', $text);
-                    }
+        return collection($crawler->filter('.playerArea .lv_list')
+            ->each(function (Crawler $row) use (&$results) {
+                $rank = $row->filter('.lv dt span')->first()->text();
+                $players = collection($row->filter('.players .player')
+                    ->each(function (Crawler $node) {
+                        return $node->text();
+                    }))->toArray();
 
-                    return $text !== '';
-                })->toArray();
-            }
-        });
-
-        return $results;
+                return compact('rank', 'players');
+            }))->combine('rank', 'players')->toArray();
     }
 
     /**
@@ -220,6 +220,14 @@ class RankDiffCommand extends Command
         $client = new Client();
         $client->setClient(new GuzzleClient());
 
-        return $client->request('GET', $url);
+        $crawler = $client->request('GET', $url);
+        if ($client->getInternalResponse()->getStatus() >= 400) {
+            throw new HttpException(
+                'クロール先のページが意図しないレスポンスを返しました。',
+                $client->getInternalResponse()->getStatus()
+            );
+        }
+
+        return $crawler;
     }
 }
