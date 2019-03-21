@@ -25,16 +25,16 @@ class PlayersControllerTest extends AppTestCase
      * @var array
      */
     public $fixtures = [
-        'app.countries',
-        'app.ranks',
-        'app.organizations',
-        'app.players',
-        'app.player_scores',
-        'app.player_ranks',
-        'app.titles',
-        'app.title_scores',
-        'app.title_score_details',
-        'app.retention_histories',
+        'app.Countries',
+        'app.Ranks',
+        'app.Organizations',
+        'app.Players',
+        'app.PlayerScores',
+        'app.PlayerRanks',
+        'app.Titles',
+        'app.TitleScores',
+        'app.TitleScoreDetails',
+        'app.RetentionHistories',
     ];
 
     /**

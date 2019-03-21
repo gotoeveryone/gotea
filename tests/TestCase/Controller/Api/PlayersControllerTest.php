@@ -2,9 +2,7 @@
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\I18n\FrozenDate;
-use Cake\Routing\Exception\MissingRouteException;
 use Cake\Utility\Hash;
-use Gotea\Controller\Api\PlayersController;
 
 /**
  * Gotea\Controller\Api\PlayersController Test Case
@@ -17,15 +15,15 @@ class PlayersControllerTest extends ApiTestCase
      * @var array
      */
     public $fixtures = [
-        'app.countries',
-        'app.ranks',
-        'app.organizations',
-        'app.players',
-        'app.player_scores',
-        'app.title_scores',
-        'app.title_score_details',
-        'app.updated_points',
-        'app.player_ranks',
+        'app.Countries',
+        'app.Ranks',
+        'app.Organizations',
+        'app.Players',
+        'app.PlayerScores',
+        'app.TitleScores',
+        'app.TitleScoreDetails',
+        'app.UpdatedPoints',
+        'app.PlayerRanks',
     ];
 
     /**

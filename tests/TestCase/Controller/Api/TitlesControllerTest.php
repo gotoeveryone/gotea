@@ -1,8 +1,6 @@
 <?php
 namespace Gotea\Test\TestCase\Controller\Api;
 
-use Gotea\Controller\ApiTitlesController;
-
 /**
  * Gotea\Controller\Api\TitlesController Test Case
  */
@@ -14,11 +12,11 @@ class TitlesControllerTest extends ApiTestCase
      * @var array
      */
     public $fixtures = [
-        'app.countries',
-        'app.titles',
-        'app.players',
-        'app.ranks',
-        'app.retention_histories',
+        'app.Countries',
+        'app.Titles',
+        'app.Players',
+        'app.Ranks',
+        'app.RetentionHistories',
     ];
 
     /**

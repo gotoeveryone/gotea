@@ -24,7 +24,7 @@ class RanksTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.ranks'
+        'app.Ranks'
     ];
 
     /**

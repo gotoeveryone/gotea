@@ -1,10 +1,8 @@
 <?php
 namespace Gotea\Test\TestCase\Model\Table;
 
-use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Gotea\Model\Table\TitleScoresTable;
 
 /**
  * タイトル成績モデルのテストケース
@@ -26,12 +24,12 @@ class TitleScoresTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.title_scores',
-        'app.title_score_details',
-        'app.players',
-        'app.countries',
-        'app.ranks',
-        'app.organizations',
+        'app.TitleScores',
+        'app.TitleScoreDetails',
+        'app.Players',
+        'app.Countries',
+        'app.Ranks',
+        'app.Organizations',
     ];
 
     /**

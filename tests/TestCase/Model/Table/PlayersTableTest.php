@@ -27,16 +27,16 @@ class PlayersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.players',
-        'app.countries',
-        'app.ranks',
-        'app.organizations',
-        'app.player_ranks',
-        'app.player_scores',
-        'app.retention_histories',
-        'app.titles',
-        'app.title_score_details',
-        'app.title_scores',
+        'app.Players',
+        'app.Countries',
+        'app.Ranks',
+        'app.Organizations',
+        'app.PlayerRanks',
+        'app.PlayerScores',
+        'app.RetentionHistories',
+        'app.Titles',
+        'app.TitleScoreDetails',
+        'app.TitleScores',
     ];
 
     /**

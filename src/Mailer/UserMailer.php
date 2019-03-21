@@ -16,7 +16,7 @@ class UserMailer extends Mailer
      *
      * @var string
      */
-    static public $name = 'User';
+    public static $name = 'User';
 
     /**
      * 通知メール送信情報を設定

@@ -50,7 +50,7 @@ class UsersController extends AppController
         $credentials = $this->getRequest()->getParsedBody();
         $form = new LoginForm();
         if (!$form->validate($credentials)) {
-            return $this->setErrors(400, $form->errors())->setAction('index');
+            return $this->setErrors(400, $form->getErrors())->setAction('index');
         }
 
         // ログイン成功→リダイレクト
