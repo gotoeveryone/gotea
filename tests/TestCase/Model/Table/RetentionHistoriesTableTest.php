@@ -25,16 +25,16 @@ class RetentionHistoriesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.retention_histories',
-        'app.titles',
-        'app.countries',
-        'app.players',
-        'app.ranks',
-        'app.organizations',
-        'app.player_ranks',
-        'app.player_scores',
-        'app.title_score_details',
-        'app.title_scores'
+        'app.RetentionHistories',
+        'app.Titles',
+        'app.Countries',
+        'app.Players',
+        'app.Ranks',
+        'app.Organizations',
+        'app.PlayerRanks',
+        'app.PlayerScores',
+        'app.TitleScoreDetails',
+        'app.TitleScores'
     ];
 
     /**

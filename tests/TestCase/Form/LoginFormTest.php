@@ -55,7 +55,7 @@ class LoginFormTest extends TestCase
         // success
         $result = $this->Login->validate($params);
         $this->assertTrue($result);
-        $this->assertEmpty($this->Login->errors());
+        $this->assertEmpty($this->Login->getErrors());
 
         // requirePresence
         foreach ($params as $name => $value) {
@@ -63,12 +63,12 @@ class LoginFormTest extends TestCase
             unset($data[$name]);
             $result = $this->Login->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Login->errors());
+            $this->assertNotEmpty($this->Login->getErrors());
 
             $data[$name] = '';
             $result = $this->Login->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Login->errors());
+            $this->assertNotEmpty($this->Login->getErrors());
         }
 
         // alphaNumeric
@@ -78,7 +78,7 @@ class LoginFormTest extends TestCase
             $data[$name] = 'テスト';
             $result = $this->Login->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Login->errors());
+            $this->assertNotEmpty($this->Login->getErrors());
         }
 
         // maxLength
@@ -86,12 +86,12 @@ class LoginFormTest extends TestCase
         $data['account'] = '12345678901';
         $result = $this->Login->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
+        $this->assertNotEmpty($this->Login->getErrors());
 
         $data = $params;
         $data['password'] = '123456789012345678901';
         $result = $this->Login->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Login->errors());
+        $this->assertNotEmpty($this->Login->getErrors());
     }
 }

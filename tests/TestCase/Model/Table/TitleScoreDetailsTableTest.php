@@ -34,15 +34,15 @@ class TitleScoreDetailsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.title_score_details',
-        'app.title_scores',
-        'app.titles',
-        'app.retention_histories',
-        'app.players',
-        'app.player_scores',
-        'app.countries',
-        'app.ranks',
-        'app.player_ranks',
+        'app.TitleScoreDetails',
+        'app.TitleScores',
+        'app.Titles',
+        'app.RetentionHistories',
+        'app.Players',
+        'app.PlayerScores',
+        'app.Countries',
+        'app.Ranks',
+        'app.PlayerRanks',
     ];
 
     /**

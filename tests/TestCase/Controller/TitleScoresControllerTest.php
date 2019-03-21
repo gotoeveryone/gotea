@@ -12,12 +12,12 @@ class TitleScoresControllerTest extends AppTestCase
      * @var array
      */
     public $fixtures = [
-        'app.title_scores',
-        'app.title_score_details',
-        'app.players',
-        'app.countries',
-        'app.ranks',
-        'app.player_ranks',
+        'app.TitleScores',
+        'app.TitleScoreDetails',
+        'app.Players',
+        'app.Countries',
+        'app.Ranks',
+        'app.PlayerRanks',
     ];
 
     /**

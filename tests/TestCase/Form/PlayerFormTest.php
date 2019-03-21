@@ -58,13 +58,13 @@ class PlayerFormTest extends TestCase
         // success
         $result = $this->Player->validate($params);
         $this->assertTrue($result);
-        $this->assertEmpty($this->Player->errors());
+        $this->assertEmpty($this->Player->getErrors());
 
         $params['joined_from'] = 2001;
         $params['joined_to'] = 2017;
         $result = $this->Player->validate($params);
         $this->assertTrue($result);
-        $this->assertEmpty($this->Player->errors());
+        $this->assertEmpty($this->Player->getErrors());
 
         // integer
         $names = [
@@ -76,17 +76,17 @@ class PlayerFormTest extends TestCase
             $data[$name] = '1a';
             $result = $this->Player->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Player->errors());
+            $this->assertNotEmpty($this->Player->getErrors());
 
             $data[$name] = 'test';
             $result = $this->Player->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Player->errors());
+            $this->assertNotEmpty($this->Player->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->Player->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Player->errors());
+            $this->assertNotEmpty($this->Player->getErrors());
         }
 
         // alphaNumeric
@@ -96,7 +96,7 @@ class PlayerFormTest extends TestCase
             $data[$name] = 'テスト';
             $result = $this->Player->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->Player->errors());
+            $this->assertNotEmpty($this->Player->getErrors());
         }
 
         // maxLength
@@ -105,21 +105,21 @@ class PlayerFormTest extends TestCase
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
 
         $data = [
             'name_english' => '12345678901234567890123456789012345678901',
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
 
         $data = [
             'name_other' => '123456789012345678901',
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
 
         // range
         $data = [
@@ -127,27 +127,27 @@ class PlayerFormTest extends TestCase
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
 
         $data = [
             'joined_from' => 10000,
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
 
         $data = [
             'joined_to' => 0,
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
 
         $data = [
             'joined_to' => 10000,
         ];
         $result = $this->Player->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->Player->errors());
+        $this->assertNotEmpty($this->Player->getErrors());
     }
 }

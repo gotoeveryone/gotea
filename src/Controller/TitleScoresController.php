@@ -48,7 +48,7 @@ class TitleScoresController extends AppController
         // バリデーション
         $data = $this->getRequest()->getQueryParams();
         if (!$form->validate($data)) {
-            return $this->setErrors(400, $form->errors())->setAction('index');
+            return $this->setErrors(400, $form->getErrors())->setAction('index');
         }
 
         // リクエストから値を取得

@@ -36,7 +36,7 @@ class CountriesCellTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.countries',
+        'app.Countries',
     ];
 
     /**

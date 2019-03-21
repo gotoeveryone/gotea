@@ -58,7 +58,7 @@ class TitleScoreFormTest extends TestCase
         // success
         $result = $this->TitleScore->validate($params);
         $this->assertTrue($result);
-        $this->assertEmpty($this->TitleScore->errors());
+        $this->assertEmpty($this->TitleScore->getErrors());
 
         // integer
         $names = ['country_id', 'target_year'];
@@ -67,17 +67,17 @@ class TitleScoreFormTest extends TestCase
             $data[$name] = '1a';
             $result = $this->TitleScore->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->TitleScore->errors());
+            $this->assertNotEmpty($this->TitleScore->getErrors());
 
             $data[$name] = 'test';
             $result = $this->TitleScore->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->TitleScore->errors());
+            $this->assertNotEmpty($this->TitleScore->getErrors());
 
             $data[$name] = '0.5';
             $result = $this->TitleScore->validate($data);
             $this->assertFalse($result);
-            $this->assertNotEmpty($this->TitleScore->errors());
+            $this->assertNotEmpty($this->TitleScore->getErrors());
         }
 
         // maxLength
@@ -86,7 +86,7 @@ class TitleScoreFormTest extends TestCase
         $data['name'] = '123456789012345678901';
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
 
         // range
         // target_year
@@ -94,12 +94,12 @@ class TitleScoreFormTest extends TestCase
         $data['target_year'] = 0;
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
 
         $data['target_year'] = 10000;
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
 
         // date
         // started
@@ -107,23 +107,23 @@ class TitleScoreFormTest extends TestCase
         $data['started'] = '20180101';
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
 
         $data['started'] = 'testtest';
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
 
         // ended
         $data = $params;
         $data['ended'] = '20180101';
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
 
         $data['ended'] = 'testtest';
         $result = $this->TitleScore->validate($data);
         $this->assertFalse($result);
-        $this->assertNotEmpty($this->TitleScore->errors());
+        $this->assertNotEmpty($this->TitleScore->getErrors());
     }
 }
