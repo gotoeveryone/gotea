@@ -1,5 +1,5 @@
 {
-    "name": "gotea",
+    "name": "gotoeveryone/gotea",
     "description": "IGO players and titles management system.",
     "homepage": "https://gotoeveryone.k2ss.info",
     "authors": [
@@ -30,10 +30,8 @@
         "cakephp/cakephp-codesniffer": "^3.0"
     },
     "suggest": {
-        "phpunit/phpunit":
-            "Allows automated tests to be run without system-wide install.",
-        "cakephp/cakephp-codesniffer":
-            "Allows to check the code against the coding standards used in CakePHP."
+        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
+        "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
     },
     "autoload": {
         "psr-4": {
@@ -48,10 +46,8 @@
     },
     "scripts": {
         "post-install-cmd": "Gotea\\Console\\Installer::postInstall",
-        "post-autoload-dump":
-            "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
-        "phpcs":
-            "phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "phpcs": "phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "phpunit": "phpunit"
     },
     "minimum-stability": "stable",
