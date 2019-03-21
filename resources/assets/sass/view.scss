@@ -10,7 +10,7 @@
     border: 0.1rem solid $c_black;
     .checkbox-label {
         @include flex-horizontal-start();
-        input[type=checkbox] {
+        input[type='checkbox'] {
             width: auto;
         }
     }
@@ -26,7 +26,7 @@
         height: $h_tab;
         .tab {
             @include sp() {
-                font-size: .6rem;
+                font-size: 0.6rem;
             }
             @include flex-center();
             padding: 0.4rem 1rem;
@@ -124,7 +124,7 @@
     }
     &_label {
         display: block;
-        margin-right: .3rem;
+        margin-right: 0.3rem;
     }
     .input {
         width: 100%;
@@ -178,8 +178,8 @@
 
 .input-row {
     @include flex-horizontal-start();
-    margin: 0.5rem .7rem;
-    width: calc(100% - (.7rem * 2));
+    margin: 0.5rem 0.7rem;
+    width: calc(100% - (0.7rem * 2));
     &.dropdowns {
         display: inline-block;
         width: auto;
@@ -215,6 +215,6 @@
  ------------------------------------------- */
 .notification {
     &_content {
-        height: 200px;
+        height: 500px;
     }
 }
