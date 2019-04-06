@@ -1,12 +1,12 @@
 <?php
 namespace Gotea\View\Helper;
 
-use Cake\View\Helper\FlashHelper;
+use Cake\View\Helper\FlashHelper as BaseFlashHelper;
 
 /**
  * 独自にカスタマイズしたFlashヘルパー
  */
-class MyFlashHelper extends FlashHelper
+class FlashHelper extends BaseFlashHelper
 {
     /**
      * エラーメッセージ単位に配列形式で取得する。

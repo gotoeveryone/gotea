@@ -20,6 +20,10 @@ use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * 段位の差分を抽出するコマンド
+ *
+ * @property \Gotea\Model\Table\PlayersTable $Players
+ * @property \Gotea\Model\Table\CountriesTable $Countries
+ * @property \Gotea\Model\Table\RanksTable $Ranks
  */
 class RankDiffCommand extends Command
 {
@@ -173,7 +177,7 @@ class RankDiffCommand extends Command
         $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
 
         return collection($crawler->filter('.playerArea .lv_list')
-            ->each(function (Crawler $row) use (&$results) {
+            ->each(function (Crawler $row) {
                 $rank = $row->filter('.lv dt span')->first()->text();
                 $players = collection($row->filter('.players .player')
                     ->each(function (Crawler $node) {
@@ -194,10 +198,12 @@ class RankDiffCommand extends Command
     {
         $results = [];
         $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
-        $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
-            $img = $node->filter('img')->first();
-            if ($img->count() && ($src = $img->attr('src'))
-                && preg_match('/dan([0-9]{2})/', $src, $matches)) {
+        $crawler->filter('table[width=685] tr')->filter(function (Crawler $node) {
+            return $node->filter('img')->first()->count();
+        })->each(function (Crawler $node) use (&$results) {
+            $src = $node->filter('img')->first()->attr('src');
+
+            if (preg_match('/dan([0-9]{2})/', $src, $matches)) {
                 $rank = intval($matches[1]);
                 $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');
                 $results[$rank] = $playerNodes->each(function ($node) {

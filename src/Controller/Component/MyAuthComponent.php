@@ -27,7 +27,7 @@ class MyAuthComponent extends AuthComponent
         if ($this->authenticate($credentials)) {
             return true;
         }
-        $this->response = $this->response->withStatus(401);
+        $this->setResponse($this->getResponse()->withStatus(401));
 
         return false;
     }

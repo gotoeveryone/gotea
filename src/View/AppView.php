@@ -10,24 +10,6 @@ use Cake\View\View;
 class AppView extends View
 {
     /**
-     * {@inheritDoc}
-     */
-    public function initialize()
-    {
-        parent::initialize();
-
-        $this->loadHelper('Flash', [
-            'className' => 'MyFlash',
-        ]);
-        $this->loadHelper('Form', [
-            'className' => 'MyForm',
-        ]);
-        $this->loadHelper('Html', [
-            'className' => 'MyHtml',
-        ]);
-    }
-
-    /**
      * 認証済みかを判定
      *
      * @return bool
@@ -56,7 +38,7 @@ class AppView extends View
      */
     public function getUser($key = null, $default = null)
     {
-        $session = $this->request->getSession();
+        $session = $this->getRequest()->getSession();
         if (!$session) {
             return $default;
         }

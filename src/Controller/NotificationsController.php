@@ -65,7 +65,7 @@ class NotificationsController extends AppController
      */
     public function create()
     {
-        $notification = $this->Notifications->newEntity($this->request->getData());
+        $notification = $this->Notifications->newEntity($this->getRequest()->getData());
         if (!$this->Notifications->save($notification)) {
             $this->set(compact('notification'));
 
@@ -87,7 +87,7 @@ class NotificationsController extends AppController
     public function update($id = null)
     {
         $notification = $this->Notifications->get($id);
-        $notification = $this->Notifications->patchEntity($notification, $this->request->getData());
+        $notification = $this->Notifications->patchEntity($notification, $this->getRequest()->getData());
         if (!$this->Notifications->save($notification)) {
             $this->set(compact('notification'));
 

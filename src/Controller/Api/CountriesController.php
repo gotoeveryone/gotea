@@ -4,6 +4,8 @@ namespace Gotea\Controller\Api;
 
 /**
  * API・所属国コントローラ
+ *
+ * @property \Gotea\Model\Table\CountriesTable $Countries
  */
 class CountriesController extends ApiController
 {

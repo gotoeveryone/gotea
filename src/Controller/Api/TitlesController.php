@@ -10,6 +10,8 @@ use Gotea\Collection\Iterator\TitlesIterator;
 
 /**
  * API・タイトルコントローラ
+ *
+ * @property \Gotea\Model\Table\TitlesTable $Titles
  */
 class TitlesController extends ApiController
 {

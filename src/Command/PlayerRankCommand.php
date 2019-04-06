@@ -8,13 +8,17 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\Utility\Inflector;
-use Gotea\Model\Entity\PlayerRank;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * 昇段履歴を追加するコマンド
+ *
+ * @property \Gotea\Model\Table\PlayersTable $Players
+ * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
+ * @property \Gotea\Model\Table\CountriesTable $Countries
+ * @property \Gotea\Model\Table\RanksTable $Ranks
  */
 class PlayerRankCommand extends Command
 {
@@ -117,11 +121,11 @@ class PlayerRankCommand extends Command
                 return $links->first()->attr('href');
             });
         }))
-        ->unfold()
-        ->filter(function ($item) {
-            return strlen($item) > 0;
-        })
-        ->toList();
+            ->unfold()
+            ->filter(function ($item) {
+                return strlen($item) > 0;
+            })
+            ->toList();
     }
 
     /**

@@ -2,14 +2,14 @@
 namespace Gotea\View\Helper;
 
 use Cake\I18n\Date;
-use Cake\View\Helper\FormHelper;
+use Cake\View\Helper\FormHelper as BaseFormHelper;
 use Cake\View\View;
 use Gotea\Utility\CalculatorTrait;
 
 /**
  * 独自にカスタマイズしたFormヘルパー
  */
-class MyFormHelper extends FormHelper
+class FormHelper extends BaseFormHelper
 {
     use CalculatorTrait;
 

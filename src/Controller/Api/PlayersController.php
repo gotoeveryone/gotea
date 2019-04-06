@@ -11,6 +11,10 @@ use Cake\Utility\Hash;
 
 /**
  * API・棋士コントローラ
+ *
+ * @property \Gotea\Model\Table\PlayersTable $Players
+ * @property \Gotea\Model\Table\CountriesTable $Countries
+ * @property \Gotea\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
  */
 class PlayersController extends ApiController
 {
@@ -29,7 +33,7 @@ class PlayersController extends ApiController
 
         return $this->renderJson([
             'count' => $query->count(),
-            'results' => $players->map(function ($item, $key) {
+            'results' => $players->map(function ($item) {
                 return $item->toArray();
             }),
         ]);
@@ -133,7 +137,7 @@ class PlayersController extends ApiController
      * @param array $params パラメータ
      * @return array ランキングデータ
      */
-    private function getRankingData(array $params) : array
+    private function getRankingData(array $params): array
     {
         // モデルのロード
         $this->loadModel('Countries');

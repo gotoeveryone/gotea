@@ -7,6 +7,7 @@ use Gotea\Form\TitleScoreForm;
  * TitleScores Controller
  *
  * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
+ * @property \Gotea\Model\Table\PlayersTable $Players
  * @property \Gotea\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
  */
 class TitleScoresController extends AppController
