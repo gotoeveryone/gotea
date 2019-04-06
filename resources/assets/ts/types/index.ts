@@ -1,5 +1,11 @@
 import Vue from 'vue';
 
+declare module 'vue/types/vue' {
+  interface Vue {
+    openDialog: Function;
+  }
+}
+
 // Vue コンポーネントの props で型を利用するための定義
 export type Prop<T> = () => T;
 
