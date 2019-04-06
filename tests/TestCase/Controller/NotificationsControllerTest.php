@@ -76,6 +76,38 @@ class NotificationsControllerTest extends AppTestCase
     }
 
     /**
+     * コピー（コピー元不正）
+     *
+     * @return void
+     */
+    public function testNewWithFromIdInvalid()
+    {
+        // 通常の新規登録になる
+        $this->get(['_name' => 'new_notification', 'from' => 999]);
+        $this->assertResponseOk();
+        $this->assertTemplate('new');
+        $this->assertResponseContains(__('新規登録'));
+    }
+
+    /**
+     * コピー
+     *
+     * @return void
+     */
+    public function testNewWithFromId()
+    {
+        $notification = $this->Notifications->find()->first();
+
+        $this->get(['_name' => 'new_notification', 'from' => $notification->id]);
+        $this->assertResponseOk();
+        $this->assertTemplate('new');
+        $this->assertResponseContains(__('新規登録'));
+
+        $this->assertResponseContains($notification->title);
+        $this->assertResponseContains($notification->content);
+    }
+
+    /**
      * 編集（データ無し）
      *
      * @return void
@@ -154,7 +186,7 @@ class NotificationsControllerTest extends AppTestCase
      */
     public function testUpdateFailed()
     {
-        $notification = $this->Notifications->find()->last();
+        $notification = $this->Notifications->find()->first();
 
         $this->enableCsrfToken();
         $now = FrozenTime::now();
@@ -180,7 +212,7 @@ class NotificationsControllerTest extends AppTestCase
      */
     public function testUpdate()
     {
-        $notification = $this->Notifications->find()->last();
+        $notification = $this->Notifications->find()->first();
 
         $this->enableCsrfToken();
         $now = FrozenTime::now();
