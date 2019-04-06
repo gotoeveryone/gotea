@@ -5,216 +5,254 @@
    詳細表示エリア
  ------------------------------------------- */
 .detail {
-    margin: 1rem;
-    padding: 0;
-    border: 0.1rem solid $c_black;
-    .checkbox-label {
-        @include flex-horizontal-start();
-        input[type='checkbox'] {
-            width: auto;
-        }
+  margin: 1rem;
+  padding: 0;
+  border: 0.1rem solid $c_black;
+
+  .checkbox-label {
+    @include flex-horizontal-start();
+
+    input[type='checkbox'] {
+      width: auto;
     }
+  }
 }
 
 .detail-dialog {
-    width: 100%;
-    height: 100%;
-    .tabs {
-        display: flex;
-        align-items: stretch;
-        justify-content: flex-start;
-        height: $h_tab;
-        .tab {
-            @include sp() {
-                font-size: 0.6rem;
-            }
-            @include flex-center();
-            padding: 0.4rem 1rem;
-            font-size: 1rem;
-            color: $c_white;
-            white-space: nowrap;
-            background-color: $c_black;
-            border: 0.1rem solid $c_black;
-            border-bottom: none;
-            border-radius: 0.5rem 0.5rem 0 0;
-            transition: font-weight 0.3s, color 0.3s, background-color 0.3s;
-            &.selectTab {
-                color: $c_black;
-                background-color: #9ff;
-            }
-            &:not(.selectTab):hover {
-                background-color: lighten($c_black, 25%);
-                cursor: pointer;
-            }
-        }
-    }
-    .detail {
-        margin: 0;
-        height: calc(100% - #{$h_tab});
-        overflow-y: auto;
-        background-color: $c_white;
+  width: 100%;
+  height: 100%;
 
-        .tab-contents {
-            @include fade(0.5, 'not-select');
-        }
+  .tabs {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: $h_tab;
+
+    .tab {
+      @include sp() {
+        font-size: 0.6rem;
+      }
+
+      @include flex-center();
+
+      padding: 0.4rem 1rem;
+      font-size: 1rem;
+      color: $c_white;
+      white-space: nowrap;
+      background-color: $c_black;
+      border: 0.1rem solid $c_black;
+      border-bottom: none;
+      border-radius: 0.5rem 0.5rem 0 0;
+      transition: font-weight 0.3s, color 0.3s, background-color 0.3s;
+
+      &.selectTab {
+        color: $c_black;
+        background-color: #9ff;
+      }
+
+      &:not(.selectTab):hover {
+        background-color: lighten($c_black, 25%);
+        cursor: pointer;
+      }
     }
+  }
+
+  .detail {
+    margin: 0;
+    height: calc(100% - #{$h_tab});
+    overflow-y: auto;
+    background-color: $c_white;
+
+    .tab-contents {
+      @include fade(0.5, 'not-select');
+    }
+  }
 }
 
 %row {
-    @include flex-horizontal-start();
-    padding: 0.2rem;
+  @include flex-horizontal-start();
+
+  padding: 0.2rem;
 }
 
 .detail-row {
-    @include sp() {
-        flex-wrap: wrap;
+  @include sp() {
+    flex-wrap: wrap;
+  }
+
+  @include flex-vertical-stretch();
+
+  margin: 0 auto;
+  padding: 0;
+
+  &-result {
+    margin: auto 1rem;
+    padding: 1rem 0;
+  }
+
+  .box-start {
+    @include flex-horizontal-start();
+  }
+
+  .box-end {
+    @include flex-horizontal-end();
+
+    .input {
+      text-align: right;
     }
-    @include flex-vertical-stretch();
-    margin: 0 auto;
-    padding: 0;
-    &-result {
-        margin: auto 1rem;
-        padding: 1rem 0;
-    }
-    .box-start {
-        @include flex-horizontal-start();
-    }
-    .box-end {
-        @include flex-horizontal-end();
-        .input {
-            text-align: right;
-        }
-    }
-    .box-between {
-        @include flex-horizontal-between();
-    }
+  }
+
+  .box-between {
+    @include flex-horizontal-between();
+  }
 }
 
 .detail-box {
-    @include sp() {
-        width: 100%;
-        flex-wrap: wrap;
-    }
+  @include sp() {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  @include flex-horizontal-start();
+
+  &-row {
     @include flex-horizontal-start();
 
-    &-row {
-        @include flex-horizontal-start();
-        margin: 0.5rem 1rem;
-        flex-wrap: wrap;
-        & > .input {
-            width: 100%;
-        }
+    margin: 0.5rem 1rem;
+    flex-wrap: wrap;
+
+    & > .input {
+      width: 100%;
     }
-    &-checkbox-row {
-        flex-wrap: nowrap;
-        & > .input {
-            width: auto;
-            padding-right: 0.5rem;
-        }
+  }
+
+  &-checkbox-row {
+    flex-wrap: nowrap;
+
+    & > .input {
+      width: auto;
+      padding-right: 0.5rem;
     }
-    &-button-row {
-        @include flex-horizontal-end();
-        margin: 0.5rem 1rem;
+  }
+
+  &-button-row {
+    @include flex-horizontal-end();
+
+    margin: 0.5rem 1rem;
+  }
+
+  &-right {
+    @include sp() {
+      justify-content: flex-end;
     }
-    &-right {
-        @include sp() {
-            justify-content: flex-end;
-        }
-        margin-left: auto;
+
+    margin-left: auto;
+  }
+
+  &_label {
+    display: block;
+    margin-right: 0.3rem;
+  }
+
+  .input {
+    width: 100%;
+    height: 100%;
+
+    .label-row,
+    .input-row:not(textarea) {
+      height: 2.2rem;
     }
-    &_label {
-        display: block;
-        margin-right: 0.3rem;
-    }
-    .input {
-        width: 100%;
-        height: 100%;
-        .label-row,
-        .input-row:not(textarea) {
-            height: 2.2rem;
-        }
-    }
-    &.box1 {
-        flex-grow: 1;
-    }
-    &.box2 {
-        flex-grow: 2;
-    }
+  }
+
+  &.box1 {
+    flex-grow: 1;
+  }
+
+  &.box2 {
+    flex-grow: 2;
+  }
 }
 
 .category-row {
-    @extend %row;
-    margin: 0 auto;
-    height: 2.5rem;
-    text-indent: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-    background-color: #def;
+  @extend %row;
+
+  margin: 0 auto;
+  height: 2.5rem;
+  text-indent: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #def;
 }
 
 .category-box {
-    &-right {
-        margin-left: auto;
-    }
+  &-right {
+    margin-left: auto;
+  }
 }
 
 .genre-row {
-    @extend %row;
-    height: 2.3rem;
-    text-indent: 0.6rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-    background-color: #efd;
+  @extend %row;
+
+  height: 2.3rem;
+  text-indent: 0.6rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #efd;
 }
 
 .label-row {
-    @extend %row;
-    margin: 0 auto;
-    height: 2.2rem;
-    text-indent: 0.7rem;
-    background-color: #fed;
-    font-weight: bold;
+  @extend %row;
+
+  margin: 0 auto;
+  height: 2.2rem;
+  text-indent: 0.7rem;
+  background-color: #fed;
+  font-weight: bold;
 }
 
 .input-row {
-    @include flex-horizontal-start();
-    margin: 0.5rem 0.7rem;
-    width: calc(100% - (0.7rem * 2));
-    &.dropdowns {
-        display: inline-block;
-        width: auto;
-    }
+  @include flex-horizontal-start();
+
+  margin: 0.5rem 0.7rem;
+  width: calc(100% - (0.7rem * 2));
+
+  &.dropdowns {
+    display: inline-block;
+    width: auto;
+  }
 }
 
 /* -------------------------------------------
    タイトル詳細
  ------------------------------------------- */
 .retentions {
-    margin: 5px auto;
-    width: 85%;
-    max-width: 750px;
-    max-height: 200px;
-    border-top: 1px solid $c_black;
-    overflow-y: auto;
+  margin: 5px auto;
+  width: 85%;
+  max-width: 750px;
+  max-height: 200px;
+  border-top: 1px solid $c_black;
+  overflow-y: auto;
 
-    &-name {
-        width: 25%;
-    }
-    &-country,
-    &-rank,
-    &-sex {
-        width: 10%;
-    }
-    &-select {
-        width: 20%;
-    }
+  &-name {
+    width: 25%;
+  }
+
+  &-country,
+  &-rank,
+  &-sex {
+    width: 10%;
+  }
+
+  &-select {
+    width: 20%;
+  }
 }
 
 /* -------------------------------------------
    お知らせ
  ------------------------------------------- */
 .notification {
-    &_content {
-        height: 500px;
-    }
+  &_content {
+    height: 500px;
+  }
 }

@@ -1,76 +1,82 @@
 /* -------------------------------------------
    タグ単位のレイアウト
  ------------------------------------------- */
-@import url('https://fonts.googleapis.com/earlyaccess/sawarabimincho.css');
-@import url('https://fonts.googleapis.com/css?family=Maitree');
+@import url("https://fonts.googleapis.com/css?family=Noto+Serif+JP");
+@import url("https://fonts.googleapis.com/css?family=Maitree");
 
 * {
-    @include sp() {
-        font-size: 0.8rem;
-    }
-    font-family: 'Sawarabi Mincho';
-    font-size: 0.9rem;
-    letter-spacing: .1rem;
-    text-indent: .1rem;
+  @include sp() {
+    font-size: 0.8rem;
+  }
+
+  font-family: "Noto Serif JP", sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.1rem;
+  text-indent: 0.1rem;
 }
 
-*, ::after, ::before {
-    box-sizing: border-box;
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-    overflow-x: hidden;
-    background-color: $c_white;
+  overflow-x: hidden;
+  background-color: $c_white;
 }
 
 main > section {
-    position: relative;
-    padding: 5px 10px;
-    height: 100%;
-    max-width: 100%;
+  position: relative;
+  padding: 5px 10px;
+  height: 100%;
+  max-width: 100%;
 }
 
 nav + main {
-    @include pc() {
-        width: 70%;
-        min-width: calc(100% - #{$w_nav});
-    }
-    @include sp() {
-        padding-top: $h_nav-sp;
-        width: 100%;
-    }
+  @include pc() {
+    width: 70%;
+    min-width: calc(100% - #{$w_nav});
+  }
+
+  @include sp() {
+    padding-top: $h_nav-sp;
+    width: 100%;
+  }
 }
 
 nav {
-    @include pc() {
-        width: 30%;
-        max-width: #{$w_nav};
-    }
-    @include sp() {
-        @include flex-horizontal-between();
-        @include fixed-row();
-        height: $h_nav-sp;
-        top: $h_header;
-    }
+  @include pc() {
+    width: 30%;
+    max-width: #{$w_nav};
+  }
+
+  @include sp() {
+    @include flex-horizontal-between();
+    @include fixed-row();
+
+    height: $h_nav-sp;
+    top: $h_header;
+  }
 }
 
 ol,
 ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 p {
-    margin: 0;
+  margin: 0;
 }
 
 h1,
@@ -80,39 +86,40 @@ h4,
 h5,
 h6,
 fieldset {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 fieldset,
 img {
-    border: none;
+  border: none;
 }
 
 input,
 textarea,
 select {
-    padding: .3rem .4rem;
-    width: 100%;
-    max-width: 100%;
-    border: 1px solid $c_gray;
-    border-radius: 5px;
-    &:focus {
-        background-color: #ffd;
-        box-shadow: 0 0 5px 1px $c_gray;
-    }
+  padding: 0.3rem 0.4rem;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid $c_gray;
+  border-radius: 5px;
+
+  &:focus {
+    background-color: #ffd;
+    box-shadow: 0 0 5px 1px $c_gray;
+  }
 }
 
-input[type=checkbox] {
-    margin: 0;
-    min-width: 18px;
-    min-height: 18px;
+input[type="checkbox"] {
+  margin: 0;
+  min-width: 18px;
+  min-height: 18px;
 }
 
 button {
-    margin: auto .3rem;
-    padding: .3rem .8rem;
-    border: 1px solid darken($c_gray, 15%);
-    border-radius: 5px;
-    cursor: pointer;
+  margin: auto 0.3rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid darken($c_gray, 15%);
+  border-radius: 5px;
+  cursor: pointer;
 }

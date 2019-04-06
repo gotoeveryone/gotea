@@ -1,32 +1,45 @@
 <template>
-    <button type="button" country="country"
-        class="button button-secondary" @click="newPlayer()">新規作成</button>
+  <button @click="newPlayer()" type="button" country="country" class="button button-secondary">
+    新規作成
+  </button>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
-    props: {
-        url: String,
-        countryId: String,
-        paramId: String,
-        changed: Boolean,
+  props: {
+    url: {
+      type: String,
+      required: true,
     },
-    methods: {
-        newPlayer() {
-            this.$store.dispatch('openModal', {
-                url: `${this.url}?country_id=${this.targetId}`,
-            })
-        },
+    countryId: {
+      type: String,
+      required: true,
     },
-    computed: {
-        targetId(): string {
-            if (!this.changed) {
-                return this.paramId
-            }
-            return this.countryId
-        },
+    paramId: {
+      type: String,
+      required: true,
     },
-})
+    changed: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    targetId(): string {
+      if (!this.changed) {
+        return this.paramId;
+      }
+      return this.countryId;
+    },
+  },
+  methods: {
+    newPlayer() {
+      this.$store.dispatch('openModal', {
+        url: `${this.url}?country_id=${this.targetId}`,
+      });
+    },
+  },
+});
 </script>
