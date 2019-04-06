@@ -6,6 +6,8 @@ use Cake\View\Cell;
 
 /**
  * 所属組織を表示するためのセル
+ *
+ * @property \Gotea\Model\Table\OrganizationsTable $Organizations
  */
 class OrganizationsCell extends Cell
 {

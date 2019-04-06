@@ -1,12 +1,12 @@
 <?php
 namespace Gotea\View\Helper;
 
-use Cake\View\Helper\HtmlHelper;
+use Cake\View\Helper\HtmlHelper as BaseHtmlHelper;
 
 /**
  * 独自にカスタマイズしたHTMLヘルパー
  */
-class MyHtmlHelper extends HtmlHelper
+class HtmlHelper extends BaseHtmlHelper
 {
     /**
      * インラインで記載しているScriptの出力処理。

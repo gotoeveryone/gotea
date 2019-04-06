@@ -2,6 +2,7 @@
 namespace Gotea\Test\TestCase\View\Cell;
 
 use Cake\TestSuite\TestCase;
+use Gotea\View\AppView;
 use Gotea\View\Cell\NavigationCell;
 
 /**
@@ -31,6 +32,11 @@ class NavigationCellTest extends TestCase
     public $Navigation;
 
     /**
+     * @var \Gotea\View\AppView
+     */
+    public $View;
+
+    /**
      * Fixtures
      *
      * @var array
@@ -53,6 +59,7 @@ class NavigationCellTest extends TestCase
         $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
         $this->response = $this->getMockBuilder('Cake\Http\Response')->getMock();
         $this->Navigation = new NavigationCell($this->request, $this->response);
+        $this->View = new AppView($this->request, $this->response);
     }
 
     /**
@@ -74,6 +81,9 @@ class NavigationCellTest extends TestCase
      */
     public function testDisplay()
     {
+        $cell = $this->View->cell('Navigation');
+        $cell->render();
+        dump($cell->viewBuilder()->getVars());
         $this->Navigation->display();
         $recents = $this->Navigation->viewVars['recents'];
         $this->assertNotNull($recents);

@@ -53,7 +53,7 @@ class DateHelper extends Helper
      */
     public function formatToDate(FrozenDate $dateObj = null)
     {
-        return $this->format($timeObj, self::FORMAT_DATE);
+        return $this->format($dateObj, self::FORMAT_DATE);
     }
 
     /**

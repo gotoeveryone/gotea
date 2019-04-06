@@ -7,14 +7,14 @@
                     <?= $this->Form->control('name', [
                         'label' => ['class' => 'search-box_label', 'text' => '棋士名'],
                         'class' => 'name',
-                        'value' => $this->request->getQuery('name'),
+                        'value' => $this->getRequest()->getQuery('name'),
                     ]) ?>
                 </fieldset>
                 <fieldset class="search-box">
                     <?= $this->Form->control('title_name', [
                         'label' => ['class' => 'search-box_label', 'text' => 'タイトル名'],
                         'class' => 'title_name',
-                        'value' => $this->request->getQuery('title_name'),
+                        'value' => $this->getRequest()->getQuery('title_name'),
                     ]) ?>
                 </fieldset>
             </li>
@@ -27,7 +27,7 @@
                                 'class' => 'search-box_label',
                                 'text' => '棋戦分類',
                             ],
-                            'value' => $this->request->getQuery('country_id'),
+                            'value' => $this->getRequest()->getQuery('country_id'),
                         ],
                     ]) ?>
                 </fieldset>
@@ -36,21 +36,21 @@
                         'label' => ['class' => 'search-box_label', 'text' => '対局年'],
                         'class' => 'year',
                         'empty' => true,
-                        'value' => $this->request->getQuery('target_year'),
+                        'value' => $this->getRequest()->getQuery('target_year'),
                     ]) ?>
                 </fieldset>
                 <fieldset class="search-box">
                     <?php
-                        echo $this->Form->label('started', '対局日', ['class' => 'search-box_label']);
-                        echo $this->Form->text('started', [
-                            'class' => 'started datepicker',
-                            'value' => $this->request->getQuery('started'),
-                        ]);
-                        echo $this->form->label('ended', '～');
-                        echo $this->Form->text('ended', [
-                            'class' => 'ended datepicker',
-                            'value' => $this->request->getQuery('ended'),
-                        ]);
+                    echo $this->Form->label('started', '対局日', ['class' => 'search-box_label']);
+                    echo $this->Form->text('started', [
+                        'class' => 'started datepicker',
+                        'value' => $this->getRequest()->getQuery('started'),
+                    ]);
+                    echo $this->form->label('ended', '～');
+                    echo $this->Form->text('ended', [
+                        'class' => 'ended datepicker',
+                        'value' => $this->getRequest()->getQuery('ended'),
+                    ]);
                     ?>
                 </fieldset>
                 <fieldset class="search-box search-box-right">
@@ -58,7 +58,7 @@
                 </fieldset>
             </li>
         </ul>
-        <?=$this->Form->end()?>
+        <?= $this->Form->end() ?>
     </div>
 
     <?php if (!empty($titleScores)) : ?>
@@ -82,11 +82,11 @@
             <?php foreach ($titleScores as $titleScore) : ?>
             <li class="table-row">
                 <span class="table-column table-column_id"><?= h($titleScore->id) ?></span>
-                <span class="table-column table-column_country"><?= h($titleScore->country->name.'棋戦') ?></span>
+                <span class="table-column table-column_country"><?= h($titleScore->country->name . '棋戦') ?></span>
                 <span class="table-column table-column_title"><?= h($titleScore->name) ?></span>
                 <span class="table-column table-column_date">
                     <?php foreach ($titleScore->dates as $idx => $date) : ?>
-                    <?php if ($idx > 0) : ?><br/>〜<?php endif ?><?= h($date) ?>
+                    <?php if ($idx > 0) : ?><br />〜<?php endif ?><?= h($date) ?>
                     <?php endforeach ?>
                 </span>
                 <span class="table-column table-column_name"><?= h($titleScore->getWinnerName()) ?></span>
@@ -97,12 +97,12 @@
                     ], [
                         'method' => 'put',
                         'data' => [
-                            'name' => $this->request->getQuery('name'),
-                            'title_name' => $this->request->getQuery('title_name'),
-                            'country_id' => $this->request->getQuery('country_id'),
-                            'target_year' => $this->request->getQuery('target_year'),
-                            'started' => $this->request->getQuery('started'),
-                            'ended' => $this->request->getQuery('ended'),
+                            'name' => $this->getRequest()->getQuery('name'),
+                            'title_name' => $this->getRequest()->getQuery('title_name'),
+                            'country_id' => $this->getRequest()->getQuery('country_id'),
+                            'target_year' => $this->getRequest()->getQuery('target_year'),
+                            'started' => $this->getRequest()->getQuery('started'),
+                            'ended' => $this->getRequest()->getQuery('ended'),
                         ],
                         'class' => 'button button-primary',
                     ]) ?>
@@ -111,12 +111,12 @@
                     ], [
                         'method' => 'delete',
                         'data' => [
-                            'name' => $this->request->getQuery('name'),
-                            'title_name' => $this->request->getQuery('title_name'),
-                            'country_id' => $this->request->getQuery('country_id'),
-                            'target_year' => $this->request->getQuery('target_year'),
-                            'started' => $this->request->getQuery('started'),
-                            'ended' => $this->request->getQuery('ended'),
+                            'name' => $this->getRequest()->getQuery('name'),
+                            'title_name' => $this->getRequest()->getQuery('title_name'),
+                            'country_id' => $this->getRequest()->getQuery('country_id'),
+                            'target_year' => $this->getRequest()->getQuery('target_year'),
+                            'started' => $this->getRequest()->getQuery('started'),
+                            'ended' => $this->getRequest()->getQuery('ended'),
                         ],
                         'onclick' => "return confirm('タイトル成績情報を削除します。よろしいですか？')",
                         'class' => 'button button-danger',

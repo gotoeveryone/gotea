@@ -130,7 +130,7 @@ abstract class AppController extends Controller
      */
     protected function setErrors(int $code, $errors)
     {
-        $this->response = $this->response->withStatus($code);
+        $this->setResponse($this->getResponse()->withStatus($code));
 
         return $this->setMessages($errors, 'error');
     }

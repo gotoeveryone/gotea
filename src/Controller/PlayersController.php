@@ -12,6 +12,7 @@ use Gotea\Form\PlayerForm;
  *
  * @property \Gotea\Model\Table\PlayersTable $Players
  * @property \Gotea\Model\Table\CountriesTable $Countries
+ * @property \Gotea\Model\Table\RanksTable $Ranks
  * @property \Gotea\Model\Table\OrganizationsTable $Organizations
  * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
  */

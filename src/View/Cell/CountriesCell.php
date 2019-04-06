@@ -6,6 +6,8 @@ use Cake\View\Cell;
 
 /**
  * 所属国を表示するためのセル
+ *
+ * @property \Gotea\Model\Table\CountriesTable $Countries
  */
 class CountriesCell extends Cell
 {

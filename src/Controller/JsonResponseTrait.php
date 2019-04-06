@@ -29,7 +29,7 @@ trait JsonResponseTrait
      * @param string|array|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    public function renderError(?int $code = 500, $message = null)
+    public function renderError(? int $code = 500, $message = null)
     {
         if ($code === 0) {
             $code = 500;
@@ -38,7 +38,7 @@ trait JsonResponseTrait
         $this->setResponse($this->getResponse()->withStatus($code));
 
         if (!$message) {
-            $message = $this->response->getReasonPhrase();
+            $message = $this->getResponse()->getReasonPhrase();
         }
 
         return $this->renderJson([

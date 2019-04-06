@@ -4,6 +4,8 @@ namespace Gotea\Controller\Api;
 
 /**
  * API・タイトル保持履歴コントローラ
+ *
+ * @property \Gotea\Model\Table\RetentionHistoriesTable $RetentionHistories
  */
 class RetentionHistoriesController extends ApiController
 {

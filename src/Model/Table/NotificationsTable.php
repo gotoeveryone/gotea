@@ -2,8 +2,6 @@
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
@@ -81,7 +79,7 @@ class NotificationsTable extends AppTable
      *
      * @return \Cake\ORM\Query
      */
-    public function findAllNewestArrivals() : Query
+    public function findAllNewestArrivals(): Query
     {
         // 棋士情報の取得
         return $this->find()->orderDesc('published');
