@@ -1,119 +1,133 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const StylelintBarePlugin = require('stylelint-bare-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+/* eslint-enable @typescript-eslint/no-var-requires */
 
-module.exports = [
+module.exports = () => {
+  return [
     {
-        entry: {
-            'js/app.js': path.resolve(__dirname, 'resources/assets/ts/main.ts'),
+      entry: {
+        'js/app': path.resolve(__dirname, 'resources', 'assets', 'ts', 'main.ts'),
+      },
+      output: {
+        path: path.join(__dirname, 'webroot'),
+      },
+      performance: {
+        hints: false,
+      },
+      resolve: {
+        extensions: ['.ts', '.vue', '.js'],
+        alias: {
+          vue$: 'vue/dist/vue.common',
+          '@': path.resolve('resources/assets/ts'),
         },
-        output: {
-            path: path.join(__dirname, 'webroot'),
-            filename: '[name]',
-        },
-        performance: {
-            hints: false,
-        },
-        resolve: {
-            extensions: ['.ts', '.vue', '.js'],
-            alias: {
-                'vue$': 'vue/dist/vue.common',
-                '@': path.resolve('resources/assets/ts'),
-            },
-        },
-        stats: 'minimal',
-        plugins: [
-            new VueLoaderPlugin(),
-            new FriendlyErrorsWebpackPlugin(),
-        ],
-        module: {
-            rules: [
-                {
-                    test: /\.ts$/,
-                    exclude: /node_modules|vue\/src/,
-                    loader: 'ts-loader',
-                    options: {
-                        appendTsSuffixTo: [/\.vue$/],
-                    },
+      },
+      stats: 'minimal',
+      plugins: [
+        new VueLoaderPlugin(),
+        new FriendlyErrorsWebpackPlugin(),
+      ],
+      module: {
+        rules: [
+          {
+            enforce: 'pre',
+            test: /\.(js|vue|ts)$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'eslint-loader',
+                options: {
+                  esModule: true,
+                  cache: true,
                 },
-                {
-                    test: /\.vue$/,
-                    loader: 'vue-loader',
-                },
-                {
-                    test: /\.css$/,
-                    loader: 'vue-style-loader!css-loader',
-                },
-                {
-                    test: /\.scss$/,
-                    exclude: /node_modules/,
-                    use: [
-                        'vue-style-loader',
-                        'css-loader',
-                        'sass-loader',
-                        {
-                            loader: 'sass-resources-loader',
-                            options: {
-                                resources: [
-                                    path.resolve(__dirname, 'resources/assets/sass/module/_variables.scss'),
-                                    path.resolve(__dirname, './resources/assets/sass/module/_mixin.scss'),
-                                ],
-                            },
-                        },
-                    ],
-                },
+              },
             ],
-        },
+          },
+          {
+            test: /\.ts$/,
+            exclude: /node_modules|vue\/src/,
+            use: [
+              {
+                loader: 'ts-loader',
+                options: {
+                  appendTsSuffixTo: [/\.vue$/],
+                },
+              },
+            ],
+          },
+          {
+            test: /\.vue$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'vue-loader',
+                options: {
+                  esModule: true,
+                },
+              },
+            ],
+          },
+          {
+            test: /\.(sa|sc|c)ss$/,
+            use: [
+              'vue-style-loader',
+              'css-loader',
+              'sass-loader',
+              {
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: [
+                    path.resolve(__dirname, 'resources/assets/sass/module/_variables.scss'),
+                    path.resolve(__dirname, './resources/assets/sass/module/_mixin.scss'),
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
     },
     {
-        entry: {
-            'css/app.css': path.resolve(
-                __dirname,
-                'resources/assets/sass/app.scss'
-            ),
-            'css/view.css': path.resolve(
-                __dirname,
-                'resources/assets/sass/view.scss'
-            ),
-        },
-        output: {
-            path: path.join(__dirname, 'webroot'),
-            filename: '[name]',
-        },
-        performance: {
-            hints: false,
-        },
-        resolve: {
-            extensions: ['.scss', 'css'],
-        },
-        stats: 'minimal',
-        plugins: [
-            new ExtractTextPlugin({
-                filename: '[name]',
-                disable: false,
-                allChunks: true,
-            }),
-            new FriendlyErrorsWebpackPlugin(),
-        ],
-        module: {
-            rules: [
-                {
-                    test: /\.css$/,
-                    loader: 'style-loader!css-loader',
-                },
-                {
-                    test: /\.scss$/,
-                    exclude: /node_modules/,
-                    use: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            'css-loader',
-                            'sass-loader',
-                        ],
-                    }),
-                },
+      entry: {
+        'css/app': path.resolve(__dirname, 'resources', 'assets', 'sass', 'app.scss'),
+        'css/view': path.resolve(__dirname, 'resources', 'assets', 'sass', 'view.scss'),
+      },
+      output: {
+        path: path.join(__dirname, 'webroot'),
+      },
+      performance: {
+        hints: false,
+      },
+      resolve: {
+        extensions: ['.scss', 'css'],
+      },
+      stats: 'minimal',
+      plugins: [
+        new FixStyleOnlyEntriesPlugin(),
+        new FriendlyErrorsWebpackPlugin(),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        }),
+        new StylelintBarePlugin({
+          files: ['resources/assets/sass/**/*.scss', 'resources/assets/vue/**/*.vue'],
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /\.(sa|sc|c)ss$/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              'css-loader',
+              'sass-loader',
             ],
-        },
+          },
+        ],
+      },
     },
-];
+  ];
+};

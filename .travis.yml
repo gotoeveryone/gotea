@@ -39,8 +39,7 @@ before_script:
 
 script:
   - if [[ $CS = 1 ]]; then composer phpcs; fi
-  - if [[ $CS = 1 ]]; then yarn run tslint; fi
-  - if [[ $CS = 1 ]]; then yarn run sasslint; fi
+  - if [[ $CS = 1 ]]; then yarn run lint; fi
   - if [[ $CS != 1 ]]; then composer phpunit; fi
 
 notifications:
