@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var \Gotea\View\AppView $this
  * @var \Gotea\Model\Entity\Notification[]|\Cake\Collection\CollectionInterface $notifications
@@ -18,7 +17,7 @@
         </li>
     </ul>
     <?php if (!empty($notifications)) : ?>
-    <?= $this->element('Paginator/default', ['url' => ['_name' => 'notifications']]) ?>
+        <?= $this->element('Paginator/default', ['url' => ['_name' => 'notifications']]) ?>
     <?php endif ?>
     <div class="search-results">
         <ul class="table-header">
@@ -31,37 +30,42 @@
             </li>
         </ul>
         <?php if (!empty($notifications)) : ?>
-        <ul class="table-body">
-            <?php foreach ($notifications as $notification) : ?>
-            <li class="table-row">
-                <span class="table-column table-column_title" title="<?= $notification->title ?>">
-                    <?= h($notification->title) ?>
-                </span>
-                <span class="table-column table-column_content" title="<?= $notification->content ?>">
-                    <?= h($notification->content) ?>
-                </span>
-                <span class="table-column table-column_status">
-                    <?= ($notification->is_draft ? '下書き' : '公開') ?>
-                </span>
-                <span class="table-column table-column_published">
-                    <?= $this->Date->formatToDateTime($notification->published) ?>
-                </span>
-                <span class="table-column table-column_actions">
-                    <?= $this->Html->link(__('編集'), [
-                        '_name' => 'edit_notification', $notification->id,
-                    ], [
-                        'class' => 'layout-button button-secondary',
-                    ]) ?>
-                    <?= $this->Form->postLink(__('削除'), [
-                        '_name' => 'delete_notification', $notification->id,
-                    ], [
-                        'class' => 'layout-button button-danger',
-                        'confirm' => __('Are you sure you want to delete # {0}?', $notification->id),
-                    ]) ?>
-                </span>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+            <ul class="table-body">
+                <?php foreach ($notifications as $notification) : ?>
+                    <li class="table-row">
+                        <span class="table-column table-column_title" title="<?= $notification->title ?>">
+                            <?= h($notification->title) ?>
+                        </span>
+                        <span class="table-column table-column_content" title="<?= $notification->content ?>">
+                            <?= h($notification->content) ?>
+                        </span>
+                        <span class="table-column table-column_status">
+                            <?= h($notification->status) ?>
+                        </span>
+                        <span class="table-column table-column_published">
+                            <?= $this->Date->formatToDateTime($notification->published) ?>
+                        </span>
+                        <span class="table-column table-column_actions">
+                            <?= $this->Html->link(__('編集'), [
+                                '_name' => 'edit_notification', $notification->id,
+                            ], [
+                                'class' => 'layout-button button-secondary',
+                            ]) ?>
+                            <?= $this->Html->link(__('コピー'), [
+                                '_name' => 'new_notification', 'from' => $notification->id,
+                            ], [
+                                'class' => 'layout-button button-secondary',
+                            ]) ?>
+                            <?= $this->Form->postLink(__('削除'), [
+                                '_name' => 'delete_notification', $notification->id,
+                            ], [
+                                'class' => 'layout-button button-danger',
+                                'confirm' => __('Are you sure you want to delete # {0}?', $notification->id),
+                            ]) ?>
+                        </span>
+                    </li>
+                <?php endforeach ?>
+            </ul>
         <?php endif ?>
     </div>
 </div>
