@@ -277,7 +277,6 @@ class PlayersControllerTest extends AppTestCase
     public function testUpdateFailed()
     {
         $this->enableCsrfToken();
-        $before = $this->Players->get(1);
         $now = Date::now();
         $name = '棋士更新' . $now->format('YmdHis');
         $data = [
@@ -311,7 +310,6 @@ class PlayersControllerTest extends AppTestCase
     public function testUpdate()
     {
         $this->enableCsrfToken();
-        $before = $this->Players->get(1);
         $now = Date::now();
         $name = '棋士更新' . $now->format('YmdHis');
         $data = [

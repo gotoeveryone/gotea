@@ -53,22 +53,21 @@ class NotificationsTable extends AppTable
         $validator
             ->scalar('title')
             ->maxLength('title', 100)
-            ->requirePresence('title', 'create')
+            ->requirePresence('title')
             ->notEmpty('title');
 
         $validator
             ->scalar('content')
-            ->requirePresence('content', 'create')
+            ->requirePresence('content')
             ->notEmpty('content');
 
         $validator
             ->boolean('is_draft')
-            ->requirePresence('is_draft', 'create')
             ->notEmpty('is_draft');
 
         $validator
             ->dateTime('published')
-            ->requirePresence('published', 'create')
+            ->requirePresence('published')
             ->notEmpty('published');
 
         return $validator;
