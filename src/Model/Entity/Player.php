@@ -125,7 +125,7 @@ class Player extends AppEntity
     protected function _setBirthday($birthday)
     {
         if ($birthday && !($birthday instanceof FrozenDate)) {
-            return FrozenDate::parseDate($birthday, 'YYYY/MM/dd');
+            return FrozenDate::parseDate($birthday, 'yyyy/MM/dd');
         }
 
         return $birthday;

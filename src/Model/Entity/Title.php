@@ -44,7 +44,7 @@ class Title extends AppEntity
     protected function _setHtmlFileModified($newValue = null)
     {
         if ($newValue && !($newValue instanceof FrozenDate)) {
-            return FrozenDate::parseDate($newValue, 'YYYY/MM/dd');
+            return FrozenDate::parseDate($newValue, 'yyyy/MM/dd');
         }
 
         return $newValue;
@@ -76,7 +76,7 @@ class Title extends AppEntity
      *
      * @return bool
      */
-    public function isNewHistories() : bool
+    public function isNewHistories(): bool
     {
         if (!($history = $this->now_retention)) {
             return false;
@@ -90,7 +90,7 @@ class Title extends AppEntity
      *
      * @return bool
      */
-    public function isRecentModified() : bool
+    public function isRecentModified(): bool
     {
         return $this->html_file_modified->wasWithinLast('1 months');
     }
@@ -100,7 +100,7 @@ class Title extends AppEntity
      *
      * @return array 配列
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             'id' => $this->id,
