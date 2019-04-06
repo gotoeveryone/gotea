@@ -33,7 +33,17 @@ class NotificationsController extends AppController
      */
     public function new()
     {
-        $notification = $this->Notifications->newEntity();
+        $data = [];
+
+        // コピー元の指定があればデータを取得して反映
+        if (($fromId = $this->getRequest()->getQuery('from'))) {
+            $notification = $this->Notifications->findById($fromId)->first();
+            if ($notification) {
+                $data = $notification->toArray();
+            }
+        }
+
+        $notification = $this->Notifications->newEntity($data);
 
         $this->set(compact('notification'));
 
