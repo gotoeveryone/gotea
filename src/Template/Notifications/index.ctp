@@ -40,7 +40,7 @@
                             <?= h($notification->content) ?>
                         </span>
                         <span class="table-column table-column_status">
-                            <?= ($notification->is_draft ? '下書き' : '公開') ?>
+                            <?= h($notification->status) ?>
                         </span>
                         <span class="table-column table-column_published">
                             <?= $this->Date->formatToDateTime($notification->published) ?>

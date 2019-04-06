@@ -8,6 +8,7 @@ namespace Gotea\Model\Entity;
  * @property string $title
  * @property string $content
  * @property bool $is_draft
+ * @property string $status
  * @property \Cake\I18n\FrozenTime $published
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -32,4 +33,14 @@ class Notification extends AppEntity
         'created' => true,
         'modified' => true
     ];
+
+    /**
+     * 状態を取得します。
+     *
+     * @return string
+     */
+    protected function _getStatus()
+    {
+        return $this->is_draft ? __('下書き') : __('公開');
+    }
 }
