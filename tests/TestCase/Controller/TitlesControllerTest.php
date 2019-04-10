@@ -102,7 +102,6 @@ class TitlesControllerTest extends AppTestCase
     public function testSaveFailed()
     {
         $this->enableCsrfToken();
-        $before = $this->Titles->get(1);
         $name = 'タイトル更新' . date('YmdHis');
         $data = [
             'id' => 1,
@@ -130,7 +129,6 @@ class TitlesControllerTest extends AppTestCase
     public function testSave()
     {
         $this->enableCsrfToken();
-        $before = $this->Titles->get(1);
         $name = 'タイトル更新' . date('YmdHis');
         $data = [
             'id' => 1,
