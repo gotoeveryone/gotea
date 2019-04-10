@@ -8,6 +8,36 @@ use Cake\Routing\Router;
 
 /**
  * 棋士エンティティ
+ *
+ * @property int $id
+ * @property int $country_id
+ * @property int $rank_id
+ * @property int $organization_id
+ * @property string $name
+ * @property string $name_english
+ * @property string $name_other
+ * @property string $sex
+ * @property string $joined
+ * @property \Cake\I18n\FrozenDate $birthday
+ * @property string $remarks
+ * @property bool $is_retired
+ * @property \Cake\I18n\FrozenDate $retired
+ * @property \Cake\I18n\FrozenTime $created
+ * @property string $created_by
+ * @property \Cake\I18n\FrozenTime $modified
+ * @property string $updated_by
+ *
+ * @property \Gotea\Model\Entity\Country $country
+ * @property \Gotea\Model\Entity\Rank $rank
+ * @property \Gotea\Model\Entity\Organization $organization
+ *
+ * @property array $input_joined
+ * @property array $format_joined
+ * @property int|null $age
+ * @property string $name_with_country
+ * @property string $name_with_rank
+ * @property \Cake\Collection\CollectionInterface $old_scores
+ * @property \Cake\Collection\CollectionInterface $retention_histories
  */
 class Player extends AppEntity
 {
@@ -62,6 +92,16 @@ class Player extends AppEntity
     protected function _getAge()
     {
         return $this->birthday ? $this->birthday->age : null;
+    }
+
+    /**
+     * 棋士名と所属国を取得します。
+     *
+     * @return string 棋士名 (所属国)
+     */
+    protected function _getNameWithCountry()
+    {
+        return "{$this->name} ({$this->country->name})";
     }
 
     /**
