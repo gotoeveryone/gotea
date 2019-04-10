@@ -117,6 +117,7 @@ class PlayerRanksTable extends AppTable
         return $this->find()
             ->contain([
                 'Players',
+                'Players.Countries',
                 'Ranks' => function (Query $q) {
                     return $q->where(['rank_numeric >' => 1]);
                 },
