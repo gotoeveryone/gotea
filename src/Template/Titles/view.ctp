@@ -124,7 +124,11 @@
             ]) ?>
             <?= $this->Form->hidden('name', ['value' => $title->name]) ?>
             <div class="category-row">保持情報</div>
-            <add-history domain="<?= $this->Url->build('/') ?>" :history-id="historyId" @cleared="clearHistory()" <?= $title->is_team ? ':is-team="true"' : '' ?>></add-history>
+            <add-history
+                :history-id="historyId"
+                :is-team="<?= $title->is_team ? 'true' : 'false' ?>"
+                @cleared="clearHistory()"
+            ></add-history>
             <ul class="boxes">
                 <?php if (!empty(($title->retention_histories))) : ?>
                 <?php if (($retention = $title->now_retention)) : ?>
@@ -136,6 +140,9 @@
                         <span class="inner-column"><label>タイトル名：</label><?= h($retention->name) ?></span>
                         <span class="inner-column"><?= h($retention->team_label) ?></span>
                         <span class="inner-column"><label>優勝者：</label><?= h($retention->winner_name) ?></span>
+                        <?php if ($retention->isRecent()) : ?>
+                        <span class="inner-column"><span class="mark-new">NEW!</span></span>
+                        <?php endif ?>
                     </fieldset>
                     <fieldset class="detail-box detail-box-right">
                         <button type="button" class="button button-secondary" value="edit" @click="select('<?= $retention->id ?>')">編集</button>

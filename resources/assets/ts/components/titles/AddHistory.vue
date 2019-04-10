@@ -29,12 +29,28 @@
       </fieldset>
       <fieldset class="detail-box box1">
         <fieldset class="detail-box-row">
+          <div class="input number">
+            <label for="acquired" class="detail-box_label">取得日</label>
+            <input
+              id="acquired"
+              v-model="acquired"
+              @change="saveDatepicker"
+              type="text"
+              maxlength="4"
+              class="acquired datepicker"
+              name="acquired"
+            >
+          </div>
+        </fieldset>
+      </fieldset>
+      <fieldset class="detail-box box1">
+        <fieldset class="detail-box-row">
           <div class="input checkbox">
             <input name="newest" value="0" type="hidden">
             <label v-if="!edit" for="newest" class="checkbox-label">
               <input
                 id="newest"
-                :disabled="required()"
+                :disabled="required"
                 v-if="!edit"
                 type="checkbox"
                 name="newest"
@@ -75,7 +91,7 @@
             <button @click="clearData()" v-if="edit" type="button">
               編集をやめる
             </button>
-            <button :disabled="required()" type="submit" class="button button-primary">
+            <button :disabled="required" type="submit" class="button button-primary">
               保存
             </button>
           </div>
@@ -130,8 +146,8 @@ import { Player } from '@/types/titles';
 export default Vue.extend({
   props: {
     isTeam: {
-      type: String,
-      default: '',
+      type: Boolean,
+      default: false,
     },
     historyId: {
       type: Number,
@@ -142,13 +158,14 @@ export default Vue.extend({
     return {
       edit: false,
       viewName: '（検索エリアから棋士を検索してください。）',
-      year: null,
-      holding: null,
+      year: '' as number | string,
+      holding: '' as number | string,
+      acquired: '',
       name: '',
       playerId: null as number | null,
       rankId: null as number | null,
       teamName: null,
-      teamTitle: '',
+      teamTitle: false,
       players: [],
     };
   },
@@ -158,6 +175,9 @@ export default Vue.extend({
     },
     text(): string {
       return this.edit ? '編集' : '新規登録';
+    },
+    required(): boolean {
+      return !(!!this.year && !!this.holding && !!this.acquired && !!this.key);
     },
   },
   watch: {
@@ -170,6 +190,7 @@ export default Vue.extend({
           this.holding = json.holding;
           this.rankId = json.rankId;
           this.year = json.targetYear;
+          this.acquired = json.acquired;
           this.viewName = `${json.winPlayerName} ${json.winRankName}`;
           this.teamName = json.winGroupName;
           this.edit = true;
@@ -178,11 +199,14 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.teamTitle = this.isTeam || '';
+    this.teamTitle = this.isTeam;
   },
   methods: {
-    required() {
-      return !this.year || !this.holding || !this.key;
+    saveDatepicker($event: Event) {
+      const target = $event.target as HTMLInputElement;
+      if (this.acquired !== target.value) {
+        this.acquired = target.value;
+      }
     },
     search() {
       if (this.name === '') {
@@ -235,18 +259,16 @@ export default Vue.extend({
       this.name = '';
       this.players = [];
     },
-    isNew() {
-      return !this.historyId;
-    },
     clearData() {
       this.viewName = '（検索エリアから棋士を検索してください。）';
-      this.year = null;
-      this.holding = null;
+      this.year = '';
+      this.holding = '';
+      this.acquired = '';
       this.name = '';
       this.playerId = null;
       this.rankId = null;
       this.teamName = null;
-      this.teamTitle = this.isTeam || '';
+      this.teamTitle = false;
       this.players = [];
       this.edit = false;
       this.$emit('cleared');

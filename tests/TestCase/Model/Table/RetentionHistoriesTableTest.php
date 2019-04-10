@@ -106,7 +106,7 @@ class RetentionHistoriesTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
-        // allowEmpty
+        // notEmpty
         // player_id
         $data = $params;
         $data['player_id'] = '';
@@ -126,12 +126,18 @@ class RetentionHistoriesTableTest extends TestCase
         $result = $this->RetentionHistories->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
-        // allowEmpty
         // id
         $data = $params;
         $data['id'] = '';
         $exist = $this->RetentionHistories->get(1);
         $result = $this->RetentionHistories->patchEntity($exist, $data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // date
+        // acquired
+        $data = $params;
+        $data['acquired'] = '20180101';
+        $result = $this->RetentionHistories->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
     }
 

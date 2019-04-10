@@ -6,6 +6,28 @@ use Cake\I18n\FrozenDate;
 
 /**
  * タイトルエンティティ
+ *
+ * @property int $id
+ * @property int $country_id
+ * @property string $name
+ * @property string $name_english
+ * @property int $holding
+ * @property int $sort_order
+ * @property string $html_file_name
+ * @property \Cake\I18n\FrozenDate $html_file_modified
+ * @property string $remarks
+ * @property bool $is_team
+ * @property bool $is_closed
+ * @property \Cake\I18n\FrozenTime $created
+ * @property string $created_by
+ * @property \Cake\I18n\FrozenTime $modified
+ * @property string $updated_by
+ *
+ * @property \Gotea\Model\Entity\Country $country
+ * @property \Gotea\Model\Entity\RetentionHistory[] $retention_histories
+ *
+ * @property \Gotea\Model\Entity\RetentionHistory|null $now_retention
+ * @property \Gotea\Model\Entity\RetentionHistory[] $histories
  */
 class Title extends AppEntity
 {
@@ -72,7 +94,7 @@ class Title extends AppEntity
     }
 
     /**
-     * 保持者の最終登録日が指定日以内かどうかを判定する。
+     * 新着の履歴かどうかを判定する。
      *
      * @return bool
      */
@@ -82,7 +104,7 @@ class Title extends AppEntity
             return false;
         }
 
-        return $history->created->wasWithinLast('20 days');
+        return $history->isRecent();
     }
 
     /**

@@ -105,6 +105,12 @@
   .box-between {
     @include flex-horizontal-between();
   }
+
+  .mark-new {
+    margin-left: 0.5rem;
+    font-size: 80%;
+    color: $c_red;
+  }
 }
 
 .detail-box {
@@ -223,7 +229,7 @@
 }
 
 /* -------------------------------------------
-   タイトル詳細
+   タイトル詳細の棋士一覧
  ------------------------------------------- */
 .retentions {
   margin: 5px auto;

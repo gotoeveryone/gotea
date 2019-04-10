@@ -52,7 +52,8 @@ class RetentionHistoriesTable extends AppTable
             ->requirePresence('win_group_name', function ($context) {
                 return !empty($context['data']['is_team']);
             })
-            ->maxLength('win_group_name', 30);
+            ->maxLength('win_group_name', 30)
+            ->date('acquired', 'y/m/d');
     }
 
     /**

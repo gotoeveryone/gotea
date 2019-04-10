@@ -30,6 +30,7 @@ class RetentionHistoriesController extends ApiController
             'winGroupName' => $history->win_group_name,
             'winRankName' => $history->is_team ? null : $history->rank->name,
             'isTeam' => $history->is_team,
+            'acquired' => $history->acquired->format('Y/m/d'),
             'playerId' => $history->player_id,
             'rankId' => $history->rank_id,
         ]);
