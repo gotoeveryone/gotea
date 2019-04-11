@@ -50,15 +50,18 @@ export default Vue.extend({
   },
   methods: {
     onSearch(params: TitleCondition) {
-      this.params = params;
+      this.params = {
+        'country_id': params.countryId,
+        'is_closed': params.isClosed,
+      };
       axios
         .get('/api/titles', { params: this.params })
         .then(res => (this.items = res.data.response));
     },
-    addRow(_params: TitleCondition) {
+    addRow(params: TitleCondition) {
       this.items.push({
         id: null,
-        countryId: _params.countryId,
+        countryId: params.countryId,
         holding: 1,
         name: '',
         sortOrder: this.items.length + 1,
