@@ -164,9 +164,15 @@
     width: 100%;
     height: 100%;
 
-    .label-row,
-    .input-row:not(textarea) {
+    > .label-row,
+    > .input-row:not(textarea) {
       height: 2.2rem;
+    }
+
+    > .checkbox {
+      @include flex-center();
+
+      height: calc(100% - 2.2rem);
     }
   }
 

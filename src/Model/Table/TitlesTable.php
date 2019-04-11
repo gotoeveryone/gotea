@@ -3,7 +3,6 @@
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
-use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Gotea\Model\Entity\Title;
@@ -19,6 +18,7 @@ class TitlesTable extends AppTable
     public function initialize(array $config)
     {
         parent::initialize($config);
+        $this->setDisplayField('name');
 
         // タイトル保持情報
         $this->hasMany('RetentionHistories')
@@ -73,6 +73,16 @@ class TitlesTable extends AppTable
                 'RetentionHistories',
             ],
         ]);
+    }
+
+    /**
+     * 有効なタイトルをID・名前のリストで取得します。
+     *
+     * @return \Cake\ORM\Query 生成されたクエリ
+     */
+    public function findSortedList()
+    {
+        return $this->find('list')->order(['country_id', 'id']);
     }
 
     /**

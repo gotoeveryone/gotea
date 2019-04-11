@@ -16,11 +16,23 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\TitleScore $title_score
  * @property \Gotea\Model\Entity\Player $player
  * @property \Gotea\Model\Entity\Rank $rank
+ *
+ * @property string $player_name_with_rank
  */
 class TitleScoreDetail extends AppEntity
 {
     use PlayerTrait;
     use RankTrait;
+
+    /**
+     * 棋士名と段位を返却します。
+     *
+     * @return string 棋士名 段位
+     */
+    protected function _getPlayerNameWithRank()
+    {
+        return implode(' ', [$this->player_name, $this->rank->name]);
+    }
 
     /**
      * ランキング表示用の名前を取得します。

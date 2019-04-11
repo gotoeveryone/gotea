@@ -500,12 +500,12 @@
 
   .table-column {
     &_id {
-      width: 5%;
+      width: 6%;
       text-align: center;
     }
 
     &_title {
-      width: 15%;
+      width: 28%;
     }
 
     &_country,
@@ -514,13 +514,13 @@
     }
 
     &_name {
-      width: 20%;
+      width: 18%;
     }
 
     &_operation {
-      display: flex;
-      width: 20%;
-      justify-content: center;
+      @include flex-center();
+
+      width: 10%;
     }
   }
 
