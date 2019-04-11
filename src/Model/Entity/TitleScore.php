@@ -16,10 +16,26 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Title $title
  * @property \Gotea\Model\Entity\Country $country
  * @property \Gotea\Model\Entity\TitleScoreDetail[] $title_score_details
+ *
+ * @property string $players_name
+ * @property \Gotea\Model\Entity\TitleScoreDetail $win_detail
+ * @property \Gotea\Model\Entity\TitleScoreDetail $lose_detail
  */
 class TitleScore extends AppEntity
 {
     use CountryTrait;
+
+    /**
+     * 対局者の名前を取得します。
+     *
+     * @return string 対局者の名前を ' - ' でつないだもの
+     */
+    protected function _getPlayersName()
+    {
+        return implode(' - ', collection($this->title_score_details)->map(function ($item) {
+            return $item->player_name_with_rank;
+        })->toArray());
+    }
 
     /**
      * 指定した棋士に合致するかを判定します。
@@ -45,7 +61,7 @@ class TitleScore extends AppEntity
     public function getWinnerName()
     {
         if (($detail = $this->win_detail)) {
-            return $detail->player_name . ' ' . $detail->rank->name;
+            return $detail->player_name_with_rank;
         }
 
         return '';
@@ -59,7 +75,7 @@ class TitleScore extends AppEntity
     public function getLoserName()
     {
         if (($detail = $this->lose_detail)) {
-            return $detail->player_name . ' ' . $detail->rank->name;
+            return $detail->player_name_with_rank;
         }
 
         return '';

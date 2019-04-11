@@ -27,6 +27,7 @@ class TitleScoresTableTest extends TestCase
         'app.TitleScores',
         'app.TitleScoreDetails',
         'app.Players',
+        'app.Titles',
         'app.Countries',
         'app.Ranks',
         'app.Organizations',
@@ -54,6 +55,102 @@ class TitleScoresTableTest extends TestCase
         unset($this->TitleScores);
 
         parent::tearDown();
+    }
+
+    /**
+     * バリデーション
+     *
+     * @return void
+     */
+    public function testValidationDefault()
+    {
+        $params = [
+            'country_id' => 1,
+            'started' => '2019-01-02',
+            'ended' => '2019-01-02',
+        ];
+
+        // success
+        $result = $this->TitleScores->newEntity($params);
+        $this->assertEmpty($result->getErrors());
+
+        // requirePresence
+        $names = array_keys($params);
+        foreach ($names as $name) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // integer
+        $names = ['id', 'title_id', 'country_id'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '1a';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = '0.5';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // maxLength
+        // name
+        $data = $params;
+        $data['name'] = substr(bin2hex(random_bytes(101)), 0, 101);
+        $result = $this->TitleScores->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // date
+        $names = ['started', 'ended'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '20180101';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'testtest';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // allowEmpty
+        // title_id
+        $data = $params;
+        $data['title_id'] = '';
+        $result = $this->TitleScores->newEntity($data);
+        $this->assertEmpty($result->getErrors());
+
+        // id (update)
+        $data = $params;
+        $data['id'] = '';
+        $exist = $this->TitleScores->get(1);
+        $result = $this->TitleScores->patchEntity($exist, $data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // id (create)
+        $result = $this->TitleScores->newEntity($data);
+        $this->assertEmpty($result->getErrors());
+    }
+
+    /**
+     * 1件取得
+     *
+     * @return void
+     */
+    public function testFindByIdWithRelation()
+    {
+        $score = $this->TitleScores->findByIdWithRelation(1);
+        $this->assertNotNull($score);
+        $this->assertNotNull($score->country);
+        $this->assertNotNull($score->title);
+        $this->assertGreaterThan(0, count($score->title_score_details));
     }
 
     /**

@@ -146,6 +146,23 @@ class TitlesTableTest extends TestCase
     }
 
     /**
+     * リスト形式での取得
+     *
+     * @return void
+     */
+    public function testFindSortedList()
+    {
+        $titles = $this->Titles->findSortedList();
+        $this->assertInternalType('array', $titles->toArray());
+        $this->assertNotNull($titles);
+
+        $titles->each(function ($value, $key) {
+            $this->assertInternalType('int', $key);
+            $this->assertInternalType('string', $value);
+        });
+    }
+
+    /**
      * タイトル検索（データ有り）
      *
      * @return void

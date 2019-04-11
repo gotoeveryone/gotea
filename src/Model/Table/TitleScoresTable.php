@@ -4,6 +4,7 @@ namespace Gotea\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
+use Cake\Validation\Validator;
 
 /**
  * TitleScores Model
@@ -41,11 +42,52 @@ class TitleScoresTable extends AppTable
     /**
      * {@inheritdoc}
      */
+    public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->requirePresence([
+                'country_id', 'started', 'ended',
+            ])
+            ->integer('country_id')
+            ->integer('title_id')
+            ->allowEmpty('title_id')
+            ->maxLength('name', 100)
+            ->date('started', 'y/m/d')
+            ->date('ended', 'y/m/d');
+
+        return $validator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['title_id'], 'Titles'));
 
         return $rules;
+    }
+
+    /**
+     * IDに合致するデータと関連データを取得します。
+     *
+     * @param int $id 検索キー
+     * @return \Gotea\Model\Entity\TitleScore 取得したエンティティ
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function findByIdWithRelation(int $id)
+    {
+        return $this->get($id, [
+            'contain' => [
+                'Countries',
+                'Titles',
+                'TitleScoreDetails',
+            ],
+        ]);
     }
 
     /**

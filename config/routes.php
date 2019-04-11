@@ -114,9 +114,11 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->scope('/scores', ['controller' => 'TitleScores'], function (RouteBuilder $routes) {
         $routes->get('/', ['action' => 'index'], 'scores');
         $routes->get('/search', ['action' => 'search'], 'find_scores');
-        $routes->put('/:id', ['action' => 'update'], 'update_scores')
+        $routes->get('/:id', ['action' => 'view'], 'view_score')
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
-        $routes->delete('/:id', ['action' => 'delete'], 'delete_scores')
+        $routes->put('/:id', ['action' => 'update'], 'update_score')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->delete('/:id', ['action' => 'delete'], 'delete_score')
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
     });
 

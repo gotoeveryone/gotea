@@ -1,12 +1,11 @@
 # LANGUAGE translation of CakePHP Application
 # Copyright 2018 Kazuki_Kamizuru <webmaster@k2ss.info>
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "POT-Creation-Date: 2018-01-02 20:07+0900\n"
-"PO-Revision-Date: 2018-01-02 20:47+0900\n"
+"PO-Revision-Date: 2019-04-11 14:17+0900\n"
 "Last-Translator: Kazuki_Kamizuru <webmaster@k2ss.info>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -14,58 +13,74 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: Controller/ErrorController.php:40
-#: Controller/NativeQueryController.php:48
+msgid "Score Detail"
+msgstr "成績詳細"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Switch Division"
+msgstr "勝敗変更"
+
+msgid "Player of GO"
+msgstr "対局者"
+
+#: Controller/ErrorController.php:40 Controller/NativeQueryController.php:48
 msgid "Executing query failed.<br/>Please confirm logfile."
-msgstr "データベースへのクエリ実行に失敗しました。<br/>詳細はログを確認してください。"
+msgstr "データベースへのクエリ実行に失敗しました<br/>詳細はログを確認してください"
 
 #: Controller/NativeQueryController.php:45
 msgid "Executed {0} queries"
-msgstr "{0}件のクエリを実行しました。"
+msgstr "{0}件のクエリを実行しました"
 
 #: Controller/NativeQueryController.php:73
 msgid "Updated record count more than {0}"
-msgstr "{0}件以上のレコードが更新されました。"
+msgstr "{0}件以上のレコードが更新されました"
 
 #: Controller/PlayerRanksController.php:39
 #: Controller/PlayerRanksController.php:64
 msgid "The rank history is saved"
-msgstr "昇段情報を保存しました。"
+msgstr "昇段情報を保存しました"
 
-#: Controller/PlayersController.php:64
-#: Controller/TitleScoresController.php:57
+#: Controller/PlayersController.php:64 Controller/TitleScoresController.php:57
 msgid "No matches found"
-msgstr "検索結果が0件でした。"
+msgstr "検索結果が0件でした"
 
-#: Controller/PlayersController.php:67
-#: Controller/TitleScoresController.php:60
+#: Controller/PlayersController.php:67 Controller/TitleScoresController.php:60
 msgid "Matched rows more than {0} ({1} row matched).<br/>Please filtering conditions and reexecute."
-msgstr "検索結果が{0}件を超えています（{1}件）。<br/>条件を絞って再検索してください。"
+msgstr "検索結果が{0}件を超えています（{1}件）<br/>条件を絞って再検索してください"
 
 #: Controller/PlayersController.php:148;185
 msgid "The player {0} - {1} is saved"
-msgstr "[{0}: {1}] を保存しました。"
+msgstr "[{0}: {1}] を保存しました"
 
 #: Controller/RetentionHistoriesController.php:33
 msgid "The retention history is saved"
-msgstr "タイトル履歴を保存しました。"
+msgstr "タイトル履歴を保存しました"
 
 #: Controller/TitlesController.php:61
 msgid "The title {0} - {1} is saved"
-msgstr "[{0}: {1}] を保存しました。"
+msgstr "[{0}: {1}] を保存しました"
 
 #: Controller/UsersController.php:65
 msgid "Authentication failed"
-msgstr "認証に失敗しました。"
+msgstr "認証に失敗しました"
 
 #: Controller/Component/MyAuthComponent.php:83
 msgid "User {0} is logged"
-msgstr "ユーザ [{0}] がログインしました。"
+msgstr "ユーザ [{0}] がログインしました"
 
 #: Model/Table/PlayersTable.php:86
 msgid "This player already exists"
-msgstr "棋士情報がすでに存在します。"
+msgstr "棋士情報がすでに存在します"
 
 msgid "Are you sure you want to delete # {0}?"
-msgstr "ID {0} を削除します。よろしいですか。"
+msgstr "ID {0} を削除します。よろしいですか?"
+
+msgid "The score {0} - {1} is saved"
+msgstr "[{0}: {1}] を保存しました"

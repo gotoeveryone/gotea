@@ -1,11 +1,21 @@
 <?php
 namespace Gotea\Test\TestCase\Controller;
 
+use Cake\I18n\FrozenTime;
+use Cake\ORM\TableRegistry;
+
 /**
  * タイトル成績コントローラのテスト
  */
 class TitleScoresControllerTest extends AppTestCase
 {
+    /**
+     * タイトルモデル
+     *
+     * @var \Gotea\Model\Table\TitleScoresTable
+     */
+    public $TitleScores;
+
     /**
      * Fixtures
      *
@@ -15,6 +25,7 @@ class TitleScoresControllerTest extends AppTestCase
         'app.TitleScores',
         'app.TitleScoreDetails',
         'app.Players',
+        'app.Titles',
         'app.Countries',
         'app.Ranks',
         'app.PlayerRanks',
@@ -26,6 +37,7 @@ class TitleScoresControllerTest extends AppTestCase
     public function setUp()
     {
         parent::setUp();
+        $this->TitleScores = TableRegistry::getTableLocator()->get('TitleScores');
         $this->createSession();
     }
 
@@ -117,16 +129,69 @@ class TitleScoresControllerTest extends AppTestCase
     }
 
     /**
-     * 更新
+     * 更新失敗
+     *
+     * @return void
+     */
+    public function testUpdateFailed()
+    {
+        $this->enableCsrfToken();
+        $now = FrozenTime::now();
+        $name = 'test_update_' . $now->format('YmdHis');
+        $data = [
+            'id' => 1,
+            'country_id' => 1,
+            'started' => 'test',
+            'ended' => '2019-01-02',
+            'name' => $name,
+        ];
+        $this->put(['_name' => 'update_score', 1], $data);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在しないこと
+        $this->assertEquals(0, $this->TitleScores->findByName($name)->count());
+    }
+
+    /**
+     * 更新成功
      *
      * @return void
      */
     public function testUpdate()
     {
         $this->enableCsrfToken();
-        $this->put(['_name' => 'update_scores', 1]);
+        $now = FrozenTime::now();
+        $name = 'test_update_' . $now->format('YmdHis');
+        $data = [
+            'id' => 1,
+            'country_id' => 1,
+            'started' => '2019-01-02',
+            'ended' => '2019-01-02',
+            'name' => $name,
+        ];
+        $this->put(['_name' => 'update_score', 1], $data);
+        $this->assertRedirect(['_name' => 'view_score', 1]);
+        $this->assertResponseNotContains('<nav class="nav">');
 
-        $this->assertRedirect(['_name' => 'find_scores']);
+        // データが存在すること
+        $this->assertEquals(1, $this->TitleScores->findByName($name)->count());
+    }
+
+    /**
+     * 勝敗変更
+     *
+     * @return void
+     */
+    public function testSwtichDivision()
+    {
+        $this->enableCsrfToken();
+        $data = [
+            'action' => 'switchDivision',
+        ];
+        $this->put(['_name' => 'update_score', 1], $data);
+
+        $this->assertRedirect(['_name' => 'view_score', 1]);
         $this->assertResponseNotContains('<nav class="nav">');
     }
 
@@ -138,7 +203,7 @@ class TitleScoresControllerTest extends AppTestCase
     public function testDelete()
     {
         $this->enableCsrfToken();
-        $this->delete(['_name' => 'delete_scores', 1]);
+        $this->delete(['_name' => 'delete_score', 1]);
 
         $this->assertRedirect(['_name' => 'find_scores']);
         $this->assertResponseNotContains('<nav class="nav">');
