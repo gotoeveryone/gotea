@@ -18,13 +18,18 @@ class AddAcquiredAtToRetentionHistories extends AbstractMigration
             'comment' => '取得日',
             'default' => null,
             'limit' => null,
-            'null' => false,
+            'null' => true,
             'after' => 'is_team',
         ]);
         $table->update();
 
         // 既存データの更新
         $this->updateData();
+
+        $table->changeColumn('acquired', 'date', [
+            'null' => false,
+        ]);
+        $table->update();
     }
 
     private function updateData()
