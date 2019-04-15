@@ -3,7 +3,7 @@
     <li v-text="text" class="label-row" />
     <li class="detail-row">
       <input :value="historyId" type="hidden" name="id">
-      <input v-model="teamTitle" type="hidden" name="is_team">
+      <input :value="isTeamHidden" type="hidden" name="is_team">
       <fieldset class="detail-box box1">
         <fieldset class="detail-box-row">
           <div class="input number">
@@ -64,7 +64,7 @@
     </li>
     <li class="detail-row">
       <fieldset class="detail-box box1">
-        <fieldset v-if="teamTitle" class="detail-box-row">
+        <fieldset v-if="isTeamHidden" class="detail-box-row">
           <div class="input text">
             <label for="win-group-name" class="detail-box_label">優勝団体名</label>
             <input
@@ -98,10 +98,10 @@
         </fieldset>
       </fieldset>
     </li>
-    <li v-if="!teamTitle" class="label-row">
+    <li v-if="!isTeamHidden" class="label-row">
       棋士検索
     </li>
-    <li v-if="!teamTitle" class="detail-row">
+    <li v-if="!isTeamHidden" class="detail-row">
       <fieldset class="detail-box box1">
         <fieldset class="detail-box-row">
           <div class="input text">
@@ -157,7 +157,7 @@ export default Vue.extend({
   data: () => {
     return {
       edit: false,
-      viewName: '（検索エリアから棋士を検索してください。）',
+      viewName: '',
       year: '' as number | string,
       holding: '' as number | string,
       acquired: '',
@@ -165,7 +165,7 @@ export default Vue.extend({
       playerId: null as number | null,
       rankId: null as number | null,
       teamName: null,
-      teamTitle: false,
+      isTeamHidden: '',
       players: [],
     };
   },
@@ -179,13 +179,16 @@ export default Vue.extend({
     required(): boolean {
       return !(!!this.year && !!this.holding && !!this.acquired && !!this.key);
     },
+    initialViewName(): string {
+      return '（検索エリアから棋士を検索してください。）';
+    },
   },
   watch: {
     historyId(_value: number) {
       if (_value) {
         axios.get(`/api/histories/${_value}`).then(res => {
           const json = res.data.response;
-          this.teamTitle = json.isTeam || '';
+          this.isTeamHidden = this.getTeamHidden(json.isTeam);
           this.playerId = json.playerId;
           this.holding = json.holding;
           this.rankId = json.rankId;
@@ -199,9 +202,13 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.teamTitle = this.isTeam;
+    this.viewName = this.initialViewName;
+    this.isTeamHidden = this.getTeamHidden(this.isTeam);
   },
   methods: {
+    getTeamHidden(value: boolean) {
+      return value ? '1' : '';
+    },
     saveDatepicker($event: Event) {
       const target = $event.target as HTMLInputElement;
       if (this.acquired !== target.value) {
@@ -260,7 +267,7 @@ export default Vue.extend({
       this.players = [];
     },
     clearData() {
-      this.viewName = '（検索エリアから棋士を検索してください。）';
+      this.viewName = this.initialViewName;
       this.year = '';
       this.holding = '';
       this.acquired = '';
@@ -268,7 +275,7 @@ export default Vue.extend({
       this.playerId = null;
       this.rankId = null;
       this.teamName = null;
-      this.teamTitle = false;
+      this.isTeamHidden = '';
       this.players = [];
       this.edit = false;
       this.$emit('cleared');
