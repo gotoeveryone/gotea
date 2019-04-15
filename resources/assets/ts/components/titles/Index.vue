@@ -22,6 +22,7 @@
           :key="idx"
           :item="item"
           @openModal="openWithCallback"
+          @refresh="refresh"
         />
       </ul>
     </div>
@@ -54,9 +55,7 @@ export default Vue.extend({
         'country_id': params.countryId,
         'is_closed': params.isClosed,
       };
-      axios
-        .get('/api/titles', { params: this.params })
-        .then(res => (this.items = res.data.response));
+      this.refresh();
     },
     addRow(params: TitleCondition) {
       this.items.push({
@@ -96,6 +95,11 @@ export default Vue.extend({
               .then(res => (this.items = res.data.response)),
         })
       );
+    },
+    refresh() {
+      axios
+        .get('/api/titles', { params: this.params })
+        .then(res => (this.items = res.data.response));
     },
   },
 });

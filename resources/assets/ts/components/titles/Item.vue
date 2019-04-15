@@ -94,9 +94,8 @@ export default Vue.extend({
       // 登録処理
       axios
         .post('/api/titles/', this.item)
-        .then(res => {
-          this.item.id = res.data.response.id;
-          this.setLabel();
+        .then(() => {
+          this.$emit('refresh');
           this.$store.dispatch('openDialog', {
             messages: `タイトル【${this.item.name}】を登録しました。`,
           });
