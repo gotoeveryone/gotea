@@ -84,7 +84,9 @@ class TitleScoresTable extends AppTable
         return $this->get($id, [
             'contain' => [
                 'Countries',
-                'Titles',
+                'Titles' => [
+                    'joinType' => 'LEFT',
+                ],
                 'TitleScoreDetails',
             ],
         ]);
@@ -96,16 +98,16 @@ class TitleScoresTable extends AppTable
      * @param array $data パラメータ
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findMatches(array $data) : Query
+    public function findMatches(array $data): Query
     {
         $query = $this->find()
-                ->contain([
-                    'Countries',
-                    'TitleScoreDetails',
-                    'TitleScoreDetails.Players',
-                    'TitleScoreDetails.Ranks',
-                ])
-                ->orderDesc('started')->orderDesc('TitleScores.id');
+            ->contain([
+                'Countries',
+                'TitleScoreDetails',
+                'TitleScoreDetails.Players',
+                'TitleScoreDetails.Ranks',
+            ])
+            ->orderDesc('started')->orderDesc('TitleScores.id');
 
         if (($id = Hash::get($data, 'player_id'))) {
             $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($id) {

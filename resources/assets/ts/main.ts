@@ -34,7 +34,7 @@ const App = new Vue({
   data: {
     countryId: '',
     changed: false,
-    historyId: 0,
+    historyId: null as number | null,
     hide: true,
   },
   computed: {
