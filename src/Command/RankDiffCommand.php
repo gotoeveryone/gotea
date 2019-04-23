@@ -12,11 +12,11 @@ use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
-use Exception;
 use Gotea\Model\Entity\Country;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
+use Throwable;
 
 /**
  * 段位の差分を抽出するコマンド
@@ -80,10 +80,13 @@ class RankDiffCommand extends Command
             }
 
             return self::CODE_SUCCESS;
-        } catch (Exception $ex) {
+        } catch (Throwable $ex) {
             Log::error($ex);
-            $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
-            $mailer->send('error', [$subject, $ex]);
+
+            if (!Configure::read('debug')) {
+                $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
+                $mailer->send('error', [$subject, $ex]);
+            }
 
             return self::CODE_ERROR;
         }
@@ -198,17 +201,16 @@ class RankDiffCommand extends Command
     {
         $results = [];
         $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
-        $crawler->filter('table[width=685] tr')->filter(function (Crawler $node) {
-            return $node->filter('img')->first()->count();
-        })->each(function (Crawler $node) use (&$results) {
-            $src = $node->filter('img')->first()->attr('src');
-
-            if (preg_match('/dan([0-9]{2})/', $src, $matches)) {
-                $rank = intval($matches[1]);
-                $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');
-                $results[$rank] = $playerNodes->each(function ($node) {
-                    return $node->text();
-                });
+        $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
+            $img = $node->filter('img')->first();
+            if ($img->count() > 0) {
+                if (preg_match('/dan([0-9]{2})/', $img->attr('src'), $matches)) {
+                    $rank = intval($matches[1]);
+                    $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');
+                    $results[$rank] = $playerNodes->each(function ($node) {
+                        return $node->text();
+                    });
+                }
             }
         });
 
