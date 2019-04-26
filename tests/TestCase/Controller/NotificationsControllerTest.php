@@ -105,6 +105,10 @@ class NotificationsControllerTest extends AppTestCase
 
         $this->assertResponseContains($notification->title);
         $this->assertResponseContains($notification->content);
+
+        // 投稿日時は一致していないこと
+        $viewNotification = $this->viewVariable('notification');
+        $this->assertNotEquals($notification->published, $viewNotification->published);
     }
 
     /**
