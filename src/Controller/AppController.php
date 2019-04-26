@@ -29,7 +29,6 @@ abstract class AppController extends Controller
         $this->forceSSL();
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
-            'className' => 'MyAuth',
             'loginAction' => [
                 '_name' => 'top',
             ],
