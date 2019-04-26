@@ -1,6 +1,7 @@
 <?php
 namespace Gotea\Controller;
 
+use Cake\I18n\FrozenTime;
 use Gotea\Controller\AppController;
 
 /**
@@ -40,6 +41,8 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->findById($fromId)->first();
             if ($notification) {
                 $data = $notification->toArray();
+                # 投稿日時は現在日時を設定しておく
+                $data['published'] = FrozenTime::now();
             }
         }
 
