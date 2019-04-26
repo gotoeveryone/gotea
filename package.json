@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "gotea front development tools configuration",
   "main": "resources/ts/main.ts",
+  "engines": {
+    "node": ">=8 <11"
+  },
   "scripts": {
     "webpack": "webpack --colors --config=./webpack.config.js",
     "dev": "yarn run webpack --mode development -w",

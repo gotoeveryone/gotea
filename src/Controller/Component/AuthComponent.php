@@ -2,7 +2,7 @@
 
 namespace Gotea\Controller\Component;
 
-use Cake\Controller\Component\AuthComponent;
+use Cake\Controller\Component\AuthComponent as BaseAuthComponent;
 use Cake\Log\Log;
 
 /**
@@ -11,7 +11,7 @@ use Cake\Log\Log;
  * @author  Kazuki Kamizuru
  * @since   2016/12/25
  */
-class MyAuthComponent extends AuthComponent
+class AuthComponent extends BaseAuthComponent
 {
     use ApiTrait;
 
@@ -27,7 +27,7 @@ class MyAuthComponent extends AuthComponent
         if ($this->authenticate($credentials)) {
             return true;
         }
-        $this->setResponse($this->getResponse()->withStatus(401));
+        $this->getController()->setResponse($this->getController()->getResponse()->withStatus(401));
 
         return false;
     }
