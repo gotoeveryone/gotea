@@ -68,6 +68,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
             'title_id' => 1,
             'name' => 'Test Title',
             'is_team' => false,
+            'acquired' => '2019/04/01',
             'holding' => 100,
             'target_year' => 2017,
         ];
@@ -93,6 +94,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
             'title_id' => 1,
             'name' => 'Test Title',
             'is_team' => false,
+            'acquired' => '2019/04/01',
             'holding' => 100,
             'target_year' => 2018,
         ];
