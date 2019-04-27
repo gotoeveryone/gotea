@@ -40,7 +40,7 @@ class RetentionHistoriesTable extends AppTable
 
         return $validator
             ->requirePresence([
-                'title_id', 'holding', 'target_year', 'name',
+                'title_id', 'holding', 'target_year', 'name', 'acquired',
             ])
             ->integer('player_id')
             ->integer('rank_id')
