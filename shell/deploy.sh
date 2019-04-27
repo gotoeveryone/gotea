@@ -2,12 +2,12 @@
 
 set -eu
 
-# Bash の設定を読み出す
-source ~/.bash_profile
-
 HOME_DIR="$1"
 SLUG="$2"
 PROJECT="gotea"
+
+# ローカルに配置した PHP のエイリアスに設定されたバージョンを利用する
+PATH="${HOME_DIR}/.php:$PATH"
 
 # ディレクトリ決定
 WORK_DIR="${HOME_DIR}/release/link/${PROJECT}"
