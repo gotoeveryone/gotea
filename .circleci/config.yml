@@ -4,6 +4,9 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.2-node-browsers
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: gotea_test
     working_directory: ~/gotea
     steps:
       - checkout
