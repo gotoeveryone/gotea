@@ -29,7 +29,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           MYSQL_DATABASE: gotea_test
-    working_directory: ~/${CIRCLE_PROJECT_REPONAME}
+    working_directory: ~/gotea
     steps:
       - checkout
       - run: sudo apt install -y zlib1g-dev
@@ -53,7 +53,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/node:10
-    working_directory: ~/${CIRCLE_PROJECT_REPONAME}
+    working_directory: ~/gotea
     steps:
       - checkout
       - restore_cache:
