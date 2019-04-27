@@ -3,8 +3,7 @@
 set -eu
 
 HOME_DIR="$1"
-SLUG="$2"
-PROJECT="gotea"
+PROJECT="$2"
 
 # ローカルに配置した PHP のエイリアスに設定されたバージョンを利用する
 PATH="${HOME_DIR}/.php:$PATH"
@@ -17,14 +16,14 @@ mkdir -p "${WWW_DIR}"
 
 # tar の解凍
 cd "${HOME_DIR}/tmp"
-TAR_NAME=$(ls -t ${SLUG}-*.tar.gz | head -n1)
+TAR_NAME=$(ls -t ${PROJECT}-*.tar.gz | head -n1)
 tar xzf "${TAR_NAME}" -C ${WWW_DIR}
 
 # ログディレクトリの設定
-ln -s "${BASE_DIR}/release/log/${PROJECT}" "${WWW_DIR}/logs"
+ln -s "${HOME_DIR}/release/log/${PROJECT}" "${WWW_DIR}/logs"
 
 # .env の設定
-ln -s "${BASE_DIR}/release/environment/${PROJECT}/.env" "${WWW_DIR}/.env"
+ln -s "${HOME_DIR}/release/environment/${PROJECT}/.env" "${WWW_DIR}/.env"
 
 # Composer setup
 cd "${WWW_DIR}"
