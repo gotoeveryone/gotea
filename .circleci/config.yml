@@ -62,7 +62,7 @@ jobs:
       - save_cache:
           <<: *save_yarn_cache
       - run: yarn run prod
-      - run: export TAR_NAME=${CIRCLE_PROJECT_REPONAME}-$(date +'%Y%m%d-%H%M%S').tar.gz
+      - run: echo "export TAR_NAME=${CIRCLE_PROJECT_REPONAME}-$(date +'%Y%m%d-%H%M%S').tar.gz" >> ${BASH_ENV}
       - run: tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ tmp/ webroot/ composer.json composer.lock
       - run: scp -P ${SSH_PORT} ${TAR_NAME} ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
       - run: scp -P ${SSH_PORT} shell/deploy.sh ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
