@@ -63,7 +63,7 @@ jobs:
           <<: *save_yarn_cache
       - run: yarn run prod
       - run: TAR_NAME=${CIRCLE_PROJECT_REPONAME}-$(date +'%Y%m%d-%H%M%S').tar.gz
-      - run: tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ tmp/ webroot/ composer.json composer.lock
+      - run: tar czf ${TAR_NAME} bin config plugins resources src tmp webroot composer.json composer.lock
       - run: scp -P ${SSH_PORT} ${TAR_NAME} ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
       - run: scp -P ${SSH_PORT} shell/deploy.sh ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
       - run: ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "${HOME_DIR}/tmp/deploy.sh ${HOME_DIR} ${CIRCLE_PROJECT_REPONAME}"
@@ -72,10 +72,11 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - lint
-      - deploy:
-          requires:
-            - lint
+      # - lint
+      - deploy
+      # - deploy:
+      #     requires:
+      #       - lint
           # filters:
           #   branches:
           #     only: master
