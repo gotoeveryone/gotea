@@ -56,14 +56,13 @@ jobs:
     working_directory: ~/gotea
     steps:
       - checkout
-      - run: sudo apt install -y zlib1g-dev
       - restore_cache:
           <<: *restore_yarn_cache
       - run: yarn install
       - save_cache:
           <<: *save_yarn_cache
       - run: yarn run prod
-      - run: TAR_NAME=${CIRCLE_PROJECT_REPONAME}-$(date +'%Y%m%d-%H%M%S').tar.gz
+      - run: export TAR_NAME=${CIRCLE_PROJECT_REPONAME}-$(date +'%Y%m%d-%H%M%S').tar.gz
       - run: tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ tmp/ webroot/ composer.json composer.lock
       - run: scp -P ${SSH_PORT} ${TAR_NAME} ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
       - run: scp -P ${SSH_PORT} shell/deploy.sh ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
