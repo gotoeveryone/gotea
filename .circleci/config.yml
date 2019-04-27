@@ -1,37 +1,81 @@
 version: 2
 
+references:
+  save_composer_cache: &save_composer_cache
+    name: Saving composer cache
+    key: composer-v1-{{ checksum "composer.lock" }}
+    paths:
+      - vendor
+  save_yarn_cache: &save_yarn_cache
+    name: Saving yarn cache
+    key: node-v1-{{ checksum "package.json" }}
+    paths:
+      - node_modules
+  restore_composer_cache: &restore_composer_cache
+    name: Restoring composer cache
+    keys:
+      - composer-v1-{{ checksum "composer.lock" }}
+      - composer-v1-
+  restore_yarn_cache: &restore_yarn_cache
+    name: Restoring yarn cache
+    keys:
+      - node-v1-{{ checksum "package.json" }}
+      - node-v1-
+
 jobs:
-  build:
+  lint:
     docker:
       - image: circleci/php:7.2-node-browsers
       - image: circleci/mysql:5.7
         environment:
           MYSQL_DATABASE: gotea_test
-    working_directory: ~/gotea
+    working_directory: ~/${CIRCLE_BRANCH}
     steps:
       - checkout
       - run: sudo apt install -y zlib1g-dev
       - run: sudo docker-php-ext-install zip pdo_mysql
       - run: sudo composer self-update
       - restore_cache:
-          keys:
-            - composer-v1-{{ checksum "composer.lock" }}
-            - composer-v1-
+          <<: *restore_composer_cache
       - run: composer install -n --prefer-dist
       - save_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
+          <<: *save_composer_cache
       - restore_cache:
-          keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
+          <<: *restore_yarn_cache
       - run: yarn install
       - save_cache:
-          key: node-v1-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+          <<: *save_yarn_cache
       - run: cp .env.example .env
       - run: composer phpcs
       - run: composer phpunit
       - run: yarn run lint
+
+  deploy:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/${CIRCLE_BRANCH}
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_yarn_cache
+      - run: yarn install
+      - save_cache:
+          <<: *save_yarn_cache
+      - run: yarn run prod
+      - run: TAR_NAME=${CIRCLE_BRANCH}-$(date +'%Y%m%d-%H%M%S').tar.gz
+      - run: tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ tmp/ webroot/ composer.json composer.lock
+      - run: scp -P ${SSH_PORT} ${TAR_NAME} ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
+      - run: scp -P ${SSH_PORT} shell/deploy.sh ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
+      - run: ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "${HOME_DIR}/tmp/deploy.sh ${HOME_DIR} ${CIRCLE_BRANCH}"
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - lint
+      - deploy:
+          requires:
+            - lint
+          # filters:
+          #   branches:
+          #     only: master
