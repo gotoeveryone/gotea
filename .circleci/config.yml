@@ -26,6 +26,28 @@ jobs:
   lint:
     docker:
       - image: circleci/php:7.2-node-browsers
+    working_directory: ~/gotea
+    steps:
+      - checkout
+      - run: sudo apt install -y zlib1g-dev
+      - run: sudo docker-php-ext-install zip
+      - run: sudo composer self-update
+      - restore_cache:
+          <<: *restore_composer_cache
+      - run: composer install -n --prefer-dist
+      - save_cache:
+          <<: *save_composer_cache
+      - restore_cache:
+          <<: *restore_yarn_cache
+      - run: yarn install
+      - save_cache:
+          <<: *save_yarn_cache
+      - run: composer phpcs
+      - run: yarn run lint
+
+  test:
+    docker:
+      - image: circleci/php:7.2
       - image: circleci/mysql:5.7
         environment:
           MYSQL_DATABASE: gotea_test
@@ -40,15 +62,8 @@ jobs:
       - run: composer install -n --prefer-dist
       - save_cache:
           <<: *save_composer_cache
-      - restore_cache:
-          <<: *restore_yarn_cache
-      - run: yarn install
-      - save_cache:
-          <<: *save_yarn_cache
       - run: cp .env.example .env
-      - run: composer phpcs
       - run: composer phpunit
-      - run: yarn run lint
 
   deploy:
     docker:
@@ -75,9 +90,11 @@ workflows:
   build_and_deploy:
     jobs:
       - lint
+      - test
       - deploy:
           requires:
             - lint
+            - test
           filters:
             branches:
               only: master
