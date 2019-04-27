@@ -66,8 +66,9 @@ jobs:
       - run: tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ tmp/ webroot/ composer.json composer.lock
       - run: echo 'StrictHostKeyChecking no' >> ~/.ssh/config
       - run: scp -P ${SSH_PORT} ${TAR_NAME} ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
-      - run: scp -P ${SSH_PORT} shell/deploy.sh ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp
-      - run: ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "${HOME_DIR}/tmp/deploy.sh ${HOME_DIR} ${CIRCLE_PROJECT_REPONAME}"
+      - run: scp -P ${SSH_PORT} shell/deploy.sh ${SSH_USER}@${SSH_HOST}:${HOME_DIR}/tmp/deploy_${CIRCLE_PROJECT_REPONAME}.sh
+      - run: ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "${HOME_DIR}/tmp/deploy_${CIRCLE_PROJECT_REPONAME}.sh ${HOME_DIR} ${CIRCLE_PROJECT_REPONAME}"
+      - run: ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "rm -f ${HOME_DIR}/tmp/deploy_${CIRCLE_PROJECT_REPONAME}.sh"
 
 workflows:
   version: 2
