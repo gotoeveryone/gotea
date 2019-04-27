@@ -23,7 +23,7 @@ references:
       - node-v1-
 
 jobs:
-  lint:
+  code_check:
     docker:
       - image: circleci/php:7.2-node-browsers
     working_directory: ~/gotea
@@ -89,12 +89,15 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - lint
-      - test
+      - code_check:
+          filters:
+            branches:
+              ignore: master
+      - test:
+          filters:
+            branches:
+              ignore: master
       - deploy:
-          requires:
-            - lint
-            - test
           filters:
             branches:
               only: master
