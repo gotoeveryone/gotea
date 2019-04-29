@@ -15,7 +15,7 @@
             <div class="category-row"><?= 'タイトル情報（ID：' . h($title->id) . '）' ?></div>
             <ul class="boxes">
                 <li class="detail-row">
-                    <fieldset class="detail-box box1">
+                    <fieldset class="detail-box box2">
                         <?php
                         echo $this->Form->control('name', [
                             'label' => ['class' => 'label-row', 'text' => 'タイトル名'],
@@ -24,7 +24,7 @@
                         ]);
                         ?>
                     </fieldset>
-                    <fieldset class="detail-box box1">
+                    <fieldset class="detail-box box2">
                         <?php
                         echo $this->Form->control('name_english', [
                             'label' => ['class' => 'label-row', 'text' => 'タイトル名（英語）'],
@@ -36,7 +36,7 @@
                     <fieldset class="detail-box box1">
                         <div class="input">
                             <div class="label-row">分類</div>
-                            <div class="input-row">
+                            <div class="label">
                                 <?= h($title->country->name . '棋戦') ?>
                             </div>
                         </div>
@@ -46,6 +46,28 @@
                             <?php
                             echo $this->Form->label('is_team', '団体戦', ['class' => 'label-row']);
                             echo $this->Form->control('is_team', [
+                                'label' => false,
+                                'class' => 'input-row',
+                            ]);
+                            ?>
+                        </div>
+                    </fieldset>
+                    <fieldset class="detail-box box1">
+                        <div class="input">
+                            <?php
+                            echo $this->Form->label('is_closed', '終了棋戦', ['class' => 'label-row']);
+                            echo $this->Form->control('is_closed', [
+                                'label' => false,
+                                'class' => 'input-row',
+                            ]);
+                            ?>
+                        </div>
+                    </fieldset>
+                    <fieldset class="detail-box box1">
+                        <div class="input">
+                            <?php
+                            echo $this->Form->label('is_output', '出力', ['class' => 'label-row']);
+                            echo $this->Form->control('is_output', [
                                 'label' => false,
                                 'class' => 'input-row',
                             ]);
@@ -66,7 +88,7 @@
                     <fieldset class="detail-box box1">
                         <div class="input">
                             <div class="label-row">現在の保持者</div>
-                            <div class="input-row"><?= h($title->getWinnerName(true)) ?></div>
+                            <div class="label"><?= h($title->getWinnerName(true)) ?></div>
                         </div>
                     </fieldset>
                     <fieldset class="detail-box box1">
@@ -124,46 +146,42 @@
             ]) ?>
             <?= $this->Form->hidden('name', ['value' => $title->name]) ?>
             <div class="category-row">保持情報</div>
-            <add-history
-                :history-id="historyId"
-                :is-team="<?= $title->is_team ? 'true' : 'false' ?>"
-                @cleared="clearHistory()"
-            ></add-history>
+            <add-history :history-id="historyId" :is-team="<?= $title->is_team ? 'true' : 'false' ?>" @cleared="clearHistory()"></add-history>
             <ul class="boxes">
                 <?php if (!empty(($title->retention_histories))) : ?>
-                <?php if (($retention = $title->now_retention)) : ?>
-                <li class="label-row">現在の保持情報</li>
-                <li class="detail-row detail-row-result">
-                    <fieldset class="detail-box box1">
-                        <span class="inner-column"><?= h($retention->target_year) . '年' ?></span>
-                        <span class="inner-column"><?= h($retention->holding) . '期' ?></span>
-                        <span class="inner-column"><label>タイトル名：</label><?= h($retention->name) ?></span>
-                        <span class="inner-column"><?= h($retention->team_label) ?></span>
-                        <span class="inner-column"><label>優勝者：</label><?= h($retention->winner_name) ?></span>
-                        <?php if ($retention->isRecent()) : ?>
-                        <span class="inner-column"><span class="mark-new">NEW!</span></span>
-                        <?php endif ?>
-                    </fieldset>
-                    <fieldset class="detail-box detail-box-right">
-                        <button type="button" class="button button-secondary" value="edit" @click="select('<?= $retention->id ?>')">編集</button>
-                    </fieldset>
-                </li>
-                <?php endif ?>
-                <li class="label-row">保持情報（履歴）</li>
-                <?php foreach ($title->histories as $history) : ?>
-                <li class="detail-row detail-row-result">
-                    <fieldset class="detail-box box1">
-                        <span class="inner-column"><?= h($history->target_year) . '年' ?></span>
-                        <span class="inner-column"><?= h($history->holding) . '期' ?></span>
-                        <span class="inner-column"><label>タイトル名：</label><?= h($history->name) ?></span>
-                        <span class="inner-column"><?= h($history->team_label) ?></span>
-                        <span class="inner-column"><label>優勝者：</label><?= h($history->winner_name) ?></span>
-                    </fieldset>
-                    <fieldset class="detail-box detail-box-right">
-                        <button type="button" class="button button-secondary" value="edit" @click="select('<?= $history->id ?>')">編集</button>
-                    </fieldset>
-                </li>
-                <?php endforeach ?>
+                    <?php if (($retention = $title->now_retention)) : ?>
+                        <li class="label-row">現在の保持情報</li>
+                        <li class="detail-row detail-row-result">
+                            <fieldset class="detail-box box1">
+                                <span class="inner-column"><?= h($retention->target_year) . '年' ?></span>
+                                <span class="inner-column"><?= h($retention->holding) . '期' ?></span>
+                                <span class="inner-column"><label>タイトル名：</label><?= h($retention->name) ?></span>
+                                <span class="inner-column"><?= h($retention->team_label) ?></span>
+                                <span class="inner-column"><label>優勝者：</label><?= h($retention->winner_name) ?></span>
+                                <?php if ($retention->isRecent()) : ?>
+                                    <span class="inner-column"><span class="mark-new">NEW!</span></span>
+                                <?php endif ?>
+                            </fieldset>
+                            <fieldset class="detail-box detail-box-right">
+                                <button type="button" class="button button-secondary" value="edit" @click="select('<?= $retention->id ?>')">編集</button>
+                            </fieldset>
+                        </li>
+                    <?php endif ?>
+                    <li class="label-row">保持情報（履歴）</li>
+                    <?php foreach ($title->histories as $history) : ?>
+                        <li class="detail-row detail-row-result">
+                            <fieldset class="detail-box box1">
+                                <span class="inner-column"><?= h($history->target_year) . '年' ?></span>
+                                <span class="inner-column"><?= h($history->holding) . '期' ?></span>
+                                <span class="inner-column"><label>タイトル名：</label><?= h($history->name) ?></span>
+                                <span class="inner-column"><?= h($history->team_label) ?></span>
+                                <span class="inner-column"><label>優勝者：</label><?= h($history->winner_name) ?></span>
+                            </fieldset>
+                            <fieldset class="detail-box detail-box-right">
+                                <button type="button" class="button button-secondary" value="edit" @click="select('<?= $history->id ?>')">編集</button>
+                            </fieldset>
+                        </li>
+                    <?php endforeach ?>
                 <?php endif ?>
             </ul>
             <?= $this->Form->end() ?>
