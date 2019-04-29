@@ -173,6 +173,18 @@ class TitlesTableTest extends TestCase
             'country_id' => 1,
         ]);
         $this->assertGreaterThan(0, $titles->count());
+        $titles->each(function ($item) {
+            $this->assertEquals($item->country_id, 1);
+            $this->assertFalse($item->is_closed);
+        });
+
+        $titles = $this->Titles->findTitles([
+            'search_all' => true,
+        ]);
+        $this->assertGreaterThan(0, $titles->count());
+        $titles->each(function ($item) {
+            $this->assertTrue($item->is_closed === true || $item->is_closed === false);
+        });
     }
 
     /**

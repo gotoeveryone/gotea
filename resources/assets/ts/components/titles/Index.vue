@@ -1,6 +1,10 @@
 <template>
   <section class="titles">
-    <title-header @add="addRow" @search="onSearch" @json="outputJson" />
+    <title-header
+      @add="addRow"
+      @search="onSearch"
+      @json="outputJson"
+    />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -13,10 +17,14 @@
           <span class="table-column table-column_filename">ファイル名</span>
           <span class="table-column table-column_modified">修正日</span>
           <span class="table-column table-column_closed">終了<br>棋戦</span>
+          <span class="table-column table-column_output">出力</span>
           <span class="table-column table-column_open-detail">詳細</span>
         </li>
       </ul>
-      <ul v-if="items.length" class="table-body">
+      <ul
+        v-if="items.length"
+        class="table-body"
+      >
         <title-item
           v-for="(item, idx) in items"
           :key="idx"
@@ -52,8 +60,8 @@ export default Vue.extend({
   methods: {
     onSearch(params: TitleCondition) {
       this.params = {
-        'country_id': params.countryId,
-        'is_closed': params.isClosed,
+        country_id: params.countryId,
+        search_all: params.searchType,
       };
       this.refresh();
     },
@@ -76,13 +84,13 @@ export default Vue.extend({
         .then(() =>
           this.$store.dispatch('openDialog', {
             messages: 'JSONを出力しました。',
-          })
+          }),
         )
         .catch(() =>
           this.$store.dispatch('openDialog', {
             messages: 'JSON出力に失敗しました…。',
             type: 'error',
-          })
+          }),
         );
     },
     openWithCallback(options: ModalOption) {
@@ -93,7 +101,7 @@ export default Vue.extend({
             axios
               .get('/api/titles', { params: this.params })
               .then(res => (this.items = res.data.response)),
-        })
+        }),
       );
     },
     refresh() {

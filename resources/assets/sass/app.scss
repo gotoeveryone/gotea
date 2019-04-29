@@ -1,6 +1,6 @@
-@import "module/_variables.scss";
-@import "module/_mixin.scss";
-@import "module/_normalize.scss";
+@import 'module/_variables.scss';
+@import 'module/_mixin.scss';
+@import 'module/_normalize.scss';
 
 /* -------------------------------------------
    共通レイアウト
@@ -416,7 +416,7 @@
     width: 100%;
     background-color: $c_title;
     color: $c_white;
-    font-family: "Maitree", serif;
+    font-family: 'Maitree', serif;
     font-size: 2rem;
     text-align: center;
   }
@@ -691,7 +691,7 @@
 
   .table-column {
     &_name {
-      width: 18%;
+      width: 17%;
     }
 
     &_winner {
@@ -709,17 +709,18 @@
     }
 
     &_team,
-    &_closed {
+    &_closed,
+    &_output {
       width: 5%;
       text-align: center;
     }
 
     &_filename {
-      width: 9%;
+      width: 10%;
     }
 
     &_modified {
-      width: 13%;
+      width: 10%;
       text-align: center;
 
       &-input {
@@ -728,7 +729,7 @@
     }
 
     &_open-detail {
-      width: 7%;
+      width: 6%;
       text-align: center;
     }
   }
