@@ -1,6 +1,6 @@
 export interface TitleCondition {
   countryId: string;
-  isClosed: boolean;
+  searchType: number;
 }
 
 export interface TitleResultItem {

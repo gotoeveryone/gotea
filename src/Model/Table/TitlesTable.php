@@ -3,6 +3,7 @@
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
+use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Gotea\Model\Entity\Title;
@@ -104,12 +105,12 @@ class TitlesTable extends AppTable
         ]);
 
         // 所属国があれば条件追加
-        if (($countryId = $data['country_id'] ?? '')) {
+        if (($countryId = Hash::get($data, 'country_id', ''))) {
             $query->where(['Countries.id' => $countryId]);
         }
 
         // 有効なタイトルのみ検索
-        if (!($data['is_closed'] ?? '')) {
+        if (!Hash::get($data, 'search_all', false)) {
             $query->where(['Titles.is_closed' => false]);
         }
 
@@ -124,7 +125,7 @@ class TitlesTable extends AppTable
      * @param array $data パラメータ
      * @return \Gotea\Model\Entity\Title
      */
-    public function createEntity($id = null, $data = []) : Title
+    public function createEntity($id = null, $data = []): Title
     {
         $properties = [];
         foreach ($data as $key => $value) {

@@ -3,7 +3,11 @@
     <li class="search-row">
       <fieldset class="search-box">
         <label class="search-box_label">対象国</label>
-        <select @change="changeValue($event)" v-model="select.countryId" class="titles-country">
+        <select
+          @change="changeValue($event)"
+          v-model="select.countryId"
+          class="titles-country"
+        >
           <option
             :key="idx"
             :value="country.value"
@@ -14,15 +18,32 @@
       </fieldset>
       <fieldset class="search-box">
         <label class="search-box_label">終了棋戦</label>
-        <select @change="changeValue($event)" v-model="select.isClosed" class="titles-closed">
-          <option :key="idx" :value="type.value" v-for="(type, idx) in types" v-text="type.text" />
+        <select
+          @change="changeValue($event)"
+          v-model="select.searchType"
+          class="titles-closed"
+        >
+          <option
+            :key="idx"
+            :value="type.value"
+            v-for="(type, idx) in types"
+            v-text="type.text"
+          />
         </select>
       </fieldset>
       <fieldset class="search-box search-box-right">
-        <button @click="add()" class="button button-secondary" type="button">
+        <button
+          @click="add()"
+          class="button button-secondary"
+          type="button"
+        >
           行追加
         </button>
-        <button @click="json()" class="button button-primary" type="button">
+        <button
+          @click="json()"
+          class="button button-primary"
+          type="button"
+        >
           JSON出力
         </button>
       </fieldset>
@@ -42,7 +63,7 @@ export default Vue.extend({
       countries: [] as DropDown[],
       select: {
         countryId: '',
-        isClosed: 0,
+        searchType: 0,
       },
     };
   },
@@ -67,13 +88,13 @@ export default Vue.extend({
         res.data.response.map((obj: Country) => ({
           value: obj.id,
           text: `${obj.name}棋戦`,
-        }))
+        })),
       )
       .then(countries => {
         this.countries = countries;
         this.select = {
           countryId: this.countries[0].value.toString() || '',
-          isClosed: this.types[0].value,
+          searchType: this.types[0].value,
         };
         this.search();
       });

@@ -1,6 +1,6 @@
 # Gotea (ゴティー)
 
-[![Build Status](https://travis-ci.org/gotoeveryone/gotea.svg?branch=master)](https://travis-ci.org/cicatrice/travis-test)
+[![CircleCI](https://circleci.com/gh/gotoeveryone/gotea.svg?style=svg)](https://circleci.com/gh/gotoeveryone/gotea)
 ![PHP from Packagist](https://img.shields.io/packagist/php-v/symfony/symfony.svg)
 [![CakePHP Version](https://img.shields.io/badge/cakephp-3.7-0366d6.svg)](https://book.cakephp.org/3.0/ja/index.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)
@@ -11,10 +11,10 @@
 
 ## Requirements
 
-*   php7.1.3+
-*   composer
-*   nodejs
-*   yarn
+- php7.1.3+
+- composer
+- nodejs
+- yarn
 
 ## Setup
 
@@ -41,25 +41,25 @@ $ ./bin/cake server
 
 ```json
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Listen for XDebug",
-            "type": "php",
-            "request": "launch",
-            "port": 9000
-        },
-        {
-            "name": "Listen for Docker XDebug",
-            "type": "php",
-            "request": "launch",
-            "port": 9001,
-            "log": true,
-            "pathMappings": {
-                "/usr/share/nginx/html": "${workspaceFolder}"
-            }
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9000
+    },
+    {
+      "name": "Listen for Docker XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9001,
+      "log": true,
+      "pathMappings": {
+        "/usr/share/nginx/html": "${workspaceFolder}"
+      }
+    }
+  ]
 }
 ```
 
@@ -74,9 +74,9 @@ $ LOCAL_IP=<your local ip> docker-compose up -d
 
 ### フロントコード
 
-*   webpack
-*   Vue.js
-*   Sass
+- webpack
+- Vue.js
+- Sass
 
 最終的な JS・CSS は`webpack`を利用して生成します。  
 `yarn run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
@@ -87,7 +87,7 @@ $ LOCAL_IP=<your local ip> docker-compose up -d
 
 環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合はプロジェクトルートの`logs`ディレクトリ）。
 
-*   gotea-access.log（アクセスログ）
-*   gotea-error.log（エラーログ）
-*   gotea-cli-debug.log（CLI デバッグログ）
-*   gotea-cli-error.log（CLI エラーログ）
+- gotea-access.log（アクセスログ）
+- gotea-error.log（エラーログ）
+- gotea-cli-debug.log（CLI デバッグログ）
+- gotea-cli-error.log（CLI エラーログ）

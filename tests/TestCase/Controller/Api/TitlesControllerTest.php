@@ -26,9 +26,28 @@ class TitlesControllerTest extends ApiTestCase
      */
     public function testIndex()
     {
-        $this->get('/api/titles');
+        $this->get('/api/titles?country_id=1');
         $this->assertResponseSuccess();
         $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
+        collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
+            $this->assertEquals($item->countryId, 1);
+            $this->assertFalse($item->isClosed);
+        });
+    }
+
+    /**
+     * Test initial setup
+     *
+     * @return void
+     */
+    public function testIndexAll()
+    {
+        $this->get('/api/titles?search_all=1');
+        $this->assertResponseSuccess();
+        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
+        collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
+            $this->assertTrue($item->isClosed === true || $item->isClosed === false);
+        });
     }
 
     /**
