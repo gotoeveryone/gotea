@@ -279,6 +279,10 @@
     width: 100%;
   }
 
+  .between-label {
+    display: inline;
+  }
+
   &-right {
     @include sp() {
       @include flex-horizontal-end();

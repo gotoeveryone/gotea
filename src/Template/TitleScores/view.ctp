@@ -23,7 +23,7 @@
                     <fieldset class="detail-box box1">
                         <?php
                         echo $this->Form->control('started', [
-                            'label' => ['class' => 'label-row', 'text' => __d('validation', 'started')],
+                            'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
                             'type' => 'text',
                             'class' => 'input-row datepicker',
                         ]);
@@ -32,7 +32,7 @@
                     <fieldset class="detail-box box1">
                         <?php
                         echo $this->Form->control('ended', [
-                            'label' => ['class' => 'label-row', 'text' => __d('validation', 'ended')],
+                            'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
                             'type' => 'text',
                             'class' => 'input-row datepicker',
                         ]);
@@ -43,7 +43,7 @@
                         echo $this->cell('Countries', [
                             'hasTitleOnly' => false,
                             [
-                                'label' => ['class' => 'label-row', 'text' => __d('validation', 'country_id')],
+                                'label' => ['class' => 'label-row', 'text' => __d('model', 'country_id')],
                                 'empty' => false,
                                 'value' => $score->country_id,
                                 'class' => 'input-row',
@@ -54,7 +54,7 @@
                     <fieldset class="detail-box box1">
                         <div class="input">
                             <?php
-                            echo $this->Form->label('is_world', __d('validation', 'is_world'), ['class' => 'label-row']);
+                            echo $this->Form->label('is_world', __d('model', 'is_world'), ['class' => 'label-row']);
                             echo $this->Form->control('is_world', [
                                 'label' => false,
                                 'class' => 'input-row',
@@ -68,7 +68,7 @@
                         <?php
                         echo $this->Form->control('title_id', [
                             'options' => $activeTitles,
-                            'label' => ['class' => 'label-row', 'text' => __d('validation', 'title_id')],
+                            'label' => ['class' => 'label-row', 'text' => __d('model', 'title_id')],
                             'empty' => true,
                             'value' => $score->title_id,
                             'class' => 'input-row',
@@ -78,14 +78,14 @@
                     <fieldset class="detail-box box2">
                         <?php
                         echo $this->Form->control('name', [
-                            'label' => ['class' => 'label-row', 'text' => __d('validation', 'title_name')],
+                            'label' => ['class' => 'label-row', 'text' => __d('model', 'title_name')],
                             'class' => 'input-row',
                         ]);
                         ?>
                     </fieldset>
                     <fieldset class="detail-box box1">
                         <div class="input">
-                            <div class="label-row"><?= __d('validation', 'modified') ?></div>
+                            <div class="label-row"><?= __d('model', 'modified') ?></div>
                             <div class="input-row">
                                 <?= h($this->Date->formatToDateTime($score->modified)) ?>
                                 <?= $this->Form->hidden('modified') ?>
@@ -104,7 +104,7 @@
                     </fieldset>
                     <fieldset class="detail-box box1">
                         <div class="input">
-                            <div class="label-row"><?= __d('validation', 'winner') ?></div>
+                            <div class="label-row"><?= __d('model', 'winner') ?></div>
                             <div class="input-row">
                                 <?= h($score->getWinnerName()) ?>
                             </div>

@@ -69,6 +69,96 @@
   }
 }
 
+.detail_box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+  &_item {
+    flex-basis: 100%;
+    width: 100%;
+    padding: 0.5rem 1rem;
+
+    @include pc() {
+      @for $sep from 1 through 12 {
+        &.box-#{$sep} {
+          flex-basis: calc(100% / 12 * #{$sep});
+          width: calc(100% / 12 * #{$sep});
+        }
+      }
+    }
+
+    &-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .input {
+      height: 100%;
+
+      > .label-row,
+      > .input-row:not(textarea),
+      > .input-row:not(input[type='checkbox']) {
+        height: 2.2rem;
+      }
+
+      &.checkbox,
+      > .checkbox-with-text-field-row,
+      > .label-field-row {
+        @include sp() {
+          padding: 0.5rem 0.7rem;
+        }
+
+        display: flex;
+        align-items: center;
+        height: calc(100% - 2.2rem);
+        min-height: 2.2rem;
+        padding-left: 0.7rem;
+      }
+
+      > .checkbox-with-text-field-row {
+        @include sp() {
+          flex-wrap: wrap;
+        }
+
+        .checkbox {
+          padding: 0.5rem 0;
+        }
+      }
+
+      &.checkbox {
+        padding-left: 1rem;
+
+        input[type='checkbox'] {
+          width: auto;
+          padding-left: 0.7rem;
+        }
+
+        .checkbox-label {
+          margin-right: 1rem;
+        }
+      }
+
+      .age {
+        min-width: 50px;
+        padding-left: 0.5rem;
+      }
+    }
+  }
+}
+
+.main-form {
+  .detail_box {
+    align-items: stretch;
+
+    &_item {
+      padding: 0;
+    }
+  }
+}
+
 %row {
   @include flex-horizontal-start();
 
@@ -122,6 +212,10 @@
   @include flex-horizontal-start();
 
   &-row {
+    @include sp() {
+      width: 100%;
+    }
+
     @include flex-horizontal-start();
 
     margin: 0.5rem 1rem;
@@ -133,7 +227,9 @@
   }
 
   &-checkbox-row {
-    flex-wrap: nowrap;
+    @include pc() {
+      flex-wrap: nowrap;
+    }
 
     & > .input {
       width: auto;

@@ -34,6 +34,7 @@ use Cake\Routing\Router;
  * @property array $input_joined
  * @property array $format_joined
  * @property int|null $age
+ * @property string $age_text
  * @property string $name_with_country
  * @property string $name_with_rank
  * @property \Cake\Collection\CollectionInterface $old_scores
@@ -92,6 +93,16 @@ class Player extends AppEntity
     protected function _getAge()
     {
         return $this->birthday ? $this->birthday->age : null;
+    }
+
+    /**
+     * 年齢のテキストを取得します。
+     *
+     * @return string 年齢のテキスト
+     */
+    protected function _getAgeText()
+    {
+        return is_numeric($this->age) ? sprintf('(%d歳)', $this->age) : '(不明)';
     }
 
     /**
