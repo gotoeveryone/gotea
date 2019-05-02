@@ -95,11 +95,11 @@
           </button>
         </div>
       </div>
-      <div class="detail_box_item">
-        <div
-          v-if="isTeamHidden"
-          class="input text"
-        >
+      <div
+        v-if="isTeamHidden"
+        class="detail_box_item"
+      >
+        <div class="input text">
           <label for="win-group-name">優勝団体名</label>
           <input
             id="win-group-name"
@@ -109,10 +109,12 @@
             maxlength="30"
           >
         </div>
-        <div
-          v-if="!isTeamHidden"
-          class="input"
-        >
+      </div>
+      <div
+        v-if="!isTeamHidden"
+        class="detail_box_item box-3"
+      >
+        <div class="input">
           <label>設定棋士名</label>
           <strong v-text="viewName" />
           <input
@@ -127,6 +129,26 @@
           >
         </div>
       </div>
+      <div
+        v-if="!isTeamHidden"
+        class="detail_box_item box-2"
+      >
+        <div class="input">
+          <label>設定棋士段位</label>
+          <select
+            @change="changeValue($event)"
+            v-model="rankId"
+          >
+            <option
+              v-for="rank in ranks"
+              :key="rank.id"
+              :value="rank.id"
+              v-text="rank.name"
+            />
+          </select>
+        </div>
+      </div>
+      <div class="detail_box_item box-7" />
     </li>
     <template v-if="!isTeamHidden">
       <li class="label-row">
@@ -217,6 +239,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      ranks: [],
       edit: false,
       viewName: '',
       year: '' as number | string,
@@ -255,7 +278,7 @@ export default Vue.extend({
           this.rankId = json.rankId;
           this.year = json.targetYear;
           this.acquired = json.acquired;
-          this.viewName = `${json.winPlayerName} ${json.winRankName}`;
+          this.viewName = json.winPlayerName;
           this.teamName = json.winGroupName;
           this.edit = true;
         });
@@ -265,8 +288,13 @@ export default Vue.extend({
   mounted() {
     this.viewName = this.initialViewName;
     this.isTeamHidden = this.getTeamHidden(this.isTeam);
+    axios.get('/api/ranks/').then(res => (this.ranks = res.data.response));
   },
   methods: {
+    changeValue($event: Event) {
+      const target = $event.target as HTMLInputElement;
+      this.rankId = Number(target.value);
+    },
     getTeamHidden(value: boolean) {
       return value ? '1' : '';
     },
@@ -314,16 +342,16 @@ export default Vue.extend({
           });
         });
     },
-    getName(_player: Player) {
-      if (_player.nameOther) {
-        return `${_player.name} [${_player.nameOther}]`;
+    getName(player: Player) {
+      if (player.nameOther) {
+        return `${player.name} [${player.nameOther}]`;
       }
-      return _player.name;
+      return player.name;
     },
-    select(_player: Player) {
-      this.playerId = _player.id || null;
-      this.rankId = _player.rankId || null;
-      this.viewName = `${_player.name} ${_player.rankName}`;
+    select(player: Player) {
+      this.playerId = player.id || null;
+      this.rankId = player.rankId || null;
+      this.viewName = player.name;
       this.name = '';
       this.players = [];
     },

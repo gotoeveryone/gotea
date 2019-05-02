@@ -149,6 +149,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->get('/countries', ['controller' => 'Countries', 'action' => 'index'], 'api_countries');
 
+        $routes->get('/ranks', ['controller' => 'Ranks', 'action' => 'index'], 'api_ranks');
+
         $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
             $routes->post('/', ['action' => 'search'], 'api_players');
             $routes->get('/ranking/:country/:year/:offset', ['controller' => 'Players', 'action' => 'searchRanking'], 'api_ranking')
@@ -157,7 +159,7 @@ Router::scope('/', function (RouteBuilder $routes) {
             $routes->post('/ranking/:country/:year/:offset', ['action' => 'createRanking'], 'api_create_ranking')
                 ->setPatterns(['year' => RouteBuilder::ID, 'offset' => RouteBuilder::ID])
                 ->setPass(['country', 'year', 'offset']);
-            $routes->get('/ranks/:country_id', ['action' => 'searchRanks'], 'api_ranks')
+            $routes->get('/ranks/:country_id', ['action' => 'searchRanks'], 'api_player_ranks')
                 ->setPatterns(['country_id' => RouteBuilder::ID])->setPass(['country_id']);
         });
 
