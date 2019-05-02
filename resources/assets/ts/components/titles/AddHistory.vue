@@ -1,139 +1,200 @@
 <template>
   <ul class="boxes">
-    <li v-text="text" class="label-row" />
-    <li class="detail-row">
-      <input :value="historyId" type="hidden" name="id">
-      <input :value="isTeamHidden" type="hidden" name="is_team">
-      <fieldset class="detail-box box1">
-        <fieldset class="detail-box-row">
-          <div class="input number">
-            <label for="target-year" class="detail-box_label">対象年度</label>
+    <li
+      v-text="text"
+      class="label-row"
+    />
+    <li class="detail_box">
+      <div class="detail_box_item box-3">
+        <input
+          :value="historyId"
+          type="hidden"
+          name="id"
+        >
+        <input
+          :value="isTeamHidden"
+          type="hidden"
+          name="is_team"
+        >
+        <div class="input number">
+          <label for="target-year">対象年度</label>
+          <input
+            id="target-year"
+            v-model="year"
+            type="number"
+            maxlength="4"
+            class="year"
+            name="target_year"
+          >
+        </div>
+      </div>
+      <div class="detail_box_item box-2">
+        <div class="input number">
+          <label for="holding">期</label>
+          <input
+            v-model="holding"
+            type="number"
+            maxlength="4"
+            class="holding"
+            name="holding"
+          >
+        </div>
+      </div>
+      <div class="detail_box_item box-2">
+        <div class="input number">
+          <label for="acquired">取得日</label>
+          <input
+            id="acquired"
+            v-model="acquired"
+            @change="saveDatepicker"
+            type="text"
+            maxlength="4"
+            class="acquired datepicker"
+            name="acquired"
+          >
+        </div>
+      </div>
+      <div class="detail_box_item box-2" />
+      <div class="detail_box_item detail_box_item-buttons box-3">
+        <div class="input checkbox">
+          <input
+            name="newest"
+            value="0"
+            type="hidden"
+          >
+          <label
+            v-if="!edit"
+            for="newest"
+            class="checkbox-label"
+          >
             <input
-              id="target-year"
-              v-model="year"
-              type="number"
-              maxlength="4"
-              class="year"
-              name="target_year"
+              id="newest"
+              :disabled="required"
+              v-if="!edit"
+              type="checkbox"
+              name="newest"
+              checked="checked"
             >
-          </div>
-        </fieldset>
-      </fieldset>
-      <fieldset class="detail-box box1">
-        <fieldset class="detail-box-row">
-          <div class="input number">
-            <label for="holding" class="detail-box_label">期</label>
-            <input v-model="holding" type="number" maxlength="4" class="holding" name="holding">
-          </div>
-        </fieldset>
-      </fieldset>
-      <fieldset class="detail-box box1">
-        <fieldset class="detail-box-row">
-          <div class="input number">
-            <label for="acquired" class="detail-box_label">取得日</label>
-            <input
-              id="acquired"
-              v-model="acquired"
-              @change="saveDatepicker"
-              type="text"
-              maxlength="4"
-              class="acquired datepicker"
-              name="acquired"
-            >
-          </div>
-        </fieldset>
-      </fieldset>
-      <fieldset class="detail-box box1">
-        <fieldset class="detail-box-row">
-          <div class="input checkbox">
-            <input name="newest" value="0" type="hidden">
-            <label v-if="!edit" for="newest" class="checkbox-label">
-              <input
-                id="newest"
-                :disabled="required"
-                v-if="!edit"
-                type="checkbox"
-                name="newest"
-                checked="checked"
-              >
-              最新として登録
-            </label>
-          </div>
-        </fieldset>
-      </fieldset>
+            最新として登録
+          </label>
+        </div>
+        <div class="input">
+          <button
+            @click="clearData()"
+            v-if="edit"
+            type="button"
+          >
+            編集をやめる
+          </button>
+          <button
+            :disabled="required"
+            type="submit"
+            class="button button-primary"
+          >
+            保存
+          </button>
+        </div>
+      </div>
+      <div class="detail_box_item">
+        <div
+          v-if="isTeamHidden"
+          class="input text"
+        >
+          <label for="win-group-name">優勝団体名</label>
+          <input
+            id="win-group-name"
+            v-model="teamName"
+            type="text"
+            name="win_group_name"
+            maxlength="30"
+          >
+        </div>
+        <div
+          v-if="!isTeamHidden"
+          class="input"
+        >
+          <label>設定棋士名</label>
+          <strong v-text="viewName" />
+          <input
+            v-model="playerId"
+            type="hidden"
+            name="player_id"
+          >
+          <input
+            v-model="rankId"
+            type="hidden"
+            name="rank_id"
+          >
+        </div>
+      </div>
     </li>
-    <li class="detail-row">
-      <fieldset class="detail-box box1">
-        <fieldset v-if="isTeamHidden" class="detail-box-row">
+    <template v-if="!isTeamHidden">
+      <li class="label-row">
+        棋士検索
+      </li>
+      <li class="detail_box">
+        <div class="detail_box_item box-3">
           <div class="input text">
-            <label for="win-group-name" class="detail-box_label">優勝団体名</label>
+            <label for="name">棋士名</label>
             <input
-              id="win-group-name"
-              v-model="teamName"
+              id="name"
+              v-model="name"
               type="text"
-              name="win_group_name"
-              maxlength="30"
+              class="name"
             >
           </div>
-        </fieldset>
-        <fieldset v-else class="detail-box-row">
+        </div>
+        <div class="detail_box_item box-7" />
+        <div class="detail_box_item detail_box_item-buttons box-2">
           <div class="input">
-            <label class="detail-box_label">設定棋士名</label>
-            <strong v-text="viewName" />
-            <input v-model="playerId" type="hidden" name="player_id">
-            <input v-model="rankId" type="hidden" name="rank_id">
-          </div>
-        </fieldset>
-      </fieldset>
-      <fieldset class="detail-box detail-box-right">
-        <fieldset class="detail-box-button-row">
-          <div class="input">
-            <button @click="clearData()" v-if="edit" type="button">
-              編集をやめる
-            </button>
-            <button :disabled="required" type="submit" class="button button-primary">
-              保存
-            </button>
-          </div>
-        </fieldset>
-      </fieldset>
-    </li>
-    <li v-if="!isTeamHidden" class="label-row">
-      棋士検索
-    </li>
-    <li v-if="!isTeamHidden" class="detail-row">
-      <fieldset class="detail-box box1">
-        <fieldset class="detail-box-row">
-          <div class="input text">
-            <label for="name" class="detail-box_label">棋士名</label>
-            <input id="name" v-model="name" type="text" class="name">
-          </div>
-        </fieldset>
-      </fieldset>
-      <fieldset class="detail-box detail-box-right">
-        <fieldset class="detail-box-button-row">
-          <div class="input">
-            <button @click="search()" type="button" class="button button-primary">
+            <button
+              @click="search()"
+              type="button"
+              class="button button-primary"
+            >
               検索
             </button>
           </div>
-        </fieldset>
-      </fieldset>
-    </li>
-    <li v-if="players.length">
-      <ul class="table-body retentions">
-        <li v-for="(player, idx) in players" :key="idx" class="table-row">
-          <span v-text="getName(player)" class="retentions-name" />
-          <span v-text="player.nameEnglish" class="retentions-name" />
-          <span v-text="player.countryName" class="retentions-country" />
-          <span v-text="player.rankName" class="retentions-rank" />
-          <span v-text="player.sex" class="retentions-sex" />
-          <span class="retentions-select">
-            <button @click="select(player)" type="button">選択</button>
-          </span>
-        </li>
-      </ul>
-    </li>
+        </div>
+      </li>
+      <li v-if="players.length">
+        <ul class="table-body retentions">
+          <li
+            v-for="(player, idx) in players"
+            :key="idx"
+            class="table-row"
+          >
+            <span
+              v-text="getName(player)"
+              class="retentions-name"
+            />
+            <span
+              v-text="player.nameEnglish"
+              class="retentions-name"
+            />
+            <span
+              v-text="player.countryName"
+              class="retentions-country"
+            />
+            <span
+              v-text="player.rankName"
+              class="retentions-rank"
+            />
+            <span
+              v-text="player.sex"
+              class="retentions-sex"
+            />
+            <span class="retentions-select">
+              <button
+                @click="select(player)"
+                class="button button-secondary"
+                type="button"
+              >選択</button>
+            </span>
+          </li>
+        </ul>
+      </li>
+    </template>
   </ul>
 </template>
 
@@ -268,6 +329,7 @@ export default Vue.extend({
     },
     clearData() {
       this.viewName = this.initialViewName;
+      this.isTeamHidden = this.getTeamHidden(this.isTeam);
       this.year = '';
       this.holding = '';
       this.acquired = '';
@@ -275,7 +337,6 @@ export default Vue.extend({
       this.playerId = null;
       this.rankId = null;
       this.teamName = null;
-      this.isTeamHidden = '';
       this.players = [];
       this.edit = false;
       this.$emit('cleared');

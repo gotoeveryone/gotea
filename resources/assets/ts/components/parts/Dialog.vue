@@ -1,20 +1,38 @@
 <template>
   <transition name="dialog">
-    <div v-if="isShow()" :style="{ backgroundColor: modalColor }" class="dialog">
+    <div
+      v-if="isShow()"
+      :style="{ backgroundColor: modalColor }"
+      class="dialog"
+    >
       >
       <div class="dialog-content">
-        <div :style="{ backgroundColor: headerColor }" class="dialog-content-header">
-          <div v-text="title" class="dialog-content-title" />
+        <div
+          :style="{ backgroundColor: headerColor }"
+          class="dialog-content-header"
+        >
+          <div
+            v-text="title"
+            class="dialog-content-title"
+          />
         </div>
         <div class="dialog-content-body">
           <div class="dialog-content-body-text">
             <ul :class="messageClass">
-              <li v-for="(message, idx) in messages" :key="idx" v-html="message" />
+              <li
+                v-for="(message, idx) in messages"
+                :key="idx"
+                v-html="message"
+              />
             </ul>
           </div>
         </div>
         <div class="dialog-content-footer">
-          <button v-focus @click="close()" class="dialog-content-button">
+          <button
+            v-focus
+            @click="close()"
+            class="dialog-content-button"
+          >
             閉じる
           </button>
         </div>
@@ -163,7 +181,7 @@ export default Vue.extend({
   }
 
   &-footer {
-    @include flex-horizontal-end();
+    @include flex-justify-end();
 
     height: 50px;
     background-color: #eee;

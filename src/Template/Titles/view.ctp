@@ -12,7 +12,7 @@
         <section data-contentname="title" class="tab-contents">
             <?= $this->Form->create($title, ['class' => 'main-form', 'url' => ['_name' => 'update_title', $title->id]]) ?>
             <?= $this->Form->control('id') ?>
-            <div class="category-row"><?= 'タイトル情報（ID：' . h($title->id) . '）' ?></div>
+            <div class="page-header"><?= h($title->name) ?>のタイトル情報</div>
             <ul class="detail_box">
                 <li class="detail_box_item box-4">
                     <?php
@@ -122,7 +122,7 @@
                         'class' => 'input-row',
                     ]) ?>
                 </li>
-                <li class="button-row">
+                <li class="detail_box_item button-row">
                     <?= $this->Form->button(__('Save'), ['class' => 'button button-primary']) ?>
                 </li>
             </ul>
@@ -137,7 +137,7 @@
                 'url' => ['_name' => 'save_histories', $title->id],
             ]) ?>
             <?= $this->Form->hidden('name', ['value' => $title->name]) ?>
-            <div class="category-row">保持情報</div>
+            <div class="page-header"><?= h($title->name) ?>の保持情報</div>
             <add-history :history-id="historyId" :is-team="<?= $title->is_team ? 'true' : 'false' ?>" @cleared="clearHistory()"></add-history>
             <ul class="boxes">
                 <?php if (!empty(($title->retention_histories))) : ?>

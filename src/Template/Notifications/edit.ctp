@@ -9,10 +9,11 @@
 <div class="notifications detail">
     <?= $this->Form->create($notification, [
         'url' => ['_name' => 'update_notification', $notification->id],
+        'class' => 'main-form',
     ]) ?>
-    <div class="category-row">
-        <span class="category-box"><?= __('編集') ?></span>
-        <span class="category-box-right">
+    <div class="page-header">
+        <span><?= __('編集') ?></span>
+        <span>
             <?= $this->Html->link(__('一覧へ戻る'), [
                 '_name' => 'notifications',
             ], [
@@ -20,59 +21,52 @@
             ]) ?>
         </span>
     </div>
-    <ul class="boxes">
-        <li class="detail-row">
-            <fieldset class="detail-box box1">
-                <?= $this->Form->control('title', [
-                    'label' => ['class' => 'label-row', 'text' => __('タイトル')],
-                    'class' => 'input-row',
-                ]) ?>
-            </fieldset>
+    <ul class="detail_box">
+        <li class="detail_box_item">
+            <?= $this->Form->control('title', [
+                'label' => ['class' => 'label-row', 'text' => __d('model', 'title')],
+                'class' => 'input-row',
+            ]) ?>
         </li>
-        <li class="detail-row">
-            <fieldset class="detail-box box1">
-                <?= $this->Form->control('content', [
-                    'label' => ['class' => 'label-row', 'text' => __('本文')],
-                    'class' => 'input-row notification_content',
-                ]) ?>
-            </fieldset>
+        <li class="detail_box_item">
+            <?= $this->Form->control('content', [
+                'label' => ['class' => 'label-row', 'text' => __d('model', 'content')],
+                'class' => 'input-row notification_content',
+            ]) ?>
         </li>
-        <li class="detail-row">
-            <fieldset class="detail-box box1">
-                <div class="input checkbox">
-                    <div class="label-row"><?= __('下書き') ?></div>
-                    <?= $this->Form->control('is_draft', [
-                        'label' => ['class' => 'input-row checkbox-label', 'text' => false],
-                        'templates' => ['inputContainer' => '{{content}}'],
-                    ]) ?>
-                </div>
-            </fieldset>
-            <fieldset class="detail-box box1">
-                <?= $this->Form->control('published', [
-                    'label' => ['class' => 'label-row', 'text' => __('公開日時')],
-                    'year' => [
-                        'class' => 'input-row dropdowns',
-                    ],
-                    'month' => [
-                        'class' => 'input-row dropdowns',
-                    ],
-                    'day' => [
-                        'class' => 'input-row dropdowns',
-                    ],
-                    'hour' => [
-                        'class' => 'input-row dropdowns',
-                    ],
-                    'minute' => [
-                        'class' => 'input-row dropdowns',
-                    ],
-                    'second' => [
-                        'class' => 'input-row dropdowns',
-                    ],
+        <li class="detail_box_item box-2">
+            <div class="input">
+                <div class="label-row"><?= __d('model', 'is_draft') ?></div>
+                <?= $this->Form->control('is_draft', [
+                    'label' => ['class' => 'input-row checkbox-label', 'text' => false],
                 ]) ?>
-            </fieldset>
+            </div>
         </li>
-        <li class="button-row">
-            <?= $this->Form->button(__('更新'), [
+        <li class="detail_box_item box-10">
+            <?= $this->Form->control('published', [
+                'label' => ['class' => 'label-row', 'text' => __d('model', 'published')],
+                'year' => [
+                    'class' => 'input-row dropdowns',
+                ],
+                'month' => [
+                    'class' => 'input-row dropdowns',
+                ],
+                'day' => [
+                    'class' => 'input-row dropdowns',
+                ],
+                'hour' => [
+                    'class' => 'input-row dropdowns',
+                ],
+                'minute' => [
+                    'class' => 'input-row dropdowns',
+                ],
+                'second' => [
+                    'class' => 'input-row dropdowns',
+                ],
+            ]) ?>
+        </li>
+        <li class="detail_box_item button-row">
+            <?= $this->Form->button(__('Save'), [
                 'class' => 'button button-primary',
             ]) ?>
         </li>

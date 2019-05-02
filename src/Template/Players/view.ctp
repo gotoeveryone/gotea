@@ -25,7 +25,7 @@
             <?= $this->Form->create($player, ['class' => 'main-form', 'url' => $player->getSaveUrl()]) ?>
             <?= $this->Form->hidden('id', ['value' => $player->id]) ?>
             <?= $this->Form->hidden('country_id') ?>
-            <div class="category-row">棋士情報<?= ($player->id ? '（ID：' . h($player->id) . '）' : "") ?></div>
+            <div class="page-header"><?= !$player->isNew() ? h($player->name . 'の') : '' ?>棋士情報</div>
             <ul class="detail_box">
                 <li class="detail_box_item box-4">
                     <?php
@@ -155,7 +155,7 @@
                         'class' => 'input-row',
                     ]) ?>
                 </li>
-                <li class="button-row">
+                <li class="detail_box_item button-row">
                     <?php  ?>
                     <?php if ($player->isNew()) : ?>
                         <?php
@@ -174,7 +174,7 @@
         <?php if (!$player->isNew()) : ?>
             <!-- 昇段情報 -->
             <section data-contentname="ranks" class="tab-contents">
-                <div class="category-row">昇段情報</div>
+                <div class="page-header"><?= !$player->isNew() ? h($player->name . 'の') : '' ?>昇段情報</div>
                 <ul class="boxes">
                     <li class="label-row">新規登録</li>
                     <li>
@@ -239,13 +239,13 @@
                 </ul>
             </section>
 
-            <!-- 棋士成績 -->
+            <!-- 成績情報 -->
             <section data-contentname="scores" class="tab-contents">
-                <div class="category-row">勝敗</div>
+                <div class="page-header"><?= !$player->isNew() ? h($player->name . 'の') : '' ?>成績情報</div>
                 <?php if (!empty($player->title_score_details)) : ?>
                     <?php foreach ($player->title_score_details as $score) : ?>
                         <ul class="boxes">
-                            <li class="genre-row"><?= __('{0}年度', $score->target_year) ?></li>
+                            <li class="label-row"><?= __('{0}年度', $score->target_year) ?></li>
                             <li class="detail_box">
                                 <div class="detail_box_item box-5">
                                     <div class="input">
@@ -275,10 +275,9 @@
                     <?php endforeach ?>
                 <?php endif ?>
 
-                <?php  ?>
                 <?php foreach ($player->old_scores as $key => $score) : ?>
                     <ul class="boxes">
-                        <li class="genre-row"><?= __('{0}年度', $score->target_year) ?></li>
+                        <li class="label-row"><?= __('{0}年度', $score->target_year) ?></li>
                         <li class="detail_box">
                             <div class="detail_box_item box-5">
                                 <div class="input">
@@ -309,10 +308,10 @@
             <!-- タイトル取得履歴 -->
             <?php if (!$player->retention_histories->isEmpty()) : ?>
                 <section data-contentname="titleRetains" class="tab-contents">
-                    <div class="category-row">タイトル取得履歴</div>
+                    <div class="page-header"><?= !$player->isNew() ? h($player->name . 'の') : '' ?>タイトル取得履歴</div>
                     <?php $histories = $player->groupByYearFromHistories(); ?>
                     <?php foreach ($histories as $key => $items) : ?>
-                        <div class="genre-row"><?= __('{0}年度', $key) ?></div>
+                        <div class="label-row"><?= __('{0}年度', $key) ?></div>
                         <?php foreach ($items as $item) : ?>
                             <div class="input-row">
                                 <span class="inner-column"><?= __('{0}期', $item->holding) ?></span>

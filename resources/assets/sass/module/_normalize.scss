@@ -60,7 +60,7 @@ nav {
   }
 
   @include sp() {
-    @include flex-horizontal-between();
+    @include flex-justify-between();
     @include fixed-row();
 
     height: $h_nav-sp;

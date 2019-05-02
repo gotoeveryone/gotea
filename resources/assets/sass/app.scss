@@ -17,7 +17,7 @@
 }
 
 .header {
-  @include flex-horizontal-between();
+  @include flex-justify-between();
 
   padding: 0 10px;
   height: $h_header;
@@ -164,7 +164,7 @@
   }
 
   &-row {
-    @include flex-horizontal-start();
+    @include flex-justify-start();
 
     flex-direction: column;
     padding: 4px 10px;
@@ -240,7 +240,7 @@
    検索エリア
  ------------------------------------------- */
 .search-header {
-  @include flex-horizontal-start();
+  @include flex-justify-start();
 
   position: relative;
   margin-bottom: 0.5rem;
@@ -266,7 +266,7 @@
     margin: 0.3rem;
   }
 
-  @include flex-horizontal-start();
+  @include flex-justify-start();
 
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
@@ -285,7 +285,7 @@
 
   &-right {
     @include sp() {
-      @include flex-horizontal-end();
+      @include flex-justify-end();
     }
 
     margin-left: auto;
@@ -308,7 +308,7 @@
     flex-wrap: wrap;
   }
 
-  @include flex-horizontal-between();
+  @include flex-justify-between();
 
   margin: 0.4rem auto;
 
@@ -394,7 +394,7 @@
 }
 
 .table-row {
-  @include flex-horizontal-start();
+  @include flex-justify-start();
 
   padding: 0.3rem 0.5rem;
 }
@@ -529,7 +529,7 @@
   }
 
   .player-scores-header {
-    @include flex-horizontal-between();
+    @include flex-justify-between();
 
     height: 40px;
 

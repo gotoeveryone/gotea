@@ -17,101 +17,95 @@
         <section data-contentname="score" class="tab-contents">
             <?= $this->Form->create($score, ['class' => 'main-form', 'url' => ['_name' => 'update_score', $score->id]]) ?>
             <?= $this->Form->control('id') ?>
-            <div class="category-row"><?= __('Score Detail') . h(" (ID：{$score->id})") ?></div>
-            <ul class="boxes">
-                <li class="detail-row">
-                    <fieldset class="detail-box box1">
-                        <?php
-                        echo $this->Form->control('started', [
-                            'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
-                            'type' => 'text',
-                            'class' => 'input-row datepicker',
-                        ]);
-                        ?>
-                    </fieldset>
-                    <fieldset class="detail-box box1">
-                        <?php
-                        echo $this->Form->control('ended', [
-                            'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
-                            'type' => 'text',
-                            'class' => 'input-row datepicker',
-                        ]);
-                        ?>
-                    </fieldset>
-                    <fieldset class="detail-box box1">
-                        <?php
-                        echo $this->cell('Countries', [
-                            'hasTitleOnly' => false,
-                            [
-                                'label' => ['class' => 'label-row', 'text' => __d('model', 'country_id')],
-                                'empty' => false,
-                                'value' => $score->country_id,
-                                'class' => 'input-row',
-                            ],
-                        ])->render()
-                        ?>
-                    </fieldset>
-                    <fieldset class="detail-box box1">
-                        <div class="input">
-                            <?php
-                            echo $this->Form->label('is_world', __d('model', 'is_world'), ['class' => 'label-row']);
-                            echo $this->Form->control('is_world', [
-                                'label' => false,
-                                'class' => 'input-row',
-                            ]);
-                            ?>
-                        </div>
-                    </fieldset>
+            <div class="page-header"><?= __('Score Detail') ?></div>
+            <ul class="detail_box">
+                <li class="detail_box_item box-4">
+                    <?php
+                    echo $this->Form->control('started', [
+                        'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
+                        'type' => 'text',
+                        'class' => 'input-row datepicker',
+                    ]);
+                    ?>
                 </li>
-                <li class="detail-row">
-                    <fieldset class="detail-box box1">
+                <li class="detail_box_item box-4">
+                    <?php
+                    echo $this->Form->control('ended', [
+                        'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
+                        'type' => 'text',
+                        'class' => 'input-row datepicker',
+                    ]);
+                    ?>
+                </li>
+                <li class="detail_box_item box-3">
+                    <?php
+                    echo $this->cell('Countries', [
+                        'hasTitleOnly' => false,
+                        [
+                            'label' => ['class' => 'label-row', 'text' => __d('model', 'country_id')],
+                            'empty' => false,
+                            'value' => $score->country_id,
+                            'class' => 'input-row',
+                        ],
+                    ])->render()
+                    ?>
+                </li>
+                <li class="detail_box_item box-1">
+                    <div class="input">
                         <?php
-                        echo $this->Form->control('title_id', [
-                            'options' => $activeTitles,
-                            'label' => ['class' => 'label-row', 'text' => __d('model', 'title_id')],
-                            'empty' => true,
-                            'value' => $score->title_id,
+                        echo $this->Form->label('is_world', __d('model', 'is_world'), ['class' => 'label-row']);
+                        echo $this->Form->control('is_world', [
+                            'label' => false,
                             'class' => 'input-row',
                         ]);
                         ?>
-                    </fieldset>
-                    <fieldset class="detail-box box2">
-                        <?php
-                        echo $this->Form->control('name', [
-                            'label' => ['class' => 'label-row', 'text' => __d('model', 'title_name')],
-                            'class' => 'input-row',
-                        ]);
-                        ?>
-                    </fieldset>
-                    <fieldset class="detail-box box1">
-                        <div class="input">
-                            <div class="label-row"><?= __d('model', 'modified') ?></div>
-                            <div class="input-row">
-                                <?= h($this->Date->formatToDateTime($score->modified)) ?>
-                                <?= $this->Form->hidden('modified') ?>
-                            </div>
-                        </div>
-                    </fieldset>
+                    </div>
                 </li>
-                <li class="detail-row">
-                    <fieldset class="detail-box box1">
-                        <div class="input">
-                            <div class="label-row"><?= __('Player of GO') ?></div>
-                            <div class="input-row">
-                                <?= h($score->players_name) ?>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset class="detail-box box1">
-                        <div class="input">
-                            <div class="label-row"><?= __d('model', 'winner') ?></div>
-                            <div class="input-row">
-                                <?= h($score->getWinnerName()) ?>
-                            </div>
-                        </div>
-                    </fieldset>
+                <li class="detail_box_item box-3">
+                    <?php
+                    echo $this->Form->control('title_id', [
+                        'options' => $activeTitles,
+                        'label' => ['class' => 'label-row', 'text' => __d('model', 'title_id')],
+                        'empty' => true,
+                        'value' => $score->title_id,
+                        'class' => 'input-row',
+                    ]);
+                    ?>
                 </li>
-                <li class="button-row">
+                <li class="detail_box_item box-5">
+                    <?php
+                    echo $this->Form->control('name', [
+                        'label' => ['class' => 'label-row', 'text' => __d('model', 'title_name')],
+                        'class' => 'input-row',
+                    ]);
+                    ?>
+                </li>
+                <li class="detail_box_item box-4">
+                    <div class="input">
+                        <div class="label-row"><?= __d('model', 'modified') ?></div>
+                        <div class="input-row">
+                            <?= h($this->Date->formatToDateTime($score->modified)) ?>
+                            <?= $this->Form->hidden('modified') ?>
+                        </div>
+                    </div>
+                </li>
+                <li class="detail_box_item box-6">
+                    <div class="input">
+                        <div class="label-row"><?= __('Player of GO') ?></div>
+                        <div class="input-row">
+                            <?= h($score->players_name) ?>
+                        </div>
+                    </div>
+                </li>
+                <li class="detail_box_item box-6">
+                    <div class="input">
+                        <div class="label-row"><?= __d('model', 'winner') ?></div>
+                        <div class="input-row">
+                            <?= h($score->getWinnerName()) ?>
+                        </div>
+                    </div>
+                </li>
+                <li class="detail_box_item button-row">
                     <?= $this->Form->button(__('Save'), [
                         'name' => 'action',
                         'value' => 'save',
