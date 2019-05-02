@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2016-02-29 21:46+0900\n"
-"PO-Revision-Date: 2019-04-11 14:10+0900\n"
+"PO-Revision-Date: 2019-04-30 19:19+0900\n"
 "Last-Translator: Kazuki_Kamizuru <webmaster@k2ss.info>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -14,96 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Language: ja_JP\n"
 "X-Generator: Poedit 2.2.1\n"
-
-msgid "account"
-msgstr "ID"
-
-msgid "password"
-msgstr "パスワード"
-
-msgid "country_id"
-msgstr "所属国"
-
-msgid "title_id"
-msgstr "タイトル"
-
-msgid "created"
-msgstr "登録日時"
-
-msgid "modified"
-msgstr "最終更新日時"
-
-msgid "name"
-msgstr "名前"
-
-msgid "name_english"
-msgstr "名前（英語）"
-
-msgid "name_other"
-msgstr "名前（その他）"
-
-msgid "birthday"
-msgstr "生年月日"
-
-msgid "joined"
-msgstr "入段日"
-
-msgid "joined_from"
-msgstr "入段年（FROM）"
-
-msgid "joined_to"
-msgstr "入段年（TO）"
-
-msgid "holding"
-msgstr "期"
-
-msgid "sort_order"
-msgstr "並び順"
-
-msgid "html_file_name"
-msgstr "HTMLファイル名"
-
-msgid "html_file_modified"
-msgstr "修正日"
-
-msgid "promoted"
-msgstr "昇段日"
-
-msgid "title_name"
-msgstr "タイトル名"
-
-msgid "target_year"
-msgstr "対象年度"
-
-msgid "win_group_name"
-msgstr "グループ名"
-
-msgid "started"
-msgstr "対局日（FROM）"
-
-msgid "ended"
-msgstr "対局日（TO）"
-
-msgid "score_name"
-msgstr "棋戦名"
-
-msgid "is_world"
-msgstr "国際棋戦"
-
-msgid "winner"
-msgstr "勝者"
-
-msgid "title"
-msgstr "タイトル"
-
-msgid "content"
-msgstr "本文"
-
-msgid "published"
-msgstr "公開日時"
-
-msgid "is_draft"
-msgstr "下書き"
 
 msgid "field {0} is invalid"
 msgstr "{0}に入力された値が不正です。"

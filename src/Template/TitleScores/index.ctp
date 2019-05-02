@@ -5,14 +5,14 @@
             <li class="search-row">
                 <fieldset class="search-box">
                     <?= $this->Form->control('name', [
-                        'label' => ['class' => 'search-box_label', 'text' => '棋士名'],
+                        'label' => ['text' => '棋士名'],
                         'class' => 'name',
                         'value' => $this->getRequest()->getQuery('name'),
                     ]) ?>
                 </fieldset>
                 <fieldset class="search-box">
                     <?= $this->Form->control('title_name', [
-                        'label' => ['class' => 'search-box_label', 'text' => 'タイトル名'],
+                        'label' => ['text' => 'タイトル名'],
                         'class' => 'title_name',
                         'value' => $this->getRequest()->getQuery('title_name'),
                     ]) ?>
@@ -23,17 +23,14 @@
                     <?= $this->cell('Countries', [
                         'hasTitleOnly' => false,
                         [
-                            'label' => [
-                                'class' => 'search-box_label',
-                                'text' => '棋戦分類',
-                            ],
+                            'label' => ['text' => '棋戦分類'],
                             'value' => $this->getRequest()->getQuery('country_id'),
                         ],
                     ]) ?>
                 </fieldset>
                 <fieldset class="search-box">
                     <?= $this->Form->years('target_year', [
-                        'label' => ['class' => 'search-box_label', 'text' => '対局年'],
+                        'label' => ['text' => '対局年'],
                         'class' => 'year',
                         'empty' => true,
                         'value' => $this->getRequest()->getQuery('target_year'),
@@ -62,7 +59,7 @@
     </div>
 
     <?php if (!empty($titleScores)) : ?>
-    <?= $this->element('Paginator/default', ['url' => ['_name' => 'find_scores']]) ?>
+        <?= $this->element('Paginator/default', ['url' => ['_name' => 'find_scores']]) ?>
     <?php endif ?>
 
     <div class="search-results">
@@ -78,59 +75,59 @@
             </li>
         </ul>
         <?php if (!empty($titleScores) && $titleScores->count() > 0) : ?>
-        <ul class="table-body">
-            <?php foreach ($titleScores as $titleScore) : ?>
-            <li class="table-row">
-                <span class="table-column table-column_id">
-                    <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_score', $titleScore->id]) ?>')">
-                        <?= h($titleScore->id) ?>
-                    </a>
-                </span>
-                <span class="table-column table-column_country"><?= h($titleScore->country->name . '棋戦') ?></span>
-                <span class="table-column table-column_title"><?= h($titleScore->name) ?></span>
-                <span class="table-column table-column_date">
-                    <?php foreach ($titleScore->dates as $idx => $date) : ?>
-                    <?php if ($idx > 0) : ?><br />〜<?php endif ?><?= h($date) ?>
-                    <?php endforeach ?>
-                </span>
-                <span class="table-column table-column_name">
-                    <?php if (!empty($titleScore->win_detail->player)) : ?>
-                    <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $titleScore->win_detail->player_id]) ?>')">
-                        <?= h($titleScore->getWinnerName()) ?>
-                    </a>
-                    <?php else : ?>
-                    <?= h($titleScore->getWinnerName()) ?>
-                    <?php endif ?>
-                </span>
-                <span class="table-column table-column_name">
-                    <?php if (!empty($titleScore->lose_detail->player)) : ?>
-                        <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $titleScore->lose_detail->player_id]) ?>')">
-                            <?= h($titleScore->getLoserName()) ?>
-                        </a>
-                    <?php else : ?>
-                    <?= h($titleScore->getLoserName()) ?>
-                    <?php endif ?>
-                </span>
-                <span class="table-column table-column_operation">
-                    <?= $this->Form->postButton(__('Delete'), [
-                        '_name' => 'delete_score', $titleScore->id,
-                    ], [
-                        'method' => 'delete',
-                        'data' => [
-                            'name' => $this->getRequest()->getQuery('name'),
-                            'title_name' => $this->getRequest()->getQuery('title_name'),
-                            'country_id' => $this->getRequest()->getQuery('country_id'),
-                            'target_year' => $this->getRequest()->getQuery('target_year'),
-                            'started' => $this->getRequest()->getQuery('started'),
-                            'ended' => $this->getRequest()->getQuery('ended'),
-                        ],
-                        'confirm' => __('Are you sure you want to delete # {0}?', $titleScore->id),
-                        'class' => 'button button-danger',
-                    ]) ?>
-                </span>
-            </li>
-            <?php endforeach ?>
-        </ul>
+            <ul class="table-body">
+                <?php foreach ($titleScores as $titleScore) : ?>
+                    <li class="table-row">
+                        <span class="table-column table-column_id">
+                            <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_score', $titleScore->id]) ?>')">
+                                <?= h($titleScore->id) ?>
+                            </a>
+                        </span>
+                        <span class="table-column table-column_country"><?= h($titleScore->country->name . '棋戦') ?></span>
+                        <span class="table-column table-column_title"><?= h($titleScore->name) ?></span>
+                        <span class="table-column table-column_date">
+                            <?php foreach ($titleScore->dates as $idx => $date) : ?>
+                                <?php if ($idx > 0) : ?><br />〜<?php endif ?><?= h($date) ?>
+                            <?php endforeach ?>
+                        </span>
+                        <span class="table-column table-column_name">
+                            <?php if (!empty($titleScore->win_detail->player)) : ?>
+                                <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $titleScore->win_detail->player_id]) ?>')">
+                                    <?= h($titleScore->getWinnerName()) ?>
+                                </a>
+                            <?php else : ?>
+                                <?= h($titleScore->getWinnerName()) ?>
+                            <?php endif ?>
+                        </span>
+                        <span class="table-column table-column_name">
+                            <?php if (!empty($titleScore->lose_detail->player)) : ?>
+                                <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $titleScore->lose_detail->player_id]) ?>')">
+                                    <?= h($titleScore->getLoserName()) ?>
+                                </a>
+                            <?php else : ?>
+                                <?= h($titleScore->getLoserName()) ?>
+                            <?php endif ?>
+                        </span>
+                        <span class="table-column table-column_operation">
+                            <?= $this->Form->postButton(__('Delete'), [
+                                '_name' => 'delete_score', $titleScore->id,
+                            ], [
+                                'method' => 'delete',
+                                'data' => [
+                                    'name' => $this->getRequest()->getQuery('name'),
+                                    'title_name' => $this->getRequest()->getQuery('title_name'),
+                                    'country_id' => $this->getRequest()->getQuery('country_id'),
+                                    'target_year' => $this->getRequest()->getQuery('target_year'),
+                                    'started' => $this->getRequest()->getQuery('started'),
+                                    'ended' => $this->getRequest()->getQuery('ended'),
+                                ],
+                                'confirm' => __('Are you sure you want to delete # {0}?', $titleScore->id),
+                                'class' => 'button button-danger',
+                            ]) ?>
+                        </span>
+                    </li>
+                <?php endforeach ?>
+            </ul>
         <?php endif ?>
     </div>
 </section>

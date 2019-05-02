@@ -47,7 +47,7 @@ class Validator extends BaseValidator
     {
         // メッセージが存在しなければ、ルールに該当するメッセージを定義から取得
         if (empty($rule['message'])) {
-            $args = [__d('validation', $field)];
+            $args = [__d('model', $field)];
             if (isset($rule['rule']) && is_array($rule['rule'])) {
                 $rules = $rule['rule'];
                 array_shift($rules);
@@ -73,10 +73,10 @@ class Validator extends BaseValidator
 
             if (isset($property['mode'])) {
                 // $propertyに`mode`があるのは`requirePresence()`利用時
-                $results[$name]['message'] = $this->getMessage('required', __d('validation', $name));
+                $results[$name]['message'] = $this->getMessage('required', __d('model', $name));
             } elseif (isset($property['when'])) {
                 // $propertyに`when`があるのは`allowEmpty()`および`notEmpty()`利用時
-                $results[$name]['message'] = $this->getMessage('notEmpty', __d('validation', $name));
+                $results[$name]['message'] = $this->getMessage('notEmpty', __d('model', $name));
             }
         }
 
@@ -94,7 +94,7 @@ class Validator extends BaseValidator
 
         // 日付フォーマットをメッセージに渡す
         $args = [
-            __d('validation', $field),
+            __d('model', $field),
             implode(', ', $formats)
         ];
         $message = $this->getMessage('invalidFormat', $args);

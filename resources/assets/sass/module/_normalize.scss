@@ -1,15 +1,15 @@
 /* -------------------------------------------
    タグ単位のレイアウト
  ------------------------------------------- */
-@import url("https://fonts.googleapis.com/css?family=Noto+Serif+JP");
-@import url("https://fonts.googleapis.com/css?family=Maitree");
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP');
+@import url('https://fonts.googleapis.com/css?family=Maitree');
 
 * {
   @include sp() {
     font-size: 0.8rem;
   }
 
-  font-family: "Noto Serif JP", sans-serif;
+  font-family: 'Noto Serif JP', sans-serif;
   font-size: 0.9rem;
   letter-spacing: 0.1rem;
   text-indent: 0.1rem;
@@ -60,7 +60,7 @@ nav {
   }
 
   @include sp() {
-    @include flex-horizontal-between();
+    @include flex-justify-between();
     @include fixed-row();
 
     height: $h_nav-sp;
@@ -95,6 +95,10 @@ img {
   border: none;
 }
 
+label {
+  display: block;
+}
+
 input,
 textarea,
 select {
@@ -110,7 +114,12 @@ select {
   }
 }
 
-input[type="checkbox"] {
+input,
+select {
+  height: 30px;
+}
+
+input[type='checkbox'] {
   margin: 0;
   min-width: 18px;
   min-height: 18px;

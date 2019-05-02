@@ -83,7 +83,6 @@ class NavigationCellTest extends TestCase
     {
         $cell = $this->View->cell('Navigation');
         $cell->render();
-        dump($cell->viewBuilder()->getVars());
         $this->Navigation->display();
         $recents = $this->Navigation->viewVars['recents'];
         $this->assertNotNull($recents);

@@ -14,7 +14,8 @@
           "extend",
           "each",
           "if",
-          "else"
+          "else",
+          "for"
         ]
       }
     ],

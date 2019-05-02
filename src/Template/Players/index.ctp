@@ -4,21 +4,21 @@
         <li class="search-row">
             <fieldset class="search-box">
                 <?= $this->Form->control('name', [
-                    'label' => ['class' => 'search-box_label', 'text' => '棋士名'],
+                    'label' => ['text' => __d('model', 'name')],
                     'class' => 'name',
                     'value' => $this->getRequest()->getQuery('name'),
                 ]) ?>
             </fieldset>
             <fieldset class="search-box">
                 <?= $this->Form->control('name_english', [
-                    'label' => ['class' => 'search-box_label', 'text' => '（英語）'],
+                    'label' => ['text' => __d('model', 'name_english')],
                     'class' => 'name',
                     'value' => $this->getRequest()->getQuery('name_english'),
                 ]) ?>
             </fieldset>
             <fieldset class="search-box">
                 <?= $this->Form->control('name_other', [
-                    'label' => ['class' => 'search-box_label', 'text' => '（その他）'],
+                    'label' => ['text' => __d('model', 'name_other')],
                     'class' => 'name',
                     'value' => $this->getRequest()->getQuery('name_other'),
                 ]) ?>
@@ -29,7 +29,7 @@
                 <?= $this->cell('Countries', [
                     'hasTitleOnly' => true,
                     [
-                        'label' => ['class' => 'search-box_label', 'text' => '所属国'],
+                        'label' => ['text' => __d('model', 'country_id')],
                         'class' => 'country',
                         'empty' => true,
                         'value' => $this->getRequest()->getQuery('country_id'),
@@ -40,7 +40,7 @@
             <fieldset class="search-box">
                 <?= $this->cell('Organizations', [
                     [
-                        'label' => ['class' => 'search-box_label', 'text' => '所属組織'],
+                        'label' => ['text' => __d('model', 'organization_id')],
                         'class' => 'organization',
                         'empty' => true,
                         'value' => $this->getRequest()->getQuery('organization_id'),
@@ -49,7 +49,7 @@
             </fieldset>
             <fieldset class="search-box">
                 <?= $this->Form->control('rank_id', [
-                    'label' => ['class' => 'search-box_label', 'text' => '段位'],
+                    'label' => ['text' => __d('model', 'rank_id')],
                     'options' => $ranks,
                     'class' => 'rank',
                     'empty' => true,
@@ -58,7 +58,7 @@
             </fieldset>
             <fieldset class="search-box">
                 <?= $this->Form->sexes([
-                    'label' => ['class' => 'search-box_label', 'text' => '性別'],
+                    'label' => ['text' => __d('model', 'sex')],
                     'class' => 'sex',
                     'empty' => true,
                     'value' => $this->getRequest()->getQuery('sex'),
@@ -74,7 +74,7 @@
                         'max' => 9999,
                         'value' => $this->getRequest()->getQuery('joined_from'),
                     ]);
-                    echo $this->form->label('joined_to', '～');
+                    echo $this->form->label('joined_to', '～', ['class' => 'between-label']);
                     echo $this->Form->number('joined_to', [
                         'class' => 'joined joined-to',
                         'min' => 1,
@@ -86,7 +86,7 @@
             </fieldset>
             <fieldset class="search-box">
                 <?= $this->Form->filters('is_retired', [
-                    'label' => ['class' => 'search-box_label', 'text' => '引退者'],
+                    'label' => ['text' => '引退者'],
                     'class' => 'excluded',
                     'value' => $this->getRequest()->getQuery('is_retired'),
                 ]) ?>
@@ -99,20 +99,20 @@
     </ul>
 
     <?php if (!empty($players)) : ?>
-    <?= $this->element('Paginator/default', ['url' => ['_name' => 'find_players']]) ?>
+        <?= $this->element('Paginator/default', ['url' => ['_name' => 'find_players']]) ?>
     <?php endif ?>
 
     <div class="search-results">
         <ul class="players table-header">
             <li class="table-row">
-                <span class="table-column table-column_id">ID</span>
-                <span class="table-column table-column_name">棋士名</span>
-                <span class="table-column table-column_name">棋士名（英語）</span>
-                <span class="table-column table-column_enrollment">入段日</span>
-                <span class="table-column table-column_country">所属国</span>
-                <span class="table-column table-column_organization">所属組織</span>
-                <span class="table-column table-column_rank">段位</span>
-                <span class="table-column table-column_sex">性別</span>
+                <span class="table-column table-column_id"><?= __d('model', 'id') ?></span>
+                <span class="table-column table-column_name"><?= __d('model', 'name') ?></span>
+                <span class="table-column table-column_name"><?= __d('model', 'name_english') ?></span>
+                <span class="table-column table-column_enrollment"><?= __d('model', 'joined') ?></span>
+                <span class="table-column table-column_country"><?= __d('model', 'country_id') ?></span>
+                <span class="table-column table-column_organization"><?= __d('model', 'organization_id') ?></span>
+                <span class="table-column table-column_rank"><?= __d('model', 'rank_id') ?></span>
+                <span class="table-column table-column_sex"><?= __d('model', 'sex') ?></span>
                 <span class="table-column table-column_score">
                     <div class="table-column table-column_score-summary"><?= date('Y') ?>年国内</div>
                     <span class="table-column table-column_score-point">勝</span>
@@ -128,60 +128,60 @@
             </li>
         </ul>
         <?php if (!empty($players)) : ?>
-        <ul class="players table-body">
-            <?php foreach ($players as $player) : ?>
-            <li class="table-row<?= ($player->is_retired ? ' table-row-retired' : '') ?>">
-                <span class="table-column table-column_id">
-                    <?= h($player->id) ?>
-                </span>
-                <span class="table-column table-column_name">
-                    <a class="view-link<?= ($player->isFemale() ? ' female' : '') ?>" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $player->id]) ?>')">
-                        <?= h($player->name) ?>
-                    </a>
-                </span>
-                <span class="table-column table-column_name">
-                    <?= h($player->name_english) ?>
-                </span>
-                <span class="table-column table-column_enrollment">
-                    <?= h($player->format_joined) ?>
-                </span>
-                <span class="table-column table-column_country">
-                    <?= h($player->country->name) ?>
-                </span>
-                <span class="table-column table-column_organization">
-                    <?= h($player->organization->name) ?>
-                </span>
-                <span class="table-column table-column_rank">
-                    <?= h($player->rank->name) ?>
-                </span>
-                <span class="table-column table-column_sex">
-                    <?= h($player->sex) ?>
-                </span>
-                <span class="table-column table-column_score">
-                    <span class="table-column table-column_score-point">
-                        <?= h($player->win(null)) ?>
-                    </span>
-                    <span class="table-column table-column_score-point">
-                        <?= h($player->lose(null)) ?>
-                    </span>
-                    <span class="table-column table-column_score-point">
-                        <?= h($player->draw(null)) ?>
-                    </span>
-                </span>
-                <span class="table-column table-column_score">
-                    <span class="table-column table-column_score-point">
-                        <?= h($player->win(null, true)) ?>
-                    </span>
-                    <span class="table-column table-column_score-point">
-                        <?= h($player->lose(null, true)) ?>
-                    </span>
-                    <span class="table-column table-column_score-point">
-                        <?= h($player->draw(null, true)) ?>
-                    </span>
-                </span>
-            </li>
-            <?php endforeach ?>
-        </ul>
+            <ul class="players table-body">
+                <?php foreach ($players as $player) : ?>
+                    <li class="table-row<?= ($player->is_retired ? ' table-row-retired' : '') ?>">
+                        <span class="table-column table-column_id">
+                            <?= h($player->id) ?>
+                        </span>
+                        <span class="table-column table-column_name">
+                            <a class="view-link<?= ($player->isFemale() ? ' female' : '') ?>" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $player->id]) ?>')">
+                                <?= h($player->name) ?>
+                            </a>
+                        </span>
+                        <span class="table-column table-column_name">
+                            <?= h($player->name_english) ?>
+                        </span>
+                        <span class="table-column table-column_enrollment">
+                            <?= h($player->format_joined) ?>
+                        </span>
+                        <span class="table-column table-column_country">
+                            <?= h($player->country->name) ?>
+                        </span>
+                        <span class="table-column table-column_organization">
+                            <?= h($player->organization->name) ?>
+                        </span>
+                        <span class="table-column table-column_rank">
+                            <?= h($player->rank->name) ?>
+                        </span>
+                        <span class="table-column table-column_sex">
+                            <?= h($player->sex) ?>
+                        </span>
+                        <span class="table-column table-column_score">
+                            <span class="table-column table-column_score-point">
+                                <?= h($player->win(null)) ?>
+                            </span>
+                            <span class="table-column table-column_score-point">
+                                <?= h($player->lose(null)) ?>
+                            </span>
+                            <span class="table-column table-column_score-point">
+                                <?= h($player->draw(null)) ?>
+                            </span>
+                        </span>
+                        <span class="table-column table-column_score">
+                            <span class="table-column table-column_score-point">
+                                <?= h($player->win(null, true)) ?>
+                            </span>
+                            <span class="table-column table-column_score-point">
+                                <?= h($player->lose(null, true)) ?>
+                            </span>
+                            <span class="table-column table-column_score-point">
+                                <?= h($player->draw(null, true)) ?>
+                            </span>
+                        </span>
+                    </li>
+                <?php endforeach ?>
+            </ul>
         <?php endif ?>
     </div>
     <?= $this->Form->end() ?>
