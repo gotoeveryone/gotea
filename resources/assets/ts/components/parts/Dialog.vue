@@ -5,7 +5,6 @@
       :style="{ backgroundColor: modalColor }"
       class="dialog"
     >
-      >
       <div class="dialog-content">
         <div
           :style="{ backgroundColor: headerColor }"
