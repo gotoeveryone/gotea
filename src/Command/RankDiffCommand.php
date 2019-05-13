@@ -151,11 +151,21 @@ class RankDiffCommand extends Command
         $crawler = $this->getCrawler(env('DIFF_KANSAI_URL'));
         $rank = null;
         $crawler->filter('.free table')->first()->filter('tr')
-            ->each(function (Crawler $row) use (&$results, &$rank, $ranks) {
+            ->each(function (Crawler $row) use (&$results, &$rank, $country, $ranks) {
                 $cell = $row->children();
                 if ($cell->count() === 1) {
-                    // 段位
-                    $rank = $ranks[$cell->text()] ?? null;
+                    if ($cell->text() === 'タイトル者') {
+                        $row->nextAll()->children()
+                            ->each(function (Crawler $node) use (&$results, $country) {
+                                if ($node->text() !== '') {
+                                    $player = $this->Players->findRankByNamesAndCountries([$node->text()], $country->id);
+                                    $results[$player->rank->rank_numeric][] = $player->name;
+                                }
+                            });
+                    } else {
+                        // 段位
+                        $rank = $ranks[$cell->text()] ?? null;
+                    }
                 } elseif ($rank) {
                     // 棋士数
                     $cell->each(function (Crawler $node) use (&$results, &$rank) {
