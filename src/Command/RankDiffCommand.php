@@ -55,7 +55,7 @@ class RankDiffCommand extends Command
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $results = $countries->combine('name', function ($item) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
-                $method = 'getPlayerFrom' . Inflector::humanize($item->name_english);
+                $method = 'getPlayersFrom' . Inflector::humanize($item->name_english);
                 $diffs = $this->$method($item);
                 if (!count($diffs)) {
                     return [];
@@ -118,65 +118,30 @@ class RankDiffCommand extends Command
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromJapan(Country $country)
+    private function getPlayersFromJapan(Country $country)
     {
         $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
-        $results = [];
 
-        // 日本棋院
-        $crawler = $this->getCrawler(env('DIFF_JAPAN_URL'));
-        $crawler->filter('#content h2')->each(function (Crawler $node) use (&$results, $country, $ranks) {
-            if ($node->text() === 'タイトル者') {
-                $node->nextAll()->filter('.ul_players')->first()
-                    ->filter('li')->each(function (Crawler $node) use (&$results, $country) {
-                        $name = str_replace('　', '', $node->text());
-                        $player = $this->Players->findRankByNamesAndCountries([$name, $node->text()], $country->id);
-                        $results[$player->rank->rank_numeric][] = $name;
-                    });
-            }
-            if (preg_match('/(.*)段/', $node->text())) {
-                $players = $node->nextAll()->filter('.ul_players')->first()
-                    ->filter('li')->each(function (Crawler $node) {
-                        return str_replace('　', '', $node->text());
-                    });
-                $rank = Hash::get($ranks, $node->text());
-                if (Hash::check($results, $rank)) {
-                    $players = Hash::merge(Hash::get($results, $rank), $players);
-                }
-                $results[$rank] = $players;
-            }
-        });
+        // 日本棋院・関西棋院それぞれから棋士一覧を取得
+        $results = Hash::merge($this->getPlayersFromNihonKiin($ranks), $this->getPlayersFromKansaiKiin($ranks));
 
-        // 関西棋院
-        $crawler = $this->getCrawler(env('DIFF_KANSAI_URL'));
-        $rank = null;
-        $crawler->filter('.free table')->first()->filter('tr')
-            ->each(function (Crawler $row) use (&$results, &$rank, $country, $ranks) {
-                $cell = $row->children();
-                if ($cell->count() === 1) {
-                    if ($cell->text() === 'タイトル者') {
-                        $row->nextAll()->children()
-                            ->each(function (Crawler $node) use (&$results, $country) {
-                                if ($node->text() !== '') {
-                                    $player = $this->Players->findRankByNamesAndCountries([$node->text()], $country->id);
-                                    $results[$player->rank->rank_numeric][] = $player->name;
-                                }
-                            });
-                    } else {
-                        // 段位
-                        $rank = $ranks[$cell->text()] ?? null;
-                    }
-                } elseif ($rank) {
-                    // 棋士数
-                    $cell->each(function (Crawler $node) use (&$results, &$rank) {
-                        if ($node->text() !== '') {
-                            $results[$rank][] = $node->text();
+        // タイトル者は DB から段位を割り当てる
+        foreach ($results as $item) {
+            if ($item['rankText'] === 'タイトル者') {
+                foreach ($item['players'] as $name) {
+                    $player = $this->Players->findRankByNamesAndCountries([$name, str_replace('　', '', $name)], $country->id);
+                    foreach ($results as $idx => $data) {
+                        if ($data['rank'] === $player->rank->rank_numeric) {
+                            $results[$idx]['players'][] = $player->name;
                         }
-                    });
+                    }
                 }
-            });
+            }
+        }
 
-        return $results;
+        return collection($results)->filter(function ($item) {
+            return $item['rank'];
+        })->combine('rank', 'players')->toArray();
     }
 
     /**
@@ -185,7 +150,7 @@ class RankDiffCommand extends Command
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromKorea(Country $country)
+    private function getPlayersFromKorea(Country $country)
     {
         $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
 
@@ -207,7 +172,7 @@ class RankDiffCommand extends Command
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromTaiwan(Country $country)
+    private function getPlayersFromTaiwan(Country $country)
     {
         $results = [];
         $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
@@ -232,6 +197,7 @@ class RankDiffCommand extends Command
      *
      * @param string $url URL
      * @return \Symfony\Component\DomCrawler\Crawler
+     * @throws \Cake\Http\Exception\HttpException
      */
     private function getCrawler($url)
     {
@@ -247,5 +213,51 @@ class RankDiffCommand extends Command
         }
 
         return $crawler;
+    }
+
+    /**
+     * 日本棋院の棋士一覧を取得
+     *
+     * @param array 段位一覧
+     * @return array 日本棋院の棋士一覧
+     */
+    private function getPlayersFromNihonKiin(array $ranks)
+    {
+        $crawler = $this->getCrawler(env('DIFF_JAPAN_URL'));
+
+        return $crawler->filter('#content h2')->each(function (Crawler $node) use ($ranks) {
+            $rankText = $node->text();
+            $rank = Hash::get($ranks, $rankText);
+            $players = $node->nextAll()->filter('.ul_players')->first()
+                ->filter('li')->each(function (Crawler $cell) {
+                    return $cell->text();
+                });
+            return compact('rankText', 'rank', 'players');
+        });
+    }
+
+    /**
+     * 関西棋院の棋士一覧を取得
+     *
+     * @param array 段位一覧
+     * @return array 関西棋院の棋士一覧
+     */
+    private function getPlayersFromKansaiKiin(array $ranks)
+    {
+        $crawler = $this->getCrawler(env('DIFF_KANSAI_URL'));
+
+        return collection($crawler->filter('.prokisi_table table')->each(function (Crawler $table) use ($ranks) {
+            $rankText = $table->filter('thead th')->first()->text();
+            $rank = Hash::get($ranks, $rankText);
+            $players = collection($table->filter('tbody td')->each(function (Crawler $cell) {
+                return $cell->text();
+            }))->filter(function ($value) {
+                return mb_strlen($value) > 0;
+            })->toArray();
+            return compact('rankText', 'rank', 'players');
+        }))->filter(function ($item) {
+            // 退役者や物故者は除く
+            return $item['rank'] || $item['rankText'] === 'タイトル者';
+        })->toArray();
     }
 }
