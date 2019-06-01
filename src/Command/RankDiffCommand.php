@@ -218,7 +218,7 @@ class RankDiffCommand extends Command
     /**
      * 日本棋院の棋士一覧を取得
      *
-     * @param array 段位一覧
+     * @param array $ranks 段位一覧
      * @return array 日本棋院の棋士一覧
      */
     private function getPlayersFromNihonKiin(array $ranks)
@@ -232,6 +232,7 @@ class RankDiffCommand extends Command
                 ->filter('li')->each(function (Crawler $cell) {
                     return $cell->text();
                 });
+
             return compact('rankText', 'rank', 'players');
         });
     }
@@ -239,7 +240,7 @@ class RankDiffCommand extends Command
     /**
      * 関西棋院の棋士一覧を取得
      *
-     * @param array 段位一覧
+     * @param array $ranks 段位一覧
      * @return array 関西棋院の棋士一覧
      */
     private function getPlayersFromKansaiKiin(array $ranks)
@@ -254,6 +255,7 @@ class RankDiffCommand extends Command
             }))->filter(function ($value) {
                 return mb_strlen($value) > 0;
             })->toArray();
+
             return compact('rankText', 'rank', 'players');
         }))->filter(function ($item) {
             // 退役者や物故者は除く
