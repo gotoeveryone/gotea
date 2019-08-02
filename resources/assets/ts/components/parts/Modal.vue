@@ -20,7 +20,12 @@ export default Vue.extend({
   props: {
     options: {
       type: Object as Prop<ModalOption>,
-      default: () => ({}),
+      default: () => ({
+        url: '',
+        height: '',
+        width: '',
+        callback: () => null,
+      }),
     },
   },
   computed: {

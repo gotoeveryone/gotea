@@ -13,3 +13,4 @@
 /webroot/js
 
 .php-version
+*.mo
