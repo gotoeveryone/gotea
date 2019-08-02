@@ -3,21 +3,25 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    modal: {
-      url: '',
-      height: '',
-      width: '',
-      callback: null,
-    },
-    dialog: {
-      title: '',
-      messages: '',
-      type: 'info',
-      server: false,
-    },
+const initialState = {
+  modal: {
+    url: '',
+    height: '',
+    width: '',
+    callback: () => {},
   },
+  dialog: {
+    modalColor: '',
+    headerColor: '',
+    title: '',
+    messages: '',
+    type: 'info',
+    server: false,
+  },
+};
+
+export default new Vuex.Store({
+  state: Object.assign({}, initialState),
   getters: {
     modalOptions: state => () => {
       return state.modal;
@@ -31,23 +35,13 @@ export default new Vuex.Store({
       state.modal = _modal;
     },
     closeModal(state) {
-      state.modal = {
-        url: '',
-        width: '',
-        height: '',
-        callback: null,
-      };
+      state.modal = Object.assign({}, initialState.modal);
     },
     openDialog(state, _dialog) {
       state.dialog = _dialog;
     },
     closeDialog(state) {
-      state.dialog = {
-        title: '',
-        messages: '',
-        type: 'info',
-        server: false,
-      };
+      state.dialog = Object.assign({}, initialState.dialog);
     },
   },
   actions: {

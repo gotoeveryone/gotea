@@ -27,10 +27,7 @@ module.exports = () => {
         },
       },
       stats: 'minimal',
-      plugins: [
-        new VueLoaderPlugin(),
-        new FriendlyErrorsWebpackPlugin(),
-      ],
+      plugins: [new VueLoaderPlugin(), new FriendlyErrorsWebpackPlugin()],
       module: {
         rules: [
           {
@@ -42,7 +39,6 @@ module.exports = () => {
                 loader: 'eslint-loader',
                 options: {
                   esModule: true,
-                  cache: true,
                 },
               },
             ],
@@ -120,11 +116,7 @@ module.exports = () => {
         rules: [
           {
             test: /\.(sa|sc|c)ss$/,
-            use: [
-              MiniCssExtractPlugin.loader,
-              'css-loader',
-              'sass-loader',
-            ],
+            use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
           },
         ],
       },
