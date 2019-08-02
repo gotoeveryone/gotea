@@ -51,7 +51,7 @@ class TitlesTable extends AppTable
             ->alphaNumeric('name_english')
             ->add('html_file_name', 'custom', [
                 'rule' => function ($value) {
-                    return (bool) preg_match('/^[a-zA-Z0-9\(\)\'\-\/\s]+$/', $value);
+                    return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\/\s]+$/', $value);
                 },
             ])
             ->maxLength('name', 30)
