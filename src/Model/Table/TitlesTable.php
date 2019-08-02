@@ -55,7 +55,8 @@ class TitlesTable extends AppTable
                 },
             ])
             ->maxLength('name', 30)
-            ->maxLength('name_english', 30)
+            ->maxLength('name_english', 60)
+            ->maxLength('html_file_name', 30)
             ->date('html_file_modified', 'y/m/d');
     }
 

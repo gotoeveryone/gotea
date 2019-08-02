@@ -1,4 +1,5 @@
 <?php
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\I18n\FrozenDate;
@@ -124,13 +125,19 @@ class TitlesTableTest extends TestCase
         // maxLength
         // name
         $data = $params;
-        $data['name'] = '1234567890123456789012345678901';
+        $data['name'] = substr(bin2hex(random_bytes(31)), 0, 31);
         $result = $this->Titles->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
         // name_english
         $data = $params;
-        $data['name_english'] = '1234567890123456789012345678901';
+        $data['name_english'] = substr(bin2hex(random_bytes(61)), 0, 61);
+        $result = $this->Titles->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // html_file_name
+        $data = $params;
+        $data['html_file_name'] = substr(bin2hex(random_bytes(31)), 0, 31);
         $result = $this->Titles->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
