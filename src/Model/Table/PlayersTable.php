@@ -106,13 +106,15 @@ class PlayersTable extends AppTable
             // 入段日を登録時段位の昇段日として設定
             $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
 
-            // 棋士昇段情報へ登録
-            $playerRanks = TableRegistry::getTableLocator()->get('PlayerRanks');
-            $playerRanks->save($playerRanks->newEntity([
-                'player_id' => $entity->id,
-                'rank_id' => $entity->rank_id,
-                'promoted' => $promoted->format('Y/m/d'),
-            ]));
+            // 入段日が完全な日付だった場合、棋士昇段情報へ登録
+            if ($promoted !== null) {
+                $playerRanks = TableRegistry::getTableLocator()->get('PlayerRanks');
+                $playerRanks->save($playerRanks->newEntity([
+                    'player_id' => $entity->id,
+                    'rank_id' => $entity->rank_id,
+                    'promoted' => $promoted->format('Y/m/d'),
+                ]));
+            }
         }
 
         return $save;
@@ -124,7 +126,7 @@ class PlayersTable extends AppTable
      * @param array $data パラメータ
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findPlayers(array $data) : Query
+    public function findPlayers(array $data): Query
     {
         // 棋士情報の取得
         $query = $this->find()->order([
