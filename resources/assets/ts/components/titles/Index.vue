@@ -1,10 +1,6 @@
 <template>
   <section class="titles">
-    <title-header
-      @add="addRow"
-      @search="onSearch"
-      @json="outputJson"
-    />
+    <title-header @add="addRow" @search="onSearch" @json="outputJson" />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -21,10 +17,7 @@
           <span class="table-column table-column_open-detail">詳細</span>
         </li>
       </ul>
-      <ul
-        v-if="items.length"
-        class="table-body"
-      >
+      <ul v-if="items.length" class="table-body">
         <title-item
           v-for="(item, idx) in items"
           :key="idx"
@@ -61,7 +54,8 @@ export default Vue.extend({
     onSearch(params: TitleCondition) {
       this.params = {
         country_id: params.countryId,
-        search_all: params.searchType,
+        search_non_output: params.searchNonOutput,
+        search_closed: params.searchClosed,
       };
       this.refresh();
     },

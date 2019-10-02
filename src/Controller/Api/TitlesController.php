@@ -68,8 +68,7 @@ class TitlesController extends ApiController
      */
     public function createNews()
     {
-        $titles = $this->Titles->findTitles(['search_all' => true])
-            ->where(['is_output' => true])
+        $titles = $this->Titles->findTitles(['search_closed' => true])
             ->map(new NewsIterator);
 
         // ファイル作成

@@ -20,7 +20,7 @@ class TitlesControllerTest extends ApiTestCase
     ];
 
     /**
-     * Test initial setup
+     * タイトル一覧取得
      *
      * @return void
      */
@@ -36,17 +36,32 @@ class TitlesControllerTest extends ApiTestCase
     }
 
     /**
-     * Test initial setup
+     * タイトル一覧取得（非出力棋戦あり）
      *
      * @return void
      */
-    public function testIndexAll()
+    public function testIndexWithNonOutput()
     {
-        $this->get('/api/titles?search_all=1');
+        $this->get('/api/titles?search_non_output=1');
         $this->assertResponseSuccess();
         $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
         collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
-            $this->assertTrue($item->isClosed === true || $item->isClosed === false);
+            $this->assertTrue(in_array($item->isOutput, [true, false], true));
+        });
+    }
+
+    /**
+     * タイトル一覧取得（終了棋戦あり）
+     *
+     * @return void
+     */
+    public function testIndexWithClosed()
+    {
+        $this->get('/api/titles?search_closed=1');
+        $this->assertResponseSuccess();
+        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
+        collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
+            $this->assertTrue(in_array($item->isClosed, [true, false], true));
         });
     }
 
