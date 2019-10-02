@@ -159,7 +159,7 @@ class TitleScoreDetailsTable extends AppTable
             ]);
 
         $sub = $this->findScores($this->query());
-        $sub->select(['win_point' => $sub->func()->count("division = '勝' or null")], true)
+        $sub->select(['win_point' => $sub->func()->count("(division = '勝' and is_official = 1) or null")], true)
             ->where([
                 'TitleScores.started >= ' => $started,
                 'TitleScores.ended <= ' => $ended,
