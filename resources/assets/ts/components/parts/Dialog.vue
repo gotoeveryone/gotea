@@ -1,6 +1,6 @@
 <template>
   <transition name="dialog">
-    <div v-if="isShow()" :style="{ backgroundColor: modalColor }" class="dialog">
+    <div @click="close()" v-if="isShow()" :style="{ backgroundColor: modalColor }" class="dialog">
       <div class="dialog-content">
         <div :style="{ backgroundColor: headerColor }" class="dialog-content-header">
           <div v-text="title" class="dialog-content-title" />
