@@ -10,6 +10,7 @@ namespace Gotea\Model\Entity;
  * @property \Cake\I18n\Time $started
  * @property \Cake\I18n\Time $ended
  * @property bool $is_world
+ * @property bool $is_official
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *

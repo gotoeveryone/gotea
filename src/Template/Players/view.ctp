@@ -247,7 +247,7 @@
                         <ul class="boxes">
                             <li class="label-row"><?= __('{0}年度', $score->target_year) ?></li>
                             <li class="detail_box">
-                                <div class="detail_box_item box-5">
+                                <div class="detail_box_item box-3">
                                     <div class="input">
                                         国内：<?= h($score->win_point) ?>勝<?= h($score->lose_point) ?>敗<?= h($score->draw_point) ?>分
                                         <span class="percent">
@@ -255,7 +255,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="detail_box_item box-5">
+                                <div class="detail_box_item box-3">
                                     <div class="input">
                                         国際：<?= h($score->win_point_world) ?>勝<?= h($score->lose_point_world) ?>敗<?= h($score->draw_point_world) ?>分
                                         <span class="percent">
@@ -263,7 +263,15 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="detail_box_item detail_box_item-buttons box-2">
+                                <div class="detail_box_item box-3">
+                                    <div class="input">
+                                        合計（非公式戦含む）：<?= h($score->win_point_all) ?>勝<?= h($score->lose_point_all) ?>敗<?= h($score->draw_point_all) ?>分
+                                        <span class="percent">
+                                            （勝率<strong><?= $this->Form->percent($score->win_point_all, $score->lose_point_all) ?></strong>）
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="detail_box_item detail_box_item-buttons box-3">
                                     <?= $this->Html->link('タイトル成績へ', [
                                         '_name' => 'find_player_scores', $player->id, $score->target_year,
                                     ], [

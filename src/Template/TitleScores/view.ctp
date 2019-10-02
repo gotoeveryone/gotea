@@ -19,7 +19,7 @@
             <?= $this->Form->control('id') ?>
             <div class="page-header"><?= __('Score Detail') ?></div>
             <ul class="detail_box">
-                <li class="detail_box_item box-4">
+                <li class="detail_box_item box-3">
                     <?php
                     echo $this->Form->control('started', [
                         'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
@@ -28,7 +28,7 @@
                     ]);
                     ?>
                 </li>
-                <li class="detail_box_item box-4">
+                <li class="detail_box_item box-3">
                     <?php
                     echo $this->Form->control('ended', [
                         'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
@@ -37,7 +37,7 @@
                     ]);
                     ?>
                 </li>
-                <li class="detail_box_item box-3">
+                <li class="detail_box_item box-4">
                     <?php
                     echo $this->cell('Countries', [
                         'hasTitleOnly' => false,
@@ -55,6 +55,17 @@
                         <?php
                         echo $this->Form->label('is_world', __d('model', 'is_world'), ['class' => 'label-row']);
                         echo $this->Form->control('is_world', [
+                            'label' => false,
+                            'class' => 'input-row',
+                        ]);
+                        ?>
+                    </div>
+                </li>
+                <li class="detail_box_item box-1">
+                    <div class="input">
+                        <?php
+                        echo $this->Form->label('is_official', __d('model', 'is_official'), ['class' => 'label-row']);
+                        echo $this->Form->control('is_official', [
                             'label' => false,
                             'class' => 'input-row',
                         ]);

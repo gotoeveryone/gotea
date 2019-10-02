@@ -30,6 +30,7 @@ use Cake\Routing\Router;
  * @property \Gotea\Model\Entity\Country $country
  * @property \Gotea\Model\Entity\Rank $rank
  * @property \Gotea\Model\Entity\Organization $organization
+ * @property \Gotea\Model\Entity\TitleScoreDetail[] $title_score_details
  *
  * @property array $input_joined
  * @property array $format_joined

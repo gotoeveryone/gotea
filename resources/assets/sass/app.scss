@@ -502,6 +502,10 @@
     }
   }
 
+  .table-row-unofficial {
+    background-color: $c_unofficial;
+  }
+
   .table-column {
     &_id {
       width: 6%;
