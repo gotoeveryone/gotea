@@ -3,11 +3,7 @@
     <li class="search-row">
       <fieldset class="search-box">
         <label class="search-box_label">対象国</label>
-        <select
-          @change="changeValue($event)"
-          v-model="select.countryId"
-          class="titles-country"
-        >
+        <select @change="changeValue($event)" v-model="select.countryId" class="titles-country">
           <option
             :key="idx"
             :value="country.value"
@@ -17,33 +13,36 @@
         </select>
       </fieldset>
       <fieldset class="search-box">
-        <label class="search-box_label">終了棋戦</label>
+        <label class="search-box_label">非出力対象</label>
         <select
           @change="changeValue($event)"
-          v-model="select.searchType"
-          class="titles-closed"
+          v-model="select.searchNonOutput"
+          class="titles-output"
         >
           <option
             :key="idx"
-            :value="type.value"
-            v-for="(type, idx) in types"
-            v-text="type.text"
+            :value="option.value"
+            v-for="(option, idx) in searchNonOutputOptions"
+            v-text="option.text"
+          />
+        </select>
+      </fieldset>
+      <fieldset class="search-box">
+        <label class="search-box_label">終了棋戦</label>
+        <select @change="changeValue($event)" v-model="select.searchClosed" class="titles-closed">
+          <option
+            :key="idx"
+            :value="option.value"
+            v-for="(option, idx) in searchClosedOptions"
+            v-text="option.text"
           />
         </select>
       </fieldset>
       <fieldset class="search-box search-box-right">
-        <button
-          @click="add()"
-          class="button button-secondary"
-          type="button"
-        >
+        <button @click="add()" class="button button-secondary" type="button">
           行追加
         </button>
-        <button
-          @click="json()"
-          class="button button-primary"
-          type="button"
-        >
+        <button @click="json()" class="button button-primary" type="button">
           JSON出力
         </button>
       </fieldset>
@@ -63,12 +62,25 @@ export default Vue.extend({
       countries: [] as DropDown[],
       select: {
         countryId: '',
-        searchType: 0,
+        searchClosed: 0,
+        searchNonOutput: 1,
       },
     };
   },
   computed: {
-    types() {
+    searchNonOutputOptions() {
+      return [
+        {
+          value: 0,
+          text: '含めない',
+        },
+        {
+          value: 1,
+          text: '含める',
+        },
+      ];
+    },
+    searchClosedOptions() {
       return [
         {
           value: 0,
@@ -94,7 +106,8 @@ export default Vue.extend({
         this.countries = countries;
         this.select = {
           countryId: this.countries[0].value.toString() || '',
-          searchType: this.types[0].value,
+          searchNonOutput: this.searchNonOutputOptions[0].value,
+          searchClosed: this.searchClosedOptions[0].value,
         };
         this.search();
       });

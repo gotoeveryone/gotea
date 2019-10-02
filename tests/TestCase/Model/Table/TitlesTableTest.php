@@ -183,14 +183,23 @@ class TitlesTableTest extends TestCase
         $titles->each(function ($item) {
             $this->assertEquals($item->country_id, 1);
             $this->assertFalse($item->is_closed);
+            $this->assertTrue($item->is_output);
         });
 
         $titles = $this->Titles->findTitles([
-            'search_all' => true,
+            'search_closed' => true,
         ]);
         $this->assertGreaterThan(0, $titles->count());
         $titles->each(function ($item) {
-            $this->assertTrue($item->is_closed === true || $item->is_closed === false);
+            $this->assertTrue(in_array($item->is_closed, [true, false], true));
+        });
+
+        $titles = $this->Titles->findTitles([
+            'search_non_output' => true,
+        ]);
+        $this->assertGreaterThan(0, $titles->count());
+        $titles->each(function ($item) {
+            $this->assertTrue(in_array($item->is_output, [true, false], true));
         });
     }
 

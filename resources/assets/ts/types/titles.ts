@@ -1,6 +1,7 @@
 export interface TitleCondition {
   countryId: string;
-  searchType: number;
+  searchNonOutput: number;
+  searchClosed: number;
 }
 
 export interface TitleResultItem {

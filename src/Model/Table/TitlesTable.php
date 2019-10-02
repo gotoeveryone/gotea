@@ -111,8 +111,13 @@ class TitlesTable extends AppTable
         }
 
         // 有効なタイトルのみ検索
-        if (!Hash::get($data, 'search_all', false)) {
+        if (!Hash::get($data, 'search_closed', false)) {
             $query->where(['Titles.is_closed' => false]);
+        }
+
+        // 出力対象のみ検索
+        if (!Hash::get($data, 'search_non_output', false)) {
+            $query->where(['Titles.is_output' => true]);
         }
 
         // データを取得
