@@ -90,12 +90,15 @@ class TitleScoreDetailsTable extends AppTable
         return $query->contain('TitleScores')->select([
             'player_id',
             'target_year' => 'year(started)',
-            'win_point' => $query->func()->count("division = '勝' or null"),
-            'lose_point' => $query->func()->count("division = '敗' or null"),
-            'draw_point' => $query->func()->count("division = '分' or null"),
-            'win_point_world' => $query->func()->count("division = '勝' and is_world = 1 or null"),
-            'lose_point_world' => $query->func()->count("division = '敗' and is_world = 1 or null"),
-            'draw_point_world' => $query->func()->count("division = '分' and is_world = 1 or null"),
+            'win_point' => $query->func()->count("(division = '勝' and is_official = 1) or null"),
+            'lose_point' => $query->func()->count("(division = '敗' and is_official = 1) or null"),
+            'draw_point' => $query->func()->count("(division = '分' and is_official = 1) or null"),
+            'win_point_world' => $query->func()->count("(division = '勝' and is_official = 1 and is_world = 1) or null"),
+            'lose_point_world' => $query->func()->count("(division = '敗' and is_official = 1 and is_world = 1) or null"),
+            'draw_point_world' => $query->func()->count("(division = '分' and is_official = 1 and is_world = 1) or null"),
+            'win_point_all' => $query->func()->count("division = '勝' or null"),
+            'lose_point_all' => $query->func()->count("division = '敗' or null"),
+            'draw_point_all' => $query->func()->count("division = '分' or null"),
         ])->group([
             'player_id', 'target_year',
         ]);

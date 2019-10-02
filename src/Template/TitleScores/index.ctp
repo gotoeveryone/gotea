@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \Gotea\View\AppView $this
+ * @var \Gotea\Model\Entity\TitleScore[]|\Cake\Collection\CollectionInterface $titleScores
+ */
+?>
 <section class="title-scores">
     <div>
         <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_scores']]) ?>
@@ -77,7 +83,7 @@
         <?php if (!empty($titleScores) && $titleScores->count() > 0) : ?>
             <ul class="table-body">
                 <?php foreach ($titleScores as $titleScore) : ?>
-                    <li class="table-row">
+                    <li class="table-row<?= (!$titleScore->is_official ? ' table-row-unofficial' : '') ?>">
                         <span class="table-column table-column_id">
                             <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_score', $titleScore->id]) ?>')">
                                 <?= h($titleScore->id) ?>

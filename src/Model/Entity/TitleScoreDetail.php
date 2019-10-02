@@ -18,6 +18,19 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Rank $rank
  *
  * @property string $player_name_with_rank
+ *
+ * 以下は findScores() 関数で取得した場合に利用できるプロパティ
+ * @see \Gotea\Model\Table\TitleScoreDetailsTable findScores()
+ * @property int $target_year
+ * @property int $win_point
+ * @property int $lose_point
+ * @property int $draw_point
+ * @property int $win_point_world
+ * @property int $lose_point_world
+ * @property int $draw_point_world
+ * @property int $win_point_all
+ * @property int $lose_point_all
+ * @property int $draw_point_all
  */
 class TitleScoreDetail extends AppEntity
 {

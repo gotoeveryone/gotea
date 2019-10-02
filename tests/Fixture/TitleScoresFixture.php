@@ -24,6 +24,7 @@ class TitleScoresFixture extends TestFixture
         'started' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '開始日', 'precision' => null],
         'ended' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '終了日', 'precision' => null],
         'is_world' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '国際棋戦かどうか', 'precision' => null],
+        'is_official' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '公式戦フラグ', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '初回登録日時', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '更新日時', 'precision' => null],
         '_indexes' => [
