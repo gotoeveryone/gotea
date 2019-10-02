@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
-import { Prop, ModalOption } from '@/types';
+import { ModalOption } from '@/types';
 
 export default Vue.extend({
   props: {
     options: {
-      type: Object as Prop<ModalOption>,
+      type: Object as PropType<ModalOption>,
       default: () => ({
         url: '',
         height: '',

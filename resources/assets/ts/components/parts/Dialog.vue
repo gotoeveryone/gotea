@@ -23,9 +23,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
-import { Prop, DialogOption } from '@/types';
+import { DialogOption } from '@/types';
 
 export default Vue.extend({
   directives: {
@@ -37,7 +37,7 @@ export default Vue.extend({
   },
   props: {
     options: {
-      type: Object as Prop<DialogOption>,
+      type: Object as PropType<DialogOption>,
       default: () => ({
         modalColor: '',
         headerColor: '',
@@ -52,7 +52,7 @@ export default Vue.extend({
       default: '',
     },
     servMessages: {
-      type: Array as Prop<string[]>,
+      type: Array as PropType<string[]>,
       default: () => [],
     },
   },
