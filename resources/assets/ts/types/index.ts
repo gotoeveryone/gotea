@@ -6,9 +6,6 @@ declare module 'vue/types/vue' {
   }
 }
 
-// Vue コンポーネントの props で型を利用するための定義
-export type Prop<T> = () => T;
-
 export interface Cake {
   csrfToken: string;
   accessUser: string;

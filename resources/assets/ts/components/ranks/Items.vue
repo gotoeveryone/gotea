@@ -16,15 +16,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
-import { Prop } from '@/types';
 import { RanksItem } from '@/types/ranks';
 
 export default Vue.extend({
   props: {
     items: {
-      type: Array as Prop<RanksItem[]>,
+      type: Array as PropType<RanksItem[]>,
       default: () => [],
     },
   },

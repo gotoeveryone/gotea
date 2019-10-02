@@ -12,14 +12,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-
-import { Prop } from '@/types';
+import Vue, { PropType } from 'vue';
 
 export default Vue.extend({
   props: {
     tabs: {
-      type: Array as Prop<string[]>,
+      type: Array as PropType<string[]>,
       default: () => [],
     },
   },

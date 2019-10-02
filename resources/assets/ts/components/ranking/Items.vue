@@ -33,15 +33,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
-import { Prop } from '@/types';
 import { RankingResultItem } from '@/types/ranking';
 
 export default Vue.extend({
   props: {
     items: {
-      type: Array as Prop<RankingResultItem[]>,
+      type: Array as PropType<RankingResultItem[]>,
       default: () => [],
     },
   },

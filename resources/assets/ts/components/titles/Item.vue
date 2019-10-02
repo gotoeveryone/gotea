@@ -1,55 +1,23 @@
 <template>
-  <li
-    :class="rowClass"
-    class="table-row"
-  >
+  <li :class="rowClass" class="table-row">
     <span class="table-column table-column_name">
-      <input
-        @change="save"
-        v-model="item.name"
-        type="text"
-      >
+      <input @change="save" v-model="item.name" type="text">
     </span>
     <span class="table-column table-column_name">
-      <input
-        @change="save"
-        v-model="item.nameEnglish"
-        type="text"
-      >
+      <input @change="save" v-model="item.nameEnglish" type="text">
     </span>
     <span class="table-column table-column_holding">
-      <input
-        @change="save"
-        v-model="item.holding"
-        type="text"
-        class="table-column_holding-input"
-      >
+      <input @change="save" v-model="item.holding" type="text" class="table-column_holding-input">
     </span>
-    <span
-      v-text="winnerName"
-      class="table-column table-column_winner"
-    />
+    <span v-text="winnerName" class="table-column table-column_winner" />
     <span class="table-column table-column_order">
-      <input
-        @change="save"
-        v-model="item.sortOrder"
-        type="text"
-        class="table-column_order-input"
-      >
+      <input @change="save" v-model="item.sortOrder" type="text" class="table-column_order-input">
     </span>
     <span class="table-column table-column_team">
-      <input
-        @change="save"
-        v-model="item.isTeam"
-        type="checkbox"
-      >
+      <input @change="save" v-model="item.isTeam" type="checkbox">
     </span>
     <span class="table-column table-column_filename">
-      <input
-        @change="save"
-        v-model="item.htmlFileName"
-        type="text"
-      >
+      <input @change="save" v-model="item.htmlFileName" type="text">
     </span>
     <span class="table-column table-column_modified">
       <input
@@ -60,41 +28,27 @@
       >
     </span>
     <span class="table-column table-column_closed">
-      <input
-        @change="save"
-        v-model="item.isClosed"
-        :disabled="!isSaved()"
-        type="checkbox"
-      >
+      <input @change="save" v-model="item.isClosed" :disabled="!isSaved()" type="checkbox">
     </span>
     <span class="table-column table-column_output">
-      <input
-        @change="save"
-        v-model="item.isOutput"
-        type="checkbox"
-      >
+      <input @change="save" v-model="item.isOutput" type="checkbox">
     </span>
     <span class="table-column table-column_open-detail">
-      <a
-        @click="select()"
-        v-text="label"
-        class="view-link"
-      />
+      <a @click="select()" v-text="label" class="view-link" />
     </span>
   </li>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import axios from 'axios';
 
-import { Prop } from '@/types';
 import { TitleResultItem } from '@/types/titles';
 
 export default Vue.extend({
   props: {
     item: {
-      type: Object as Prop<TitleResultItem>,
+      type: Object as PropType<TitleResultItem>,
       required: true,
     },
   },
