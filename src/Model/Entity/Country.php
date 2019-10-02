@@ -6,6 +6,16 @@ use Cake\ORM\TableRegistry;
 
 /**
  * 所属国エンティティ
+ *
+ * @property string $code
+ * @property string $name
+ * @property string $name_english
+ * @property string $label
+ * @property bool $has_title
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
+ *
+ * @property \Gotea\Model\Entity\Organization[] $organizations
  */
 class Country extends AppEntity
 {

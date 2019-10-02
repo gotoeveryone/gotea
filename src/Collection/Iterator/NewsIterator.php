@@ -28,6 +28,7 @@ class NewsIterator
             'htmlFileModified' => $item->html_file_modified->format('Y-m-d'),
             'isNewHistories' => $item->isNewHistories(),
             'isRecent' => $item->isRecentModified(),
+            'isClosed' => $item->is_closed,
         ];
     }
 }
