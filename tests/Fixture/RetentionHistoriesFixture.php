@@ -34,12 +34,14 @@ class RetentionHistoriesFixture extends TestFixture
         'modified_by' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '最終更新者', 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'fk_histories_to_player' => ['type' => 'index', 'columns' => ['player_id'], 'length' => []],
+            'fk_histories_to_country' => ['type' => 'index', 'columns' => ['country_id'], 'length' => []],
             'fk_histories_to_rank' => ['type' => 'index', 'columns' => ['rank_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'uq_retention_histories' => ['type' => 'unique', 'columns' => ['title_id', 'holding'], 'length' => []],
             'fk_histories_to_player' => ['type' => 'foreign', 'columns' => ['player_id'], 'references' => ['players', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'fk_histories_to_country' => ['type' => 'foreign', 'columns' => ['country_id'], 'references' => ['countries', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'fk_histories_to_rank' => ['type' => 'foreign', 'columns' => ['rank_id'], 'references' => ['ranks', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'fk_histories_to_title' => ['type' => 'foreign', 'columns' => ['title_id'], 'references' => ['titles', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
