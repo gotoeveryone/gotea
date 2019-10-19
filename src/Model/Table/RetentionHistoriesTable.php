@@ -10,6 +10,11 @@ use Cake\Validation\Validator;
 
 /**
  * 保持履歴
+ *
+ * @property \Gotea\Model\Table\TitlesTable|\Cake\ORM\Association\BelongsTo $Titles
+ * @property \Gotea\Model\Table\PlayersTable|\Cake\ORM\Association\BelongsTo $Players
+ * @property \Gotea\Model\Table\CountriesTable|\Cake\ORM\Association\BelongsTo $Countries
+ * @property \Gotea\Model\Table\RanksTable|\Cake\ORM\Association\BelongsTo $Ranks
  */
 class RetentionHistoriesTable extends AppTable
 {
@@ -23,9 +28,11 @@ class RetentionHistoriesTable extends AppTable
         // タイトルマスタ
         $this->belongsTo('Titles')
             ->setJoinType('INNER');
-        // 棋士マスタ
+        // 棋士
         $this->belongsTo('Players');
-        // 段位マスタ
+        // 出場国
+        $this->belongsTo('Countries');
+        // 段位
         $this->belongsTo('Ranks');
     }
 
@@ -65,6 +72,11 @@ class RetentionHistoriesTable extends AppTable
             ['title_id', 'holding'],
             '該当期の保持履歴がすでに存在します。'
         ));
+
+        $rules->add($rules->existsIn(['title_id'], 'Titles'));
+        $rules->add($rules->existsIn(['player_id'], 'Players'));
+        $rules->add($rules->existsIn(['country_id'], 'Countries'));
+        $rules->add($rules->existsIn(['rank_id'], 'Ranks'));
 
         return $rules;
     }

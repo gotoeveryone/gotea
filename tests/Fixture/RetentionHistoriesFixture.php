@@ -20,6 +20,7 @@ class RetentionHistoriesFixture extends TestFixture
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => 'サロゲートキー', 'autoIncrement' => true, 'precision' => null],
         'title_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => 'タイトルID', 'precision' => null, 'autoIncrement' => null],
         'player_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '優勝棋士ID', 'precision' => null, 'autoIncrement' => null],
+        'country_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '優勝棋士出場国ID', 'precision' => null, 'autoIncrement' => null],
         'rank_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '優勝棋士段位ID', 'precision' => null, 'autoIncrement' => null],
         'holding' => ['type' => 'integer', 'length' => 3, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '期', 'precision' => null, 'autoIncrement' => null],
         'target_year' => ['type' => 'integer', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '対象年', 'precision' => null, 'autoIncrement' => null],

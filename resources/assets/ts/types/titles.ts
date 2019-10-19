@@ -20,6 +20,7 @@ export interface Player {
   id: number;
   name: string;
   nameOther: string;
+  countryId: number;
   rankId: number;
   rankName: string;
 }

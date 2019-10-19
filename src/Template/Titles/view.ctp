@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \Gotea\View\AppView $this
+ * @var \Gotea\Model\Entity\Title $title
+ */
+?>
 <?= $this->Html->css('view', ['block' => true]) ?>
 <div class="detail-dialog">
     <!-- タブ -->
@@ -150,6 +156,9 @@
                                 <span class="inner-column"><span>タイトル名：</span><?= h($retention->name) ?></span>
                                 <span class="inner-column"><?= h($retention->team_label) ?></span>
                                 <span class="inner-column"><span>優勝者：</span><?= h($retention->winner_name) ?></span>
+                                <?php if ($title->country->isWorlds() && !$retention->is_team) : ?>
+                                <span class="inner-column"><span>出場国：</span><?= h($retention->country->name) ?></span>
+                                <?php endif ?>
                                 <?php if ($retention->isRecent()) : ?>
                                     <span class="inner-column"><span class="mark-new">NEW!</span></span>
                                 <?php endif ?>
@@ -168,6 +177,9 @@
                                 <span class="inner-column"><span>タイトル名：</span><?= h($history->name) ?></span>
                                 <span class="inner-column"><?= h($history->team_label) ?></span>
                                 <span class="inner-column"><span>優勝者：</span><?= h($history->winner_name) ?></span>
+                                <?php if ($title->country->isWorlds() && !$history->is_team) : ?>
+                                <span class="inner-column"><span>出場国：</span><?= h($history->country->name) ?></span>
+                                <?php endif ?>
                             </div>
                             <div class="detail_box_item detail_box_item-buttons box-2">
                                 <button type="button" class="button button-secondary" value="edit" @click="select('<?= $history->id ?>')">編集</button>

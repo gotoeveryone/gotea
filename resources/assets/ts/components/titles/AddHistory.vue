@@ -123,6 +123,11 @@
             name="player_id"
           >
           <input
+            v-model="countryId"
+            type="hidden"
+            name="country_id"
+          >
+          <input
             v-model="rankId"
             type="hidden"
             name="rank_id"
@@ -134,9 +139,28 @@
         class="detail_box_item box-2"
       >
         <div class="input">
+          <label>設定棋士出場国</label>
+          <select
+            @change="changeCountry($event)"
+            v-model="countryId"
+          >
+            <option
+              v-for="country in countries"
+              :key="country.id"
+              :value="country.id"
+              v-text="country.name"
+            />
+          </select>
+        </div>
+      </div>
+      <div
+        v-if="!isTeamHidden"
+        class="detail_box_item box-2"
+      >
+        <div class="input">
           <label>設定棋士段位</label>
           <select
-            @change="changeValue($event)"
+            @change="changeRank($event)"
             v-model="rankId"
           >
             <option
@@ -148,7 +172,7 @@
           </select>
         </div>
       </div>
-      <div class="detail_box_item box-7" />
+      <div class="detail_box_item box-5" />
     </li>
     <template v-if="!isTeamHidden">
       <li class="label-row">
@@ -239,6 +263,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      countries: [],
       ranks: [],
       edit: false,
       viewName: '',
@@ -247,6 +272,7 @@ export default Vue.extend({
       acquired: '',
       name: '',
       playerId: null as number | null,
+      countryId: null as number | null,
       rankId: null as number | null,
       teamName: null,
       isTeamHidden: '',
@@ -275,6 +301,7 @@ export default Vue.extend({
           this.isTeamHidden = this.getTeamHidden(json.isTeam);
           this.playerId = json.playerId;
           this.holding = json.holding;
+          this.countryId = json.countryId;
           this.rankId = json.rankId;
           this.year = json.targetYear;
           this.acquired = json.acquired;
@@ -288,10 +315,15 @@ export default Vue.extend({
   mounted() {
     this.viewName = this.initialViewName;
     this.isTeamHidden = this.getTeamHidden(this.isTeam);
+    axios.get('/api/countries/').then(res => (this.countries = res.data.response));
     axios.get('/api/ranks/').then(res => (this.ranks = res.data.response));
   },
   methods: {
-    changeValue($event: Event) {
+    changeCountry($event: Event) {
+      const target = $event.target as HTMLInputElement;
+      this.countryId = Number(target.value);
+    },
+    changeRank($event: Event) {
       const target = $event.target as HTMLInputElement;
       this.rankId = Number(target.value);
     },
@@ -350,6 +382,7 @@ export default Vue.extend({
     },
     select(player: Player) {
       this.playerId = player.id || null;
+      this.countryId = player.countryId || null;
       this.rankId = player.rankId || null;
       this.viewName = player.name;
       this.name = '';
@@ -363,6 +396,7 @@ export default Vue.extend({
       this.acquired = '';
       this.name = '';
       this.playerId = null;
+      this.countryId = null;
       this.rankId = null;
       this.teamName = null;
       this.players = [];
