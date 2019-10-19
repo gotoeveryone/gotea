@@ -62,6 +62,24 @@ class RetentionHistoriesTableTest extends TestCase
     }
 
     /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $this->RetentionHistories->initialize([]);
+
+        // Association
+        $associations = collection($this->RetentionHistories->associations());
+        $compare = ['Titles', 'Players', 'Countries', 'Ranks'];
+        $this->assertEquals($associations->count(), count($compare));
+        $associations->each(function ($a) use ($compare) {
+            $this->assertTrue(in_array($a->getName(), $compare, true));
+        });
+    }
+
+    /**
      * バリデーション
      *
      * @return void
@@ -140,6 +158,38 @@ class RetentionHistoriesTableTest extends TestCase
         $data['acquired'] = '20180101';
         $result = $this->RetentionHistories->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
+    {
+        $data = $this->RetentionHistories->find()->first();
+
+        // title_id と holding が重複
+        $result = $this->RetentionHistories->newEntity([
+            'title_id' => $data->title_id,
+            'holding' => $data->holding,
+        ]);
+        $this->assertNotEmpty($result->getErrors());
+
+        // リレーション先に存在しないIDを設定
+        $keys = ['title_id', 'player_id', 'country_id', 'rank_id'];
+        foreach ($keys as $key) {
+            $result = $this->RetentionHistories->newEntity([
+                $key => 999,
+            ]);
+            $this->assertFalse($this->RetentionHistories->checkRules($result));
+        }
+
+        // 成功
+        $result = $this->RetentionHistories->newEntity(array_map(function ($key) {
+            return [$key => 1];
+        }, $keys));
+        $this->assertTrue($this->RetentionHistories->checkRules($result));
     }
 
     /**

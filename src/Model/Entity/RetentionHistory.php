@@ -20,6 +20,7 @@ namespace Gotea\Model\Entity;
  *
  * @property \Gotea\Model\Entity\Title $title
  * @property \Gotea\Model\Entity\Player|null $player
+ * @property \Gotea\Model\Entity\Country|null $country
  * @property \Gotea\Model\Entity\Rank|null $rank
  */
 class RetentionHistory extends AppEntity

@@ -247,6 +247,7 @@ class Player extends AppEntity
             'nameOther' => $this->name_other,
             'sex' => $this->sex,
             'birthday' => $this->birthday ? $this->birthday->format('Y/m/d') : null,
+            'countryId' => $this->country->id,
             'countryName' => $this->country->name,
             'rankId' => $this->rank->id,
             'rankName' => $this->rank->name,

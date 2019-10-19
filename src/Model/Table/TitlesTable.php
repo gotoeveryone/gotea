@@ -73,6 +73,9 @@ class TitlesTable extends AppTable
             'contain' => [
                 'Countries',
                 'RetentionHistories',
+                'RetentionHistories.Players',
+                'RetentionHistories.Countries',
+                'RetentionHistories.Ranks',
             ],
         ]);
     }
@@ -102,6 +105,7 @@ class TitlesTable extends AppTable
             },
             'RetentionHistories.Titles',
             'RetentionHistories.Players',
+            'RetentionHistories.Countries',
             'RetentionHistories.Ranks'
         ]);
 

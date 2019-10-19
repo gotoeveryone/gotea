@@ -87,11 +87,24 @@ class Title extends AppEntity
 
         if ($this->is_team) {
             return $history->win_group_name;
-        } elseif (!$isJp) {
-            return "{$history->player->name_english} ({$history->rank->rank_numeric} dan)";
-        } else {
+        }
+
+        // 日本語表記
+        if ($isJp) {
+            // 国際棋戦
+            if ($this->country->isWorlds()) {
+                return "{$history->player->name} {$history->rank->name} ({$history->country->name})";
+            }
+
             return "{$history->player->name} {$history->rank->name}";
         }
+
+        // 国際棋戦
+        if ($this->country->isWorlds()) {
+            return "{$history->player->name_english} ({$history->country->name_english})";
+        }
+
+        return "{$history->player->name_english} ({$history->rank->rank_numeric} dan)";
     }
 
     /**
