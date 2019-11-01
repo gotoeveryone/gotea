@@ -105,6 +105,11 @@ class NotificationsTableTest extends TestCase
         $data['is_draft'] = 'testtest';
         $result = $this->Notifications->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
+        // is_permanent
+        $data = $params;
+        $data['is_permanent'] = 'testtest';
+        $result = $this->Notifications->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
 
         // dateTime
         // published

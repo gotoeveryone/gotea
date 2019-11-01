@@ -22,6 +22,7 @@ class NotificationsFixture extends TestFixture
         'content' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '本文', 'precision' => null],
         'is_draft' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '下書き', 'precision' => null],
         'published' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '公開日時', 'precision' => null],
+        'is_permanent' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '恒久表示フラグ', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '初回登録日時', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '更新日時', 'precision' => null],
         '_constraints' => [

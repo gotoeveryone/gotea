@@ -6,6 +6,8 @@ use Cake\View\View;
 
 /**
  * アプリケーション基底のビュー
+ *
+ * @property \Gotea\View\Helper\DateHelper $Date
  */
 class AppView extends View
 {

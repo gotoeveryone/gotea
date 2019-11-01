@@ -1,0 +1,52 @@
+/* -------------------------------------------
+   お知らせ
+ ------------------------------------------- */
+.notifications {
+  padding: 10px;
+
+  .table-body {
+    .table-row {
+      padding-top: 0.7rem;
+    }
+  }
+
+  .table-column {
+    &_title {
+      width: 20%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &_content {
+      width: 37%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &_status {
+      width: 5%;
+      max-width: 80px;
+      text-align: center;
+    }
+
+    &_permanent {
+      width: 8%;
+      max-width: 80px;
+      text-align: center;
+    }
+
+    &_published {
+      width: 15%;
+      max-width: 180px;
+      text-align: center;
+    }
+
+    &_actions {
+      width: 15%;
+      min-width: 200px;
+      text-align: center;
+    }
+  }
+}

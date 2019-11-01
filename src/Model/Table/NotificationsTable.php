@@ -70,6 +70,10 @@ class NotificationsTable extends AppTable
             ->requirePresence('published')
             ->notEmpty('published');
 
+        $validator
+            ->boolean('is_permanent')
+            ->notEmpty('is_permanent');
+
         return $validator;
     }
 

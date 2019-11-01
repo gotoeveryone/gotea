@@ -1,5 +1,5 @@
-@import 'module/_variables.scss';
-@import 'module/_mixin.scss';
+@import 'base/_variables.scss';
+@import 'base/_mixin.scss';
 
 %row {
   @include flex-justify-start();

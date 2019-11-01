@@ -42,7 +42,15 @@
                 ]) ?>
             </div>
         </li>
-        <li class="detail_box_item box-10">
+        <li class="detail_box_item box-2">
+            <div class="input">
+                <div class="label-row"><?= __d('model', 'is_permanent') ?></div>
+                <?= $this->Form->control('is_permanent', [
+                    'label' => ['class' => 'input-row checkbox-label', 'text' => false],
+                ]) ?>
+            </div>
+        </li>
+        <li class="detail_box_item box-8">
             <?= $this->Form->control('published', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'published')],
                 'year' => [
