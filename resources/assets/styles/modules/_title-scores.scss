@@ -1,0 +1,97 @@
+/* -------------------------------------------
+   タイトル勝敗検索
+ ------------------------------------------- */
+.title-scores {
+  .search-header {
+    .started {
+      margin-right: 0.5rem;
+      width: 120px;
+    }
+
+    .ended {
+      margin-left: 0.5rem;
+      width: 120px;
+    }
+  }
+
+  .table-row-unofficial {
+    background-color: $c_unofficial;
+  }
+
+  .table-column {
+    &_id {
+      width: 6%;
+      text-align: center;
+    }
+
+    &_title {
+      width: 28%;
+    }
+
+    &_country,
+    &_date {
+      width: 10%;
+    }
+
+    &_name {
+      width: 18%;
+    }
+
+    &_operation {
+      @include flex-center();
+
+      width: 10%;
+    }
+  }
+
+  .player-scores-header {
+    @include flex-justify-between();
+
+    height: 40px;
+
+    .score-detail {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+
+  .player-scores-results {
+    height: calc(100% - 40px);
+    border: 1px solid $c_black;
+
+    .table-header {
+      .table-row {
+        height: 35px;
+      }
+    }
+
+    .table-body {
+      height: calc(100% - 35px);
+      overflow-y: auto;
+    }
+
+    .table-column {
+      &_id {
+        width: 10%;
+      }
+
+      &_title {
+        width: 30%;
+      }
+
+      &_country,
+      &_date {
+        width: 10%;
+      }
+
+      &_name {
+        width: 20%;
+
+        .selected {
+          color: #04d;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

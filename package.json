@@ -2,7 +2,7 @@
   "name": "gotea",
   "version": "1.0.0",
   "description": "gotea front development tools configuration",
-  "main": "resources/ts/main.ts",
+  "main": "resources/scripts/main.ts",
   "engines": {
     "node": ">=8 <11"
   },
@@ -12,9 +12,9 @@
     "prod": "yarn run webpack --mode production -p",
     "lint": "yarn run eslint && yarn run stylelint",
     "lint:fix": "yarn run eslint:fix && yarn run stylelint:fix",
-    "eslint": "eslint --ext .ts,.vue ./resources/assets/ts",
+    "eslint": "eslint --ext .ts,.vue ./resources/assets/scripts",
     "eslint:fix": "yarn run eslint --fix",
-    "stylelint": "stylelint \"./resources/assets/sass/**/*.scss\" \"./resources/assets/ts/**/*.vue\"",
+    "stylelint": "stylelint \"./resources/assets/styles/**/*.scss\" \"./resources/assets/scripts/**/*.vue\"",
     "stylelint:fix": "yarn run stylelint --fix"
   },
   "author": "Kazuki Kamizuru",

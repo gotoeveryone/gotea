@@ -1,0 +1,22 @@
+/* -------------------------------------------
+   段位別棋士数検索
+ ------------------------------------------- */
+.categories {
+  @include sp() {
+    width: 100%;
+  }
+
+  width: 200px;
+
+  .table-column {
+    &_rank {
+      width: 40%;
+      text-align: right;
+    }
+
+    &_count {
+      width: 60%;
+      text-align: right;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+/* -------------------------------------------
+   勝敗ランキング画面
+ ------------------------------------------- */
+.ranking {
+  width: 500px;
+
+  &_year,
+  &_country,
+  &_limit {
+    margin-right: 0.4rem;
+    width: calc(33% - 0.4rem);
+  }
+
+  &_date {
+    &-duration {
+      margin: auto 0.4rem;
+    }
+  }
+
+  .table-column {
+    &_no {
+      width: 10%;
+      text-align: center;
+    }
+
+    &_percent {
+      width: 15%;
+      text-align: center;
+    }
+
+    &_player {
+      width: 45%;
+    }
+
+    &_point {
+      width: 10%;
+      text-align: center;
+    }
+  }
+}
