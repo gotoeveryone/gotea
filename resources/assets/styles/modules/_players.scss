@@ -1,0 +1,102 @@
+/* -------------------------------------------
+   棋士情報検索
+ ------------------------------------------- */
+.players {
+  .search-header {
+    .joined {
+      margin-right: 0.3rem;
+      width: 100px;
+
+      &.joined-to {
+        margin-left: 0.3rem;
+      }
+    }
+  }
+
+  .table-row-retired {
+    background-color: $c_gray;
+  }
+
+  .table-column {
+    &_id {
+      width: 6%;
+      text-align: center;
+    }
+
+    &_name {
+      @include sp() {
+        width: 23%;
+      }
+
+      width: 20%;
+    }
+
+    &_country {
+      @include sp() {
+        width: 8%;
+      }
+
+      width: 6%;
+      text-align: center;
+    }
+
+    &_enrollment {
+      @include sp() {
+        width: 13%;
+      }
+
+      width: 10%;
+    }
+
+    &_rank,
+    &_sex {
+      @include sp() {
+        width: 7%;
+      }
+
+      width: 5%;
+      text-align: center;
+    }
+
+    &_organization {
+      @include sp() {
+        width: 13%;
+      }
+
+      width: 10%;
+      text-align: center;
+    }
+
+    &_score {
+      @include sp() {
+        display: none;
+      }
+
+      display: flex;
+      padding: 0;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      width: 9%;
+
+      &-summary {
+        width: 100%;
+        text-align: center;
+      }
+
+      &-point {
+        padding: 0;
+        min-width: 20%;
+        text-align: center;
+      }
+    }
+
+    &_point {
+      @include sp() {
+        display: none;
+      }
+
+      width: 3%;
+      text-align: center;
+    }
+  }
+}

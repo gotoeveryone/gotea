@@ -1,0 +1,55 @@
+/* -------------------------------------------
+   タイトル情報検索
+ ------------------------------------------- */
+.titles {
+  .table-row {
+    &-closed {
+      background-color: $c_gray;
+    }
+  }
+
+  .table-column {
+    &_name {
+      width: 17%;
+    }
+
+    &_winner {
+      width: 15%;
+    }
+
+    &_holding,
+    &_order {
+      width: 5%;
+      text-align: center;
+
+      &-input {
+        text-align: right;
+      }
+    }
+
+    &_team,
+    &_closed,
+    &_output {
+      width: 5%;
+      text-align: center;
+    }
+
+    &_filename {
+      width: 10%;
+    }
+
+    &_modified {
+      width: 10%;
+      text-align: center;
+
+      &-input {
+        text-align: center;
+      }
+    }
+
+    &_open-detail {
+      width: 6%;
+      text-align: center;
+    }
+  }
+}

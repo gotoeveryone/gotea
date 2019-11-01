@@ -7,14 +7,18 @@ const StylelintBarePlugin = require('stylelint-bare-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 /* eslint-enable @typescript-eslint/no-var-requires */
 
+const webrootDir = path.join(__dirname, 'webroot');
+const stylesDir = path.join(__dirname, 'resources', 'assets', 'styles');
+const scriptsDir = path.join(__dirname, 'resources', 'assets', 'scripts');
+
 module.exports = () => {
   return [
     {
       entry: {
-        'js/app': path.resolve(__dirname, 'resources', 'assets', 'ts', 'main.ts'),
+        'js/app': path.join(scriptsDir, 'main.ts'),
       },
       output: {
-        path: path.join(__dirname, 'webroot'),
+        path: webrootDir,
       },
       performance: {
         hints: false,
@@ -23,7 +27,7 @@ module.exports = () => {
         extensions: ['.ts', '.vue', '.js'],
         alias: {
           vue$: 'vue/dist/vue.common',
-          '@': path.resolve('resources/assets/ts'),
+          '@': scriptsDir,
         },
       },
       stats: 'minimal',
@@ -77,8 +81,8 @@ module.exports = () => {
                 loader: 'sass-resources-loader',
                 options: {
                   resources: [
-                    path.resolve(__dirname, 'resources/assets/sass/module/_variables.scss'),
-                    path.resolve(__dirname, './resources/assets/sass/module/_mixin.scss'),
+                    path.join(stylesDir, 'base', '_variables.scss'),
+                    path.join(stylesDir, 'base', '_mixin.scss'),
                   ],
                 },
               },
@@ -89,11 +93,11 @@ module.exports = () => {
     },
     {
       entry: {
-        'css/app': path.resolve(__dirname, 'resources', 'assets', 'sass', 'app.scss'),
-        'css/view': path.resolve(__dirname, 'resources', 'assets', 'sass', 'view.scss'),
+        'css/app': path.join(stylesDir, 'app.scss'),
+        'css/view': path.join(stylesDir, 'view.scss'),
       },
       output: {
-        path: path.join(__dirname, 'webroot'),
+        path: webrootDir,
       },
       performance: {
         hints: false,
@@ -109,7 +113,7 @@ module.exports = () => {
           filename: '[name].css',
         }),
         new StylelintBarePlugin({
-          files: ['resources/assets/sass/**/*.scss', 'resources/assets/vue/**/*.vue'],
+          files: ['resources/assets/styles/**/*.scss', 'resources/assets/scripts/**/*.vue'],
         }),
       ],
       module: {

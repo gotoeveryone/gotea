@@ -1,0 +1,13 @@
+/* -------------------------------------------
+   各種情報クエリ更新
+ ------------------------------------------- */
+.update-score {
+  .queries {
+    margin-bottom: 5px;
+    width: 100%;
+    height: calc(100% - 3.8rem);
+    font-size: 12px;
+    overflow-y: auto;
+    border: 1px solid $c_black;
+  }
+}
