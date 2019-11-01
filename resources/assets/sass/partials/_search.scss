@@ -1,0 +1,166 @@
+/* -------------------------------------------
+   検索エリア
+ ------------------------------------------- */
+.search-header {
+  @include flex-justify-start();
+
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding: $rowPadding;
+  flex-wrap: wrap;
+  background-color: $c_white;
+  border: 0.2rem solid #bbb;
+  border-radius: 0.4rem;
+}
+
+.search-row {
+  @include sp() {
+    display: block;
+  }
+
+  @include flex-searcharea();
+
+  width: 100%;
+}
+
+.search-box {
+  @include sp() {
+    margin: 0.3rem;
+  }
+
+  @include flex-justify-start();
+
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  margin-left: 1rem;
+  flex-wrap: wrap;
+
+  &_label {
+    display: block;
+    margin-right: 0.3rem;
+    width: 100%;
+  }
+
+  .between-label {
+    display: inline;
+  }
+
+  &-right {
+    @include sp() {
+      @include flex-justify-end();
+    }
+
+    margin-left: auto;
+  }
+
+  .input {
+    @include sp() {
+      width: 100%;
+    }
+  }
+}
+
+/* -------------------------------------------
+   ページネーション
+ ------------------------------------------- */
+.pagination {
+  @include sp() {
+    @include flex-center();
+
+    flex-wrap: wrap;
+  }
+
+  @include flex-justify-between();
+
+  margin: 0.4rem auto;
+
+  &-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .result-count {
+    padding-left: 0.3rem;
+    color: $c_red;
+  }
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  &-item {
+    margin: auto 0.15rem;
+    background-color: $c_gray;
+
+    &-link {
+      display: block;
+      padding: 0.1rem 0.5rem 0.2rem;
+      color: $c_black;
+      text-decoration: none;
+
+      &:hover {
+        background-color: darken($c_gray, 10%);
+        transition: background-color 0.3s ease-in-out;
+      }
+    }
+
+    &.active {
+      font-weight: bold;
+    }
+
+    &.active,
+    &.disabled {
+      background-color: darken($c_gray, 10%);
+
+      .pager-item-link {
+        cursor: initial;
+
+        &:hover {
+          background-color: inherit;
+        }
+      }
+    }
+  }
+}
+
+/* -------------------------------------------
+   一覧エリア
+ ------------------------------------------- */
+.search-results {
+  @include sp() {
+    &,
+    & * {
+      font-size: 0.6rem;
+      word-wrap: break-word;
+    }
+  }
+
+  border: 1px solid $c_black;
+}
+
+.table-header,
+.table-body {
+  margin: 0;
+  padding: 0;
+}
+
+.table-header {
+  background-color: $c_table-header;
+}
+
+.table-body {
+  margin-bottom: 0.5rem;
+  border-top: none;
+}
+
+.table-row {
+  @include flex-justify-start();
+
+  padding: 0.3rem 0.5rem;
+}
+
+.table-column {
+  padding: 0.1rem 0.3rem;
+}

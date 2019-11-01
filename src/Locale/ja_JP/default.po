@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "POT-Creation-Date: 2018-01-02 20:07+0900\n"
-"PO-Revision-Date: 2019-04-11 14:17+0900\n"
+"PO-Revision-Date: 2019-11-01 12:57+0900\n"
 "Last-Translator: Kazuki_Kamizuru <webmaster@k2ss.info>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.4\n"
 
 msgid "Score Detail"
 msgstr "成績詳細"
@@ -84,3 +84,30 @@ msgstr "ID {0} を削除します。よろしいですか?"
 
 msgid "The score {0} - {1} is saved"
 msgstr "[{0}: {1}] を保存しました"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "Content"
+msgstr "本文"
+
+msgid "Status"
+msgstr "状態"
+
+msgid "Permanent"
+msgstr "常時表示"
+
+msgid "Published"
+msgstr "公開日時"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Copy"
+msgstr "コピー"
+
+msgid "Check"
+msgstr "✓"

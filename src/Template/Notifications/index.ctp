@@ -22,11 +22,12 @@
     <div class="search-results">
         <ul class="table-header">
             <li class="table-row">
-                <span class="table-column table-column_title"><?= __('タイトル') ?></span>
-                <span class="table-column table-column_content"><?= __('本文') ?></span>
-                <span class="table-column table-column_status"><?= __('状態') ?></span>
-                <span class="table-column table-column_published"><?= __('公開日時') ?></span>
-                <span class="table-column table-column_actions"><?= __('操作') ?></span>
+                <span class="table-column table-column_title"><?= __('Title') ?></span>
+                <span class="table-column table-column_content"><?= __('Content') ?></span>
+                <span class="table-column table-column_status"><?= __('Status') ?></span>
+                <span class="table-column table-column_permanent"><?= __('Permanent') ?></span>
+                <span class="table-column table-column_published"><?= __('Published') ?></span>
+                <span class="table-column table-column_actions"><?= __('Actions') ?></span>
             </li>
         </ul>
         <?php if (!empty($notifications)) : ?>
@@ -42,21 +43,24 @@
                         <span class="table-column table-column_status">
                             <?= h($notification->status) ?>
                         </span>
+                        <span class="table-column table-column_permanent">
+                            <?= $notification->is_permanent ? __('Check') : '' ?>
+                        </span>
                         <span class="table-column table-column_published">
-                            <?= $this->Date->formatToDateTime($notification->published) ?>
+                            <?= $this->Date->format($notification->published, 'yyyy-MM-dd HH:mm:ss') ?>
                         </span>
                         <span class="table-column table-column_actions">
-                            <?= $this->Html->link(__('編集'), [
+                            <?= $this->Html->link(__('Edit'), [
                                 '_name' => 'edit_notification', $notification->id,
                             ], [
                                 'class' => 'layout-button button-secondary',
                             ]) ?>
-                            <?= $this->Html->link(__('コピー'), [
+                            <?= $this->Html->link(__('Copy'), [
                                 '_name' => 'new_notification', 'from' => $notification->id,
                             ], [
                                 'class' => 'layout-button button-secondary',
                             ]) ?>
-                            <?= $this->Form->postLink(__('削除'), [
+                            <?= $this->Form->postLink(__('Delete'), [
                                 '_name' => 'delete_notification', $notification->id,
                             ], [
                                 'class' => 'layout-button button-danger',

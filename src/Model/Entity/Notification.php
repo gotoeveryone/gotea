@@ -9,6 +9,7 @@ namespace Gotea\Model\Entity;
  * @property string $content
  * @property bool $is_draft
  * @property string $status
+ * @property bool $is_permanent
  * @property \Cake\I18n\FrozenTime $published
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -30,6 +31,7 @@ class Notification extends AppEntity
         'content' => true,
         'is_draft' => true,
         'published' => true,
+        'is_permanent' => true,
         'created' => true,
         'modified' => true
     ];
