@@ -1,55 +1,63 @@
 {
-    "name": "gotoeveryone/gotea",
-    "description": "IGO players and titles management system.",
-    "homepage": "https://gotoeveryone.k2ss.info",
-    "authors": [
-        {
-            "name": "Kazuki Kamizuru",
-            "email": "webmaster@k2ss.info",
-            "homepage": "https://k2ss.info/",
-            "role": "Administrator"
-        }
+  "name": "gotoeveryone/gotea",
+  "description": "IGO players and titles management system.",
+  "homepage": "https://gotoeveryone.k2ss.info",
+  "authors": [
+    {
+      "name": "Kazuki Kamizuru",
+      "email": "webmaster@k2ss.info",
+      "homepage": "https://k2ss.info/",
+      "role": "Administrator"
+    }
+  ],
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": "^7.1.3",
+    "cakephp/cakephp": "3.8.*",
+    "mobiledetect/mobiledetectlib": "^2.8",
+    "cakephp/migrations": "^1.6",
+    "cakephp/plugin-installer": "^1.0",
+    "vlucas/phpdotenv": "^2.4",
+    "fabpot/goutte": "^3.2",
+    "gotoeveryone/cake-parts": "0.0.*"
+  },
+  "require-dev": {
+    "psy/psysh": "@stable",
+    "cakephp/debug_kit": "~3.0",
+    "cakephp/bake": "~1.1",
+    "phpunit/phpunit": "^6.1",
+    "cakephp/cakephp-codesniffer": "^3.0"
+  },
+  "suggest": {
+    "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
+    "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
+  },
+  "autoload": {
+    "psr-4": {
+      "Gotea\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Gotea\\Test\\": "tests",
+      "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": "Gotea\\Console\\Installer::postInstall",
+    "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+    "check": [
+      "@test",
+      "@cs-check"
     ],
-    "type": "project",
-    "license": "MIT",
-    "require": {
-        "php": "^7.1.3",
-        "cakephp/cakephp": "3.7.*",
-        "mobiledetect/mobiledetectlib": "^2.8",
-        "cakephp/migrations": "^1.6",
-        "cakephp/plugin-installer": "^1.0",
-        "vlucas/phpdotenv": "^2.4",
-        "fabpot/goutte": "^3.2",
-        "gotoeveryone/cake-parts": "0.0.*"
-    },
-    "require-dev": {
-        "psy/psysh": "@stable",
-        "cakephp/debug_kit": "~3.0",
-        "cakephp/bake": "~1.1",
-        "phpunit/phpunit": "^6.1",
-        "cakephp/cakephp-codesniffer": "^3.0"
-    },
-    "suggest": {
-        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
-        "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
-    },
-    "autoload": {
-        "psr-4": {
-            "Gotea\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Gotea\\Test\\": "tests",
-            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
-        }
-    },
-    "scripts": {
-        "post-install-cmd": "Gotea\\Console\\Installer::postInstall",
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
-        "phpcs": "phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "phpunit": "phpunit"
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+    "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+    "test": "phpunit --colors=always"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  }
 }

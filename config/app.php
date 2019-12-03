@@ -1,4 +1,12 @@
 <?php
+
+use Cake\Cache\Engine\FileEngine;
+use Cake\Database\Connection;
+use Cake\Database\Driver\Mysql;
+use Cake\Log\Engine\FileLog;
+use Cake\Mailer\Transport\SmtpTransport;
+use Gotea\Error\AppExceptionRenderer;
+
 return [
     /**
      * Debug Level:
@@ -65,7 +73,7 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => env('SECURITY_SALT', '__SALT__'),
+        'salt' => env('SECURITY_SALT'),
     ],
 
     /**
@@ -86,7 +94,7 @@ return [
      */
     'Cache' => [
         'default' => [
-            'className' => 'File',
+            'className' => FileEngine::class,
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
@@ -98,7 +106,7 @@ return [
          * If you set 'className' => 'Null' core cache will be disabled.
          */
         '_cake_core_' => [
-            'className' => 'Cake\Cache\Engine\FileEngine',
+            'className' => FileEngine::class,
             'prefix' => 'gotea_cake_core_',
             'path' => CACHE . 'persistent/',
             'serialize' => true,
@@ -113,7 +121,7 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          */
         '_cake_model_' => [
-            'className' => 'Cake\Cache\Engine\FileEngine',
+            'className' => FileEngine::class,
             'prefix' => 'gotea_cake_model_',
             'path' => CACHE . 'models/',
             'serialize' => true,
@@ -127,7 +135,7 @@ return [
          * Duration will be set to '+2 seconds' in bootstrap.php when debug = true
          */
         '_cake_routes_' => [
-            'className' => 'Cake\Cache\Engine\FileEngine',
+            'className' => FileEngine::class,
             'prefix' => 'gotea_cake_routes_',
             'path' => CACHE,
             'serialize' => true,
@@ -167,7 +175,7 @@ return [
      */
     'Error' => [
         'errorLevel' => E_ALL & ~E_DEPRECATED,
-        'exceptionRenderer' => 'Gotea\Error\AppExceptionRenderer',
+        'exceptionRenderer' => AppExceptionRenderer::class,
         'skipLog' => [],
         'log' => true,
         'trace' => true,
@@ -194,7 +202,7 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => 'Smtp',
+            'className' => SmtpTransport::class,
             // The following keys are used in SMTP transports
             'host' => env('EMAIL_HOST', 'localhost'),
             'port' => env('EMAIL_PORT', 25),
@@ -243,8 +251,8 @@ return [
      */
     'Datasources' => [
         'default' => [
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Mysql',
+            'className' => Connection::class,
+            'driver' => Mysql::class,
             'persistent' => false,
             'host' => env('DB_HOST', 'localhost'),
             /**
@@ -288,8 +296,8 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Mysql',
+            'className' => Connection::class,
+            'driver' => Mysql::class,
             'persistent' => false,
             'host' => env('DB_TEST_HOST', 'localhost'),
             'port' => env('DB_TEST_PORT', 3306),
@@ -311,7 +319,7 @@ return [
      */
     'Log' => [
         'debug' => [
-            'className' => 'Cake\Log\Engine\FileLog',
+            'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-access',
             'url' => env('LOG_DEBUG_URL', null),
@@ -319,7 +327,7 @@ return [
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [
-            'className' => 'Cake\Log\Engine\FileLog',
+            'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-error',
             'url' => env('LOG_ERROR_URL', null),
@@ -328,7 +336,7 @@ return [
         ],
         // To enable this dedicated query log, you need set your datasource's log flag to true
         'queries' => [
-            'className' => 'Cake\Log\Engine\FileLog',
+            'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-query',
             'url' => env('LOG_QUERIES_URL', null),

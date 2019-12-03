@@ -19,10 +19,10 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Gotoeveryone\Middleware\TraceMiddleware;
-use Gotoeveryone\Middleware\TransactionMiddleware;
+use Cake\Routing\Route\DashedRoute;
 
 /**
  * The default class to use for all routes
@@ -42,13 +42,19 @@ use Gotoeveryone\Middleware\TransactionMiddleware;
  * `:action` markers.
  *
  */
-Router::defaultRouteClass('DashedRoute');
+Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    // ミドルウェアの登録
-    $routes->registerMiddleware('trace', new TraceMiddleware())
-        ->registerMiddleware('transaction', new TransactionMiddleware())
-        ->applyMiddleware('trace', 'transaction');
+    // Register scoped middleware for in scopes.
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    /**
+     * Apply a middleware to the current route scope.
+     * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
+     */
+    $routes->applyMiddleware('csrf');
 
     $routes->scope('/', ['controller' => 'Users'], function (RouteBuilder $routes) {
         $routes->get('/', ['action' => 'index'], 'top');
@@ -178,5 +184,17 @@ Router::scope('/', function (RouteBuilder $routes) {
     });
 
     // フォールバックメソッド
-    // $routes->fallbacks('DashedRoute');
+    // $routes->fallbacks(DashedRoute::class);
 });
+
+/**
+ * If you need a different set of middleware or none at all,
+ * open new scope and define routes there.
+ *
+ * ```
+ * Router::scope('/api', function (RouteBuilder $routes) {
+ *     // No $routes->applyMiddleware() here.
+ *     // Connect API actions here.
+ * });
+ * ```
+ */

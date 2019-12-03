@@ -50,7 +50,7 @@ jobs:
       - run: composer install -n --prefer-dist
       - save_cache:
           <<: *save_composer_cache
-      - run: composer phpcs
+      - run: composer cs-check
 
   test:
     docker:
@@ -70,7 +70,7 @@ jobs:
       - save_cache:
           <<: *save_composer_cache
       - run: cp .env.example .env
-      - run: composer phpunit
+      - run: composer test
 
   deploy:
     docker:
