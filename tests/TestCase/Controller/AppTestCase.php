@@ -33,12 +33,10 @@ abstract class AppTestCase extends IntegrationTestCase
     {
         $this->session([
             'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'account' => env('TEST_USER'),
-                    'name' => 'テスト',
-                    'role' => '管理者',
-                ],
+                'id' => 1,
+                'account' => env('TEST_USER'),
+                'name' => 'テスト',
+                'role' => '管理者',
             ],
         ]);
     }
