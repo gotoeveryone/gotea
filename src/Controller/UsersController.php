@@ -19,7 +19,8 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'login']);
+
+        $this->Authentication->allowUnauthenticated(['index', 'login']);
     }
 
     /**
@@ -30,8 +31,8 @@ class UsersController extends AppController
     public function index()
     {
         // すでにログイン済みならリダイレクト
-        if ($this->Auth->user()) {
-            return $this->redirect($this->Auth->redirectUrl());
+        if ($this->Authentication->getIdentity()) {
+            return $this->redirect($this->getLoginRedirectUrl());
         }
 
         $this->viewBuilder()->setLayout('login');
@@ -54,13 +55,9 @@ class UsersController extends AppController
         }
 
         // ログイン成功→リダイレクト
-        if ($this->Auth->login($credentials)) {
-            $redirect = $this->Auth::QUERY_STRING_REDIRECT;
-            $this->setRequest($this->getRequest()->withQueryParams([
-                $redirect => $this->getRequest()->getData($redirect),
-            ]));
-
-            return $this->redirect($this->Auth->redirectUrl());
+        $result = $this->Authentication->getResult();
+        if ($result->isValid()) {
+            return $this->redirect($this->getLoginRedirectUrl());
         }
 
         // ログイン失敗
@@ -74,6 +71,6 @@ class UsersController extends AppController
      */
     public function logout()
     {
-        return $this->redirect($this->Auth->logout());
+        return $this->redirect($this->Authentication->logout());
     }
 }

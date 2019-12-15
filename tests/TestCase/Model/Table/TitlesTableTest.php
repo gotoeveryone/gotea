@@ -231,7 +231,7 @@ class TitlesTableTest extends TestCase
             'htmlFileModified' => FrozenDate::parse('2017-01-04'),
         ];
         $entity = $this->Titles->createEntity(null, $data);
-        foreach ($entity->visibleProperties() as $key => $value) {
+        foreach ($entity->getVisible() as $key => $value) {
             $this->assertEquals(Inflector::underscore($key), $key);
         }
     }

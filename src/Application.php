@@ -14,14 +14,26 @@
  */
 namespace Gotea;
 
+use Authentication\AuthenticationService;
+use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\AuthorizationService;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Authorization\Policy\MapResolver;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Gotea\Policy\RequestPolicy;
 use Gotoeveryone\Middleware\TraceMiddleware;
 use Gotoeveryone\Middleware\TransactionMiddleware;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Application setup class.
@@ -29,7 +41,7 @@ use Gotoeveryone\Middleware\TransactionMiddleware;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -52,6 +64,8 @@ class Application extends BaseApplication
         }
 
         // Load more plugins here
+        $this->addPlugin('Authentication');
+        $this->addPlugin('Authorization');
     }
 
     /**
@@ -80,8 +94,17 @@ class Application extends BaseApplication
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this, '_cake_routes_'))
 
+            // Add authentication middleware.
+            ->add(new AuthenticationMiddleware($this))
+
+            // Add authorization middleware.
+            ->add(new AuthorizationMiddleware($this))
+
+            // Add request authorization middleware.
+            ->add(new RequestAuthorizationMiddleware())
+
             // Add trace middleware.
-            ->add(new TraceMiddleware())
+            ->add(new TraceMiddleware($this))
 
             // Add transaction middleware.
             ->add(new TransactionMiddleware());
@@ -103,5 +126,54 @@ class Application extends BaseApplication
         $this->addPlugin('Migrations');
 
         // Load more plugins here
+    }
+
+    /**
+     * Returns a authentication service provider instance.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @param \Psr\Http\Message\ResponseInterface $response Response
+     * @return \Authentication\AuthenticationServiceInterface
+     */
+    public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $service = new AuthenticationService([
+            'unauthenticatedRedirect' => '/',
+            'queryParam' => 'redirect',
+        ]);
+
+        $fields = [
+            'username' => 'account',
+            'password' => 'password'
+        ];
+
+        // Load identifiers
+        $service->loadIdentifier('Gotea.ExternalApi', [
+            'fields' => $fields,
+        ]);
+
+        // Load the authenticators, you want session first
+        $service->loadAuthenticator('Gotea.Session');
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => $fields,
+            'loginUrl' => '/login',
+        ]);
+
+        return $service;
+    }
+
+    /**
+     * Returns a authorization service provider instance.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @param \Psr\Http\Message\ResponseInterface $response Response
+     * @return \Authorization\AuthorizationService
+     */
+    public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $resolver = new MapResolver();
+        $resolver->map(ServerRequest::class, RequestPolicy::class);
+
+        return new AuthorizationService($resolver);
     }
 }

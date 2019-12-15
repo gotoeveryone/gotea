@@ -46,10 +46,10 @@ class AppView extends View
         }
 
         if (!$key) {
-            return $session->read('Auth.User');
+            return $session->read('Auth');
         }
 
-        return $session->read("Auth.User.${key}");
+        return $session->read("Auth.${key}");
     }
 
     /**

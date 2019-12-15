@@ -1,6 +1,6 @@
 <?php
 
-namespace Gotea\Controller\Component;
+namespace Gotea;
 
 use Cake\Http\Client;
 use Cake\Log\Log;
