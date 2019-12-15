@@ -6,6 +6,7 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Utility\Hash;
 
 /**
  * ログインユーザ情報を保持
@@ -15,9 +16,9 @@ class LoggedUser implements EventListenerInterface
     /**
      * Constructor
      *
-     * @param array $user 認証ユーザ
+     * @param array|ArrayAccess $user 認証ユーザ
      */
-    public function __construct(array $user)
+    public function __construct($user)
     {
         $this->_user = $user;
     }
@@ -45,8 +46,7 @@ class LoggedUser implements EventListenerInterface
      */
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
-        if (empty($options['account'])
-            && ($account = $this->_user['account'] ?? null)) {
+        if (($account = Hash::get($this->_user, 'account'))) {
             $options['account'] = $account;
         }
     }

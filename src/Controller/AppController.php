@@ -12,8 +12,9 @@ use Gotea\Event\LoggedUser;
  * @author  Kazuki Kamizuru
  * @since   2015/07/26
  *
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
+ * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
  * @property \Cake\Controller\Component\FlashComponent $Flash
- * @property \Gotea\Controller\Component\MyAuthComponent $Auth
  */
 abstract class AppController extends Controller
 {
@@ -28,42 +29,17 @@ abstract class AppController extends Controller
 
         $this->forceSSL();
         $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
-            'loginAction' => [
-                '_name' => 'top',
-            ],
-            'loginRedirect' => [
-                '_name' => 'players',
-            ],
+        $this->loadComponent('Authentication.Authentication', [
             'logoutRedirect' => [
                 '_name' => 'top',
             ],
-            'authorize' => 'Controller',
         ]);
+        $this->loadComponent('Authorization.Authorization');
 
         // 操作ユーザ記録イベントを設定
-        if (($user = $this->Auth->user())) {
-            EventManager::instance()->on(new LoggedUser($user));
+        if (($user = $this->Authentication->getIdentity())) {
+            EventManager::instance()->on(new LoggedUser($user->getOriginalData()));
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isAuthorized($user = null)
-    {
-        if ($user) {
-            $this->set([
-                'userid' => $user['account'],
-                'username' => $user['name'],
-                'admin' => ($user['role'] === '管理者'),
-            ]);
-
-            return true;
-        }
-
-        // デフォルトは拒否
-        return false;
     }
 
     /**
@@ -167,5 +143,17 @@ abstract class AppController extends Controller
     protected function enableDialogMode()
     {
         return $this->set('isDialog', true);
+    }
+
+    /**
+     * ログイン済みの場合にリダイレクトする URL を取得する
+     *
+     * @return string URL
+     */
+    protected function getLoginRedirectUrl()
+    {
+        return $this->Authentication->getLoginRedirect() ?? [
+            '_name' => 'players',
+        ];
     }
 }
