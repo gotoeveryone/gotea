@@ -54,9 +54,15 @@ class UsersController extends AppController
             return $this->setErrors(400, $form->getErrors())->setAction('index');
         }
 
-        // ログイン成功→リダイレクト
         $result = $this->Authentication->getResult();
+
+        // ログイン成功
         if ($result->isValid()) {
+            // リダイレクト先をクエリパラメータに設定しておく
+            $this->setRequest($this->getRequest()->withQueryParams([
+                'redirect' => $this->getRequest()->getData('redirect'),
+            ]));
+
             return $this->redirect($this->getLoginRedirectUrl());
         }
 
