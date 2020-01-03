@@ -53,7 +53,6 @@ const App = new Vue({
       config => {
         config.headers = {
           'Content-Type': 'application/json',
-          'X-CSRF-Token': window.Cake.csrfToken,
         };
         if (window.Cake.accessUser) {
           config.headers['X-Access-User'] = window.Cake.accessUser;
