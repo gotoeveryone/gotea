@@ -2,9 +2,9 @@
 use Migrations\AbstractSeed;
 
 /**
- * Country seed.
+ * Countries seed.
  */
-class CountrySeed extends AbstractSeed
+class CountriesSeed extends AbstractSeed
 {
     /**
      * Run Method.

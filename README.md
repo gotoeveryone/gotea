@@ -7,7 +7,7 @@
 [![GitHub version](https://badge.fury.io/gh/gotoeveryone%2Fgotea.svg)](https://badge.fury.io/gh/gotoeveryone%2Fgotea)
 
 囲碁のプロ棋士・棋戦情報を管理します。  
-[CakePHP](http://cakephp.org) 3.7.x を利用しています。
+[CakePHP](http://cakephp.org) 3.x を利用しています。
 
 ## Requirements
 
@@ -48,28 +48,18 @@ $ ./bin/cake server
       "type": "php",
       "request": "launch",
       "port": 9000
-    },
-    {
-      "name": "Listen for Docker XDebug",
-      "type": "php",
-      "request": "launch",
-      "port": 9001,
-      "log": true,
-      "pathMappings": {
-        "/usr/share/nginx/html": "${workspaceFolder}"
-      }
     }
   ]
 }
 ```
 
-### Docker を利用する場合
+### データベースに Docker を利用する場合
 
-以下コマンドを実行してください。
+以下コマンドを実行してください。  
+ホストからの接続ポートは 53306、デフォルトのデータベースは gotea、テスト用のデータベースは gotea_test です。
 
 ```console
-$ cd ./docker
-$ LOCAL_IP=<your local ip> docker-compose up -d
+$ docker-compose up -d
 ```
 
 ### フロントコード

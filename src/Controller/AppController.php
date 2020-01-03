@@ -34,10 +34,11 @@ abstract class AppController extends Controller
                 '_name' => 'top',
             ],
         ]);
-        $this->loadComponent('Authorization.Authorization');
+        // $this->loadComponent('Authorization.Authorization');
 
         // 操作ユーザ記録イベントを設定
         if (($user = $this->Authentication->getIdentity())) {
+            // モデル側のインスタンスイベントより先に実行する必要があるため、グローバルイベントマネージャに登録する
             EventManager::instance()->on(new LoggedUser($user->getOriginalData()));
         }
     }

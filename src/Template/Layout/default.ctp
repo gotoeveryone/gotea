@@ -1,8 +1,11 @@
 <?php
 /**
  * アプリケーションの共通テンプレート
- * @property \Gotea\View\AppView $this
+ *
+ * @var \Gotea\View\AppView $this
  */
+
+use Cake\I18n\FrozenTime;
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,17 +31,17 @@
             <!-- 見出し -->
             <h1 class="page-title"><?= h($this->hasTitle() ? $pageTitle : 'Gotea') ?></h1>
             <div class="other">
-                <?php if ($this->isAuth()) : ?>
-                <span class="username">ユーザ：<?= h($this->getUser('name')) ?></span>
+                <?php if ($this->Identity->isLoggedIn()) : ?>
+                <span class="username">ユーザ：<?= h($this->Identity->get('name')) ?></span>
                 <?php endif ?>
-                <span><?= date('Y年m月d日 H時i分s秒') ?></span>
+                <span><?= FrozenTime::now()->format('Y年m月d日 H時i分s秒') ?></span>
             </div>
         </header>
 
         <!-- メインコンテンツ -->
         <div class="main-content">
-            <?php if ($this->isAuth()) : ?>
-            <?= $this->element('sidebar') ?>
+            <?php if ($this->Identity->isLoggedIn()) : ?>
+                <?= $this->element('sidebar') ?>
             <?php endif ?>
             <main class="main">
                 <?= $this->fetch('content') ?>
@@ -47,14 +50,13 @@
 
         <!-- フッター -->
         <footer class="footer">
-            <?php if ($this->isAuth()) : ?>
+            <?php if ($this->Identity->isLoggedIn()) : ?>
             <div>
                 <?= $this->Html->link('ログアウト', ['_name' => 'logout']); ?>
             </div>
             <?php endif ?>
         </footer>
         <?php else : ?>
-
         <!-- メインコンテンツ（モーダル表示） -->
         <div class="main-content-modal">
             <main class="main">
@@ -70,11 +72,10 @@
         <?= $this->Flash->render() ?>
     </div>
 
-    <?php if ($this->isAuth()) : ?>
+    <?php if ($this->Identity->isLoggedIn()) : ?>
     <script>
         window.Cake = {
-            csrfToken: '<?= $this->getRequest()->getParam('_csrfToken') ?>',
-            accessUser: '<?= $this->getUser('account') ?>',
+            accessUser: '<?= $this->Identity->get('account') ?>',
         };
     </script>
     <?php endif ?>

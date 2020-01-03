@@ -2,9 +2,9 @@
 use Migrations\AbstractSeed;
 
 /**
- * Rank seed.
+ * Ranks seed.
  */
-class RankSeed extends AbstractSeed
+class RanksSeed extends AbstractSeed
 {
     /**
      * Run Method.

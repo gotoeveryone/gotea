@@ -7,18 +7,19 @@ use Cake\View\View;
 /**
  * アプリケーション基底のビュー
  *
+ * @property \Authentication\View\Helper\IdentityHelper $Identity
  * @property \Gotea\View\Helper\DateHelper $Date
  */
 class AppView extends View
 {
     /**
-     * 認証済みかを判定
-     *
-     * @return bool
+     * {@inheritDoc}
      */
-    public function isAuth()
+    public function initialize()
     {
-        return (bool)$this->getUser();
+        parent::initialize();
+
+        $this->loadHelper('Authentication.Identity');
     }
 
     /**
@@ -28,28 +29,7 @@ class AppView extends View
      */
     public function isAdmin()
     {
-        return $this->getUser('role', '一般') === '管理者';
-    }
-
-    /**
-     * ユーザ情報を取得する。
-     *
-     * @param string|null $key キー
-     * @param mixed $default デフォルト値
-     * @return array ユーザ情報
-     */
-    public function getUser($key = null, $default = null)
-    {
-        $session = $this->getRequest()->getSession();
-        if (!$session) {
-            return $default;
-        }
-
-        if (!$key) {
-            return $session->read('Auth');
-        }
-
-        return $session->read("Auth.${key}");
+        return $this->Identity->get('role') === '管理者';
     }
 
     /**
