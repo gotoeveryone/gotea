@@ -16,7 +16,6 @@ namespace Gotea\Identifier;
 
 use Authentication\Identifier\AbstractIdentifier;
 use Authentication\Identifier\Resolver\ResolverAwareTrait;
-use Authentication\Identifier\Resolver\ResolverInterface;
 
 /**
  * 外部 API 認証を行うクラス

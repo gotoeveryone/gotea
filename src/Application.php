@@ -18,9 +18,9 @@ use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
-use Authorization\AuthorizationServiceProviderInterface;
-use Authorization\Middleware\AuthorizationMiddleware;
-use Authorization\Middleware\RequestAuthorizationMiddleware;
+// use Authorization\AuthorizationServiceProviderInterface;
+// use Authorization\Middleware\AuthorizationMiddleware;
+// use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Authorization\Policy\MapResolver;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
@@ -41,7 +41,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface//, AuthorizationServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -65,7 +65,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
         // Load more plugins here
         $this->addPlugin('Authentication');
-        $this->addPlugin('Authorization');
+        // $this->addPlugin('Authorization');
     }
 
     /**
@@ -98,10 +98,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             ->add(new AuthenticationMiddleware($this))
 
             // Add authorization middleware.
-            ->add(new AuthorizationMiddleware($this))
+            // ->add(new AuthorizationMiddleware($this))
 
             // Add request authorization middleware.
-            ->add(new RequestAuthorizationMiddleware())
+            // ->add(new RequestAuthorizationMiddleware())
 
             // Add trace middleware.
             ->add(new TraceMiddleware($this))
