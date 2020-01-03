@@ -147,54 +147,42 @@ Router::scope('/', function (RouteBuilder $routes) {
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
     });
 
-    // API
-    $routes->prefix('Api', function (RouteBuilder $routes) {
-        $routes->setExtensions(['json']);
-
-        $routes->get('/years', ['controller' => 'Years', 'action' => 'index'], 'api_years');
-
-        $routes->get('/countries', ['controller' => 'Countries', 'action' => 'index'], 'api_countries');
-
-        $routes->get('/ranks', ['controller' => 'Ranks', 'action' => 'index'], 'api_ranks');
-
-        $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
-            $routes->post('/', ['action' => 'search'], 'api_players');
-            $routes->get('/ranking/:country/:year/:offset', ['controller' => 'Players', 'action' => 'searchRanking'], 'api_ranking')
-                ->setPatterns(['year' => RouteBuilder::ID, 'offset' => RouteBuilder::ID])
-                ->setPass(['country', 'year', 'offset']);
-            $routes->post('/ranking/:country/:year/:offset', ['action' => 'createRanking'], 'api_create_ranking')
-                ->setPatterns(['year' => RouteBuilder::ID, 'offset' => RouteBuilder::ID])
-                ->setPass(['country', 'year', 'offset']);
-            $routes->get('/ranks/:country_id', ['action' => 'searchRanks'], 'api_player_ranks')
-                ->setPatterns(['country_id' => RouteBuilder::ID])->setPass(['country_id']);
-        });
-
-        $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes) {
-            $routes->get('/', ['action' => 'index'], 'api_titles');
-            $routes->post('/', ['action' => 'create'], 'api_create_titles');
-            $routes->put('//:id', ['action' => 'update'], 'api_update_titles')
-                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
-            $routes->post('/news', ['action' => 'createNews'], 'api_news');
-        });
-
-        $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
-            $routes->get('/:id', ['action' => 'view'], 'api_history')
-                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
-        });
-    });
-
     // フォールバックメソッド
     // $routes->fallbacks(DashedRoute::class);
 });
 
-/**
- * If you need a different set of middleware or none at all,
- * open new scope and define routes there.
- *
- * ```
- * Router::scope('/api', function (RouteBuilder $routes) {
- *     // No $routes->applyMiddleware() here.
- *     // Connect API actions here.
- * });
- * ```
- */
+// api
+Router::prefix('api', function (RouteBuilder $routes) {
+    $routes->setExtensions(['json']);
+
+    $routes->get('/years', ['controller' => 'Years', 'action' => 'index'], 'api_years');
+
+    $routes->get('/countries', ['controller' => 'Countries', 'action' => 'index'], 'api_countries');
+
+    $routes->get('/ranks', ['controller' => 'Ranks', 'action' => 'index'], 'api_ranks');
+
+    $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
+        $routes->post('/', ['action' => 'search'], 'api_players');
+        $routes->get('/ranking/:country/:year/:offset', ['controller' => 'Players', 'action' => 'searchRanking'], 'api_ranking')
+            ->setPatterns(['year' => RouteBuilder::ID, 'offset' => RouteBuilder::ID])
+            ->setPass(['country', 'year', 'offset']);
+        $routes->post('/ranking/:country/:year/:offset', ['action' => 'createRanking'], 'api_create_ranking')
+            ->setPatterns(['year' => RouteBuilder::ID, 'offset' => RouteBuilder::ID])
+            ->setPass(['country', 'year', 'offset']);
+        $routes->get('/ranks/:country_id', ['action' => 'searchRanks'], 'api_player_ranks')
+            ->setPatterns(['country_id' => RouteBuilder::ID])->setPass(['country_id']);
+    });
+
+    $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'api_titles');
+        $routes->post('/', ['action' => 'create'], 'api_create_titles');
+        $routes->put('//:id', ['action' => 'update'], 'api_update_titles')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->post('/news', ['action' => 'createNews'], 'api_news');
+    });
+
+    $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
+        $routes->get('/:id', ['action' => 'view'], 'api_history')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+    });
+});

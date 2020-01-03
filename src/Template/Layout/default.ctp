@@ -75,7 +75,6 @@ use Cake\I18n\FrozenTime;
     <?php if ($this->Identity->isLoggedIn()) : ?>
     <script>
         window.Cake = {
-            csrfToken: '<?= $this->getRequest()->getParam('_csrfToken') ?>',
             accessUser: '<?= $this->Identity->get('account') ?>',
         };
     </script>
