@@ -1,6 +1,0 @@
-FROM nginx:latest
-LABEL maintainer="Kazuki_Kamizuru<kamizuru@k2ss.info>"
-
-COPY ./default.conf /etc/nginx/conf.d/
-
-CMD ["nginx", "-g", "daemon off;"]

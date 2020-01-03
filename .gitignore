@@ -1,16 +1,56 @@
-.DS_Store
-*.log
-
+# Project specific files #
+##########################
 /.env
-/vendor
-/nbproject
-/.buildpath
-/.project
-/.settings
-/.vscode
-/node_modules
-/webroot/css
-/webroot/js
+/database/*
+*.log
+/webroot/**/*.json
 
-.php-version
+# CakePHP specific files #
+##########################
+/config/Migrations/schema-dump-default.lock
+/logs/*
+/tmp/*
+/vendor/*
 *.mo
+
+# NodeJS specific files #
+#########################
+/node_modules/*
+/webroot/css/*
+/webroot/js/*
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+.directory
+
+# Tool specific files #
+#######################
+# vim
+*~
+*.swp
+*.swo
+# sublime text & textmate
+*.sublime-*
+*.stTheme.cache
+*.tmlanguage.cache
+*.tmPreferences.cache
+# Eclipse
+.settings/*
+# JetBrains, aka PHPStorm, IntelliJ IDEA
+.idea/*
+# NetBeans
+nbproject/*
+# Visual Studio Code
+.vscode
+# Sass preprocessor
+.sass-cache/
+# phpenv
+.php-version

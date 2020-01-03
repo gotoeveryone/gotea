@@ -1,0 +1,16 @@
+version: '3'
+services:
+  gotea_db:
+    container_name: gotea_db
+    image: mysql:5.7
+    volumes:
+      - ./database:/var/lib/mysql
+      - ./tests/setup.sh:/docker-entrypoint-initdb.d/setup.sh
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'gotea'
+      MYSQL_TEST_DATABASE: 'gotea_test'
+      TZ: 'Asia/Tokyo'
+    ports:
+      - '53306:3306'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
