@@ -24,6 +24,7 @@ use Throwable;
  * @property \Gotea\Model\Table\PlayersTable $Players
  * @property \Gotea\Model\Table\CountriesTable $Countries
  * @property \Gotea\Model\Table\RanksTable $Ranks
+ * @property \Gotea\Model\Table\OrganizationsTable $Organizations
  */
 class RankDiffCommand extends Command
 {
@@ -38,6 +39,7 @@ class RankDiffCommand extends Command
         $this->loadModel('Players');
         $this->loadModel('Countries');
         $this->loadModel('Ranks');
+        $this->loadModel('Organizations');
     }
 
     /**
@@ -61,7 +63,7 @@ class RankDiffCommand extends Command
                     return [];
                 }
 
-                return $this->getDiff($item->id, $diffs);
+                return $this->getDiff($item, $diffs);
             });
 
             if (!Configure::read('debug')) {
@@ -95,21 +97,25 @@ class RankDiffCommand extends Command
     /**
      * 差分データを設定します。
      *
-     * @param int $countryId 所属国ID
+     * @param \Gotea\Model\Entity\Country $country 所属国
      * @param array $results 抽出結果
      * @return array
      */
-    private function getDiff($countryId, $results)
+    private function getDiff($country, $results)
     {
-        return $this->Players->findRanksCount($countryId)->map(function ($item) use ($results) {
-            $item->web_count = count($results[$item->rank]) ?? 0;
+        // 台湾の場合は台湾棋院のみを対象とする
+        $organization = ($country->code === 'tw') ? $this->Organizations->findByName('台湾棋院')->first() : null;
 
-            return $item;
-        })->filter(function ($item) {
-            return $item->web_count !== $item->count;
-        })->map(function ($item) {
-            return "　{$item->name} WEB: {$item->web_count} - DB: {$item->count}";
-        })->toArray();
+        return $this->Players->findRanksCount($country->id, $organization ? $organization->id : null)
+            ->map(function ($item) use ($results) {
+                $item->web_count = count($results[$item->rank]) ?? 0;
+
+                return $item;
+            })->filter(function ($item) {
+                return $item->web_count !== $item->count;
+            })->map(function ($item) {
+                return "　{$item->name} WEB: {$item->web_count} - DB: {$item->count}";
+            })->toArray();
     }
 
     /**
@@ -152,7 +158,7 @@ class RankDiffCommand extends Command
      */
     private function getPlayersFromKorea(Country $country)
     {
-        $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
+        $crawler = $this->getCrawler(Configure::read('App.diffUrl.korea'));
 
         return collection($crawler->filter('.playerArea .lv_list')
             ->each(function (Crawler $row) {
@@ -175,7 +181,7 @@ class RankDiffCommand extends Command
     private function getPlayersFromTaiwan(Country $country)
     {
         $results = [];
-        $crawler = $this->getCrawler(env('DIFF_TAIWAN_URL'));
+        $crawler = $this->getCrawler(Configure::read('App.diffUrl.taiwan'));
         $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
             $img = $node->filter('img')->first();
             if ($img->count() > 0) {
@@ -223,7 +229,7 @@ class RankDiffCommand extends Command
      */
     private function getPlayersFromNihonKiin(array $ranks)
     {
-        $crawler = $this->getCrawler(env('DIFF_JAPAN_URL'));
+        $crawler = $this->getCrawler(Configure::read('App.diffUrl.japan'));
 
         return $crawler->filter('#content h2')->each(function (Crawler $node) use ($ranks) {
             $rankText = $node->text();
@@ -245,7 +251,7 @@ class RankDiffCommand extends Command
      */
     private function getPlayersFromKansaiKiin(array $ranks)
     {
-        $crawler = $this->getCrawler(env('DIFF_KANSAI_URL'));
+        $crawler = $this->getCrawler(Configure::read('App.diffUrl.kansai'));
 
         return collection($crawler->filter('.prokisi_table table')->each(function (Crawler $table) use ($ranks) {
             $rankText = $table->filter('thead th')->first()->text();
