@@ -130,7 +130,7 @@ class PlayersTable extends AppTable
     {
         // 棋士情報の取得
         $query = $this->find()->order([
-            'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id'
+            'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id',
         ])->contain([
             'Ranks', 'Countries', 'Organizations', 'TitleScoreDetails',
         ]);
@@ -174,11 +174,16 @@ class PlayersTable extends AppTable
      * 段位ごとの棋士数を取得します。
      *
      * @param int $countryId 所属国ID
+     * @param int|null $organizationId 所属組織ID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanksCount(int $countryId)
+    public function findRanksCount(int $countryId, int $organizationId = null)
     {
         $query = $this->find();
+
+        if ($organizationId) {
+            $query->where(['organization_id' => $organizationId]);
+        }
 
         return $query
             ->contain('Ranks')
@@ -186,7 +191,7 @@ class PlayersTable extends AppTable
             ->where(['is_retired' => false])->select([
                 'rank' => 'Ranks.rank_numeric',
                 'name' => 'Ranks.name',
-                'count' => $query->func()->count('*')
+                'count' => $query->func()->count('*'),
             ])
             ->group('Ranks.name')
             ->orderDesc('Ranks.rank_numeric');

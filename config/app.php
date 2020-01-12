@@ -63,6 +63,12 @@ return [
             'locales' => [APP . 'Locale' . DS],
         ],
         'jsonDir' => env('JSON_OUTPUT_DIR', WWW_ROOT),
+        'diffUrl' => [
+            'japan' => env('DIFF_JAPAN_URL'),
+            'kansai' => env('DIFF_KANSAI_URL'),
+            'korea' => env('DIFF_KOREA_URL'),
+            'taiwan' => env('DIFF_TAIWAN_URL'),
+        ],
     ],
 
     /**
