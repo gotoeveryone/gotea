@@ -12,6 +12,19 @@ use Cake\View\Cell;
 class OrganizationsCell extends Cell
 {
     /**
+     * {@inheritDoc}
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        // CakePHP 4.x からはこのパスになるため、アップグレード時にこの記述は不要になる
+        // https://book.cakephp.org/4/ja/appendices/4-0-migration-guide.html
+        $this->viewBuilder()
+            ->setTemplatePath('cell' . DS . str_replace('\\', DS, $name));
+    }
+
+    /**
      * 表示処理
      *
      * @param array $attributes 属性

@@ -13,6 +13,20 @@ use Cake\View\View;
 class AppView extends View
 {
     /**
+     * Constant for name of view file 'Element'
+     *
+     * @var string
+     */
+    const NAME_ELEMENT = 'element';
+
+    /**
+     * Constant for template folder  'Template'
+     *
+     * @var string
+     */
+    const NAME_TEMPLATE = 'templates';
+
+    /**
      * テンプレートの拡張子
      * CakePHP 4.x からは php になるため、アップグレード時にこの記述は不要になる
      * https://book.cakephp.org/4/ja/appendices/4-0-migration-guide.html
