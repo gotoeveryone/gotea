@@ -13,6 +13,15 @@ use Cake\View\View;
 class AppView extends View
 {
     /**
+     * テンプレートの拡張子
+     * CakePHP 4.x からは php になるため、アップグレード時にこの記述は不要になる
+     * https://book.cakephp.org/4/ja/appendices/4-0-migration-guide.html
+     *
+     * @var string
+     */
+    protected $_ext = '.php';
+
+    /**
      * {@inheritDoc}
      */
     public function initialize()
