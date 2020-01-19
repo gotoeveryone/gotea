@@ -21,6 +21,7 @@ class TitleScoresFixture extends TestFixture
         'country_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '所属国ID', 'precision' => null, 'autoIncrement' => null],
         'title_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => 'タイトルID', 'precision' => null, 'autoIncrement' => null],
         'name' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '対局名', 'precision' => null, 'fixed' => null],
+        'result' => ['type' => 'string', 'length' => 30, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '結果', 'precision' => null, 'fixed' => null],
         'started' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '開始日', 'precision' => null],
         'ended' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '終了日', 'precision' => null],
         'is_world' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '国際棋戦かどうか', 'precision' => null],

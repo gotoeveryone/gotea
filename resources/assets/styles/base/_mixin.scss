@@ -83,11 +83,12 @@
 }
 
 @mixin button-link($color) {
-  padding: 5px 10px;
+  margin: auto 0.3rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid darken($color, 15%);
+  border-radius: 5px;
   background-color: #{$color};
   transition: background-color 0.2s ease-in-out;
-  border: 1px outset darken($color, 25%);
-  border-radius: 3px;
   color: $c_black;
   text-decoration: none;
 

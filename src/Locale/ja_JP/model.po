@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2016-02-29 21:46+0900\n"
-"PO-Revision-Date: 2019-11-01 13:07+0900\n"
+"PO-Revision-Date: 2020-01-19 15:03+0900\n"
 "Last-Translator: Kazuki_Kamizuru <webmaster@k2ss.info>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -123,6 +123,9 @@ msgstr "公式戦"
 msgid "winner"
 msgstr "勝者"
 
+msgid "loser"
+msgstr "敗者"
+
 msgid "title"
 msgstr "タイトル"
 
@@ -137,3 +140,6 @@ msgstr "下書き"
 
 msgid "is_permanent"
 msgstr "常時表示"
+
+msgid "result"
+msgstr "結果"

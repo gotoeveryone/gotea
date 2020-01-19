@@ -48,12 +48,12 @@
                 </span>
                 <span class="table-column_name">
                     <span <?= $titleScore->isSelected($titleScore->winner, $player->id) ? 'class="selected"' : '' ?>>
-                        <?= h($titleScore->getWinnerName()) ?>
+                        <?= h($titleScore->winner_name) ?>
                     </span>
                 </span>
                 <span class="table-column_name">
                     <span <?= $titleScore->isSelected($titleScore->loser, $player->id) ? 'class="selected"' : '' ?>>
-                        <?= h($titleScore->getLoserName()) ?>
+                        <?= h($titleScore->loser_name) ?>
                     </span>
                 </span>
             </li>

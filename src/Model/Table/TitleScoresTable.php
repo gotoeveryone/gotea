@@ -46,18 +46,44 @@ class TitleScoresTable extends AppTable
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->requirePresence([
-                'country_id', 'started', 'ended',
-            ])
             ->integer('country_id')
+            ->requirePresence('country_id', 'create')
+            ->notEmptyString('country_id');
+
+        $validator
             ->integer('title_id')
-            ->allowEmpty('title_id')
+            ->allowEmptyString('title_id');
+
+        $validator
+            ->scalar('name')
             ->maxLength('name', 100)
-            ->date('started', 'y/m/d')
-            ->date('ended', 'y/m/d');
+            ->allowEmptyString('name');
+
+        $validator
+            ->scalar('result')
+            ->maxLength('result', 30)
+            ->allowEmptyString('result');
+
+        $validator
+            ->date('started', ['y/m/d'])
+            ->requirePresence('started', 'create')
+            ->notEmptyDate('started');
+
+        $validator
+            ->date('ended', ['y/m/d'])
+            ->requirePresence('ended', 'create')
+            ->notEmptyDate('ended');
+
+        $validator
+            ->boolean('is_world')
+            ->notEmptyString('is_world');
+
+        $validator
+            ->boolean('is_official')
+            ->notEmptyString('is_official');
 
         return $validator;
     }
@@ -67,6 +93,7 @@ class TitleScoresTable extends AppTable
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['country_id'], 'Countries'));
         $rules->add($rules->existsIn(['title_id'], 'Titles'));
 
         return $rules;
@@ -88,6 +115,8 @@ class TitleScoresTable extends AppTable
                     'joinType' => 'LEFT',
                 ],
                 'TitleScoreDetails',
+                'TitleScoreDetails.Players',
+                'TitleScoreDetails.Ranks',
             ],
         ]);
     }
