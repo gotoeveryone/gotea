@@ -17,8 +17,9 @@ class RetentionHistoriesController extends ApiController
      */
     public function view(int $id)
     {
+        /** @var \Gotea\Model\Entity\RetentionHistory */
         $history = $this->RetentionHistories->get($id, [
-            'contain' => ['Players', 'Ranks'],
+            'contain' => ['Players', 'Players.PlayerRanks.Ranks'],
         ]);
 
         return $this->renderJson([
@@ -26,14 +27,12 @@ class RetentionHistoriesController extends ApiController
             'titleId' => $history->title_id,
             'holding' => $history->holding,
             'targetYear' => $history->target_year,
-            'winPlayerName' => $history->player ? $history->player->name : '',
+            'winPlayerName' => $history->winner_name,
             'winGroupName' => $history->win_group_name,
-            'winRankName' => $history->is_team ? null : $history->rank->name,
             'isTeam' => $history->is_team,
             'acquired' => $history->acquired->format('Y/m/d'),
             'playerId' => $history->player_id,
             'countryId' => $history->country_id,
-            'rankId' => $history->rank_id,
         ]);
     }
 }

@@ -89,14 +89,17 @@ class Title extends AppEntity
             return $history->win_group_name;
         }
 
+        // 取得当時の段位
+        $rank = $history->player->getRankByDate($history->acquired);
+
         // 日本語表記
         if ($isJp) {
             // 国際棋戦
             if ($this->country->isWorlds()) {
-                return "{$history->player->name} {$history->rank->name} ({$history->country->name})";
+                return "{$history->player->name} {$rank->name} ({$history->country->name})";
             }
 
-            return "{$history->player->name} {$history->rank->name}";
+            return "{$history->player->name} {$rank->name}";
         }
 
         // 国際棋戦
@@ -104,7 +107,7 @@ class Title extends AppEntity
             return "{$history->player->name_english} ({$history->country->name_english})";
         }
 
-        return "{$history->player->name_english} ({$history->rank->rank_numeric} dan)";
+        return "{$history->player->name_english} ({$rank->rank_numeric} dan)";
     }
 
     /**

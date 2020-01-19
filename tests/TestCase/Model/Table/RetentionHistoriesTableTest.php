@@ -69,10 +69,13 @@ class RetentionHistoriesTableTest extends TestCase
     public function testInitialize()
     {
         $this->RetentionHistories->initialize([]);
+        $this->assertEquals($this->RetentionHistories->getTable(), 'retention_histories');
+        $this->assertEquals($this->RetentionHistories->getDisplayField(), 'name');
+        $this->assertEquals($this->RetentionHistories->getPrimaryKey(), 'id');
 
         // Association
         $associations = collection($this->RetentionHistories->associations());
-        $compare = ['Titles', 'Players', 'Countries', 'Ranks'];
+        $compare = ['Titles', 'Players', 'Countries'];
         $this->assertEquals($associations->count(), count($compare));
         $associations->each(function ($a) use ($compare) {
             $this->assertTrue(in_array($a->getName(), $compare, true));
@@ -92,7 +95,6 @@ class RetentionHistoriesTableTest extends TestCase
             'target_year' => 2017,
             'name' => 'test',
             'player_id' => 1,
-            'rank_id' => 1,
             'acquired' => '2019/04/01',
         ];
 
@@ -109,7 +111,7 @@ class RetentionHistoriesTableTest extends TestCase
         }
 
         // integer
-        $names = ['player_id', 'rank_id', 'holding', 'target_year'];
+        $names = ['player_id', 'holding', 'target_year'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = '1a';
@@ -129,12 +131,6 @@ class RetentionHistoriesTableTest extends TestCase
         // player_id
         $data = $params;
         $data['player_id'] = '';
-        $result = $this->RetentionHistories->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
-
-        // rank_id
-        $data = $params;
-        $data['rank_id'] = '';
         $result = $this->RetentionHistories->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
@@ -177,7 +173,7 @@ class RetentionHistoriesTableTest extends TestCase
         $this->assertNotEmpty($result->getErrors());
 
         // リレーション先に存在しないIDを設定
-        $keys = ['title_id', 'player_id', 'country_id', 'rank_id'];
+        $keys = ['title_id', 'player_id', 'country_id'];
         foreach ($keys as $key) {
             $result = $this->RetentionHistories->newEntity([
                 $key => 999,
@@ -207,7 +203,6 @@ class RetentionHistoriesTableTest extends TestCase
             'name' => 'test title',
             'is_team' => 1,
             'player_id' => 1,
-            'rank_id' => 1,
         ]);
         $result = $this->RetentionHistories->save($entity, [
             'account' => 'test',
@@ -223,7 +218,6 @@ class RetentionHistoriesTableTest extends TestCase
             'is_team' => 0,
             'acquired' => '2019/04/01',
             'player_id' => 1,
-            'rank_id' => 1,
         ]);
         $result = $this->RetentionHistories->save($entity, [
             'account' => 'test',
@@ -242,11 +236,9 @@ class RetentionHistoriesTableTest extends TestCase
         foreach ($histories as $history) {
             if ($history->is_team) {
                 $this->assertNull($history->player_id);
-                $this->assertNull($history->rank_id);
                 $this->assertNotNull($history->win_group_name);
             } else {
                 $this->assertNotNull($history->player_id);
-                $this->assertNotNull($history->rank_id);
                 $this->assertNull($history->win_group_name);
             }
             $this->assertNotNull($history->title);
@@ -265,11 +257,9 @@ class RetentionHistoriesTableTest extends TestCase
         foreach ($histories as $history) {
             if ($history->is_team) {
                 $this->assertNull($history->player_id);
-                $this->assertNull($history->rank_id);
                 $this->assertNotNull($history->win_group_name);
             } else {
                 $this->assertNotNull($history->player_id);
-                $this->assertNotNull($history->rank_id);
                 $this->assertNull($history->win_group_name);
             }
             $this->assertNotNull($history->title);

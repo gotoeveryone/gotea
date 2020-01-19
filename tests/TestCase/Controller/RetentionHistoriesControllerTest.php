@@ -64,7 +64,6 @@ class RetentionHistoriesControllerTest extends AppTestCase
         $this->enableCsrfToken();
         $data = [
             'player_id' => 1,
-            'rank_id' => 1,
             'title_id' => 1,
             'name' => 'Test Title',
             'is_team' => false,
@@ -90,7 +89,6 @@ class RetentionHistoriesControllerTest extends AppTestCase
         $this->enableCsrfToken();
         $data = [
             'player_id' => 1,
-            'rank_id' => 1,
             'title_id' => 1,
             'name' => 'Test Title',
             'is_team' => false,
