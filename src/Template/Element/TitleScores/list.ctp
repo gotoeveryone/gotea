@@ -50,8 +50,8 @@
             </span>
             <span class="table-column table-column_name">
                 <?php if (!empty($player)) : ?>
-                <span <?= $titleScore->isSelected($titleScore->winner, $player->id) ? 'class="selected"' : '' ?>>
-                    <?= h($titleScore->winner_name) ?>
+                <span <?= $titleScore->isSelected($titleScore->loser, $player->id) ? 'class="selected"' : '' ?>>
+                    <?= h($titleScore->loser_name) ?>
                 </span>
                 <?php else: ?>
                     <?php if (!empty($titleScore->loser)) : ?>
