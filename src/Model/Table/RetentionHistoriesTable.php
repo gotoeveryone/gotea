@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \Gotea\Model\Table\TitlesTable|\Cake\ORM\Association\BelongsTo $Titles
  * @property \Gotea\Model\Table\PlayersTable|\Cake\ORM\Association\BelongsTo $Players
  * @property \Gotea\Model\Table\CountriesTable|\Cake\ORM\Association\BelongsTo $Countries
- * @property \Gotea\Model\Table\RanksTable|\Cake\ORM\Association\BelongsTo $Ranks
  */
 class RetentionHistoriesTable extends AppTable
 {
@@ -27,13 +26,11 @@ class RetentionHistoriesTable extends AppTable
 
         // タイトルマスタ
         $this->belongsTo('Titles')
-            ->setJoinType('INNER');
+            ->setJoinType(Query::JOIN_TYPE_INNER);
         // 棋士
         $this->belongsTo('Players');
         // 出場国
         $this->belongsTo('Countries');
-        // 段位
-        $this->belongsTo('Ranks');
     }
 
     /**
@@ -50,10 +47,9 @@ class RetentionHistoriesTable extends AppTable
                 'title_id', 'holding', 'target_year', 'name', 'acquired',
             ])
             ->integer('player_id')
-            ->integer('rank_id')
             ->integer('holding')
             ->integer('target_year')
-            ->requirePresence(['player_id', 'rank_id'], function ($context) {
+            ->requirePresence(['player_id'], function ($context) {
                 return empty($context['data']['is_team']);
             })
             ->requirePresence('win_group_name', function ($context) {
@@ -76,7 +72,6 @@ class RetentionHistoriesTable extends AppTable
         $rules->add($rules->existsIn(['title_id'], 'Titles'));
         $rules->add($rules->existsIn(['player_id'], 'Players'));
         $rules->add($rules->existsIn(['country_id'], 'Countries'));
-        $rules->add($rules->existsIn(['rank_id'], 'Ranks'));
 
         return $rules;
     }

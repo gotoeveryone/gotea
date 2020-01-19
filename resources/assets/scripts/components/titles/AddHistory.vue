@@ -127,11 +127,6 @@
             type="hidden"
             name="country_id"
           >
-          <input
-            v-model="rankId"
-            type="hidden"
-            name="rank_id"
-          >
         </div>
       </div>
       <div
@@ -153,26 +148,7 @@
           </select>
         </div>
       </div>
-      <div
-        v-if="!isTeamHidden"
-        class="detail_box_item box-2"
-      >
-        <div class="input">
-          <label>設定棋士段位</label>
-          <select
-            @change="changeRank($event)"
-            v-model="rankId"
-          >
-            <option
-              v-for="rank in ranks"
-              :key="rank.id"
-              :value="rank.id"
-              v-text="rank.name"
-            />
-          </select>
-        </div>
-      </div>
-      <div class="detail_box_item box-5" />
+      <div class="detail_box_item box-7" />
     </li>
     <template v-if="!isTeamHidden">
       <li class="label-row">
@@ -264,7 +240,6 @@ export default Vue.extend({
   data: () => {
     return {
       countries: [],
-      ranks: [],
       edit: false,
       viewName: '',
       year: '' as number | string,
@@ -273,7 +248,6 @@ export default Vue.extend({
       name: '',
       playerId: null as number | null,
       countryId: null as number | null,
-      rankId: null as number | null,
       teamName: null,
       isTeamHidden: '',
       players: [],
@@ -302,7 +276,6 @@ export default Vue.extend({
           this.playerId = json.playerId;
           this.holding = json.holding;
           this.countryId = json.countryId;
-          this.rankId = json.rankId;
           this.year = json.targetYear;
           this.acquired = json.acquired;
           this.viewName = json.winPlayerName;
@@ -316,16 +289,11 @@ export default Vue.extend({
     this.viewName = this.initialViewName;
     this.isTeamHidden = this.getTeamHidden(this.isTeam);
     axios.get('/api/countries/').then(res => (this.countries = res.data.response));
-    axios.get('/api/ranks/').then(res => (this.ranks = res.data.response));
   },
   methods: {
     changeCountry($event: Event) {
       const target = $event.target as HTMLInputElement;
       this.countryId = Number(target.value);
-    },
-    changeRank($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      this.rankId = Number(target.value);
     },
     getTeamHidden(value: boolean) {
       return value ? '1' : '';
@@ -383,8 +351,7 @@ export default Vue.extend({
     select(player: Player) {
       this.playerId = player.id || null;
       this.countryId = player.countryId || null;
-      this.rankId = player.rankId || null;
-      this.viewName = player.name;
+      this.viewName = `${player.name} ${player.rankName}`;
       this.name = '';
       this.players = [];
     },
@@ -397,7 +364,6 @@ export default Vue.extend({
       this.name = '';
       this.playerId = null;
       this.countryId = null;
-      this.rankId = null;
       this.teamName = null;
       this.players = [];
       this.edit = false;

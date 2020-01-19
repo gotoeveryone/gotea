@@ -8,7 +8,6 @@ namespace Gotea\Model\Entity;
  * @property int $id
  * @property int $title_id
  * @property int $player_id
- * @property int $rank_id
  * @property int $holding
  * @property int $target_year
  * @property string $name
@@ -22,6 +21,9 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Player|null $player
  * @property \Gotea\Model\Entity\Country|null $country
  * @property \Gotea\Model\Entity\Rank|null $rank
+ *
+ * @property string $team_label
+ * @property string $winner_name
  */
 class RetentionHistory extends AppEntity
 {
@@ -48,8 +50,8 @@ class RetentionHistory extends AppEntity
         if ($this->is_team) {
             return $this->win_group_name;
         }
-        if ($this->player_id && $this->rank_id) {
-            return "{$this->player->name} {$this->rank->name}";
+        if ($this->player_id) {
+            return "{$this->player->name} {$this->player->getRankByDate($this->acquired)->name}";
         }
 
         return '';

@@ -74,8 +74,8 @@ class TitlesTable extends AppTable
                 'Countries',
                 'RetentionHistories',
                 'RetentionHistories.Players',
+                'RetentionHistories.Players.PlayerRanks.Ranks',
                 'RetentionHistories.Countries',
-                'RetentionHistories.Ranks',
             ],
         ]);
     }
@@ -105,8 +105,8 @@ class TitlesTable extends AppTable
             },
             'RetentionHistories.Titles',
             'RetentionHistories.Players',
+            'RetentionHistories.Players.PlayerRanks.Ranks',
             'RetentionHistories.Countries',
-            'RetentionHistories.Ranks'
         ]);
 
         // 所属国があれば条件追加
