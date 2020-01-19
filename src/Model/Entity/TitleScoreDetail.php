@@ -1,6 +1,8 @@
 <?php
 namespace Gotea\Model\Entity;
 
+use Cake\I18n\FrozenDate;
+
 /**
  * TitleScoreDetail Entity
  *
@@ -8,16 +10,12 @@ namespace Gotea\Model\Entity;
  * @property int $title_score_id
  * @property int $player_id
  * @property string $player_name
- * @property int $rank_id
  * @property string $division
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
  * @property \Gotea\Model\Entity\TitleScore $title_score
  * @property \Gotea\Model\Entity\Player $player
- * @property \Gotea\Model\Entity\Rank $rank
- *
- * @property string $player_name_with_rank
  *
  * 以下は findScores() 関数で取得した場合に利用できるプロパティ
  * @see \Gotea\Model\Table\TitleScoreDetailsTable findScores()
@@ -38,13 +36,14 @@ class TitleScoreDetail extends AppEntity
     use RankTrait;
 
     /**
-     * 棋士名と段位を返却します。
+     * 棋士名と当時の段位を返却します。
      *
+     * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付
      * @return string 棋士名 段位
      */
-    protected function _getPlayerNameWithRank()
+    public function getPlayerNameWithRank(FrozenDate $baseDate)
     {
-        return implode(' ', [$this->player_name, $this->rank->name]);
+        return implode(' ', [$this->player_name, $this->player->getRankByDate($baseDate)->name]);
     }
 
     /**

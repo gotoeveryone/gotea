@@ -116,7 +116,8 @@ class TitleScoresTable extends AppTable
                 ],
                 'TitleScoreDetails',
                 'TitleScoreDetails.Players',
-                'TitleScoreDetails.Ranks',
+                'TitleScoreDetails.Players.Ranks',
+                'TitleScoreDetails.Players.PlayerRanks.Ranks',
             ],
         ]);
     }
@@ -134,7 +135,8 @@ class TitleScoresTable extends AppTable
                 'Countries',
                 'TitleScoreDetails',
                 'TitleScoreDetails.Players',
-                'TitleScoreDetails.Ranks',
+                'TitleScoreDetails.Players.Ranks',
+                'TitleScoreDetails.Players.PlayerRanks.Ranks',
             ])
             ->orderDesc('started')->orderDesc('TitleScores.id');
 

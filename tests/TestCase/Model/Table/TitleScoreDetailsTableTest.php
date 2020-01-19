@@ -73,6 +73,27 @@ class TitleScoreDetailsTableTest extends TestCase
     }
 
     /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $this->TitleScoreDetails->initialize([]);
+        $this->assertEquals($this->TitleScoreDetails->getTable(), 'title_score_details');
+        $this->assertEquals($this->TitleScoreDetails->getDisplayField(), 'id');
+        $this->assertEquals($this->TitleScoreDetails->getPrimaryKey(), 'id');
+
+        // Association
+        $associations = collection($this->TitleScoreDetails->associations());
+        $compare = ['TitleScores', 'Players'];
+        $this->assertEquals($associations->count(), count($compare));
+        $associations->each(function ($a) use ($compare) {
+            $this->assertTrue(in_array($a->getName(), $compare, true));
+        });
+    }
+
+    /**
      * バリデーション
      *
      * @return void
@@ -82,7 +103,6 @@ class TitleScoreDetailsTableTest extends TestCase
         $params = [
             'title_score_id' => 1,
             'player_id' => 1,
-            'rank_id' => 1,
             'division' => 'win',
         ];
 
@@ -99,7 +119,7 @@ class TitleScoreDetailsTableTest extends TestCase
         }
 
         // integer
-        $names = ['title_score_id', 'player_id', 'rank_id'];
+        $names = ['title_score_id', 'player_id'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = '1a';
@@ -122,6 +142,33 @@ class TitleScoreDetailsTableTest extends TestCase
         $exist = $this->TitleScoreDetails->get(1);
         $result = $this->TitleScoreDetails->patchEntity($exist, $data);
         $this->assertNotEmpty($result->getErrors());
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
+    {
+        // title_score_id が存在しない値
+        $result = $this->TitleScoreDetails->newEntity([
+            'title_score_id' => 999,
+        ]);
+        $this->assertFalse($this->TitleScoreDetails->checkRules($result));
+
+        // player_id が存在しない値
+        $result = $this->TitleScoreDetails->newEntity([
+            'player_id' => 999,
+        ]);
+        $this->assertFalse($this->TitleScoreDetails->checkRules($result));
+
+        // 成功
+        $result = $this->TitleScoreDetails->newEntity([
+            'title_score_id' => 1,
+            'player_id' => 1,
+        ]);
+        $this->assertTrue($this->TitleScoreDetails->checkRules($result));
     }
 
     /**
