@@ -100,21 +100,29 @@
                         </div>
                     </div>
                 </li>
-                <li class="detail_box_item box-6">
+                <li class="detail_box_item box-3">
                     <div class="input">
-                        <div class="label-row"><?= __('Player of GO') ?></div>
+                        <div class="label-row"><?= __d('model', 'winner') ?></div>
                         <div class="input-row">
-                            <?= h($score->players_name) ?>
+                            <?= h($score->winner_name) ?>
+                        </div>
+                    </div>
+                </li>
+                <li class="detail_box_item box-3">
+                    <div class="input">
+                        <div class="label-row"><?= __d('model', 'loser') ?></div>
+                        <div class="input-row">
+                            <?= h($score->loser_name) ?>
                         </div>
                     </div>
                 </li>
                 <li class="detail_box_item box-6">
-                    <div class="input">
-                        <div class="label-row"><?= __d('model', 'winner') ?></div>
-                        <div class="input-row">
-                            <?= h($score->getWinnerName()) ?>
-                        </div>
-                    </div>
+                    <?php
+                    echo $this->Form->control('result', [
+                        'label' => ['class' => 'label-row', 'text' => __d('model', 'result')],
+                        'class' => 'input-row',
+                    ]);
+                    ?>
                 </li>
                 <li class="detail_box_item button-row">
                     <?= $this->Form->button(__('Save'), [

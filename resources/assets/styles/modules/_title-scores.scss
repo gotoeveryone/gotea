@@ -20,21 +20,29 @@
 
   .table-column {
     &_id {
-      width: 6%;
+      width: 5%;
       text-align: center;
     }
 
-    &_title {
-      width: 28%;
+    &_country {
+      width: 6%;
     }
 
-    &_country,
+    &_title {
+      width: 24%;
+    }
+
     &_date {
       width: 10%;
     }
 
+    // 勝者・敗者で2列ある
     &_name {
-      width: 18%;
+      width: calc(30% / 2);
+    }
+
+    &_result {
+      width: 15%;
     }
 
     &_operation {

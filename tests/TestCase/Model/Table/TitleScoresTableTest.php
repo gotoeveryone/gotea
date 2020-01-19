@@ -3,6 +3,7 @@ namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * タイトル成績モデルのテストケース
@@ -58,7 +59,28 @@ class TitleScoresTableTest extends TestCase
     }
 
     /**
-     * バリデーション
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $this->TitleScores->initialize([]);
+        $this->assertEquals($this->TitleScores->getTable(), 'title_scores');
+        $this->assertEquals($this->TitleScores->getDisplayField(), 'name');
+        $this->assertEquals($this->TitleScores->getPrimaryKey(), 'id');
+
+        // Association
+        $associations = collection($this->TitleScores->associations());
+        $compare = ['Titles', 'Countries', 'TitleScoreDetails'];
+        $this->assertEquals($associations->count(), count($compare));
+        $associations->each(function ($a) use ($compare) {
+            $this->assertTrue(in_array($a->getName(), $compare, true));
+        });
+    }
+
+    /**
+     * Test validationDefault method
      *
      * @return void
      */
@@ -101,11 +123,16 @@ class TitleScoresTableTest extends TestCase
         }
 
         // maxLength
-        // name
-        $data = $params;
-        $data['name'] = substr(bin2hex(random_bytes(101)), 0, 101);
-        $result = $this->TitleScores->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
+        $names = [
+            'name' => 100,
+            'result' => 30,
+        ];
+        foreach ($names as $name => $length) {
+            $data = $params;
+            $data[$name] = Security::randomString($length + 1);
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
 
         // date
         $names = ['started', 'ended'];
@@ -120,12 +147,27 @@ class TitleScoresTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
-        // allowEmpty
-        // title_id
-        $data = $params;
-        $data['title_id'] = '';
-        $result = $this->TitleScores->newEntity($data);
-        $this->assertEmpty($result->getErrors());
+        // boolean
+        $names = ['is_world', 'is_official'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '0.5';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // allowEmptyString
+        $names = ['title_id', 'name', 'result'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '';
+            $result = $this->TitleScores->newEntity($data);
+            $this->assertEmpty($result->getErrors());
+        }
 
         // id (update)
         $data = $params;
@@ -137,6 +179,36 @@ class TitleScoresTableTest extends TestCase
         // id (create)
         $result = $this->TitleScores->newEntity($data);
         $this->assertEmpty($result->getErrors());
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
+    {
+        // title_id が存在しない値
+        $result = $this->TitleScores->newEntity([
+            'title_id' => 999,
+            'label' => 'test',
+        ]);
+        $this->assertFalse($this->TitleScores->checkRules($result));
+
+        // country_id が存在しない値
+        $result = $this->TitleScores->newEntity([
+            'country_id' => 999,
+            'label' => 'test',
+        ]);
+        $this->assertFalse($this->TitleScores->checkRules($result));
+
+        // 成功
+        $result = $this->TitleScores->newEntity([
+            'title_id' => 1,
+            'country_id' => 1,
+            'label' => 'test',
+        ]);
+        $this->assertTrue($this->TitleScores->checkRules($result));
     }
 
     /**

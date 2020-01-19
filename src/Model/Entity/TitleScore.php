@@ -7,6 +7,7 @@ namespace Gotea\Model\Entity;
  * @property int $id
  * @property int $title_id
  * @property string $name
+ * @property string|null $result
  * @property \Cake\I18n\Time $started
  * @property \Cake\I18n\Time $ended
  * @property bool $is_world
@@ -18,9 +19,14 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Country $country
  * @property \Gotea\Model\Entity\TitleScoreDetail[] $title_score_details
  *
+ * @property string $winner_name
+ * @property string $loser_name
  * @property string $players_name
  * @property \Gotea\Model\Entity\TitleScoreDetail $win_detail
  * @property \Gotea\Model\Entity\TitleScoreDetail $lose_detail
+ * @property \Gotea\Model\Entity\Player|null $winner
+ * @property \Gotea\Model\Entity\Player|null $loser
+ * @property array $game_dates
  */
 class TitleScore extends AppEntity
 {
@@ -39,27 +45,11 @@ class TitleScore extends AppEntity
     }
 
     /**
-     * 指定した棋士に合致するかを判定します。
-     *
-     * @param \Gotea\Model\Entity\Player|null $player 棋士
-     * @param string|null $id 棋士ID
-     * @return 判定結果
-     */
-    public function isSelected($player, $id = null)
-    {
-        if (!$player || !$id) {
-            return false;
-        }
-
-        return $player->id === (int)$id;
-    }
-
-    /**
      * 勝者名を取得します。
      *
      * @return string 勝者名
      */
-    public function getWinnerName()
+    protected function _getWinnerName()
     {
         if (($detail = $this->win_detail)) {
             return $detail->player_name_with_rank;
@@ -73,7 +63,7 @@ class TitleScore extends AppEntity
      *
      * @return string 敗者名
      */
-    public function getLoserName()
+    protected function _getLoserName()
     {
         if (($detail = $this->lose_detail)) {
             return $detail->player_name_with_rank;
@@ -127,12 +117,12 @@ class TitleScore extends AppEntity
     }
 
     /**
-     * 対局日を取得します。
-     * 複数日にまたがった場合、fromとtoを返却します。
+     * 対局日を配列形式で取得します。
+     * 開始日と終了日が異なる場合は2件、それ以外は1件のデータが返却されます。
      *
      * @return array
      */
-    protected function _getDates()
+    protected function _getGameDates()
     {
         $dates = [$this->started];
         if ($this->ended->diffInDays($this->started, false) < 0) {
@@ -140,5 +130,21 @@ class TitleScore extends AppEntity
         }
 
         return $dates;
+    }
+
+    /**
+     * 指定した棋士に合致するかを判定します。
+     *
+     * @param \Gotea\Model\Entity\Player|null $player 棋士
+     * @param string|null $id 棋士ID
+     * @return 判定結果
+     */
+    public function isSelected($player, $id = null)
+    {
+        if (!$player || !$id) {
+            return false;
+        }
+
+        return $player->id === (int)$id;
     }
 }
