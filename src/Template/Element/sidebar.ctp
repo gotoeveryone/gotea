@@ -11,7 +11,7 @@
     ], ['class' => 'nav-menu']);
     ?>
     <?=
-    $this->Html->link('タイトル勝敗検索', [
+    $this->Html->link('タイトル成績検索', [
         '_name' => 'scores',
     ], ['class' => 'nav-menu']);
     ?>

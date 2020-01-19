@@ -191,14 +191,12 @@ class TitleScoresTableTest extends TestCase
         // title_id が存在しない値
         $result = $this->TitleScores->newEntity([
             'title_id' => 999,
-            'label' => 'test',
         ]);
         $this->assertFalse($this->TitleScores->checkRules($result));
 
         // country_id が存在しない値
         $result = $this->TitleScores->newEntity([
             'country_id' => 999,
-            'label' => 'test',
         ]);
         $this->assertFalse($this->TitleScores->checkRules($result));
 
@@ -206,7 +204,6 @@ class TitleScoresTableTest extends TestCase
         $result = $this->TitleScores->newEntity([
             'title_id' => 1,
             'country_id' => 1,
-            'label' => 'test',
         ]);
         $this->assertTrue($this->TitleScores->checkRules($result));
     }

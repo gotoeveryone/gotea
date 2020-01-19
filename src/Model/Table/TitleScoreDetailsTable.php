@@ -36,8 +36,6 @@ class TitleScoreDetailsTable extends AppTable
         $this->belongsTo('TitleScores');
         $this->belongsTo('Players')
             ->setJoinType(Query::JOIN_TYPE_INNER);
-        $this->belongsTo('Ranks')
-            ->setJoinType(Query::JOIN_TYPE_INNER);
     }
 
     /**
@@ -51,11 +49,10 @@ class TitleScoreDetailsTable extends AppTable
 
         $validator
             ->requirePresence([
-                'title_score_id', 'player_id', 'rank_id', 'division',
+                'title_score_id', 'player_id', 'division',
             ])
             ->integer('title_score_id')
-            ->integer('player_id')
-            ->integer('rank_id');
+            ->integer('player_id');
 
         return $validator;
     }

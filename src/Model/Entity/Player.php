@@ -29,6 +29,7 @@ use Cake\Routing\Router;
  *
  * @property \Gotea\Model\Entity\Country $country
  * @property \Gotea\Model\Entity\Rank $rank
+ * @property \Gotea\Model\Entity\PlayerRank[] $player_ranks
  * @property \Gotea\Model\Entity\Organization $organization
  * @property \Gotea\Model\Entity\TitleScoreDetail[] $title_score_details
  *
@@ -45,6 +46,33 @@ class Player extends AppEntity
 {
     use CountryTrait;
     use RankTrait;
+
+    /**
+     * 引数の日付時点での段位を取得する
+     * player_ranks から段位が取得できなかった場合は棋士情報に設定されている段位を返却する
+     *
+     * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付
+     * @return \Gotea\Model\Entity\Rank
+     */
+    public function getRankByDate(FrozenDate $baseDate)
+    {
+        if (!$this->player_ranks) {
+            return $this->rank;
+        }
+
+        $rank = collection($this->player_ranks)
+            ->filter(function (PlayerRank $item) use ($baseDate) {
+                // 入段日と昇段日が同じ（＝初段のデータ）は含めない
+                return $baseDate >= $item->promoted && $item->promoted->format('Ymd') !== $this->joined;
+            })
+            ->sortBy('promoted', SORT_DESC)
+            ->map(function (PlayerRank $item) {
+                return $item->rank;
+            })
+            ->first();
+
+        return $rank ? $rank : $this->rank;
+    }
 
     /**
      * 入力フォーム用の入段日を取得します。
