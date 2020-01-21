@@ -11,7 +11,7 @@ import Ranking from '@/components/ranking/Index.vue';
 import Titles from '@/components/titles/Index.vue';
 import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
-import { DialogOption, ModalOption, Window } from '@/types';
+import { Window } from '@/types';
 
 declare var window: Window;
 
