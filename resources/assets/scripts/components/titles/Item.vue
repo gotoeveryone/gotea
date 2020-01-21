@@ -28,7 +28,7 @@
       >
     </span>
     <span class="table-column table-column_closed">
-      <input @change="save" v-model="item.isClosed" :disabled="!isSaved()" type="checkbox">
+      <input @change="save" v-model="item.isClosed" :disabled="!isSaved" type="checkbox">
     </span>
     <span class="table-column table-column_output">
       <input @change="save" v-model="item.isOutput" type="checkbox">
@@ -52,11 +52,6 @@ export default Vue.extend({
       required: true,
     },
   },
-  data: () => {
-    return {
-      label: '',
-    };
-  },
   computed: {
     winnerName(): string {
       return this.item.winnerName || '';
@@ -64,18 +59,21 @@ export default Vue.extend({
     rowClass(): string {
       return this.item.isClosed ? 'table-row-closed' : '';
     },
-  },
-  mounted() {
-    this.setLabel();
+    label(): string {
+      return this.isSaved ? '開く' : '登録';
+    },
+    isSaved(): boolean {
+      return this.item.id !== null && this.item.id !== undefined;
+    },
   },
   methods: {
     save() {
       // 未登録なら何もしない
-      if (!this.isSaved()) {
+      if (!this.isSaved) {
         return;
       }
       // 更新処理
-      axios.put(`/api/titles/${this.item.id}`, this.item).catch(res => {
+      return axios.put(`/api/titles/${this.item.id}`, this.item).catch(res => {
         const message = res.data.response.message;
         this.$store.dispatch('openDialog', {
           messages: message || '更新に失敗しました…。',
@@ -84,7 +82,7 @@ export default Vue.extend({
       });
     },
     select() {
-      if (!this.isSaved()) {
+      if (!this.isSaved) {
         this.add();
       } else {
         this.$emit('openModal', {
@@ -94,7 +92,7 @@ export default Vue.extend({
     },
     add() {
       // 登録処理
-      axios
+      return axios
         .post('/api/titles/', this.item)
         .then(() => {
           this.$emit('refresh');
@@ -116,12 +114,6 @@ export default Vue.extend({
         this.item.htmlFileModified = target.value;
         this.save();
       }
-    },
-    setLabel() {
-      this.label = this.isSaved() ? '開く' : '登録';
-    },
-    isSaved() {
-      return this.item.id !== null && this.item.id !== undefined;
     },
   },
 });
