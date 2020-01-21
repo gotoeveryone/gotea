@@ -1,9 +1,9 @@
 <template>
   <transition name="modal">
-    <div @click="close()" v-if="isShow()" class="iframe-modal">
+    <div @click="close()" v-if="isShow" class="iframe-modal">
       <div :style="{ height: height, width: width }" class="modal-parent">
         <iframe :src="options.url" class="modal-body" />
-        <div @click="close()" v-if="isShow()" class="modal-close">
+        <div @click="close()" class="modal-close">
           <span class="modal-close-mark">×</span>
         </div>
       </div>
@@ -12,40 +12,33 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue from 'vue';
 
 import { ModalOption } from '@/types';
 
 export default Vue.extend({
-  props: {
-    options: {
-      type: Object as PropType<ModalOption>,
-      default: () => ({
-        url: '',
-        height: '',
-        width: '',
-        callback: () => null,
-      }),
-    },
-  },
   computed: {
+    options(): ModalOption {
+      return this.$store.getters.modalOptions();
+    },
     height(): string {
       return this.options.height ? this.options.height.toString() : '90%';
     },
     width(): string {
       return this.options.width ? this.options.width.toString() : '90%';
     },
+    isShow(): boolean {
+      return !!this.options.url;
+    },
   },
   methods: {
     close() {
+      const callback = this.options.callback;
       this.$store.dispatch('closeModal').then(() => {
-        if (typeof this.options.callback === 'function') {
-          this.options.callback();
+        if (typeof callback === 'function') {
+          callback();
         }
       });
-    },
-    isShow() {
-      return this.options.url !== '';
     },
   },
 });

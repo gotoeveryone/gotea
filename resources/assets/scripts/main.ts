@@ -37,14 +37,6 @@ const App = new Vue({
     historyId: null as number | null,
     hide: true,
   },
-  computed: {
-    modal(): ModalOption {
-      return this.$store.getters.modalOptions();
-    },
-    dialog(): DialogOption {
-      return this.$store.getters.dialogOptions();
-    },
-  },
   mounted() {
     require('@/util');
 

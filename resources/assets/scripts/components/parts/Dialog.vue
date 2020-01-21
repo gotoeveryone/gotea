@@ -1,6 +1,6 @@
 <template>
   <transition name="dialog">
-    <div @click="close()" v-if="isShow()" :style="{ backgroundColor: modalColor }" class="dialog">
+    <div @click="close()" v-if="isShow" :style="{ backgroundColor: modalColor }" class="dialog">
       <div class="dialog-content">
         <div :style="{ backgroundColor: headerColor }" class="dialog-content-header">
           <div v-text="title" class="dialog-content-title" />
@@ -36,17 +36,6 @@ export default Vue.extend({
     },
   },
   props: {
-    options: {
-      type: Object as PropType<DialogOption>,
-      default: () => ({
-        modalColor: '',
-        headerColor: '',
-        type: '',
-        title: '',
-        messages: [],
-        server: false,
-      }),
-    },
     servType: {
       type: String,
       default: '',
@@ -57,6 +46,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    options(): DialogOption {
+      return this.$store.getters.dialogOptions();
+    },
     modalColor(): string {
       return this.options.modalColor || 'rgba(204, 204, 204, 0.6)';
     },
@@ -79,10 +71,19 @@ export default Vue.extend({
       }
       return 'message-info';
     },
+    isShow(): boolean {
+      return (
+        this.messages.length > 0 &&
+        ((this.isServ && this.options.server) || (!this.isServ && !this.options.server))
+      );
+    },
+    isServ(): boolean {
+      return this.servMessages && this.servMessages.length > 0;
+    },
   },
   mounted() {
     // サーバからのメッセージを保持している場合、それをオプションに設定
-    if (this.isServ()) {
+    if (this.isServ) {
       this.$store.dispatch('openDialog', {
         title: this.title,
         messages: this.servMessages,
@@ -94,15 +95,6 @@ export default Vue.extend({
   methods: {
     close() {
       this.$store.dispatch('closeDialog');
-    },
-    isShow(): boolean {
-      return (
-        this.messages.length > 0 &&
-        ((this.isServ() && this.options.server) || (!this.isServ() && !this.options.server))
-      );
-    },
-    isServ(): boolean {
-      return this.servMessages && this.servMessages.length > 0;
     },
   },
 });
