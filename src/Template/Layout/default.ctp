@@ -66,9 +66,9 @@ use Cake\I18n\FrozenTime;
         <?php endif ?>
 
         <!-- モーダルコンテンツ -->
-        <app-modal :options="modal"></app-modal>
+        <app-modal></app-modal>
         <!-- ダイアログ -->
-        <app-dialog :options="dialog"></app-dialog>
+        <app-dialog></app-dialog>
         <?= $this->Flash->render() ?>
     </div>
 

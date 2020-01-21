@@ -1,20 +1,21 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { DialogOption, ModalOption, State } from '@/types';
 
 Vue.use(Vuex);
 
-const initialState = {
+const initialState: State = {
   modal: {
-    url: '',
-    height: '',
-    width: '',
-    callback: () => {},
+    url: null,
+    height: null,
+    width: null,
+    callback: null,
   },
   dialog: {
-    modalColor: '',
-    headerColor: '',
-    title: '',
-    messages: '',
+    modalColor: null,
+    headerColor: null,
+    title: null,
+    messages: [],
     type: 'info',
     server: false,
   },
@@ -31,17 +32,17 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    openModal(state, _modal) {
-      state.modal = _modal;
+    openModal(state, _modal: ModalOption) {
+      state.modal = { ..._modal };
     },
     closeModal(state) {
-      state.modal = Object.assign({}, initialState.modal);
+      state.modal = { ...initialState.modal };
     },
-    openDialog(state, _dialog) {
-      state.dialog = _dialog;
+    openDialog(state, _dialog: DialogOption) {
+      state.dialog = { ..._dialog };
     },
     closeDialog(state) {
-      state.dialog = Object.assign({}, initialState.dialog);
+      state.dialog = { ...initialState.dialog };
     },
   },
   actions: {

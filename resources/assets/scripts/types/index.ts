@@ -6,8 +6,12 @@ declare module 'vue/types/vue' {
   }
 }
 
+export interface State {
+  dialog: DialogOption;
+  modal: ModalOption;
+}
+
 export interface Cake {
-  csrfToken: string;
   accessUser: string;
 }
 
@@ -23,19 +27,19 @@ export interface DropDown {
 }
 
 export interface DialogOption {
-  modalColor: string;
-  headerColor: string;
-  type: string;
-  title: string;
+  modalColor: string | null;
+  headerColor: string | null;
+  type: 'error' | 'warning' | 'info';
+  title: string | null;
   messages: string | string[];
   server: boolean;
 }
 
 export interface ModalOption {
-  url: string | number;
-  width: string | number;
-  height: string;
-  callback: Function;
+  url: string | null;
+  width: string | number | null;
+  height: string | number | null;
+  callback: Function | null;
 }
 
 export interface Country {

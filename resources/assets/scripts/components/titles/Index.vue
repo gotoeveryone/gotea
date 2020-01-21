@@ -73,7 +73,7 @@ export default Vue.extend({
       });
     },
     outputJson() {
-      axios
+      return axios
         .post('/api/titles/news')
         .then(() =>
           this.$store.dispatch('openDialog', {
@@ -91,15 +91,12 @@ export default Vue.extend({
       this.$store.dispatch(
         'openModal',
         Object.assign(options, {
-          callback: () =>
-            axios
-              .get('/api/titles', { params: this.params })
-              .then(res => (this.items = res.data.response)),
+          callback: () => this.refresh(),
         }),
       );
     },
     refresh() {
-      axios
+      return axios
         .get('/api/titles', { params: this.params })
         .then(res => (this.items = res.data.response));
     },
