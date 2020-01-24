@@ -35,7 +35,7 @@ class RetentionHistoriesController extends AppController
 
         return $this->redirect([
             '_name' => 'view_title',
-            '?' => ['tab' => 'histories'],
+            '?' => ['tab' => 'retention_histories'],
             $id,
         ]);
     }
