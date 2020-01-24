@@ -17,7 +17,7 @@
         </div>
         <div class="back-detail">
             <?= $this->Html->link('<< 戻る', [
-                '_name' => 'view_player', '?' => ['tab' => 'scores'], $player->id,
+                '_name' => 'view_player', '?' => ['tab' => 'title_scores'], $player->id,
             ], [
                 'class' => 'layout-button',
             ]) ?>
