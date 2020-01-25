@@ -14,6 +14,7 @@ namespace Gotea\Model\Entity;
  * @property string $win_group_name
  * @property bool $is_team
  * @property \Cake\I18n\FrozenDate $acquired
+ * @property bool $is_official
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *

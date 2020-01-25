@@ -33,6 +33,9 @@
     <span class="table-column table-column_output">
       <input @change="save" v-model="item.isOutput" type="checkbox">
     </span>
+    <span class="table-column table-column_official">
+      <input @change="save" v-model="item.isOfficial" type="checkbox">
+    </span>
     <span class="table-column table-column_open-detail">
       <a @click="select()" v-text="label" class="view-link" />
     </span>

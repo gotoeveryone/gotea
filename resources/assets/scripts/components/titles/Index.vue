@@ -14,6 +14,7 @@
           <span class="table-column table-column_modified">修正日</span>
           <span class="table-column table-column_closed">終了<br>棋戦</span>
           <span class="table-column table-column_output">出力</span>
+          <span class="table-column table-column_official">公式戦</span>
           <span class="table-column table-column_open-detail">詳細</span>
         </li>
       </ul>
@@ -70,6 +71,8 @@ export default Vue.extend({
         htmlFileModified: '',
         url: null,
         isClosed: false,
+        isOutput: true,
+        isOfficial: true,
       });
     },
     outputJson() {

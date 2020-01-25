@@ -9,7 +9,7 @@
     <?= $this->Form->control('id') ?>
     <div class="page-header">タイトル情報 (ID: <?= h($title->id) ?>)</div>
     <ul class="detail_box">
-        <li class="detail_box_item box-4">
+        <li class="detail_box_item box-3">
             <?php
             echo $this->Form->control('name', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'name')],
@@ -62,6 +62,17 @@
                 <?php
                 echo $this->Form->label('is_output', __d('model', 'is_output'), ['class' => 'label-row']);
                 echo $this->Form->control('is_output', [
+                    'label' => false,
+                    'class' => 'input-row',
+                ]);
+                ?>
+            </div>
+        </li>
+        <li class="detail_box_item box-1">
+            <div class="input">
+                <?php
+                echo $this->Form->label('is_official', __d('model', 'is_official'), ['class' => 'label-row']);
+                echo $this->Form->control('is_official', [
                     'label' => false,
                     'class' => 'input-row',
                 ]);
