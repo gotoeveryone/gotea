@@ -28,6 +28,9 @@
                         <?php if ($title->country->isWorlds() && !$retention->is_team) : ?>
                         <span class="inner-column"><span>出場国：</span><?= h($retention->country->name) ?></span>
                         <?php endif ?>
+                        <?php if (!$retention->is_official) : ?>
+                            <span class="inner-column">（非公式戦）</span>
+                        <?php endif ?>
                         <?php if ($retention->isRecent()) : ?>
                             <span class="inner-column"><span class="mark-new">NEW!</span></span>
                         <?php endif ?>
@@ -48,6 +51,9 @@
                         <span class="inner-column"><span>優勝者：</span><?= h($history->winner_name) ?></span>
                         <?php if ($title->country->isWorlds() && !$history->is_team) : ?>
                         <span class="inner-column"><span>出場国：</span><?= h($history->country->name) ?></span>
+                        <?php endif ?>
+                        <?php if (!$history->is_official) : ?>
+                            <span class="inner-column">（非公式戦）</span>
                         <?php endif ?>
                     </div>
                     <div class="detail_box_item detail_box_item-buttons box-2">
