@@ -27,6 +27,7 @@ class RetentionHistoriesFixture extends TestFixture
         'win_group_name' => ['type' => 'string', 'length' => 30, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '優勝チーム名', 'precision' => null, 'fixed' => null],
         'is_team' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '団体戦判定', 'precision' => null],
         'acquired' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '取得日', 'precision' => null],
+        'is_official' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '公式戦フラグ', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '初回登録日時', 'precision' => null],
         'created_by' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '初回登録者', 'precision' => null, 'fixed' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '更新日時', 'precision' => null],

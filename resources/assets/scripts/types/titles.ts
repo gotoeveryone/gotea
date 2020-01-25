@@ -14,6 +14,8 @@ export interface TitleResultItem {
   htmlFileModified: string;
   url: string | null;
   isClosed: boolean;
+  isOutput: boolean;
+  isOfficial: boolean;
 }
 
 export interface Player {

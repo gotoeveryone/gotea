@@ -6,6 +6,7 @@ use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Inflector;
+use Cake\Utility\Security;
 use Gotea\Model\Table\TitlesTable;
 
 /**
@@ -34,6 +35,7 @@ class TitlesTableTest extends TestCase
         'app.Players',
         'app.Countries',
         'app.Ranks',
+        'app.PlayerRanks',
     ];
 
     /**
@@ -89,8 +91,29 @@ class TitlesTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
+        // notEmpty
+        $names = [
+            'country_id',
+            'name',
+            'name_english',
+            'holding',
+            'sort_order',
+            'html_file_name',
+            'html_file_modified',
+            'is_team',
+            'is_closed',
+            'is_output',
+            'is_official',
+        ];
+        foreach ($params as $name => $value) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
         // integer
-        $names = ['holding', 'sort_order'];
+        $names = ['country_id', 'holding', 'sort_order'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = '1a';
@@ -107,13 +130,72 @@ class TitlesTableTest extends TestCase
         }
 
         // alphaNumeric
-        $data = $params;
-        $data['name_english'] = 'テスト';
-        $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
+        $names = ['name_english'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = 'テスト';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
 
-        $data['name_english'] = 'test/1';
-        $result = $this->Titles->newEntity($data);
+            $data[$name] = 'test/1';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // maxLength
+        $names = [
+            'name' => 30,
+            'name_english' => 60,
+            'html_file_name' => 30,
+            'remarks' => 500,
+        ];
+        foreach ($names as $name => $length) {
+            $data = $params;
+            $data[$name] = Security::randomString($length + 1);
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // date
+        $names = ['html_file_modified'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '20180101';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'testtest';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // boolean
+        $names = ['is_team', 'is_closed', 'is_output', 'is_official'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '0.5';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->Titles->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // allowEmptyString
+        $names = ['remarks'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '';
+            $result = $this->Titles->newEntity($data);
+            $this->assertEmpty($result->getErrors());
+        }
+
+        // id
+        $data = $params;
+        $data['id'] = '';
+        $exist = $this->Titles->get(1);
+        $result = $this->Titles->patchEntity($exist, $data);
         $this->assertNotEmpty($result->getErrors());
 
         // custom (ascii value only)
@@ -122,34 +204,29 @@ class TitlesTableTest extends TestCase
         $result = $this->Titles->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
-        // maxLength
-        // name
-        $data = $params;
-        $data['name'] = substr(bin2hex(random_bytes(31)), 0, 31);
+        $data['html_file_name'] = '#test';
         $result = $this->Titles->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
+    }
 
-        // name_english
-        $data = $params;
-        $data['name_english'] = substr(bin2hex(random_bytes(61)), 0, 61);
-        $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
+    {
+        // country_id が存在しない値
+        $result = $this->Titles->newEntity([
+            'country_id' => 999,
+        ]);
+        $this->assertFalse($this->Titles->checkRules($result));
 
-        // html_file_name
-        $data = $params;
-        $data['html_file_name'] = substr(bin2hex(random_bytes(31)), 0, 31);
-        $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
-
-        // date
-        // html_file_modified
-        $data = $params;
-        $data['html_file_modified'] = '20180101';
-        $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
-        $data['html_file_modified'] = 'testtest';
-        $result = $this->Titles->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
+        // 成功
+        $result = $this->Titles->newEntity([
+            'country_id' => 1,
+        ]);
+        $this->assertTrue($this->Titles->checkRules($result));
     }
 
     /**

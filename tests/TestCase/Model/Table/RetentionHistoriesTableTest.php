@@ -110,8 +110,25 @@ class RetentionHistoriesTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
+        // notEmpty
+        $names = [
+            'title_id',
+            'holding',
+            'target_year',
+            'name',
+            'is_team',
+            'acquired',
+            'is_official',
+        ];
+        foreach ($params as $name => $value) {
+            $data = $params;
+            unset($data[$name]);
+            $result = $this->RetentionHistories->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
         // integer
-        $names = ['player_id', 'holding', 'target_year'];
+        $names = ['title_id', 'player_id', 'country_id', 'holding', 'target_year'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = '1a';
@@ -127,19 +144,40 @@ class RetentionHistoriesTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
-        // notEmpty
-        // player_id
-        $data = $params;
-        $data['player_id'] = '';
-        $result = $this->RetentionHistories->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
+        // date
+        $names = ['acquired'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '20180101';
+            $result = $this->RetentionHistories->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
 
-        // win_group_name
-        $data = $params;
-        $data['is_team'] = '1';
-        $data['win_group_name'] = '';
-        $result = $this->RetentionHistories->newEntity($data);
-        $this->assertNotEmpty($result->getErrors());
+            $data[$name] = 'testtest';
+            $result = $this->RetentionHistories->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // boolean
+        $names = ['is_team', 'is_official'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '0.5';
+            $result = $this->RetentionHistories->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+
+            $data[$name] = 'test';
+            $result = $this->RetentionHistories->newEntity($data);
+            $this->assertNotEmpty($result->getErrors());
+        }
+
+        // allowEmptyString
+        $names = ['country_id'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '';
+            $result = $this->RetentionHistories->newEntity($data);
+            $this->assertEmpty($result->getErrors());
+        }
 
         // id
         $data = $params;
@@ -148,12 +186,31 @@ class RetentionHistoriesTableTest extends TestCase
         $result = $this->RetentionHistories->patchEntity($exist, $data);
         $this->assertNotEmpty($result->getErrors());
 
-        // date
-        // acquired
+        // custom
         $data = $params;
-        $data['acquired'] = '20180101';
+        $data['is_team'] = '1';
+        $data['player_id'] = '1';
+        $data['win_group_name'] = '';
         $result = $this->RetentionHistories->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
+
+        $data['is_team'] = '0';
+        $data['player_id'] = '';
+        $data['win_group_name'] = 'test';
+        $result = $this->RetentionHistories->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        $data['is_team'] = '1';
+        $data['player_id'] = '';
+        $data['win_group_name'] = 'test';
+        $result = $this->RetentionHistories->newEntity($data);
+        $this->assertEmpty($result->getErrors());
+
+        $data['is_team'] = '0';
+        $data['player_id'] = '1';
+        $data['win_group_name'] = '';
+        $result = $this->RetentionHistories->newEntity($data);
+        $this->assertEmpty($result->getErrors());
     }
 
     /**

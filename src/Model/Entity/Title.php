@@ -19,6 +19,7 @@ use Cake\I18n\FrozenDate;
  * @property bool $is_team
  * @property bool $is_closed
  * @property bool $is_output
+ * @property bool $is_official
  * @property \Cake\I18n\FrozenTime $created
  * @property string $created_by
  * @property \Cake\I18n\FrozenTime $modified
@@ -153,6 +154,7 @@ class Title extends AppEntity
             'htmlFileModified' => $this->html_file_modified->format('Y/m/d'),
             'isClosed' => $this->is_closed,
             'isOutput' => $this->is_output,
+            'isOfficial' => $this->is_official,
         ];
     }
 }

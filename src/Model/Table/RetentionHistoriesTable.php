@@ -40,23 +40,66 @@ class RetentionHistoriesTable extends AppTable
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
-        return $validator
-            ->requirePresence([
-                'title_id', 'holding', 'target_year', 'name', 'acquired',
-            ])
+        $validator
+            ->integer('title_id')
+            ->requirePresence('title_id', 'create')
+            ->notEmptyString('title_id');
+
+        $validator
             ->integer('player_id')
-            ->integer('holding')
-            ->integer('target_year')
-            ->requirePresence(['player_id'], function ($context) {
+            ->requirePresence('player_id', function ($context) {
                 return empty($context['data']['is_team']);
             })
+            ->notEmptyString('player_id', null, function ($context) {
+                return empty($context['data']['is_team']);
+            });
+
+        $validator
+            ->integer('country_id')
+            ->allowEmptyString('country_id');
+
+        $validator
+            ->integer('holding')
+            ->requirePresence('holding', 'create')
+            ->notEmptyString('holding');
+
+        $validator
+            ->integer('target_year')
+            ->requirePresence('target_year', 'create')
+            ->notEmptyString('target_year');
+
+        $validator
+            ->scalar('name')
+            ->maxLength('name', 30)
+            ->requirePresence('name', 'create')
+            ->notEmptyString('name');
+
+        $validator
+            ->scalar('win_group_name')
+            ->maxLength('win_group_name', 30)
             ->requirePresence('win_group_name', function ($context) {
                 return !empty($context['data']['is_team']);
             })
-            ->maxLength('win_group_name', 30)
-            ->date('acquired', 'y/m/d');
+            ->notEmptyString('win_group_name', null, function ($context) {
+                return !empty($context['data']['is_team']);
+            });
+
+        $validator
+            ->boolean('is_team')
+            ->notEmptyString('is_team');
+
+        $validator
+            ->date('acquired', ['y/m/d'])
+            ->requirePresence('acquired', 'create')
+            ->notEmptyDate('acquired');
+
+        $validator
+            ->boolean('is_official')
+            ->notEmptyString('is_official');
+
+        return $validator;
     }
 
     /**

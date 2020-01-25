@@ -3,6 +3,7 @@
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
@@ -37,27 +38,86 @@ class TitlesTable extends AppTable
      */
     public function validationDefault(Validator $validator)
     {
-        return $validator
-            ->requirePresence([
-                'country_id', 'name', 'name_english', 'holding',
-                'sort_order', 'html_file_name', 'html_file_modified',
-            ], 'create')
-            ->notEmpty([
-                'name', 'name_english', 'holding',
-                'html_file_name', 'html_file_modified',
-            ])
-            ->integer('holding')
-            ->integer('sort_order')
+        $validator
+            ->integer('id')
+            ->allowEmptyString('id', null, 'create');
+
+        $validator
+            ->integer('country_id')
+            ->requirePresence('country_id', 'create')
+            ->notEmptyString('country_id');
+
+        $validator
+            ->scalar('name')
+            ->maxLength('name', 30)
+            ->requirePresence('name', 'create')
+            ->notEmptyString('name');
+
+        $validator
+            ->scalar('name_english')
             ->alphaNumeric('name_english')
+            ->maxLength('name_english', 60)
+            ->requirePresence('name_english', 'create')
+            ->notEmptyString('name_english');
+
+        $validator
+            ->integer('holding')
+            ->requirePresence('holding', 'create')
+            ->notEmptyString('holding');
+
+        $validator
+            ->integer('sort_order')
+            ->requirePresence('sort_order', 'create')
+            ->notEmptyString('sort_order');
+
+        $validator
+            ->scalar('html_file_name')
+            ->maxLength('html_file_name', 30)
+            ->requirePresence('html_file_name', 'create')
+            ->notEmptyString('html_file_name')
             ->add('html_file_name', 'custom', [
                 'rule' => function ($value) {
                     return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\/\s]+$/', $value);
                 },
-            ])
-            ->maxLength('name', 30)
-            ->maxLength('name_english', 60)
-            ->maxLength('html_file_name', 30)
-            ->date('html_file_modified', 'y/m/d');
+            ]);
+
+        $validator
+            ->date('html_file_modified', ['y/m/d'])
+            ->requirePresence('html_file_modified', 'create')
+            ->notEmptyDate('html_file_modified');
+
+        $validator
+            ->scalar('remarks')
+            ->maxLength('remarks', 500)
+            ->allowEmptyString('remarks');
+
+        $validator
+            ->boolean('is_team')
+            ->notEmptyString('is_team');
+
+        $validator
+            ->boolean('is_closed')
+            ->notEmptyString('is_closed');
+
+        $validator
+            ->boolean('is_output')
+            ->notEmptyString('is_output');
+
+        $validator
+            ->boolean('is_official')
+            ->notEmptyString('is_official');
+
+        return $validator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['country_id'], 'Countries'));
+
+        return $rules;
     }
 
     /**

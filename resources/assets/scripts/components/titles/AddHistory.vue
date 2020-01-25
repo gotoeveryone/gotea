@@ -12,7 +12,7 @@
           name="id"
         >
         <input
-          :value="isTeamHidden"
+          :value="isTeamHidden ? 1 : 0"
           type="hidden"
           name="is_team"
         >
@@ -54,7 +54,26 @@
           >
         </div>
       </div>
-      <div class="detail_box_item box-2" />
+      <div class="detail_box_item box-1">
+        <div class="input checkbox">
+          <input
+            name="is_official"
+            value="0"
+            type="hidden"
+          >
+          <label class="checkbox-label" for="official">
+            <input
+              id="official"
+              v-model="isOfficial"
+              type="checkbox"
+              class="official"
+              name="is_official"
+            >
+            <span>公式戦</span>
+          </label>
+        </div>
+      </div>
+      <div class="detail_box_item box-1" />
       <div class="detail_box_item detail_box_item-buttons box-3">
         <div class="input checkbox">
           <input
@@ -245,6 +264,7 @@ export default Vue.extend({
       year: '' as number | string,
       holding: '' as number | string,
       acquired: '',
+      isOfficial: true,
       name: '',
       playerId: null as number | null,
       countryId: null as number | null,
@@ -278,6 +298,7 @@ export default Vue.extend({
           this.countryId = json.countryId;
           this.year = json.targetYear;
           this.acquired = json.acquired;
+          this.isOfficial = json.isOfficial;
           this.viewName = json.winPlayerName;
           this.teamName = json.winGroupName;
           this.edit = true;
@@ -361,6 +382,7 @@ export default Vue.extend({
       this.year = '';
       this.holding = '';
       this.acquired = '';
+      this.isOfficial = true;
       this.name = '';
       this.playerId = null;
       this.countryId = null;

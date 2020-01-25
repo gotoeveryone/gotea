@@ -10,11 +10,11 @@
 
   .table-column {
     &_name {
-      width: 17%;
+      width: 15%;
     }
 
     &_winner {
-      width: 15%;
+      width: 14%;
     }
 
     &_holding,
@@ -29,7 +29,8 @@
 
     &_team,
     &_closed,
-    &_output {
+    &_output,
+    &_official {
       width: 5%;
       text-align: center;
     }

@@ -30,6 +30,7 @@ class TitlesFixture extends TestFixture
         'is_team' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '団体戦判定', 'precision' => null],
         'is_closed' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '終了済', 'precision' => null],
         'is_output' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => 'Go News 出力有無', 'precision' => null],
+        'is_official' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '公式戦フラグ', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '初回登録日時', 'precision' => null],
         'created_by' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '初回登録者', 'precision' => null, 'fixed' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '更新日時', 'precision' => null],
