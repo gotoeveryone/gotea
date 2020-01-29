@@ -10,16 +10,16 @@
 
   .table-column {
     &_name {
-      width: 15%;
+      width: calc(30% / 2);
     }
 
     &_winner {
-      width: 14%;
+      width: 12%;
     }
 
-    &_holding,
-    &_order {
-      width: 5%;
+    &_order,
+    &_holding {
+      width: calc(12% / 3);
       text-align: center;
 
       &-input {
@@ -31,7 +31,7 @@
     &_closed,
     &_output,
     &_official {
-      width: 5%;
+      width: calc(20% / 4);
       text-align: center;
     }
 

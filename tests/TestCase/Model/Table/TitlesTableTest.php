@@ -63,6 +63,27 @@ class TitlesTableTest extends TestCase
     }
 
     /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $this->Titles->initialize([]);
+        $this->assertEquals($this->Titles->getTable(), 'titles');
+        $this->assertEquals($this->Titles->getDisplayField(), 'name');
+        $this->assertEquals($this->Titles->getPrimaryKey(), 'id');
+
+        // Association
+        $associations = collection($this->Titles->associations());
+        $compare = ['Countries', 'RetentionHistories'];
+        $this->assertEquals($associations->count(), count($compare));
+        $associations->each(function ($a) use ($compare) {
+            $this->assertTrue(in_array($a->getName(), $compare, true));
+        });
+    }
+
+    /**
      * バリデーション
      *
      * @return void
@@ -75,7 +96,7 @@ class TitlesTableTest extends TestCase
             'name_english' => '123456789012345678901234567890',
             'holding' => 1,
             'sort_order' => 1,
-            'html_file_name' => 'test/1',
+            'html_file_name' => 'test-1',
             'html_file_modified' => '2018/01/01',
         ];
 
@@ -113,7 +134,7 @@ class TitlesTableTest extends TestCase
         }
 
         // integer
-        $names = ['country_id', 'holding', 'sort_order'];
+        $names = ['country_id', 'holding', 'sort_order', 'html_file_holding'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = '1a';
@@ -146,7 +167,10 @@ class TitlesTableTest extends TestCase
         $names = [
             'name' => 30,
             'name_english' => 60,
+            'holding' => 3,
+            'sort_order' => 2,
             'html_file_name' => 30,
+            'html_file_holding' => 3,
             'remarks' => 500,
         ];
         foreach ($names as $name => $length) {
@@ -183,7 +207,7 @@ class TitlesTableTest extends TestCase
         }
 
         // allowEmptyString
-        $names = ['remarks'];
+        $names = ['remarks', 'html_file_holding'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = '';
@@ -204,7 +228,7 @@ class TitlesTableTest extends TestCase
         $result = $this->Titles->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
-        $data['html_file_name'] = '#test';
+        $data['html_file_name'] = '/test';
         $result = $this->Titles->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
     }

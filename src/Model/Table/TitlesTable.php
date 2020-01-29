@@ -62,13 +62,20 @@ class TitlesTable extends AppTable
 
         $validator
             ->integer('holding')
+            ->maxLength('holding', 3)
             ->requirePresence('holding', 'create')
             ->notEmptyString('holding');
 
         $validator
             ->integer('sort_order')
+            ->maxLength('sort_order', 2)
             ->requirePresence('sort_order', 'create')
             ->notEmptyString('sort_order');
+
+        $validator
+            ->integer('html_file_holding')
+            ->maxLength('html_file_holding', 3)
+            ->allowEmptyString('html_file_holding');
 
         $validator
             ->scalar('html_file_name')
@@ -77,7 +84,7 @@ class TitlesTable extends AppTable
             ->notEmptyString('html_file_name')
             ->add('html_file_name', 'custom', [
                 'rule' => function ($value) {
-                    return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\/\s]+$/', $value);
+                    return (bool)preg_match('/^[a-zA-Z0-9\-]+$/', $value);
                 },
             ]);
 

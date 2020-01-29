@@ -19,6 +19,9 @@
     <span class="table-column table-column_filename">
       <input @change="save" v-model="item.htmlFileName" type="text">
     </span>
+    <span class="table-column table-column_holding">
+      <input @change="save" v-model="item.htmlFileHolding" type="text" class="table-column_holding-input">
+    </span>
     <span class="table-column table-column_modified">
       <input
         @change="saveDatepicker($event)"

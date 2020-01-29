@@ -105,6 +105,15 @@
         </li>
         <li class="detail_box_item box-2">
             <?php
+            echo $this->Form->control('html_file_holding', [
+                'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_holding')],
+                'class' => 'input-row input-short',
+                'maxlength' => 3,
+            ]);
+            ?>
+        </li>
+        <li class="detail_box_item box-2">
+            <?php
             echo $this->Form->control('html_file_modified', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_modified')],
                 'type' => 'text',
@@ -112,7 +121,7 @@
             ]);
             ?>
         </li>
-        <li class="detail_box_item box-4">
+        <li class="detail_box_item box-2">
             <div class="input">
                 <div class="label-row"><?= __d('model', 'modified') ?></div>
                 <div class="label-field-row">
