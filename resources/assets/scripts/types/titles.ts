@@ -11,6 +11,8 @@ export interface TitleResultItem {
   name: string;
   sortOrder: number;
   winnerName: string | null;
+  htmlFileName: string;
+  htmlFileHolding: number | null;
   htmlFileModified: string;
   url: string | null;
   isClosed: boolean;

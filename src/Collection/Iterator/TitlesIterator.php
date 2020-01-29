@@ -31,6 +31,7 @@ class TitlesIterator
             'sortOrder' => $item->sort_order,
             'isTeam' => $item->is_team,
             'htmlFileName' => $item->html_file_name,
+            'htmlFileHolding' => $item->html_file_holding,
             'htmlFileModified' => $item->html_file_modified->format('Y/m/d'),
             'isNewHistories' => $item->isNewHistories(),
             'isRecent' => $item->isRecentModified(),

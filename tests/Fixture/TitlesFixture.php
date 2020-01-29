@@ -25,6 +25,7 @@ class TitlesFixture extends TestFixture
         'holding' => ['type' => 'integer', 'length' => 3, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '期', 'precision' => null, 'autoIncrement' => null],
         'sort_order' => ['type' => 'integer', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '並び順', 'precision' => null, 'autoIncrement' => null],
         'html_file_name' => ['type' => 'string', 'length' => 30, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'htmlファイル名', 'precision' => null, 'fixed' => null],
+        'html_file_holding' => ['type' => 'integer', 'length' => 3, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => 'htmlファイル期', 'precision' => null, 'autoIncrement' => null],
         'html_file_modified' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => 'htmlファイル修正日', 'precision' => null],
         'remarks' => ['type' => 'string', 'length' => 500, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'その他備考', 'precision' => null, 'fixed' => null],
         'is_team' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '団体戦判定', 'precision' => null],

@@ -14,6 +14,7 @@ use Cake\I18n\FrozenDate;
  * @property int $holding
  * @property int $sort_order
  * @property string $html_file_name
+ * @property int|null $html_file_holding
  * @property \Cake\I18n\FrozenDate $html_file_modified
  * @property string $remarks
  * @property bool $is_team
@@ -151,6 +152,7 @@ class Title extends AppEntity
             'sortOrder' => $this->sort_order,
             'isTeam' => $this->is_team,
             'htmlFileName' => $this->html_file_name,
+            'htmlFileHolding' => $this->html_file_holding,
             'htmlFileModified' => $this->html_file_modified->format('Y/m/d'),
             'isClosed' => $this->is_closed,
             'isOutput' => $this->is_output,
