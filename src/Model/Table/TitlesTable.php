@@ -192,7 +192,7 @@ class TitlesTable extends AppTable
         }
 
         // データを取得
-        return $query->order(['Titles.country_id', 'Titles.sort_order']);
+        return $query->order(['Titles.country_id', 'Titles.is_closed', 'Titles.sort_order']);
     }
 
     /**
