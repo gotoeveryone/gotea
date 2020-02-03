@@ -5,7 +5,7 @@
       class="label-row"
     />
     <li class="detail_box">
-      <div class="detail_box_item box-3">
+      <div class="detail_box_item box-2">
         <input
           :value="historyId"
           type="hidden"
@@ -54,17 +54,21 @@
           >
         </div>
       </div>
-      <div class="detail_box_item box-1">
+      <div class="detail_box_item box-2">
         <div class="input checkbox">
           <input
             name="is_official"
             value="0"
             type="hidden"
           >
-          <label class="checkbox-label" for="official">
+          <label
+            class="checkbox-label"
+            for="official"
+          >
             <input
               id="official"
-              v-model="isOfficial"
+              :checked="isOfficial"
+              value="1"
               type="checkbox"
               class="official"
               name="is_official"
