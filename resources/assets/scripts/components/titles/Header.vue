@@ -3,7 +3,11 @@
     <li class="search-row">
       <fieldset class="search-box">
         <label class="search-box_label">対象国</label>
-        <select @change="changeValue($event)" v-model="select.countryId" class="titles-country">
+        <select
+          @change="changeValue($event)"
+          v-model="select.countryId"
+          class="titles-country"
+        >
           <option
             :key="idx"
             :value="country.value"
@@ -29,7 +33,11 @@
       </fieldset>
       <fieldset class="search-box">
         <label class="search-box_label">終了棋戦</label>
-        <select @change="changeValue($event)" v-model="select.searchClosed" class="titles-closed">
+        <select
+          @change="changeValue($event)"
+          v-model="select.searchClosed"
+          class="titles-closed"
+        >
           <option
             :key="idx"
             :value="option.value"
@@ -39,10 +47,18 @@
         </select>
       </fieldset>
       <fieldset class="search-box search-box-right">
-        <button @click="add()" class="button button-secondary" type="button">
+        <button
+          @click="add()"
+          class="button button-secondary"
+          type="button"
+        >
           行追加
         </button>
-        <button @click="json()" class="button button-primary" type="button">
+        <button
+          @click="json()"
+          class="button button-primary"
+          type="button"
+        >
           JSON出力
         </button>
       </fieldset>
@@ -83,12 +99,12 @@ export default Vue.extend({
     searchClosedOptions() {
       return [
         {
-          value: 0,
-          text: '検索しない',
-        },
-        {
           value: 1,
           text: '検索する',
+        },
+        {
+          value: 0,
+          text: '検索しない',
         },
       ];
     },
