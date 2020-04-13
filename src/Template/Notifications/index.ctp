@@ -34,10 +34,10 @@
             <ul class="table-body">
                 <?php foreach ($notifications as $notification) : ?>
                     <li class="table-row">
-                        <span class="table-column table-column_title" title="<?= $notification->title ?>">
+                        <span class="table-column table-column_title" title="<?= h($notification->title) ?>">
                             <?= h($notification->title) ?>
                         </span>
-                        <span class="table-column table-column_content" title="<?= $notification->content ?>">
+                        <span class="table-column table-column_content" title="<?= h($notification->content) ?>">
                             <?= h($notification->content) ?>
                         </span>
                         <span class="table-column table-column_status">
