@@ -32,21 +32,6 @@ abstract class ApiTestCase extends IntegrationTestCase
     ];
 
     /**
-     * Asserts content does not exist in the response body.
-     *
-     * @param mixed $content The content to check for.
-     * @param string $message The failure message that will be appended to the generated message.
-     * @return void
-     */
-    public function assertResponseNotEquals($content, $message = '')
-    {
-        if (!$this->_response) {
-            $this->fail('No response set, cannot assert content. ' . $message);
-        }
-        $this->assertNotEquals($content, $this->_getBodyAsString(), $message);
-    }
-
-    /**
      * APIユーザのヘッダを設定します。
      *
      * @param string $username ユーザ名
@@ -101,6 +86,6 @@ abstract class ApiTestCase extends IntegrationTestCase
      */
     protected function getCompareJsonResponse(array $data): string
     {
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return json_encode($data);
     }
 }

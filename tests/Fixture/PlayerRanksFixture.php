@@ -57,7 +57,7 @@ class PlayerRanksFixture extends TestFixture
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         // 最近の昇段情報
         $now = Date::now();

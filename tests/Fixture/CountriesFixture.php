@@ -38,7 +38,7 @@ class CountriesFixture extends TestFixture
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $countries = [
             [

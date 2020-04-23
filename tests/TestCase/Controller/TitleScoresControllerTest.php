@@ -36,7 +36,7 @@ class TitleScoresControllerTest extends AppTestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->TitleScores = TableRegistry::getTableLocator()->get('TitleScores');

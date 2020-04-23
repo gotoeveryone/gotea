@@ -23,7 +23,7 @@ class TitleScoreFormTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->TitleScore = new TitleScoreForm();
@@ -34,7 +34,7 @@ class TitleScoreFormTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->TitleScore);
 

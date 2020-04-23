@@ -39,7 +39,7 @@ class OrganizationsFixture extends TestFixture
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $organizations = [
             [

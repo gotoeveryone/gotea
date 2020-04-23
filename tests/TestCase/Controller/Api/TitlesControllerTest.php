@@ -18,6 +18,7 @@ class TitlesControllerTest extends ApiTestCase
         'app.Titles',
         'app.Players',
         'app.Ranks',
+        'app.PlayerRanks',
         'app.RetentionHistories',
     ];
 
@@ -30,8 +31,8 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles?country_id=1');
         $this->assertResponseSuccess();
-        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
-        collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
+        $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
+        collection(json_decode($this->_getBodyAsString())->response)->each(function ($item) {
             $this->assertEquals($item->countryId, 1);
             $this->assertFalse($item->isClosed);
         });
@@ -46,8 +47,8 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles?search_non_output=1');
         $this->assertResponseSuccess();
-        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
-        collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
+        $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
+        collection(json_decode($this->_getBodyAsString())->response)->each(function ($item) {
             $this->assertTrue(in_array($item->isOutput, [true, false], true));
         });
     }
@@ -61,8 +62,8 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles?search_closed=1');
         $this->assertResponseSuccess();
-        $this->assertNotEquals($this->getEmptyResponse(), $this->_response->getBody());
-        collection(json_decode($this->_response->getBody())->response)->each(function ($item) {
+        $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
+        collection(json_decode($this->_getBodyAsString())->response)->each(function ($item) {
             $this->assertTrue(in_array($item->isClosed, [true, false], true));
         });
     }
@@ -74,7 +75,6 @@ class TitlesControllerTest extends ApiTestCase
      */
     public function testCreateInvalidParameter()
     {
-        $this->enableCsrfToken();
         $this->enableApiUser();
         $this->post('/api/titles', [
             'country_id' => 1,
@@ -91,7 +91,6 @@ class TitlesControllerTest extends ApiTestCase
      */
     public function testCreate()
     {
-        $this->enableCsrfToken();
         $this->enableApiUser();
         $this->post('/api/titles', [
             'country_id' => 1,

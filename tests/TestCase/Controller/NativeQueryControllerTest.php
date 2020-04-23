@@ -15,7 +15,7 @@ class NativeQueryControllerTest extends AppTestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->createSession();

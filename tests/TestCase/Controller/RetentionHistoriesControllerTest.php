@@ -37,7 +37,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->RetentionHistories = TableRegistry::getTableLocator()->get('RetentionHistories');

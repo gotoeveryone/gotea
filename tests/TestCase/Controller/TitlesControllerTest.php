@@ -37,7 +37,7 @@ class TitlesControllerTest extends AppTestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Titles = TableRegistry::getTableLocator()->get('Titles');

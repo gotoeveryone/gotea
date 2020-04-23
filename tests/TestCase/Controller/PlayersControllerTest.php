@@ -41,7 +41,7 @@ class PlayersControllerTest extends AppTestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Players = TableRegistry::getTableLocator()->get('Players');

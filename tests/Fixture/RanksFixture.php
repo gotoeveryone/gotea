@@ -35,7 +35,7 @@ class RanksFixture extends TestFixture
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $ranks = [
             [

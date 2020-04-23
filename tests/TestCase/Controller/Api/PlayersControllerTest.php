@@ -210,7 +210,6 @@ class PlayersControllerTest extends ApiTestCase
     public function testCreateRankingInvalidCountry()
     {
         // 所属国
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/testtest/2017/20');
         $this->assertResponseCode(404);
         $this->assertResponseEquals($this->getNotFoundResponse());
@@ -224,7 +223,6 @@ class PlayersControllerTest extends ApiTestCase
     public function testCreateRankingInvalidYear()
     {
         // 年
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/test/20');
         $this->assertResponseCode(404);
     }
@@ -237,7 +235,6 @@ class PlayersControllerTest extends ApiTestCase
     public function testCreateRankingInvalidRank()
     {
         // 順位
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/2017/te');
         $this->assertResponseCode(404);
     }
@@ -249,7 +246,6 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testCreateRankingNoData()
     {
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/2000/20');
         $this->assertResponseCode(200);
         $this->assertResponseEquals($this->getCompareJsonResponse([
@@ -271,7 +267,6 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testCreateRankingSuccess()
     {
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/2017/20');
         $this->assertResponseCode(200);
         $this->assertResponseNotEquals($this->getCompareJsonResponse([
@@ -294,7 +289,6 @@ class PlayersControllerTest extends ApiTestCase
     public function testCreateRankingSuccessWithFrom()
     {
         $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/2017/20', [
             'from' => $targetFrom->i18nFormat('yyyy-MM-dd'),
         ]);
@@ -315,7 +309,6 @@ class PlayersControllerTest extends ApiTestCase
     {
         $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
 
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/2017/20', [
             'to' => $targetTo->i18nFormat('yyyy-MM-dd'),
         ]);
@@ -337,7 +330,6 @@ class PlayersControllerTest extends ApiTestCase
         $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
         $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
 
-        $this->enableCsrfToken();
         $this->post('/api/players/ranking/jp/2017/20', [
             'from' => $targetFrom->i18nFormat('yyyy-MM-dd'),
             'to' => $targetTo->i18nFormat('yyyy-MM-dd'),

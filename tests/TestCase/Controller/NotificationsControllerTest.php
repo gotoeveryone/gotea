@@ -33,7 +33,7 @@ class NotificationsControllerTest extends AppTestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Notifications = TableRegistry::getTableLocator()->get('Notifications');
