@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -11,7 +13,6 @@ use Gotea\Model\Table\RetentionHistoriesTable;
  */
 class RetentionHistoriesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -34,7 +35,7 @@ class RetentionHistoriesTableTest extends TestCase
         'app.PlayerRanks',
         'app.PlayerScores',
         'app.TitleScoreDetails',
-        'app.TitleScores'
+        'app.TitleScores',
     ];
 
     /**

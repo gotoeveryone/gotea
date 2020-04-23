@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Model\Entity;
 
 /**
@@ -16,7 +18,6 @@ namespace Gotea\Model\Entity;
  */
 class Notification extends AppEntity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -33,7 +34,7 @@ class Notification extends AppEntity
         'published' => true,
         'is_permanent' => true,
         'created' => true,
-        'modified' => true
+        'modified' => true,
     ];
 
     /**

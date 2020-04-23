@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -18,9 +19,9 @@ use Cake\Validation\Validator;
 class RetentionHistoriesTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -34,9 +35,9 @@ class RetentionHistoriesTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -103,9 +104,9 @@ class RetentionHistoriesTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(
             ['title_id', 'holding'],
@@ -120,7 +121,7 @@ class RetentionHistoriesTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save(EntityInterface $entity, $options = [])
     {
@@ -143,14 +144,14 @@ class RetentionHistoriesTable extends AppTable
      * @param int $playerId 棋士ID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findHistoriesByPlayer(int $playerId) : Query
+    public function findHistoriesByPlayer(int $playerId): Query
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Titles.Countries'])
             ->order([
                 'RetentionHistories.target_year' => 'DESC',
                 'Titles.country_id' => 'ASC',
-                'Titles.sort_order' => 'ASC'
+                'Titles.sort_order' => 'ASC',
             ]);
     }
 
@@ -160,7 +161,7 @@ class RetentionHistoriesTable extends AppTable
      * @param int $titleId タイトルID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findHistoriesByTitle(int $titleId) : Query
+    public function findHistoriesByTitle(int $titleId): Query
     {
         return $this->findByTitleId($titleId)
             ->contain(['Titles'])

@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * TitleScoreDetailsFixture
- *
  */
 class TitleScoreDetailsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -53,7 +51,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'name' => 'Test1',
             'division' => '勝',
             'created' => '2017-11-26 15:09:50',
-            'modified' => '2017-11-26 15:09:50'
+            'modified' => '2017-11-26 15:09:50',
         ],
         [
             'title_score_id' => 1,
@@ -61,7 +59,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'name' => 'Test2',
             'division' => '敗',
             'created' => '2017-11-26 15:09:50',
-            'modified' => '2017-11-26 15:09:50'
+            'modified' => '2017-11-26 15:09:50',
         ],
         [
             'title_score_id' => 2,
@@ -69,7 +67,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'name' => 'Test3',
             'division' => '勝',
             'created' => '2017-11-26 15:09:50',
-            'modified' => '2017-11-26 15:09:50'
+            'modified' => '2017-11-26 15:09:50',
         ],
         [
             'title_score_id' => 2,
@@ -77,7 +75,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'name' => 'Test4',
             'division' => '敗',
             'created' => '2017-11-26 15:09:50',
-            'modified' => '2017-11-26 15:09:50'
+            'modified' => '2017-11-26 15:09:50',
         ],
     ];
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Form;
 
@@ -12,9 +13,9 @@ use Cake\Validation\Validator;
 class PlayerForm extends AppForm
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    protected function _buildSchema(Schema $schema)
+    protected function _buildSchema(Schema $schema): Schema
     {
         return $schema->addFields([
             'country_id' => 'integer',
@@ -25,15 +26,15 @@ class PlayerForm extends AppForm
             'name' => ['type' => 'string', 'length' => 20],
             'name_english' => ['type' => 'string', 'length' => 40],
             'name_other' => ['type' => 'string', 'length' => 20],
-            'joined_from', 'integer',
-            'joined_to', 'integer'
+            'joined_from' => 'integer',
+            'joined_to' => 'integer',
         ]);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildValidator(Event $event, Validator $validator, $name)
+    public function buildValidator(Event $event, Validator $validator, $name): void
     {
         $validator
             ->allowEmpty([

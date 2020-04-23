@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
@@ -13,7 +15,6 @@ use Cake\Validation\Validator;
  *
  * @property \Gotea\Model\Table\PlayersTable|\Cake\ORM\Association\BelongsTo $Players
  * @property \Gotea\Model\Table\RanksTable|\Cake\ORM\Association\BelongsTo $Ranks
- *
  * @method \Gotea\Model\Entity\PlayerRank get($primaryKey, $options = [])
  * @method \Gotea\Model\Entity\PlayerRank newEntity($data = null, array $options = [])
  * @method \Gotea\Model\Entity\PlayerRank[] newEntities(array $data, array $options = [])
@@ -21,15 +22,14 @@ use Cake\Validation\Validator;
  * @method \Gotea\Model\Entity\PlayerRank patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Gotea\Model\Entity\PlayerRank[] patchEntities($entities, array $data, array $options = [])
  * @method \Gotea\Model\Entity\PlayerRank findOrCreate($search, callable $callback = null, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class PlayerRanksTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -44,9 +44,9 @@ class PlayerRanksTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -62,9 +62,9 @@ class PlayerRanksTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['player_id'], 'Players'));
         $rules->add($rules->existsIn(['rank_id'], 'Ranks'));
@@ -78,7 +78,7 @@ class PlayerRanksTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save(EntityInterface $entity, $options = [])
     {

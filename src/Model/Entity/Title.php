@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
@@ -83,7 +84,8 @@ class Title extends AppEntity
      */
     public function getWinnerName($isJp = true)
     {
-        if (!($history = $this->now_retention)) {
+        $history = $this->now_retention;
+        if (!$history) {
             return null;
         }
 
@@ -119,7 +121,8 @@ class Title extends AppEntity
      */
     public function isNewHistories(): bool
     {
-        if (!($history = $this->now_retention)) {
+        $history = $this->now_retention;
+        if (!$history) {
             return false;
         }
 

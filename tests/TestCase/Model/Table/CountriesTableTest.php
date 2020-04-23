@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +12,6 @@ use Gotea\Model\Table\CountriesTable;
  */
 class CountriesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *

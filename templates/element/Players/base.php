@@ -1,14 +1,14 @@
 <?php
 /**
- * @var \Gotea\View\AppView $this
- * @var \Gotea\Model\Entity\Player $player
+ * @var \Gotea\View\AppView $this ビューオブジェクト
+ * @var \Gotea\Model\Entity\Player $player 棋士データ
  */
 ?>
 <section data-contentname="player" class="tab-contents">
     <?= $this->Form->create($player, ['class' => 'main-form', 'url' => $player->getSaveUrl()]) ?>
     <?= $this->Form->hidden('id', ['value' => $player->id]) ?>
     <?= $this->Form->hidden('country_id') ?>
-    <div class="page-header">棋士情報<?= !$player->isNew() ? ' (ID: '. h($player->id) . ')' : '' ?></div>
+    <div class="page-header">棋士情報<?= !$player->isNew() ? ' (ID: ' . h($player->id) . ')' : '' ?></div>
     <ul class="detail_box">
         <li class="detail_box_item box-4">
             <?php
@@ -42,7 +42,7 @@
                 <div class="label-row"><?= __d('model', 'birthday') ?></div>
                 <div class="input-row">
                     <?= $this->Form->text('birthday', [
-                        'class' => 'birthday datepicker'
+                        'class' => 'birthday datepicker',
                     ]) ?>
                     <span class="age">
                         <?= h($player->age_text) ?>
@@ -70,17 +70,26 @@
             ?>
         </li>
         <li class="detail_box_item box-3">
-            <?php
-            echo $this->Form->selectDate('input_joined', [
-                'label' => ['class' => 'label-row', 'text' => __d('model', 'joined')],
-                'class' => 'input-row',
-                'empty' => [
-                    'year' => false,
-                    'month' => ['' => '-'],
-                    'day' => ['' => '-'],
-                ],
-            ]);
-            ?>
+            <div class="input date">
+                <?= $this->Form->label('input_joined.year', __d('model', 'joined'), ['class' => 'label-row']) ?>
+                <?php
+                echo $this->Form->select('input_joined.year', $this->joinedYears(), [
+                    'label' => false,
+                    'empty' => false,
+                    'class' => 'input-row dropdowns',
+                ]);
+                echo $this->Form->select('input_joined.month', $this->joinedMonths(), [
+                    'label' => false,
+                    'empty' => ['' => '-'],
+                    'class' => 'input-row dropdowns',
+                ]);
+                echo $this->Form->select('input_joined.day', $this->joinedDays(), [
+                    'label' => false,
+                    'empty' => ['' => '-'],
+                    'class' => 'input-row dropdowns',
+                ]);
+                ?>
+            </div>
         </li>
         <li class="detail_box_item box-2">
             <?php

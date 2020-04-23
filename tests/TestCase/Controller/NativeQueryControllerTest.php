@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
@@ -11,7 +13,7 @@ class NativeQueryControllerTest extends AppTestCase
     use IntegrationTestTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp()
     {

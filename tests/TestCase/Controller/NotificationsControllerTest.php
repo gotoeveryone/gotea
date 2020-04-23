@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\I18n\FrozenTime;
@@ -25,11 +27,11 @@ class NotificationsControllerTest extends AppTestCase
         'app.Organizations',
         'app.PlayerRanks',
         'app.Players',
-        'app.Notifications'
+        'app.Notifications',
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp()
     {

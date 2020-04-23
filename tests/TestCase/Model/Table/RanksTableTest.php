@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +12,6 @@ use Gotea\Model\Table\RanksTable;
  */
 class RanksTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +25,7 @@ class RanksTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Ranks'
+        'app.Ranks',
     ];
 
     /**

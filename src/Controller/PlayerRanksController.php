@@ -1,13 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
+
+use Cake\Http\Response;
 
 /**
  * 昇段情報コントローラ
  *
  * @author      Kazuki Kamizuru
  * @since       2017/07/22
- *
  * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
  */
 class PlayerRanksController extends AppController
@@ -17,7 +19,7 @@ class PlayerRanksController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index(): ?Response
     {
         return $this->renderWith("段位別棋士数表示");
     }
@@ -28,7 +30,7 @@ class PlayerRanksController extends AppController
      * @param int $playerId 棋士ID
      * @return \Cake\Http\Response|null
      */
-    public function create(int $playerId)
+    public function create(int $playerId): ?Response
     {
         $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->newEntity($data);
@@ -50,11 +52,11 @@ class PlayerRanksController extends AppController
     /**
      * 更新処理
      *
-     * @param int $playerId 棋士ID
-     * @param int $id 昇段情報ID
+     * @param string $playerId 棋士ID
+     * @param string $id 昇段情報ID
      * @return \Cake\Http\Response|null
      */
-    public function update(int $playerId, int $id)
+    public function update(string $playerId, string $id): ?Response
     {
         $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->get($id);

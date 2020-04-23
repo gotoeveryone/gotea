@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
 use Cake\Controller\ErrorController as BaseErrorController;
 use Cake\Log\Log;
-use Exception;
 use PDOException;
+use Throwable;
 
 /**
  * アプリの共通例外コントローラ
@@ -18,9 +19,9 @@ class ErrorController extends BaseErrorController
     use JsonResponseTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -30,10 +31,10 @@ class ErrorController extends BaseErrorController
     /**
      * ロールバック処理を行います。
      *
-     * @param Exception $exception 例外
+     * @param \Exception $exception 例外
      * @return void
      */
-    public function rollback(Exception $exception)
+    public function rollback(Throwable $exception)
     {
         Log::error("Error Code: {$exception->getCode()}");
         Log::error($exception->getMessage());

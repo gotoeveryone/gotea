@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
+use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
@@ -23,7 +25,7 @@ class PlayersController extends ApiController
      *
      * @return \Cake\Http\Response 棋士情報
      */
-    public function search()
+    public function search(): ?Response
     {
         // limit、offsetを指定して取得
         $request = $this->getRequest();
@@ -42,12 +44,12 @@ class PlayersController extends ApiController
     /**
      * 所属国に該当する段位と棋士数を取得します。
      *
-     * @param int $countryId 所属国ID
+     * @param string $countryId 所属国ID
      * @return \Cake\Http\Response 段位別棋士一覧
      */
-    public function searchRanks(int $countryId)
+    public function searchRanks(string $countryId): ?Response
     {
-        $ranks = $this->Players->findRanksCount($countryId);
+        $ranks = $this->Players->findRanksCount((int)$countryId);
 
         return $this->renderJson($ranks);
     }
@@ -56,11 +58,11 @@ class PlayersController extends ApiController
      * ランキングを取得します。
      *
      * @param string $country 所属国
-     * @param int $year 対象年度
-     * @param int $limit 取得上限値
+     * @param string $year 対象年度
+     * @param string $limit 取得上限値
      * @return \Cake\Http\Response ランキング
      */
-    public function searchRanking(string $country, int $year, int $limit)
+    public function searchRanking(string $country, string $year, string $limit): ?Response
     {
         $request = $this->getRequest();
         $from = $request->getQuery('from');
@@ -69,8 +71,8 @@ class PlayersController extends ApiController
         // ランキングデータ取得
         $json = $this->getRankingData([
             'country' => $country,
-            'year' => $year,
-            'limit' => $limit,
+            'year' => (int)$year,
+            'limit' => (int)$limit,
             'from' => $from,
             'to' => $to,
             'ja' => true,
@@ -87,11 +89,11 @@ class PlayersController extends ApiController
      * ランキングJSONデータを生成します。
      *
      * @param string $country 所属国
-     * @param int $year 対象年度
-     * @param int $limit 取得上限値
+     * @param string $year 対象年度
+     * @param string $limit 取得上限値
      * @return \Cake\Http\Response ランキング
      */
-    public function createRanking(string $country, int $year, int $limit)
+    public function createRanking(string $country, string $year, string $limit): ?Response
     {
         $request = $this->getRequest();
         $from = $request->getData('from');
@@ -100,8 +102,8 @@ class PlayersController extends ApiController
         // ランキングデータ取得
         $json = $this->getRankingData([
             'country' => $country,
-            'year' => $year,
-            'limit' => $limit,
+            'year' => (int)$year,
+            'limit' => (int)$limit,
             'from' => $from,
             'to' => $to,
         ]);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Form;
 
 use Cake\TestSuite\TestCase;
@@ -9,7 +11,6 @@ use Gotea\Form\TitleScoreForm;
  */
 class TitleScoreFormTest extends TestCase
 {
-
     /**
      * Test subject
      *

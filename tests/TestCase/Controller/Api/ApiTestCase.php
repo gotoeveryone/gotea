@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\TestSuite\IntegrationTestCase;
@@ -86,7 +88,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      *
      * @return array
      */
-    protected function getResponseArray() : array
+    protected function getResponseArray(): array
     {
         return json_decode($this->_getBodyAsString(), true);
     }
@@ -97,7 +99,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      * @param array $data
      * @return string
      */
-    protected function getCompareJsonResponse(array $data) : string
+    protected function getCompareJsonResponse(array $data): string
     {
         return json_encode($data, JSON_PRETTY_PRINT);
     }

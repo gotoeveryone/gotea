@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -16,7 +17,7 @@ class UpdatedPointsTable extends AppTable
      * @param int $targetYear 対象年度
      * @return string
      */
-    public function findRecent(Country $country, int $targetYear) : string
+    public function findRecent(Country $country, int $targetYear): string
     {
         $target = $this->find()->where([
             'country_id' => $country->id,

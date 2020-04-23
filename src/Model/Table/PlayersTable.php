@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -16,9 +17,9 @@ use Cake\Validation\Validator;
 class PlayersTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -43,12 +44,13 @@ class PlayersTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         return $validator
-            ->allowEmpty(['name_other', 'birthday'])
+            ->allowEmptyString('name_other')
+            ->allowEmptyString('birthday')
             ->requirePresence('joined', function ($context) {
                 return empty($context['data']['input_joined']);
             })
@@ -56,13 +58,15 @@ class PlayersTable extends AppTable
                 'country_id', 'organization_id', 'rank_id',
                 'name', 'name_english', 'sex',
             ], 'create')
-            ->notEmpty('joined', function ($context) {
+            ->notEmptyString('joined', null, function ($context) {
                 return empty($context['data']['input_joined']);
             })
-            ->notEmpty([
-                'country_id', 'organization_id', 'rank_id',
-                'name', 'name_english', 'sex',
-            ])
+            ->notEmptyString('country_id')
+            ->notEmptyString('organization_id')
+            ->notEmptyString('rank_id')
+            ->notEmptyString('name')
+            ->notEmptyString('name_english')
+            ->notEmptyString('sex')
             ->integer('country_id')
             ->integer('organization_id')
             ->integer('rank_id')
@@ -77,9 +81,9 @@ class PlayersTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(
             ['country_id', 'name', 'birthday'],
@@ -90,7 +94,7 @@ class PlayersTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save(EntityInterface $entity, $options = [])
     {
@@ -136,34 +140,52 @@ class PlayersTable extends AppTable
         ]);
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
-        if (($countryId = Hash::get($data, 'country_id')) > 0) {
+        $countryId = Hash::get($data, 'country_id');
+        if ($country_id) {
             $query->where(['Countries.id' => $countryId]);
         }
-        if (($organizationId = Hash::get($data, 'organization_id')) > 0) {
+
+        $organizationId = Hash::get($data, 'organization_id');
+        if ($organizationId) {
             $query->where(['Organizations.id' => $organizationId]);
         }
-        if (($rankId = Hash::get($data, 'rank_id')) > 0) {
+
+        $rankId = Hash::get($data, 'rank_id');
+        if ($rankId) {
             $query->where(['Ranks.id' => $rankId]);
         }
-        if (($sex = Hash::get($data, 'sex'))) {
+
+        $sex = Hash::get($data, 'sex');
+        if ($sex) {
             $query->where(['Players.sex' => $sex]);
         }
-        if (($name = trim(Hash::get($data, 'name')))) {
+
+        $name = trim(Hash::get($data, 'name'));
+        if ($name) {
             $query->where(['OR' => $this->createLikeParams('name', $name)]);
         }
-        if (($nameEnglish = trim(Hash::get($data, 'name_english')))) {
+
+        $nameEnglish = trim(Hash::get($data, 'name_english'));
+        if ($nameEnglish) {
             $query->where(['OR' => $this->createLikeParams('name_english', $nameEnglish)]);
         }
-        if (($nameOther = trim(Hash::get($data, 'name_other')))) {
+
+        $nameOther = trim(Hash::get($data, 'name_other'));
+        if ($nameOther) {
             $query->where(['OR' => $this->createLikeParams('name_other', $nameOther)]);
         }
-        if (($joinedFrom = Hash::get($data, 'joined_from')) > 0) {
+
+        $joinedFrom = Hash::get($data, 'joined_from');
+        if ($joinedFrom > 0) {
             $query->where(['SUBSTR(Players.joined, 1, 4) >=' => sprintf('%04d', $joinedFrom)]);
         }
-        if (($joinedTo = Hash::get($data, 'joined_to')) > 0) {
+
+        $joinedTo = Hash::get($data, 'joined_to');
+        if ($joinedTo) {
             $query->where(['SUBSTR(Players.joined, 1, 4) <=' => sprintf('%04d', $joinedTo)]);
         }
-        if (!(Hash::get($data, 'is_retired', false))) {
+
+        if (!Hash::get($data, 'is_retired', false)) {
             $query->where(['Players.is_retired' => 0]);
         }
 
@@ -177,7 +199,7 @@ class PlayersTable extends AppTable
      * @param int|null $organizationId 所属組織ID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanksCount(int $countryId, int $organizationId = null)
+    public function findRanksCount(int $countryId, ?int $organizationId = null)
     {
         $query = $this->find();
 

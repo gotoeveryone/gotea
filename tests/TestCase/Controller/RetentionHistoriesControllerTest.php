@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller;
 
@@ -34,7 +35,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp()
     {

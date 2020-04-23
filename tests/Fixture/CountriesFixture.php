@@ -6,11 +6,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * CountriesFixture
- *
  */
 class CountriesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -38,7 +36,7 @@ class CountriesFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {

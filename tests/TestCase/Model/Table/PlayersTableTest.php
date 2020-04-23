@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Table\PlayersTable;

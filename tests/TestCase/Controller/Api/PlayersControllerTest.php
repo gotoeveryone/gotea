@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\I18n\FrozenDate;

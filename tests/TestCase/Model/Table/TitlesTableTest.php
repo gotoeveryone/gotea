@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Table;
 
@@ -16,7 +17,6 @@ use Gotea\Model\Table\TitlesTable;
  */
 class TitlesTableTest extends TestCase
 {
-
     /**
      * タイトルモデル
      *

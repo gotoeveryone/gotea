@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Collection\Iterator;
 
@@ -14,10 +15,10 @@ class TitlesIterator
      * 実行メソッド
      *
      * @param \Gotea\Model\Entity\Title $item タイトル
-     * @param string $key キー
+     * @param int $index インデックス
      * @return array
      */
-    public function __invoke(Title $item, string $key)
+    public function __invoke(Title $item, int $index)
     {
         return [
             'id' => $item->id,

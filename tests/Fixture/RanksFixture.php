@@ -6,11 +6,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * RanksFixture
- *
  */
 class RanksFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -35,7 +33,7 @@ class RanksFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {

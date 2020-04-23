@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
@@ -7,7 +8,6 @@ namespace Gotea\Controller;
  *
  * @author      Kazuki Kamizuru
  * @since       2017/07/22
- *
  * @property \Gotea\Model\Table\RetentionHistoriesTable $RetentionHistories
  */
 class RetentionHistoriesController extends AppController

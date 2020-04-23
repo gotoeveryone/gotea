@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Entity;
 
 use Cake\I18n\FrozenDate;
@@ -10,7 +12,6 @@ use Gotea\Model\Entity\RetentionHistory;
  */
 class RetentionHistoryTest extends TestCase
 {
-
     /**
      * Test subject
      *

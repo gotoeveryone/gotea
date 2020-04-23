@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Validation;
 
-use Cake\Validation\RulesProvider;
 use Cake\Validation\Validator as BaseValidator;
 
 /**
@@ -10,16 +10,7 @@ use Cake\Validation\Validator as BaseValidator;
  */
 class Validator extends BaseValidator
 {
-    const DEFAULT_MESSAGE = 'field {0} is invalid';
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setProvider('default', new RulesProvider('Gotea\Validation\Validation'));
-    }
+    public const DEFAULT_MESSAGE = 'field {0} is invalid';
 
     /**
      * メッセージ
@@ -41,7 +32,7 @@ class Validator extends BaseValidator
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function add($field, $name, $rule = [])
     {
@@ -60,9 +51,9 @@ class Validator extends BaseValidator
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function _convertValidatorToArray($fieldName, $defaults = [], $settings = [])
+    protected function _convertValidatorToArray($fieldName, $defaults = [], $settings = []): array
     {
         $results = parent::_convertValidatorToArray($fieldName, $defaults, $settings);
         foreach ($results as $name => $property) {
@@ -84,7 +75,7 @@ class Validator extends BaseValidator
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function date($field, $formats = ['ymd'], $message = null, $when = null)
     {
@@ -95,7 +86,7 @@ class Validator extends BaseValidator
         // 日付フォーマットをメッセージに渡す
         $args = [
             __d('model', $field),
-            implode(', ', $formats)
+            implode(', ', $formats),
         ];
         $message = $this->getMessage('invalidFormat', $args);
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
@@ -25,7 +26,7 @@ class TitlesController extends ApiController
         // 検索
         $titles = $this->Titles->findTitles($this->getRequest()->getQueryParams());
 
-        return $this->renderJson($titles->map(new TitlesIterator));
+        return $this->renderJson($titles->map(new TitlesIterator()));
     }
 
     /**
@@ -69,7 +70,7 @@ class TitlesController extends ApiController
     public function createNews()
     {
         $titles = $this->Titles->findTitles(['search_closed' => true])
-            ->map(new NewsIterator);
+            ->map(new NewsIterator());
 
         // ファイル作成
         $file = new File(Configure::read('App.jsonDir') . 'news.json');

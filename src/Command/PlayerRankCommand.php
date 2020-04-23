@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Command;
 
 use Cake\Console\Arguments;
@@ -19,13 +21,15 @@ use Symfony\Component\DomCrawler\Crawler;
  * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
  * @property \Gotea\Model\Table\CountriesTable $Countries
  * @property \Gotea\Model\Table\RanksTable $Ranks
+ *
+ * phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod
  */
 class PlayerRankCommand extends Command
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadModel('Players');
@@ -35,9 +39,9 @@ class PlayerRankCommand extends Command
     }
 
     /**
-     * ${@inheritDoc}
+     * @inheritDoc
      */
-    public function buildOptionParser(ConsoleOptionParser $parser)
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->addArgument('code', [
             'help' => 'country code',

@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Gotea\Form\LoginForm;
 
 /**
@@ -14,9 +16,9 @@ use Gotea\Form\LoginForm;
 class UsersController extends AppController
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
 
@@ -26,9 +28,9 @@ class UsersController extends AppController
     /**
      * 初期表示処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index(): ?Response
     {
         // すでにログイン済みならリダイレクト
         if ($this->Authentication->getIdentity()) {
@@ -37,15 +39,15 @@ class UsersController extends AppController
 
         $this->viewBuilder()->setLayout('login');
 
-        return $this->set('form', new LoginForm)->render();
+        return $this->set('form', new LoginForm())->render();
     }
 
     /**
      * ログイン処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
-    public function login()
+    public function login(): ?Response
     {
         // ログイン
         $credentials = $this->getRequest()->getParsedBody();
@@ -73,9 +75,9 @@ class UsersController extends AppController
     /**
      * ログアウト
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
-    public function logout()
+    public function logout(): ?Response
     {
         return $this->redirect($this->Authentication->logout());
     }

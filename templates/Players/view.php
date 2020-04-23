@@ -1,7 +1,7 @@
 <?php
 /**
- * @var \Gotea\View\AppView $this
- * @var \Gotea\Model\Entity\Player $player
+ * @var \Gotea\View\AppView $this ビューオブジェクト
+ * @var \Gotea\Model\Entity\Player $player 棋士データ
  */
 ?>
 <?= $this->Html->css('view', ['block' => true]) ?>

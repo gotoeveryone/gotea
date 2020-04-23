@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Gotea\Model\Table\TitleScoreDetailsTable;
 
 /**
  * タイトル成績詳細モデルのテストケース

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
@@ -11,7 +12,6 @@ use Gotea\Event\LoggedUser;
  *
  * @author  Kazuki Kamizuru
  * @since   2015/07/26
- *
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
  * @property \Cake\Controller\Component\FlashComponent $Flash
@@ -21,9 +21,9 @@ abstract class AppController extends Controller
     use SecureTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -37,7 +37,8 @@ abstract class AppController extends Controller
         // $this->loadComponent('Authorization.Authorization');
 
         // 操作ユーザ記録イベントを設定
-        if (($user = $this->Authentication->getIdentity())) {
+        $user = $this->Authentication->getIdentity();
+        if ($user) {
             // モデル側のインスタンスイベントより先に実行する必要があるため、グローバルイベントマネージャに登録する
             EventManager::instance()->on(new LoggedUser($user->getOriginalData()));
         }

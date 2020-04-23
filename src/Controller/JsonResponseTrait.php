@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
@@ -29,7 +30,7 @@ trait JsonResponseTrait
      * @param string|array|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    public function renderError(? int $code = 500, $message = null)
+    public function renderError(?int $code = 500, $message = null)
     {
         if ($code === 0) {
             $code = 500;
@@ -55,9 +56,9 @@ trait JsonResponseTrait
      */
     public function renderJson($json = [])
     {
-        return $this->set([
+        return $this->response->withStringBody(json_encode([
             'response' => $json,
-            '_serialize' => true,
-        ])->render();
+            // '_serialize' => true,
+        ]));
     }
 }

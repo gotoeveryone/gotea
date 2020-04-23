@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
@@ -12,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Titles
  * @property \Cake\ORM\Association\BelongsTo $Countries
  * @property \Cake\ORM\Association\HasMany $TitleScoreDetails
- *
  * @method \Gotea\Model\Entity\TitleScore get($primaryKey, $options = [])
  * @method \Gotea\Model\Entity\TitleScore newEntity($data = null, array $options = [])
  * @method \Gotea\Model\Entity\TitleScore[] newEntities(array $data, array $options = [])
@@ -20,15 +21,14 @@ use Cake\Validation\Validator;
  * @method \Gotea\Model\Entity\TitleScore patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Gotea\Model\Entity\TitleScore[] patchEntities($entities, array $data, array $options = [])
  * @method \Gotea\Model\Entity\TitleScore findOrCreate($search, callable $callback = null, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class TitleScoresTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -40,9 +40,9 @@ class TitleScoresTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -89,9 +89,9 @@ class TitleScoresTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['country_id'], 'Countries'));
         $rules->add($rules->existsIn(['title_id'], 'Titles'));
@@ -140,33 +140,46 @@ class TitleScoresTable extends AppTable
             ])
             ->orderDesc('started')->orderDesc('TitleScores.id');
 
-        if (($id = Hash::get($data, 'player_id'))) {
+        $id = Hash::get($data, 'player_id');
+        if ($id) {
             $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($id) {
                 return $q->innerJoinWith('Players', function (Query $q) use ($id) {
                     return $q->where(['TitleScoreDetails.player_id' => $id]);
                 });
             });
         }
-        if (($name = Hash::get($data, 'name'))) {
+
+        $name = Hash::get($data, 'name');
+        if ($name) {
             $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
                 return $q->innerJoinWith('Players', function (Query $q) use ($name) {
                     return $q->where(['Players.name like' => "%${name}%"]);
                 });
             });
         }
-        if (($titleName = Hash::get($data, 'title_name'))) {
+
+        $titleName = Hash::get($data, 'title_name');
+        if ($titleName) {
             $query->where(['TitleScores.name like' => "%${titleName}%"]);
         }
-        if (($year = Hash::get($data, 'target_year'))) {
+
+        $year = Hash::get($data, 'target_year');
+        if ($year) {
             $query->where(['YEAR(TitleScores.started)' => $year])->where(['YEAR(TitleScores.ended)' => $year]);
         }
-        if (($countryId = Hash::get($data, 'country_id'))) {
+
+        $countryId = Hash::get($data, 'country_id');
+        if ($countryId) {
             $query->where(['TitleScores.country_id' => $countryId]);
         }
-        if (($started = Hash::get($data, 'started', 0)) > 0) {
+
+        $started = Hash::get($data, 'started', 0);
+        if ($started > 0) {
             $query->where(['TitleScores.started >= ' => $started]);
         }
-        if (($ended = Hash::get($data, 'ended', 0)) > 0) {
+
+        $ended = Hash::get($data, 'ended', 0);
+        if ($ended > 0) {
             $query->where(['TitleScores.ended <= ' => $ended]);
         }
 

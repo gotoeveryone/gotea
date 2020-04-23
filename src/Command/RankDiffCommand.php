@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Command;
 
@@ -25,15 +26,17 @@ use Throwable;
  * @property \Gotea\Model\Table\CountriesTable $Countries
  * @property \Gotea\Model\Table\RanksTable $Ranks
  * @property \Gotea\Model\Table\OrganizationsTable $Organizations
+ *
+ * phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod
  */
 class RankDiffCommand extends Command
 {
     use MailerAwareTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadModel('Players');
@@ -104,7 +107,7 @@ class RankDiffCommand extends Command
     private function getDiff($country, $results)
     {
         // 台湾の場合は台湾棋院のみを対象とする
-        $organization = ($country->code === 'tw') ? $this->Organizations->findByName('台湾棋院')->first() : null;
+        $organization = $country->code === 'tw' ? $this->Organizations->findByName('台湾棋院')->first() : null;
 
         return $this->Players->findRanksCount($country->id, $organization ? $organization->id : null)
             ->map(function ($item) use ($results) {
@@ -135,7 +138,10 @@ class RankDiffCommand extends Command
         foreach ($results as $item) {
             if ($item['rankText'] === 'タイトル者') {
                 foreach ($item['players'] as $name) {
-                    $player = $this->Players->findRankByNamesAndCountries([$name, str_replace('　', '', $name)], $country->id);
+                    $player = $this->Players->findRankByNamesAndCountries(
+                        [$name, str_replace('　', '', $name)],
+                        $country->id
+                    );
                     foreach ($results as $idx => $data) {
                         if ($data['rank'] === $player->rank->rank_numeric) {
                             $results[$idx]['players'][] = $player->name;
