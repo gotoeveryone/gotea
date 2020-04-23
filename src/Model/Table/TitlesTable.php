@@ -56,7 +56,7 @@ class TitlesTable extends AppTable
 
         $validator
             ->scalar('name_english')
-            ->alphaNumeric('name_english')
+            ->asciiAlphaNumeric('name_english')
             ->maxLength('name_english', 60)
             ->requirePresence('name_english', 'create')
             ->notEmptyString('name_english');

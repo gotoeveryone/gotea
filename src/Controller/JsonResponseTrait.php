@@ -19,7 +19,6 @@ trait JsonResponseTrait
     {
         $this->loadComponent('RequestHandler');
 
-        $this->setResponse($this->getResponse()->withType('application/json'));
         $this->RequestHandler->renderAs($this, 'json');
     }
 

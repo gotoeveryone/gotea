@@ -70,7 +70,7 @@ class PlayersTable extends AppTable
             ->integer('country_id')
             ->integer('organization_id')
             ->integer('rank_id')
-            ->alphaNumeric('name_english')
+            ->asciiAlphaNumeric('name_english')
             ->naturalNumber('joined')
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
@@ -141,7 +141,7 @@ class PlayersTable extends AppTable
 
         // 入力されたパラメータが空でなければ、WHERE句へ追加
         $countryId = Hash::get($data, 'country_id');
-        if ($country_id) {
+        if ($countryId) {
             $query->where(['Countries.id' => $countryId]);
         }
 
@@ -160,17 +160,17 @@ class PlayersTable extends AppTable
             $query->where(['Players.sex' => $sex]);
         }
 
-        $name = trim(Hash::get($data, 'name'));
+        $name = trim(Hash::get($data, 'name', ''));
         if ($name) {
             $query->where(['OR' => $this->createLikeParams('name', $name)]);
         }
 
-        $nameEnglish = trim(Hash::get($data, 'name_english'));
+        $nameEnglish = trim(Hash::get($data, 'name_english', ''));
         if ($nameEnglish) {
             $query->where(['OR' => $this->createLikeParams('name_english', $nameEnglish)]);
         }
 
-        $nameOther = trim(Hash::get($data, 'name_other'));
+        $nameOther = trim(Hash::get($data, 'name_other', ''));
         if ($nameOther) {
             $query->where(['OR' => $this->createLikeParams('name_other', $nameOther)]);
         }
