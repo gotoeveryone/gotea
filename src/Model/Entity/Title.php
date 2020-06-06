@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
-use Cake\I18n\FrozenDate;
-
 /**
  * タイトルエンティティ
  *
@@ -59,21 +57,6 @@ class Title extends AppEntity
         return collection($this->retention_histories)->filter(function ($item) {
             return $item->holding < $this->holding;
         });
-    }
-
-    /**
-     * HTMLファイル修正日を設定します。
-     *
-     * @param mixed $newValue 更新値
-     * @return \Cake\I18n\FrozenDate|null
-     */
-    protected function _setHtmlFileModified($newValue = null)
-    {
-        if ($newValue && !($newValue instanceof FrozenDate)) {
-            return FrozenDate::parseDate($newValue, 'yyyy/MM/dd');
-        }
-
-        return $newValue;
     }
 
     /**

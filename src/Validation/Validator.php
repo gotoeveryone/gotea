@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Validation;
 
+use Cake\Validation\RulesProvider;
 use Cake\Validation\Validator as BaseValidator;
 
 /**
@@ -30,6 +31,16 @@ class Validator extends BaseValidator
         'invalidFormat' => 'field {0} is {1} format only',
         'naturalNumber' => 'field {0} is natural number only',
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setProvider('default', new RulesProvider(Validation::class));
+    }
 
     /**
      * @inheritDoc
@@ -96,6 +107,25 @@ class Validator extends BaseValidator
         }
 
         return parent::date($field, $formats, $message, $when);
+    }
+
+    /**
+     * Add a string length validation rule to a field.
+     *
+     * @param string $field The field you want to apply the rule to.
+     * @param string|null $message The error message when the rule fails.
+     * @param string|callable|null $when Either 'create' or 'update' or a callable that returns
+     *   true when the validation rule should be applied.
+     * @see \Gotea\Validation\Validation::nameEnglish()
+     * @return $this
+     */
+    public function nameEnglish(string $field, ?string $message = null, $when = null)
+    {
+        $extra = array_filter(['on' => $when, 'message' => $message]);
+
+        return $this->add($field, 'nameEnglish', $extra + [
+            'rule' => ['nameEnglish'],
+        ]);
     }
 
     /**
