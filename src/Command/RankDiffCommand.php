@@ -194,8 +194,10 @@ class RankDiffCommand extends Command
                     if (preg_match('/(.*段).*\(\d+\)/', $text, $matches)) {
                         $rank = Hash::get($ranks, $matches[1]);
                     } else {
-                        $players = $node->filter('a')->each(function ($node) {
+                        $players = Hash::filter($node->filter('a')->each(function ($node) {
                             return trim(preg_replace("/\s+/u", '', $node->text()));
+                        }), function ($name) {
+                            return !empty($name);
                         });
                         if ($players) {
                             $results[$rank] = Hash::merge(Hash::get($results, $rank, []), $players);
