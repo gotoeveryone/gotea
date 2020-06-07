@@ -111,3 +111,6 @@ msgstr "コピー"
 
 msgid "Check"
 msgstr "✓"
+
+msgid "The notification has been saved."
+msgstr "お知らせを保存しました。"
