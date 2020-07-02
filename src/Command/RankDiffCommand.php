@@ -129,11 +129,43 @@ class RankDiffCommand extends Command
     private function getPlayersFromJapan(Country $country, array $ranks)
     {
         // 日本棋院・関西棋院それぞれから棋士一覧を取得
-        $results = Hash::merge($this->getPlayersFromNihonKiin($ranks), $this->getPlayersFromKansaiKiin($ranks));
+        $nihonkiin = $this->getPlayersFromNihonKiin($ranks);
+        $kansaikiin = $this->getPlayersFromKansaiKiin($ranks);
+        // 対象の段位を取得
+        // タイトル者がどちらかにしかいないケースを考慮し、rankText の値をマージしたうえで重複を排除する
+        $rankTexts = array_unique(
+            Hash::merge(
+                Hash::extract($nihonkiin, '{n}.rankText'),
+                Hash::extract($kansaikiin, '{n}.rankText')
+            )
+        );
 
-        // タイトル者は DB から段位を割り当てる
+        $results = Hash::map($rankTexts, '{n}', function ($rankText) use ($ranks, $nihonkiin, $kansaikiin) {
+            return [
+                'rankText' => $rankText,
+                'rank' => Hash::get($ranks, $rankText),
+                'players' => Hash::merge(
+                    collection($nihonkiin)
+                        ->filter(function ($item) use ($rankText) {
+                            return Hash::get($item, 'rankText') === $rankText;
+                        })
+                        ->extract('players')
+                        ->unfold()
+                        ->toList(),
+                    collection($kansaikiin)
+                        ->filter(function ($item) use ($rankText) {
+                            return Hash::get($item, 'rankText') === $rankText;
+                        })
+                        ->extract('players')
+                        ->unfold()
+                        ->toList()
+                ),
+            ];
+        });
+
+        // 段位が設定されていない場合は DB から段位を割り当てる
         foreach ($results as $item) {
-            if ($item['rankText'] === 'タイトル者') {
+            if ($item['rank'] === null) {
                 foreach ($item['players'] as $name) {
                     $player = $this->Players->findRankByNamesAndCountries([$name, str_replace('　', '', $name)], $country->id);
                     foreach ($results as $idx => $data) {
