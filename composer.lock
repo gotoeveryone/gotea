@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c097cbc5ea822d9787385e1e9852c97",
+    "content-hash": "1bd3afdd6fe93d85a92e85bd7e70e082",
     "packages": [
         {
             "name": "aura/intl",
@@ -322,32 +322,33 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "3.0.0-beta3",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "d0a101ec8c5eb167885419170a6133c258298949"
+                "reference": "a41a44e726dcc3634db0c2ac6bc4e158e416d103"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/d0a101ec8c5eb167885419170a6133c258298949",
-                "reference": "d0a101ec8c5eb167885419170a6133c258298949",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/a41a44e726dcc3634db0c2ac6bc4e158e416d103",
+                "reference": "a41a44e726dcc3634db0c2ac6bc4e158e416d103",
                 "shasum": ""
             },
             "require": {
-                "cakephp/cache": "^4.0",
-                "cakephp/orm": "^4.0",
+                "cakephp/cache": "^4.0.5",
+                "cakephp/orm": "^4.0.5",
                 "php": ">=7.2.0",
                 "robmorgan/phinx": "^0.12"
             },
             "require-dev": {
-                "cakephp/bake": "^2.0",
-                "cakephp/cakephp": "^4.0",
-                "cakephp/cakephp-codesniffer": "^4.0",
-                "phpunit/phpunit": "^8.0"
+                "cakephp/bake": "^2.1.0",
+                "cakephp/cakephp": "^4.0.5",
+                "cakephp/cakephp-codesniffer": "~4.1.0",
+                "phpunit/phpunit": "~8.5.0"
             },
             "suggest": {
-                "cakephp/bake": "Required if you want to generate migrations."
+                "cakephp/bake": "If you want to generate migrations.",
+                "dereuromark/cakephp-ide-helper": "If you want to have IDE suggest/autocomplete when creating migrations."
             },
             "type": "cakephp-plugin",
             "autoload": {
@@ -371,7 +372,7 @@
                 "cakephp",
                 "migrations"
             ],
-            "time": "2020-04-10T21:37:06+00:00"
+            "time": "2020-05-10T22:26:04+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -574,46 +575,6 @@
                 "scraper"
             ],
             "time": "2019-12-06T13:11:18+00:00"
-        },
-        {
-            "name": "gotoeveryone/cake-parts",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gotoeveryone/cake-parts.git",
-                "reference": "c6bb36431a47d42cb104ab506350e90673b035e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gotoeveryone/cake-parts/zipball/c6bb36431a47d42cb104ab506350e90673b035e5",
-                "reference": "c6bb36431a47d42cb104ab506350e90673b035e5",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": ">=3.0",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "cakephp/cakephp-codesniffer": ">=3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Gotoeveryone\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kazuki Kamizuru",
-                    "email": "webmaster@k2ss.info"
-                }
-            ],
-            "description": "Custom parts using CakePHP3+",
-            "time": "2019-12-16T07:24:04+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3780,20 +3741,21 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.5.4",
+            "version": "8.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "8474e22d7d642f665084ba5ec780626cbd1efd23"
+                "reference": "34c18baa6a44f1d1fbf0338907139e9dce95b997"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8474e22d7d642f665084ba5ec780626cbd1efd23",
-                "reference": "8474e22d7d642f665084ba5ec780626cbd1efd23",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/34c18baa6a44f1d1fbf0338907139e9dce95b997",
+                "reference": "34c18baa6a44f1d1fbf0338907139e9dce95b997",
                 "shasum": ""
             },
             "require": {
@@ -3863,7 +3825,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-04-23T04:39:42+00:00"
+            "time": "2020-06-22T07:06:58+00:00"
         },
         {
             "name": "psy/psysh",
@@ -5121,7 +5083,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cakephp/migrations": 10,
         "psy/psysh": 0
     },
     "prefer-stable": true,

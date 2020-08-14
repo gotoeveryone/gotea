@@ -31,9 +31,9 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
 use Gotea\Policy\RequestPolicy;
-use Gotoeveryone\Middleware\TraceMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

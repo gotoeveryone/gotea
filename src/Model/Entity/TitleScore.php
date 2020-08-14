@@ -128,7 +128,7 @@ class TitleScore extends AppEntity
      *
      * @param \Gotea\Model\Entity\Player|null $player 棋士
      * @param string|null $id 棋士ID
-     * @return \Gotea\Model\Entity\判定結果
+     * @return bool
      */
     public function isSelected($player, $id = null)
     {

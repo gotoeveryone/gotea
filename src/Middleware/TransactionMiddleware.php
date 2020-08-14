@@ -5,8 +5,8 @@ namespace Gotea\Middleware;
 
 use Cake\Datasource\ConnectionManager;
 use Cake\Log\Log;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
 /**
@@ -34,12 +34,12 @@ class TransactionMiddleware
     /**
      * Invoke this middleware.
      *
-     * @param \Gotoeveryone\Middleware\Psr\Http\Message\ServerRequestInterface $request HTTP reqeust
-     * @param \Gotoeveryone\Middleware\Psr\Http\Message\ResponseInterface $response HTTP response
+     * @param \Psr\Http\Message\ServerRequestInterface $request HTTP reqeust
+     * @param \Psr\Http\Message\ResponseInterface $response HTTP response
      * @param callable $next Next function
-     * @return \Gotoeveryone\Middleware\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next): ResponseInterface
     {
         $conn = ConnectionManager::get($this->__name);
 
