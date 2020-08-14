@@ -27,6 +27,7 @@ class NativeQueryControllerTest extends AppTestCase
      * @var array
      */
     public $fixtures = [
+        'app.Countries',
         'app.Players',
         'app.Ranks',
         'app.PlayerRanks',

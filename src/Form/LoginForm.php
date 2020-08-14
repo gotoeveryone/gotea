@@ -31,12 +31,12 @@ class LoginForm extends AppForm
         $validator
             ->requirePresence('account')
             ->maxLength('account', 10)
-            ->alphaNumeric('account');
+            ->asciiAlphaNumeric('account');
 
         // パスワード
         $validator
             ->requirePresence('password')
             ->maxLength('password', 20)
-            ->alphaNumeric('password');
+            ->asciiAlphaNumeric('password');
     }
 }

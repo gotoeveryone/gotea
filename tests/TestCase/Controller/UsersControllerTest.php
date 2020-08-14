@@ -28,7 +28,7 @@ class UsersControllerTest extends AppTestCase
     public function testNotLogged()
     {
         $this->get('/players');
-        $this->assertRedirect(['_name' => 'top', 'redirect' => '/players']);
+        $this->assertRedirectEquals(['_name' => 'top', '?' => ['redirect' => '/players']]);
     }
 
     /**

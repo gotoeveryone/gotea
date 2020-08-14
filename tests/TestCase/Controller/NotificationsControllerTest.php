@@ -100,7 +100,7 @@ class NotificationsControllerTest extends AppTestCase
     {
         $notification = $this->Notifications->find()->first();
 
-        $this->get(['_name' => 'new_notification', 'from' => $notification->id]);
+        $this->get(['_name' => 'new_notification', '?' => ['from' => $notification->id]]);
         $this->assertResponseOk();
         $this->assertTemplate('new');
         $this->assertResponseContains(__('新規登録'));

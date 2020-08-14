@@ -70,7 +70,7 @@ class PlayersTable extends AppTable
             ->integer('country_id')
             ->integer('organization_id')
             ->integer('rank_id')
-            ->asciiAlphaNumeric('name_english')
+            ->nameEnglish('name_english')
             ->naturalNumber('joined')
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)

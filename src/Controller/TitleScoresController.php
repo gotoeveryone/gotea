@@ -115,15 +115,13 @@ class TitleScoresController extends AppController
      */
     public function update(string $id): ?Response
     {
-        $id = (int)$id;
-
         // 勝敗変更の場合は該当アクションを実施
         if ($this->getRequest()->getData('action') == 'switchDivision') {
             return $this->switchDivision($id);
         }
 
         // データ取得
-        $score = $this->TitleScores->findByIdWithRelation($id);
+        $score = $this->TitleScores->findByIdWithRelation((int)$id);
         $this->TitleScores->patchEntity($score, $this->getRequest()->getParsedBody());
 
         // 保存
@@ -170,7 +168,7 @@ class TitleScoresController extends AppController
     /**
      * 勝敗変更処理
      *
-     * @param int $id 成績ID
+     * @param string $id 成績ID
      * @return \Cake\Http\Response|null
      */
     private function switchDivision(string $id): ?Response

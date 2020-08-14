@@ -93,7 +93,7 @@ class OrganizationsTableTest extends TestCase
     public function testFindSorted()
     {
         $entities = $this->Organizations->findSorted();
-        $this->assertInternalType('array', $entities->toArray());
+        $this->assertIsArray($entities->toArray());
         $this->assertNotNull($entities);
     }
 }

@@ -249,7 +249,7 @@ class TitleScoresTableTest extends TestCase
         ]);
         $this->assertGreaterThan(0, $scores->count());
         $scores->each(function ($item) use ($name) {
-            $this->assertContains($name, $item->name);
+            $this->assertStringContainsString($name, $item->name);
         });
 
         // 対局日

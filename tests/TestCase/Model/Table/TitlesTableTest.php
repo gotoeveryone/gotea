@@ -261,12 +261,12 @@ class TitlesTableTest extends TestCase
     public function testFindSortedList()
     {
         $titles = $this->Titles->findSortedList();
-        $this->assertInternalType('array', $titles->toArray());
+        $this->assertIsArray($titles->toArray());
         $this->assertNotNull($titles);
 
         $titles->each(function ($value, $key) {
-            $this->assertInternalType('int', $key);
-            $this->assertInternalType('string', $value);
+            $this->assertIsInt($key);
+            $this->assertIsString($value);
         });
     }
 
@@ -331,8 +331,9 @@ class TitlesTableTest extends TestCase
             'sort_order' => 1,
             'htmlFileModified' => FrozenDate::parse('2017-01-04'),
         ];
+        /** @var \Gotea\Model\Entity\Title $entity */
         $entity = $this->Titles->createEntity(null, $data);
-        foreach ($entity->getVisible() as $key => $value) {
+        foreach ($entity->getVisible() as $key) {
             $this->assertEquals(Inflector::underscore($key), $key);
         }
     }

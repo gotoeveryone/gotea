@@ -48,7 +48,7 @@ class NativeQueryController extends AppController
 
             return $this->redirect(['_name' => 'queries']);
         } catch (PDOException $e) {
-            Log::error($e);
+            Log::error($e->getMessage());
         }
 
         return $this->renderWithErrors(

@@ -56,7 +56,7 @@
                                 'class' => 'layout-button button-secondary',
                             ]) ?>
                             <?= $this->Html->link(__('Copy'), [
-                                '_name' => 'new_notification', 'from' => $notification->id,
+                                '_name' => 'new_notification', '?' => ['from' => $notification->id],
                             ], [
                                 'class' => 'layout-button button-secondary',
                             ]) ?>

@@ -74,8 +74,8 @@ class CountriesCellTest extends TestCase
     public function testDisplay()
     {
         $this->Countries->display();
-        $countries = $this->Countries->viewVars['countries'];
-        $attributes = $this->Countries->viewVars['attributes'];
+        $countries = $this->Countries->viewBuilder()->getVar('countries');
+        $attributes = $this->Countries->viewBuilder()->getVar('attributes');
         $this->assertNotEmpty($countries);
         $this->assertEmpty($attributes);
     }

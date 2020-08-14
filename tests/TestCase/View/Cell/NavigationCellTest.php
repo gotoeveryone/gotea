@@ -83,10 +83,8 @@ class NavigationCellTest extends TestCase
      */
     public function testDisplay()
     {
-        $cell = $this->View->cell('Navigation');
-        $cell->render();
         $this->Navigation->display();
-        $recents = $this->Navigation->viewVars['recents'];
+        $recents = $this->Navigation->viewBuilder()->getVar('recents');
         $this->assertNotNull($recents);
         foreach ($recents as $items) {
             foreach ($items as $item) {

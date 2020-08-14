@@ -260,9 +260,11 @@ class PlayersControllerTest extends AppTestCase
         $this->post(['_name' => 'create_player'], $data);
         $this->assertRedirect([
             '_name' => 'new_player',
-            'country_id' => 1,
-            'sex' => '男性',
-            'joined' => $now->format('Ymd'),
+            '?' => [
+                'country_id' => 1,
+                'sex' => '男性',
+                'joined' => $now->format('Ymd'),
+            ],
         ]);
         $this->assertResponseNotContains('<nav class="nav">');
 
