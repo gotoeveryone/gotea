@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Gotea\Middleware;
 
 use Cake\Log\Log;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Recording access to action.
