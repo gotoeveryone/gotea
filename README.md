@@ -2,16 +2,16 @@
 
 [![CircleCI](https://circleci.com/gh/gotoeveryone/gotea.svg?style=svg)](https://circleci.com/gh/gotoeveryone/gotea)
 ![PHP from Packagist](https://img.shields.io/packagist/php-v/symfony/symfony.svg)
-[![CakePHP Version](https://img.shields.io/badge/cakephp-3.7-0366d6.svg)](https://book.cakephp.org/3.0/ja/index.html)
+[![CakePHP Version](https://img.shields.io/badge/cakephp-4.0-0366d6.svg)](https://book.cakephp.org/4.0/ja/index.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)
 [![GitHub version](https://badge.fury.io/gh/gotoeveryone%2Fgotea.svg)](https://badge.fury.io/gh/gotoeveryone%2Fgotea)
 
 囲碁のプロ棋士・棋戦情報を管理します。  
-[CakePHP](http://cakephp.org) 3.x を利用しています。
+[CakePHP](http://cakephp.org) 4.x を利用しています。
 
 ## Requirements
 
-- php7.1.3+
+- php7.2+
 - composer
 - nodejs
 - yarn
