@@ -70,26 +70,17 @@
             ?>
         </li>
         <li class="detail_box_item box-3">
-            <div class="input date">
-                <?= $this->Form->label('input_joined.year', __d('model', 'joined'), ['class' => 'label-row']) ?>
-                <?php
-                echo $this->Form->select('input_joined.year', $this->joinedYears(), [
-                    'label' => false,
-                    'empty' => false,
-                    'class' => 'input-row dropdowns',
-                ]);
-                echo $this->Form->select('input_joined.month', $this->joinedMonths(), [
-                    'label' => false,
-                    'empty' => ['' => '-'],
-                    'class' => 'input-row dropdowns',
-                ]);
-                echo $this->Form->select('input_joined.day', $this->joinedDays(), [
-                    'label' => false,
-                    'empty' => ['' => '-'],
-                    'class' => 'input-row dropdowns',
+            <?php
+                echo $this->Form->joined('input_joined', [
+                    'label' => ['class' => 'label-row', 'text' => __d('model', 'joined')],
+                    'class' => 'input-row',
+                    'empty' => [
+                        'year' => false,
+                        'month' => ['' => '-'],
+                        'day' => ['' => '-'],
+                    ],
                 ]);
                 ?>
-            </div>
         </li>
         <li class="detail_box_item box-2">
             <?php
