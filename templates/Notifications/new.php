@@ -37,7 +37,7 @@
             <div class="input">
                 <div class="label-row"><?= __d('model', 'is_draft') ?></div>
                 <?= $this->Form->control('is_draft', [
-                    'label' => ['class' => 'input-row checkbox-label'],
+                    'label' => ['class' => 'input-row checkbox-label', 'text' => null],
                 ]) ?>
             </div>
         </li>
@@ -45,15 +45,13 @@
             <div class="input">
                 <div class="label-row"><?= __d('model', 'is_permanent') ?></div>
                 <?= $this->Form->control('is_permanent', [
-                    'label' => ['class' => 'input-row checkbox-label'],
+                    'label' => ['class' => 'input-row checkbox-label', 'text' => null],
                 ]) ?>
             </div>
         </li>
         <li class="detail_box_item box-8">
-            <?= $this->Form->control('published', [
-                'type' => 'datetime',
+            <?= $this->Form->datetimeSelect('published', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'published')],
-                'class' => 'input-row dropdowns',
             ]) ?>
         </li>
         <li class="detail_box_item button-row">
