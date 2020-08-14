@@ -119,7 +119,7 @@ abstract class AppController extends Controller
      * @param string $type メッセージの種類
      * @return \Gotea\Controller\AppController
      */
-    protected function setMessages($messages, $type = 'info')
+    protected function setMessages($messages, $type = 'success')
     {
         $this->Flash->$type($messages);
 

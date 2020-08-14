@@ -159,7 +159,7 @@ class TitleScoresController extends AppController
         }
         $this->TitleScores->delete($model);
 
-        $this->Flash->info("ID【{$id}】の成績情報を削除しました。");
+        $this->setMessages("ID【{$id}】の成績情報を削除しました。");
 
         return $this->redirect([
             '_name' => 'find_scores',
@@ -194,7 +194,7 @@ class TitleScoresController extends AppController
         }
 
         if ($changed === 2) {
-            $this->Flash->info("ID【{$id}】の勝敗を変更しました。");
+            $this->setMessages("ID【{$id}】の勝敗を変更しました。");
         }
 
         return $this->redirect([

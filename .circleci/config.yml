@@ -25,7 +25,7 @@ references:
 jobs:
   code_check_resources:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:12
     working_directory: ~/gotea
     steps:
       - checkout
@@ -74,7 +74,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:12
     working_directory: ~/gotea
     steps:
       - checkout

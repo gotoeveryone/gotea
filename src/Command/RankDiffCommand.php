@@ -58,10 +58,11 @@ class RankDiffCommand extends Command
         $today = FrozenDate::now()->format('Ymd');
         try {
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
-            $results = $countries->combine('name', function ($item) {
+            $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
+            $results = $countries->combine('name', function ($item) use ($ranks) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
                 $method = 'getPlayersFrom' . Inflector::humanize($item->name_english);
-                $diffs = $this->$method($item);
+                $diffs = $this->$method($item, $ranks);
                 if (!count($diffs)) {
                     return [];
                 }
@@ -125,18 +126,49 @@ class RankDiffCommand extends Command
      * 日本棋士の段位と棋士数を取得
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromJapan(Country $country)
+    private function getPlayersFromJapan(Country $country, array $ranks)
     {
-        $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
-
         // 日本棋院・関西棋院それぞれから棋士一覧を取得
-        $results = Hash::merge($this->getPlayersFromNihonKiin($ranks), $this->getPlayersFromKansaiKiin($ranks));
+        $nihonkiin = $this->getPlayersFromNihonKiin($ranks);
+        $kansaikiin = $this->getPlayersFromKansaiKiin($ranks);
+        // 対象の段位を取得
+        // タイトル者がどちらかにしかいないケースを考慮し、rankText の値をマージしたうえで重複を排除する
+        $rankTexts = array_unique(
+            Hash::merge(
+                Hash::extract($nihonkiin, '{n}.rankText'),
+                Hash::extract($kansaikiin, '{n}.rankText')
+            )
+        );
 
-        // タイトル者は DB から段位を割り当てる
+        $results = Hash::map($rankTexts, '{n}', function ($rankText) use ($ranks, $nihonkiin, $kansaikiin) {
+            return [
+                'rankText' => $rankText,
+                'rank' => Hash::get($ranks, $rankText),
+                'players' => Hash::merge(
+                    collection($nihonkiin)
+                        ->filter(function ($item) use ($rankText) {
+                            return Hash::get($item, 'rankText') === $rankText;
+                        })
+                        ->extract('players')
+                        ->unfold()
+                        ->toList(),
+                    collection($kansaikiin)
+                        ->filter(function ($item) use ($rankText) {
+                            return Hash::get($item, 'rankText') === $rankText;
+                        })
+                        ->extract('players')
+                        ->unfold()
+                        ->toList()
+                ),
+            ];
+        });
+
+        // 段位が設定されていない場合は DB から段位を割り当てる
         foreach ($results as $item) {
-            if ($item['rankText'] === 'タイトル者') {
+            if ($item['rank'] === null) {
                 foreach ($item['players'] as $name) {
                     $player = $this->Players->findRankByNamesAndCountries(
                         [$name, str_replace('　', '', $name)],
@@ -160,9 +192,10 @@ class RankDiffCommand extends Command
      * 韓国棋士の段位と棋士数を取得
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromKorea(Country $country)
+    private function getPlayersFromKorea(Country $country, array $ranks)
     {
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.korea'));
 
@@ -182,24 +215,34 @@ class RankDiffCommand extends Command
      * 台湾棋士の段位と棋士数を取得
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
+     * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromTaiwan(Country $country)
+    private function getPlayersFromTaiwan(Country $country, array $ranks)
     {
         $results = [];
+        $rank = null;
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.taiwan'));
-        $crawler->filter('table[width=685] tr')->each(function (Crawler $node) use (&$results) {
-            $img = $node->filter('img')->first();
-            if ($img->count() > 0) {
-                if (preg_match('/dan([0-9]{2})/', $img->attr('src'), $matches)) {
-                    $rank = intval($matches[1]);
-                    $playerNodes = $node->nextAll()->filter('tr')->first()->filter('td[colspan=2] div');
-                    $results[$rank] = $playerNodes->each(function ($node) {
-                        return $node->text();
-                    });
+        $crawler->filter('.post-body.entry-content div:first-child div')
+            ->each(function (Crawler $node) use (&$results, &$rank, $ranks) {
+                // テキストが設定されている場合のみ処理する
+                $text = trim($node->text());
+                if ($text) {
+                    $matches = [];
+                    if (preg_match('/(.*段).*\(\d+\)/', $text, $matches)) {
+                        $rank = Hash::get($ranks, $matches[1]);
+                    } else {
+                        $players = Hash::filter($node->filter('a')->each(function ($node) {
+                            return trim(preg_replace("/\s+/u", '', $node->text()));
+                        }), function ($name) {
+                            return !empty($name);
+                        });
+                        if ($players) {
+                            $results[$rank] = Hash::merge(Hash::get($results, $rank, []), $players);
+                        }
+                    }
                 }
-            }
-        });
+            });
 
         return $results;
     }
