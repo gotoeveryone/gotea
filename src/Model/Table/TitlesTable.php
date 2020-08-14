@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -15,9 +16,9 @@ use Gotea\Model\Entity\Title;
 class TitlesTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->setDisplayField('name');
@@ -26,7 +27,7 @@ class TitlesTable extends AppTable
         $this->hasMany('RetentionHistories')
             ->setSort([
                 'RetentionHistories.target_year' => 'DESC',
-                'RetentionHistories.holding' => 'DESC'
+                'RetentionHistories.holding' => 'DESC',
             ]);
         // 所属国マスタ
         $this->belongsTo('Countries')
@@ -34,9 +35,9 @@ class TitlesTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -55,10 +56,10 @@ class TitlesTable extends AppTable
 
         $validator
             ->scalar('name_english')
-            ->alphaNumeric('name_english')
             ->maxLength('name_english', 60)
             ->requirePresence('name_english', 'create')
-            ->notEmptyString('name_english');
+            ->notEmptyString('name_english')
+            ->nameEnglish('name_english');
 
         $validator
             ->integer('holding')
@@ -118,9 +119,9 @@ class TitlesTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['country_id'], 'Countries'));
 
@@ -177,7 +178,8 @@ class TitlesTable extends AppTable
         ]);
 
         // 所属国があれば条件追加
-        if (($countryId = Hash::get($data, 'country_id', ''))) {
+        $countryId = Hash::get($data, 'country_id', '');
+        if ($countryId) {
             $query->where(['Countries.id' => $countryId]);
         }
 

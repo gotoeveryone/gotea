@@ -20,9 +20,9 @@
  */
 
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 
 /**
  * The default class to use for all routes
@@ -40,14 +40,13 @@ use Cake\Routing\Route\DashedRoute;
  * Note that `Route` does not do any inflections on URLs which will result in
  * inconsistently cased URLs when used with `:plugin`, `:controller` and
  * `:action` markers.
- *
  */
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
     // Register scoped middleware for in scopes.
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     /**

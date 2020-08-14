@@ -1,7 +1,7 @@
 <?php
-namespace Gotea\Model\Entity;
+declare(strict_types=1);
 
-use Cake\ORM\Entity;
+namespace Gotea\Model\Entity;
 
 /**
  * PlayerRank Entity

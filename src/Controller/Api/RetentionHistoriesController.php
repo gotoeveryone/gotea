@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
@@ -17,7 +18,7 @@ class RetentionHistoriesController extends ApiController
      */
     public function view(int $id)
     {
-        /** @var \Gotea\Model\Entity\RetentionHistory */
+        /** @var \Gotea\Model\Entity\RetentionHistory $history */
         $history = $this->RetentionHistories->get($id, [
             'contain' => ['Players', 'Players.PlayerRanks.Ranks'],
         ]);

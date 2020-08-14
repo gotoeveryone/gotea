@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
@@ -82,6 +83,10 @@ class Player extends AppEntity
     protected function _getInputJoined()
     {
         $value = $this->joined;
+        if ($value === null) {
+            return null;
+        }
+
         if (is_array($value)) {
             return $value;
         }
@@ -254,7 +259,7 @@ class Player extends AppEntity
     /**
      * 年度単位でグループ化します。
      *
-     * @return Cake\Collection\Collection
+     * @return \Gotea\Model\Entity\Cake\Collection\Collection
      */
     public function groupByYearFromHistories()
     {
@@ -369,7 +374,7 @@ class Player extends AppEntity
             return 0;
         }
 
-        $propertyName = ($world) ? "${type}_point_world" : "${type}_point";
+        $propertyName = $world ? "${type}_point_world" : "${type}_point";
 
         return (int)$score->$propertyName;
     }

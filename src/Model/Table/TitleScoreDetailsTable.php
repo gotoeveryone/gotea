@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -15,7 +16,6 @@ use Gotea\Model\Query\RankingQuery;
  *
  * @property \Cake\ORM\Association\BelongsTo $TitleScores
  * @property \Cake\ORM\Association\BelongsTo $Players
- *
  * @method \Gotea\Model\Entity\TitleScoreDetail get($primaryKey, $options = [])
  * @method \Gotea\Model\Entity\TitleScoreDetail newEntity($data = null, array $options = [])
  * @method \Gotea\Model\Entity\TitleScoreDetail[] newEntities(array $data, array $options = [])
@@ -27,9 +27,9 @@ use Gotea\Model\Query\RankingQuery;
 class TitleScoreDetailsTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -39,9 +39,9 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -58,9 +58,9 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['title_score_id'], 'TitleScores'));
         $rules->add($rules->existsIn(['player_id'], 'Players'));
@@ -69,9 +69,9 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function query()
+    public function query(): Query
     {
         return new RankingQuery($this->getConnection(), $this);
     }
@@ -90,9 +90,15 @@ class TitleScoreDetailsTable extends AppTable
             'win_point' => $query->func()->count("(division = '勝' and is_official = 1) or null"),
             'lose_point' => $query->func()->count("(division = '敗' and is_official = 1) or null"),
             'draw_point' => $query->func()->count("(division = '分' and is_official = 1) or null"),
-            'win_point_world' => $query->func()->count("(division = '勝' and is_official = 1 and is_world = 1) or null"),
-            'lose_point_world' => $query->func()->count("(division = '敗' and is_official = 1 and is_world = 1) or null"),
-            'draw_point_world' => $query->func()->count("(division = '分' and is_official = 1 and is_world = 1) or null"),
+            'win_point_world' => $query->func()->count(
+                "(division = '勝' and is_official = 1 and is_world = 1) or null"
+            ),
+            'lose_point_world' => $query->func()->count(
+                "(division = '敗' and is_official = 1 and is_world = 1) or null"
+            ),
+            'draw_point_world' => $query->func()->count(
+                "(division = '分' and is_official = 1 and is_world = 1) or null"
+            ),
             'win_point_all' => $query->func()->count("division = '勝' or null"),
             'lose_point_all' => $query->func()->count("division = '敗' or null"),
             'draw_point_all' => $query->func()->count("division = '分' or null"),
@@ -220,8 +226,8 @@ class TitleScoreDetailsTable extends AppTable
      * @param int $targetYear 対象年度
      * @return bool
      */
-    private function isOldRanking(int $targetYear) : bool
+    private function isOldRanking(int $targetYear): bool
     {
-        return ($targetYear < 2017);
+        return $targetYear < 2017;
     }
 }

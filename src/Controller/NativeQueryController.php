@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
 use Cake\Datasource\ConnectionInterface;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Response;
 use Cake\Log\Log;
 use PDOException;
 
@@ -18,9 +20,9 @@ class NativeQueryController extends AppController
     /**
      * 初期表示処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index(): ?Response
     {
         return $this->renderWith('各種情報クエリ更新');
     }
@@ -28,9 +30,9 @@ class NativeQueryController extends AppController
     /**
      * クエリ実行処理
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Cake\Http\Response|null
      */
-    public function execute()
+    public function execute(): ?Response
     {
         // トリムし、改行・タブ・全角スペースがあれば除去
         $updateText = str_replace(["\r", "\n", "\t", '　'], '', trim($this->getRequest()->getData('queries')));
@@ -46,7 +48,7 @@ class NativeQueryController extends AppController
 
             return $this->redirect(['_name' => 'queries']);
         } catch (PDOException $e) {
-            Log::error($e);
+            Log::error($e->getMessage());
         }
 
         return $this->renderWithErrors(
@@ -65,7 +67,7 @@ class NativeQueryController extends AppController
      * @return int 更新件数
      * @throws \PDOException
      */
-    private function executeQueries(ConnectionInterface $conn, $queries)
+    private function executeQueries(ConnectionInterface $conn, $queries): int
     {
         $counter = 0;
         foreach ($queries as $query) {

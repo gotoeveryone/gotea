@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\ORM\Query;
 use Gotea\Model\Entity\Country;
 use Gotea\Model\Query\RankingQuery;
 
@@ -11,9 +13,9 @@ use Gotea\Model\Query\RankingQuery;
 class PlayerScoresTable extends AppTable
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -24,9 +26,9 @@ class PlayerScoresTable extends AppTable
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function query()
+    public function query(): Query
     {
         return new RankingQuery($this->getConnection(), $this);
     }

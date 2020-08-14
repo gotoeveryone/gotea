@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +12,6 @@ use Gotea\Model\Table\RanksTable;
  */
 class RanksTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +25,7 @@ class RanksTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Ranks'
+        'app.Ranks',
     ];
 
     /**
@@ -32,7 +33,7 @@ class RanksTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Ranks') ? [] : ['className' => RanksTable::class];
@@ -44,7 +45,7 @@ class RanksTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Ranks);
 

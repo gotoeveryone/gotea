@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Form;
 
 use Cake\TestSuite\TestCase;
@@ -9,7 +11,6 @@ use Gotea\Form\TitleScoreForm;
  */
 class TitleScoreFormTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -22,7 +23,7 @@ class TitleScoreFormTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->TitleScore = new TitleScoreForm();
@@ -33,7 +34,7 @@ class TitleScoreFormTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->TitleScore);
 

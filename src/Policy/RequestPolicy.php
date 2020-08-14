@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Policy;
 
@@ -11,7 +12,7 @@ use Cake\Http\ServerRequest;
 class RequestPolicy implements RequestPolicyInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function canAccess($identity, ServerRequest $request)
     {

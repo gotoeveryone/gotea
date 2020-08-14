@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Identifier\Resolver;
 
@@ -37,7 +38,7 @@ class ApiResolver implements ResolverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function find(array $conditions, $type = self::TYPE_AND)
     {

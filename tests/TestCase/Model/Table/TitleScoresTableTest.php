@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -39,7 +41,7 @@ class TitleScoresTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('TitleScores') ? [] : ['className' => 'Gotea\Model\Table\TitleScoresTable'];
@@ -51,7 +53,7 @@ class TitleScoresTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->TitleScores);
 
@@ -247,7 +249,7 @@ class TitleScoresTableTest extends TestCase
         ]);
         $this->assertGreaterThan(0, $scores->count());
         $scores->each(function ($item) use ($name) {
-            $this->assertContains($name, $item->name);
+            $this->assertStringContainsString($name, $item->name);
         });
 
         // 対局日

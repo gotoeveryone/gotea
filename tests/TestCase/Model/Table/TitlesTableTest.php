@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Table;
 
@@ -16,7 +17,6 @@ use Gotea\Model\Table\TitlesTable;
  */
 class TitlesTableTest extends TestCase
 {
-
     /**
      * タイトルモデル
      *
@@ -43,7 +43,7 @@ class TitlesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Titles') ? [] : ['className' => TitlesTable::class];
@@ -55,7 +55,7 @@ class TitlesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Titles);
 
@@ -261,12 +261,12 @@ class TitlesTableTest extends TestCase
     public function testFindSortedList()
     {
         $titles = $this->Titles->findSortedList();
-        $this->assertInternalType('array', $titles->toArray());
+        $this->assertIsArray($titles->toArray());
         $this->assertNotNull($titles);
 
         $titles->each(function ($value, $key) {
-            $this->assertInternalType('int', $key);
-            $this->assertInternalType('string', $value);
+            $this->assertIsInt($key);
+            $this->assertIsString($value);
         });
     }
 
@@ -331,8 +331,9 @@ class TitlesTableTest extends TestCase
             'sort_order' => 1,
             'htmlFileModified' => FrozenDate::parse('2017-01-04'),
         ];
+        /** @var \Gotea\Model\Entity\Title $entity */
         $entity = $this->Titles->createEntity(null, $data);
-        foreach ($entity->getVisible() as $key => $value) {
+        foreach ($entity->getVisible() as $key) {
             $this->assertEquals(Inflector::underscore($key), $key);
         }
     }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -12,7 +14,6 @@ use Gotea\Model\Table\PlayerRanksTable;
  */
 class PlayerRanksTableTest extends TestCase
 {
-
     /**
      * 棋士昇段
      *
@@ -37,7 +38,7 @@ class PlayerRanksTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('PlayerRanks') ? [] : ['className' => PlayerRanksTable::class];
@@ -49,7 +50,7 @@ class PlayerRanksTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->PlayerRanks);
 

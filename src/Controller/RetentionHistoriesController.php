@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
@@ -7,7 +8,6 @@ namespace Gotea\Controller;
  *
  * @author      Kazuki Kamizuru
  * @since       2017/07/22
- *
  * @property \Gotea\Model\Table\RetentionHistoriesTable $RetentionHistories
  */
 class RetentionHistoriesController extends AppController
@@ -15,13 +15,13 @@ class RetentionHistoriesController extends AppController
     /**
      * 登録・更新処理
      *
-     * @param int $id タイトルID
+     * @param string $id タイトルID
      * @return \Cake\Http\Response|null
      */
-    public function save(int $id)
+    public function save(string $id)
     {
         // エンティティ取得 or 生成
-        $historyId = $this->getRequest()->getData('id');
+        $historyId = $this->getRequest()->getData('id', '');
         $history = $this->RetentionHistories->findOrNew(['id' => $historyId]);
         $this->RetentionHistories->patchEntity($history, $this->getRequest()->getParsedBody());
         $history->title_id = $id;

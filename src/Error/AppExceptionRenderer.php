@@ -1,23 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Error;
 
 use Cake\Error\ExceptionRenderer;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Exception発生時のレンダラクラス
  *
- * @author  Kazuki Kamizuru
- * @since   2016/12/28
+ * @property \Gotea\Controller\ErrorController $controller
  */
 class AppExceptionRenderer extends ExceptionRenderer
 {
     /**
-     * {@inheritdoc}
-     *
-     * @see \Gotea\Controller\ErrorController
+     * @inheritDoc
      */
-    public function render()
+    public function render(): ResponseInterface
     {
         $this->controller->rollback($this->error);
 

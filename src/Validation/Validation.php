@@ -1,14 +1,24 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Validation;
 
 use Cake\Validation\Validation as BaseValidation;
-use Gotoeveryone\Validation\CustomValidationTrait;
 
 /**
- * カスタムのバリデーションクラスです。
+ * カスタムのバリデーションクラス
  */
 class Validation extends BaseValidation
 {
-    use CustomValidationTrait;
+    /**
+     * Invalid multibyte value too.
+     *
+     * @static
+     * @param mixed $check check value
+     * @return bool check result
+     */
+    public static function nameEnglish($check)
+    {
+        return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\s]+$/', $check);
+    }
 }

@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Controller;
 
+use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
-use Gotea\Controller\AppController;
 
 /**
  * Notifications Controller
  *
  * @property \Gotea\Model\Table\NotificationsTable $Notifications
- *
  * @method \Gotea\Model\Entity\Notification[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class NotificationsController extends AppController
@@ -16,9 +17,9 @@ class NotificationsController extends AppController
     /**
      * 一覧表示処理
      *
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index(): ?Response
     {
         $notifications = $this->paginate($this->Notifications->findAllNewestArrivals());
 
@@ -30,14 +31,15 @@ class NotificationsController extends AppController
     /**
      * 新規登録画面表示処理
      *
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
-    public function new()
+    public function new(): ?Response
     {
         $data = [];
 
         // コピー元の指定があればデータを取得して反映
-        if (($fromId = $this->getRequest()->getQuery('from'))) {
+        $fromId = $this->getRequest()->getQuery('from');
+        if ($fromId) {
             $notification = $this->Notifications->findById($fromId)->first();
             if ($notification) {
                 $data = $notification->toArray();
@@ -56,14 +58,14 @@ class NotificationsController extends AppController
     /**
      * 編集画面表示処理
      *
-     * @param int $id サロゲートキー
-     * @return \Cake\Http\Response
+     * @param string $id サロゲートキー
+     * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function edit($id = null)
+    public function edit(string $id): ?Response
     {
         $notification = $this->Notifications->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
 
         $this->set('notification', $notification);
@@ -74,9 +76,9 @@ class NotificationsController extends AppController
     /**
      * 新規登録処理
      *
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
-    public function create()
+    public function create(): ?Response
     {
         $notification = $this->Notifications->newEntity($this->getRequest()->getData());
         if (!$this->Notifications->save($notification)) {
@@ -93,11 +95,11 @@ class NotificationsController extends AppController
     /**
      * 更新処理
      *
-     * @param int $id サロゲートキー
-     * @return \Cake\Http\Response
+     * @param string $id サロゲートキー
+     * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function update($id = null)
+    public function update(string $id): ?Response
     {
         $notification = $this->Notifications->get($id);
         $notification = $this->Notifications->patchEntity($notification, $this->getRequest()->getData());
@@ -115,11 +117,11 @@ class NotificationsController extends AppController
     /**
      * 削除処理
      *
-     * @param int $id サロゲートキー
-     * @return \Cake\Http\Response
+     * @param string $id サロゲートキー
+     * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function delete($id = null)
+    public function delete(string $id): ?Response
     {
         $notification = $this->Notifications->get($id);
         if ($this->Notifications->delete($notification)) {

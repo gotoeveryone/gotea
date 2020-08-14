@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
@@ -11,9 +13,9 @@ class NativeQueryControllerTest extends AppTestCase
     use IntegrationTestTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->createSession();
@@ -25,6 +27,7 @@ class NativeQueryControllerTest extends AppTestCase
      * @var array
      */
     public $fixtures = [
+        'app.Countries',
         'app.Players',
         'app.Ranks',
         'app.PlayerRanks',

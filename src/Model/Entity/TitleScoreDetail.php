@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Model\Entity;
 
 use Cake\I18n\FrozenDate;

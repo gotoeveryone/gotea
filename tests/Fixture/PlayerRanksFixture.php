@@ -6,11 +6,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * PlayerRanksFixture
- *
  */
 class PlayerRanksFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -52,14 +50,14 @@ class PlayerRanksFixture extends TestFixture
             'rank_id' => 1,
             'promoted' => '2017-11-26',
             'created' => '2017-11-26 15:09:51',
-            'modified' => '2017-11-26 15:09:51'
+            'modified' => '2017-11-26 15:09:51',
         ],
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         // 最近の昇段情報
         $now = Date::now();
@@ -68,14 +66,14 @@ class PlayerRanksFixture extends TestFixture
             'rank_id' => 2,
             'promoted' => $now->format('Y/m/d'),
             'created' => '2017-11-26 15:09:51',
-            'modified' => '2017-11-26 15:09:51'
+            'modified' => '2017-11-26 15:09:51',
         ];
         $this->records[] = [
             'player_id' => 1,
             'rank_id' => 3,
             'promoted' => $now->format('Y/m/d'),
             'created' => '2017-11-26 15:09:51',
-            'modified' => '2017-11-26 15:09:51'
+            'modified' => '2017-11-26 15:09:51',
         ];
 
         parent::init();

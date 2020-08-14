@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\View\Helper;
 
 use Cake\View\Helper\HtmlHelper as BaseHtmlHelper;
@@ -24,7 +26,7 @@ class HtmlHelper extends BaseHtmlHelper
      * @param array $options オプション
      * @return string|null 出力するスクリプト
      */
-    public function scriptBlock($script, array $options = [])
+    public function scriptBlock($script, array $options = []): ?string
     {
         // 開始・終了タグを除去しておく
         $s = preg_replace('{<script([\s\S]*?)>([\s\S]*?)</script>}', '$2', $script);
@@ -39,7 +41,7 @@ class HtmlHelper extends BaseHtmlHelper
      * @return string|null String of `<script />` tags or null if block is specified in options
      *   or if $once is true and the file has been included before.
      */
-    public function commonScript(string $path)
+    public function commonScript(string $path): ?string
     {
         return $this->script(env('ASSETS_URL') . $path);
     }
@@ -50,7 +52,7 @@ class HtmlHelper extends BaseHtmlHelper
      * @param string $path パス
      * @return string|null CSS `<link />` or `<style />` tag, depending on the type of link.
      */
-    public function commonCss(string $path)
+    public function commonCss(string $path): ?string
     {
         return $this->css(env('ASSETS_URL') . $path);
     }

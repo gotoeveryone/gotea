@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * RetentionHistoriesFixture
- *
  */
 class RetentionHistoriesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -69,7 +67,7 @@ class RetentionHistoriesFixture extends TestFixture
             'created' => '2017-11-26 14:35:24',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:24',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
         [
             'id' => 2,
@@ -84,7 +82,7 @@ class RetentionHistoriesFixture extends TestFixture
             'created' => '2017-11-26 14:35:24',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:24',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
         [
             'id' => 3,
@@ -99,7 +97,7 @@ class RetentionHistoriesFixture extends TestFixture
             'created' => '2017-11-26 14:35:24',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:24',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
         [
             'id' => 4,
@@ -114,7 +112,7 @@ class RetentionHistoriesFixture extends TestFixture
             'created' => '2017-11-26 14:35:24',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:24',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
     ];
 }

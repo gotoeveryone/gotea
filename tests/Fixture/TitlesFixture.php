@@ -6,11 +6,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * TitlesFixture
- *
  */
 class TitlesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -70,7 +68,7 @@ class TitlesFixture extends TestFixture
             'created' => '2017-11-26 14:35:16',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:16',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
         [
             'id' => 2,
@@ -88,7 +86,7 @@ class TitlesFixture extends TestFixture
             'created' => '2017-11-26 14:35:16',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:16',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
         [
             'id' => 3,
@@ -106,7 +104,7 @@ class TitlesFixture extends TestFixture
             'created' => '2017-11-26 14:35:16',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:16',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
         [
             'id' => 4,
@@ -124,7 +122,7 @@ class TitlesFixture extends TestFixture
             'created' => '2017-11-26 14:35:16',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 14:35:16',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
     ];
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller;
 
@@ -34,9 +35,9 @@ class TitlesControllerTest extends AppTestCase
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Titles = TableRegistry::getTableLocator()->get('Titles');

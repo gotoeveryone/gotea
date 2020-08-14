@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\View\Helper;
 
@@ -12,9 +13,9 @@ use Cake\View\Helper;
 class DateHelper extends Helper
 {
     // 日付フォーマット
-    const FORMAT_DATE = 'yyyy年MM月dd日';
-    const FORMAT_TIME = 'HH時mm分ss秒';
-    const FORMAT_DATETIME = self::FORMAT_DATE . ' ' . self::FORMAT_TIME;
+    public const FORMAT_DATE = 'yyyy年MM月dd日';
+    public const FORMAT_TIME = 'HH時mm分ss秒';
+    public const FORMAT_DATETIME = self::FORMAT_DATE . ' ' . self::FORMAT_TIME;
 
     /**
      * 日付型オブジェクトを特定フォーマットの表記に変換して表示します。
@@ -39,7 +40,7 @@ class DateHelper extends Helper
      * @param \Cake\I18n\FrozenTime|null $timeObj 変換するTime型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDateTime(FrozenTime $timeObj = null)
+    public function formatToDateTime(?FrozenTime $timeObj = null)
     {
         return $this->format($timeObj, self::FORMAT_DATETIME);
     }
@@ -51,7 +52,7 @@ class DateHelper extends Helper
      * @param \Cake\I18n\FrozenDate|null $dateObj 変換するDate型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDate(FrozenDate $dateObj = null)
+    public function formatToDate(?FrozenDate $dateObj = null)
     {
         return $this->format($dateObj, self::FORMAT_DATE);
     }
@@ -63,7 +64,7 @@ class DateHelper extends Helper
      * @param \Cake\I18n\FrozenTime|null $timeObj 変換するTime型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToTime(FrozenTime $timeObj = null)
+    public function formatToTime(?FrozenTime $timeObj = null)
     {
         return $this->format($timeObj, self::FORMAT_TIME);
     }

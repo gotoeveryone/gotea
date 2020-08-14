@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\I18n\FrozenTime;
@@ -25,13 +27,13 @@ class NotificationsControllerTest extends AppTestCase
         'app.Organizations',
         'app.PlayerRanks',
         'app.Players',
-        'app.Notifications'
+        'app.Notifications',
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Notifications = TableRegistry::getTableLocator()->get('Notifications');
@@ -98,7 +100,7 @@ class NotificationsControllerTest extends AppTestCase
     {
         $notification = $this->Notifications->find()->first();
 
-        $this->get(['_name' => 'new_notification', 'from' => $notification->id]);
+        $this->get(['_name' => 'new_notification', '?' => ['from' => $notification->id]]);
         $this->assertResponseOk();
         $this->assertTemplate('new');
         $this->assertResponseContains(__('新規登録'));

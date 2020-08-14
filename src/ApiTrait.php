@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea;
 
@@ -29,8 +30,9 @@ trait ApiTrait
 
         $http = new Client();
         if (method_exists($http, $callMethod)) {
+            /** @var \Cake\Http\Client\Response $response */
             $response = $http->$callMethod($url, $data, $headers);
-            $body = $response->getBody();
+            $body = $response->getStringBody();
 
             // ステータスコードが200～204なら正常終了とみなす
             if ($response->isOk()) {

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\View\Cell;
 
 use Cake\TestSuite\TestCase;
@@ -44,7 +46,7 @@ class CountriesCellTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
@@ -57,7 +59,7 @@ class CountriesCellTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Countries);
 
@@ -72,8 +74,8 @@ class CountriesCellTest extends TestCase
     public function testDisplay()
     {
         $this->Countries->display();
-        $countries = $this->Countries->viewVars['countries'];
-        $attributes = $this->Countries->viewVars['attributes'];
+        $countries = $this->Countries->viewBuilder()->getVar('countries');
+        $attributes = $this->Countries->viewBuilder()->getVar('attributes');
         $this->assertNotEmpty($countries);
         $this->assertEmpty($attributes);
     }

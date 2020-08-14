@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Http\Response;
 use Gotea\Form\PlayerForm;
 
 /**
@@ -9,7 +11,6 @@ use Gotea\Form\PlayerForm;
  *
  * @author  Kazuki Kamizuru
  * @since   2015/07/20
- *
  * @property \Gotea\Model\Table\PlayersTable $Players
  * @property \Gotea\Model\Table\CountriesTable $Countries
  * @property \Gotea\Model\Table\RanksTable $Ranks
@@ -19,9 +20,9 @@ use Gotea\Form\PlayerForm;
 class PlayersController extends AppController
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -38,9 +39,9 @@ class PlayersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index(): ?Response
     {
-        $this->set('form', new PlayerForm);
+        $this->set('form', new PlayerForm());
 
         return $this->withRanks()->renderWith('棋士情報検索');
     }
@@ -50,9 +51,9 @@ class PlayersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function search()
+    public function search(): ?Response
     {
-        $this->set('form', ($form = new PlayerForm));
+        $this->set('form', ($form = new PlayerForm()));
 
         // バリデーション
         $data = $this->getRequest()->getQueryParams();
@@ -79,13 +80,14 @@ class PlayersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function new()
+    public function new(): ?Response
     {
         $params = [
             'rank_id' => $this->Ranks->findByRank()->id,
         ];
         // 所属国
-        if (($countryId = $this->getRequest()->getQuery('country_id'))) {
+        $countryId = $this->getRequest()->getQuery('country_id');
+        if ($countryId) {
             $params['country_id'] = $countryId;
 
             if (is_numeric($countryId) && $this->Countries->exists(['id' => $countryId])) {
@@ -97,11 +99,13 @@ class PlayersController extends AppController
             }
         }
         // 性別
-        if (($sex = $this->getRequest()->getQuery('sex'))) {
+        $sex = $this->getRequest()->getQuery('sex');
+        if ($sex) {
             $params['sex'] = $sex;
         }
         // 入段日
-        if (($joined = $this->getRequest()->getQuery('joined'))) {
+        $joined = $this->getRequest()->getQuery('joined');
+        if ($joined) {
             $params['joined'] = $joined;
         }
         $player = $this->Players->newEntity($params, [
@@ -117,12 +121,12 @@ class PlayersController extends AppController
     /**
      * 詳細表示処理
      *
-     * @param int $id 取得するデータのID
+     * @param string $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function view(int $id)
+    public function view(string $id): ?Response
     {
-        $player = $this->Players->findByIdWithRelation($id);
+        $player = $this->Players->findByIdWithRelation((int)$id);
 
         return $this->set(compact('player'))->withRanks()->renderWithDialog();
     }
@@ -132,7 +136,7 @@ class PlayersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function create()
+    public function create(): ?Response
     {
         // エンティティ生成
         $data = $this->getRequest()->getParsedBody();
@@ -165,14 +169,14 @@ class PlayersController extends AppController
     /**
      * 棋士の更新処理
      *
-     * @param int $id 対象の棋士ID
+     * @param string $id 対象の棋士ID
      * @return \Cake\Http\Response|null
      */
-    public function update(int $id)
+    public function update(string $id): ?Response
     {
         // エンティティ取得
         $data = $this->getRequest()->getParsedBody();
-        $player = $this->Players->findByIdWithRelation($id);
+        $player = $this->Players->findByIdWithRelation((int)$id);
         $this->Players->patchEntity($player, $data);
 
         // 失敗
@@ -192,7 +196,7 @@ class PlayersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function ranking()
+    public function ranking(): ?Response
     {
         return $this->renderWith('棋士勝敗ランキング出力');
     }

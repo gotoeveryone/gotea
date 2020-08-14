@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -21,9 +22,9 @@ class AppTable extends Table
     protected $_validatorClass = Validator::class;
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller;
 
@@ -24,15 +25,16 @@ class PlayerRanksControllerTest extends AppTestCase
      * @var array
      */
     public $fixtures = [
+        'app.Countries',
         'app.Players',
         'app.Ranks',
         'app.PlayerRanks',
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->PlayerRanks = TableRegistry::getTableLocator()->get('PlayerRanks');
@@ -70,7 +72,7 @@ class PlayerRanksControllerTest extends AppTestCase
         $data = $conditions;
         $data['promoted'] = '2017/12/10';
         $this->post(['_name' => 'create_ranks', 1], $data);
-        $this->assertRedirect(['_name' => 'view_player', 'tab' => 'ranks', 1]);
+        $this->assertRedirect(['_name' => 'view_player', '?' => ['tab' => 'ranks'], 1]);
 
         // 1件のまま
         $this->assertEquals(1, $this->PlayerRanks->find()->where($conditions)->count());
@@ -94,7 +96,7 @@ class PlayerRanksControllerTest extends AppTestCase
         $data = $conditions;
         $data['promoted'] = '2017/12/10';
         $this->post(['_name' => 'create_ranks', 1], $data);
-        $this->assertRedirect(['_name' => 'view_player', 'tab' => 'ranks', 1]);
+        $this->assertRedirect(['_name' => 'view_player', '?' => ['tab' => 'ranks'], 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること
@@ -114,7 +116,7 @@ class PlayerRanksControllerTest extends AppTestCase
 
         $this->enableCsrfToken();
         $this->put(['_name' => 'update_ranks', $rank->player_id, $rank->id], $rank->toArray());
-        $this->assertRedirect(['_name' => 'view_player', 'tab' => 'ranks', 1]);
+        $this->assertRedirect(['_name' => 'view_player', '?' => ['tab' => 'ranks'], 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること

@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Authenticator;
 
+use Authentication\Authenticator\ResultInterface;
 use Authentication\Authenticator\SessionAuthenticator as BaseSessionAuthenticator;
 use Gotea\ApiTrait;
 use Psr\Http\Message\ResponseInterface;
@@ -15,17 +17,17 @@ class SessionAuthenticator extends BaseSessionAuthenticator
     use ApiTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
+    public function authenticate(ServerRequestInterface $request): ResultInterface
     {
-        return parent::authenticate($request, $response);
+        return parent::authenticate($request);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function clearIdentity(ServerRequestInterface $request, ResponseInterface $response)
+    public function clearIdentity(ServerRequestInterface $request, ResponseInterface $response): array
     {
         $sessionKey = $this->getConfig('sessionKey');
         /** @var \Cake\Http\Session $session */

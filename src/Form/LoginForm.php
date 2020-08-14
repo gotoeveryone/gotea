@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Form;
 
@@ -12,9 +13,9 @@ use Cake\Validation\Validator;
 class LoginForm extends AppForm
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    protected function _buildSchema(Schema $schema)
+    protected function _buildSchema(Schema $schema): Schema
     {
         return $schema->addField('account', [
             'type' => 'string', 'length' => 10,
@@ -22,20 +23,20 @@ class LoginForm extends AppForm
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildValidator(Event $event, Validator $validator, $name)
+    public function buildValidator(Event $event, Validator $validator, $name): void
     {
         // ユーザID
         $validator
             ->requirePresence('account')
             ->maxLength('account', 10)
-            ->alphaNumeric('account');
+            ->asciiAlphaNumeric('account');
 
         // パスワード
         $validator
             ->requirePresence('password')
             ->maxLength('password', 20)
-            ->alphaNumeric('password');
+            ->asciiAlphaNumeric('password');
     }
 }

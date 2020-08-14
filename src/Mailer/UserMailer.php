@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Mailer;
 
 use Cake\Collection\Collection;

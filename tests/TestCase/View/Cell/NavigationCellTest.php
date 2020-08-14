@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\View\Cell;
 
 use Cake\TestSuite\TestCase;
@@ -53,7 +55,7 @@ class NavigationCellTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
@@ -67,7 +69,7 @@ class NavigationCellTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Navigation);
 
@@ -81,10 +83,8 @@ class NavigationCellTest extends TestCase
      */
     public function testDisplay()
     {
-        $cell = $this->View->cell('Navigation');
-        $cell->render();
         $this->Navigation->display();
-        $recents = $this->Navigation->viewVars['recents'];
+        $recents = $this->Navigation->viewBuilder()->getVar('recents');
         $this->assertNotNull($recents);
         foreach ($recents as $items) {
             foreach ($items as $item) {

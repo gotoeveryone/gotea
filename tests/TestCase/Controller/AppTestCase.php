@@ -1,14 +1,19 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * テスト時の共通コントローラ
  */
-abstract class AppTestCase extends IntegrationTestCase
+abstract class AppTestCase extends TestCase
 {
+    use IntegrationTestTrait;
+
     /**
      * レスポンスがエラーになったかを確認します。
      *

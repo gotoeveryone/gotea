@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\View\Helper;
 
 use Cake\View\Helper\PaginatorHelper as BaseHelper;
@@ -14,8 +16,9 @@ use Cake\View\Helper\PaginatorHelper as BaseHelper;
 class PaginatorHelper extends BaseHelper
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
+    // phpcs:disable Generic.Files.LineLength.TooLong
     protected $_defaultConfig = [
         'options' => [],
         'templates' => [
@@ -37,4 +40,5 @@ class PaginatorHelper extends BaseHelper
             'sortDescLocked' => '<a class="pager-item-link" class="desc locked" href="{{url}}">{{text}}</a>',
         ],
     ];
+    // phpcs:enable Generic.Files.LineLength.TooLong
 }

@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * UpdatedPointsFixture
- *
  */
 class UpdatedPointsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -51,7 +49,7 @@ class UpdatedPointsFixture extends TestFixture
             'created' => '2017-11-26 16:01:47',
             'created_by' => 'Lorem ip',
             'modified' => '2017-11-26 16:01:47',
-            'modified_by' => 'Lorem ip'
+            'modified_by' => 'Lorem ip',
         ],
     ];
 }

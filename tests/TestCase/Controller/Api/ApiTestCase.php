@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\TestSuite\IntegrationTestCase;
@@ -28,21 +30,6 @@ abstract class ApiTestCase extends IntegrationTestCase
             'message' => 'Not Found',
         ],
     ];
-
-    /**
-     * Asserts content does not exist in the response body.
-     *
-     * @param mixed $content The content to check for.
-     * @param string $message The failure message that will be appended to the generated message.
-     * @return void
-     */
-    public function assertResponseNotEquals($content, $message = '')
-    {
-        if (!$this->_response) {
-            $this->fail('No response set, cannot assert content. ' . $message);
-        }
-        $this->assertNotEquals($content, $this->_getBodyAsString(), $message);
-    }
 
     /**
      * APIユーザのヘッダを設定します。
@@ -86,7 +73,7 @@ abstract class ApiTestCase extends IntegrationTestCase
      *
      * @return array
      */
-    protected function getResponseArray() : array
+    protected function getResponseArray(): array
     {
         return json_decode($this->_getBodyAsString(), true);
     }
@@ -97,8 +84,8 @@ abstract class ApiTestCase extends IntegrationTestCase
      * @param array $data
      * @return string
      */
-    protected function getCompareJsonResponse(array $data) : string
+    protected function getCompareJsonResponse(array $data): string
     {
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return json_encode($data);
     }
 }

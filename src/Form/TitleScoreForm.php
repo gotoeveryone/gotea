@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Form;
 
@@ -12,12 +13,9 @@ use Cake\Validation\Validator;
 class TitleScoreForm extends AppForm
 {
     /**
-     * {@inheritdoc}
-     *
-     * @param \Cake\Form\Schema $schema
-     * @return type
+     * @inheritDoc
      */
-    protected function _buildSchema(Schema $schema)
+    protected function _buildSchema(Schema $schema): Schema
     {
         return $schema->addFields([
             'name' => ['type' => 'string', 'length' => 20],
@@ -30,9 +28,9 @@ class TitleScoreForm extends AppForm
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function buildValidator(Event $event, Validator $validator, $name)
+    public function buildValidator(Event $event, Validator $validator, $name): void
     {
         $validator
             ->allowEmpty(['name', 'title_name', 'country_id', 'target_year', 'started', 'ended'])

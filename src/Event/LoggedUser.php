@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Event;
 
@@ -16,7 +17,7 @@ class LoggedUser implements EventListenerInterface
     /**
      * Constructor
      *
-     * @param array|ArrayAccess $user 認証ユーザ
+     * @param array|\Gotea\Event\ArrayAccess $user 認証ユーザ
      */
     public function __construct($user)
     {
@@ -24,9 +25,9 @@ class LoggedUser implements EventListenerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'Model.beforeSave' => [
@@ -46,7 +47,8 @@ class LoggedUser implements EventListenerInterface
      */
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
-        if (($account = Hash::get($this->_user, 'account'))) {
+        $account = Hash::get($this->_user, 'account');
+        if ($account) {
             $options['account'] = $account;
         }
     }

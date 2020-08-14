@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Utility;
 
@@ -19,7 +20,7 @@ trait CalculatorTrait
     public function percent(int $win, int $lose)
     {
         $sum = $win + $lose;
-        $calc = $sum === 0 ? 0 : ($win / $sum);
+        $calc = $sum === 0 ? 0 : $win / $sum;
 
         return Number::toPercentage($calc, 0, [
             'multiply' => true,

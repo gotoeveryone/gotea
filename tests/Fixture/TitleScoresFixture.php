@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * TitleScoresFixture
- *
  */
 class TitleScoresFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -60,7 +58,7 @@ class TitleScoresFixture extends TestFixture
             'ended' => '2017-11-20',
             'is_world' => 0,
             'created' => '2017-11-26 15:09:49',
-            'modified' => '2017-11-26 15:09:49'
+            'modified' => '2017-11-26 15:09:49',
         ],
         [
             'id' => 2,
@@ -71,7 +69,7 @@ class TitleScoresFixture extends TestFixture
             'ended' => '2017-12-23',
             'is_world' => 0,
             'created' => '2017-11-26 15:09:49',
-            'modified' => '2017-11-26 15:09:49'
+            'modified' => '2017-11-26 15:09:49',
         ],
         [
             'id' => 3,
@@ -82,7 +80,7 @@ class TitleScoresFixture extends TestFixture
             'ended' => '2017-11-23',
             'is_world' => 1,
             'created' => '2017-11-26 15:09:49',
-            'modified' => '2017-11-26 15:09:49'
+            'modified' => '2017-11-26 15:09:49',
         ],
         [
             'id' => 4,
@@ -93,7 +91,7 @@ class TitleScoresFixture extends TestFixture
             'ended' => '2017-12-31',
             'is_world' => 1,
             'created' => '2017-11-26 15:09:49',
-            'modified' => '2017-11-26 15:09:49'
+            'modified' => '2017-11-26 15:09:49',
         ],
         [
             'id' => 5,
@@ -104,7 +102,7 @@ class TitleScoresFixture extends TestFixture
             'ended' => '2018-01-01',
             'is_world' => 1,
             'created' => '2017-11-26 15:09:49',
-            'modified' => '2017-11-26 15:09:49'
+            'modified' => '2017-11-26 15:09:49',
         ],
     ];
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
@@ -8,9 +9,9 @@ namespace Gotea\Model\Table;
 class CountriesTable extends AppTable
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->setDisplayField('name');
     }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\TestSuite\IntegrationTestTrait;
@@ -17,7 +19,7 @@ class RanksControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Ranks'
+        'app.Ranks',
     ];
 
     /**

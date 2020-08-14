@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller;
 
@@ -34,9 +35,9 @@ class RetentionHistoriesControllerTest extends AppTestCase
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->RetentionHistories = TableRegistry::getTableLocator()->get('RetentionHistories');
@@ -72,7 +73,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
             'target_year' => 2017,
         ];
         $this->post(['_name' => 'save_histories', 1], $data);
-        $this->assertRedirect(['_name' => 'view_title', 'tab' => 'retention_histories', 1]);
+        $this->assertRedirect(['_name' => 'view_title', '?' => ['tab' => 'retention_histories'], 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること
@@ -97,7 +98,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
             'target_year' => 2018,
         ];
         $this->post(['_name' => 'save_histories', 1], $data);
-        $this->assertRedirect(['_name' => 'view_title', 'tab' => 'retention_histories', 1]);
+        $this->assertRedirect(['_name' => 'view_title', '?' => ['tab' => 'retention_histories'], 1]);
         $this->assertResponseNotContains('<nav class="nav">');
 
         // データが存在すること

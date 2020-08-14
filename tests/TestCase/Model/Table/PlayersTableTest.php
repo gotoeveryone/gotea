@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Table\PlayersTable;
@@ -44,7 +45,7 @@ class PlayersTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Players') ? [] : ['className' => PlayersTable::class];
@@ -56,7 +57,7 @@ class PlayersTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Players);
 
@@ -86,7 +87,6 @@ class PlayersTableTest extends TestCase
 
         // requirePresence
         foreach ($params as $name => $value) {
-            // country_id
             $data = $params;
             unset($data[$name]);
             $result = $this->Players->newEntity($data);
@@ -246,8 +246,8 @@ class PlayersTableTest extends TestCase
     public function testFindRankByNamesAndCountries()
     {
         $player = $this->Players->findRankByNamesAndCountries(['Test Player 1', 'Test Player 111'], 1);
-        $this->assertContains('Test Player 1', $player->name);
-        $this->assertNotContains('Test Player 2', $player->name);
+        $this->assertStringContainsString('Test Player 1', $player->name);
+        $this->assertStringNotContainsString('Test Player 2', $player->name);
     }
 
     /**

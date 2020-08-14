@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Controller;
 
+use Cake\Http\Response;
 use Gotea\Form\TitleScoreForm;
 
 /**
@@ -14,9 +17,9 @@ use Gotea\Form\TitleScoreForm;
 class TitleScoresController extends AppController
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -32,9 +35,9 @@ class TitleScoresController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index(): ?Response
     {
-        $this->set('form', new TitleScoreForm);
+        $this->set('form', new TitleScoreForm());
 
         return $this->renderWith('タイトル勝敗検索', 'index');
     }
@@ -44,9 +47,9 @@ class TitleScoresController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function search()
+    public function search(): ?Response
     {
-        $this->set('form', ($form = new TitleScoreForm));
+        $this->set('form', ($form = new TitleScoreForm()));
 
         // バリデーション
         $data = $this->getRequest()->getQueryParams();
@@ -71,12 +74,14 @@ class TitleScoresController extends AppController
     /**
      * 指定した棋士・年度に該当する成績の取得処理
      *
-     * @param int $id 棋士ID
-     * @param int $year 対象年度
+     * @param string $id 棋士ID
+     * @param string $year 対象年度
      * @return \Cake\Http\Response|null
      */
-    public function searchByPlayer(int $id, int $year)
+    public function searchByPlayer(string $id, string $year): ?Response
     {
+        $id = (int)$id;
+        $year = (int)$year;
         $player = $this->Players->get($id);
         $titleScores = $this->TitleScores->findMatches([
             'player_id' => $id,
@@ -91,12 +96,12 @@ class TitleScoresController extends AppController
     /**
      * 詳細表示処理
      *
-     * @param int $id 取得するデータのID
+     * @param string $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function view(int $id)
+    public function view(string $id): ?Response
     {
-        $score = $this->TitleScores->findByIdWithRelation($id);
+        $score = $this->TitleScores->findByIdWithRelation((int)$id);
         $activeTitles = $this->Titles->findSortedList();
 
         return $this->set(compact('score', 'activeTitles'))->renderWithDialog();
@@ -105,10 +110,10 @@ class TitleScoresController extends AppController
     /**
      * 更新処理
      *
-     * @param int $id 成績ID
+     * @param string $id 成績ID
      * @return \Cake\Http\Response|null
      */
-    public function update(int $id)
+    public function update(string $id): ?Response
     {
         // 勝敗変更の場合は該当アクションを実施
         if ($this->getRequest()->getData('action') == 'switchDivision') {
@@ -116,7 +121,7 @@ class TitleScoresController extends AppController
         }
 
         // データ取得
-        $score = $this->TitleScores->findByIdWithRelation($id);
+        $score = $this->TitleScores->findByIdWithRelation((int)$id);
         $this->TitleScores->patchEntity($score, $this->getRequest()->getParsedBody());
 
         // 保存
@@ -138,10 +143,10 @@ class TitleScoresController extends AppController
     /**
      * 削除処理
      *
-     * @param int $id 成績ID
+     * @param string $id 成績ID
      * @return \Cake\Http\Response|null
      */
-    public function delete(int $id)
+    public function delete(string $id): ?Response
     {
         $model = $this->TitleScores->get($id, [
             'contain' => 'TitleScoreDetails',
@@ -163,10 +168,10 @@ class TitleScoresController extends AppController
     /**
      * 勝敗変更処理
      *
-     * @param int $id 成績ID
+     * @param string $id 成績ID
      * @return \Cake\Http\Response|null
      */
-    private function switchDivision(int $id)
+    private function switchDivision(string $id): ?Response
     {
         $score = $this->TitleScores->get($id, [
             'contain' => 'TitleScoreDetails',

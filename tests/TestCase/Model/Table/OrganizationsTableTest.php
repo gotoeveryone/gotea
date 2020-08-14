@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +12,6 @@ use Gotea\Model\Table\OrganizationsTable;
  */
 class OrganizationsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -33,7 +34,7 @@ class OrganizationsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Organizations') ? [] : ['className' => OrganizationsTable::class];
@@ -45,7 +46,7 @@ class OrganizationsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Organizations);
 
@@ -92,7 +93,7 @@ class OrganizationsTableTest extends TestCase
     public function testFindSorted()
     {
         $entities = $this->Organizations->findSorted();
-        $this->assertInternalType('array', $entities->toArray());
+        $this->assertIsArray($entities->toArray());
         $this->assertNotNull($entities);
     }
 }

@@ -1,8 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
-
-use Cake\I18n\FrozenDate;
 
 /**
  * タイトルエンティティ
@@ -61,21 +60,6 @@ class Title extends AppEntity
     }
 
     /**
-     * HTMLファイル修正日を設定します。
-     *
-     * @param mixed $newValue 更新値
-     * @return \Cake\I18n\FrozenDate|null
-     */
-    protected function _setHtmlFileModified($newValue = null)
-    {
-        if ($newValue && !($newValue instanceof FrozenDate)) {
-            return FrozenDate::parseDate($newValue, 'yyyy/MM/dd');
-        }
-
-        return $newValue;
-    }
-
-    /**
      * 現在の優勝者を取得します。
      *
      * @param bool $isJp 日本名を取得するか
@@ -83,7 +67,8 @@ class Title extends AppEntity
      */
     public function getWinnerName($isJp = true)
     {
-        if (!($history = $this->now_retention)) {
+        $history = $this->now_retention;
+        if (!$history) {
             return null;
         }
 
@@ -119,7 +104,8 @@ class Title extends AppEntity
      */
     public function isNewHistories(): bool
     {
-        if (!($history = $this->now_retention)) {
+        $history = $this->now_retention;
+        if (!$history) {
             return false;
         }
 

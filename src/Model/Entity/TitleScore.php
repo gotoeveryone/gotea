@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Model\Entity;
 
 /**
@@ -38,7 +40,8 @@ class TitleScore extends AppEntity
      */
     protected function _getWinnerName()
     {
-        if (($detail = $this->win_detail)) {
+        $detail = $this->win_detail;
+        if ($detail) {
             return $detail->getPlayerNameWithRank($this->started);
         }
 
@@ -52,7 +55,8 @@ class TitleScore extends AppEntity
      */
     protected function _getLoserName()
     {
-        if (($detail = $this->lose_detail)) {
+        $detail = $this->lose_detail;
+        if ($detail) {
             return $detail->getPlayerNameWithRank($this->started);
         }
 
@@ -124,7 +128,7 @@ class TitleScore extends AppEntity
      *
      * @param \Gotea\Model\Entity\Player|null $player 棋士
      * @param string|null $id 棋士ID
-     * @return 判定結果
+     * @return \Gotea\Model\Entity\判定結果
      */
     public function isSelected($player, $id = null)
     {

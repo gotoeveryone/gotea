@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\Validation;
 
@@ -10,16 +11,7 @@ use Cake\Validation\Validator as BaseValidator;
  */
 class Validator extends BaseValidator
 {
-    const DEFAULT_MESSAGE = 'field {0} is invalid';
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setProvider('default', new RulesProvider('Gotea\Validation\Validation'));
-    }
+    public const DEFAULT_MESSAGE = 'field {0} is invalid';
 
     /**
      * メッセージ
@@ -41,7 +33,17 @@ class Validator extends BaseValidator
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setProvider('default', new RulesProvider(Validation::class));
+    }
+
+    /**
+     * @inheritDoc
      */
     public function add($field, $name, $rule = [])
     {
@@ -60,9 +62,9 @@ class Validator extends BaseValidator
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function _convertValidatorToArray($fieldName, $defaults = [], $settings = [])
+    protected function _convertValidatorToArray($fieldName, $defaults = [], $settings = []): array
     {
         $results = parent::_convertValidatorToArray($fieldName, $defaults, $settings);
         foreach ($results as $name => $property) {
@@ -84,7 +86,7 @@ class Validator extends BaseValidator
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function date($field, $formats = ['ymd'], $message = null, $when = null)
     {
@@ -95,7 +97,7 @@ class Validator extends BaseValidator
         // 日付フォーマットをメッセージに渡す
         $args = [
             __d('model', $field),
-            implode(', ', $formats)
+            implode(', ', $formats),
         ];
         $message = $this->getMessage('invalidFormat', $args);
 
@@ -105,6 +107,25 @@ class Validator extends BaseValidator
         }
 
         return parent::date($field, $formats, $message, $when);
+    }
+
+    /**
+     * Add a string length validation rule to a field.
+     *
+     * @param string $field The field you want to apply the rule to.
+     * @param string|null $message The error message when the rule fails.
+     * @param string|callable|null $when Either 'create' or 'update' or a callable that returns
+     *   true when the validation rule should be applied.
+     * @see \Gotea\Validation\Validation::nameEnglish()
+     * @return $this
+     */
+    public function nameEnglish(string $field, ?string $message = null, $when = null)
+    {
+        $extra = array_filter(['on' => $when, 'message' => $message]);
+
+        return $this->add($field, 'nameEnglish', $extra + [
+            'rule' => ['nameEnglish'],
+        ]);
     }
 
     /**

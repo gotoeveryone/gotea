@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Gotea\Model\Table\TitleScoreDetailsTable;
 
 /**
  * タイトル成績詳細モデルのテストケース
@@ -50,7 +51,7 @@ class TitleScoreDetailsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Countries') ? [] : ['className' => 'Gotea\Model\Table\CountriesTable'];
@@ -65,7 +66,7 @@ class TitleScoreDetailsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->TitleScoreDetails);
 

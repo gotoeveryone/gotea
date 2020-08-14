@@ -6,11 +6,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * OrganizationsFixture
- *
  */
 class OrganizationsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -39,9 +37,9 @@ class OrganizationsFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $organizations = [
             [

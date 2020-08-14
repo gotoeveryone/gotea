@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -11,7 +13,6 @@ use Gotea\Model\Table\RetentionHistoriesTable;
  */
 class RetentionHistoriesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -34,7 +35,7 @@ class RetentionHistoriesTableTest extends TestCase
         'app.PlayerRanks',
         'app.PlayerScores',
         'app.TitleScoreDetails',
-        'app.TitleScores'
+        'app.TitleScores',
     ];
 
     /**
@@ -42,7 +43,7 @@ class RetentionHistoriesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('RetentionHistories') ? [] : ['className' => RetentionHistoriesTable::class];
@@ -54,7 +55,7 @@ class RetentionHistoriesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->RetentionHistories);
 
@@ -239,9 +240,11 @@ class RetentionHistoriesTableTest extends TestCase
         }
 
         // 成功
-        $result = $this->RetentionHistories->newEntity(array_map(function ($key) {
-            return [$key => 1];
-        }, $keys));
+        $data = [];
+        foreach ($keys as $key) {
+            $data[$key] = 1;
+        }
+        $result = $this->RetentionHistories->newEntity($data);
         $this->assertTrue($this->RetentionHistories->checkRules($result));
     }
 

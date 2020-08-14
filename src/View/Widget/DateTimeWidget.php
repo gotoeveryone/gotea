@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Gotea\View\Widget;
 
-use Cake\View\Widget\DateTimeWidget as BaseDateTimeWidget;
+use Cake\Utility\Hash;
+use Cake\View\Form\ContextInterface;
+use Shim\View\Widget\DateTimeWidget as BaseDateTimeWidget;
 
 /**
  * `datatime`のカスタムウィジェット
@@ -10,9 +13,9 @@ use Cake\View\Widget\DateTimeWidget as BaseDateTimeWidget;
 class DateTimeWidget extends BaseDateTimeWidget
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function _yearSelect($options, $context)
+    protected function _yearSelect(array $options, ContextInterface $context): string
     {
         $options += [
             'name' => '',
@@ -21,7 +24,7 @@ class DateTimeWidget extends BaseDateTimeWidget
             'end' => date('Y', strtotime('+5 years')),
             'order' => 'desc',
             'templateVars' => [],
-            'options' => []
+            'options' => [],
         ];
 
         if (!empty($options['val'])) {
@@ -29,7 +32,7 @@ class DateTimeWidget extends BaseDateTimeWidget
             $options['end'] = max($options['val'], $options['end']);
         }
         if (empty($options['options'])) {
-            $options['options'] = $this->_generateNumbers($options['start'], $options['end'], $options);
+            $options['options'] = $this->_generateNumbers((int)$options['start'], (int)$options['end'], $options);
         }
         if ($options['order'] === 'desc') {
             $options['options'] = array_reverse($options['options'], true);
@@ -40,14 +43,34 @@ class DateTimeWidget extends BaseDateTimeWidget
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function _generateNumbers($start, $end, $options = [])
+    protected function _secondSelect(array $options, ContextInterface $context): string
+    {
+        $options += [
+            'name' => '',
+            'val' => null,
+            'leadingZeroKey' => true,
+            'leadingZeroValue' => true,
+            'options' => $this->_generateNumbers(0, 59, $options),
+            'templateVars' => [],
+        ];
+
+        unset($options['leadingZeroKey'], $options['leadingZeroValue']);
+
+        return $this->_select->render($options, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _generateNumbers(int $start, int $end, array $options = []): array
     {
         $numbers = parent::_generateNumbers($start, $end, $options);
 
         // サフィックスがあればテキストに付与
-        if (($suffix = $options['suffix'] ?? '')) {
+        $suffix = Hash::get($options, 'suffix');
+        if ($suffix) {
             foreach ($numbers as $key => $value) {
                 $numbers[$key] = $value . $suffix;
             }
