@@ -22,6 +22,9 @@ tar xzf "${TAR_NAME}" -C ${WWW_DIR}
 # ログディレクトリの設定
 ln -s "${HOME_DIR}/release/log/${PROJECT}" "${WWW_DIR}/logs"
 
+# 一時ディレクトリの設定
+ln -s "${HOME_DIR}/release/tmp/${PROJECT}" "${WWW_DIR}/tmp"
+
 # .env の設定
 ln -s "${HOME_DIR}/release/environment/${PROJECT}/.env" "${WWW_DIR}/.env"
 
