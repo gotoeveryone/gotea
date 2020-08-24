@@ -1,7 +1,7 @@
 <template>
   <ul class="search-header">
     <li class="search-row">
-      <fieldset class="search-box">
+      <div class="search-box">
         <label class="search-box_label">対象国</label>
         <select
           @change="changeValue($event)"
@@ -15,8 +15,8 @@
             v-text="country.text"
           />
         </select>
-      </fieldset>
-      <fieldset class="search-box">
+      </div>
+      <div class="search-box">
         <label class="search-box_label">非出力対象</label>
         <select
           @change="changeValue($event)"
@@ -30,8 +30,8 @@
             v-text="option.text"
           />
         </select>
-      </fieldset>
-      <fieldset class="search-box">
+      </div>
+      <div class="search-box">
         <label class="search-box_label">終了棋戦</label>
         <select
           @change="changeValue($event)"
@@ -45,8 +45,8 @@
             v-text="option.text"
           />
         </select>
-      </fieldset>
-      <fieldset class="search-box search-box-right">
+      </div>
+      <div class="search-box search-box-right">
         <button
           @click="add()"
           class="button button-secondary"
@@ -61,7 +61,7 @@
         >
           JSON出力
         </button>
-      </fieldset>
+      </div>
     </li>
   </ul>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <ul class="search-header">
     <li class="search-row">
-      <fieldset class="search-box">
+      <div class="search-box">
         <label class="search-box_label">対象国</label>
         <select v-model="select.country" @change="changeValue($event)" class="country">
           <option
@@ -11,7 +11,7 @@
             v-text="country.text"
           />
         </select>
-      </fieldset>
+      </div>
     </li>
   </ul>
 </template>

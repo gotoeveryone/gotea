@@ -7,13 +7,13 @@
 <div class="notifications index large-9 medium-8 columns content">
     <ul class="search-header">
         <li class="search-row">
-            <fieldset class="search-box search-box-right">
+            <div class="search-box search-box-right">
                 <?= $this->Html->link(__('新規登録'), [
                     '_name' => 'new_notification',
                 ], [
                     'class' => 'layout-button button-secondary',
                 ]) ?>
-            </fieldset>
+            </div>
         </li>
     </ul>
     <?php if (!empty($notifications)) : ?>

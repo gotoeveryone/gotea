@@ -23,6 +23,7 @@ class FormHelper extends BaseFormHelper
         parent::__construct($View, $config);
 
         $this->setTemplates([
+            'nestingLabel' => '{{hidden}}<label{{attrs}}>{{input}}<span class="text">{{text}}</span></label>',
             'date' => '{{year}}{{month}}{{day}}',
             'datetime' => '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}{{meridian}}',
             // エラーメッセージは個別に出力しない

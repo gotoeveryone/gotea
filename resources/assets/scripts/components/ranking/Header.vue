@@ -1,7 +1,7 @@
 <template>
   <ul class="search-header">
     <li class="search-row">
-      <fieldset class="search-box">
+      <div class="search-box">
         <label class="search-box_label ranking_label">抽出対象</label>
         <select
           v-model="select.year"
@@ -37,10 +37,10 @@
             v-text="limit.text"
           />
         </select>
-      </fieldset>
+      </div>
     </li>
     <li class="search-row">
-      <fieldset class="search-box">
+      <div class="search-box">
         <label class="search-box_label ranking_label">対局日</label>
         <input
           v-model="select.from"
@@ -59,21 +59,21 @@
           name="to"
           class="ranking_date datepicker"
         >
-      </fieldset>
+      </div>
     </li>
     <li class="search-row">
-      <fieldset class="search-box">
+      <div class="search-box">
         <label class="search-box_label ranking_label">最終更新日</label>
         <span v-text="lastUpdate" class="lastUpdate" />
-      </fieldset>
-      <fieldset class="search-box search-box-right">
+      </div>
+      <div class="search-box search-box-right">
         <button @click="clearDate()" type="button">
           日付をクリア
         </button>
         <button @click="json()" type="button" class="button button-primary">
           JSON出力
         </button>
-      </fieldset>
+      </div>
     </li>
   </ul>
 </template>
