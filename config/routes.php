@@ -146,6 +146,19 @@ Router::scope('/', function (RouteBuilder $routes) {
             ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
     });
 
+    // 表テンプレート
+    $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes) {
+        $routes->get('/', ['action' => 'index'], 'table_templates');
+        $routes->get('/new', ['action' => 'new'], 'new_table_template');
+        $routes->post('/', ['action' => 'create'], 'create_table_template');
+        $routes->get('/:id', ['action' => 'edit'], 'edit_table_template')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->put('/:id', ['action' => 'update'], 'update_table_template')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        $routes->delete('/:id', ['action' => 'delete'], 'delete_table_template')
+            ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+    });
+
     // フォールバックメソッド
     // $routes->fallbacks(DashedRoute::class);
 });
