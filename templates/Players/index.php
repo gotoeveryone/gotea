@@ -2,30 +2,30 @@
     <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_players']]) ?>
     <ul class="search-header">
         <li class="search-row">
-            <fieldset class="search-box">
+            <div class="search-box">
                 <?= $this->Form->control('name', [
                     'label' => ['text' => __d('model', 'name')],
                     'class' => 'name',
                     'value' => $this->getRequest()->getQuery('name'),
                 ]) ?>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <?= $this->Form->control('name_english', [
                     'label' => ['text' => __d('model', 'name_english')],
                     'class' => 'name',
                     'value' => $this->getRequest()->getQuery('name_english'),
                 ]) ?>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <?= $this->Form->control('name_other', [
                     'label' => ['text' => __d('model', 'name_other')],
                     'class' => 'name',
                     'value' => $this->getRequest()->getQuery('name_other'),
                 ]) ?>
-            </fieldset>
+            </div>
         </li>
         <li class="search-row">
-            <fieldset class="search-box">
+            <div class="search-box">
                 <?= $this->cell('Countries', [
                     'hasTitleOnly' => true,
                     [
@@ -36,18 +36,18 @@
                         '@change' => 'changeCountry($event)',
                     ],
                 ])->render() ?>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <?= $this->cell('Organizations', [
                     [
                         'label' => ['text' => __d('model', 'organization_id')],
                         'class' => 'organization',
                         'empty' => true,
                         'value' => $this->getRequest()->getQuery('organization_id'),
-                    ]
+                    ],
                 ])->render() ?>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <?= $this->Form->control('rank_id', [
                     'label' => ['text' => __d('model', 'rank_id')],
                     'options' => $ranks,
@@ -55,16 +55,16 @@
                     'empty' => true,
                     'value' => $this->getRequest()->getQuery('rank_id'),
                 ]) ?>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <?= $this->Form->sexes([
                     'label' => ['text' => __d('model', 'sex')],
                     'class' => 'sex',
                     'empty' => true,
                     'value' => $this->getRequest()->getQuery('sex'),
                 ]) ?>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <div>
                     <?php
                     echo $this->Form->label('joined_from', '入段年', ['class' => 'search-box_label']);
@@ -83,18 +83,18 @@
                     ]);
                     ?>
                 </div>
-            </fieldset>
-            <fieldset class="search-box">
+            </div>
+            <div class="search-box">
                 <?= $this->Form->filters('is_retired', [
                     'label' => ['text' => '引退者'],
                     'class' => 'excluded',
                     'value' => $this->getRequest()->getQuery('is_retired'),
                 ]) ?>
-            </fieldset>
-            <fieldset class="search-box search-box-right">
+            </div>
+            <div class="search-box search-box-right">
                 <add-button :country-id="countryId" :changed="changed" :url="'<?= $this->Url->build(['_name' => 'new_player']) ?>'" :param-id="'<?= $this->getRequest()->getData('country_id') ?>'"></add-button>
                 <?= $this->Form->button('検索', ['type' => 'submit', 'class' => 'button button-primary']) ?>
-            </fieldset>
+            </div>
         </li>
     </ul>
 

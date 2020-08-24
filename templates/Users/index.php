@@ -2,7 +2,7 @@
     'method' => 'post',
     'url' => ['_name' => 'login'],
 ]) ?>
-<fieldset class="login-row">
+<div class="login-row">
     <?=
         $this->Form->control('account', [
             'label' => [
@@ -12,8 +12,8 @@
             'class' => 'login-account',
         ]);
     ?>
-</fieldset>
-<fieldset class="login-row">
+</div>
+<div class="login-row">
     <?=
         $this->Form->control('password', [
             'label' => [
@@ -23,10 +23,10 @@
             'class' => 'login-password',
         ]);
     ?>
-</fieldset>
-<fieldset class="row button-row">
+</div>
+<div class="row button-row">
     <?= $this->Form->hidden('redirect', ['value' => $this->getRequest()->getQuery('redirect')]) ?>
     <?= $this->Form->button('ログイン', ['type' => 'submit', 'class' => 'button button-primary']) ?>
     <?= $this->Form->button('クリア', ['type' => 'reset']) ?>
-</fieldset>
+</div>
 <?= $this->Form->end() ?>

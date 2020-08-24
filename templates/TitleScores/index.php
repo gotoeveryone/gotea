@@ -9,23 +9,23 @@
         <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_scores']]) ?>
         <ul class="search-header">
             <li class="search-row">
-                <fieldset class="search-box">
+                <div class="search-box">
                     <?= $this->Form->control('name', [
                         'label' => ['text' => '棋士名'],
                         'class' => 'name',
                         'value' => $this->getRequest()->getQuery('name'),
                     ]) ?>
-                </fieldset>
-                <fieldset class="search-box">
+                </div>
+                <div class="search-box">
                     <?= $this->Form->control('title_name', [
                         'label' => ['text' => 'タイトル名'],
                         'class' => 'title_name',
                         'value' => $this->getRequest()->getQuery('title_name'),
                     ]) ?>
-                </fieldset>
+                </div>
             </li>
             <li class="search-row">
-                <fieldset class="search-box">
+                <div class="search-box">
                     <?= $this->cell('Countries', [
                         'hasTitleOnly' => false,
                         [
@@ -33,16 +33,16 @@
                             'value' => $this->getRequest()->getQuery('country_id'),
                         ],
                     ]) ?>
-                </fieldset>
-                <fieldset class="search-box">
+                </div>
+                <div class="search-box">
                     <?= $this->Form->years('target_year', [
                         'label' => ['text' => '対局年'],
                         'class' => 'year',
                         'empty' => true,
                         'value' => $this->getRequest()->getQuery('target_year'),
                     ]) ?>
-                </fieldset>
-                <fieldset class="search-box">
+                </div>
+                <div class="search-box">
                     <?php
                     echo $this->Form->label('started', '対局日', ['class' => 'search-box_label']);
                     echo $this->Form->text('started', [
@@ -55,10 +55,10 @@
                         'value' => $this->getRequest()->getQuery('ended'),
                     ]);
                     ?>
-                </fieldset>
-                <fieldset class="search-box search-box-right">
+                </div>
+                <div class="search-box search-box-right">
                     <?= $this->Form->button('検索', ['type' => 'submit', 'class' => 'button button-primary']) ?>
-                </fieldset>
+                </div>
             </li>
         </ul>
         <?= $this->Form->end() ?>
