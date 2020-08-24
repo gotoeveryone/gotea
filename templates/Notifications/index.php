@@ -8,7 +8,7 @@
     <ul class="search-header">
         <li class="search-row">
             <div class="search-box search-box-right">
-                <?= $this->Html->link(__('新規登録'), [
+                <?= $this->Html->link(__('Add'), [
                     '_name' => 'new_notification',
                 ], [
                     'class' => 'layout-button button-secondary',
@@ -63,6 +63,7 @@
                             <?= $this->Form->postLink(__('Delete'), [
                                 '_name' => 'delete_notification', $notification->id,
                             ], [
+                                'method' => 'delete',
                                 'class' => 'layout-button button-danger',
                                 'confirm' => __('Are you sure you want to delete # {0}?', $notification->id),
                             ]) ?>
