@@ -1,0 +1,32 @@
+/* -------------------------------------------
+   表テンプレート
+ ------------------------------------------- */
+.table-templates {
+  padding: 10px;
+
+  .table-body {
+    .table-row {
+      padding-top: 0.7rem;
+    }
+  }
+
+  .table-column {
+    &_title {
+      width: 30%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &_created,
+    &_modified {
+      width: 25%;
+    }
+
+    &_actions {
+      width: 20%;
+      min-width: 200px;
+      text-align: center;
+    }
+  }
+}
