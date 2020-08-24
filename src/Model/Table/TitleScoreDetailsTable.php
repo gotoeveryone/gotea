@@ -182,8 +182,9 @@ class TitleScoreDetailsTable extends AppTable
         return $query
             ->having(["win_point >= COALESCE(({$sub->sql()}), 0)"])
             ->orderDesc('win_point')
-            ->order(['lose_point', 'Players.joined'])
-            ->orderDesc('Ranks.rank_numeric');
+            ->order(['lose_point'])
+            ->orderDesc('Ranks.rank_numeric')
+            ->order(['Players.joined']);
     }
 
     /**
