@@ -39,8 +39,9 @@ use Cake\Error\ConsoleErrorHandler;
 use Cake\Error\ErrorHandler;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
-use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
+use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
@@ -126,7 +127,8 @@ if ($isCli) {
  *
  * If you define fullBaseUrl in your config file you can remove this.
  */
-if (!Configure::read('App.fullBaseUrl')) {
+$fullBaseUrl = Configure::read('App.fullBaseUrl');
+if (!$fullBaseUrl) {
     $s = null;
     if (env('HTTPS')) {
         $s = 's';
@@ -134,24 +136,21 @@ if (!Configure::read('App.fullBaseUrl')) {
 
     $httpHost = env('HTTP_HOST');
     if (isset($httpHost)) {
-        Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
+        $fullBaseUrl = 'http' . $s . '://' . $httpHost;
     }
     unset($httpHost, $s);
 }
+if ($fullBaseUrl) {
+    Router::fullBaseUrl($fullBaseUrl);
+}
+unset($fullBaseUrl);
 
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
 TransportFactory::setConfig(Configure::consume('EmailTransport'));
-Email::setConfig(Configure::consume('Email'));
+Mailer::setConfig(Configure::consume('Email'));
 Log::setConfig(Configure::consume('Log'));
 Security::setSalt(Configure::consume('Security.salt'));
-
-/**
- * The default crypto extension in 3.0 is OpenSSL.
- * If you are migrating from 2.x uncomment this code to
- * use a more compatible Mcrypt based implementation
- */
-// Security::engine(new \Cake\Utility\Crypto\Mcrypt());
 
 /**
  * Setup detectors for mobile and tablet.
@@ -204,4 +203,3 @@ TypeFactory::build('date')
 //Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
-//Inflector::rules('transliteration', ['/å/' => 'aa']);
