@@ -50,7 +50,7 @@ class LoginFormTest extends TestCase
     {
         $params = [
             'account' => '1234567890',
-            'password' => '12345678901234567890',
+            'password' => 'P@ssW0rd_123',
         ];
 
         // success
@@ -72,8 +72,18 @@ class LoginFormTest extends TestCase
             $this->assertNotEmpty($this->Login->getErrors());
         }
 
-        // alphaNumeric
-        $names = ['account', 'password'];
+        // asciiAlphaNumeric
+        $names = ['account'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = 'テスト';
+            $result = $this->Login->validate($data);
+            $this->assertFalse($result);
+            $this->assertNotEmpty($this->Login->getErrors());
+        }
+
+        // ascii
+        $names = ['password'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = 'テスト';

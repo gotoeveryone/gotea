@@ -110,7 +110,26 @@ class Validator extends BaseValidator
     }
 
     /**
-     * Add a string length validation rule to a field.
+     * パスワードが設定可能な文字のみで構成されているか
+     *
+     * @param string $field The field you want to apply the rule to.
+     * @param string|null $message The error message when the rule fails.
+     * @param string|callable|null $when Either 'create' or 'update' or a callable that returns
+     *   true when the validation rule should be applied.
+     * @see \Gotea\Validation\Validation::nameEnglish()
+     * @return $this
+     */
+    public function password(string $field, ?string $message = null, $when = null)
+    {
+        $extra = array_filter(['on' => $when, 'message' => $message]);
+
+        return $this->add($field, 'password', $extra + [
+            'rule' => ['password'],
+        ]);
+    }
+
+    /**
+     * 英語名として利用可能な文字のみで構成されているか
      *
      * @param string $field The field you want to apply the rule to.
      * @param string|null $message The error message when the rule fails.

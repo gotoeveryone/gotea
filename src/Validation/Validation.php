@@ -17,6 +17,18 @@ class Validation extends BaseValidation
      * @param mixed $check check value
      * @return bool check result
      */
+    public static function password($check)
+    {
+        return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-_@]+$/', $check);
+    }
+
+    /**
+     * Invalid multibyte value too.
+     *
+     * @static
+     * @param mixed $check check value
+     * @return bool check result
+     */
     public static function nameEnglish($check)
     {
         return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\s]+$/', $check);
