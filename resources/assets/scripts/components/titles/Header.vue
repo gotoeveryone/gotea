@@ -46,7 +46,7 @@
           />
         </select>
       </div>
-      <div class="search-box search-box-right">
+      <div v-if="isAdmin" class="search-box search-box-right">
         <button
           @click="add()"
           class="button button-secondary"
@@ -73,6 +73,12 @@ import axios from 'axios';
 import { Country, DropDown } from '@/types';
 
 export default Vue.extend({
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => {
     return {
       countries: [] as DropDown[],

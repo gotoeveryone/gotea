@@ -21,6 +21,11 @@ use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Exception\AuthorizationRequiredException;
+use Authorization\Exception\ForbiddenException;
+use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\MapResolver;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
@@ -35,7 +40,6 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
 use Gotea\Policy\RequestPolicy;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -44,7 +48,9 @@ use Psr\Http\Message\ServerRequestInterface;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication implements AuthenticationServiceProviderInterface//, AuthorizationServiceProviderInterface
+class Application extends BaseApplication implements
+    AuthenticationServiceProviderInterface,
+    AuthorizationServiceProviderInterface
 {
     /**
      * @inheritDoc
@@ -69,7 +75,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         // Load more plugins here
         $this->addPlugin('Shim');
         $this->addPlugin('Authentication');
-        // $this->addPlugin('Authorization');
+        $this->addPlugin('Authorization');
     }
 
     /**
@@ -107,10 +113,18 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             ->add(new AuthenticationMiddleware($this))
 
             // Add authorization middleware.
-            // ->add(new AuthorizationMiddleware($this))
-
-            // Add request authorization middleware.
-            // ->add(new RequestAuthorizationMiddleware())
+            ->add(new AuthorizationMiddleware($this, [
+                'requireAuthorizationCheck' => false,
+                'unauthorizedHandler' => [
+                    'className' => 'Authorization.Redirect',
+                    'url' => '/players',
+                    'queryParam' => null,
+                    'exceptions' => [
+                        AuthorizationRequiredException::class,
+                        ForbiddenException::class,
+                    ],
+                ],
+            ]))
 
             // Add trace middleware.
             ->add(new TraceMiddleware($this))
@@ -181,10 +195,9 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
      * Returns a authorization service provider instance.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request Request
-     * @param \Psr\Http\Message\ResponseInterface $response Response
      * @return \Authorization\AuthorizationService
      */
-    public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
     {
         $resolver = new MapResolver();
         $resolver->map(ServerRequest::class, RequestPolicy::class);

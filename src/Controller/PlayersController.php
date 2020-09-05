@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Gotea\Form\PlayerForm;
 
@@ -32,6 +33,20 @@ class PlayersController extends AppController
         $this->loadModel('TitleScores');
 
         $this->loadComponent('Paginator');
+
+        if ($this->request->getParam('action') === 'index') {
+            $this->Authorization->skipAuthorization();
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->Authorization->authorize($this->request, 'access');
+
+        parent::beforeFilter($event);
     }
 
     /**

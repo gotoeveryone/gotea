@@ -3,6 +3,7 @@
  * @var \Gotea\View\AppView $this
  * @var \Gotea\Model\Entity\TitleScore $score
  */
+$isAdmin = $this->isAdmin();
 ?>
 <section data-contentname="score" class="tab-contents">
     <?= $this->Form->create($score, ['class' => 'main-form', 'url' => ['_name' => 'update_score', $score->id]]) ?>
@@ -15,6 +16,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
                 'type' => 'text',
                 'class' => 'input-row datepicker',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -24,6 +26,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
                 'type' => 'text',
                 'class' => 'input-row datepicker',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -36,6 +39,7 @@
                     'empty' => false,
                     'value' => $score->country_id,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ],
             ])->render()
             ?>
@@ -47,6 +51,7 @@
                 echo $this->Form->control('is_world', [
                     'label' => false,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
             </div>
@@ -58,6 +63,7 @@
                 echo $this->Form->control('is_official', [
                     'label' => false,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
             </div>
@@ -70,6 +76,7 @@
                 'empty' => true,
                 'value' => $score->title_id,
                 'class' => 'input-row',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -78,6 +85,7 @@
             echo $this->Form->control('name', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'title_name')],
                 'class' => 'input-row',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -111,9 +119,11 @@
             echo $this->Form->control('result', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'result')],
                 'class' => 'input-row',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
+        <?php if ($isAdmin) : ?>
         <li class="detail_box_item button-row">
             <?= $this->Form->button(__('Save'), [
                 'name' => 'action',
@@ -126,6 +136,7 @@
                 'class' => 'button button-secondary',
             ]) ?>
         </li>
+        <?php endif ?>
     </ul>
     <?= $this->Form->end() ?>
 </section>

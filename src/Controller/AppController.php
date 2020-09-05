@@ -31,7 +31,7 @@ abstract class AppController extends Controller
                 '_name' => 'top',
             ],
         ]);
-        // $this->loadComponent('Authorization.Authorization');
+        $this->loadComponent('Authorization.Authorization');
 
         // 操作ユーザ記録イベントを設定
         $user = $this->Authentication->getIdentity();

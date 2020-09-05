@@ -4,6 +4,7 @@
  * @var \Gotea\Model\Entity\Player $player
  * @var \Gotea\Model\Entity\TitleScore[]|\Cake\Collection\CollectionInterface $titleScores
  */
+$isAdmin = $this->isAdmin();
 ?>
 <ul class="table-header">
     <li class="table-row">
@@ -30,7 +31,9 @@
             <span class="table-column table-column_title"><?= h($titleScore->name) ?></span>
             <span class="table-column table-column_date">
                 <?php foreach ($titleScore->game_dates as $idx => $date) : ?>
-                    <?php if ($idx > 0) : ?><br />〜<?php endif ?><?= h($date) ?>
+                    <?php if ($idx > 0) :
+                        ?><br />〜<?php
+                    endif ?><?= h($date) ?>
                 <?php endforeach ?>
             </span>
             <span class="table-column table-column_name">
@@ -38,13 +41,13 @@
                 <span <?= $titleScore->isSelected($titleScore->winner, $player->id) ? 'class="selected"' : '' ?>>
                     <?= h($titleScore->winner_name) ?>
                 </span>
-                <?php else: ?>
+                <?php else : ?>
                     <?php if (!empty($titleScore->winner)) : ?>
                     <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $titleScore->winner->id]) ?>')">
                         <?= h($titleScore->winner_name) ?>
                     </a>
                     <?php else : ?>
-                    <?= h($titleScore->winner_name) ?>
+                        <?= h($titleScore->winner_name) ?>
                     <?php endif ?>
                 <?php endif ?>
             </span>
@@ -53,13 +56,13 @@
                 <span <?= $titleScore->isSelected($titleScore->loser, $player->id) ? 'class="selected"' : '' ?>>
                     <?= h($titleScore->loser_name) ?>
                 </span>
-                <?php else: ?>
+                <?php else : ?>
                     <?php if (!empty($titleScore->loser)) : ?>
                     <a class="view-link" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $titleScore->loser->id]) ?>')">
                         <?= h($titleScore->loser_name) ?>
                     </a>
                     <?php else : ?>
-                    <?= h($titleScore->loser_name) ?>
+                        <?= h($titleScore->loser_name) ?>
                     <?php endif ?>
                 <?php endif ?>
             </span>
@@ -69,9 +72,10 @@
             <?php if (empty($player)) : ?>
             <span class="table-column table-column_operation">
                 <a class="view-link layout-button button-primary" @click="openModal('<?= $this->Url->build(['_name' => 'view_score', $titleScore->id]) ?>')">
-                    <?= __('Edit') ?>
+                    <?= __($isAdmin ? 'Edit' : 'View') ?>
                 </a>
-                <?= $this->Form->postButton(__('Delete'), [
+                <?php if ($isAdmin) : ?>
+                    <?= $this->Form->postButton(__('Delete'), [
                     '_name' => 'delete_score', $titleScore->id,
                 ], [
                     'method' => 'delete',
@@ -86,6 +90,7 @@
                     'confirm' => __('Are you sure you want to delete # {0}?', $titleScore->id),
                     'class' => 'button button-danger',
                 ]) ?>
+                <?php endif ?>
             </span>
             <?php endif ?>
         </li>

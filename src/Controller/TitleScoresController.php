@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Gotea\Form\TitleScoreForm;
 
@@ -16,6 +17,16 @@ use Gotea\Form\TitleScoreForm;
  */
 class TitleScoresController extends AppController
 {
+    /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->Authorization->authorize($this->request, 'access');
+
+        parent::beforeFilter($event);
+    }
+
     /**
      * @inheritDoc
      */

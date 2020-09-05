@@ -5,6 +5,7 @@ namespace Gotea\Controller;
 
 use Cake\Datasource\ConnectionInterface;
 use Cake\Datasource\ConnectionManager;
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\Log\Log;
 use PDOException;
@@ -17,6 +18,16 @@ use PDOException;
  */
 class NativeQueryController extends AppController
 {
+    /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->Authorization->authorize($this->request, 'access');
+
+        parent::beforeFilter($event);
+    }
+
     /**
      * 初期表示処理
      *

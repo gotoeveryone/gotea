@@ -22,7 +22,8 @@ class UsersController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['index', 'login']);
+        $this->Authentication->allowUnauthenticated(['index', 'login', 'logout']);
+        $this->Authorization->skipAuthorization();
     }
 
     /**
@@ -32,6 +33,7 @@ class UsersController extends AppController
      */
     public function index(): ?Response
     {
+        $this->Authorization->skipAuthorization();
         // すでにログイン済みならリダイレクト
         if ($this->Authentication->getIdentity()) {
             return $this->redirect($this->getLoginRedirectUrl());

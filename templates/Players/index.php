@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var \Gotea\View\AppView $this ビューオブジェクト
+ * @var \Gotea\Model\Entity\Player[]|\Cake\Collection\CollectionInterface $players 棋士一覧データ
+ */
+$isAdmin = $this->isAdmin();
+?>
 <section class="players">
     <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_players']]) ?>
     <ul class="search-header">
@@ -92,7 +99,9 @@
                 ]) ?>
             </div>
             <div class="search-box search-box-right">
+                <?php if ($isAdmin) : ?>
                 <add-button :country-id="countryId" :changed="changed" :url="'<?= $this->Url->build(['_name' => 'new_player']) ?>'" :param-id="'<?= $this->getRequest()->getData('country_id') ?>'"></add-button>
+                <?php endif ?>
                 <?= $this->Form->button('検索', ['type' => 'submit', 'class' => 'button button-primary']) ?>
             </div>
         </li>

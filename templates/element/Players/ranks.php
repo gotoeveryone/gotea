@@ -3,10 +3,12 @@
  * @var \Gotea\View\AppView $this
  * @var \Gotea\Model\Entity\Player $player
  */
+$isAdmin = $this->isAdmin();
 ?>
 <section data-contentname="ranks" class="tab-contents">
-    <div class="page-header">昇段情報<?= !$player->isNew() ? ' (ID: '. h($player->id) . ')' : '' ?></div>
+    <div class="page-header">昇段情報<?= !$player->isNew() ? ' (ID: ' . h($player->id) . ')' : '' ?></div>
     <ul class="boxes">
+        <?php if ($isAdmin) : ?>
         <li class="label-row">新規登録</li>
         <li>
             <?= $this->Form->create($player, [
@@ -38,6 +40,7 @@
             </div>
             <?= $this->Form->end() ?>
         </li>
+        <?php endif ?>
         <li class="label-row">昇段履歴</li>
         <?php foreach ($player->player_ranks as $player_rank) : ?>
             <li>
@@ -52,6 +55,7 @@
                         'options' => $ranks,
                         'class' => 'rank',
                         'empty' => false,
+                        'disabled' => !$isAdmin,
                     ]) ?>
                 </div>
                 <div class="detail_box_item box-3">
@@ -59,11 +63,14 @@
                         'label' => ['text' => __d('model', 'promoted')],
                         'type' => 'text',
                         'class' => 'datepicker',
+                        'disabled' => !$isAdmin,
                     ]) ?>
                 </div>
+                <?php if ($isAdmin) : ?>
                 <div class="detail_box_item detail_box_item-buttons box-3">
                     <?= $this->Form->button('更新', ['class' => 'button button-primary']) ?>
                 </div>
+                <?php endif ?>
                 <?= $this->Form->end() ?>
             </li>
         <?php endforeach ?>
