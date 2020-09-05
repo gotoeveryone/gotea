@@ -75,7 +75,12 @@ module.exports = () => {
             test: /\.(sa|sc|c)ss$/,
             use: [
               'vue-style-loader',
-              'css-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  esModule: false,
+                },
+              },
               'sass-loader',
               {
                 loader: 'sass-resources-loader',
@@ -120,7 +125,16 @@ module.exports = () => {
         rules: [
           {
             test: /\.(sa|sc|c)ss$/,
-            use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+            use: [
+              MiniCssExtractPlugin.loader,
+              {
+                loader: 'css-loader',
+                options: {
+                  esModule: false,
+                },
+              },
+              'sass-loader',
+            ],
           },
         ],
       },
