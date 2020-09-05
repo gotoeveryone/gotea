@@ -30,7 +30,7 @@ class RequestPolicy implements RequestPolicyInterface
 
         // 以下は管理者以外
         // 特定のコントローラはアクセスさせない
-        if (in_array($controller, ['Notifications', 'NativeQueries', 'TableTemplates'])) {
+        if (in_array($controller, ['Notifications', 'NativeQuery', 'TableTemplates'])) {
             return false;
         }
 

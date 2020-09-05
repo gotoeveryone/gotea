@@ -37,6 +37,6 @@ class LoginForm extends AppForm
         $validator
             ->requirePresence('password')
             ->maxLength('password', 20)
-            ->asciiAlphaNumeric('password');
+            ->password('password');
     }
 }
