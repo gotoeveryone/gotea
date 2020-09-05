@@ -6,21 +6,18 @@ namespace Gotea\Middleware;
 use Cake\Log\Log;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Recording access to action.
  */
-class TraceMiddleware
+class TraceMiddleware implements MiddlewareInterface
 {
     /**
-     * Invoke this middleware.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request HTTP reqeust
-     * @param \Psr\Http\Message\ResponseInterface $response HTTP response
-     * @param callable $next Next function
-     * @return \Psr\Http\Message\ResponseInterface
+     * @inheritDoc
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $url = $request->getRequestTarget();
         $controller = $request->getParam('controller');
@@ -28,7 +25,7 @@ class TraceMiddleware
         $message = "${url} (${controller}@${action})";
 
         Log::debug("${message} - Start");
-        $response = $next($request, $response);
+        $response = $handler->handle($request);
         Log::debug("${message} - End");
 
         return $response;

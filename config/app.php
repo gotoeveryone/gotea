@@ -62,6 +62,7 @@ return [
             'templates' => [ROOT . DS . 'templates' . DS],
             'locales' => [RESOURCES . 'locales' . DS],
         ],
+        'environment' => env('CAKE_ENV', 'local'),
         'jsonDir' => env('JSON_OUTPUT_DIR', WWW_ROOT),
         'diffUrl' => [
             'japan' => env('DIFF_JAPAN_URL'),

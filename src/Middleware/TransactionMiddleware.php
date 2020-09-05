@@ -7,49 +7,47 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Log\Log;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
 /**
  * Manage transaction at application request unit.
  */
-class TransactionMiddleware
+class TransactionMiddleware implements MiddlewareInterface
 {
     /**
      * Connection name
      *
      * @var string
      */
-    private $__name = '';
+    private $name = '';
 
     /**
      * Constructor
      *
-     * @param string $name Connection name
+     * @param string $options Connection name
      */
-    public function __construct($name = 'default')
+    public function __construct(array $options = [])
     {
-        $this->__name = $name;
+        $options += ['name' => 'default'];
+        $this->name = $options['name'];
     }
 
     /**
-     * Invoke this middleware.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request HTTP reqeust
-     * @param \Psr\Http\Message\ResponseInterface $response HTTP response
-     * @param callable $next Next function
-     * @return \Psr\Http\Message\ResponseInterface
+     * @inheritDoc
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $conn = ConnectionManager::get($this->__name);
+        $conn = ConnectionManager::get($this->name);
 
         return $conn->enableSavePoints(true)
-            ->transactional(function ($conn) use ($request, $response, $next) {
+            ->transactional(function ($conn) use ($request, $handler) {
                 try {
-                    $res = $next($request, $response);
+                    $response = $handler->handle($request);
                     Log::debug('Commit the transaction.');
 
-                    return $res;
+                    return $response;
                 } catch (Throwable $e) {
                     Log::error('Error! Rollback the transaction...');
                     throw $e;

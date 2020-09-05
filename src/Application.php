@@ -27,6 +27,7 @@ use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\Middleware\HttpsEnforcerMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -116,6 +117,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
             // Add transaction middleware.
             ->add(new TransactionMiddleware());
+
+        // HTTPSを強制
+        if (!Configure::read('debug') && Configure::read('environment') !== 'local') {
+            $middlewareQueue->add(new HttpsEnforcerMiddleware([
+                'redirect' => true,
+            ]));
+        }
 
         return $middlewareQueue;
     }
