@@ -18,7 +18,7 @@ class UsersController extends AppController
     /**
      * @inheritDoc
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
 
@@ -35,6 +35,11 @@ class UsersController extends AppController
         // すでにログイン済みならリダイレクト
         if ($this->Authentication->getIdentity()) {
             return $this->redirect($this->getLoginRedirectUrl());
+        }
+
+        // リダイレクトパラメータがある（ログアウトされている状態でログイン必須のページにアクセスがあった）場合はメッセージを表示
+        if ($this->request->getQuery('redirect')) {
+            $this->Flash->error(__('Login required.'));
         }
 
         $this->viewBuilder()->setLayout('login');

@@ -141,3 +141,6 @@ msgstr "表テンプレートを削除しました。"
 
 msgid "The table template could not be deleted. Please, try again."
 msgstr "表テンプレートの削除に失敗しました。もう一度やり直してください。"
+
+msgid "Login required."
+msgstr "ログインが必要です。"
