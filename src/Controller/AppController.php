@@ -18,8 +18,6 @@ use Gotea\Event\LoggedUser;
  */
 abstract class AppController extends Controller
 {
-    use SecureTrait;
-
     /**
      * @inheritDoc
      */
@@ -27,7 +25,6 @@ abstract class AppController extends Controller
     {
         parent::initialize();
 
-        $this->forceSSL();
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication', [
             'logoutRedirect' => [
