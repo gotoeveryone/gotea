@@ -63,7 +63,7 @@ class ApiResolver implements ResolverInterface
         $user = Hash::get($response, 'content');
         $user['password'] = $conditions['password'];
         $user['accessToken'] = $token;
-        $user['isAdmin'] = Hash::get($user, 'role') === '管理者';
+        $user['isAdmin'] = Hash::get($user, 'role') === __('Administrator');
 
         Log::info(__('User {0} is logged', Hash::get($user, 'account')));
 
