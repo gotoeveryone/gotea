@@ -33,10 +33,6 @@ class PlayersController extends AppController
         $this->loadModel('TitleScores');
 
         $this->loadComponent('Paginator');
-
-        if ($this->request->getParam('action') === 'index') {
-            $this->Authorization->skipAuthorization();
-        }
     }
 
     /**
@@ -44,7 +40,9 @@ class PlayersController extends AppController
      */
     public function beforeFilter(EventInterface $event)
     {
-        $this->Authorization->authorize($this->request, 'access');
+        if ($this->request->getParam('action') !== 'index') {
+            $this->Authorization->authorize($this->request, 'access');
+        }
 
         parent::beforeFilter($event);
     }
