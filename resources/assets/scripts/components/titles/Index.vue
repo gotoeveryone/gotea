@@ -1,6 +1,11 @@
 <template>
   <section class="titles">
-    <title-header @add="addRow" @search="onSearch" @json="outputJson" />
+    <title-header
+      :is-admin="isAdmin"
+      @add="addRow"
+      @search="onSearch"
+      @json="outputJson"
+    />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -24,6 +29,7 @@
           v-for="(item, idx) in items"
           :key="idx"
           :item="item"
+          :is-admin="isAdmin"
           @openModal="openWithCallback"
           @refresh="refresh"
         />
@@ -45,6 +51,12 @@ export default Vue.extend({
   components: {
     titleHeader: Header,
     titleItem: Item,
+  },
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => {
     return {

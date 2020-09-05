@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * タイトル保持履歴コントローラ
  *
@@ -12,6 +14,16 @@ namespace Gotea\Controller;
  */
 class RetentionHistoriesController extends AppController
 {
+    /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->Authorization->authorize($this->request, 'access');
+
+        parent::beforeFilter($event);
+    }
+
     /**
      * 登録・更新処理
      *

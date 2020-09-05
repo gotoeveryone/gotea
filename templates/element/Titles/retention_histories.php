@@ -4,6 +4,7 @@
  * @var \Gotea\View\AppView $this
  * @var \Gotea\Model\Entity\Title $title
  */
+$isAdmin = $this->isAdmin();
 ?>
 <section data-contentname="retention_histories" class="tab-contents">
     <?= $this->Form->create(null, [
@@ -13,9 +14,11 @@
     ]) ?>
     <?= $this->Form->hidden('name', ['value' => $title->name]) ?>
     <div class="page-header">保持履歴 (ID: <?= h($title->id) ?>)</div>
+    <?php if ($isAdmin) : ?>
     <add-history :history-id="historyId" :is-team="<?= $title->is_team ? 'true' : 'false' ?>" @cleared="clearHistory()"></add-history>
+    <?php endif ?>
     <ul class="boxes">
-        <?php if (!empty(($title->retention_histories))) : ?>
+        <?php if (!empty($title->retention_histories)) : ?>
             <?php if (($retention = $title->now_retention)) : ?>
                 <li class="label-row">現在の保持情報</li>
                 <li class="detail_box">
@@ -35,9 +38,11 @@
                             <span class="inner-column"><span class="mark-new">NEW!</span></span>
                         <?php endif ?>
                     </div>
+                    <?php if ($isAdmin) : ?>
                     <div class="detail_box_item detail_box_item-buttons box-2">
                         <button type="button" class="button button-secondary" value="edit" @click="select('<?= $retention->id ?>')">編集</button>
                     </div>
+                    <?php endif ?>
                 </li>
             <?php endif ?>
             <li class="label-row">保持情報（履歴）</li>
@@ -56,9 +61,11 @@
                             <span class="inner-column">（非公式戦）</span>
                         <?php endif ?>
                     </div>
+                    <?php if ($isAdmin) : ?>
                     <div class="detail_box_item detail_box_item-buttons box-2">
                         <button type="button" class="button button-secondary" value="edit" @click="select('<?= $history->id ?>')">編集</button>
                     </div>
+                    <?php endif ?>
                 </li>
             <?php endforeach ?>
         <?php endif ?>

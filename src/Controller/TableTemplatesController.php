@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
@@ -13,6 +14,16 @@ use Cake\Http\Response;
  */
 class TableTemplatesController extends AppController
 {
+    /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->Authorization->authorize($this->request, 'access');
+
+        parent::beforeFilter($event);
+    }
+
     /**
      * 一覧表示処理
      *

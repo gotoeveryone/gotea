@@ -103,6 +103,9 @@ msgstr "公開日時"
 msgid "Actions"
 msgstr "操作"
 
+msgid "View"
+msgstr "参照"
+
 msgid "Edit"
 msgstr "編集"
 

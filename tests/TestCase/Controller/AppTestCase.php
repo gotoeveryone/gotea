@@ -41,7 +41,7 @@ abstract class AppTestCase extends TestCase
                 'id' => 1,
                 'account' => env('TEST_USER'),
                 'name' => 'テスト',
-                'role' => '管理者',
+                'isAdmin' => true,
             ],
         ]);
     }

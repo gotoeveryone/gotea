@@ -3,6 +3,7 @@
  * @var \Gotea\View\AppView $this
  * @var \Gotea\Model\Entity\Title $title
  */
+$isAdmin = $this->isAdmin();
 ?>
 <section data-contentname="title" class="tab-contents">
     <?= $this->Form->create($title, ['class' => 'main-form', 'url' => ['_name' => 'update_title', $title->id]]) ?>
@@ -15,6 +16,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'name')],
                 'class' => 'input-row',
                 'maxlength' => 30,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -24,6 +26,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'name_english')],
                 'class' => 'input-row',
                 'maxlength' => 30,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -42,6 +45,7 @@
                 echo $this->Form->control('is_team', [
                     'label' => false,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
             </div>
@@ -53,6 +57,7 @@
                 echo $this->Form->control('is_closed', [
                     'label' => false,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
             </div>
@@ -64,6 +69,7 @@
                 echo $this->Form->control('is_output', [
                     'label' => false,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
             </div>
@@ -75,6 +81,7 @@
                 echo $this->Form->control('is_official', [
                     'label' => false,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
             </div>
@@ -85,6 +92,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'holding')],
                 'class' => 'input-row input-short',
                 'maxlength' => 3,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -100,6 +108,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_name')],
                 'class' => 'input-row',
                 'maxlength' => 10,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -109,6 +118,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_holding')],
                 'class' => 'input-row input-short',
                 'maxlength' => 3,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -118,6 +128,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_modified')],
                 'type' => 'text',
                 'class' => 'input-row datepicker',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -135,11 +146,14 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'remarks')],
                 'type' => 'textarea',
                 'class' => 'input-row',
+                'disabled' => !$isAdmin,
             ]) ?>
         </li>
+        <?php if ($isAdmin) : ?>
         <li class="detail_box_item button-row">
             <?= $this->Form->button(__('Save'), ['class' => 'button button-primary']) ?>
         </li>
+        <?php endif ?>
     </ul>
     <?= $this->Form->end() ?>
 </section>

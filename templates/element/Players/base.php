@@ -3,6 +3,7 @@
  * @var \Gotea\View\AppView $this ビューオブジェクト
  * @var \Gotea\Model\Entity\Player $player 棋士データ
  */
+$isAdmin = $this->isAdmin();
 ?>
 <section data-contentname="player" class="tab-contents">
     <?= $this->Form->create($player, ['class' => 'main-form', 'url' => $player->getSaveUrl()]) ?>
@@ -16,6 +17,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'name')],
                 'class' => 'input-row name',
                 'maxlength' => 20,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -25,6 +27,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'name_english')],
                 'class' => 'input-row name',
                 'maxlength' => 40,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -34,6 +37,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'name_other')],
                 'class' => 'input-row name',
                 'maxlength' => 20,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -43,6 +47,7 @@
                 <div class="input-row">
                     <?= $this->Form->text('birthday', [
                         'class' => 'birthday datepicker',
+                        'disabled' => !$isAdmin,
                     ]) ?>
                     <span class="age">
                         <?= h($player->age_text) ?>
@@ -56,6 +61,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'sex')],
                 'value' => $player->sex,
                 'class' => 'input-row sex',
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -66,6 +72,7 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'rank_id')],
                 'class' => 'input-row rank',
                 'empty' => false,
+                'disabled' => !$isAdmin,
             ]);
             ?>
         </li>
@@ -79,6 +86,7 @@
                         'month' => ['' => '-'],
                         'day' => ['' => '-'],
                     ],
+                    'disabled' => !$isAdmin,
                 ]);
                 ?>
         </li>
@@ -91,6 +99,7 @@
                     'empty' => false,
                     'value' => $player->country_id,
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ],
             ])->render()
             ?>
@@ -103,6 +112,7 @@
                     'empty' => false,
                     'value' => ($player->organization_id ? $player->organization_id : '1'),
                     'class' => 'input-row',
+                    'disabled' => !$isAdmin,
                 ],
             ])->render()
             ?>
@@ -113,11 +123,13 @@
                 <div class="input checkbox-with-text-field-row">
                     <?= $this->Form->control('is_retired', [
                         'label' => ['class' => 'checkbox-label', 'text' => '引退しました'],
+                        'disabled' => !$isAdmin,
                     ]) ?>
                     <?= $this->Form->text('retired', [
                         'class' => 'datepicker',
                         'disabled' => true,
                         'placeholder' => __d('model', 'retired'),
+                        'disabled' => !$isAdmin,
                     ]) ?>
                 </div>
             </div>
@@ -136,8 +148,10 @@
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'remarks')],
                 'type' => 'textarea',
                 'class' => 'input-row',
+                'disabled' => !$isAdmin,
             ]) ?>
         </li>
+        <?php if ($isAdmin) : ?>
         <li class="detail_box_item button-row">
             <?php  ?>
             <?php if ($player->isNew()) : ?>
@@ -148,8 +162,9 @@
                 ]);
                 ?>
             <?php endif ?>
-            <?= $this->Form->button('保存', ['class' => 'button button-primary']) ?>
+            <?= $this->Form->button(__('Save'), ['class' => 'button button-primary']) ?>
         </li>
+        <?php endif ?>
     </ul>
     <?= $this->Form->end() ?>
 </section>
