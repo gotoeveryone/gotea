@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase;
+namespace Gotea\Test\TestCase;
 
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
@@ -10,7 +10,7 @@ use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\TestCase;
 use Gotea\Application;
 use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
@@ -19,7 +19,7 @@ use InvalidArgumentException;
 /**
  * ApplicationTest class
  */
-class ApplicationTest extends IntegrationTestCase
+class ApplicationTest extends TestCase
 {
     /**
      * testBootstrap
