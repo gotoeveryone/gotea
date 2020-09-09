@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller\Api;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * APIテスト時の共通コントローラ
  */
-abstract class ApiTestCase extends IntegrationTestCase
+abstract class ApiTestCase extends TestCase
 {
+    use IntegrationTestTrait;
+
     /**
      * データなしレスポンス
      *
