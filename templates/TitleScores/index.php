@@ -47,11 +47,13 @@
                     echo $this->Form->label('started', '対局日', ['class' => 'search-box_label']);
                     echo $this->Form->text('started', [
                         'class' => 'started datepicker',
+                        'autocomplete' => 'off',
                         'value' => $this->getRequest()->getQuery('started'),
                     ]);
                     echo $this->form->label('ended', '～');
                     echo $this->Form->text('ended', [
                         'class' => 'ended datepicker',
+                        'autocomplete' => 'off',
                         'value' => $this->getRequest()->getQuery('ended'),
                     ]);
                     ?>

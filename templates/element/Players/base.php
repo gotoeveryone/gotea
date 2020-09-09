@@ -47,6 +47,7 @@ $isAdmin = $this->isAdmin();
                 <div class="input-row">
                     <?= $this->Form->text('birthday', [
                         'class' => 'birthday datepicker',
+                        'autocomplete' => 'off',
                         'disabled' => !$isAdmin,
                     ]) ?>
                     <span class="age">
@@ -127,6 +128,7 @@ $isAdmin = $this->isAdmin();
                     ]) ?>
                     <?= $this->Form->text('retired', [
                         'class' => 'datepicker',
+                        'autocomplete' => 'off',
                         'disabled' => true,
                         'placeholder' => __d('model', 'retired'),
                         'disabled' => !$isAdmin,
