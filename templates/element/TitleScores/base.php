@@ -16,6 +16,7 @@ $isAdmin = $this->isAdmin();
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
                 'type' => 'text',
                 'class' => 'input-row datepicker',
+                'autocomplete' => 'off',
                 'disabled' => !$isAdmin,
             ]);
             ?>
@@ -26,6 +27,7 @@ $isAdmin = $this->isAdmin();
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
                 'type' => 'text',
                 'class' => 'input-row datepicker',
+                'autocomplete' => 'off',
                 'disabled' => !$isAdmin,
             ]);
             ?>

@@ -50,6 +50,7 @@
             type="text"
             maxlength="4"
             class="acquired datepicker"
+            autocomplete="off"
             name="acquired"
           >
         </div>

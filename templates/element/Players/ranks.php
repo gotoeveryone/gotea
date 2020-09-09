@@ -29,6 +29,7 @@ $isAdmin = $this->isAdmin();
                     'label' => ['text' => __d('model', 'promoted')],
                     'type' => 'text',
                     'class' => 'datepicker',
+                    'autocomplete' => 'off',
                 ]) ?>
             </div>
             <div class="detail_box_item detail_box_item-buttons box-3">
@@ -63,6 +64,7 @@ $isAdmin = $this->isAdmin();
                         'label' => ['text' => __d('model', 'promoted')],
                         'type' => 'text',
                         'class' => 'datepicker',
+                        'autocomplete' => 'off',
                         'disabled' => !$isAdmin,
                     ]) ?>
                 </div>

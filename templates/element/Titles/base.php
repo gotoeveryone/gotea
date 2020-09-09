@@ -128,6 +128,7 @@ $isAdmin = $this->isAdmin();
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_modified')],
                 'type' => 'text',
                 'class' => 'input-row datepicker',
+                'autocomplete' => 'off',
                 'disabled' => !$isAdmin,
             ]);
             ?>

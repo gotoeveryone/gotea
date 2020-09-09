@@ -49,6 +49,7 @@
           type="text"
           name="from"
           class="ranking_date datepicker"
+          autocomplete="off"
         >
         <span class="ranking_date-duration">～</span>
         <input
@@ -58,6 +59,7 @@
           type="text"
           name="to"
           class="ranking_date datepicker"
+          autocomplete="off"
         >
       </div>
     </li>

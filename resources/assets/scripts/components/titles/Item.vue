@@ -29,6 +29,7 @@
         v-model="item.htmlFileModified"
         type="text"
         class="datepicker table-column_modified-input"
+        autocomplete="off"
       >
     </span>
     <span class="table-column table-column_closed">
