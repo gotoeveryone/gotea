@@ -79,22 +79,22 @@ class RankDiffCommand extends Command
             } else {
                 $results->filter(function ($item) {
                     return count($item) > 0;
-                })->each(function ($item, $key) {
-                    Log::info($key);
-                    Log::info($item);
+                })->each(function ($item, $key) use ($io) {
+                    $io->out($key);
+                    $io->out($item);
                 });
             }
 
             return self::CODE_SUCCESS;
         } catch (Throwable $ex) {
-            Log::error($ex);
+            Log::error($ex->getMessage());
 
             if (!Configure::read('debug')) {
                 $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
                 $mailer->send('error', [$subject, $ex]);
             }
 
-            return self::CODE_ERROR;
+            throw $ex;
         }
     }
 
@@ -260,10 +260,10 @@ class RankDiffCommand extends Command
         $client->setClient(new GuzzleClient());
 
         $crawler = $client->request('GET', $url);
-        if ($client->getInternalResponse()->getStatus() >= 400) {
+        if ($client->getInternalResponse()->getStatusCode() >= 400) {
             throw new HttpException(
                 'クロール先のページが意図しないレスポンスを返しました。',
-                $client->getInternalResponse()->getStatus()
+                $client->getInternalResponse()->getStatusCode()
             );
         }
 
