@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
+use Gotea\Model\Entity\Notification;
 
 /**
  * Notifications Controller
@@ -98,6 +102,10 @@ class NotificationsController extends AppController
             return $this->renderWithErrors(400, $notification->getErrors(), 'お知らせ追加', 'new');
         }
 
+        if ($notification->is_published) {
+            $this->postTwitter($notification);
+        }
+
         $this->Flash->success(__('The notification has been saved.'));
 
         return $this->redirect(['_name' => 'notifications']);
@@ -113,11 +121,16 @@ class NotificationsController extends AppController
     public function update(string $id): ?Response
     {
         $notification = $this->Notifications->get($id);
+        $isPublished = $notification->is_published;
         $notification = $this->Notifications->patchEntity($notification, $this->getRequest()->getData());
         if (!$this->Notifications->save($notification)) {
             $this->set(compact('notification'));
 
             return $this->renderWithErrors(400, $notification->getErrors(), 'お知らせ編集', 'edit');
+        }
+
+        if (!$isPublished && $notification->is_published) {
+            $this->postTwitter($notification);
         }
 
         $this->Flash->success(__('The notification has been saved.'));
@@ -142,5 +155,34 @@ class NotificationsController extends AppController
         }
 
         return $this->redirect(['_name' => 'notifications']);
+    }
+
+    /**
+     * Twitter へ投稿する
+     *
+     * @param \Gotea\Model\Entity\Notification $data お知らせ
+     * @return void
+     */
+    private function postTwitter(Notification $data): void
+    {
+        if (Configure::read('debug')) {
+            return;
+        }
+
+        $consumerKey = Configure::read('App.twitter.consumerKey');
+        $consumerSecret = Configure::read('App.twitter.consumerSecret');
+        $accessToken = Configure::read('App.twitter.accessToken');
+        $accessTokenSecret = Configure::read('App.twitter.accessTokenSecret');
+
+        $informationsUrl = rtrim(Configure::read('App.gotoeveryone.informationsUrl'), '/');
+
+        try {
+            $client = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
+            $client->post("statuses/update", [
+                'status' => "{$data->title}\n{$informationsUrl}/{$data->id}",
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 }
