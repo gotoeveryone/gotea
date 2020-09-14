@@ -15,6 +15,8 @@ namespace Gotea\Model\Entity;
  * @property \Cake\I18n\FrozenTime $published
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ *
+ * @property bool $is_published
  */
 class Notification extends AppEntity
 {
@@ -45,5 +47,15 @@ class Notification extends AppEntity
     protected function _getStatus()
     {
         return $this->is_draft ? __('下書き') : __('公開');
+    }
+
+    /**
+     * 公開状態かを判定します。
+     *
+     * @return bool
+     */
+    protected function _getIsPublished()
+    {
+        return !$this->is_draft;
     }
 }
