@@ -26,6 +26,9 @@ jobs:
   code_check_resources:
     docker:
       - image: circleci/node:12
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
     working_directory: ~/gotea
     steps:
       - checkout
@@ -39,6 +42,9 @@ jobs:
   code_check_php:
     docker:
       - image: circleci/php:7.2
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
     working_directory: ~/gotea
     steps:
       - checkout
@@ -55,7 +61,13 @@ jobs:
   test:
     docker:
       - image: circleci/php:7.2
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
       - image: circleci/mysql:5.7
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
         environment:
           MYSQL_DATABASE: gotea_test
     working_directory: ~/gotea
@@ -75,6 +87,9 @@ jobs:
   deploy:
     docker:
       - image: circleci/node:12
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
     working_directory: ~/gotea
     steps:
       - checkout
