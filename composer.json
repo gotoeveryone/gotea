@@ -49,7 +49,7 @@
   },
   "scripts": {
     "post-install-cmd": "Gotea\\Console\\Installer::postInstall",
-    "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+    "post-create-project-cmd": "Gotea\\Console\\Installer::postInstall",
     "check": [
       "@test",
       "@cs-check"
