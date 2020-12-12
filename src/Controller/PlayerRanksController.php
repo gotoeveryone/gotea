@@ -32,7 +32,7 @@ class PlayerRanksController extends AppController
      */
     public function index(): ?Response
     {
-        return $this->renderWith("段位別棋士数表示");
+        return $this->renderWith('段位別棋士数表示');
     }
 
     /**

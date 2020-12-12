@@ -178,7 +178,7 @@ class NotificationsController extends AppController
 
         try {
             $client = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
-            $client->post("statuses/update", [
+            $client->post('statuses/update', [
                 'status' => "{$data->title}\n{$informationsUrl}/{$data->id}",
             ]);
         } catch (\Exception $e) {
