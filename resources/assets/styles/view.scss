@@ -151,8 +151,7 @@
       height: 100%;
 
       > .label-row,
-      > .input-row:not(textarea),
-      > .input-row:not(input[type='checkbox']) {
+      > .input-row:not(textarea):not(input[type='checkbox']) {
         height: 2.2rem;
       }
 
