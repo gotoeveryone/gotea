@@ -1,7 +1,25 @@
 version: '3'
 services:
-  gotea_db:
-    container_name: gotea_db
+  server:
+    container_name: app
+    build: ./docker/app
+    volumes:
+      - ./:/src
+    ports:
+      - '8765:8765'
+    depends_on:
+      - database
+    working_dir: /src
+    command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
+  resources:
+    image: node:12
+    container_name: resources
+    volumes:
+      - ./:/src
+    working_dir: /src
+    command: sh -c 'yarn && yarn dev'
+  database:
+    container_name: database
     image: mysql:5.7
     volumes:
       - ./database:/var/lib/mysql

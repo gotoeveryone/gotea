@@ -11,55 +11,34 @@
 
 ## Requirements
 
-- php7.2+
-- composer
-- nodejs
-- yarn
+- Docker
 
 ## Setup
 
 ```console
-$ cd <project_root>
 $ cp .env.example .env
-$ composer install
-$ yarn
 ```
 
 ## Run
 
 ```console
-$ # frontend
-$ yarn run dev
-$
-$ # backend
-$ ./bin/cake server
+$ docker-compose up
 ```
 
-### VSCode を利用する場合
+- ホストから接続するためのポートは以下
+  - http: 8765
+  - データベース (MySQL): 53306
 
-プロジェクトルートに`.vscode/settings.json`を配置し、以下を記載します。
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Listen for XDebug",
-      "type": "php",
-      "request": "launch",
-      "port": 9000
-    }
-  ]
-}
-```
-
-### データベースに Docker を利用する場合
-
-以下コマンドを実行してください。  
-ホストからの接続ポートは 53306、デフォルトのデータベースは gotea、テスト用のデータベースは gotea_test です。
+## Migration
 
 ```console
-$ docker-compose up -d
+$ docker-compose exec server ./bin/cake migrations migrate
+```
+
+## Test
+
+```console
+$ docker-compose exec server ./vendor/bin/phpunit
 ```
 
 ### フロントコード
