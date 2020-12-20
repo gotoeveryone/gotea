@@ -33,27 +33,4 @@ class HtmlHelper extends BaseHtmlHelper
 
         return parent::scriptBlock($s, $options);
     }
-
-    /**
-     * 共通JSファイルを読み出します。
-     *
-     * @param string $path パス
-     * @return string|null String of `<script />` tags or null if block is specified in options
-     *   or if $once is true and the file has been included before.
-     */
-    public function commonScript(string $path): ?string
-    {
-        return $this->script(env('ASSETS_URL') . $path);
-    }
-
-    /**
-     * 共通JSファイルを読み出します。
-     *
-     * @param string $path パス
-     * @return string|null CSS `<link />` or `<style />` tag, depending on the type of link.
-     */
-    public function commonCss(string $path): ?string
-    {
-        return $this->css(env('ASSETS_URL') . $path);
-    }
 }
