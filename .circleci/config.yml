@@ -114,16 +114,16 @@ workflows:
       - code_check_resources:
           filters:
             branches:
-              ignore: master
+              ignore: main
       - code_check_php:
           filters:
             branches:
-              ignore: master
+              ignore: main
       - test:
           filters:
             branches:
-              ignore: master
+              ignore: main
       - deploy:
           filters:
             branches:
-              only: master
+              only: main
