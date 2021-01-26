@@ -131,9 +131,15 @@ class TitleScoresController extends AppController
             return $this->switchDivision($id);
         }
 
+        // 開始日と同じにチェックがあった場合、終了日には開始日と同じ値をセットする
+        $data = $this->request->getData();
+        if ($this->request->getData('is_same_started')) {
+            $data['ended'] = $data['started'];
+        }
+
         // データ取得
         $score = $this->TitleScores->findByIdWithRelation((int)$id);
-        $this->TitleScores->patchEntity($score, $this->getRequest()->getParsedBody());
+        $this->TitleScores->patchEntity($score, $data);
 
         // 保存
         if (!$this->TitleScores->save($score)) {

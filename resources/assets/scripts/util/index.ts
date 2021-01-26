@@ -115,23 +115,25 @@ if (tabWrap) {
   }
 }
 
-// 引退フラグ・引退日
-const isRetired = document.querySelector('#is-retired') as HTMLInputElement;
-if (isRetired) {
+// チェックボックスと入力項目の連動
+const checked = document.querySelector('[data-checked]') as HTMLInputElement;
+if (checked) {
   // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
-  const setRetired = (): void => {
-    const retired = document.querySelector('[name=retired]') as HTMLInputElement;
-    if (retired) {
-      if (isRetired.checked) {
-        retired.disabled = false;
+  const setChecked = (withClear = false): void => {
+    const target = document.querySelector(`[data-target="${checked.getAttribute('data-checked')}"]`) as HTMLInputElement;
+    if (target) {
+      if (checked.checked) {
+        target.disabled = checked.getAttribute('data-is-check') === 'disabled';
       } else {
-        retired.disabled = true;
-        retired.value = '';
+        target.disabled = checked.getAttribute('data-is-check') !== 'disabled';
+      }
+      if (target.disabled && withClear) {
+        target.value = '';
       }
     }
   };
-  setRetired();
-  isRetired.addEventListener('click', () => setRetired(), false);
+  setChecked();
+  checked.addEventListener('click', () => setChecked(true), false);
 }
 
 // クエリ整形

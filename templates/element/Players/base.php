@@ -124,9 +124,11 @@ $isAdmin = $this->isAdmin();
                 <div class="input checkbox-with-text-field-row">
                     <?= $this->Form->control('is_retired', [
                         'label' => ['class' => 'checkbox-label', 'text' => '引退しました'],
+                        'data-checked' => 'retired',
                         'disabled' => !$isAdmin,
                     ]) ?>
                     <?= $this->Form->text('retired', [
+                        'data-target' => 'retired',
                         'class' => 'datepicker',
                         'autocomplete' => 'off',
                         'disabled' => true,
