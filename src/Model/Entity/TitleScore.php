@@ -28,6 +28,7 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Player|null $winner
  * @property \Gotea\Model\Entity\Player|null $loser
  * @property array $game_dates
+ * @property bool $is_same_started
  */
 class TitleScore extends AppEntity
 {
@@ -121,6 +122,16 @@ class TitleScore extends AppEntity
         }
 
         return $dates;
+    }
+
+    /**
+     * 開始日と終了日が同じ値かどうかを判定します。
+     *
+     * @return bool
+     */
+    protected function _getIsSameStarted()
+    {
+        return $this->started->diffInDays($this->ended) === 0;
     }
 
     /**

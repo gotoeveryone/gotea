@@ -22,15 +22,27 @@ $isAdmin = $this->isAdmin();
             ?>
         </li>
         <li class="detail_box_item box-3">
-            <?php
-            echo $this->Form->control('ended', [
-                'label' => ['class' => 'label-row', 'text' => __d('model', 'ended')],
-                'type' => 'text',
-                'class' => 'input-row datepicker',
-                'autocomplete' => 'off',
-                'disabled' => !$isAdmin,
-            ]);
-            ?>
+            <div class="input">
+                <div class="label-row"><?= h(__d('model', 'ended')) ?></div>
+                <div class="input checkbox-with-text-field-row">
+                    <?php
+                    echo $this->Form->control('is_same_started', [
+                        'type' => 'checkbox',
+                        'data-checked' => 'ended',
+                        'data-is-check' => 'disabled',
+                        'label' => ['class' => 'checkbox-label', 'text' => '開始日と同じ'],
+                    ]);
+                    echo $this->Form->text('ended', [
+                        'data-target' => 'ended',
+                        'type' => 'text',
+                        'disabled' => true,
+                        'class' => 'datepicker',
+                        'autocomplete' => 'off',
+                        'disabled' => !$isAdmin,
+                    ]);
+                    ?>
+                </div>
+            </div>
         </li>
         <li class="detail_box_item box-4">
             <?php
