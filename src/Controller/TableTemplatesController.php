@@ -31,7 +31,7 @@ class TableTemplatesController extends AppController
      */
     public function index(): ?Response
     {
-        $tableTemplates = $this->paginate($this->TableTemplates);
+        $tableTemplates = $this->paginate($this->TableTemplates->find()->orderAsc('title'));
 
         $this->set(compact('tableTemplates'));
 
