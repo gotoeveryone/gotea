@@ -1,6 +1,6 @@
 <template>
   <section class="ranking">
-    <ranking-header :lastUpdate="lastUpdate" @search="onSearch" @json="outputJson" />
+    <ranking-header :is-admin="isAdmin" :lastUpdate="lastUpdate" @search="onSearch" @json="outputJson" />
     <ranking-items :items="items" />
   </section>
 </template>
@@ -18,6 +18,12 @@ export default Vue.extend({
   components: {
     RankingHeader,
     RankingItems,
+  },
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => {
     return {
