@@ -62,8 +62,8 @@ class ApiResolver implements ResolverInterface
         // ユーザ情報に認証関連の値を設定して返却
         $user = Hash::get($response, 'content');
         $user['password'] = $conditions['password'];
-        $user['accessToken'] = $token;
-        $user['isAdmin'] = Hash::get($user, 'role') === __('Administrator');
+        $user['access_token'] = $token;
+        $user['is_admin'] = Hash::get($user, 'role') === __('Administrator');
 
         Log::info(__('User {0} is logged', Hash::get($user, 'account')));
 

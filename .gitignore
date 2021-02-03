@@ -54,3 +54,6 @@ nbproject/*
 .sass-cache/
 # phpenv
 .php-version
+
+# phpunit cache
+.phpunit.result.cache

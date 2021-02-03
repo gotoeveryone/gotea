@@ -39,9 +39,9 @@ abstract class AppTestCase extends TestCase
         $this->session([
             'Auth' => [
                 'id' => 1,
-                'account' => env('TEST_USER'),
+                'account' => 'testuser',
                 'name' => 'テスト',
-                'isAdmin' => true,
+                'is_admin' => true,
             ],
         ]);
     }

@@ -132,7 +132,7 @@ class PlayerRanksTableTest extends TestCase
         ]);
 
         $save = $this->PlayerRanks->save($rank, [
-            'account' => env('TEST_USER'),
+            'account' => 'testuser',
         ]);
         $this->assertNotEquals(false, $save);
 
@@ -151,7 +151,7 @@ class PlayerRanksTableTest extends TestCase
         ]);
 
         $save = $this->PlayerRanks->save($rank, [
-            'account' => env('TEST_USER'),
+            'account' => 'testuser',
         ]);
         $this->assertNotEquals(false, $save);
 

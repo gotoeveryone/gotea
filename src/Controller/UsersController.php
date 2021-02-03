@@ -5,6 +5,8 @@ namespace Gotea\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 use Gotea\Form\LoginForm;
 
 /**
@@ -12,6 +14,7 @@ use Gotea\Form\LoginForm;
  *
  * @author      Kazuki Kamizuru
  * @since       2015/07/26
+ * @property \Gotea\Model\Table\UsersTable $Users
  */
 class UsersController extends AppController
 {
@@ -67,6 +70,14 @@ class UsersController extends AppController
 
         // ログイン成功
         if ($result->isValid()) {
+            // 最終ログイン日時を更新
+            /** @var \Gotea\Model\Entity\User $user */
+            $user = $this->Users->patchEntity($result->getData(), ['last_logged' => FrozenTime::now()]);
+            if (!$this->Users->save($user)) {
+                // 仮に保存に失敗してもログ出力のみ行う
+                Log::warning('Update failed: last_logged');
+            }
+
             // リダイレクト先をクエリパラメータに設定しておく
             $this->setRequest($this->getRequest()->withQueryParams([
                 'redirect' => $this->getRequest()->getData('redirect'),
