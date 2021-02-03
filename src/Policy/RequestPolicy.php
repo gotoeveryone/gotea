@@ -24,7 +24,7 @@ class RequestPolicy implements RequestPolicyInterface
         $controller = $request->getParam('controller');
 
         // 管理者は許可
-        if ($identity->get('isAdmin')) {
+        if ($identity->get('is_admin')) {
             return true;
         }
 

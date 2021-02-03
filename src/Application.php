@@ -177,9 +177,12 @@ class Application extends BaseApplication implements
         ];
 
         // Load identifiers
-        $service->loadIdentifier('Gotea.ExternalApi', [
+        $service->loadIdentifier('Authentication.Password', [
             'fields' => $fields,
         ]);
+        // $service->loadIdentifier('Gotea.ExternalApi', [
+        //     'fields' => $fields,
+        // ]);
 
         // Load the authenticators, you want session first
         $service->loadAuthenticator('Gotea.Session');

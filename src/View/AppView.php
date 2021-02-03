@@ -31,7 +31,7 @@ class AppView extends View
      */
     public function isAdmin()
     {
-        return $this->Identity->get('isAdmin');
+        return $this->Identity->get('is_admin');
     }
 
     /**

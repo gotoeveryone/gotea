@@ -72,7 +72,7 @@
         <button @click="clearDate()" type="button">
           日付をクリア
         </button>
-        <button @click="json()" type="button" class="button button-primary">
+        <button v-if="isAdmin" @click="json()" type="button" class="button button-primary">
           JSON出力
         </button>
       </div>
@@ -88,6 +88,10 @@ import { Country, DropDown, Year } from '@/types';
 
 export default Vue.extend({
   props: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     lastUpdate: {
       type: String,
       default: '',

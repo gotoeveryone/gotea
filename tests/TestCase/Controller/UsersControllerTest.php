@@ -9,6 +9,15 @@ namespace Gotea\Test\TestCase\Controller;
 class UsersControllerTest extends AppTestCase
 {
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'app.Users',
+    ];
+
+    /**
      * 初期表示
      *
      * @return void
@@ -97,8 +106,8 @@ class UsersControllerTest extends AppTestCase
         }
         $this->enableCsrfToken();
         $this->post('/login', [
-            'account' => env('TEST_USER'),
-            'password' => env('TEST_PASSWORD'),
+            'account' => 'testuser',
+            'password' => 'password',
         ]);
         $this->assertRedirect(['_name' => 'players']);
     }
