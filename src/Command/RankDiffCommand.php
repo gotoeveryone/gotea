@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Gotea\Command;
 
+use Cake\Collection\Collection;
 use Cake\Console\Arguments;
 use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Core\Configure;
+use Cake\Http\Client as HttpClient;
 use Cake\Http\Exception\HttpException;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
@@ -70,19 +72,18 @@ class RankDiffCommand extends Command
                 return $this->getDiff($item, $diffs);
             });
 
-            if (!Configure::read('debug')) {
-                // メール送信
-                if (!$results->unfold()->isEmpty()) {
-                    $subject = "【自動通知】${today}_棋士段位差分抽出";
-                    $mailer->send('notification', [$subject, $results]);
-                }
-            } else {
-                $results->filter(function ($item) {
-                    return count($item) > 0;
-                })->each(function ($item, $key) use ($io) {
-                    $io->out($key);
-                    $io->out($item);
-                });
+            if (Configure::read('App.slack.notifyUrl') && !$results->unfold()->isEmpty()) {
+                $client = new HttpClient();
+                $url = Configure::read('App.slack.notifyUrl');
+                $response = $client->post($url, json_encode([
+                    'username' => 'gotea',
+                    'link_names' => true,
+                    'text' => $this->getNotifyContent($results),
+                ]), [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
             }
 
             return self::CODE_SUCCESS;
@@ -316,5 +317,32 @@ class RankDiffCommand extends Command
             // 退役者や物故者は除く
             return $item['rank'] || $item['rankText'] === 'タイトル者';
         })->toArray();
+    }
+
+    /**
+     * 通知コンテンツを取得する
+     *
+     * @param \Cake\Collection\Collection $messages 本文
+     * @return string 通知コンテンツ
+     */
+    private function getNotifyContent(Collection $messages): string
+    {
+        return implode("\n", [
+            '段位差分がありました。',
+            '```',
+            implode("\n", $messages->map(function ($values, $key) {
+                $arr = [];
+                if (count($values)) {
+                    $arr[] = "【${key}】";
+
+                    return implode("\n", $arr + array_map(function ($value) {
+                        return $value;
+                    }, $values));
+                }
+
+                return [];
+            })->toList()),
+            '```',
+        ]);
     }
 }
