@@ -79,6 +79,9 @@ return [
         'gotoeveryone' => [
             'informationsUrl' => env('GOTOEVERYONE_INFORMATION_URL'),
         ],
+        'slack' => [
+            'notifyUrl' => env('NOTIFY_SLACK_URL'),
+        ],
     ],
 
     /**
