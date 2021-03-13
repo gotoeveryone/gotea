@@ -330,18 +330,13 @@ class RankDiffCommand extends Command
         return implode("\n", [
             '段位差分がありました。',
             '```',
-            implode("\n", $messages->map(function ($values, $key) {
-                $arr = [];
-                if (count($values)) {
-                    $arr[] = "【${key}】";
-
-                    return implode("\n", $arr + array_map(function ($value) {
-                        return $value;
-                    }, $values));
-                }
-
-                return [];
-            })->toList()),
+            implode("\n", $messages->filter(function ($values, $key) {
+                return count($values) > 0;
+            })->map(function ($values, $key) {
+                return implode("\n", array_merge(["【${key}】"], array_map(function ($value) {
+                    return $value;
+                }, array_values($values))));
+            })->toArray()),
             '```',
         ]);
     }
