@@ -216,14 +216,18 @@ class TitleScoreDetailsTableTest extends TestCase
 
         $this->assertGreaterThan(0, $ranking->count());
 
-        $win = 0;
-        $lose = 0;
+        $win = null;
+        $lose = null;
         $ranking->each(function ($item) use ($win, $lose) {
-            if (!$win) {
+            if ($win !== null) {
                 $this->assertGreaterThanOrEqual($win, $item->win_point);
-                // 勝数が同じ場合、敗数は昇順
+                // 勝数が同じ場合、敗数の昇順
                 if ($win === $item->win_point) {
                     $this->assertLessThanOrEqual($lose, $item->lose_point);
+                    $lose = $item->lose_point;
+                } else {
+                    // 勝数が変わった場合は敗数を0に
+                    $lose = 0;
                 }
             }
             $win = $item->win_point;

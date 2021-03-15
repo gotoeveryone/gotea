@@ -34,6 +34,7 @@ class TitleScoresTableTest extends TestCase
         'app.Countries',
         'app.Ranks',
         'app.Organizations',
+        'app.PlayerRanks',
     ];
 
     /**
@@ -242,14 +243,29 @@ class TitleScoresTableTest extends TestCase
             $this->assertEquals($item->ended->year, $year);
         });
 
-        // タイトル名
-        $name = 'World';
+        // 棋士名
+        $name = 'test1 test2';
         $scores = $this->TitleScores->findMatches([
-            'title_name' => $name,
+            'name' => $name,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) use ($name) {
-            $this->assertStringContainsString($name, $item->name);
+        $names = explode(' ', $name);
+        $scores->each(function ($item) use ($names) {
+            $this->assertTrue(collection($names)
+                ->some(function ($value) use ($item) {
+                    return strpos($item->winner_name, $value) !== false
+                        || strpos($item->loser_name, $value) !== false;
+                }));
+        });
+
+        // タイトル名
+        $titleName = 'World';
+        $scores = $this->TitleScores->findMatches([
+            'title_name' => $titleName,
+        ]);
+        $this->assertGreaterThan(0, $scores->count());
+        $scores->each(function ($item) use ($titleName) {
+            $this->assertStringContainsString($titleName, $item->name);
         });
 
         // 対局日
