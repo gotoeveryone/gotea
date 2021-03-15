@@ -151,10 +151,13 @@ class TitleScoresTable extends AppTable
 
         $name = Hash::get($data, 'name');
         if ($name) {
-            $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
-                return $q->innerJoinWith('Players', function (Query $q) use ($name) {
-                    return $q->where(['Players.name like' => "%${name}%"]);
-                });
+            $query->innerJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
+                return $q->where([
+                    'OR' => collection(explode(' ', $name))
+                        ->map(function ($param) {
+                            return ['TitleScoreDetails.player_name LIKE' => "%{$param}%"];
+                        })->toArray(),
+                ]);
             });
         }
 
