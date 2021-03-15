@@ -180,7 +180,7 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         return $query
-            ->having(["win_point >= COALESCE(({$sub->sql()}), 0)"])
+            ->having(['win_point >= ' => $query->func()->coalesce([$sub, 1])])
             ->orderDesc('win_point')
             ->order(['lose_point'])
             ->orderDesc('Ranks.rank_numeric')

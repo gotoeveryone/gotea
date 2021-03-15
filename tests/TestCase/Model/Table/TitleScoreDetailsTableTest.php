@@ -219,6 +219,8 @@ class TitleScoreDetailsTableTest extends TestCase
         $win = null;
         $lose = null;
         $ranking->each(function ($item) use ($win, $lose) {
+            // 0勝は存在しない
+            $this->assertNotEquals($item->win_point, 0);
             if ($win !== null) {
                 $this->assertGreaterThanOrEqual($win, $item->win_point);
                 // 勝数が同じ場合、敗数の昇順
