@@ -168,6 +168,7 @@ class TitleScoreDetailsTable extends AppTable
                 'TitleScores.ended <= ' => $ended,
             ])
             ->group(['player_id'], true)
+            ->having(['win_point >' => 0])
             ->orderDesc('win_point')->limit(1)->offset($limit - 1);
 
         if (!$country->isWorlds()) {
