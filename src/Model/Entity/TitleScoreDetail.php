@@ -25,6 +25,7 @@ use Cake\I18n\FrozenDate;
  * @property int $win_point
  * @property int $lose_point
  * @property int $draw_point
+ * @property int $win_percent
  * @property int $win_point_world
  * @property int $lose_point_world
  * @property int $draw_point_world

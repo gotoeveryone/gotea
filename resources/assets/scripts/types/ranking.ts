@@ -2,8 +2,9 @@ export interface RankingCondition {
   year: string;
   country: string;
   limit: number;
-  from: string;
-  to: string;
+  from?: string;
+  to?: string;
+  type: string;
 }
 
 export interface RankingResult {

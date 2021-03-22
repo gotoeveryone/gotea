@@ -3,30 +3,30 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Query;
 
+use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\Routing\Router;
-use Gotea\Utility\CalculatorTrait;
 
 class RankingQuery extends Query
 {
-    use CalculatorTrait;
-
     /**
      * ランキングモデルを配列に変換します。
      *
      * @param bool $isWorlds 国際棋戦かどうか
      * @param bool $withJa 日本語情報を表示するかどうか
+     * @param string $type 種類（何順で表示するか）
      * @return \Cake\Collection\Collection ランキング
      */
-    public function mapRanking(bool $isWorlds, bool $withJa)
+    public function mapRanking(bool $isWorlds, bool $withJa, string $type)
     {
         $rank = 0;
         $win = 0;
 
-        return $this->each(function ($item, $key) use (&$rank, &$win) {
-            if ($win !== $item->win_point) {
+        return $this->each(function ($item, $key) use (&$rank, &$win, $type) {
+            $currentValue = $type === 'percent' ? $item->win_percent : $item->win_point;
+            if ($win !== $currentValue) {
                 $rank = $key + 1;
-                $win = $item->win_point;
+                $win = $currentValue;
             }
             $item->win_rank = $rank;
         })->map(function ($item) use ($isWorlds, $withJa) {
@@ -36,7 +36,9 @@ class RankingQuery extends Query
                 'win' => (int)$item->win_point,
                 'lose' => (int)$item->lose_point,
                 'draw' => (int)$item->draw_point,
-                'percentage' => $this->percent($item->win_point, $item->lose_point),
+                'percentage' => Number::toPercentage($item->win_percent, 0, [
+                    'multiply' => true,
+                ]),
             ];
 
             // 日本語出力あり
