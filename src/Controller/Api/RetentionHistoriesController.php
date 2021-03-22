@@ -33,6 +33,7 @@ class RetentionHistoriesController extends ApiController
             'isTeam' => $history->is_team,
             'acquired' => $history->acquired->format('Y/m/d'),
             'isOfficial' => $history->is_official,
+            'broadcasted' => $history->broadcasted === null ? null : $history->broadcasted->format('Y/m/d'),
             'playerId' => $history->player_id,
             'countryId' => $history->country_id,
         ]);
