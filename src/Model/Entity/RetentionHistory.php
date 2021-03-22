@@ -16,6 +16,7 @@ namespace Gotea\Model\Entity;
  * @property bool $is_team
  * @property \Cake\I18n\FrozenDate $acquired
  * @property bool $is_official
+ * @property \Cake\I18n\FrozenDate|null $broadcasted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -66,6 +67,11 @@ class RetentionHistory extends AppEntity
      */
     public function isRecent(): bool
     {
+        // 放映日があればその値を基準に判定する
+        if ($this->broadcasted !== null) {
+            return $this->broadcasted->wasWithinLast('20 days');
+        }
+
         return $this->acquired->wasWithinLast('20 days');
     }
 }

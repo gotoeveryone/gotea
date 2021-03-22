@@ -46,7 +46,7 @@
           <input
             id="acquired"
             v-model="acquired"
-            @change="saveDatepicker"
+            @change="onChangeAcquired"
             type="text"
             maxlength="4"
             class="acquired datepicker"
@@ -56,6 +56,21 @@
         </div>
       </div>
       <div class="detail_box_item box-2">
+        <div class="input number">
+          <label for="acquired">放映日</label>
+          <input
+            id="broadcasted"
+            v-model="broadcasted"
+            @change="onChangeBroadcasted"
+            type="text"
+            maxlength="4"
+            class="broadcasted datepicker"
+            autocomplete="off"
+            name="broadcasted"
+          >
+        </div>
+      </div>
+      <div class="detail_box_item detail_box_item-buttons box-4">
         <div class="input checkbox">
           <input
             name="is_official"
@@ -77,9 +92,6 @@
             <span>公式戦</span>
           </label>
         </div>
-      </div>
-      <div class="detail_box_item box-1" />
-      <div class="detail_box_item detail_box_item-buttons box-3">
         <div class="input checkbox">
           <input
             name="newest"
@@ -269,6 +281,7 @@ export default Vue.extend({
       year: '' as number | string,
       holding: '' as number | string,
       acquired: '',
+      broadcasted: '',
       isOfficial: true,
       name: '',
       playerId: null as number | null,
@@ -304,6 +317,7 @@ export default Vue.extend({
           this.year = json.targetYear;
           this.acquired = json.acquired;
           this.isOfficial = json.isOfficial;
+          this.broadcasted = json.broadcasted;
           this.viewName = json.winPlayerName;
           this.teamName = json.winGroupName;
           this.edit = true;
@@ -324,10 +338,16 @@ export default Vue.extend({
     getTeamHidden(value: boolean) {
       return value ? '1' : '';
     },
-    saveDatepicker($event: Event) {
+    onChangeAcquired($event: Event) {
       const target = $event.target as HTMLInputElement;
       if (this.acquired !== target.value) {
         this.acquired = target.value;
+      }
+    },
+    onChangeBroadcasted($event: Event) {
+      const target = $event.target as HTMLInputElement;
+      if (this.broadcasted !== target.value) {
+        this.broadcasted = target.value;
       }
     },
     search() {
@@ -388,6 +408,7 @@ export default Vue.extend({
       this.holding = '';
       this.acquired = '';
       this.isOfficial = true;
+      this.broadcasted = '';
       this.name = '';
       this.playerId = null;
       this.countryId = null;

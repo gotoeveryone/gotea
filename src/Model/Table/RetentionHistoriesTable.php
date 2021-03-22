@@ -100,6 +100,10 @@ class RetentionHistoriesTable extends AppTable
             ->boolean('is_official')
             ->notEmptyString('is_official');
 
+        $validator
+            ->date('broadcasted', ['y/m/d'])
+            ->allowEmptyDate('broadcasted');
+
         return $validator;
     }
 
