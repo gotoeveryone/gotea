@@ -3,6 +3,8 @@
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label ranking_label">抽出対象</label>
+      </div>
+      <div class="search-box">
         <select
           v-model="select.year"
           @change="changeValue($event)"
@@ -37,11 +39,26 @@
             v-text="limit.text"
           />
         </select>
+        <select
+          v-model="select.type"
+          @change="changeValue($event)"
+          name="type"
+          class="ranking_type"
+        >
+          <option
+            v-for="type in types"
+            :key="type.value"
+            :value="type.value"
+            v-text="type.text"
+          />
+        </select>
       </div>
     </li>
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label ranking_label">対局日</label>
+      </div>
+      <div class="search-box">
         <input
           v-model="select.from"
           @change="changeValue($event)"
@@ -64,17 +81,19 @@
       </div>
     </li>
     <li class="search-row">
-      <div class="search-box">
-        <label class="search-box_label ranking_label">最終更新日</label>
-        <span v-text="lastUpdate" class="lastUpdate" />
-      </div>
-      <div class="search-box search-box-right">
-        <button @click="clearDate()" type="button">
-          日付をクリア
-        </button>
-        <button v-if="isAdmin" @click="json()" type="button" class="button button-primary">
-          JSON出力
-        </button>
+      <div class="search-box search-box-between">
+        <div>
+          <label class="search-box_label ranking_label">最終更新日</label>
+          <span v-text="lastUpdate" class="lastUpdate" />
+        </div>
+        <div>
+          <button @click="clearDate()" type="button">
+            日付をクリア
+          </button>
+          <button v-if="isAdmin" @click="json()" type="button" class="button button-primary">
+            JSON出力
+          </button>
+        </div>
       </div>
     </li>
   </ul>
@@ -107,6 +126,7 @@ export default Vue.extend({
         limit: 0,
         from: '',
         to: '',
+        type: 'point',
       },
     };
   },
@@ -120,6 +140,18 @@ export default Vue.extend({
         });
       }
       return limits;
+    },
+    types() {
+      return [
+        {
+          value: 'point',
+          text: '勝数',
+        },
+        {
+          value: 'percent',
+          text: '勝率',
+        },
+      ];
     },
   },
   mounted() {

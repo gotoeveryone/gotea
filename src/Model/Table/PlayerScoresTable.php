@@ -9,6 +9,9 @@ use Gotea\Model\Query\RankingQuery;
 
 /**
  * 棋士成績
+ *
+ * @property \Cake\ORM\Association\BelongsTo $Players
+ * @property \Cake\ORM\Association\BelongsTo $Ranks
  */
 class PlayerScoresTable extends AppTable
 {
@@ -52,9 +55,10 @@ class PlayerScoresTable extends AppTable
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param int $targetYear 対象年度
      * @param int $offset 取得開始行
+     * @param string $type 種類（何順で表示するか）
      * @return \Cake\ORM\Query
      */
-    public function findRanking(Country $country, int $targetYear, int $offset)
+    public function findRanking(Country $country, int $targetYear, int $offset, string $type)
     {
         $suffix = ($country->has_title ? '' : '_world');
         $winColumn = "PlayerScores.win_point${suffix}";
@@ -74,6 +78,11 @@ class PlayerScoresTable extends AppTable
         }
 
         $query = $this->find()
+            ->select(['win_percent' => 'win_point / (win_point + lose_point)'])
+            ->select($this)
+            ->select($this->Ranks)
+            ->select($this->Players)
+            ->select($this->Players->Countries)
             ->contain([
                 'Ranks', 'Players', 'Players.Countries',
             ])->where(function ($exp, $q) use ($winColumn, $subQuery) {
