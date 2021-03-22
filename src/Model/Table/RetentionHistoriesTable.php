@@ -102,7 +102,6 @@ class RetentionHistoriesTable extends AppTable
 
         $validator
             ->date('broadcasted', ['y/m/d'])
-            ->requirePresence('broadcasted', 'create')
             ->allowEmptyDate('broadcasted');
 
         return $validator;
