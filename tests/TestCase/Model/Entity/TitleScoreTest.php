@@ -6,6 +6,7 @@ namespace Gotea\Test\TestCase\Model\Entity;
 use Cake\I18n\FrozenDate;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Entity\TitleScore;
+use Gotea\Model\Entity\TitleScoreDetail;
 
 /**
  * Gotea\Model\Entity\RetentionHistory Test Case
@@ -40,6 +41,42 @@ class TitleScoreTest extends TestCase
         unset($this->TitleScore);
 
         parent::tearDown();
+    }
+
+    /**
+     * Test winner_id property
+     *
+     * @return void
+     */
+    public function testGetWinnerId()
+    {
+        // 勝者情報なし
+        $this->TitleScore->title_score_details = [];
+        $this->assertNull($this->TitleScore->winner_id);
+
+        $titleScoreDetail = new TitleScoreDetail();
+        $titleScoreDetail->player_id = 1;
+        $titleScoreDetail->division = '勝';
+        $this->TitleScore->title_score_details = [$titleScoreDetail];
+        $this->assertEquals($this->TitleScore->winner_id, $titleScoreDetail->player_id);
+    }
+
+    /**
+     * Test winner_id property
+     *
+     * @return void
+     */
+    public function testGetLoserId()
+    {
+        // 敗者情報なし
+        $this->TitleScore->title_score_details = [];
+        $this->assertNull($this->TitleScore->loser_id);
+
+        $titleScoreDetail = new TitleScoreDetail();
+        $titleScoreDetail->player_id = 2;
+        $titleScoreDetail->division = '敗';
+        $this->TitleScore->title_score_details = [$titleScoreDetail];
+        $this->assertEquals($this->TitleScore->loser_id, $titleScoreDetail->player_id);
     }
 
     /**

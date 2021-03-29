@@ -116,7 +116,7 @@ $isAdmin = $this->isAdmin();
             <div class="input">
                 <div class="label-row"><?= __d('model', 'winner') ?></div>
                 <div class="input-row">
-                    <?= h($score->winner_name) ?>
+                    <?= $score->winner_id ? h($score->winner_id) . ': ' : null ?><?= h($score->winner_name) ?>
                 </div>
             </div>
         </li>
@@ -124,7 +124,7 @@ $isAdmin = $this->isAdmin();
             <div class="input">
                 <div class="label-row"><?= __d('model', 'loser') ?></div>
                 <div class="input-row">
-                    <?= h($score->loser_name) ?>
+                    <?= $score->loser_id ? h($score->loser_id) . ': ' : null ?><?= h($score->loser_name) ?>
                 </div>
             </div>
         </li>
