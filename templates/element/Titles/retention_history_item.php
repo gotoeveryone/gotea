@@ -15,7 +15,7 @@
         <?php endif ?>
     </div>
     <div class="detail_box_item box-1">
-        <?= !$retention->is_official ? '（非公式戦）' : '（公式戦）' ?>
+        <?= !$retention->is_official ? '非公式戦' : '公式戦' ?>
     </div>
     <div class="detail_box_item box-2">
         <span class="inner-column">
