@@ -23,6 +23,15 @@ class TitlesControllerTest extends ApiTestCase
     ];
 
     /**
+     * @inheritDoc
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->createSession();
+    }
+
+    /**
      * タイトル一覧取得
      *
      * @return void

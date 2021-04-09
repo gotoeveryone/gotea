@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * Gotea\Controller\Api\RanksController Test Case
  */
-class RanksControllerTest extends TestCase
+class RanksControllerTest extends ApiTestCase
 {
     use IntegrationTestTrait;
 
@@ -21,6 +20,15 @@ class RanksControllerTest extends TestCase
     public $fixtures = [
         'app.Ranks',
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->createSession();
+    }
 
     /**
      * Test index method
