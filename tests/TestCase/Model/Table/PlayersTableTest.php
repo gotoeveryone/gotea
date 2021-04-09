@@ -189,6 +189,23 @@ class PlayersTableTest extends TestCase
             'sex' => '男性',
         ]);
         $this->assertGreaterThan(0, $players->count());
+        $players->each(function ($data) {
+            $this->assertEquals('男性', $data->sex);
+        });
+
+        // ソート
+        $players = $this->Players->findPlayers([
+            'sort' => 'id',
+            'direction' => 'desc',
+        ]);
+        $this->assertGreaterThan(0, $players->count());
+        $tmpId = null;
+        $players->each(function ($data) use (&$tmpId) {
+            if ($tmpId != null) {
+                $this->assertLessThan($tmpId, $data->id);
+            }
+            $tmpId = $data->id;
+        });
     }
 
     /**

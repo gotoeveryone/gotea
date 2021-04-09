@@ -189,6 +189,24 @@ class PlayersTable extends AppTable
             $query->where(['Players.is_retired' => 0]);
         }
 
+        // ソート指定があれば適用
+        $fields = [
+            'id',
+            'joined',
+            'country_id',
+            'organization_id',
+            'rank_id',
+        ];
+        $sort = Hash::get($data, 'sort');
+        $direction = Hash::get($data, 'direction', 'asc');
+        if ($sort && in_array(strtolower($sort), $fields, true)) {
+            if (in_array(strtolower($direction), ['asc', 'desc'], true)) {
+                $query->order(["Players.${sort}" => $direction], true);
+            } else {
+                $query->order(["Players.${sort}" => 'asc'], true);
+            }
+        }
+
         return $query;
     }
 
