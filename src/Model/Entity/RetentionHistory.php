@@ -25,23 +25,12 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Country|null $country
  * @property \Gotea\Model\Entity\Rank|null $rank
  *
- * @property string $team_label
  * @property string $winner_name
  */
 class RetentionHistory extends AppEntity
 {
     use PlayerTrait;
     use RankTrait;
-
-    /**
-     * 団体戦判定結果を取得します。
-     *
-     * @return string
-     */
-    protected function _getTeamLabel()
-    {
-        return __($this->is_team ? '（団体戦）' : '（個人戦）');
-    }
 
     /**
      * タイトル保持者を取得します。

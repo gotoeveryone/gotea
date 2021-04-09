@@ -68,6 +68,10 @@
       width: auto;
     }
   }
+
+  .retention-row {
+    @include flex-justify-start();
+  }
 }
 
 .detail-dialog {
