@@ -11,7 +11,6 @@ use Cake\ORM\TableRegistry;
  * @property string $code
  * @property string $name
  * @property string $name_english
- * @property string $label
  * @property bool $has_title
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -49,15 +48,5 @@ class Country extends AppEntity
     public function isWorlds()
     {
         return !$this->has_title;
-    }
-
-    /**
-     * 表示用のラベルを取得します。
-     *
-     * @return string ラベル
-     */
-    protected function _getLabel()
-    {
-        return "（{$this->name}棋戦）";
     }
 }

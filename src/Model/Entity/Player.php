@@ -196,7 +196,9 @@ class Player extends AppEntity
             return collection([]);
         }
 
-        $result = TableRegistry::getTableLocator()->get('RetentionHistories')->findHistoriesByPlayer($this->id);
+        /** @var \Gotea\Model\Table\RetentionHistoriesTable $table */
+        $table = TableRegistry::getTableLocator()->get('RetentionHistories');
+        $result = $table->findHistoriesByPlayer($this->id);
 
         return $this->retention_histories = $result;
     }
@@ -259,11 +261,15 @@ class Player extends AppEntity
     /**
      * 年度単位でグループ化します。
      *
-     * @return \Gotea\Model\Entity\Cake\Collection\Collection
+     * @return \Cake\Collection\Collection
      */
     public function groupByYearFromHistories()
     {
-        return $this->retention_histories->groupBy('target_year');
+        return $this->retention_histories
+            ->groupBy('target_year')
+            ->map(function ($items) {
+                return collection($items)->groupBy('title.country.name');
+            });
     }
 
     /**
