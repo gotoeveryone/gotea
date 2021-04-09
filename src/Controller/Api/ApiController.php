@@ -22,6 +22,13 @@ abstract class ApiController extends Controller
     {
         parent::initialize();
 
+        $this->loadComponent('Authentication.Authentication', [
+            'logoutRedirect' => [
+                '_name' => 'top',
+            ],
+        ]);
+        $this->loadComponent('Authorization.Authorization');
+
         $this->forceJsonResponse();
 
         // 操作ユーザ記録イベントを設定
