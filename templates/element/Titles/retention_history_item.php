@@ -28,10 +28,13 @@
     <div class="detail_box_item box-5">
         <?php
             $winner = $title->country->isWorlds() && !$retention->is_team
-                ? $retention->country->name
-                : $retention->winner_name . '(' . $retention->country->name . ')';
-        ?>
-        <span class="inner-column"><?= h($winner) ?></span>
+                ? h($retention->country->name)
+                : $this->Html->link($retention->winner_name . ' (' . $retention->country->name . ')', [
+                    '_name' => 'view_player',
+                    $retention->player_id,
+                ]);
+            ?>
+        <span class="inner-column"><?= $winner ?></span>
     </div>
     <?php if ($isAdmin) : ?>
     <div class="detail_box_item detail_box_item-buttons box-2">
