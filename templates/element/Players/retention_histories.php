@@ -28,10 +28,14 @@
                 <div class="input-row-inner-box input-row-inner-box-10">
                     <?php
                         $label = implode(' / ', array_map(function ($history) {
-                            return '第' . $history->holding . '期 ' . $history->name . (!$history->is_official ? '（非公式戦）' : '');
+                            $holding = h('第' . $history->holding . '期 ');
+                            $acquiredMonth = h('(' . $this->Date->format($history->acquired, 'M月d日') . ')');
+
+                            return $holding . $this->Html->link($history->name, ['_name' => 'view_title', $history->title_id])
+                                . $acquiredMonth . (!$history->is_official ? '（非公式戦）' : '');
                         }, $items));
                     ?>
-                    <span><?= h($label) ?></span>
+                    <span><?= $label ?></span>
                 </div>
             </div>
         <?php endforeach ?>
