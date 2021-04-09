@@ -155,7 +155,7 @@ class RetentionHistoriesTable extends AppTable
             ->order([
                 'RetentionHistories.target_year' => 'DESC',
                 'Titles.country_id' => 'ASC',
-                'Titles.sort_order' => 'ASC',
+                'RetentionHistories.acquired' => 'ASC',
             ]);
     }
 

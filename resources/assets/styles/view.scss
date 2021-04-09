@@ -54,10 +54,23 @@
     margin: 0.5rem 0.7rem;
     width: calc(100% - (0.7rem * 2));
 
+    &-inner-box {
+      @for $sep from 1 through 12 {
+        &-#{$sep} {
+          flex-basis: calc(100% / 12 * #{$sep});
+          width: calc(100% / 12 * #{$sep});
+        }
+      }
+    }
+
     &.dropdowns {
       display: inline-block;
       width: auto;
     }
+  }
+
+  .retention-row {
+    @include flex-justify-start();
   }
 }
 
