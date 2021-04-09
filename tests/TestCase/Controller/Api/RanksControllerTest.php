@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Gotea\Test\TestCase\Controller\Api;
 
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * Gotea\Controller\Api\RanksController Test Case
