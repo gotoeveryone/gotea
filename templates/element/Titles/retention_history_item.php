@@ -27,8 +27,8 @@
     </div>
     <div class="detail_box_item box-5">
         <?php
-            $winner = $title->country->isWorlds() && !$retention->is_team
-                ? h($retention->country->name)
+            $winner = $retention->is_team
+                ? h($retention->winner_name)
                 : $this->Html->link($retention->winner_name . ' (' . $retention->country->name . ')', [
                     '_name' => 'view_player',
                     $retention->player_id,
