@@ -35,7 +35,7 @@ class PlayerScore extends AppEntity
         }
 
         // 上記以外は段位を表示
-        $rankName = ($this->rank ? $this->rank->nae : $this->player->rank->name);
+        $rankName = ($this->rank ? $this->rank->name : $this->player->rank->name);
         $rankNumeric = ($this->rank->rank_numeric ? $this->rank->rank_numeric : $this->player->rank->rank_numeric);
 
         return $name . ($showJp ? " ${rankName}" : "(${rankNumeric} dan)");
