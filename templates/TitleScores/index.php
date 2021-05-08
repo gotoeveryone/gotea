@@ -10,10 +10,17 @@
         <ul class="search-header">
             <li class="search-row">
                 <div class="search-box">
-                    <?= $this->Form->control('name', [
-                        'label' => ['text' => '棋士名'],
+                    <?= $this->Form->control('name1', [
+                        'label' => ['text' => '棋士名1'],
                         'class' => 'name',
-                        'value' => $this->getRequest()->getQuery('name'),
+                        'value' => $this->getRequest()->getQuery('name1'),
+                    ]) ?>
+                </div>
+                <div class="search-box">
+                    <?= $this->Form->control('name2', [
+                        'label' => ['text' => '棋士名2'],
+                        'class' => 'name',
+                        'value' => $this->getRequest()->getQuery('name2'),
                     ]) ?>
                 </div>
                 <div class="search-box">
