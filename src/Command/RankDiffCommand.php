@@ -224,7 +224,7 @@ class RankDiffCommand extends Command
         $results = [];
         $rank = null;
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.taiwan'));
-        $crawler->filter('.post-body.entry-content div:first-child div')
+        $crawler->filter('.post-body.entry-content div:first-child > div')
             ->each(function (Crawler $node) use (&$results, &$rank, $ranks) {
                 // テキストが設定されている場合のみ処理する
                 $text = trim($node->text());
