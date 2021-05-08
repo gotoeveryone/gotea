@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
@@ -149,16 +150,21 @@ class TitleScoresTable extends AppTable
             });
         }
 
-        $name = Hash::get($data, 'name');
-        if ($name) {
-            $query->innerJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
-                return $q->where([
-                    'OR' => collection(explode(' ', $name))
-                        ->map(function ($param) {
-                            return ['TitleScoreDetails.player_name LIKE' => "%{$param}%"];
-                        })->toArray(),
-                ]);
-            });
+        $nameFields = ['name1', 'name2'];
+        foreach ($nameFields as $nameField) {
+            $name = Hash::get($data, $nameField);
+            if ($name) {
+                $query->where(function (QueryExpression $exp) use ($name) {
+                    $q = $this->TitleScoreDetails->find();
+
+                    return $exp->exists(
+                        $q->where([
+                            'TitleScoreDetails.title_score_id = TitleScores.id',
+                            'TitleScoreDetails.player_name LIKE' => "%{$name}%",
+                        ]),
+                    );
+                });
+            }
         }
 
         $titleName = Hash::get($data, 'title_name');
