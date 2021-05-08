@@ -2,8 +2,10 @@ version: '3'
 services:
   server:
     build: ./docker/app
+    image: gotea/server:latest
     volumes:
       - ./:/src
+      - vendor:/src/vendor
     ports:
       - '8765:8765'
     depends_on:
@@ -11,14 +13,16 @@ services:
     working_dir: /src
     command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
   resources:
-    image: node:12
+    image: node:14.16
     volumes:
       - ./:/src
+      - node_modules:/src/node_modules
     working_dir: /src
     command: sh -c 'yarn && yarn dev'
   database:
     image: mysql:5.7
     volumes:
+      - ./database:/var/lib/mysql
       - ./tests/setup.sh:/docker-entrypoint-initdb.d/setup.sh
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
@@ -28,3 +32,7 @@ services:
     ports:
       - '33306:3306'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+
+volumes:
+  node_modules:
+  vendor:
