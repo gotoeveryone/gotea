@@ -6,9 +6,9 @@ references:
     key: composer-v1-{{ checksum "composer.lock" }}
     paths:
       - vendor
-  save_yarn_cache: &save_yarn_cache
-    name: Saving yarn cache
-    key: node-v1-{{ checksum "package.json" }}
+  save_npm_cache: &save_npm_cache
+    name: Saving npm cache
+    key: node-v1-{{ checksum "package-lock.json" }}
     paths:
       - node_modules
   restore_composer_cache: &restore_composer_cache
@@ -16,10 +16,10 @@ references:
     keys:
       - composer-v1-{{ checksum "composer.lock" }}
       - composer-v1-
-  restore_yarn_cache: &restore_yarn_cache
-    name: Restoring yarn cache
+  restore_npm_cache: &restore_npm_cache
+    name: Restoring npm cache
     keys:
-      - node-v1-{{ checksum "package.json" }}
+      - node-v1-{{ checksum "package-lock.json" }}
       - node-v1-
 
 jobs:
@@ -33,11 +33,11 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *restore_yarn_cache
-      - run: yarn install
+          <<: *restore_npm_cache
+      - run: npm install
       - save_cache:
-          <<: *save_yarn_cache
-      - run: yarn run lint
+          <<: *save_npm_cache
+      - run: npm run lint
 
   code_check_php:
     docker:
@@ -94,11 +94,11 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *restore_yarn_cache
-      - run: yarn install
+          <<: *restore_npm_cache
+      - run: npm install
       - save_cache:
-          <<: *save_yarn_cache
-      - run: yarn run prod
+          <<: *save_npm_cache
+      - run: npm run prod
       - run: echo "export TAR_NAME=${CIRCLE_PROJECT_REPONAME}-$(date +'%Y%m%d-%H%M%S').tar.gz" >> ${BASH_ENV}
       - run: tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock
       - run: echo 'StrictHostKeyChecking no' >> ~/.ssh/config

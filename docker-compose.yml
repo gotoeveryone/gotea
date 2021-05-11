@@ -18,7 +18,7 @@ services:
       - ./:/src
       - node_modules:/src/node_modules
     working_dir: /src
-    command: sh -c 'yarn && yarn dev'
+    command: sh -c 'npm i && npm run dev'
   database:
     image: mysql:5.7
     volumes:

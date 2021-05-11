@@ -48,7 +48,7 @@ $ docker-compose exec server ./vendor/bin/phpunit
 - Sass
 
 最終的な JS・CSS は`webpack`を利用して生成します。  
-`yarn run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
+`npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
 
 ## その他
 

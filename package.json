@@ -8,14 +8,14 @@
   },
   "scripts": {
     "webpack": "webpack --colors --config=./webpack.config.js",
-    "dev": "yarn run webpack --mode development -w",
-    "prod": "yarn run webpack --mode production -p",
-    "lint": "yarn run eslint && yarn run stylelint",
-    "lint:fix": "yarn run eslint:fix && yarn run stylelint:fix",
+    "dev": "npm run webpack -- --mode development -w",
+    "prod": "npm run webpack -- --mode production -p",
+    "lint": "npm run eslint && npm run stylelint",
+    "lint:fix": "npm run eslint:fix && npm run stylelint:fix",
     "eslint": "eslint --ext .ts,.vue ./resources/assets/scripts",
-    "eslint:fix": "yarn run eslint --fix",
+    "eslint:fix": "npm run eslint -- --fix",
     "stylelint": "stylelint \"./resources/assets/styles/**/*.scss\" \"./resources/assets/scripts/**/*.vue\"",
-    "stylelint:fix": "yarn run stylelint --fix"
+    "stylelint:fix": "npm run stylelint -- --fix"
   },
   "author": "Kazuki Kamizuru",
   "license": "MIT",
