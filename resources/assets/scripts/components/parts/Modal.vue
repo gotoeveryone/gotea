@@ -1,9 +1,9 @@
 <template>
   <transition name="modal">
-    <div @click="close()" v-if="isShow" class="iframe-modal">
+    <div v-if="isShow" class="iframe-modal" @click="close()">
       <div :style="{ height: height, width: width }" class="modal-parent">
         <iframe :src="options.url" class="modal-body" />
-        <div @click="close()" class="modal-close">
+        <div class="modal-close" @click="close()">
           <span class="modal-close-mark">×</span>
         </div>
       </div>

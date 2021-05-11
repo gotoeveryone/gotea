@@ -1,8 +1,8 @@
 <template>
   <ul class="boxes">
     <li
-      v-text="text"
       class="label-row"
+      v-text="text"
     />
     <li class="detail_box">
       <div class="detail_box_item box-2">
@@ -46,12 +46,12 @@
           <input
             id="acquired"
             v-model="acquired"
-            @change="onChangeAcquired"
             type="text"
             maxlength="4"
             class="acquired datepicker"
             autocomplete="off"
             name="acquired"
+            @change="onChangeAcquired"
           >
         </div>
       </div>
@@ -61,12 +61,12 @@
           <input
             id="broadcasted"
             v-model="broadcasted"
-            @change="onChangeBroadcasted"
             type="text"
             maxlength="4"
             class="broadcasted datepicker"
             autocomplete="off"
             name="broadcasted"
+            @change="onChangeBroadcasted"
           >
         </div>
       </div>
@@ -104,9 +104,9 @@
             class="checkbox-label"
           >
             <input
+              v-if="!edit"
               id="newest"
               :disabled="required"
-              v-if="!edit"
               type="checkbox"
               name="newest"
               checked="checked"
@@ -116,9 +116,9 @@
         </div>
         <div class="input">
           <button
-            @click="clearData()"
             v-if="edit"
             type="button"
+            @click="clearData()"
           >
             編集をやめる
           </button>
@@ -172,8 +172,8 @@
         <div class="input">
           <label>設定棋士出場国</label>
           <select
-            @change="changeCountry($event)"
             v-model="countryId"
+            @change="changeCountry($event)"
           >
             <option
               v-for="country in countries"
@@ -206,9 +206,9 @@
         <div class="detail_box_item detail_box_item-buttons box-2">
           <div class="input">
             <button
-              @click="search()"
               type="button"
               class="button button-primary"
+              @click="search()"
             >
               検索
             </button>
@@ -223,30 +223,30 @@
             class="table-row"
           >
             <span
+              class="retentions-name"
               v-text="getName(player)"
-              class="retentions-name"
             />
             <span
+              class="retentions-name"
               v-text="player.nameEnglish"
-              class="retentions-name"
             />
             <span
-              v-text="player.countryName"
               class="retentions-country"
+              v-text="player.countryName"
             />
             <span
-              v-text="player.rankName"
               class="retentions-rank"
+              v-text="player.rankName"
             />
             <span
-              v-text="player.sex"
               class="retentions-sex"
+              v-text="player.sex"
             />
             <span class="retentions-select">
               <button
-                @click="select(player)"
                 class="button button-secondary"
                 type="button"
+                @click="select(player)"
               >選択</button>
             </span>
           </li>

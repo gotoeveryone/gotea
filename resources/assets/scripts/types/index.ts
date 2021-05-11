@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 declare module 'vue/types/vue' {
   interface Vue {
-    openDialog: Function;
+    openDialog: CallableFunction;
   }
 }
 
@@ -39,7 +39,7 @@ export interface ModalOption {
   url: string | null;
   width: string | number | null;
   height: string | number | null;
-  callback: Function | null;
+  callback: CallableFunction | null;
 }
 
 export interface Country {

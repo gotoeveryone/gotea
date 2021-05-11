@@ -1,6 +1,6 @@
 <template>
   <section class="ranking">
-    <ranking-header :is-admin="isAdmin" :lastUpdate="lastUpdate" @search="onSearch" @json="outputJson" />
+    <ranking-header :is-admin="isAdmin" :last-update="lastUpdate" @search="onSearch" @json="outputJson" />
     <ranking-items :items="items" />
   </section>
 </template>

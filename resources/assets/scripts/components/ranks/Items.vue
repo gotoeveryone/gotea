@@ -8,8 +8,8 @@
     </ul>
     <ul v-if="items.length" class="table-body">
       <li v-for="(item, idx) in items" :key="idx" class="table-row">
-        <span v-text="item.name" class="table-column table-column_rank" />
-        <span v-text="count(item)" class="table-column table-column_count" />
+        <span class="table-column table-column_rank" v-text="item.name" />
+        <span class="table-column table-column_count" v-text="count(item)" />
       </li>
     </ul>
   </div>

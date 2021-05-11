@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const EslintWebpackPlugin = require('eslint-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -31,22 +32,15 @@ module.exports = () => {
         },
       },
       stats: 'minimal',
-      plugins: [new VueLoaderPlugin(), new FriendlyErrorsWebpackPlugin()],
+      plugins: [
+        new VueLoaderPlugin(),
+        new FriendlyErrorsWebpackPlugin(),
+        new EslintWebpackPlugin({
+          extensions: ['.ts', '.js', '.vue'],
+        }),
+      ],
       module: {
         rules: [
-          {
-            enforce: 'pre',
-            test: /\.(js|vue|ts)$/,
-            exclude: /node_modules/,
-            use: [
-              {
-                loader: 'eslint-loader',
-                options: {
-                  esModule: true,
-                },
-              },
-            ],
-          },
           {
             test: /\.ts$/,
             exclude: /node_modules|vue\/src/,

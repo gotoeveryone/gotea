@@ -3,10 +3,10 @@
     <li
       v-for="(tab, idx) in tabs"
       :key="idx"
-      v-text="tab"
       :class="{ selectTab: isSelect(tab) }"
-      @click="select(tab)"
       class="tab"
+      @click="select(tab)"
+      v-text="tab"
     />
   </ul>
 </template>

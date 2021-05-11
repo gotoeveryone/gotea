@@ -1,48 +1,48 @@
 <template>
   <li :class="rowClass" class="table-row">
     <span class="table-column table-column_name">
-      <input :disabled="!isAdmin" @change="save" v-model="item.name" type="text">
+      <input v-model="localItem.name" :disabled="!isAdmin" type="text" @change="save">
     </span>
     <span class="table-column table-column_name">
-      <input :disabled="!isAdmin" @change="save" v-model="item.nameEnglish" type="text">
+      <input v-model="localItem.nameEnglish" :disabled="!isAdmin" type="text" @change="save">
     </span>
     <span class="table-column table-column_holding">
-      <input :disabled="!isAdmin" @change="save" v-model="item.holding" type="text" class="table-column_holding-input">
+      <input v-model="localItem.holding" :disabled="!isAdmin" type="text" class="table-column_holding-input" @change="save">
     </span>
-    <span v-text="winnerName" class="table-column table-column_winner" />
+    <span class="table-column table-column_winner" v-text="winnerName" />
     <span class="table-column table-column_order">
-      <input :disabled="!isAdmin" @change="save" v-model="item.sortOrder" type="text" class="table-column_order-input">
+      <input v-model="localItem.sortOrder" :disabled="!isAdmin" type="text" class="table-column_order-input" @change="save">
     </span>
     <span class="table-column table-column_team">
-      <input :disabled="!isAdmin" @change="save" v-model="item.isTeam" type="checkbox">
+      <input v-model="localItem.isTeam" :disabled="!isAdmin" type="checkbox" @change="save">
     </span>
     <span class="table-column table-column_filename">
-      <input :disabled="!isAdmin" @change="save" v-model="item.htmlFileName" type="text">
+      <input v-model="localItem.htmlFileName" :disabled="!isAdmin" type="text" @change="save">
     </span>
     <span class="table-column table-column_holding">
-      <input :disabled="!isAdmin" @change="save" v-model="item.htmlFileHolding" type="text" class="table-column_holding-input">
+      <input v-model="localItem.htmlFileHolding" :disabled="!isAdmin" type="text" class="table-column_holding-input" @change="save">
     </span>
     <span class="table-column table-column_modified">
       <input
+        v-model="localItem.htmlFileModified"
         :disabled="!isAdmin"
-        @change="saveDatepicker($event)"
-        v-model="item.htmlFileModified"
         type="text"
         class="datepicker table-column_modified-input"
         autocomplete="off"
+        @change="saveDatepicker($event)"
       >
     </span>
     <span class="table-column table-column_closed">
-      <input :disabled="!isAdmin || !isSaved" @change="save" v-model="item.isClosed" type="checkbox">
+      <input v-model="localItem.isClosed" :disabled="!isAdmin || !isSaved" type="checkbox" @change="save">
     </span>
     <span class="table-column table-column_output">
-      <input :disabled="!isAdmin" @change="save" v-model="item.isOutput" type="checkbox">
+      <input v-model="localItem.isOutput" :disabled="!isAdmin" type="checkbox" @change="save">
     </span>
     <span class="table-column table-column_official">
-      <input :disabled="!isAdmin" @change="save" v-model="item.isOfficial" type="checkbox">
+      <input v-model="localItem.isOfficial" :disabled="!isAdmin" type="checkbox" @change="save">
     </span>
     <span class="table-column table-column_open-detail">
-      <a @click="select()" v-text="label" class="view-link" />
+      <a class="view-link" @click="select()" v-text="label" />
     </span>
   </li>
 </template>
@@ -64,19 +64,27 @@ export default Vue.extend({
       required: true,
     },
   },
+  data: () => {
+    return {
+      localItem: {} as TitleResultItem,
+    };
+  },
   computed: {
     winnerName(): string {
-      return this.item.winnerName || '';
+      return this.localItem.winnerName || '';
     },
     rowClass(): string {
-      return this.item.isClosed ? 'table-row-closed' : '';
+      return this.localItem.isClosed ? 'table-row-closed' : '';
     },
     label(): string {
       return this.isSaved ? '開く' : '登録';
     },
     isSaved(): boolean {
-      return this.item.id !== null && this.item.id !== undefined;
+      return this.localItem.id !== null && this.localItem.id !== undefined;
     },
+  },
+  mounted() {
+    this.localItem = this.item;
   },
   methods: {
     save() {
@@ -85,7 +93,7 @@ export default Vue.extend({
         return;
       }
       // 更新処理
-      return axios.put(`/api/titles/${this.item.id}`, this.item).catch(res => {
+      return axios.put(`/api/titles/${this.localItem.id}`, this.item).catch(res => {
         const message = res.data.response.message;
         this.$store.dispatch('openDialog', {
           messages: message || '更新に失敗しました…。',
@@ -98,7 +106,7 @@ export default Vue.extend({
         this.add();
       } else {
         this.$emit('openModal', {
-          url: this.item.url,
+          url: this.localItem.url,
         });
       }
     },
@@ -109,7 +117,7 @@ export default Vue.extend({
         .then(() => {
           this.$emit('refresh');
           this.$store.dispatch('openDialog', {
-            messages: `タイトル【${this.item.name}】を登録しました。`,
+            messages: `タイトル【${this.localItem.name}】を登録しました。`,
           });
         })
         .catch(res => {
@@ -122,8 +130,8 @@ export default Vue.extend({
     },
     saveDatepicker($event: Event) {
       const target = $event.target as HTMLInputElement;
-      if (this.item.htmlFileModified !== target.value) {
-        this.item.htmlFileModified = target.value;
+      if (this.localItem.htmlFileModified !== target.value) {
+        this.localItem.htmlFileModified = target.value;
         this.save();
       }
     },
