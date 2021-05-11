@@ -1,5 +1,5 @@
 <template>
-  <button @click="newPlayer()" type="button" country="country" class="button button-secondary">
+  <button type="button" country="country" class="button button-secondary" @click="newPlayer()">
     新規作成
   </button>
 </template>

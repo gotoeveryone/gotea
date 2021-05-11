@@ -5,17 +5,17 @@
         <label class="search-box_label ranking_label">抽出対象</label>
         <select
           v-model="select.year"
-          @change="changeValue($event)"
           name="year"
           class="ranking_year"
+          @change="changeValue($event)"
         >
           <option v-for="(year, idx) in years" :key="idx" :value="year.value" v-text="year.text" />
         </select>
         <select
           v-model="select.country"
-          @change="changeValue($event)"
           name="country"
           class="ranking_country"
+          @change="changeValue($event)"
         >
           <option
             v-for="(country, idx) in countries"
@@ -26,9 +26,9 @@
         </select>
         <select
           v-model="select.limit"
-          @change="changeValue($event)"
           name="limit"
           class="ranking_limit"
+          @change="changeValue($event)"
         >
           <option
             v-for="(limit, idx) in limits"
@@ -44,35 +44,35 @@
         <label class="search-box_label ranking_label">対局日</label>
         <input
           v-model="select.from"
-          @change="changeValue($event)"
           :disabled="!useInputDate()"
           type="text"
           name="from"
           class="ranking_date datepicker"
           autocomplete="off"
+          @change="changeValue($event)"
         >
         <span class="ranking_date-duration">～</span>
         <input
           v-model="select.to"
-          @change="changeValue($event)"
           :disabled="!useInputDate()"
           type="text"
           name="to"
           class="ranking_date datepicker"
           autocomplete="off"
+          @change="changeValue($event)"
         >
       </div>
     </li>
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label ranking_label">最終更新日</label>
-        <span v-text="lastUpdate" class="lastUpdate" />
+        <span class="lastUpdate" v-text="lastUpdate" />
       </div>
       <div class="search-box search-box-right">
-        <button @click="clearDate()" type="button">
+        <button type="button" @click="clearDate()">
           日付をクリア
         </button>
-        <button v-if="isAdmin" @click="json()" type="button" class="button button-primary">
+        <button v-if="isAdmin" type="button" class="button button-primary" @click="json()">
           JSON出力
         </button>
       </div>

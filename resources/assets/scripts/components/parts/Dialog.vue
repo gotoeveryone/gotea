@@ -1,19 +1,21 @@
 <template>
   <transition name="dialog">
-    <div @click="close()" v-if="isShow" :style="{ backgroundColor: modalColor }" class="dialog">
+    <div v-if="isShow" :style="{ backgroundColor: modalColor }" class="dialog" @click="close()">
       <div class="dialog-content">
         <div :style="{ backgroundColor: headerColor }" class="dialog-content-header">
-          <div v-text="title" class="dialog-content-title" />
+          <div class="dialog-content-title" v-text="title" />
         </div>
         <div class="dialog-content-body">
           <div class="dialog-content-body-text">
             <ul :class="messageClass">
+              <!-- eslint-disable vue/no-v-html -->
               <li v-for="(message, idx) in messages" :key="idx" v-html="message" />
+              <!-- eslint-enable vue/no-v-html -->
             </ul>
           </div>
         </div>
         <div class="dialog-content-footer">
-          <button v-focus @click="close()" class="dialog-content-button">
+          <button v-focus class="dialog-content-button" @click="close()">
             閉じる
           </button>
         </div>

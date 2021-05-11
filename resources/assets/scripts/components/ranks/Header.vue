@@ -3,7 +3,7 @@
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label">対象国</label>
-        <select v-model="select.country" @change="changeValue($event)" class="country">
+        <select v-model="select.country" class="country" @change="changeValue($event)">
           <option
             v-for="(country, idx) in countries"
             :key="idx"

@@ -9,8 +9,8 @@ import { Window } from '@/types';
 // ロケールを設定
 moment.locale('ja');
 
-declare var window: Window;
-declare var document: Document;
+declare let window: Window;
+declare let document: Document;
 
 // APIコールの設定
 window.Cake = window.Cake || {};
