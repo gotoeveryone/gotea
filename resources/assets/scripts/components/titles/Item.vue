@@ -83,6 +83,11 @@ export default Vue.extend({
       return this.localItem.id !== null && this.localItem.id !== undefined;
     },
   },
+  watch: {
+    item(newVal) {
+      this.localItem = newVal;
+    },
+  },
   mounted() {
     this.localItem = this.item;
   },
