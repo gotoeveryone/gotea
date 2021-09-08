@@ -41,16 +41,13 @@ jobs:
 
   code_check_php:
     docker:
-      - image: circleci/php:7.4
+      - image: gotoeveryone/composer-php:7.4
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
     working_directory: ~/gotea
     steps:
       - checkout
-      - run: sudo apt install -y zlib1g-dev
-      - run: sudo docker-php-ext-install zip
-      - run: sudo composer self-update
       - restore_cache:
           <<: *restore_composer_cache
       - run: composer install -n --prefer-dist
@@ -60,7 +57,7 @@ jobs:
 
   test:
     docker:
-      - image: circleci/php:7.4
+      - image: gotoeveryone/composer-php:7.4
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
@@ -73,9 +70,6 @@ jobs:
     working_directory: ~/gotea
     steps:
       - checkout
-      - run: sudo apt install -y zlib1g-dev
-      - run: sudo docker-php-ext-install zip pdo_mysql
-      - run: sudo composer self-update
       - restore_cache:
           <<: *restore_composer_cache
       - run: composer install -n --prefer-dist
