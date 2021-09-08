@@ -2,7 +2,6 @@
 const path = require('path');
 const EslintWebpackPlugin = require('eslint-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintBarePlugin = require('stylelint-bare-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
@@ -34,7 +33,6 @@ module.exports = () => {
       stats: 'minimal',
       plugins: [
         new VueLoaderPlugin(),
-        new FriendlyErrorsWebpackPlugin(),
         new EslintWebpackPlugin({
           extensions: ['.ts', '.js', '.vue'],
         }),
@@ -75,7 +73,15 @@ module.exports = () => {
                   esModule: false,
                 },
               },
-              'sass-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  implementation: require('sass'),
+                  sassOptions: {
+                    fiber: require('fibers'),
+                  },
+                },
+              },
               {
                 loader: 'sass-resources-loader',
                 options: {
@@ -107,7 +113,6 @@ module.exports = () => {
       stats: 'minimal',
       plugins: [
         new FixStyleOnlyEntriesPlugin(),
-        new FriendlyErrorsWebpackPlugin(),
         new MiniCssExtractPlugin({
           filename: '[name].css',
         }),
@@ -127,7 +132,15 @@ module.exports = () => {
                   esModule: false,
                 },
               },
-              'sass-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  implementation: require('sass'),
+                  sassOptions: {
+                    fiber: require('fibers'),
+                  },
+                },
+              },
             ],
           },
         ],
