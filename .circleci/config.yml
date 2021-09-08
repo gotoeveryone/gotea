@@ -1,4 +1,4 @@
-version: 2
+version: 2.0
 
 references:
   save_composer_cache: &save_composer_cache
@@ -71,6 +71,17 @@ jobs:
     working_directory: ~/gotea
     steps:
       - checkout
+      - run:
+          name: install dockerize
+          command: |
+            curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz -O
+            tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+            rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       - restore_cache:
           <<: *restore_composer_cache
       - run: composer install -n --prefer-dist
