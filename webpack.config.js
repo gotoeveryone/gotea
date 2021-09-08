@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const EslintWebpackPlugin = require('eslint-webpack-plugin');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintBarePlugin = require('stylelint-bare-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 const webrootDir = path.join(__dirname, 'webroot');
@@ -112,7 +112,7 @@ module.exports = () => {
       },
       stats: 'minimal',
       plugins: [
-        new FixStyleOnlyEntriesPlugin(),
+        new RemoveEmptyScriptsPlugin(),
         new MiniCssExtractPlugin({
           filename: '[name].css',
         }),
