@@ -1,8 +1,7 @@
 version: '3'
 services:
   backend:
-    build: ./docker/app
-    image: gotea/server:latest
+    image: gotoeveryone/composer-php:7.4
     volumes:
       - ./:/src
       - vendor:/src/vendor
