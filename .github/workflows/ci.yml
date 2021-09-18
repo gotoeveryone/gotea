@@ -10,13 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Cache modules
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: vendor_cache
         with:
           path: vendor
           key: ${{ runner.OS }}-vendor-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
-        if: steps.vendor_cache.outputs.cache-hit != 'true'
+        if: ${{ steps.vendor_cache.outputs.cache-hit != 'true' }}
         run: composer install
       - name: Execute code check
         run: composer cs-check
@@ -34,7 +34,7 @@ jobs:
           path: node_modules
           key: ${{ runner.OS }}-node_modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.node_cache.outputs.cache-hit != 'true'
+        if: ${{ steps.node_cache.outputs.cache-hit != 'true' }}
         run: npm i
       - name: Execute code check
         run: npm run lint
@@ -55,13 +55,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Cache modules
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: vendor_cache
         with:
           path: vendor
           key: ${{ runner.OS }}-vendor-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
-        if: steps.vendor_cache.outputs.cache-hit != 'true'
+        if: ${{ steps.vendor_cache.outputs.cache-hit != 'true' }}
         run: composer install
       - name: Execute setup
         run: cp .env.example .env
@@ -69,12 +69,17 @@ jobs:
         run: composer test
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.ref == 'refs/heads/main' }}
+    env:
+      TAR_NAME: "gotea_${{ github.run_number }}.tar.gz"
+      SHELL_DEST_PATH: "~/deploy_${{ github.run_number }}.sh"
     runs-on: ubuntu-latest
     needs:
       - code_check_backend
       - code_check_frontend
       - test_backend
+    container:
+      image: node:14.16.1
     steps:
       - uses: actions/checkout@v1
       - name: Install SSH Key
@@ -92,13 +97,24 @@ jobs:
               User ${{ secrets.SSH_USER }}
               Port ${{ secrets.SSH_PORT }}
               IdentityFile ~/.ssh/id_rsa-target
-      - name: Deploy modules
+      - name: Cache modules
+        uses: actions/cache@v2
+        id: node_cache
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: ${{ steps.node_cache.outputs.cache-hit != 'true' }}
+        run: npm i
+      - name: Build assets
+        run: npm run prod
+      - name: Transfer modules
         run: |
-          TAR_NAME="gotea_${GITHUB_RUN_NUMBER}.tar.gz"
-          tar czf ${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock
-          scp -r ~/${TAR_NAME} target:/tmp
-          scp ./shell/deploy.sh target:/tmp/deploy-${GITHUB_RUN_NUMBER}.sh
-          ssh target "/tmp/deploy-${GITHUB_RUN_NUMBER}.sh ${HOME_DIR} gotea"
+          tar czf ~/${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock
+          scp -r ~/${TAR_NAME} target:~/
+          scp ./shell/deploy.sh target:${SHELL_DEST_PATH}
+      - name: Deploy modules
+        run: ssh target "${SHELL_DEST_PATH} ${TAR_NAME} gotea && rm -f ${SHELL_DEST_PATH}"
 
   notify:
     if: ${{ always() }}
@@ -115,7 +131,7 @@ jobs:
         with:
           status: ${{ env.WORKFLOW_CONCLUSION }}
           author_name: GitHub Actions
-          fields: author,message,ref,workflow
+          fields: message,ref
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
