@@ -1,6 +1,6 @@
 # Gotea (ゴティー)
 
-[![CircleCI](https://circleci.com/gh/gotoeveryone/gotea.svg?style=svg)](https://circleci.com/gh/gotoeveryone/gotea)
+![Build Status](https://github.com/gotoeveryone/gotea/workflows/Build/badge.svg)
 ![PHP from Packagist](https://img.shields.io/packagist/php-v/symfony/symfony.svg)
 [![CakePHP Version](https://img.shields.io/badge/cakephp-4.0-0366d6.svg)](https://book.cakephp.org/4.0/ja/index.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)

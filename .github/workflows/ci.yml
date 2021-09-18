@@ -39,7 +39,7 @@ jobs:
       - name: Execute code check
         run: npm run lint
 
-  test:
+  test_backend:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/gotoeveryone/composer-php:7.4
@@ -74,7 +74,7 @@ jobs:
     needs:
       - code_check_backend
       - code_check_frontend
-      - test
+      - test_backend
     steps:
       - uses: actions/checkout@v1
       - name: Install SSH Key
@@ -99,3 +99,23 @@ jobs:
           scp -r ~/${TAR_NAME} target:/tmp
           scp ./shell/deploy.sh target:/tmp/deploy-${GITHUB_RUN_NUMBER}.sh
           ssh target "/tmp/deploy-${GITHUB_RUN_NUMBER}.sh ${HOME_DIR} gotea"
+
+  notify:
+    if: ${{ always() }}
+    needs:
+      - code_check_backend
+      - code_check_frontend
+      - test_backend
+      - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v1
+      - name: Notify to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+          author_name: GitHub Actions
+          fields: author,message,ref,workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
