@@ -1,0 +1,4 @@
+- hosts: web
+  roles:
+    - setup_dir
+    - transfer_env

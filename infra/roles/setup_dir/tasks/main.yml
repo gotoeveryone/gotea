@@ -1,0 +1,20 @@
+- name: 'Create environment directory'
+  file:
+    path: '{{ hostvars[inventory_hostname].home }}/release/environment/gotea'
+    mode: u=rwx,g=rx,o=rx
+    state: directory
+- name: 'Create deploy directory'
+  file:
+    path: '{{ hostvars[inventory_hostname].home }}/release/link/gotea'
+    mode: u=rwx,g=rx,o=rx
+    state: directory
+- name: 'Create log directory'
+  file:
+    path: '{{ hostvars[inventory_hostname].home }}/release/log/gotea'
+    mode: u=rwx,g=rx,o=rx
+    state: directory
+- name: 'Create temp directory'
+  file:
+    path: '{{ hostvars[inventory_hostname].home }}/release/tmp/gotea'
+    mode: u=rwx,g=rx,o=rx
+    state: directory
