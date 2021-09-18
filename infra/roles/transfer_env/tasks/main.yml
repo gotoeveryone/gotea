@@ -1,0 +1,5 @@
+- name: 'Transfer environment file'
+  copy:
+    # from /.env.example
+    src: '.env'
+    dest: '{{ hostvars[inventory_hostname].home }}/release/environment/gotea/.env'
