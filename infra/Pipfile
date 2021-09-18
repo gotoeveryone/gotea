@@ -4,12 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ansible = "*"
+ansible = "~=4.5.0"
 
 [dev-packages]
+ansible-lint = "*"
 
 [requires]
 python_version = "3.9"
 
 [scripts]
+lint = "ansible-lint ./"
 setup = "ansible-playbook setup.yml -i hosts/server"

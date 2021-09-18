@@ -1,0 +1,32 @@
+name: Ansible
+
+on:
+  push:
+    paths:
+      - infra/**
+
+jobs:
+  ansible_lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Setup Pipenv
+        run: pip install pipenv
+      - name: Cache virtualenvs
+        uses: actions/cache@v1
+        id: pipenv_cache
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.OS }}-virtualenvs-${{ hashFiles('**/Pipfile.lock') }}
+      - name: Install Dependencies
+        if: steps.pipenv_cache.outputs.cache-hit != 'true'
+        run: pipenv install -d
+      - name: Execute Lint
+        run: pipenv run lint
