@@ -27,7 +27,7 @@ jobs:
       image: node:14.16.1
     steps:
       - uses: actions/checkout@v1
-      - name: Cache node modules
+      - name: Cache modules
         uses: actions/cache@v2
         id: node_cache
         with:
