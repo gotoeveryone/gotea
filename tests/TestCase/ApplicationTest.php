@@ -39,6 +39,7 @@ class ApplicationTest extends TestCase
         $this->assertSame('Shim', $plugins->get('Shim')->getName());
         $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
         $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
+        $this->assertSame('Connehito/CakeSentry', $plugins->get('Connehito/CakeSentry')->getName());
     }
 
     /**
