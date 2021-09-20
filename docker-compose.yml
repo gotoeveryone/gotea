@@ -1,7 +1,7 @@
 version: '3'
 services:
   backend:
-    image: gotoeveryone/composer-php:7.4
+    image: ghcr.io/gotoeveryone/composer-php:7.4
     volumes:
       - ./:/src
       - vendor:/src/vendor
