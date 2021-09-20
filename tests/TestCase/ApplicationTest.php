@@ -32,13 +32,14 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(6, $plugins);
+        $this->assertCount(7, $plugins);
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
         $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
         $this->assertSame('Shim', $plugins->get('Shim')->getName());
         $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
         $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
+        $this->assertSame('Connehito/CakeSentry', $plugins->get('Connehito/CakeSentry')->getName());
     }
 
     /**
