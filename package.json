@@ -1,35 +1,36 @@
 {
   "name": "gotea",
   "version": "1.0.0",
+  "private": true,
   "description": "gotea front development tools configuration",
-  "main": "resources/scripts/main.ts",
-  "engines": {
-    "node": ">=14 <15"
-  },
+  "author": "Kazuki Kamizuru",
   "scripts": {
-    "webpack": "webpack --config=./webpack.config.js",
+    "lint": "run-p -c lint:*",
     "dev": "npm run webpack -- --mode development -w",
-    "prod": "npm run webpack -- --mode production",
-    "lint": "run-p lint:*",
+    "format": "run-p -c format:*",
+    "format:scripts": "npm run lint:scripts -- --fix",
+    "format:styles": "npm run lint:styles -- --fix",
     "lint:scripts": "eslint --ext .ts,.vue ./resources/assets/scripts",
     "lint:styles": "stylelint \"./resources/assets/styles/**/*.scss\" \"./resources/assets/scripts/**/*.vue\"",
-    "format": "run-p format:*",
-    "format:scripts": "npm run lint:scripts -- --fix",
-    "format:styles": "npm run lint:styles -- --fix"
+    "prod": "npm run webpack -- --mode production",
+    "webpack": "webpack --config=./webpack.config.js"
   },
-  "author": "Kazuki Kamizuru",
-  "license": "MIT",
-  "private": true,
-  "dependencies": {},
+  "main": "resources/scripts/main.ts",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "dayjs": "^1.10.4",
+    "pikaday": "^1.7.0",
+    "vue": "^3.2.19",
+    "vuex": "^4.0.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@types/node": "^12.0.0",
     "@types/pikaday": "^1.6.5",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
-    "axios": "^0.21.4",
+    "@vue/compiler-sfc": "^3.2.19",
     "css-loader": "^6.2.0",
-    "dayjs": "^1.10.4",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-typescript": "^3.0.0",
@@ -39,7 +40,6 @@
     "fibers": "^5.0.0",
     "mini-css-extract-plugin": "^2.2.2",
     "npm-run-all": "^4.1.5",
-    "pikaday": "^1.7.0",
     "postcss": "^8.3.6",
     "prettier": "^2.3.2",
     "sass": "^1.39.0",
@@ -52,13 +52,15 @@
     "stylelint-scss": "^3.20.1",
     "ts-loader": "^9.2.5",
     "typescript": "^4.4.2",
-    "vue": "^2.5.17",
     "vue-eslint-parser": "^7.11.0",
-    "vue-loader": "^15.9.8",
-    "vue-template-compiler": "^2.5.17",
-    "vuex": "^3.0.1",
+    "vue-loader": "^16.8.1",
+    "vue-style-loader": "^4.1.3",
     "webpack": "^5.52.0",
     "webpack-cli": "^4.8.0",
     "webpack-remove-empty-scripts": "^0.7.1"
-  }
+  },
+  "engines": {
+    "node": ">=14 <15"
+  },
+  "license": "MIT"
 }
