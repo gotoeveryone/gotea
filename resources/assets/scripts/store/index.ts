@@ -1,5 +1,8 @@
-import { createStore  } from 'vuex';
+import Vue from 'vue';
+import Vuex from 'vuex';
 import { DialogOption, ModalOption, State } from '@/types';
+
+Vue.use(Vuex);
 
 const initialState: State = {
   modal: {
@@ -18,7 +21,7 @@ const initialState: State = {
   },
 };
 
-export default createStore({
+export default new Vuex.Store({
   state: Object.assign({}, initialState),
   getters: {
     modalOptions: state => () => {

@@ -1,10 +1,21 @@
 <template>
   <ul class="boxes">
-    <li class="label-row" v-text="text" />
+    <li
+      class="label-row"
+      v-text="text"
+    />
     <li class="detail_box">
       <div class="detail_box_item box-2">
-        <input :value="historyId" type="hidden" name="id">
-        <input :value="isTeamHidden ? 1 : 0" type="hidden" name="is_team">
+        <input
+          :value="historyId"
+          type="hidden"
+          name="id"
+        >
+        <input
+          :value="isTeamHidden ? 1 : 0"
+          type="hidden"
+          name="is_team"
+        >
         <div class="input number">
           <label for="target-year">対象年度</label>
           <input
@@ -20,7 +31,13 @@
       <div class="detail_box_item box-2">
         <div class="input number">
           <label for="holding">期</label>
-          <input v-model="holding" type="number" maxlength="4" class="holding" name="holding">
+          <input
+            v-model="holding"
+            type="number"
+            maxlength="4"
+            class="holding"
+            name="holding"
+          >
         </div>
       </div>
       <div class="detail_box_item box-2">
@@ -55,8 +72,15 @@
       </div>
       <div class="detail_box_item detail_box_item-buttons box-4">
         <div class="input checkbox">
-          <input name="is_official" value="0" type="hidden">
-          <label class="checkbox-label" for="official">
+          <input
+            name="is_official"
+            value="0"
+            type="hidden"
+          >
+          <label
+            class="checkbox-label"
+            for="official"
+          >
             <input
               id="official"
               :checked="isOfficial"
@@ -69,8 +93,16 @@
           </label>
         </div>
         <div class="input checkbox">
-          <input name="newest" value="0" type="hidden">
-          <label v-if="!edit" for="newest" class="checkbox-label">
+          <input
+            name="newest"
+            value="0"
+            type="hidden"
+          >
+          <label
+            v-if="!edit"
+            for="newest"
+            class="checkbox-label"
+          >
             <input
               v-if="!edit"
               id="newest"
@@ -83,15 +115,26 @@
           </label>
         </div>
         <div class="input">
-          <button v-if="edit" type="button" @click="clearData()">
+          <button
+            v-if="edit"
+            type="button"
+            @click="clearData()"
+          >
             編集をやめる
           </button>
-          <button :disabled="required" type="submit" class="button button-primary">
+          <button
+            :disabled="required"
+            type="submit"
+            class="button button-primary"
+          >
             保存
           </button>
         </div>
       </div>
-      <div v-if="isTeamHidden" class="detail_box_item">
+      <div
+        v-if="isTeamHidden"
+        class="detail_box_item"
+      >
         <div class="input text">
           <label for="win-group-name">優勝団体名</label>
           <input
@@ -103,18 +146,35 @@
           >
         </div>
       </div>
-      <div v-if="!isTeamHidden" class="detail_box_item box-3">
+      <div
+        v-if="!isTeamHidden"
+        class="detail_box_item box-3"
+      >
         <div class="input">
           <label>設定棋士名</label>
           <strong v-text="viewName" />
-          <input v-model="playerId" type="hidden" name="player_id">
-          <input v-model="countryId" type="hidden" name="country_id">
+          <input
+            v-model="playerId"
+            type="hidden"
+            name="player_id"
+          >
+          <input
+            v-model="countryId"
+            type="hidden"
+            name="country_id"
+          >
         </div>
       </div>
-      <div v-if="!isTeamHidden" class="detail_box_item box-2">
+      <div
+        v-if="!isTeamHidden"
+        class="detail_box_item box-2"
+      >
         <div class="input">
           <label>設定棋士出場国</label>
-          <select v-model="countryId" @change="changeCountry($event)">
+          <select
+            v-model="countryId"
+            @change="changeCountry($event)"
+          >
             <option
               v-for="country in countries"
               :key="country.id"
@@ -134,13 +194,22 @@
         <div class="detail_box_item box-3">
           <div class="input text">
             <label for="name">棋士名</label>
-            <input id="name" v-model="name" type="text" class="name">
+            <input
+              id="name"
+              v-model="name"
+              type="text"
+              class="name"
+            >
           </div>
         </div>
         <div class="detail_box_item box-7" />
         <div class="detail_box_item detail_box_item-buttons box-2">
           <div class="input">
-            <button type="button" class="button button-primary" @click="search()">
+            <button
+              type="button"
+              class="button button-primary"
+              @click="search()"
+            >
               検索
             </button>
           </div>
@@ -148,16 +217,37 @@
       </li>
       <li v-if="players.length">
         <ul class="table-body retentions">
-          <li v-for="(player, idx) in players" :key="idx" class="table-row">
-            <span class="retentions-name" v-text="getName(player)" />
-            <span class="retentions-name" v-text="player.nameEnglish" />
-            <span class="retentions-country" v-text="player.countryName" />
-            <span class="retentions-rank" v-text="player.rankName" />
-            <span class="retentions-sex" v-text="player.sex" />
+          <li
+            v-for="(player, idx) in players"
+            :key="idx"
+            class="table-row"
+          >
+            <span
+              class="retentions-name"
+              v-text="getName(player)"
+            />
+            <span
+              class="retentions-name"
+              v-text="player.nameEnglish"
+            />
+            <span
+              class="retentions-country"
+              v-text="player.countryName"
+            />
+            <span
+              class="retentions-rank"
+              v-text="player.rankName"
+            />
+            <span
+              class="retentions-sex"
+              v-text="player.sex"
+            />
             <span class="retentions-select">
-              <button class="button button-secondary" type="button" @click="select(player)">
-                選択
-              </button>
+              <button
+                class="button button-secondary"
+                type="button"
+                @click="select(player)"
+              >選択</button>
             </span>
           </li>
         </ul>
@@ -167,12 +257,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import axios from 'axios';
 
 import { Player } from '@/types/titles';
 
-export default defineComponent({
+export default Vue.extend({
   props: {
     isTeam: {
       type: Boolean,
@@ -218,7 +308,7 @@ export default defineComponent({
   watch: {
     historyId(_value: number) {
       if (_value) {
-        axios.get(`/api/histories/${_value}`).then((res) => {
+        axios.get(`/api/histories/${_value}`).then(res => {
           const json = res.data.response;
           this.isTeamHidden = this.getTeamHidden(json.isTeam);
           this.playerId = json.playerId;
@@ -238,7 +328,7 @@ export default defineComponent({
   mounted() {
     this.viewName = this.initialViewName;
     this.isTeamHidden = this.getTeamHidden(this.isTeam);
-    axios.get('/api/countries/').then((res) => (this.countries = res.data.response));
+    axios.get('/api/countries/').then(res => (this.countries = res.data.response));
   },
   methods: {
     changeCountry($event: Event) {
@@ -273,7 +363,7 @@ export default defineComponent({
         .post('/api/players', {
           name: this.name,
         })
-        .then((res) => {
+        .then(res => {
           const players = res.data.response.results;
           switch (players.length) {
             case 0:
@@ -290,7 +380,7 @@ export default defineComponent({
               break;
           }
         })
-        .catch((res) => {
+        .catch(res => {
           const message = res.data.response.message;
           this.$store.dispatch('openDialog', {
             messages: message || '更新に失敗しました…。',

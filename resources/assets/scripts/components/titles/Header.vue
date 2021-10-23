@@ -3,7 +3,11 @@
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label">対象国</label>
-        <select v-model="select.countryId" class="titles-country" @change="changeValue($event)">
+        <select
+          v-model="select.countryId"
+          class="titles-country"
+          @change="changeValue($event)"
+        >
           <option
             v-for="(country, idx) in countries"
             :key="idx"
@@ -29,7 +33,11 @@
       </div>
       <div class="search-box">
         <label class="search-box_label">終了棋戦</label>
-        <select v-model="select.searchClosed" class="titles-closed" @change="changeValue($event)">
+        <select
+          v-model="select.searchClosed"
+          class="titles-closed"
+          @change="changeValue($event)"
+        >
           <option
             v-for="(option, idx) in searchClosedOptions"
             :key="idx"
@@ -39,10 +47,18 @@
         </select>
       </div>
       <div v-if="isAdmin" class="search-box search-box-right">
-        <button class="button button-secondary" type="button" @click="add()">
+        <button
+          class="button button-secondary"
+          type="button"
+          @click="add()"
+        >
           行追加
         </button>
-        <button class="button button-primary" type="button" @click="json()">
+        <button
+          class="button button-primary"
+          type="button"
+          @click="json()"
+        >
           JSON出力
         </button>
       </div>
@@ -51,12 +67,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import axios from 'axios';
 
 import { Country, DropDown } from '@/types';
 
-export default defineComponent({
+export default Vue.extend({
   props: {
     isAdmin: {
       type: Boolean,
@@ -102,13 +118,13 @@ export default defineComponent({
   mounted() {
     axios
       .get('/api/countries/')
-      .then((res) =>
+      .then(res =>
         res.data.response.map((obj: Country) => ({
           value: obj.id,
           text: `${obj.name}棋戦`,
         })),
       )
-      .then((countries) => {
+      .then(countries => {
         this.countries = countries;
         this.select = {
           countryId: this.countries[0].value.toString() || '',

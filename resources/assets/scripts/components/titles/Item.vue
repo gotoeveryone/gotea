@@ -7,23 +7,11 @@
       <input v-model="localItem.nameEnglish" :disabled="!isAdmin" type="text" @change="save">
     </span>
     <span class="table-column table-column_holding">
-      <input
-        v-model="localItem.holding"
-        :disabled="!isAdmin"
-        type="text"
-        class="table-column_holding-input"
-        @change="save"
-      >
+      <input v-model="localItem.holding" :disabled="!isAdmin" type="text" class="table-column_holding-input" @change="save">
     </span>
     <span class="table-column table-column_winner" v-text="winnerName" />
     <span class="table-column table-column_order">
-      <input
-        v-model="localItem.sortOrder"
-        :disabled="!isAdmin"
-        type="text"
-        class="table-column_order-input"
-        @change="save"
-      >
+      <input v-model="localItem.sortOrder" :disabled="!isAdmin" type="text" class="table-column_order-input" @change="save">
     </span>
     <span class="table-column table-column_team">
       <input v-model="localItem.isTeam" :disabled="!isAdmin" type="checkbox" @change="save">
@@ -32,13 +20,7 @@
       <input v-model="localItem.htmlFileName" :disabled="!isAdmin" type="text" @change="save">
     </span>
     <span class="table-column table-column_holding">
-      <input
-        v-model="localItem.htmlFileHolding"
-        :disabled="!isAdmin"
-        type="text"
-        class="table-column_holding-input"
-        @change="save"
-      >
+      <input v-model="localItem.htmlFileHolding" :disabled="!isAdmin" type="text" class="table-column_holding-input" @change="save">
     </span>
     <span class="table-column table-column_modified">
       <input
@@ -51,12 +33,7 @@
       >
     </span>
     <span class="table-column table-column_closed">
-      <input
-        v-model="localItem.isClosed"
-        :disabled="!isAdmin || !isSaved"
-        type="checkbox"
-        @change="save"
-      >
+      <input v-model="localItem.isClosed" :disabled="!isAdmin || !isSaved" type="checkbox" @change="save">
     </span>
     <span class="table-column table-column_output">
       <input v-model="localItem.isOutput" :disabled="!isAdmin" type="checkbox" @change="save">
@@ -71,12 +48,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import Vue, { PropType } from 'vue';
 import axios from 'axios';
 
 import { TitleResultItem } from '@/types/titles';
 
-export default defineComponent({
+export default Vue.extend({
   props: {
     isAdmin: {
       type: Boolean,
@@ -121,7 +98,7 @@ export default defineComponent({
         return;
       }
       // 更新処理
-      return axios.put(`/api/titles/${this.localItem.id}`, this.item).catch((res) => {
+      return axios.put(`/api/titles/${this.localItem.id}`, this.item).catch(res => {
         const message = res.data.response.message;
         this.$store.dispatch('openDialog', {
           messages: message || '更新に失敗しました…。',
@@ -148,7 +125,7 @@ export default defineComponent({
             messages: `タイトル【${this.localItem.name}】を登録しました。`,
           });
         })
-        .catch((res) => {
+        .catch(res => {
           const message = res.data.response.message;
           this.$store.dispatch('openDialog', {
             messages: message || '登録に失敗しました…。',

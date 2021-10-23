@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import axios from 'axios';
 
 import RanksHeader from '@/components/ranks/Header.vue';
 import RanksItems from '@/components/ranks/Items.vue';
 import { RanksCondition } from '@/types/ranks';
 
-export default defineComponent({
+export default Vue.extend({
   components: {
     RanksHeader,
     RanksItems,
@@ -27,7 +27,7 @@ export default defineComponent({
     onSearch(_params: RanksCondition) {
       axios
         .get(`/api/players/ranks/${_params.country}`)
-        .then((res) => (this.items = res.data.response));
+        .then(res => (this.items = res.data.response));
     },
   },
 });

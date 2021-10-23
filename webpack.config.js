@@ -26,7 +26,7 @@ module.exports = () => {
       resolve: {
         extensions: ['.ts', '.vue', '.js'],
         alias: {
-          // vue$: 'vue/dist/vue.common',
+          vue$: 'vue/dist/vue.common',
           '@': scriptsDir,
         },
       },

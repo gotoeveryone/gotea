@@ -81,12 +81,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import axios from 'axios';
 
 import { Country, DropDown, Year } from '@/types';
 
-export default defineComponent({
+export default Vue.extend({
   props: {
     isAdmin: {
       type: Boolean,
@@ -125,7 +125,7 @@ export default defineComponent({
   mounted() {
     // 所属国
     Promise.all([axios.get('/api/countries'), axios.get('/api/years')])
-      .then((res) => {
+      .then(res => {
         this.countries = res[0].data.response.map((obj: Country) => ({
           value: obj.code,
           text: `${obj.name}棋戦`,
@@ -161,7 +161,7 @@ export default defineComponent({
       this.$emit('json', this.select);
     },
     useInputDate() {
-      const selected = this.years.find((y) => y.value === parseInt(this.select.year, 10));
+      const selected = this.years.find(y => y.value === parseInt(this.select.year, 10));
       return selected ? !selected.old : false;
     },
   },

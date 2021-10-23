@@ -33,11 +33,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import Vue, { PropType } from 'vue';
 
 import { RankingResultItem } from '@/types/ranking';
 
-export default defineComponent({
+export default Vue.extend({
   props: {
     items: {
       type: Array as PropType<RankingResultItem[]>,

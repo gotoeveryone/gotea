@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import axios from 'axios';
 
 import { Country, DropDown } from '@/types';
 
-export default defineComponent({
+export default Vue.extend({
   data: () => {
     return {
       countries: [] as DropDown[],
@@ -34,13 +34,13 @@ export default defineComponent({
   mounted() {
     axios
       .get('/api/countries/?has_title=1')
-      .then((res) =>
+      .then(res =>
         res.data.response.map((obj: Country) => ({
           value: obj.id,
           text: obj.name,
-        })),
+        }))
       )
-      .then((countries) => {
+      .then(countries => {
         this.countries = countries;
         this.select = {
           country: this.countries[0].value.toString() || '',
