@@ -1,7 +1,7 @@
-import { App } from '@vue/runtime-core';
+import Vue from 'vue';
 
-declare module '@vue/runtime-core' {
-  interface App {
+declare module 'vue/types/vue' {
+  interface Vue {
     openDialog: CallableFunction;
   }
 }
@@ -16,7 +16,7 @@ export interface Cake {
 }
 
 export interface Window {
-  App: App;
+  App: Vue;
   Cake: Cake;
 }
 

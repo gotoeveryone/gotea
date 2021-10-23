@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import Vue, { PropType } from 'vue';
 
 import { DialogOption } from '@/types';
 
-export default defineComponent({
+export default Vue.extend({
   directives: {
     focus: {
-      mounted: (el) => {
+      inserted: el => {
         el.focus();
       },
     },
