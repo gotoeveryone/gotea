@@ -63,16 +63,14 @@ jobs:
       - name: Install dependencies
         if: ${{ steps.vendor_cache.outputs.cache-hit != 'true' }}
         run: composer install
-      - name: Execute setup
-        run: cp .env.example .env
       - name: Execute test
         run: composer test
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
     env:
-      TAR_NAME: "gotea_${{ github.run_number }}.tar.gz"
-      SHELL_DEST_PATH: "~/deploy_${{ github.run_number }}.sh"
+      TAR_NAME: 'gotea_${{ github.run_number }}.tar.gz'
+      SHELL_DEST_PATH: '~/deploy_${{ github.run_number }}.sh'
     runs-on: ubuntu-latest
     needs:
       - code_check_backend
