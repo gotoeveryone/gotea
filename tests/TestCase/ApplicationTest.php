@@ -32,9 +32,10 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(7, $plugins);
+        $this->assertCount(8, $plugins);
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
+        $this->assertSame('Cake/Repl', $plugins->get('Cake/Repl')->getName());
         $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
         $this->assertSame('Shim', $plugins->get('Shim')->getName());
         $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
@@ -53,7 +54,7 @@ class ApplicationTest extends TestCase
 
         $app = $this->getMockBuilder(Application::class)
             ->setConstructorArgs([dirname(dirname(__DIR__)) . '/config'])
-            ->setMethods(['addPlugin'])
+            ->onlyMethods(['addPlugin'])
             ->getMock();
 
         $app->method('addPlugin')
