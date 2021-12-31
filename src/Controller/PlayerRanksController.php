@@ -38,10 +38,10 @@ class PlayerRanksController extends AppController
     /**
      * 登録処理
      *
-     * @param string $playerId 棋士ID
+     * @param int $playerId 棋士ID
      * @return \Cake\Http\Response|null
      */
-    public function create(string $playerId): ?Response
+    public function create(int $playerId): ?Response
     {
         $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->newEntity($data);
@@ -63,11 +63,11 @@ class PlayerRanksController extends AppController
     /**
      * 更新処理
      *
-     * @param string $playerId 棋士ID
-     * @param string $id 昇段情報ID
+     * @param int $playerId 棋士ID
+     * @param int $id 昇段情報ID
      * @return \Cake\Http\Response|null
      */
-    public function update(string $playerId, string $id): ?Response
+    public function update(int $playerId, int $id): ?Response
     {
         $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->get($id);

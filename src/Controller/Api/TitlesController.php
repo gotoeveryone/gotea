@@ -49,12 +49,12 @@ class TitlesController extends ApiController
     /**
      * タイトルを更新します。
      *
-     * @param string $id ID
+     * @param int $id ID
      * @return \Cake\Http\Response|null
      */
-    public function update(string $id): ?Response
+    public function update(int $id): ?Response
     {
-        $title = $this->Titles->createEntity((int)$id, $this->getRequest()->getParsedBody());
+        $title = $this->Titles->createEntity($id, $this->getRequest()->getParsedBody());
 
         if (!$this->Titles->save($title)) {
             return $this->renderError(400, $title->getValidateErrors());

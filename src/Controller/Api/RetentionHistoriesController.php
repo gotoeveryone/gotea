@@ -13,10 +13,10 @@ class RetentionHistoriesController extends ApiController
     /**
      * 履歴を1件取得します。
      *
-     * @param string $id ID
+     * @param int $id ID
      * @return \Cake\Http\Response 所属国一覧
      */
-    public function view(string $id)
+    public function view(int $id)
     {
         /** @var \Gotea\Model\Entity\RetentionHistory $history */
         $history = $this->RetentionHistories->get($id, [

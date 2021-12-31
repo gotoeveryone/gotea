@@ -27,10 +27,10 @@ class RetentionHistoriesController extends AppController
     /**
      * 登録・更新処理
      *
-     * @param string $id タイトルID
+     * @param int $id タイトルID
      * @return \Cake\Http\Response|null
      */
-    public function save(string $id)
+    public function save(int $id)
     {
         // エンティティ取得 or 生成
         $historyId = $this->getRequest()->getData('id', '');

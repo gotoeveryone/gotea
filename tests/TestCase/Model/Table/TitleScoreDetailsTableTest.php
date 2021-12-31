@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Table;
 
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -210,8 +210,8 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testFindRanking()
     {
         $country = $this->Countries->get(1);
-        $from = Date::createFromDate(2017, 1, 1);
-        $to = Date::createFromDate(2017, 12, 31);
+        $from = FrozenDate::createFromDate(2017, 1, 1);
+        $to = FrozenDate::createFromDate(2017, 12, 31);
         $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to);
 
         $this->assertGreaterThan(0, $ranking->count());
@@ -246,8 +246,8 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testFindRankingNoData()
     {
         $country = $this->Countries->get(1);
-        $from = Date::createFromDate(2018, 1, 1);
-        $to = Date::createFromDate(2018, 12, 31);
+        $from = FrozenDate::createFromDate(2018, 1, 1);
+        $to = FrozenDate::createFromDate(2018, 12, 31);
         $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to);
 
         $this->assertEquals(0, $ranking->count());
@@ -261,8 +261,8 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testRecent()
     {
         $country = $this->Countries->get(1);
-        $from = Date::createFromDate(2017, 1, 1);
-        $to = Date::createFromDate(2017, 12, 31);
+        $from = FrozenDate::createFromDate(2017, 1, 1);
+        $to = FrozenDate::createFromDate(2017, 12, 31);
         $recent = $this->TitleScoreDetails->findRecent($country, $from, $to);
 
         $this->assertNotEquals('', $recent);
@@ -276,8 +276,8 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testRecentNoData()
     {
         $country = $this->Countries->get(1);
-        $from = Date::createFromDate(2018, 1, 1);
-        $to = Date::createFromDate(2018, 12, 31);
+        $from = FrozenDate::createFromDate(2018, 1, 1);
+        $to = FrozenDate::createFromDate(2018, 12, 31);
         $recent = $this->TitleScoreDetails->findRecent($country, $from, $to);
 
         $this->assertEquals('', $recent);

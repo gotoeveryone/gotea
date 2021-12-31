@@ -170,10 +170,10 @@ class TitleScore extends AppEntity
      * 指定した棋士に合致するかを判定します。
      *
      * @param \Gotea\Model\Entity\Player|null $player 棋士
-     * @param string|null $id 棋士ID
+     * @param int|null $id 棋士ID
      * @return bool
      */
-    public function isSelected($player, $id = null)
+    public function isSelected($player, ?int $id)
     {
         if (!$player || !$id) {
             return false;

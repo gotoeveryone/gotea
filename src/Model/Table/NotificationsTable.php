@@ -48,31 +48,31 @@ class NotificationsTable extends AppTable
     {
         $validator
             ->nonNegativeInteger('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('title')
             ->maxLength('title', 100)
             ->requirePresence('title')
-            ->notEmpty('title');
+            ->notEmptyString('title');
 
         $validator
             ->scalar('content')
             ->requirePresence('content')
-            ->notEmpty('content');
+            ->notEmptyString('content');
 
         $validator
             ->boolean('is_draft')
-            ->notEmpty('is_draft');
+            ->notEmptyString('is_draft');
 
         $validator
             ->dateTime('published')
             ->requirePresence('published')
-            ->notEmpty('published');
+            ->notEmptyDateTime('published');
 
         $validator
             ->boolean('is_permanent')
-            ->notEmpty('is_permanent');
+            ->notEmptyString('is_permanent');
 
         return $validator;
     }
