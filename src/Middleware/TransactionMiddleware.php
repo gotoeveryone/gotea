@@ -39,6 +39,7 @@ class TransactionMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var \Cake\Database\Connection $conn */
         $conn = ConnectionManager::get($this->name);
 
         return $conn->enableSavePoints(true)

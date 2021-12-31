@@ -13,8 +13,8 @@ use Cake\I18n\FrozenDate;
  * @property int $player_id
  * @property string $player_name
  * @property string $division
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \Gotea\Model\Entity\TitleScore $title_score
  * @property \Gotea\Model\Entity\Player $player

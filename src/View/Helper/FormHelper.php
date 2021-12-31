@@ -27,7 +27,7 @@ class FormHelper extends BaseFormHelper
             'date' => '{{year}}{{month}}{{day}}',
             'datetime' => '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}{{meridian}}',
             // エラーメッセージは個別に出力しない
-            'error' => false,
+            'error' => '',
         ]);
         $this->addWidget('date', ['Gotea.DateTime', 'select']);
         $this->addWidget('datetime', ['Gotea.DateTime', 'select']);

@@ -7,8 +7,6 @@ use Cake\View\Cell;
 
 /**
  * 所属組織を表示するためのセル
- *
- * @property \Gotea\Model\Table\OrganizationsTable $Organizations
  */
 class OrganizationsCell extends Cell
 {
@@ -20,8 +18,9 @@ class OrganizationsCell extends Cell
      */
     public function display($attributes = [])
     {
-        $this->loadModel('Organizations');
-        $organizations = $this->Organizations->findSorted();
+        /** @var \Gotea\Model\Table\OrganizationsTable $table */
+        $table = $this->fetchTable('Organizations');
+        $organizations = $table->findSorted();
         $this->set(compact('organizations', 'attributes'));
     }
 }

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Command;
 
+use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
@@ -32,10 +32,10 @@ class PlayerRankCommand extends Command
     public function initialize(): void
     {
         parent::initialize();
-        $this->loadModel('Players');
-        $this->loadModel('PlayerRanks');
-        $this->loadModel('Countries');
-        $this->loadModel('Ranks');
+        $this->Players = $this->fetchTable('Players');
+        $this->PlayerRanks = $this->fetchTable('PlayerRanks');
+        $this->Countries = $this->fetchTable('Countries');
+        $this->Ranks = $this->fetchTable('Ranks');
     }
 
     /**

@@ -1,28 +1,30 @@
+<?php
+/**
+ * @var \Gotea\View\AppView $this
+ * @var \Gotea\Form\LoginForm $form
+ */
+?>
 <?= $this->Form->create($form, [
     'method' => 'post',
     'url' => ['_name' => 'login'],
 ]) ?>
 <div class="login-row">
-    <?=
-        $this->Form->control('account', [
-            'label' => [
-                'class' => 'login-label',
-                'text' => 'ID',
-            ],
-            'class' => 'login-account',
-        ]);
-    ?>
+    <?= $this->Form->control('account', [
+        'label' => [
+            'class' => 'login-label',
+            'text' => 'ID',
+        ],
+        'class' => 'login-account',
+    ]); ?>
 </div>
 <div class="login-row">
-    <?=
-        $this->Form->control('password', [
-            'label' => [
-                'class' => 'login-label',
-                'text' => 'Password',
-            ],
-            'class' => 'login-password',
-        ]);
-    ?>
+    <?= $this->Form->control('password', [
+        'label' => [
+            'class' => 'login-label',
+            'text' => 'Password',
+        ],
+        'class' => 'login-password',
+    ]); ?>
 </div>
 <div class="row button-row">
     <?= $this->Form->hidden('redirect', ['value' => $this->getRequest()->getQuery('redirect')]) ?>
