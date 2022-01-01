@@ -64,6 +64,7 @@ class PlayersController extends ApiController
         $request = $this->getRequest();
         $from = $request->getQuery('from');
         $to = $request->getQuery('to');
+        $type = $request->getQuery('type');
 
         // ランキングデータ取得
         $json = $this->getRankingData([
@@ -73,6 +74,7 @@ class PlayersController extends ApiController
             'from' => $from,
             'to' => $to,
             'ja' => true,
+            'type' => $type,
         ]);
 
         if (!$json) {
@@ -95,6 +97,7 @@ class PlayersController extends ApiController
         $request = $this->getRequest();
         $from = $request->getData('from');
         $to = $request->getData('to');
+        $type = $request->getData('type');
 
         // ランキングデータ取得
         $ranking = $this->getRankingData([
@@ -103,6 +106,7 @@ class PlayersController extends ApiController
             'limit' => $limit,
             'from' => $from,
             'to' => $to,
+            'type' => $type,
         ]);
 
         if (!$ranking) {
@@ -144,6 +148,7 @@ class PlayersController extends ApiController
         $from = Hash::get($params, 'from');
         $to = Hash::get($params, 'to');
         $withJa = Hash::get($params, 'ja', false);
+        $type = Hash::get($params, 'type', 'point');
 
         // 開始日・終了日の補填
         $from = $from ? FrozenDate::parse($from) : FrozenDate::createFromDate($year, 1, 1);
@@ -151,8 +156,8 @@ class PlayersController extends ApiController
 
         // ランキングデータの取得
         $ranking = $this->TitleScoreDetails
-            ->findRanking($country, $limit, $from, $to)
-            ->mapRanking($country->isWorlds(), $withJa);
+            ->findRanking($country, $limit, $from, $to, $type)
+            ->mapRanking($country->isWorlds(), $withJa, $type);
 
         // 最終更新日の取得
         $lastUpdate = $this->TitleScoreDetails->findRecent($country, $from, $to);

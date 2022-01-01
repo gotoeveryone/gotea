@@ -4,14 +4,10 @@ declare(strict_types=1);
 namespace Gotea\Test\TestCase\Model\Table;
 
 use Cake\I18n\FrozenDate;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
  * タイトル成績詳細モデルのテストケース
- *
- * @property \Gotea\Model\Table\CountriesTable $Countries
- * @property \Gotea\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
  */
 class TitleScoreDetailsTableTest extends TestCase
 {
@@ -54,11 +50,11 @@ class TitleScoreDetailsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Countries') ? [] : ['className' => 'Gotea\Model\Table\CountriesTable'];
-        $this->Countries = TableRegistry::getTableLocator()->get('Countries', $config);
+        $config = $this->getTableLocator()->exists('Countries') ? [] : ['className' => 'Gotea\Model\Table\CountriesTable'];
+        $this->Countries = $this->getTableLocator()->get('Countries', $config);
 
-        $config = TableRegistry::getTableLocator()->exists('TitleScoreDetails') ? [] : ['className' => 'Gotea\Model\Table\TitleScoreDetailsTable'];
-        $this->TitleScoreDetails = TableRegistry::getTableLocator()->get('TitleScoreDetails', $config);
+        $config = $this->getTableLocator()->exists('TitleScoreDetails') ? [] : ['className' => 'Gotea\Model\Table\TitleScoreDetailsTable'];
+        $this->TitleScoreDetails = $this->getTableLocator()->get('TitleScoreDetails', $config);
     }
 
     /**
@@ -68,6 +64,7 @@ class TitleScoreDetailsTableTest extends TestCase
      */
     public function tearDown(): void
     {
+        unset($this->Countries);
         unset($this->TitleScoreDetails);
 
         parent::tearDown();
@@ -207,12 +204,12 @@ class TitleScoreDetailsTableTest extends TestCase
      *
      * @return void
      */
-    public function testFindRanking()
+    public function testFindRankingByPoint()
     {
         $country = $this->Countries->get(1);
         $from = FrozenDate::createFromDate(2017, 1, 1);
         $to = FrozenDate::createFromDate(2017, 12, 31);
-        $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to);
+        $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to, 'point');
 
         $this->assertGreaterThan(0, $ranking->count());
 
@@ -232,6 +229,48 @@ class TitleScoreDetailsTableTest extends TestCase
                     $lose = 0;
                 }
             }
+            $win = $item->win_point;
+            $lose = $item->lose_point;
+            $this->assertEquals(2017, $item->target_year);
+        });
+    }
+
+    /**
+     * ランキングデータ取得（データ有り）
+     *
+     * @return void
+     */
+    public function testFindRankingByPercent()
+    {
+        $country = $this->Countries->get(1);
+        $from = FrozenDate::createFromDate(2017, 1, 1);
+        $to = FrozenDate::createFromDate(2017, 12, 31);
+        $ranking = $this->TitleScoreDetails->findRanking($country, 20, $from, $to, 'percent');
+
+        $this->assertGreaterThan(0, $ranking->count());
+
+        $percentage = null;
+        $win = null;
+        $lose = null;
+        $ranking->each(function ($item) use ($percentage, $win, $lose) {
+            // 0%は存在しない
+            $this->assertNotEquals($item->win_percent, 0);
+            if ($percentage !== null) {
+                $this->assertGreaterThanOrEqual($percentage, $item->win_percent);
+                // 勝率が同じ場合、勝数の昇順
+                if ($percentage === $item->win_percent) {
+                    $this->assertGreaterThanOrEqual($win, $item->win_point);
+                    // 勝数が同じ場合、敗数の昇順
+                    if ($win === $item->win_point) {
+                        $this->assertLessThanOrEqual($lose, $item->lose_point);
+                        $lose = $item->lose_point;
+                    } else {
+                        // 勝数が変わった場合は敗数を0に
+                        $lose = 0;
+                    }
+                }
+            }
+            $percentage = $item->win_percent;
             $win = $item->win_point;
             $lose = $item->lose_point;
             $this->assertEquals(2017, $item->target_year);

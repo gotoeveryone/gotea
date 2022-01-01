@@ -85,7 +85,7 @@ class TitleScoreDetailsTable extends AppTable
     public function findScores(Query $query)
     {
         return $query->contain('TitleScores')->select([
-            'player_id',
+            'player_id' => 'TitleScoreDetails.player_id',
             'target_year' => 'year(started)',
             'win_point' => $query->func()->count("(division = '勝' and is_official = 1) or null"),
             'lose_point' => $query->func()->count("(division = '敗' and is_official = 1) or null"),
@@ -129,21 +129,66 @@ class TitleScoreDetailsTable extends AppTable
      * @param int $limit 取得順位の上限
      * @param \Cake\I18n\FrozenDate $started 対局日FROM
      * @param \Cake\I18n\FrozenDate $ended 対局日TO
+     * @param string $type 種類（何順で表示するか）
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanking(Country $country, int $limit, FrozenDate $started, FrozenDate $ended)
+    public function findRanking(Country $country, int $limit, FrozenDate $started, FrozenDate $ended, $type = 'point')
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
             /** @var \Gotea\Model\Table\PlayerScoresTable $playerScores */
             $playerScores = TableRegistry::getTableLocator()->get('PlayerScores');
 
-            return $playerScores->findRanking($country, $started->year, $limit);
+            return $playerScores->findRanking($country, $started->year, $limit, $type);
         }
 
-        $query = $this->findScores($this->query())
+        // まずは基準となる値を取得する
+        $standardQuery = $this->findScores($this->query())
+            ->where([
+                'TitleScores.started >= ' => $started,
+                'TitleScores.ended <= ' => $ended,
+            ]);
+
+        if (!$country->isWorlds()) {
+            $standardQuery->innerJoinWith('Players')->innerJoinWith('Players.Countries')
+                ->where(['Countries.id' => $country->id]);
+        } else {
+            $standardQuery->where(['TitleScores.is_world' => true]);
+        }
+
+        $selectFields = $type === 'percent' ? 'win_point / (win_point + lose_point)' : 'win_point';
+        $value = $this->query()
+            ->from(['TitleScoreDetails' => $standardQuery])
+            ->select(['value' => $selectFields])
+            ->having(['value >' => 0])
+            ->orderDesc('value')
+            ->limit(1)
+            ->offset($limit - 1)
+            ->first();
+
+        // 取得したしきい値以上のデータを取得する
+        $scoreQuery = $this->findScores($this->query())
+            ->where([
+                'TitleScores.started >= ' => $started,
+                'TitleScores.ended <= ' => $ended,
+            ]);
+
+        if ($country->isWorlds()) {
+            $scoreQuery->where(['TitleScores.is_world' => true]);
+        }
+
+        $query = $this->query()
+            ->from(['TitleScoreDetails' => $scoreQuery])
             ->contain([
-                'Players', 'Players.Countries', 'Players.Ranks',
+                'Players',
+                'Players.Countries' => function ($q) use ($country) {
+                    if (!$country->isWorlds()) {
+                        return $q->where(['Countries.id' => $country->id]);
+                    }
+
+                    return $q;
+                },
+                'Players.Ranks',
                 'Players.PlayerRanks' => function ($q) use ($ended) {
                     // 抽出期間TOよりも前の段位を取得
                     return $q->where(['PlayerRanks.promoted <=' => $ended])
@@ -154,35 +199,34 @@ class TitleScoreDetailsTable extends AppTable
                     return $q->where(['Ranks.rank_numeric !=' => 1]);
                 },
             ])
+            ->select([
+                'player_id',
+                'target_year',
+                'win_point',
+                'lose_point',
+                'draw_point',
+                'win_percent' => 'win_point / (win_point + lose_point)',
+            ])
             ->select($this->Players)
             ->select($this->Players->Countries)
-            ->select($this->Players->Ranks)
-            ->where([
-                'TitleScores.started >= ' => $started,
-                'TitleScores.ended <= ' => $ended,
-            ]);
+            ->select($this->Players->Ranks);
 
-        $sub = $this->findScores($this->query());
-        $sub->select(['win_point' => $sub->func()->count("(division = '勝' and is_official = 1) or null")], true)
-            ->where([
-                'TitleScores.started >= ' => $started,
-                'TitleScores.ended <= ' => $ended,
-            ])
-            ->group(['player_id'], true)
-            ->having(['win_point >' => 0])
-            ->orderDesc('win_point')->limit(1)->offset($limit - 1);
-
-        if (!$country->isWorlds()) {
-            $query->where(['Countries.id' => $country->id]);
-            $sub->innerJoinWith('Players')->innerJoinWith('Players.Countries')
-                ->where(['Countries.id' => $country->id]);
+        if ($type === 'percent') {
+            $query->orderDesc('win_percent');
+            if ($value !== null) {
+                $query->having(['win_percent >=' => $value->value]);
+            } else {
+                $query->having(['win_percent >' => 0]);
+            }
         } else {
-            $query->where(['TitleScores.is_world' => true]);
-            $sub->where(['TitleScores.is_world' => true]);
+            if ($value !== null) {
+                $query->where(['win_point >=' => $value->value]);
+            } else {
+                $query->where(['win_point >' => 0]);
+            }
         }
 
         return $query
-            ->having(['win_point >= ' => $query->func()->coalesce([$sub, 1])])
             ->orderDesc('win_point')
             ->order(['lose_point'])
             ->orderDesc('Ranks.rank_numeric')

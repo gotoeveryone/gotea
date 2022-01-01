@@ -36,6 +36,7 @@ export default Vue.extend({
       const params = {
         from: _params.from || '',
         to: _params.to || '',
+        type: _params.type,
       };
 
       axios.get(this.createUrl(_params), { params: params }).then(res => {
@@ -53,6 +54,7 @@ export default Vue.extend({
       const params = {
         from: _params.from || '',
         to: _params.to || '',
+        type: _params.type,
       };
 
       axios

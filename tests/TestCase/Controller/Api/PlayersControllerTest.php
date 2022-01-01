@@ -152,6 +152,46 @@ class PlayersControllerTest extends ApiTestCase
     }
 
     /**
+     * ランキング作成（勝数順）
+     *
+     * @return void
+     */
+    public function testSearchRankingOrderOfPoint()
+    {
+        $this->get('/api/players/ranking/jp/2017/20?type=point');
+        $this->assertResponseCode(200);
+        $data = json_decode($this->_getBodyAsString())->response->ranking;
+        $this->assertGreaterThan(0, count($data));
+        $tmpPoint = null;
+        collection($data)->each(function ($item) use ($tmpPoint) {
+            if ($tmpPoint != null) {
+                $this->assertGreaterThanOrEqual($item->win, $tmpPoint);
+            }
+            $tmpPoint = $item->win;
+        });
+    }
+
+    /**
+     * ランキング作成（勝数順）
+     *
+     * @return void
+     */
+    public function testSearchRankingOrderOfPercentage()
+    {
+        $this->get('/api/players/ranking/jp/2017/20?type=percent');
+        $this->assertResponseCode(200);
+        $data = json_decode($this->_getBodyAsString())->response->ranking;
+        $this->assertGreaterThan(0, count($data));
+        $tmpPercentage = null;
+        collection($data)->each(function ($item) use ($tmpPercentage) {
+            if ($tmpPercentage != null) {
+                $this->assertGreaterThanOrEqual($item->percentage, $tmpPercentage);
+            }
+            $tmpPercentage = $item->percentage;
+        });
+    }
+
+    /**
      * ランキング取得（データあり・FROM指定）
      *
      * @return void
