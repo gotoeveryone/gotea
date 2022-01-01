@@ -205,12 +205,6 @@ class TitleScoreDetailsTable extends AppTable
                 'win_point',
                 'lose_point',
                 'draw_point',
-                'win_point_world',
-                'lose_point_world',
-                'draw_point_world',
-                'win_point_all',
-                'lose_point_all',
-                'draw_point_all',
                 'win_percent' => 'win_point / (win_point + lose_point)',
             ])
             ->select($this->Players)

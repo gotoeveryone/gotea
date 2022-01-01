@@ -97,7 +97,7 @@ class PlayersController extends ApiController
         $request = $this->getRequest();
         $from = $request->getData('from');
         $to = $request->getData('to');
-        $type = $request->getQuery('type');
+        $type = $request->getData('type');
 
         // ランキングデータ取得
         $ranking = $this->getRankingData([
