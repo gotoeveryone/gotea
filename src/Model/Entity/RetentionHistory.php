@@ -16,6 +16,7 @@ namespace Gotea\Model\Entity;
  * @property bool $is_team
  * @property \Cake\I18n\FrozenDate $acquired
  * @property bool $is_official
+ * @property \Cake\I18n\FrozenDate|null $broadcasted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -24,23 +25,12 @@ namespace Gotea\Model\Entity;
  * @property \Gotea\Model\Entity\Country|null $country
  * @property \Gotea\Model\Entity\Rank|null $rank
  *
- * @property string $team_label
  * @property string $winner_name
  */
 class RetentionHistory extends AppEntity
 {
     use PlayerTrait;
     use RankTrait;
-
-    /**
-     * 団体戦判定結果を取得します。
-     *
-     * @return string
-     */
-    protected function _getTeamLabel()
-    {
-        return __($this->is_team ? '（団体戦）' : '（個人戦）');
-    }
 
     /**
      * タイトル保持者を取得します。
@@ -66,6 +56,11 @@ class RetentionHistory extends AppEntity
      */
     public function isRecent(): bool
     {
+        // 放映日があればその値を基準に判定する
+        if ($this->broadcasted !== null) {
+            return $this->broadcasted->wasWithinLast('20 days');
+        }
+
         return $this->acquired->wasWithinLast('20 days');
     }
 }

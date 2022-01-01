@@ -10,17 +10,19 @@ namespace Gotea\Model\Entity;
  * @property int $title_id
  * @property string $name
  * @property string|null $result
- * @property \Cake\I18n\Time $started
- * @property \Cake\I18n\Time $ended
+ * @property \Cake\I18n\FrozenDate $started
+ * @property \Cake\I18n\FrozenDate $ended
  * @property bool $is_world
  * @property bool $is_official
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \Gotea\Model\Entity\Title $title
  * @property \Gotea\Model\Entity\Country $country
  * @property \Gotea\Model\Entity\TitleScoreDetail[] $title_score_details
  *
+ * @property int|null $winner_id
+ * @property int|null $loser_id
  * @property string $winner_name
  * @property string $loser_name
  * @property \Gotea\Model\Entity\TitleScoreDetail $win_detail
@@ -33,6 +35,36 @@ namespace Gotea\Model\Entity;
 class TitleScore extends AppEntity
 {
     use CountryTrait;
+
+    /**
+     * 勝者の棋士IDを取得します。
+     *
+     * @return int|null 勝者の棋士ID
+     */
+    protected function _getWinnerId()
+    {
+        $detail = $this->win_detail;
+        if ($detail) {
+            return $detail->player_id;
+        }
+
+        return null;
+    }
+
+    /**
+     * 敗者の棋士IDを取得します。
+     *
+     * @return int|null 敗者の棋士ID
+     */
+    protected function _getLoserId()
+    {
+        $detail = $this->lose_detail;
+        if ($detail) {
+            return $detail->player_id;
+        }
+
+        return null;
+    }
 
     /**
      * 勝者名を取得します。
@@ -138,10 +170,10 @@ class TitleScore extends AppEntity
      * 指定した棋士に合致するかを判定します。
      *
      * @param \Gotea\Model\Entity\Player|null $player 棋士
-     * @param string|null $id 棋士ID
+     * @param int|null $id 棋士ID
      * @return bool
      */
-    public function isSelected($player, $id = null)
+    public function isSelected($player, ?int $id)
     {
         if (!$player || !$id) {
             return false;

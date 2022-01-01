@@ -7,8 +7,6 @@ use Cake\View\Cell;
 
 /**
  * ナビゲーションに表示する情報
- *
- * @property \Gotea\Model\Table\PlayerRanksTable $PlayerRanks
  */
 class NavigationCell extends Cell
 {
@@ -27,8 +25,9 @@ class NavigationCell extends Cell
      */
     public function display()
     {
-        $this->loadModel('PlayerRanks');
-        $recents = $this->PlayerRanks
+        /** @var \Gotea\Model\Table\PlayerRanksTable $table */
+        $table = $this->fetchTable('PlayerRanks');
+        $recents = $table
             ->findRecentPromoted()
             ->reject(function ($item) {
                 // 入段日と昇段日が同じ（＝入段時点の段位の）場合は除外

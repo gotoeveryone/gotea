@@ -55,11 +55,11 @@ class TableTemplatesController extends AppController
     /**
      * 編集画面表示処理
      *
-     * @param string $id サロゲートキー
+     * @param int $id サロゲートキー
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function edit(string $id): ?Response
+    public function edit(int $id): ?Response
     {
         $tableTemplate = $this->TableTemplates->get($id, [
             'contain' => [],
@@ -92,11 +92,11 @@ class TableTemplatesController extends AppController
     /**
      * 更新処理
      *
-     * @param string $id サロゲートキー
+     * @param int $id サロゲートキー
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function update(string $id): ?Response
+    public function update(int $id): ?Response
     {
         $tableTemplate = $this->TableTemplates->get($id);
         $tableTemplate = $this->TableTemplates->patchEntity($tableTemplate, $this->getRequest()->getData());
@@ -114,11 +114,11 @@ class TableTemplatesController extends AppController
     /**
      * 削除処理
      *
-     * @param string $id サロゲートキー
+     * @param int $id サロゲートキー
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function delete(string $id): ?Response
+    public function delete(int $id): ?Response
     {
         $tableTemplate = $this->TableTemplates->get($id);
         if ($this->TableTemplates->delete($tableTemplate)) {

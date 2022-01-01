@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -45,7 +45,7 @@ class TitleScoreDetailsTable extends AppTable
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->requirePresence([
@@ -127,12 +127,12 @@ class TitleScoreDetailsTable extends AppTable
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param int $limit 取得順位の上限
-     * @param \Cake\I18n\Date $started 対局日FROM
-     * @param \Cake\I18n\Date $ended 対局日TO
+     * @param \Cake\I18n\FrozenDate $started 対局日FROM
+     * @param \Cake\I18n\FrozenDate $ended 対局日TO
      * @param string $type 種類（何順で表示するか）
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanking(Country $country, int $limit, Date $started, Date $ended, $type = 'point')
+    public function findRanking(Country $country, int $limit, FrozenDate $started, FrozenDate $ended, $type = 'point')
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
@@ -243,14 +243,15 @@ class TitleScoreDetailsTable extends AppTable
      * 最新データの対局日を取得します。
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
-     * @param \Cake\I18n\Date $started 対局日FROM
-     * @param \Cake\I18n\Date $ended 対局日TO
+     * @param \Cake\I18n\FrozenDate $started 対局日FROM
+     * @param \Cake\I18n\FrozenDate $ended 対局日TO
      * @return string|null
      */
-    public function findRecent(Country $country, Date $started, Date $ended)
+    public function findRecent(Country $country, FrozenDate $started, FrozenDate $ended)
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
+            /** @var \Gotea\Model\Table\UpdatedPointsTable $points */
             $points = TableRegistry::getTableLocator()->get('UpdatedPoints');
 
             return $points->findRecent($country, $started->year);
@@ -269,7 +270,7 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         return $query->select([
-            'max' => $query->func()->max('ended'),
+            'max' => $query->func()->max('ended', ['text']),
         ], true)->first()->max;
     }
 

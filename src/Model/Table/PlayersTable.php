@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -108,7 +108,7 @@ class PlayersTable extends AppTable
         // 新規作成時には昇段情報も登録
         if ($save && $new) {
             // 入段日を登録時段位の昇段日として設定
-            $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
+            $promoted = FrozenDate::parseDate($entity->joined, 'yyyyMMdd');
 
             // 入段日が完全な日付だった場合、棋士昇段情報へ登録
             if ($promoted !== null) {
@@ -187,6 +187,24 @@ class PlayersTable extends AppTable
 
         if (!Hash::get($data, 'is_retired', false)) {
             $query->where(['Players.is_retired' => 0]);
+        }
+
+        // ソート指定があれば適用
+        $fields = [
+            'id',
+            'joined',
+            'country_id',
+            'organization_id',
+            'rank_id',
+        ];
+        $sort = Hash::get($data, 'sort');
+        $direction = Hash::get($data, 'direction', 'asc');
+        if ($sort && in_array(strtolower($sort), $fields, true)) {
+            if (in_array(strtolower($direction), ['asc', 'desc'], true)) {
+                $query->order(["Players.${sort}" => $direction], true);
+            } else {
+                $query->order(["Players.${sort}" => 'asc'], true);
+            }
         }
 
         return $query;

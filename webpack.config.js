@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const EslintWebpackPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintBarePlugin = require('stylelint-bare-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 const webrootDir = path.join(__dirname, 'webroot');
@@ -31,22 +31,14 @@ module.exports = () => {
         },
       },
       stats: 'minimal',
-      plugins: [new VueLoaderPlugin(), new FriendlyErrorsWebpackPlugin()],
+      plugins: [
+        new VueLoaderPlugin(),
+        new EslintWebpackPlugin({
+          extensions: ['.ts', '.js', '.vue'],
+        }),
+      ],
       module: {
         rules: [
-          {
-            enforce: 'pre',
-            test: /\.(js|vue|ts)$/,
-            exclude: /node_modules/,
-            use: [
-              {
-                loader: 'eslint-loader',
-                options: {
-                  esModule: true,
-                },
-              },
-            ],
-          },
           {
             test: /\.ts$/,
             exclude: /node_modules|vue\/src/,
@@ -81,7 +73,15 @@ module.exports = () => {
                   esModule: false,
                 },
               },
-              'sass-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  implementation: require('sass'),
+                  sassOptions: {
+                    fiber: require('fibers'),
+                  },
+                },
+              },
               {
                 loader: 'sass-resources-loader',
                 options: {
@@ -112,8 +112,7 @@ module.exports = () => {
       },
       stats: 'minimal',
       plugins: [
-        new FixStyleOnlyEntriesPlugin(),
-        new FriendlyErrorsWebpackPlugin(),
+        new RemoveEmptyScriptsPlugin(),
         new MiniCssExtractPlugin({
           filename: '[name].css',
         }),
@@ -133,7 +132,15 @@ module.exports = () => {
                   esModule: false,
                 },
               },
-              'sass-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  implementation: require('sass'),
+                  sassOptions: {
+                    fiber: require('fibers'),
+                  },
+                },
+              },
             ],
           },
         ],

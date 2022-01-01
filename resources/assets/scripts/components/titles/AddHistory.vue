@@ -1,8 +1,8 @@
 <template>
   <ul class="boxes">
     <li
-      v-text="text"
       class="label-row"
+      v-text="text"
     />
     <li class="detail_box">
       <div class="detail_box_item box-2">
@@ -46,16 +46,31 @@
           <input
             id="acquired"
             v-model="acquired"
-            @change="saveDatepicker"
             type="text"
             maxlength="4"
             class="acquired datepicker"
             autocomplete="off"
             name="acquired"
+            @change="onChangeAcquired"
           >
         </div>
       </div>
       <div class="detail_box_item box-2">
+        <div class="input number">
+          <label for="acquired">放映日</label>
+          <input
+            id="broadcasted"
+            v-model="broadcasted"
+            type="text"
+            maxlength="4"
+            class="broadcasted datepicker"
+            autocomplete="off"
+            name="broadcasted"
+            @change="onChangeBroadcasted"
+          >
+        </div>
+      </div>
+      <div class="detail_box_item detail_box_item-buttons box-4">
         <div class="input checkbox">
           <input
             name="is_official"
@@ -77,9 +92,6 @@
             <span>公式戦</span>
           </label>
         </div>
-      </div>
-      <div class="detail_box_item box-1" />
-      <div class="detail_box_item detail_box_item-buttons box-3">
         <div class="input checkbox">
           <input
             name="newest"
@@ -92,9 +104,9 @@
             class="checkbox-label"
           >
             <input
+              v-if="!edit"
               id="newest"
               :disabled="required"
-              v-if="!edit"
               type="checkbox"
               name="newest"
               checked="checked"
@@ -104,9 +116,9 @@
         </div>
         <div class="input">
           <button
-            @click="clearData()"
             v-if="edit"
             type="button"
+            @click="clearData()"
           >
             編集をやめる
           </button>
@@ -160,8 +172,8 @@
         <div class="input">
           <label>設定棋士出場国</label>
           <select
-            @change="changeCountry($event)"
             v-model="countryId"
+            @change="changeCountry($event)"
           >
             <option
               v-for="country in countries"
@@ -194,9 +206,9 @@
         <div class="detail_box_item detail_box_item-buttons box-2">
           <div class="input">
             <button
-              @click="search()"
               type="button"
               class="button button-primary"
+              @click="search()"
             >
               検索
             </button>
@@ -211,30 +223,30 @@
             class="table-row"
           >
             <span
+              class="retentions-name"
               v-text="getName(player)"
-              class="retentions-name"
             />
             <span
+              class="retentions-name"
               v-text="player.nameEnglish"
-              class="retentions-name"
             />
             <span
-              v-text="player.countryName"
               class="retentions-country"
+              v-text="player.countryName"
             />
             <span
-              v-text="player.rankName"
               class="retentions-rank"
+              v-text="player.rankName"
             />
             <span
-              v-text="player.sex"
               class="retentions-sex"
+              v-text="player.sex"
             />
             <span class="retentions-select">
               <button
-                @click="select(player)"
                 class="button button-secondary"
                 type="button"
+                @click="select(player)"
               >選択</button>
             </span>
           </li>
@@ -269,6 +281,7 @@ export default Vue.extend({
       year: '' as number | string,
       holding: '' as number | string,
       acquired: '',
+      broadcasted: '',
       isOfficial: true,
       name: '',
       playerId: null as number | null,
@@ -304,6 +317,7 @@ export default Vue.extend({
           this.year = json.targetYear;
           this.acquired = json.acquired;
           this.isOfficial = json.isOfficial;
+          this.broadcasted = json.broadcasted;
           this.viewName = json.winPlayerName;
           this.teamName = json.winGroupName;
           this.edit = true;
@@ -324,10 +338,16 @@ export default Vue.extend({
     getTeamHidden(value: boolean) {
       return value ? '1' : '';
     },
-    saveDatepicker($event: Event) {
+    onChangeAcquired($event: Event) {
       const target = $event.target as HTMLInputElement;
       if (this.acquired !== target.value) {
         this.acquired = target.value;
+      }
+    },
+    onChangeBroadcasted($event: Event) {
+      const target = $event.target as HTMLInputElement;
+      if (this.broadcasted !== target.value) {
+        this.broadcasted = target.value;
       }
     },
     search() {
@@ -388,6 +408,7 @@ export default Vue.extend({
       this.holding = '';
       this.acquired = '';
       this.isOfficial = true;
+      this.broadcasted = '';
       this.name = '';
       this.playerId = null;
       this.countryId = null;

@@ -13,7 +13,7 @@ import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
 import { Window } from '@/types';
 
-declare var window: Window;
+declare let window: Window;
 
 /**
  * アプリケーションのVueインスタンス

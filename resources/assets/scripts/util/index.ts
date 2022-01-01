@@ -1,25 +1,27 @@
 import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
 
-import moment from 'moment';
-import 'moment/locale/ja';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ja';
 
 import { Window } from '@/types';
 
 // ロケールを設定
-moment.locale('ja');
+dayjs.locale('ja');
 
-declare var window: Window;
-declare var document: Document;
+declare let window: Window;
+declare let document: Document;
 
 // APIコールの設定
 window.Cake = window.Cake || {};
 
 // 日付選択オプション
 const pikadayOptions = (element: HTMLElement, birthday: boolean): Pikaday.PikadayOptions => {
-  const nowYear = moment().year();
+  const nowYear = dayjs().year();
   const startYear = birthday ? 1920 : nowYear - 10;
   const endYear = birthday ? nowYear - 5 : nowYear + 1;
+  const defaultDate = dayjs().set('years', birthday ? endYear : nowYear).toDate();
+  const maxDate = dayjs().set('years', endYear).toDate();
   return {
     field: element,
     i18n: {
@@ -45,8 +47,9 @@ const pikadayOptions = (element: HTMLElement, birthday: boolean): Pikaday.Pikada
     // closeText: '閉じる',
     // currentText: '今日',
     // weekHeader: '週',
-    minDate: moment('1920-01-01').toDate(),
-    maxDate: moment().toDate(),
+    minDate: dayjs('1920-01-01').toDate(),
+    defaultDate,
+    maxDate,
     format: 'YYYY/MM/DD',
     firstDay: 0,
     isRTL: false,

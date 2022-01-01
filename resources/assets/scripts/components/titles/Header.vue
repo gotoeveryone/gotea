@@ -4,14 +4,14 @@
       <div class="search-box">
         <label class="search-box_label">対象国</label>
         <select
-          @change="changeValue($event)"
           v-model="select.countryId"
           class="titles-country"
+          @change="changeValue($event)"
         >
           <option
+            v-for="(country, idx) in countries"
             :key="idx"
             :value="country.value"
-            v-for="(country, idx) in countries"
             v-text="country.text"
           />
         </select>
@@ -19,14 +19,14 @@
       <div class="search-box">
         <label class="search-box_label">非出力対象</label>
         <select
-          @change="changeValue($event)"
           v-model="select.searchNonOutput"
           class="titles-output"
+          @change="changeValue($event)"
         >
           <option
+            v-for="(option, idx) in searchNonOutputOptions"
             :key="idx"
             :value="option.value"
-            v-for="(option, idx) in searchNonOutputOptions"
             v-text="option.text"
           />
         </select>
@@ -34,30 +34,30 @@
       <div class="search-box">
         <label class="search-box_label">終了棋戦</label>
         <select
-          @change="changeValue($event)"
           v-model="select.searchClosed"
           class="titles-closed"
+          @change="changeValue($event)"
         >
           <option
+            v-for="(option, idx) in searchClosedOptions"
             :key="idx"
             :value="option.value"
-            v-for="(option, idx) in searchClosedOptions"
             v-text="option.text"
           />
         </select>
       </div>
       <div v-if="isAdmin" class="search-box search-box-right">
         <button
-          @click="add()"
           class="button button-secondary"
           type="button"
+          @click="add()"
         >
           行追加
         </button>
         <button
-          @click="json()"
           class="button button-primary"
           type="button"
+          @click="json()"
         >
           JSON出力
         </button>

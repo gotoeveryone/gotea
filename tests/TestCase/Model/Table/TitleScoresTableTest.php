@@ -243,19 +243,33 @@ class TitleScoresTableTest extends TestCase
             $this->assertEquals($item->ended->year, $year);
         });
 
-        // 棋士名
-        $name = 'test1 test2';
+        // 棋士名（1件）
+        $name1 = 'test1';
         $scores = $this->TitleScores->findMatches([
-            'name' => $name,
+            'name1' => $name1,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $names = explode(' ', $name);
-        $scores->each(function ($item) use ($names) {
-            $this->assertTrue(collection($names)
-                ->some(function ($value) use ($item) {
-                    return strpos($item->winner_name, $value) !== false
-                        || strpos($item->loser_name, $value) !== false;
-                }));
+        $scores->each(function ($item) use ($name1) {
+            $this->assertTrue(
+                strpos($item->winner_name, $name1) !== false || strpos($item->loser_name, $name1) !== false,
+            );
+        });
+
+        // 棋士名（2件）
+        $name1 = 'test1';
+        $name2 = 'test2';
+        $scores = $this->TitleScores->findMatches([
+            'name1' => $name1,
+            'name2' => $name2,
+        ]);
+        $this->assertGreaterThan(0, $scores->count());
+        $scores->each(function ($item) use ($name1, $name2) {
+            $this->assertTrue(
+                strpos($item->winner_name, $name1) !== false || strpos($item->loser_name, $name1) !== false,
+            );
+            $this->assertTrue(
+                strpos($item->winner_name, $name2) !== false || strpos($item->loser_name, $name2) !== false,
+            );
         });
 
         // タイトル名

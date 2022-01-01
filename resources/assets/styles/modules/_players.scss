@@ -1,6 +1,34 @@
 /* -------------------------------------------
    棋士情報検索
  ------------------------------------------- */
+// 列の幅
+$_columns: (
+  id: (
+    pc: 60px,
+  ),
+  country: (
+    pc: 70px,
+    sp: 50px,
+  ),
+  joined: (
+    pc: 95px,
+  ),
+  rank: (
+    pc: 60px,
+    sp: 50px,
+  ),
+  sex: (
+    pc: 60px,
+  ),
+  organization: (
+    pc: 100px,
+    sp: 50px,
+  ),
+  score: (
+    pc: 100px,
+  ),
+);
+
 .players {
   .search-header {
     .joined {
@@ -18,53 +46,58 @@
   }
 
   .table-column {
-    &_id {
-      width: 6%;
+    $w_specify_pc: 0;
+    $w_specify_sp: 0;
+
+    @each $name, $device_widths in $_columns {
+      $w_pc: map-get($device_widths, pc);
+      $w_sp: map-get($device_widths, sp);
+      &_#{$name} {
+        @include ellipsis();
+
+        @include sp() {
+          @if $w_sp == null {
+            // sp 用の幅が取得できないカラムは表示しない
+            display: none;
+          }
+
+          flex-basis: $w_sp;
+        }
+
+        flex-basis: $w_pc;
+      }
+      $w_specify_pc: $w_specify_pc + $w_pc;
+
+      @if $w_sp {
+        $w_specify_sp: $w_specify_sp + $w_sp;
+      }
+
+      // score は2列あるので再度加算する
+      @if $name == 'score' {
+        $w_specify_pc: $w_specify_pc + $w_pc;
+
+        @if $w_sp {
+          $w_specify_sp: $w_specify_sp + $w_sp;
+        }
+      }
+    }
+
+    &_id,
+    &_country,
+    &_organization,
+    &_rank,
+    &_sex {
       text-align: center;
     }
 
     &_name {
+      @include ellipsis();
+
       @include sp() {
-        width: 23%;
+        flex-basis: calc((100% - #{$w_specify_sp}) / 3);
       }
 
-      width: 20%;
-    }
-
-    &_country {
-      @include sp() {
-        width: 8%;
-      }
-
-      width: 6%;
-      text-align: center;
-    }
-
-    &_enrollment {
-      @include sp() {
-        width: 13%;
-      }
-
-      width: 10%;
-    }
-
-    &_rank,
-    &_sex {
-      @include sp() {
-        width: 7%;
-      }
-
-      width: 5%;
-      text-align: center;
-    }
-
-    &_organization {
-      @include sp() {
-        width: 13%;
-      }
-
-      width: 10%;
-      text-align: center;
+      flex-basis: calc((100% - #{$w_specify_pc}) / 3);
     }
 
     &_score {
@@ -76,27 +109,17 @@
       padding: 0;
       justify-content: space-around;
       flex-wrap: wrap;
-      width: 9%;
 
       &-summary {
-        width: 100%;
+        flex-basis: 100%;
         text-align: center;
       }
 
       &-point {
         padding: 0;
-        min-width: 20%;
+        flex-basis: calc(100% / 3);
         text-align: center;
       }
-    }
-
-    &_point {
-      @include sp() {
-        display: none;
-      }
-
-      width: 3%;
-      text-align: center;
     }
   }
 }

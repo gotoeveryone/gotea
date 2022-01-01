@@ -54,6 +54,10 @@ nbproject/*
 .sass-cache/
 # phpenv
 .php-version
+# nodenv
+.node-version
+# pyenv
+.python-version
 
 # phpunit cache
 .phpunit.result.cache

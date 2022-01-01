@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
@@ -149,15 +150,40 @@ class TitleScoresTable extends AppTable
             });
         }
 
-        $name = Hash::get($data, 'name');
-        if ($name) {
-            $query->innerJoinWith('TitleScoreDetails', function (Query $q) use ($name) {
-                return $q->where([
-                    'OR' => collection(explode(' ', $name))
-                        ->map(function ($param) {
-                            return ['TitleScoreDetails.player_name LIKE' => "%{$param}%"];
-                        })->toArray(),
-                ]);
+        // 棋士名は複数設定されているかどうかで抽出条件を変更する
+        $name1 = Hash::get($data, 'name1');
+        $name2 = Hash::get($data, 'name2');
+        if ($name1 && $name2) {
+            $query->join([
+                's' => [
+                    'type' => 'INNER',
+                    'table' => $this->TitleScoreDetails->find()->select([
+                        'title_score_id' => 'title_score_id',
+                        'player_names' => $query->func()->group_concat([
+                            'player_name separator \'/\'' => 'identifier',
+                        ]),
+                    ])->group('title_score_id')->having([
+                        'OR' => [
+                            ["player_names LIKE '%{$name1}%/%{$name2}%'"],
+                            ["player_names LIKE '%{$name2}%/%{$name1}%'"],
+                        ],
+                    ]),
+                    'conditions' => 's.title_score_id = TitleScores.id',
+                ],
+            ]);
+        } elseif ($name1 || $name2) {
+            $name = $name1 ? $name1 : $name2;
+            $query->where(function (QueryExpression $exp) use ($name) {
+                $q = $this->TitleScoreDetails->find();
+
+                return $exp->exists(
+                    $q
+                        ->select(['X' => 1])
+                        ->where([
+                            'TitleScoreDetails.title_score_id = TitleScores.id',
+                            'TitleScoreDetails.player_name LIKE' => "%{$name}%",
+                        ]),
+                );
             });
         }
 

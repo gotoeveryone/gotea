@@ -29,6 +29,15 @@ class PlayersControllerTest extends ApiTestCase
     ];
 
     /**
+     * @inheritDoc
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->createSession();
+    }
+
+    /**
      * 棋士と段位の一覧取得（不正パラメータ）
      *
      * @return void

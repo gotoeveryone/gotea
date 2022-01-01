@@ -33,11 +33,11 @@ class PaginatorHelper extends BaseHelper
             'number' => '<li class="pager-item"><a class="pager-item-link" href="{{url}}">{{text}}</a></li>',
             'current' => '<li class="pager-item active"><a class="pager-item-link">{{text}}</a></li>',
             'ellipsis' => '<li class="pager-item ellipsis">&hellip;</li>',
-            'sort' => '<a class="pager-item-link" href="{{url}}">{{text}}</a>',
-            'sortAsc' => '<a class="pager-item-link" class="asc" href="{{url}}">{{text}}</a>',
-            'sortDesc' => '<a class="pager-item-link" class="desc" href="{{url}}">{{text}}</a>',
-            'sortAscLocked' => '<a class="pager-item-link" class="asc locked" href="{{url}}">{{text}}</a>',
-            'sortDescLocked' => '<a class="pager-item-link" class="desc locked" href="{{url}}">{{text}}</a>',
+            'sort' => '<a class="sort" href="{{url}}"><span>{{text}}</span></span></a>',
+            'sortAsc' => '<a class="sort asc" href="{{url}}"><span class="material-icons">arrow_drop_up</span><span>{{text}}</span></a>',
+            'sortDesc' => '<a class="sort desc" href="{{url}}"><span class="material-icons">arrow_drop_down</span><span>{{text}}</span></a>',
+            'sortAscLocked' => '<a class="sort asc locked" href="{{url}}"><span class="material-icons">arrow_drop_up</span><span>{{text}}</span></a>',
+            'sortDescLocked' => '<a class="sort desc locked" href="{{url}}"><span class="material-icons">arrow_drop_down</span><span>{{text}}</span></a>',
         ],
     ];
     // phpcs:enable Generic.Files.LineLength.TooLong

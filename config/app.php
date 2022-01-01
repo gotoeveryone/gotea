@@ -405,4 +405,9 @@ return [
         'defaults' => 'php',
         'timeout' => 30,
     ],
+
+    'Sentry' => [
+        'dsn' => env('SENTRY_DSN'),
+        'environment' => env('CAKE_ENV', 'local'),
+    ],
 ];

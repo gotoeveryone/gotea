@@ -61,8 +61,8 @@
       <div class="search-box">
         <input
           v-model="select.from"
-          @change="changeValue($event)"
           :disabled="!useInputDate()"
+          @change="changeValue($event)"
           type="text"
           name="from"
           class="ranking_date datepicker"
@@ -71,8 +71,8 @@
         <span class="ranking_date-duration">～</span>
         <input
           v-model="select.to"
-          @change="changeValue($event)"
           :disabled="!useInputDate()"
+          @change="changeValue($event)"
           type="text"
           name="to"
           class="ranking_date datepicker"

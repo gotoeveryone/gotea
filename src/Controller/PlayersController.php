@@ -27,10 +27,10 @@ class PlayersController extends AppController
     {
         parent::initialize();
 
-        $this->loadModel('Countries');
-        $this->loadModel('Ranks');
-        $this->loadModel('Organizations');
-        $this->loadModel('TitleScores');
+        $this->Countries = $this->fetchTable('Countries');
+        $this->Ranks = $this->fetchTable('Ranks');
+        $this->Organizations = $this->fetchTable('Organizations');
+        $this->TitleScores = $this->fetchTable('TitleScores');
 
         $this->loadComponent('Paginator');
     }
@@ -134,12 +134,12 @@ class PlayersController extends AppController
     /**
      * 詳細表示処理
      *
-     * @param string $id 取得するデータのID
+     * @param int $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function view(string $id): ?Response
+    public function view(int $id): ?Response
     {
-        $player = $this->Players->findByIdWithRelation((int)$id);
+        $player = $this->Players->findByIdWithRelation($id);
 
         return $this->set(compact('player'))->withRanks()->renderWithDialog();
     }
@@ -182,14 +182,14 @@ class PlayersController extends AppController
     /**
      * 棋士の更新処理
      *
-     * @param string $id 対象の棋士ID
+     * @param int $id 対象の棋士ID
      * @return \Cake\Http\Response|null
      */
-    public function update(string $id): ?Response
+    public function update(int $id): ?Response
     {
         // エンティティ取得
         $data = $this->getRequest()->getParsedBody();
-        $player = $this->Players->findByIdWithRelation((int)$id);
+        $player = $this->Players->findByIdWithRelation($id);
         $this->Players->patchEntity($player, $data);
 
         // 失敗

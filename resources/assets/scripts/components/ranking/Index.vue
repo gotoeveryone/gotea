@@ -1,6 +1,6 @@
 <template>
   <section class="ranking">
-    <ranking-header :is-admin="isAdmin" :lastUpdate="lastUpdate" @search="onSearch" @json="outputJson" />
+    <ranking-header :is-admin="isAdmin" :last-update="lastUpdate" @search="onSearch" @json="outputJson" />
     <ranking-items :items="items" />
   </section>
 </template>
@@ -8,7 +8,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import RankingHeader from '@/components/ranking/Header.vue';
 import RankingItems from '@/components/ranking/Items.vue';
@@ -42,7 +42,7 @@ export default Vue.extend({
       axios.get(this.createUrl(_params), { params: params }).then(res => {
         const json = res.data.response;
         if (json.lastUpdate) {
-          const dateObj = moment(json.lastUpdate);
+          const dateObj = dayjs(json.lastUpdate);
           this.lastUpdate = dateObj.format('YYYY年MM月DD日');
         } else {
           this.lastUpdate = '';

@@ -43,11 +43,28 @@ class RetentionHistoryTest extends TestCase
     }
 
     /**
-     * Test isRecent method
+     * Test isRecent method if `broadcasted` field has value
      *
      * @return void
      */
-    public function testIsRecent()
+    public function testIsRecentHasBroadcasted()
+    {
+        $this->RetentionHistory->broadcasted = FrozenDate::now();
+        $this->assertTrue($this->RetentionHistory->isRecent());
+
+        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDay(20);
+        $this->assertTrue($this->RetentionHistory->isRecent());
+
+        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDay(21);
+        $this->assertFalse($this->RetentionHistory->isRecent());
+    }
+
+    /**
+     * Test isRecent method if `broadcasted` field not has value
+     *
+     * @return void
+     */
+    public function testIsRecentNoHasBroadcasted()
     {
         $this->RetentionHistory->acquired = FrozenDate::now();
         $this->assertTrue($this->RetentionHistory->isRecent());

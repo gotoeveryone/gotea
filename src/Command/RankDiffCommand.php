@@ -4,15 +4,14 @@ declare(strict_types=1);
 namespace Gotea\Command;
 
 use Cake\Collection\Collection;
+use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Core\Configure;
 use Cake\Http\Client as HttpClient;
 use Cake\Http\Exception\HttpException;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
-use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Gotea\Model\Entity\Country;
@@ -33,18 +32,16 @@ use Throwable;
  */
 class RankDiffCommand extends Command
 {
-    use MailerAwareTrait;
-
     /**
      * @inheritDoc
      */
     public function initialize(): void
     {
         parent::initialize();
-        $this->loadModel('Players');
-        $this->loadModel('Countries');
-        $this->loadModel('Ranks');
-        $this->loadModel('Organizations');
+        $this->Players = $this->fetchTable('Players');
+        $this->Countries = $this->fetchTable('Countries');
+        $this->Ranks = $this->fetchTable('Ranks');
+        $this->Organizations = $this->fetchTable('Organizations');
     }
 
     /**
@@ -56,8 +53,9 @@ class RankDiffCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $mailer = $this->getMailer('User');
         $today = FrozenDate::now()->format('Ymd');
+        $url = Configure::read('App.slack.notifyUrl');
+        $client = new HttpClient();
         try {
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
@@ -72,10 +70,8 @@ class RankDiffCommand extends Command
                 return $this->getDiff($item, $diffs);
             });
 
-            if (Configure::read('App.slack.notifyUrl') && !$results->unfold()->isEmpty()) {
-                $client = new HttpClient();
-                $url = Configure::read('App.slack.notifyUrl');
-                $response = $client->post($url, json_encode([
+            if ($url && !$results->unfold()->isEmpty()) {
+                $client->post($url, json_encode([
                     'username' => 'gotea',
                     'link_names' => true,
                     'text' => $this->getNotifyContent($results),
@@ -90,9 +86,16 @@ class RankDiffCommand extends Command
         } catch (Throwable $ex) {
             Log::error($ex->getMessage());
 
-            if (!Configure::read('debug')) {
-                $subject = "【自動通知】${today}_棋士段位差分抽出_異常終了";
-                $mailer->send('error', [$subject, $ex]);
+            if ($url) {
+                $client->post($url, json_encode([
+                    'username' => 'gotea',
+                    'link_names' => true,
+                    'text' => '段位差分抽出時にエラーが発生しました。',
+                ]), [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
             }
 
             throw $ex;
@@ -224,7 +227,7 @@ class RankDiffCommand extends Command
         $results = [];
         $rank = null;
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.taiwan'));
-        $crawler->filter('.post-body.entry-content div:first-child div')
+        $crawler->filter('.post-body.entry-content div:first-child > div')
             ->each(function (Crawler $node) use (&$results, &$rank, $ranks) {
                 // テキストが設定されている場合のみ処理する
                 $text = trim($node->text());

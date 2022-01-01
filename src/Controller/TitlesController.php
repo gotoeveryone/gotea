@@ -38,12 +38,12 @@ class TitlesController extends AppController
     /**
      * 詳細表示処理
      *
-     * @param string $id 取得するデータのID
+     * @param int $id 取得するデータのID
      * @return \Cake\Http\Response|null
      */
-    public function view(string $id): ?Response
+    public function view(int $id): ?Response
     {
-        $title = $this->Titles->findByIdWithRelation((int)$id);
+        $title = $this->Titles->findByIdWithRelation($id);
 
         return $this->set(compact('title'))->renderWithDialog();
     }
@@ -51,13 +51,13 @@ class TitlesController extends AppController
     /**
      * 更新処理
      *
-     * @param string $id タイトルID
+     * @param int $id タイトルID
      * @return \Cake\Http\Response|null
      */
-    public function update(string $id): ?Response
+    public function update(int $id): ?Response
     {
         // データ取得
-        $title = $this->Titles->findByIdWithRelation((int)$id);
+        $title = $this->Titles->findByIdWithRelation($id);
         $this->Titles->patchEntity($title, $this->getRequest()->getParsedBody());
 
         // 保存

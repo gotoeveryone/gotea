@@ -76,6 +76,7 @@ class Application extends BaseApplication implements
         $this->addPlugin('Shim');
         $this->addPlugin('Authentication');
         $this->addPlugin('Authorization');
+        $this->addPlugin('Connehito/CakeSentry');
     }
 
     /**
@@ -149,6 +150,14 @@ class Application extends BaseApplication implements
     {
         try {
             $this->addPlugin('Bake');
+
+            /*
+             * Only try to load DebugKit in development mode
+             * Debug Kit should not be installed on a production system
+             */
+            if (Configure::read('debug')) {
+                $this->addPlugin('Cake/Repl');
+            }
         } catch (MissingPluginException $e) {
             // Do not halt if the plugin is missing
         }

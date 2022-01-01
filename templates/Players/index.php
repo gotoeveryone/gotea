@@ -114,14 +114,33 @@ $isAdmin = $this->isAdmin();
     <div class="search-results">
         <ul class="players table-header">
             <li class="table-row">
-                <span class="table-column table-column_id"><?= __d('model', 'id') ?></span>
-                <span class="table-column table-column_name"><?= __d('model', 'name') ?></span>
-                <span class="table-column table-column_name"><?= __d('model', 'name_english') ?></span>
-                <span class="table-column table-column_enrollment"><?= __d('model', 'joined') ?></span>
-                <span class="table-column table-column_country"><?= __d('model', 'country_id') ?></span>
-                <span class="table-column table-column_organization"><?= __d('model', 'organization_id') ?></span>
-                <span class="table-column table-column_rank"><?= __d('model', 'rank_id') ?></span>
-                <span class="table-column table-column_sex"><?= __d('model', 'sex') ?></span>
+                <span class="table-column table-column_id" title="<?= __d('model', 'id') ?>">
+                    <?= $this->Paginator->sort('id', __d('model', 'id')) ?>
+                </span>
+                <span class="table-column table-column_name" title="<?= __d('model', 'name') ?>">
+                    <?= __d('model', 'name') ?>
+                </span>
+                <span class="table-column table-column_name" title="<?= __d('model', 'name_english') ?>">
+                    <?= __d('model', 'name_english') ?>
+                </span>
+                <span class="table-column table-column_name" title="<?= __d('model', 'name_other') ?>">
+                    <?= __d('model', 'name_other') ?>
+                </span>
+                <span class="table-column table-column_joined" title="<?= __d('model', 'joined') ?>">
+                    <?= $this->Paginator->sort('joined', __d('model', 'joined')) ?>
+                </span>
+                <span class="table-column table-column_country" title="<?= __d('model', 'country_id') ?>">
+                    <?= $this->Paginator->sort('country_id', __d('model', 'country_id')) ?>
+                </span>
+                <span class="table-column table-column_organization" title="<?= __d('model', 'organization_id') ?>">
+                    <?= $this->Paginator->sort('organization_id', __d('model', 'organization_id')) ?>
+                </span>
+                <span class="table-column table-column_rank">
+                    <?= $this->Paginator->sort('rank_id', __d('model', 'rank_id')) ?>
+                </span>
+                <span class="table-column table-column_sex">
+                    <?= __d('model', 'sex') ?>
+                </span>
                 <span class="table-column table-column_score">
                     <div class="table-column table-column_score-summary"><?= date('Y') ?>年国内</div>
                     <span class="table-column table-column_score-point">勝</span>
@@ -140,30 +159,33 @@ $isAdmin = $this->isAdmin();
             <ul class="players table-body">
                 <?php foreach ($players as $player) : ?>
                     <li class="table-row<?= ($player->is_retired ? ' table-row-retired' : '') ?>">
-                        <span class="table-column table-column_id">
+                        <span class="table-column table-column_id" title="<?= $player->id ?>">
                             <?= h($player->id) ?>
                         </span>
-                        <span class="table-column table-column_name">
+                        <span class="table-column table-column_name" title="<?= $player->name ?>">
                             <a class="view-link<?= ($player->isFemale() ? ' female' : '') ?>" @click="openModal('<?= $this->Url->build(['_name' => 'view_player', $player->id]) ?>')">
                                 <?= h($player->name) ?>
                             </a>
                         </span>
-                        <span class="table-column table-column_name">
+                        <span class="table-column table-column_name" title="<?= $player->name_english ?>">
                             <?= h($player->name_english) ?>
                         </span>
-                        <span class="table-column table-column_enrollment">
+                        <span class="table-column table-column_name" title="<?= $player->name_other ?>">
+                            <?= h($player->name_other) ?>
+                        </span>
+                        <span class="table-column table-column_joined" title="<?= $player->format_joined ?>">
                             <?= h($player->format_joined) ?>
                         </span>
-                        <span class="table-column table-column_country">
+                        <span class="table-column table-column_country" title="<?= $player->country->name ?>">
                             <?= h($player->country->name) ?>
                         </span>
-                        <span class="table-column table-column_organization">
+                        <span class="table-column table-column_organization" title="<?= $player->organization->name ?>">
                             <?= h($player->organization->name) ?>
                         </span>
-                        <span class="table-column table-column_rank">
+                        <span class="table-column table-column_rank" title="<?= $player->rank->name ?>">
                             <?= h($player->rank->name) ?>
                         </span>
-                        <span class="table-column table-column_sex">
+                        <span class="table-column table-column_sex" title="<?= $player->sex ?>">
                             <?= h($player->sex) ?>
                         </span>
                         <span class="table-column table-column_score">

@@ -18,15 +18,15 @@
         <span class="table-column table-column_player">
           <a
             :class="getSexClass(item)"
+            class="view-link"
             @click="select(item)"
             v-text="item.name"
-            class="view-link"
           />
         </span>
-        <span v-text="item.win" class="table-column table-column_point" />
-        <span v-text="item.lose" class="table-column table-column_point" />
-        <span v-text="item.draw" class="table-column table-column_point" />
-        <span v-text="item.percentage" class="table-column table-column_percent" />
+        <span class="table-column table-column_point" v-text="item.win" />
+        <span class="table-column table-column_point" v-text="item.lose" />
+        <span class="table-column table-column_point" v-text="item.draw" />
+        <span class="table-column table-column_percent" v-text="item.percentage" />
       </li>
     </ul>
   </div>

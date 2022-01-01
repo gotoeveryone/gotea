@@ -3,6 +3,7 @@
  ------------------------------------------- */
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP');
 @import url('https://fonts.googleapis.com/css?family=Maitree');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 * {
   @include sp() {
@@ -132,5 +133,10 @@ button {
   padding: 0.3rem 0.8rem;
   border: 1px solid darken($c_gray, 15%);
   border-radius: 5px;
+  cursor: pointer;
+}
+
+a {
+  color: $c_blue;
   cursor: pointer;
 }

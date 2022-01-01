@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
@@ -14,6 +15,7 @@ class AddNameWithRankIdToTitleScoreDetails extends AbstractMigration
      *
      * More information on this method is available here:
      * http://docs.phinx.org/en/latest/migrations.html#the-change-method
+     *
      * @return void
      */
     public function change()
@@ -51,7 +53,7 @@ class AddNameWithRankIdToTitleScoreDetails extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();

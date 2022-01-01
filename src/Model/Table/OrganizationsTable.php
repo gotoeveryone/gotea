@@ -28,7 +28,7 @@ class OrganizationsTable extends AppTable
      */
     public function validationDefault(Validator $validator): Validator
     {
-        return $validator->notEmpty('name', '組織名は必須です。');
+        return $validator->notEmptyString('name', '組織名は必須です。');
     }
 
     /**

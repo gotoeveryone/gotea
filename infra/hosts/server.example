@@ -1,0 +1,6 @@
+[web]
+x.x.x.x ansible_port=22
+
+[web:vars]
+ansible_ssh_user=user
+home=/home/user
