@@ -171,10 +171,14 @@ return static function (RouteBuilder $routes) {
 
         $routes->get('/countries', ['controller' => 'Countries', 'action' => 'index'], 'api_countries');
 
+        $routes->get('/organizations', ['controller' => 'Organizations', 'action' => 'index'], 'api_organizations');
+
         $routes->get('/ranks', ['controller' => 'Ranks', 'action' => 'index'], 'api_ranks');
 
         $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
             $routes->post('/', ['action' => 'search'], 'api_players');
+            $routes->get('/{id}', ['action' => 'view'], 'api_player')
+                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
             $routes->get('/ranking/{country}/{year}/{limit}', ['controller' => 'Players', 'action' => 'searchRanking'], 'api_ranking')
                 ->setPatterns(['year' => RouteBuilder::ID, 'limit' => RouteBuilder::ID])
                 ->setPass(['country', 'year', 'limit']);

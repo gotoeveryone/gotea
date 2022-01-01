@@ -86,6 +86,19 @@ class PlayersController extends ApiController
     }
 
     /**
+     * 詳細表示処理
+     *
+     * @param int $id 取得するデータのID
+     * @return \Cake\Http\Response|null
+     */
+    public function view(int $id): ?Response
+    {
+        $player = $this->Players->findByIdWithRelation($id);
+
+        return $this->renderJson($player->toArray());
+    }
+
+    /**
      * ランキングJSONデータを生成します。
      *
      * @param string $country 所属国
