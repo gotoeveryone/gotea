@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
-use Cake\Core\Configure;
-use Cake\Filesystem\File;
-use Cake\Filesystem\Folder;
 use Cake\Http\Response;
 use Cake\I18n\FrozenDate;
-use Cake\Log\Log;
 use Cake\Utility\Hash;
+use Gotea\Utility\FileBuilder;
 
 /**
  * API・棋士コントローラ
@@ -100,7 +97,7 @@ class PlayersController extends ApiController
         $to = $request->getData('to');
 
         // ランキングデータ取得
-        $json = $this->getRankingData([
+        $ranking = $this->getRankingData([
             'country' => $country,
             'year' => $year,
             'limit' => $limit,
@@ -108,29 +105,18 @@ class PlayersController extends ApiController
             'to' => $to,
         ]);
 
-        if (!$json) {
+        if (!$ranking) {
             return $this->renderError(404);
         }
 
-        // フォルダ作成
-        $dir = $json['countryCode'];
-        $folder = new Folder(Configure::read('App.jsonDir') . 'ranking' . DS . $dir, true, 0755);
-        if ($folder->errors()) {
-            Log::error(implode(', ', $folder->errors()));
-
+        $filename = strtolower($ranking['countryName']) . $ranking['year'];
+        $builder = FileBuilder::new();
+        $builder->setParentDir('ranking' . DS . $ranking['countryCode']);
+        if (!$builder->output($filename, $ranking)) {
             return $this->renderError(500, 'JSON出力失敗');
         }
 
-        // ファイル作成
-        $fileName = strtolower($json['countryName']) . $json['year'];
-        $file = new File($folder->pwd() . DS . "{$fileName}.json");
-        Log::info("JSONファイル出力：{$file->path}");
-
-        if (!$file->write(json_encode($json))) {
-            return $this->renderError(500, 'JSON出力失敗');
-        }
-
-        return $this->renderJson($json);
+        return $this->renderJson($ranking);
     }
 
     /**
