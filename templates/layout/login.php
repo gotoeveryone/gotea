@@ -11,8 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= __('Gotea') ?></title>
         <?= $this->Html->meta('icon') ?>
-        <?= $this->Html->css('app') ?>
-        <?= $this->fetch('css') ?>
+        <?= $this->ViteScripts->head() ?>
     </head>
     <body>
         <div class="container login-container">
@@ -25,7 +24,6 @@
             <!-- ダイアログ -->
             <?= $this->Flash->render() ?>
         </div>
-        <?= $this->Html->script('app') ?>
-        <?= $this->fetch('script') ?>
+        <?= $this->ViteScripts->body() ?>
     </body>
 </html>

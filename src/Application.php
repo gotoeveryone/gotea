@@ -77,6 +77,7 @@ class Application extends BaseApplication implements
         $this->addPlugin('Authentication');
         $this->addPlugin('Authorization');
         $this->addPlugin('Connehito/CakeSentry');
+        $this->addPlugin('ViteHelper');
     }
 
     /**

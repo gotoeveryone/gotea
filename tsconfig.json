@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "es2015", "es2015.promise"],
-    "module": "es2015",
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": "resources/assets",
     "paths": {
-      "@/*": ["scripts/*"]
+      "/@/*": ["scripts/*"]
     },
     "isolatedModules": false,
     "experimentalDecorators": true,

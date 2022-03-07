@@ -410,4 +410,9 @@ return [
         'dsn' => env('SENTRY_DSN'),
         'environment' => env('CAKE_ENV', 'local'),
     ],
+
+    'ViteHelper' => [
+        'forceProductionMode' => true,
+        'mainJs' => 'main.ts',
+    ],
 ];

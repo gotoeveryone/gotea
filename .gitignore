@@ -61,3 +61,6 @@ nbproject/*
 
 # phpunit cache
 .phpunit.result.cache
+
+# cakephp-vite
+/webroot/build

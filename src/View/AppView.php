@@ -11,6 +11,7 @@ use Cake\View\View;
  *
  * @property \Authentication\View\Helper\IdentityHelper $Identity
  * @property \Gotea\View\Helper\DateHelper $Date
+ * @property \ViteHelper\View\Helper\ViteScriptsHelper $ViteScripts
  */
 class AppView extends View
 {
@@ -22,6 +23,7 @@ class AppView extends View
         parent::initialize();
 
         $this->loadHelper('Authentication.Identity');
+        $this->loadHelper('ViteHelper.ViteScripts');
     }
 
     /**
