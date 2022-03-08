@@ -7,8 +7,6 @@ use Cake\View\Cell;
 
 /**
  * 所属国を表示するためのセル
- *
- * @property \Gotea\Model\Table\CountriesTable $Countries
  */
 class CountriesCell extends Cell
 {
@@ -21,8 +19,9 @@ class CountriesCell extends Cell
      */
     public function display($hasTitleOnly = true, $attributes = [])
     {
-        $this->loadModel('Countries');
-        $countries = $this->Countries->findAllHasCode($hasTitleOnly)
+        /** @var \Gotea\Model\Table\CountriesTable $table */
+        $table = $this->fetchTable('Countries');
+        $countries = $table->findAllHasCode($hasTitleOnly)
             ->combine('id', 'name');
         $this->set(compact('countries', 'attributes'));
     }

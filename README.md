@@ -41,6 +41,12 @@ $ docker-compose exec server ./bin/cake migrations migrate
 $ docker-compose exec server ./vendor/bin/phpunit
 ```
 
+## Repl
+
+```console
+$ docker-compose exec server ./bin/cake console
+```
+
 ### フロントコード
 
 - webpack

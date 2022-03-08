@@ -3,6 +3,8 @@
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label ranking_label">抽出対象</label>
+      </div>
+      <div class="search-box">
         <select
           v-model="select.year"
           name="year"
@@ -37,11 +39,26 @@
             v-text="limit.text"
           />
         </select>
+        <select
+          v-model="select.type"
+          name="type"
+          class="ranking_type"
+          @change="changeValue($event)"
+        >
+          <option
+            v-for="type in types"
+            :key="type.value"
+            :value="type.value"
+            v-text="type.text"
+          />
+        </select>
       </div>
     </li>
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label ranking_label">対局日</label>
+      </div>
+      <div class="search-box">
         <input
           v-model="select.from"
           :disabled="!useInputDate()"
@@ -64,17 +81,19 @@
       </div>
     </li>
     <li class="search-row">
-      <div class="search-box">
-        <label class="search-box_label ranking_label">最終更新日</label>
-        <span class="lastUpdate" v-text="lastUpdate" />
-      </div>
-      <div class="search-box search-box-right">
-        <button type="button" @click="clearDate()">
-          日付をクリア
-        </button>
-        <button v-if="isAdmin" type="button" class="button button-primary" @click="json()">
-          JSON出力
-        </button>
+      <div class="search-box search-box-between">
+        <div>
+          <label class="search-box_label ranking_label">最終更新日</label>
+          <span class="lastUpdate" v-text="lastUpdate" />
+        </div>
+        <div>
+          <button type="button" @click="clearDate()">
+            日付をクリア
+          </button>
+          <button v-if="isAdmin" type="button" class="button button-primary" @click="json()">
+            JSON出力
+          </button>
+        </div>
       </div>
     </li>
   </ul>
@@ -107,6 +126,7 @@ export default defineComponent({
         limit: 0,
         from: '',
         to: '',
+        type: 'point',
       },
     };
   },
@@ -120,6 +140,18 @@ export default defineComponent({
         });
       }
       return limits;
+    },
+    types() {
+      return [
+        {
+          value: 'point',
+          text: '勝数',
+        },
+        {
+          value: 'percent',
+          text: '勝率',
+        },
+      ];
     },
   },
   mounted() {

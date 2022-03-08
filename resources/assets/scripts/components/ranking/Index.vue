@@ -41,6 +41,7 @@ export default defineComponent({
       const params = {
         from: _params.from || '',
         to: _params.to || '',
+        type: _params.type,
       };
 
       axios.get(this.createUrl(_params), { params: params }).then((res) => {
@@ -58,6 +59,7 @@ export default defineComponent({
       const params = {
         from: _params.from || '',
         to: _params.to || '',
+        type: _params.type,
       };
 
       axios

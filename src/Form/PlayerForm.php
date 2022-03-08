@@ -37,10 +37,16 @@ class PlayerForm extends AppForm
     public function buildValidator(Event $event, Validator $validator, $name): void
     {
         $validator
-            ->allowEmpty([
-                'country_id', 'organization_id', 'rank_id', 'is_retired', 'sex',
-                'name', 'name_english', 'name_other', 'joined_from', 'joined_to',
-            ])
+            ->allowEmptyString('country_id')
+            ->allowEmptyString('organization_id')
+            ->allowEmptyString('rank_id')
+            ->allowEmptyString('is_retired')
+            ->allowEmptyString('sex')
+            ->allowEmptyString('name')
+            ->allowEmptyString('name_english')
+            ->allowEmptyString('name_other')
+            ->allowEmptyString('joined_from')
+            ->allowEmptyString('joined_to')
             ->integer('country_id')
             ->integer('rank_id')
             ->integer('organization_id')

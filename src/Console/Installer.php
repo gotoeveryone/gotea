@@ -94,11 +94,11 @@ class Installer
      */
     public static function createAppConfig($dir, $io)
     {
-        $appConfig = $dir . '/config/app.php';
-        $defaultConfig = $dir . '/config/app.default.php';
-        if (!file_exists($appConfig)) {
-            copy($defaultConfig, $appConfig);
-            $io->write('Created `config/app.php` file');
+        $appLocalConfig = $dir . '/.env';
+        $appLocalConfigTemplate = $dir . '/.env.example';
+        if (!file_exists($appLocalConfig)) {
+            copy($appLocalConfigTemplate, $appLocalConfig);
+            $io->write('Created `.env` file');
         }
     }
 
@@ -177,7 +177,7 @@ class Installer
     public static function setSecuritySalt($dir, $io)
     {
         $newKey = hash('sha256', Security::randomBytes(64));
-        static::setSecuritySaltInFile($dir, $io, $newKey, 'app.php');
+        static::setSecuritySaltInFile($dir, $io, $newKey, '.env');
     }
 
     /**
@@ -191,7 +191,7 @@ class Installer
      */
     public static function setSecuritySaltInFile($dir, $io, $newKey, $file)
     {
-        $config = $dir . '/config/' . $file;
+        $config = $dir . '/' . $file;
         $content = file_get_contents($config);
 
         $content = str_replace('__SALT__', $newKey, $content, $count);
@@ -204,7 +204,7 @@ class Installer
 
         $result = file_put_contents($config, $content);
         if ($result) {
-            $io->write('Updated Security.salt value in config/' . $file);
+            $io->write('Updated Security.salt value in ' . $file);
 
             return;
         }
@@ -222,7 +222,7 @@ class Installer
      */
     public static function setAppNameInFile($dir, $io, $appName, $file)
     {
-        $config = $dir . '/config/' . $file;
+        $config = $dir . '/' . $file;
         $content = file_get_contents($config);
         $content = str_replace('__APP_NAME__', $appName, $content, $count);
 
@@ -234,7 +234,7 @@ class Installer
 
         $result = file_put_contents($config, $content);
         if ($result) {
-            $io->write('Updated __APP_NAME__ value in config/' . $file);
+            $io->write('Updated __APP_NAME__ value in ' . $file);
 
             return;
         }

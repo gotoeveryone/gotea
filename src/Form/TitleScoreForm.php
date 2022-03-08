@@ -33,12 +33,17 @@ class TitleScoreForm extends AppForm
     public function buildValidator(Event $event, Validator $validator, $name): void
     {
         $validator
-            ->allowEmpty(['name', 'title_name', 'country_id', 'target_year', 'started', 'ended'])
+            ->allowEmptyString('name')
+            ->allowEmptyString('title_name')
+            ->allowEmptyString('country_id')
+            ->allowEmptyString('target_year')
+            ->allowEmptyDate('started')
+            ->allowEmptyDate('ended')
             ->integer('country_id')
             ->range('target_year', [1, 9999])
             ->maxLength('name', 20)
             ->maxLength('title_name', 20)
-            ->date('started', 'y/m/d')
-            ->date('ended', 'y/m/d');
+            ->date('started', ['y/m/d'])
+            ->date('ended', ['y/m/d']);
     }
 }

@@ -47,12 +47,11 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 
 /**
- * Read .env file if APP_NAME is not set.
+ * Read .env file.
  *
  * You can remove this block if you do not want to use environment
  * variables for configuration when deploying.
  */
-// .envファイル読み込み
 try {
     (new Dotenv(ROOT))->overload();
 } catch (InvalidPathException $e) {

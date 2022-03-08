@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Gotea\Command;
 
 use Cake\Collection\Collection;
+use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Core\Configure;
 use Cake\Http\Client as HttpClient;
@@ -38,10 +38,10 @@ class RankDiffCommand extends Command
     public function initialize(): void
     {
         parent::initialize();
-        $this->loadModel('Players');
-        $this->loadModel('Countries');
-        $this->loadModel('Ranks');
-        $this->loadModel('Organizations');
+        $this->Players = $this->fetchTable('Players');
+        $this->Countries = $this->fetchTable('Countries');
+        $this->Ranks = $this->fetchTable('Ranks');
+        $this->Organizations = $this->fetchTable('Organizations');
     }
 
     /**

@@ -28,6 +28,6 @@ class UpdatedPointsTable extends AppTable
             return '';
         }
 
-        return $target->score_updated->format('Y-m-d');
+        return $target->score_updated->i18nFormat('yyyy-MM-dd');
     }
 }

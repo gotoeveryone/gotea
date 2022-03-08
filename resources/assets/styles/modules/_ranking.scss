@@ -4,11 +4,40 @@
 .ranking {
   width: 500px;
 
+  .search-row {
+    flex-direction: column;
+    padding: 0 0.2rem;
+  }
+
+  .search-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+
+    &-between {
+      justify-content: space-between;
+    }
+  }
+
   &_year,
   &_country,
-  &_limit {
+  &_limit,
+  &_type {
     margin-right: 0.4rem;
-    width: calc(33% - 0.4rem);
+  }
+
+  &_year,
+  &_country {
+    flex-basis: 27%;
+  }
+
+  &_limit {
+    flex-basis: 22%;
+  }
+
+  &_type {
+    flex-basis: 18%;
   }
 
   &_date {

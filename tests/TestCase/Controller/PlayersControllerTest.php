@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller;
 
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -176,7 +176,7 @@ class PlayersControllerTest extends AppTestCase
     public function testCreateFailed()
     {
         $this->enableCsrfToken();
-        $now = Date::now();
+        $now = FrozenDate::now();
         $name = '棋士新規作成' . $now->format('YmdHis');
         $data = [
             'name' => $name,
@@ -208,7 +208,7 @@ class PlayersControllerTest extends AppTestCase
     public function testCreate()
     {
         $this->enableCsrfToken();
-        $now = Date::now();
+        $now = FrozenDate::now();
         $name = '棋士新規作成' . $now->format('YmdHis');
         $data = [
             'name' => $name,
@@ -240,7 +240,7 @@ class PlayersControllerTest extends AppTestCase
     public function testCreateWithContinue()
     {
         $this->enableCsrfToken();
-        $now = Date::now();
+        $now = FrozenDate::now();
         $name = '棋士新規作成' . $now->format('YmdHis');
         $data = [
             'name' => $name,
@@ -280,7 +280,7 @@ class PlayersControllerTest extends AppTestCase
     public function testUpdateFailed()
     {
         $this->enableCsrfToken();
-        $now = Date::now();
+        $now = FrozenDate::now();
         $name = '棋士更新' . $now->format('YmdHis');
         $data = [
             'id' => 1,
@@ -313,7 +313,7 @@ class PlayersControllerTest extends AppTestCase
     public function testUpdate()
     {
         $this->enableCsrfToken();
-        $now = Date::now();
+        $now = FrozenDate::now();
         $name = '棋士更新' . $now->format('YmdHis');
         $data = [
             'id' => 1,

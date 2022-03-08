@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -50,13 +50,13 @@ class PlayerRanksTable extends AppTable
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->requirePresence(['player_id', 'rank_id', 'promoted'])
             ->integer('player_id')
             ->integer('rank_id')
-            ->date('promoted', 'y/m/d');
+            ->date('promoted', ['y/m/d']);
 
         return $validator;
     }
@@ -122,7 +122,7 @@ class PlayerRanksTable extends AppTable
                     return $q->where(['rank_numeric >' => 1]);
                 },
             ])
-            ->where(['PlayerRanks.promoted >=' => Date::now()->addMonths(-2)])
+            ->where(['PlayerRanks.promoted >=' => FrozenDate::now()->addMonths(-2)])
             ->orderDesc('PlayerRanks.promoted')
             ->order('Players.country_id')
             ->orderDesc('Ranks.rank_numeric');
