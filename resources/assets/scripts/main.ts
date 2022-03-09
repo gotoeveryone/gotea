@@ -11,6 +11,7 @@ import Ranking from '@/components/ranking/Index.vue';
 import Titles from '@/components/titles/Index.vue';
 import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
+import NotificationListPage from '@/pages/notifications/index.vue';
 import { Window } from '@/types';
 
 declare let window: Window;
@@ -30,6 +31,7 @@ const App = new Vue({
     ranking: Ranking,
     titles: Titles,
     ranks: Ranks,
+    NotificationListPage,
   },
   data: {
     countryId: '',

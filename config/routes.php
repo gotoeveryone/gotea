@@ -197,5 +197,11 @@ return static function (RouteBuilder $routes) {
             $routes->get('/{id}', ['action' => 'view'], 'api_history')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
+
+        // TODO: 全ての action を実装した段階で resources を使う
+        // $routes->resources('notifications');
+        $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes) {
+            $routes->get('/', ['action' => 'index'], 'api_notifications');
+        });
     });
 };
