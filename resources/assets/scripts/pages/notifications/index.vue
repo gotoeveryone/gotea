@@ -7,7 +7,7 @@
         </div>
       </li>
     </ul>
-    <paginator v-if="items.length" :current-page="currentPage" :total="total" @change-page="onSearch" />
+    <paginator v-if="items.length" :current-page="currentPage" :per-page="perPage" :total="total" @change-page="onSearch" />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -55,13 +55,18 @@ export default Vue.extend({
     items: [] as Item[],
     currentPage: 1,
   }),
+  computed: {
+    perPage(): number {
+      return 20;
+    },
+  },
   mounted() {
     this.onSearch(1);
   },
   methods: {
     onSearch(page: number) {
       this.currentPage = page;
-      return axios.get<Response>('/api/notifications', { params: { page, limit: 20 } })
+      return axios.get<Response>('/api/notifications', { params: { page, limit: this.perPage } })
         .then(res => res.data)
         .then(({ response: { total, items } }) => {
           this.total = total;

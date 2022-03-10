@@ -49,7 +49,7 @@ export default Vue.extend({
       return this.currentPage === this.lastPage;
     },
     pageCount(): number {
-      return 9;
+      return Math.min(this.lastPage, 9);
     },
     lastPage(): number {
       return Math.ceil(this.total / this.perPage);
@@ -66,11 +66,11 @@ export default Vue.extend({
       return 5 - (5 - (this.toPage - this.pageCount + 1));
     },
     toPage(): number {
-      if (this.lastPage <= this.pageCount) {
+      if (this.currentPage <= 5) {
         return this.pageCount;
       }
-      if (this.currentPage + 5 <= this.lastPage) {
-        return this.pageCount;
+      if (this.currentPage + 4 <= this.lastPage) {
+        return this.currentPage + 4;
       }
       return this.lastPage;
     },
