@@ -12,6 +12,7 @@ import Titles from '@/components/titles/Index.vue';
 import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
 import NotificationListPage from '@/pages/notifications/index.vue';
+import TableTemplateListPage from '@/pages/table-templates/index.vue';
 import { Window } from '@/types';
 
 declare let window: Window;
@@ -32,6 +33,7 @@ const App = new Vue({
     titles: Titles,
     ranks: Ranks,
     NotificationListPage,
+    TableTemplateListPage,
   },
   data: {
     countryId: '',

@@ -31,10 +31,6 @@ class TableTemplatesController extends AppController
      */
     public function index(): ?Response
     {
-        $tableTemplates = $this->paginate($this->TableTemplates->find()->orderAsc('title'));
-
-        $this->set(compact('tableTemplates'));
-
         return $this->renderWith('表テンプレート一覧', 'index');
     }
 
