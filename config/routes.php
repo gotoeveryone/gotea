@@ -203,5 +203,11 @@ return static function (RouteBuilder $routes) {
         $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes) {
             $routes->get('/', ['action' => 'index'], 'api_notifications');
         });
+
+        // TODO: 全ての action を実装した段階で resources を使う
+        // $routes->resources('table-templates');
+        $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes) {
+            $routes->get('/', ['action' => 'index'], 'api_table_templates');
+        });
     });
 };
