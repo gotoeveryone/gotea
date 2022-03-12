@@ -18,7 +18,7 @@ class TableTemplatesController extends ApiController
      */
     public function index()
     {
-        $query = $this->TableTemplates->find();
+        $query = $this->TableTemplates->find()->orderAsc('title');
         $tableTemplates = $this->paginate($query);
 
         return $this->renderJson([
