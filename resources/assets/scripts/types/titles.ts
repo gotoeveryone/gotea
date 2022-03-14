@@ -4,6 +4,10 @@ export interface TitleCondition {
   searchClosed: number;
 }
 
+export interface TitleResponse {
+  response: TitleResultItem[];
+}
+
 export interface TitleResultItem {
   id: number | null;
   countryId: string;

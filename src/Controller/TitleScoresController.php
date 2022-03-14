@@ -12,7 +12,6 @@ use Gotea\Form\TitleScoreForm;
  *
  * @property \Gotea\Model\Table\TitleScoresTable $TitleScores
  * @property \Gotea\Model\Table\PlayersTable $Players
- * @property \Gotea\Model\Table\TitlesTable $Titles
  * @property \Gotea\Model\Table\TitleScoreDetailsTable $TitleScoreDetails
  */
 class TitleScoresController extends AppController
@@ -110,49 +109,10 @@ class TitleScoresController extends AppController
      */
     public function view(int $id): ?Response
     {
-        $score = $this->TitleScores->findByIdWithRelation($id);
-        $activeTitles = $this->Titles->findSortedList();
+        // NOTE: 404 対応は一旦サーバーサイドで実施
+        $score = $this->TitleScores->get($id);
 
-        return $this->set(compact('score', 'activeTitles'))->renderWithDialog();
-    }
-
-    /**
-     * 更新処理
-     *
-     * @param int $id 成績ID
-     * @return \Cake\Http\Response|null
-     */
-    public function update(int $id): ?Response
-    {
-        // 勝敗変更の場合は該当アクションを実施
-        if ($this->getRequest()->getData('action') == 'switchDivision') {
-            return $this->switchDivision($id);
-        }
-
-        // 開始日と同じにチェックがあった場合、終了日には開始日と同じ値をセットする
-        $data = $this->request->getData();
-        if ($this->request->getData('is_same_started')) {
-            $data['ended'] = $data['started'];
-        }
-
-        // データ取得
-        $score = $this->TitleScores->findByIdWithRelation($id);
-        $this->TitleScores->patchEntity($score, $data);
-
-        // 保存
-        if (!$this->TitleScores->save($score)) {
-            $activeTitles = $this->Titles->findSortedList();
-            $this->set(compact('score', 'activeTitles'));
-
-            return $this->renderWithDialogErrors(400, $score->getErrors(), 'view');
-        } else {
-            $this->setMessages(__('The score {0} - {1} is saved', $score->id, $score->name));
-        }
-
-        return $this->redirect([
-            '_name' => 'view_score',
-            $score->id,
-        ]);
+        return $this->set(compact('id'))->renderWithDialog();
     }
 
     /**
@@ -177,42 +137,6 @@ class TitleScoresController extends AppController
         return $this->redirect([
             '_name' => 'find_scores',
             '?' => $this->getRequest()->getParsedBody(),
-        ]);
-    }
-
-    /**
-     * 勝敗変更処理
-     *
-     * @param int $id 成績ID
-     * @return \Cake\Http\Response|null
-     */
-    private function switchDivision(int $id): ?Response
-    {
-        $score = $this->TitleScores->get($id, [
-            'contain' => 'TitleScoreDetails',
-        ]);
-
-        $changed = 0;
-        foreach ($score->title_score_details as $detail) {
-            switch ($detail->division) {
-                case '勝':
-                case '敗':
-                    $detail->division = ($detail->division === '勝' ? '敗' : '勝');
-                    $this->TitleScoreDetails->save($detail);
-                    $changed++;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if ($changed === 2) {
-            $this->setMessages("ID【{$id}】の勝敗を変更しました。");
-        }
-
-        return $this->redirect([
-            '_name' => 'view_score',
-            $score->id,
         ]);
     }
 }

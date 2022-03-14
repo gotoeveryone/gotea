@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller;
 
-use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -128,73 +127,6 @@ class TitleScoresControllerTest extends AppTestCase
             $this->assertEquals($year, $score->started->format('Y'));
             $this->assertEquals($year, $score->ended->format('Y'));
         }
-    }
-
-    /**
-     * 更新失敗
-     *
-     * @return void
-     */
-    public function testUpdateFailed()
-    {
-        $this->enableCsrfToken();
-        $now = FrozenTime::now();
-        $name = 'test_update_' . $now->format('YmdHis');
-        $data = [
-            'id' => 1,
-            'country_id' => 1,
-            'started' => 'test',
-            'ended' => '2019-01-02',
-            'name' => $name,
-        ];
-        $this->put(['_name' => 'update_score', 1], $data);
-        $this->assertResponseCode(400);
-        $this->assertResponseNotContains('<nav class="nav">');
-
-        // データが存在しないこと
-        $this->assertEquals(0, $this->TitleScores->findByName($name)->count());
-    }
-
-    /**
-     * 更新成功
-     *
-     * @return void
-     */
-    public function testUpdate()
-    {
-        $this->enableCsrfToken();
-        $now = FrozenTime::now();
-        $name = 'test_update_' . $now->format('YmdHis');
-        $data = [
-            'id' => 1,
-            'country_id' => 1,
-            'started' => '2019-01-02',
-            'ended' => '2019-01-02',
-            'name' => $name,
-        ];
-        $this->put(['_name' => 'update_score', 1], $data);
-        $this->assertRedirect(['_name' => 'view_score', 1]);
-        $this->assertResponseNotContains('<nav class="nav">');
-
-        // データが存在すること
-        $this->assertEquals(1, $this->TitleScores->findByName($name)->count());
-    }
-
-    /**
-     * 勝敗変更
-     *
-     * @return void
-     */
-    public function testSwtichDivision()
-    {
-        $this->enableCsrfToken();
-        $data = [
-            'action' => 'switchDivision',
-        ];
-        $this->put(['_name' => 'update_score', 1], $data);
-
-        $this->assertRedirect(['_name' => 'view_score', 1]);
-        $this->assertResponseNotContains('<nav class="nav">');
     }
 
     /**
