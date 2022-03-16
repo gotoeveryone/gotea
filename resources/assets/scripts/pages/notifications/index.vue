@@ -20,17 +20,15 @@
         </li>
       </ul>
       <ul v-if="items.length" class="table-body">
-        <template v-for="item in items">
-          <list-item :key="item.id" :item="item" :csrf-token="csrfToken" />
-        </template>
+        <list-item v-for="item in items" :key="item.id" :item="item" :csrf-token="csrfToken" />
       </ul>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import axios from 'axios';
+import { defineComponent } from 'vue';
 
 import Paginator from '@/components/Paginator.vue';
 import ListItem from '@/components/notifications/Item.vue';
@@ -39,7 +37,7 @@ import {
   NotificationListResponse as Response,
 } from '@/types/notification';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     Paginator,
     ListItem,

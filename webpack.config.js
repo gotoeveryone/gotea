@@ -12,7 +12,7 @@ const stylesDir = path.join(__dirname, 'resources', 'assets', 'styles');
 const scriptsDir = path.join(__dirname, 'resources', 'assets', 'scripts');
 
 module.exports = () => {
-  return [
+  return Promise.all([
     {
       entry: {
         'js/app': path.join(scriptsDir, 'main.ts'),
@@ -26,7 +26,8 @@ module.exports = () => {
       resolve: {
         extensions: ['.ts', '.vue', '.js'],
         alias: {
-          // vue$: 'vue/dist/vue.common',
+          vue$: 'vue/dist/vue.esm-bundler',
+          vuex$: 'vuex/dist/vuex.mjs',
           '@': scriptsDir,
         },
       },
@@ -146,5 +147,5 @@ module.exports = () => {
         ],
       },
     },
-  ];
+  ]);
 };
