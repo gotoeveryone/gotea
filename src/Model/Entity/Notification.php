@@ -39,6 +39,10 @@ class Notification extends AppEntity
         'modified' => true,
     ];
 
+    protected $_virtual = [
+        'status',
+    ];
+
     /**
      * 状態を取得します。
      *

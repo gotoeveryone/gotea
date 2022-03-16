@@ -36,10 +36,6 @@ class NotificationsController extends AppController
      */
     public function index(): ?Response
     {
-        $notifications = $this->paginate($this->Notifications->findAllNewestArrivals());
-
-        $this->set(compact('notifications'));
-
         return $this->renderWith('お知らせ一覧', 'index');
     }
 

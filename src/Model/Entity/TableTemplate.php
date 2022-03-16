@@ -28,9 +28,15 @@ class TableTemplate extends AppEntity
     protected $_accessible = [
         'title' => true,
         'content' => true,
-        'created' => true,
-        'created_by' => true,
+        'created',
         'modified' => true,
-        'modified_by' => true,
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    protected $_hidden = [
+        'created_by',
+        'modified_by',
     ];
 }
