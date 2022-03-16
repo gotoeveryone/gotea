@@ -1,11 +1,6 @@
 <template>
   <section class="titles">
-    <title-header
-      :is-admin="isAdmin"
-      @add="addRow"
-      @search="onSearch"
-      @json="outputJson"
-    />
+    <title-header :is-admin="isAdmin" @add="addRow" @search="onSearch" @json="outputJson" />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -39,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import axios from 'axios';
 
 import Header from '@/components/titles/Header.vue';
@@ -47,7 +42,7 @@ import Item from '@/components/titles/Item.vue';
 import { ModalOption } from '@/types';
 import { TitleCondition, TitleResultItem } from '@/types/titles';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     titleHeader: Header,
     titleItem: Item,
@@ -116,7 +111,7 @@ export default Vue.extend({
     refresh() {
       return axios
         .get('/api/titles', { params: this.params })
-        .then(res => (this.items = res.data.response));
+        .then((res) => (this.items = res.data.response));
     },
   },
 });

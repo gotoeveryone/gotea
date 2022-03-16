@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import axios from 'axios';
 
 import store from '@/store';
@@ -20,9 +20,7 @@ declare let window: Window;
 /**
  * アプリケーションのVueインスタンス
  */
-const App = new Vue({
-  store,
-  el: '.container',
+const app = createApp({
   components: {
     appBlock: BlockUI,
     appModal: Modal,
@@ -35,11 +33,13 @@ const App = new Vue({
     NotificationListPage,
     TableTemplateListPage,
   },
-  data: {
-    countryId: '',
-    changed: false,
-    historyId: null as number | null,
-    hide: true,
+  data: () => {
+    return {
+      countryId: '',
+      changed: false,
+      historyId: null as number | null,
+      hide: true,
+    };
   },
   mounted() {
     require('@/util');
@@ -107,6 +107,10 @@ const App = new Vue({
   },
 });
 
-window.App = App;
+app.use(store);
 
-export default App;
+app.mount('.container');
+
+window.App = app;
+
+export default app;

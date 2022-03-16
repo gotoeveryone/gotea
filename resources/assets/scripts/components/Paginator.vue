@@ -10,11 +10,9 @@
         <span v-if="isFirstPage" class="pager-item-link">&lt;</span>
         <a v-else class="pager-item-link" @click="onChangePage(currentPage - 1)">&lt;</a>
       </li>
-      <template v-for="page in pages">
-        <li :key="page" class="pager-item" :class="{ 'active': currentPage === page }">
-          <a class="pager-item-link" @click="onChangePage(page)" v-text="page" />
-        </li>
-      </template>
+      <li v-for="page in pages" :key="page" class="pager-item" :class="{ 'active': currentPage === page }">
+        <a class="pager-item-link" @click="onChangePage(page)" v-text="page" />
+      </li>
       <li class="pager-item next" :class="{ 'disabled': isLastPage }">
         <span v-if="isLastPage" class="pager-item-link">&gt;</span>
         <a v-else class="pager-item-link" @click="onChangePage(currentPage + 1)">&gt;</a>
@@ -24,9 +22,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     currentPage: {
       type: Number,

@@ -16,11 +16,12 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
-import Vue, { PropType } from 'vue';
+import { defineComponent } from 'vue';
+import type { PropType } from 'vue';
 
 import { TableTemplate as Item } from '@/types/table-template';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as PropType<Item>,
