@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* -------------------------------------------
    タグ単位のレイアウト
  ------------------------------------------- */
@@ -131,7 +133,7 @@ input[type='checkbox'] {
 button {
   margin: auto 0.3rem;
   padding: 0.3rem 0.8rem;
-  border: 1px solid darken($c_gray, 15%);
+  border: 1px solid color.adjust($c_gray, $lightness: -15%);
   border-radius: 5px;
   cursor: pointer;
 }

@@ -1,9 +1,29 @@
 {
   "plugins": ["stylelint-scss"],
-  "extends": "stylelint-config-standard",
   "files": ["**/*.scss", "**/*.vue"],
+  "overrides": [
+    {
+      "files": ["*.scss", "**/*.scss"],
+      "customSyntax": "postcss-scss",
+      "extends": ["stylelint-config-recommended-scss"]
+    },
+    {
+      "files": ["*.vue", "**/*.vue"],
+      "customSyntax": "postcss-html",
+      "extends": [
+        "stylelint-config-recommended-scss",
+        "stylelint-config-recommended-vue"
+      ]
+    }
+  ],
   "rules": {
     "scss/dollar-variable-colon-space-after": "always",
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["color.adjust", "map.get"]
+      }
+    ],
     "at-rule-no-unknown": [
       true,
       {
@@ -15,7 +35,8 @@
           "each",
           "if",
           "else",
-          "for"
+          "for",
+          "use"
         ]
       }
     ],
