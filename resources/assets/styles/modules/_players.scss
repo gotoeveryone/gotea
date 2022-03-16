@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 /* -------------------------------------------
    棋士情報検索
  ------------------------------------------- */
@@ -50,13 +52,13 @@ $_columns: (
     $w_specify_sp: 0;
 
     @each $name, $device_widths in $_columns {
-      $w_pc: map-get($device_widths, pc);
-      $w_sp: map-get($device_widths, sp);
+      $w_pc: map.get($device_widths, pc);
+      $w_sp: map.get($device_widths, sp);
       &_#{$name} {
         @include ellipsis();
 
         @include sp() {
-          @if $w_sp == null {
+          @if not $w_sp {
             // sp 用の幅が取得できないカラムは表示しない
             display: none;
           }

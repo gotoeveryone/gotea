@@ -90,6 +90,7 @@ module.exports = () => {
                     path.join(stylesDir, 'base', '_variables.scss'),
                     path.join(stylesDir, 'base', '_mixin.scss'),
                   ],
+                  hoistUseStatements: true,
                 },
               },
             ],
