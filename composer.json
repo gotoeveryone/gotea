@@ -13,7 +13,7 @@
   "type": "project",
   "license": "MIT",
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.4",
     "abraham/twitteroauth": "^1.1",
     "cakephp/authentication": "^2.0",
     "cakephp/authorization": "^2.0",
