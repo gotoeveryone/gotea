@@ -52,9 +52,9 @@ use Dotenv\Exception\InvalidPathException;
  * You can remove this block if you do not want to use environment
  * variables for configuration when deploying.
  */
-if (file_exists(ROOT . '.env')) {
+if (file_exists(ENV)) {
     try {
-        (new Dotenv(ROOT))->overload();
+        (new Dotenv(dirname(ENV)))->overload();
     } catch (InvalidPathException $e) {
         exit($e->getMessage() . "\n");
     }
