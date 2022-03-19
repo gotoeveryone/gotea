@@ -32,7 +32,7 @@ services:
       TZ: 'Asia/Tokyo'
     ports:
       - '33306:3306'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
 
 volumes:
   node_modules:
