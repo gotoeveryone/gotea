@@ -1,4 +1,5 @@
 <?php
+
 namespace Gotea\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
@@ -18,6 +19,7 @@ class RetentionHistoriesFixture extends TestFixture
             'id' => 1,
             'title_id' => 1,
             'player_id' => 1,
+            'country_id' => 1,
             'holding' => 1,
             'target_year' => 1,
             'name' => 'Lorem ipsum dolor sit amet',
@@ -48,6 +50,7 @@ class RetentionHistoriesFixture extends TestFixture
             'id' => 3,
             'title_id' => 2,
             'player_id' => 1,
+            'country_id' => 1,
             'holding' => 1,
             'target_year' => 1,
             'name' => 'Lorem ipsum dolor sit amet',
