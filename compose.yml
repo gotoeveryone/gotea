@@ -1,4 +1,3 @@
-version: '3'
 services:
   backend:
     image: ghcr.io/gotoeveryone/composer-php:7.4
@@ -11,15 +10,13 @@ services:
       - database
     working_dir: /src
     command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
-    tty: true
   frontend:
-    image: node:14.16
+    image: node:14.16.1
     volumes:
       - ./:/src
       - node_modules:/src/node_modules
     working_dir: /src
     command: sh -c 'npm i && npm run dev'
-    tty: true
   database:
     image: mysql:5.7
     volumes:

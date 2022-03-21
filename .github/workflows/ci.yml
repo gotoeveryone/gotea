@@ -73,7 +73,7 @@ jobs:
             -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
             -d \
             -p ${DB_TEST_PORT}:3306 \
-            mysql:5.7 mysqld --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_bin
+            mysql:5.7 mysqld --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_general_ci
       - uses: actions/checkout@v1
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
