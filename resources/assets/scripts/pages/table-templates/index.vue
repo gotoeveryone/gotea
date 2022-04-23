@@ -3,7 +3,7 @@
     <ul class="search-header">
       <li class="search-row">
         <div class="search-box search-box-right">
-          <a href="/title-templates/new" class="layout-button button-secondary">新規登録</a>
+          <a href="/table-templates/new" class="layout-button button-secondary">新規登録</a>
         </div>
       </li>
     </ul>
