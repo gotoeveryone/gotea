@@ -29,8 +29,6 @@ abstract class ApiController extends Controller
         ]);
         $this->loadComponent('Authorization.Authorization');
 
-        $this->forceJsonResponse();
-
         // 操作ユーザ記録イベントを設定
         $user = $this->getRequest()->getHeaderLine('X-Access-User');
         if ($user) {

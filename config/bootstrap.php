@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -35,8 +36,8 @@ use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Database\TypeFactory;
 use Cake\Datasource\ConnectionManager;
-use Cake\Error\ConsoleErrorHandler;
-use Cake\Error\ErrorHandler;
+use Cake\Error\ErrorTrap;
+use Cake\Error\ExceptionTrap;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
@@ -107,18 +108,16 @@ mb_internal_encoding(Configure::read('App.encoding'));
  */
 ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 
-/**
+/*
  * Register application error and exception handlers.
  */
-$isCli = PHP_SAPI === 'cli';
-if ($isCli) {
-    (new ConsoleErrorHandler(Configure::read('Error')))->register();
-} else {
-    (new ErrorHandler(Configure::read('Error')))->register();
-}
+(new ErrorTrap(Configure::read('Error')))->register();
+(new ExceptionTrap(Configure::read('Error')))->register();
 
-// Include the CLI bootstrap overrides.
-if ($isCli) {
+/*
+ * Include the CLI bootstrap overrides.
+ */
+if (PHP_SAPI === 'cli') {
     require __DIR__ . '/bootstrap_cli.php';
 }
 
@@ -193,8 +192,8 @@ ServerRequest::addDetector('tablet', function ($request) {
 // TypeFactory::build('timestamptimezone')
 //    ->useMutable();
 TypeFactory::build('date')
-   ->useLocaleParser()
-   ->setLocaleFormat('yyyy/MM/dd');
+    ->useLocaleParser()
+    ->setLocaleFormat('yyyy/MM/dd');
 
 /*
 * Custom Inflector rules, can be set to correctly pluralize or singularize
