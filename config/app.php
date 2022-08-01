@@ -1,11 +1,15 @@
 <?php
+declare(strict_types=1);
 
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
+use Cake\Http\Exception\MissingControllerException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\SmtpTransport;
+use Cake\Routing\Exception\MissingRouteException;
 use Gotea\Error\AppExceptionRenderer;
 
 return [
@@ -196,7 +200,11 @@ return [
     'Error' => [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
         'exceptionRenderer' => AppExceptionRenderer::class,
-        'skipLog' => [],
+        'skipLog' => [
+            NotFoundException::class,
+            MissingRouteException::class,
+            MissingControllerException::class,
+        ],
         'log' => true,
         'trace' => true,
     ],
