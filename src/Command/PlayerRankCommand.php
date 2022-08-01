@@ -11,7 +11,6 @@ use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\Utility\Inflector;
 use Goutte\Client;
-use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -202,7 +201,6 @@ class PlayerRankCommand extends Command
     private function getCrawler($url)
     {
         $client = new Client();
-        $client->setClient(new GuzzleClient());
 
         return $client->request('GET', $url);
     }

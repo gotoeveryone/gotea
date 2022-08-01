@@ -15,7 +15,6 @@ use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Gotea\Model\Entity\Country;
 use Goutte\Client;
-use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 use Throwable;
 
@@ -264,7 +263,6 @@ class RankDiffCommand extends Command
     private function getCrawler($url)
     {
         $client = new Client();
-        $client->setClient(new GuzzleClient());
 
         $crawler = $client->request('GET', $url);
         if ($client->getInternalResponse()->getStatusCode() >= 400) {
