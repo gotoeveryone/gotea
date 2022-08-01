@@ -669,25 +669,26 @@
         },
         {
             "name": "dereuromark/cakephp-shim",
-            "version": "2.1.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dereuromark/cakephp-shim.git",
-                "reference": "53018b53ea20f9a7f39a0b3a78f4b1f043fdc1c8"
+                "reference": "7b0861607ebe2d25e7e374b7eb440f9de3c523ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/53018b53ea20f9a7f39a0b3a78f4b1f043fdc1c8",
-                "reference": "53018b53ea20f9a7f39a0b3a78f4b1f043fdc1c8",
+                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/7b0861607ebe2d25e7e374b7eb440f9de3c523ca",
+                "reference": "7b0861607ebe2d25e7e374b7eb440f9de3c523ca",
                 "shasum": ""
             },
             "require": {
-                "cakephp/cakephp": "^4.0",
-                "php": ">=7.2"
+                "cakephp/cakephp": "^4.2",
+                "php": ">=7.3"
             },
             "require-dev": {
-                "dereuromark/cakephp-ide-helper": "^1.6.0",
-                "fig-r/psr2r-sniffer": "dev-master"
+                "dereuromark/cakephp-ide-helper": "^1.9.0",
+                "fig-r/psr2r-sniffer": "dev-master",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "cakephp-plugin",
             "autoload": {
@@ -719,7 +720,7 @@
                 "issues": "https://github.com/dereuromark/cakephp-shim/issues",
                 "source": "https://github.com/dereuromark/cakephp-shim"
             },
-            "time": "2020-09-15T16:02:02+00:00"
+            "time": "2022-01-13T00:08:55+00:00"
         },
         {
             "name": "fabpot/goutte",
