@@ -103,6 +103,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'resources/assets/styles/base/variables';
+@import 'resources/assets/styles/base/mixin';
+
 .dialog {
   display: block;
   position: fixed;

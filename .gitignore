@@ -52,15 +52,10 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
-# phpenv
+
+# anyenv
 .php-version
-# nodenv
 .node-version
-# pyenv
-.python-version
 
 # phpunit cache
 .phpunit.result.cache
-
-# Vetur
-vetur.config.js

@@ -45,6 +45,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'resources/assets/styles/base/variables';
+@import 'resources/assets/styles/base/mixin';
+
 .iframe-modal {
   @include display-center();
 

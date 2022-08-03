@@ -24,7 +24,7 @@ jobs:
   code_check_frontend:
     runs-on: ubuntu-latest
     container:
-      image: node:14.16.1
+      image: node:14.18.3
     steps:
       - uses: actions/checkout@v1
       - name: Cache modules
@@ -109,7 +109,7 @@ jobs:
       - code_check_frontend
       - test_backend
     container:
-      image: node:14.16.1
+      image: node:14.18.3
     steps:
       - uses: actions/checkout@v1
       - name: Install SSH Key

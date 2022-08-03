@@ -46,23 +46,3 @@ $ docker compose exec server ./vendor/bin/phpunit
 ```console
 $ docker compose exec server ./bin/cake console
 ```
-
-### フロントコード
-
-- webpack
-- Vue.js
-- Sass
-
-最終的な JS・CSS は`webpack`を利用して生成します。  
-`npm run dev`を実行するとこれらの変更を監視し、更新時には自動で`webroot`ディレクトリ以下に出力します。
-
-## その他
-
-### ログ出力
-
-環境変数`LOG_DIR`に以下を出力します（未設定もしくはブランクの場合はプロジェクトルートの`logs`ディレクトリ）。
-
-- gotea-access.log（アクセスログ）
-- gotea-error.log（エラーログ）
-- gotea-cli-debug.log（CLI デバッグログ）
-- gotea-cli-error.log（CLI エラーログ）
