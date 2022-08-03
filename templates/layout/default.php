@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * アプリケーションの共通テンプレート
  *
@@ -6,6 +8,7 @@
  */
 
 use Cake\I18n\FrozenTime;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,7 +19,9 @@ use Cake\I18n\FrozenTime;
             <?= 'Gotea' . h($this->hasTitle() ? " - ${pageTitle}" : '') ?>
         </title>
         <?= $this->Html->meta('icon') ?>
-        <?= $this->ViteScripts->head() ?>
+        <?= $this->Html->css('main') ?>
+        <?= $this->Html->css('app') ?>
+        <?= $this->fetch('css') ?>
     </head>
 
     <body>
@@ -77,6 +82,7 @@ use Cake\I18n\FrozenTime;
             };
         </script>
         <?php endif ?>
-        <?= $this->ViteScripts->body() ?>
+        <?= $this->Html->script('main', ['type' => 'module']) ?>
+        <?= $this->fetch('script') ?>
     </body>
 </html>

@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "baseUrl": "resources/assets",
     "paths": {
-      "/@/*": ["scripts/*"]
+      "@/*": ["scripts/*"]
     },
     "isolatedModules": false,
     "experimentalDecorators": true,

@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 /**
  * アプリケーションの共通テンプレート
+ *
  * @property \Gotea\View\AppView $this
  */
 ?>
@@ -11,7 +14,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= __('Gotea') ?></title>
         <?= $this->Html->meta('icon') ?>
-        <?= $this->ViteScripts->head() ?>
+        <?= $this->Html->css('main') ?>
+        <?= $this->Html->css('app') ?>
+        <?= $this->fetch('css') ?>
     </head>
     <body>
         <div class="container login-container">
@@ -24,6 +29,7 @@
             <!-- ダイアログ -->
             <?= $this->Flash->render() ?>
         </div>
-        <?= $this->ViteScripts->body() ?>
+        <?= $this->Html->script('main', ['type' => 'module']) ?>
+        <?= $this->fetch('script') ?>
     </body>
 </html>

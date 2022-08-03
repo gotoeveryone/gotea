@@ -1,6 +1,8 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import eslint from 'vite-plugin-eslint';
+import stylelint from 'vite-plugin-stylelint';
 
 const stylesDir = resolve(__dirname, 'resources', 'assets', 'styles');
 const scriptsDir = resolve(__dirname, 'resources', 'assets', 'scripts');
@@ -9,32 +11,29 @@ export default defineConfig({
   build: {
     outDir: './webroot/',
     emptyOutDir: false,
-    assetsDir: 'assets',
-    manifest: false,
     rollupOptions: {
       input: {
         main: resolve(scriptsDir, 'main.ts'),
-        'css/app': resolve(stylesDir, 'app.scss'),
-        'css/view': resolve(stylesDir, 'view.scss'),
+        app: resolve(stylesDir, 'app.scss'),
+        view: resolve(stylesDir, 'view.scss'),
       },
       output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]',
+        assetFileNames: (assetInfo) => {
+          const directory = /\.css$/i.test(assetInfo.name as string) ? 'css' : 'js';
+          return `${directory}/[name][extname]`;
+        },
+        chunkFileNames: 'js/[name].js',
+        entryFileNames: 'js/[name].js',
       },
     },
   },
-  plugins: [vue()],
+  plugins: [vue(), eslint(), stylelint({
+    include: ['./resources/assets/styles/**/*.scss', './resources/assets/scripts/**/*.vue'],
+  })],
   resolve: {
     alias: {
       '@': scriptsDir,
-    },
-  },
-  server: {
-    hmr: {
-      protocol: 'ws',
-      host: 'localhost',
-      port: 3000,
+      vue: 'vue/dist/vue.esm-bundler.js',
     },
   },
 });

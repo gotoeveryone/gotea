@@ -11,7 +11,7 @@ services:
     working_dir: /src
     command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
   frontend:
-    image: node:14.16.1
+    image: node:14.18.3
     volumes:
       - ./:/src
       - node_modules:/src/node_modules

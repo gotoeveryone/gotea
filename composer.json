@@ -24,7 +24,6 @@
     "dereuromark/cakephp-shim": "^2.0",
     "fabpot/goutte": "^4.0",
     "mobiledetect/mobiledetectlib": "^2.8",
-    "passchn/cakephp-vite": "^0.2.0",
     "symfony/http-client": "^5.3",
     "vlucas/phpdotenv": "^2.4"
   },
