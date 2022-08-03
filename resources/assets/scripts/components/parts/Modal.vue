@@ -12,11 +12,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
 import { ModalOption } from '@/types';
 
-export default Vue.extend({
+export default defineComponent({
   computed: {
     options(): ModalOption {
       return this.$store.getters.modalOptions();

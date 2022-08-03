@@ -1,10 +1,15 @@
 <?php
+declare(strict_types=1);
 
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
+use Cake\Http\Exception\MissingControllerException;
+use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\FrozenDate;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\SmtpTransport;
+use Cake\Routing\Exception\MissingRouteException;
 use Gotea\Error\AppExceptionRenderer;
 
 return [
@@ -195,7 +200,11 @@ return [
     'Error' => [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
         'exceptionRenderer' => AppExceptionRenderer::class,
-        'skipLog' => [],
+        'skipLog' => [
+            NotFoundException::class,
+            MissingRouteException::class,
+            MissingControllerException::class,
+        ],
         'log' => true,
         'trace' => true,
     ],
@@ -340,7 +349,9 @@ return [
         'debug' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'gotea-access',
+            'file' => 'gotea-access_' . FrozenDate::now()->format('Y_m_d'),
+            'size' => '5MB',
+            'rotate' => 7,
             'url' => env('LOG_DEBUG_URL', null),
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
@@ -348,7 +359,9 @@ return [
         'error' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'gotea-error',
+            'file' => 'gotea-error_' . FrozenDate::now()->format('Y_m_d'),
+            'size' => '5MB',
+            'rotate' => 7,
             'url' => env('LOG_ERROR_URL', null),
             'scopes' => false,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
@@ -357,7 +370,9 @@ return [
         'queries' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'gotea-query',
+            'file' => 'gotea-query_' . FrozenDate::now()->format('Y_m_d'),
+            'size' => '5MB',
+            'rotate' => 7,
             'url' => env('LOG_QUERIES_URL', null),
             'scopes' => ['queriesLog'],
         ],

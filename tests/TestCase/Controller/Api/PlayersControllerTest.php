@@ -55,7 +55,7 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testSearchRanksNoData()
     {
-        $this->get('/api/players/ranks/0');
+        $this->get('/api/players/ranks/999');
         $this->assertResponseSuccess();
         $this->assertResponseEquals($this->getEmptyResponse());
     }

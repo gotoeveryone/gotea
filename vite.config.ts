@@ -1,31 +1,30 @@
-import path from 'path';
-import legacy from '@vitejs/plugin-legacy';
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import { createVuePlugin } from 'vite-plugin-vue2';
+import vue from '@vitejs/plugin-vue';
 
-const stylesDir = path.join(__dirname, 'resources', 'assets', 'styles');
-const scriptsDir = path.join(__dirname, 'resources', 'assets', 'scripts');
+const stylesDir = resolve(__dirname, 'resources', 'assets', 'styles');
+const scriptsDir = resolve(__dirname, 'resources', 'assets', 'scripts');
 
 export default defineConfig({
   build: {
     outDir: './webroot/',
     emptyOutDir: false,
-    assetsDir: 'build',
-    manifest: true,
+    assetsDir: 'assets',
+    manifest: false,
     rollupOptions: {
       input: {
-        main: path.join(scriptsDir, 'main.ts'),
-        'css/app': path.join(stylesDir, 'app.scss'),
-        'css/view': path.join(stylesDir, 'view.scss'),
+        main: resolve(scriptsDir, 'main.ts'),
+        'css/app': resolve(stylesDir, 'app.scss'),
+        'css/view': resolve(stylesDir, 'view.scss'),
+      },
+      output: {
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name].[ext]',
       },
     },
   },
-  plugins: [
-    legacy({
-      targets: ['defaults', 'not IE 11'],
-    }),
-    createVuePlugin(),
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': scriptsDir,

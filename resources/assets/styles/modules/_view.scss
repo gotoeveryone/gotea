@@ -1,0 +1,267 @@
+@use 'sass:color';
+
+%row {
+  @include flex-justify-start();
+
+  padding: 0.2rem;
+}
+
+/* -------------------------------------------
+   詳細表示エリア
+ ------------------------------------------- */
+.detail {
+  margin: 1rem;
+  padding: 0;
+  border: 0.1rem solid $c_black;
+
+  .checkbox-label {
+    @include flex-justify-start();
+
+    input[type='checkbox'] {
+      width: auto;
+    }
+
+    .text {
+      margin-left: 0.3rem;
+    }
+  }
+
+  .page-header {
+    @include flex-justify-between();
+
+    margin: 0 auto;
+    padding: 0.7rem 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: color.adjust($c_nav, $lightness: 15%);
+    color: $c_white;
+  }
+
+  .label-row {
+    @extend %row;
+
+    margin: 0 auto;
+    height: 2.2rem;
+    text-indent: 0.7rem;
+    background-color: $c_gray;
+    font-weight: bold;
+  }
+
+  .input-row {
+    @include flex-justify-start();
+
+    margin: 0.5rem 0.7rem;
+    width: calc(100% - (0.7rem * 2));
+
+    &-inner-box {
+      @for $sep from 1 through 12 {
+        &-#{$sep} {
+          flex-basis: calc(100% / 12 * #{$sep});
+          width: calc(100% / 12 * #{$sep});
+        }
+      }
+    }
+
+    &.dropdowns {
+      display: inline-block;
+      width: auto;
+    }
+  }
+
+  .retention-row {
+    @include flex-justify-start();
+  }
+}
+
+.detail-dialog {
+  width: 100%;
+  height: 100%;
+
+  .tabs {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: $h_tab;
+
+    .tab {
+      @include sp() {
+        font-size: 0.6rem;
+      }
+
+      @include flex-center();
+
+      padding: 0.4rem 1rem;
+      font-size: 1rem;
+      color: $c_white;
+      white-space: nowrap;
+      background-color: $c_black;
+      border: 0.1rem solid $c_black;
+      border-bottom: none;
+      border-radius: 0.5rem 0.5rem 0 0;
+      transition: font-weight 0.3s, color 0.3s, background-color 0.3s;
+
+      &.selectTab {
+        color: $c_black;
+        background-color: rgb(188, 233, 218);
+      }
+
+      &:not(.selectTab):hover {
+        background-color: color.adjust($c_black, $lightness: 25%);
+        cursor: pointer;
+      }
+    }
+  }
+
+  .detail {
+    margin: 0;
+    height: calc(100% - #{$h_tab});
+    overflow-y: auto;
+    background-color: $c_white;
+
+    .tab-contents {
+      @include fade(0.5, 'not-select');
+    }
+  }
+}
+
+.detail_box {
+  @include flex-justify-start();
+
+  flex-wrap: wrap;
+
+  &_item {
+    flex-basis: 100%;
+    width: 100%;
+    padding: 0.5rem 1rem;
+
+    @include pc() {
+      @for $sep from 1 through 12 {
+        &.box-#{$sep} {
+          flex-basis: calc(100% / 12 * #{$sep});
+          width: calc(100% / 12 * #{$sep});
+        }
+      }
+    }
+
+    &-buttons {
+      @include flex-justify-end();
+    }
+
+    &.button-row {
+      @include flex-center();
+
+      margin-top: 0.5rem;
+    }
+
+    .mark-new {
+      margin-left: 0.5rem;
+      font-size: 80%;
+      color: $c_red;
+    }
+
+    .input {
+      height: 100%;
+
+      > .label-row,
+      > .input-row:not(textarea):not(input[type='checkbox']) {
+        height: 2.2rem;
+      }
+
+      &.checkbox,
+      > .checkbox-with-text-field-row,
+      > .label-field-row {
+        @include sp() {
+          padding: 0.5rem 0.7rem;
+        }
+
+        display: flex;
+        align-items: center;
+        height: calc(100% - 2.2rem);
+        min-height: 2.2rem;
+        padding-left: 0.7rem;
+      }
+
+      > .checkbox-with-text-field-row {
+        @include sp() {
+          flex-wrap: wrap;
+        }
+
+        .checkbox {
+          padding: 0.5rem 0;
+        }
+      }
+
+      &.checkbox {
+        padding-left: 1rem;
+
+        input[type='checkbox'] {
+          width: auto;
+          padding-left: 0.7rem;
+        }
+
+        .checkbox-label {
+          margin-right: 1rem;
+        }
+      }
+
+      .age {
+        min-width: 50px;
+        padding-left: 0.5rem;
+      }
+    }
+  }
+}
+
+.main-form {
+  .detail_box {
+    align-items: stretch;
+
+    &_item {
+      padding: 0;
+    }
+  }
+}
+
+/* -------------------------------------------
+   タイトル詳細の棋士一覧
+ ------------------------------------------- */
+.retentions {
+  margin: 5px auto;
+  width: 85%;
+  max-width: 750px;
+  max-height: 200px;
+  border-top: 1px solid $c_black;
+  overflow-y: auto;
+
+  &-name {
+    width: 25%;
+  }
+
+  &-country,
+  &-rank,
+  &-sex {
+    width: 10%;
+  }
+
+  &-select {
+    width: 20%;
+  }
+}
+
+/* -------------------------------------------
+   お知らせ
+ ------------------------------------------- */
+.notification {
+  &_content {
+    height: 500px;
+  }
+}
+
+/* -------------------------------------------
+   表テンプレート
+ ------------------------------------------- */
+.table-template {
+  &_content {
+    height: 500px;
+  }
+}

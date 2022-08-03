@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import axios from 'axios';
 
 import store from '@/store';
@@ -11,6 +11,8 @@ import Ranking from '@/components/ranking/Index.vue';
 import Titles from '@/components/titles/Index.vue';
 import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
+import NotificationListPage from '@/pages/notifications/index.vue';
+import TableTemplateListPage from '@/pages/table-templates/index.vue';
 import { Window } from '@/types';
 
 declare let window: Window;
@@ -18,9 +20,7 @@ declare let window: Window;
 /**
  * アプリケーションのVueインスタンス
  */
-const App = new Vue({
-  store,
-  el: '.container',
+const app = createApp({
   components: {
     appBlock: BlockUI,
     appModal: Modal,
@@ -30,12 +30,16 @@ const App = new Vue({
     ranking: Ranking,
     titles: Titles,
     ranks: Ranks,
+    NotificationListPage,
+    TableTemplateListPage,
   },
-  data: {
-    countryId: '',
-    changed: false,
-    historyId: null as number | null,
-    hide: true,
+  data: () => {
+    return {
+      countryId: '',
+      changed: false,
+      historyId: null as number | null,
+      hide: true,
+    };
   },
   mounted() {
     require('@/util');
@@ -103,6 +107,10 @@ const App = new Vue({
   },
 });
 
-window.App = App;
+app.use(store);
 
-export default App;
+app.mount('.container');
+
+window.App = app;
+
+export default app;

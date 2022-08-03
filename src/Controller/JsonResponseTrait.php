@@ -3,23 +3,19 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\View\JsonView;
+
 /**
  * JSON形式のレスポンスを制御します。
- *
- * @property \Cake\Controller\Component\RequestHandlerComponent $RequestHandler
  */
 trait JsonResponseTrait
 {
     /**
-     * アクションのレスポンスをすべてJSON形式に設定します。
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function forceJsonResponse()
+    public function viewClasses(): array
     {
-        $this->loadComponent('RequestHandler');
-
-        $this->RequestHandler->renderAs($this, 'json');
+        return [JsonView::class];
     }
 
     /**

@@ -10,13 +10,11 @@ use Cake\Console\ConsoleIo;
 use Cake\Core\Configure;
 use Cake\Http\Client as HttpClient;
 use Cake\Http\Exception\HttpException;
-use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Gotea\Model\Entity\Country;
 use Goutte\Client;
-use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\DomCrawler\Crawler;
 use Throwable;
 
@@ -53,16 +51,15 @@ class RankDiffCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $today = FrozenDate::now()->format('Ymd');
         $url = Configure::read('App.slack.notifyUrl');
         $client = new HttpClient();
         try {
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
             $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
-            $results = $countries->combine('name', function ($item) use ($ranks) {
+            $results = $countries->combine('name', function ($item) use ($client, $ranks) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
                 $method = 'getPlayersFrom' . Inflector::humanize($item->name_english);
-                $diffs = $this->$method($item, $ranks);
+                $diffs = $this->$method($client, $item, $ranks);
                 if (!count($diffs)) {
                     return [];
                 }
@@ -129,11 +126,12 @@ class RankDiffCommand extends Command
     /**
      * 日本棋士の段位と棋士数を取得
      *
+     * @param \Cake\Http\Client $client HTTP クライアント
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromJapan(Country $country, array $ranks)
+    private function getPlayersFromJapan(HttpClient $client, Country $country, array $ranks)
     {
         // 日本棋院・関西棋院それぞれから棋士一覧を取得
         $nihonkiin = $this->getPlayersFromNihonKiin($ranks);
@@ -195,34 +193,38 @@ class RankDiffCommand extends Command
     /**
      * 韓国棋士の段位と棋士数を取得
      *
+     * @param \Cake\Http\Client $client HTTP クライアント
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromKorea(Country $country, array $ranks)
+    private function getPlayersFromKorea(HttpClient $client, Country $country, array $ranks)
     {
-        $crawler = $this->getCrawler(Configure::read('App.diffUrl.korea'));
+        $url = Configure::read('App.diffUrl.korea');
 
-        return collection($crawler->filter('.playerArea .lv_list')
-            ->each(function (Crawler $row) {
-                $rank = $row->filter('.lv dt span')->first()->text();
-                $players = collection($row->filter('.players .player')
-                    ->each(function (Crawler $node) {
-                        return $node->text();
-                    }))->toArray();
+        return collection(array_reverse(range(1, 9)))->map(function (int $rank) use ($client, $url) {
+            $response = $client->get($url, [
+                'q' => "nation=1,ob_forc={$rank}",
+            ]);
 
-                return compact('rank', 'players');
-            }))->combine('rank', 'players')->toArray();
+            return [
+                'rank' => $rank,
+                'players' => array_map(function ($item) {
+                    return $item['prpl_name'];
+                }, $response->getJson()['recordset']),
+            ];
+        })->combine('rank', 'players')->toArray();
     }
 
     /**
      * 台湾棋士の段位と棋士数を取得
      *
+     * @param \Cake\Http\Client $client HTTP クライアント
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromTaiwan(Country $country, array $ranks)
+    private function getPlayersFromTaiwan(HttpClient $client, Country $country, array $ranks)
     {
         $results = [];
         $rank = null;
@@ -261,7 +263,6 @@ class RankDiffCommand extends Command
     private function getCrawler($url)
     {
         $client = new Client();
-        $client->setClient(new GuzzleClient());
 
         $crawler = $client->request('GET', $url);
         if ($client->getInternalResponse()->getStatusCode() >= 400) {

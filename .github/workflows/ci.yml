@@ -40,20 +40,52 @@ jobs:
         run: npm run lint
 
   test_backend:
+    timeout-minutes: 3
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/gotoeveryone/composer-php:7.4
-    services:
-      database:
-        image: mysql:5.7
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_DATABASE: gotea_test
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    # 本来はこの方法でテストを実行したいが、service として立ち上げる MySQL は非 ASCII 文字に対応しておらずエラーになるため一旦断念
+    # container:
+    #   image: ghcr.io/gotoeveryone/composer-php:7.4
+    # services:
+    #   database:
+    #     image: mysql:5.7
+    #     ports:
+    #       - 3306:3306
+    #     env:
+    #       MYSQL_DATABASE: 'gotea_test'
+    #       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      DB_TEST_HOST: '127.0.0.1'
+      DB_TEST_PORT: 33306
+      DB_TEST_USERNAME: 'root'
+      DB_TEST_PASSWORD: ''
+      DB_TEST_NAME: 'gotea_test'
+      DB_TEST_ENCODING: 'utf8mb4'
+      DB_TEST_TIMEZONE: 'Asia/Tokyo'
+      SECURITY_SALT: ${{ secrets.SECURITY_SALT }}
+      TZ: Asia/Tokyo
+      SENTRY_DSN: ''
     steps:
+      - name: Set up MySQL
+        run: >
+          docker run \
+            -e MYSQL_DATABASE=${DB_TEST_NAME} \
+            -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+            -d \
+            -p ${DB_TEST_PORT}:3306 \
+            mysql:5.7 mysqld --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_general_ci
       - uses: actions/checkout@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: zip, intl, pdo_mysql
+          ini-values: xdebug.mode="develop"
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=${DB_TEST_HOST} --port ${DB_TEST_PORT} --silent; do
+            sleep 1
+          done
       - name: Cache modules
         uses: actions/cache@v2
         id: vendor_cache

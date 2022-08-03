@@ -62,5 +62,8 @@ nbproject/*
 # phpunit cache
 .phpunit.result.cache
 
+# Vetur
+vetur.config.js
+
 # cakephp-vite
 /webroot/build

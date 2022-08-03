@@ -13,16 +13,16 @@
   "type": "project",
   "license": "MIT",
   "require": {
-    "php": ">=7.2",
-    "abraham/twitteroauth": "^1.1",
+    "php": ">=7.4",
+    "abraham/twitteroauth": "^4.0",
     "cakephp/authentication": "^2.0",
     "cakephp/authorization": "^2.0",
-    "cakephp/cakephp": "^4.3",
+    "cakephp/cakephp": "^4.4",
     "cakephp/migrations": "^3.2",
     "cakephp/plugin-installer": "^1.0",
     "connehito/cake-sentry": "^4.0",
     "dereuromark/cakephp-shim": "^2.0",
-    "fabpot/goutte": "^3.2",
+    "fabpot/goutte": "^4.0",
     "mobiledetect/mobiledetectlib": "^2.8",
     "passchn/cakephp-vite": "^0.2.0",
     "symfony/http-client": "^5.3",
@@ -54,13 +54,17 @@
       "@test",
       "@cs-check"
     ],
-    "cs-check": "phpcs --colors -p  src/ tests/",
+    "cs-check": "phpcs --colors -p src/ tests/",
     "cs-fix": "phpcbf --colors -p src/ tests/",
     "test": "phpunit --colors=always"
   },
   "minimum-stability": "stable",
   "prefer-stable": true,
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "cakephp/plugin-installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

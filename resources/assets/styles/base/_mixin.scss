@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 @mixin sp() {
   @media screen and (max-width: ($breakpoint)) {
     @content;
@@ -63,17 +65,17 @@
   transition: background-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: darken($color, 15%);
+    background-color: color.adjust($color, $lightness: -15%);
   }
 }
 
 @mixin button($color) {
   background-color: #{$color};
-  border: 1px solid darken($color, 20%);
+  border: 1px solid color.adjust($color, $lightness: -20%);
   transition: background-color 0.3s ease-in-out;
 
   &:enabled:hover {
-    background-color: darken($color, 15%);
+    background-color: color.adjust($color, $lightness: -15%);
   }
 
   &:disabled {
@@ -85,7 +87,7 @@
 @mixin button-link($color) {
   margin: auto 0.3rem;
   padding: 0.3rem 0.8rem;
-  border: 1px solid darken($color, 15%);
+  border: 1px solid color.adjust($color, $lightness: -15%);
   border-radius: 5px;
   background-color: #{$color};
   transition: background-color 0.2s ease-in-out;
@@ -93,7 +95,7 @@
   text-decoration: none;
 
   &:hover {
-    background-color: darken($color, 10%);
+    background-color: color.adjust($color, $lightness: -10%);
   }
 }
 

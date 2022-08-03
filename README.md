@@ -22,7 +22,7 @@ $ cp .env.example .env
 ## Run
 
 ```console
-$ docker-compose up
+$ docker compose up
 ```
 
 - ホストから接続するためのポートは以下
@@ -32,19 +32,19 @@ $ docker-compose up
 ## Migration
 
 ```console
-$ docker-compose exec server ./bin/cake migrations migrate
+$ docker compose exec server ./bin/cake migrations migrate
 ```
 
 ## Test
 
 ```console
-$ docker-compose exec server ./vendor/bin/phpunit
+$ docker compose exec server ./vendor/bin/phpunit
 ```
 
 ## Repl
 
 ```console
-$ docker-compose exec server ./bin/cake console
+$ docker compose exec server ./bin/cake console
 ```
 
 ### フロントコード
