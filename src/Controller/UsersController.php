@@ -59,11 +59,17 @@ class UsersController extends AppController
      */
     public function login(): ?Response
     {
+        $this->viewBuilder()->setLayout('login');
+
         // ログイン
         $credentials = $this->getRequest()->getParsedBody();
         $form = new LoginForm();
+        $this->set('form', $form);
+
         if (!$form->validate($credentials)) {
-            return $this->setErrors(400, $form->getErrors())->setAction('index');
+            return $this->set('form', $form)
+                ->setErrors(400, $form->getErrors())
+                ->render('index');
         }
 
         $result = $this->Authentication->getResult();
@@ -87,7 +93,7 @@ class UsersController extends AppController
         }
 
         // ログイン失敗
-        return $this->setErrors(401, __('Authentication failed'))->setAction('index');
+        return $this->setErrors(401, __('Authentication failed'))->render('index');
     }
 
     /**

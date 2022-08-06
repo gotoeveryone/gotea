@@ -71,7 +71,9 @@ class PlayersController extends AppController
         // バリデーション
         $data = $this->getRequest()->getQueryParams();
         if (!$form->validate($data)) {
-            return $this->setErrors(400, $form->getErrors())->setAction('index');
+            return $this->withRanks()
+                ->setErrors(400, $form->getErrors())
+                ->render('index');
         }
 
         // データを取得
