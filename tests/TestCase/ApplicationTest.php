@@ -5,6 +5,7 @@ namespace Gotea\Test\TestCase;
 
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\MiddlewareQueue;
@@ -32,7 +33,7 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(8, $plugins);
+        $this->assertCount(7, $plugins);
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
         $this->assertSame('Cake/Repl', $plugins->get('Cake/Repl')->getName());
@@ -40,6 +41,9 @@ class ApplicationTest extends TestCase
         $this->assertSame('Shim', $plugins->get('Shim')->getName());
         $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
         $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
+        $this->assertFalse($plugins->has('Connehito/CakeSentry'));
+
+        Configure::write('Sentry.dsn', 'hogefuga');
         $this->assertSame('Connehito/CakeSentry', $plugins->get('Connehito/CakeSentry')->getName());
     }
 
@@ -60,6 +64,7 @@ class ApplicationTest extends TestCase
         $app->method('addPlugin')
             ->will($this->throwException(new InvalidArgumentException('test exception.')));
 
+        /** @var \Gotea\Application $app */
         $app->bootstrap();
     }
 

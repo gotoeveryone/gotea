@@ -76,7 +76,10 @@ class Application extends BaseApplication implements
         $this->addPlugin('Shim');
         $this->addPlugin('Authentication');
         $this->addPlugin('Authorization');
-        $this->addPlugin('Connehito/CakeSentry');
+
+        if (Configure::read('Sentry.dsn')) {
+            $this->addPlugin('Connehito/CakeSentry');
+        }
     }
 
     /**
