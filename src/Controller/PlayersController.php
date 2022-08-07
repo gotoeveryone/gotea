@@ -31,8 +31,6 @@ class PlayersController extends AppController
         $this->Ranks = $this->fetchTable('Ranks');
         $this->Organizations = $this->fetchTable('Organizations');
         $this->TitleScores = $this->fetchTable('TitleScores');
-
-        $this->loadComponent('Paginator');
     }
 
     /**
