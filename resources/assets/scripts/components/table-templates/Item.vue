@@ -20,40 +20,26 @@
   </li>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import dayjs from 'dayjs';
-import { defineComponent } from 'vue';
+import { computed, defineProps } from 'vue';
 import type { PropType } from 'vue';
-
 import { TableTemplate as Item } from '@/types/table-template';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as PropType<Item>,
-      required: true,
-    },
-    csrfToken: {
-      type: String,
-      default: '',
-    },
+const props = defineProps({
+  item: {
+    type: Object as PropType<Item>,
+    required: true,
   },
-  computed: {
-    created(): string {
-      return dayjs(this.item.created).format('YYYY年MM月DD日 HH時mm分ss秒');
-    },
-    modified(): string {
-      return dayjs(this.item.modified).format('YYYY年MM月DD日 HH時mm分ss秒');
-    },
-    editPageLink(): string {
-      return `/table-templates/${this.item.id}`;
-    },
-    formName(): string {
-      return `table_templates_${this.item.id}`;
-    },
-    confirmMessage(): string {
-      return `ID ${this.item.id} を削除します。よろしいですか?`;
-    },
+  csrfToken: {
+    type: String,
+    default: '',
   },
 });
+
+const created = computed(() => dayjs(props.item.created).format('YYYY年MM月DD日 HH時mm分ss秒'));
+const modified = computed(() => dayjs(props.item.modified).format('YYYY年MM月DD日 HH時mm分ss秒'));
+const editPageLink = computed(() => `/table-templates/${props.item.id}`);
+const formName = computed(() => `table_templates_${props.item.id}`);
+const confirmMessage = computed(() => `ID ${props.item.id} を削除します。よろしいですか?`);
 </script>

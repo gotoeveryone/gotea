@@ -1,6 +1,6 @@
 <template>
   <transition name="dialog">
-    <div v-if="isShow" :style="{ backgroundColor: modalColor }" class="dialog" @click="close()">
+    <div v-if="isShow" :style="{ backgroundColor: modalColor }" class="dialog" @click="close">
       <div class="dialog-content">
         <div :style="{ backgroundColor: headerColor }" class="dialog-content-header">
           <div class="dialog-content-title" v-text="title" />
@@ -15,89 +15,72 @@
           </div>
         </div>
         <div class="dialog-content-footer">
-          <button v-focus class="dialog-content-button" @click="close()">閉じる</button>
+          <button ref="closeButton" class="dialog-content-button" @click="close">閉じる</button>
         </div>
       </div>
     </div>
   </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-
+<script lang="ts" setup>
+import { computed, defineProps, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+import type { PropType } from 'vue';
 import { DialogOption } from '@/types';
 
-export default defineComponent({
-  directives: {
-    focus: {
-      mounted: (el) => {
-        el.focus();
-      },
-    },
+const closeButtonRef = ref<HTMLButtonElement>();
+
+const props = defineProps({
+  servType: {
+    type: String,
+    default: '',
   },
-  props: {
-    servType: {
-      type: String,
-      default: '',
-    },
-    servMessages: {
-      type: Array as PropType<string[]>,
-      default: () => [],
-    },
-  },
-  computed: {
-    options(): DialogOption {
-      return this.$store.getters.dialogOptions();
-    },
-    modalColor(): string {
-      return this.options.modalColor || 'rgba(204, 204, 204, 0.6)';
-    },
-    headerColor(): string {
-      return this.options.headerColor || '#4ba';
-    },
-    title(): string {
-      return this.options.title || 'メッセージ';
-    },
-    messages(): string[] {
-      const m = this.options.messages;
-      if (!Array.isArray(m)) {
-        return m ? [m] : [];
-      }
-      return m;
-    },
-    messageClass(): string {
-      if (this.options.type) {
-        return `message-${this.options.type}`;
-      }
-      return 'message-info';
-    },
-    isShow(): boolean {
-      return (
-        this.messages.length > 0 &&
-        ((this.isServ && this.options.server) || (!this.isServ && !this.options.server))
-      );
-    },
-    isServ(): boolean {
-      return this.servMessages && this.servMessages.length > 0;
-    },
-  },
-  mounted() {
-    // サーバからのメッセージを保持している場合、それをオプションに設定
-    if (this.isServ) {
-      this.$store.dispatch('openDialog', {
-        title: this.title,
-        messages: this.servMessages,
-        type: this.servType,
-        server: true,
-      });
-    }
-  },
-  methods: {
-    close() {
-      this.$store.dispatch('closeDialog');
-    },
+  servMessages: {
+    type: Array as PropType<string[]>,
+    default: () => [],
   },
 });
+
+const store = useStore();
+
+const options = computed(() => store.getters.dialogOptions() as DialogOption);
+const modalColor = computed(() => options.value.modalColor || 'rgba(204, 204, 204, 0.6)');
+const headerColor = computed(() => options.value.headerColor || '#4ba');
+const title = computed(() => options.value.title || 'メッセージ');
+const messages = computed(() => {
+  const m = options.value.messages;
+  if (!Array.isArray(m)) {
+    return m ? [m] : [];
+  }
+  return m;
+});
+const messageClass = computed(() => {
+  if (options.value.type) {
+    return `message-${options.value.type}`;
+  }
+  return 'message-info';
+});
+const isServ = computed(() => props.servMessages && props.servMessages.length > 0);
+const isShow = computed(
+  () =>
+    messages.value.length > 0 &&
+    ((isServ.value && options.value.server) || (!isServ.value && !options.value.server)),
+);
+
+onMounted(() => {
+  // サーバからのメッセージを保持している場合、それをオプションに設定
+  if (isServ.value) {
+    store.dispatch('openDialog', {
+      title: title.value,
+      messages: props.servMessages,
+      type: props.servType,
+      server: true,
+    });
+  }
+  closeButtonRef.value?.focus();
+});
+
+const close = () => store.dispatch('closeDialog');
 </script>
 
 <style lang="scss" scoped>

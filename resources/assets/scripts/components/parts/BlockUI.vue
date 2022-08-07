@@ -4,22 +4,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed, defineProps } from 'vue';
 
-export default defineComponent({
-  props: {
-    hide: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    blockClass(): string {
-      return this.hide ? 'blocked' : '';
-    },
+const props = defineProps({
+  hide: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const blockClass = computed(() => (props.hide ? 'blocked' : ''));
 </script>
 
 <style lang="scss" scoped>

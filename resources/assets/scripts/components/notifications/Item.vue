@@ -25,40 +25,26 @@
   </li>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import dayjs from 'dayjs';
-import { defineComponent } from 'vue';
+import { computed, defineProps } from 'vue';
 import type { PropType } from 'vue';
-
 import { Notification as Item } from '@/types/notification';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as PropType<Item>,
-      required: true,
-    },
-    csrfToken: {
-      type: String,
-      default: '',
-    },
+const props = defineProps({
+  item: {
+    type: Object as PropType<Item>,
+    required: true,
   },
-  computed: {
-    published(): string {
-      return dayjs(this.item.published).format('YYYY-MM-DD HH:mm:ss');
-    },
-    editPageLink(): string {
-      return `/notifications/${this.item.id}`;
-    },
-    copyPageLink(): string {
-      return `/notifications/new?from=${this.item.id}`;
-    },
-    formName(): string {
-      return `post_${this.item.id}`;
-    },
-    confirmMessage(): string {
-      return `ID ${this.item.id} を削除します。よろしいですか?`;
-    },
+  csrfToken: {
+    type: String,
+    default: '',
   },
 });
+
+const published = computed(() => dayjs(props.item.published).format('YYYY-MM-DD HH:mm:ss'));
+const editPageLink = computed(() => `/notifications/${props.item.id}`);
+const copyPageLink = computed(() => `/notifications/new?from=${props.item.id}`);
+const formName = computed(() => `post_${props.item.id}`);
+const confirmMessage = computed(() => `ID ${props.item.id} を削除します。よろしいですか?`);
 </script>

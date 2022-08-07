@@ -15,7 +15,8 @@
     "strictNullChecks": true,
     "removeComments": true,
     "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "jsx": "preserve"
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "typings"],

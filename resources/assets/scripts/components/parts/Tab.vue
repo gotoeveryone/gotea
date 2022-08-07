@@ -11,31 +11,25 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+import { defineProps, onMounted } from 'vue';
+import type { PropType } from 'vue';
 
-export default defineComponent({
-  props: {
-    tabs: {
-      type: Array as PropType<string[]>,
-      default: () => [],
-    },
-  },
-  data: () => {
-    return {
-      selectTab: '',
-    };
-  },
-  mounted() {
-    this.selectTab = this.tabs[0];
-  },
-  methods: {
-    select(tab: string) {
-      this.selectTab = tab;
-    },
-    isSelect(tab: string) {
-      return this.selectTab === tab;
-    },
+let selectTab = '';
+
+const props = defineProps({
+  tabs: {
+    type: Array as PropType<string[]>,
+    default: () => [],
   },
 });
+
+onMounted(() => {
+  selectTab = props.tabs[0];
+});
+
+const select = (tab: string) => {
+  selectTab = tab;
+};
+const isSelect = (tab: string) => selectTab === tab;
 </script>
