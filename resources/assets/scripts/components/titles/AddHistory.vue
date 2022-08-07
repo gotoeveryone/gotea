@@ -3,8 +3,8 @@
     <li class="label-row" v-text="text" />
     <li class="detail_box">
       <div class="detail_box_item box-2">
-        <input :value="historyId" type="hidden" name="id">
-        <input :value="isTeamHidden ? 1 : 0" type="hidden" name="is_team">
+        <input :value="historyId" type="hidden" name="id" />
+        <input :value="isTeamHidden ? 1 : 0" type="hidden" name="is_team" />
         <div class="input number">
           <label for="target-year">対象年度</label>
           <input
@@ -14,13 +14,13 @@
             maxlength="4"
             class="year"
             name="target_year"
-          >
+          />
         </div>
       </div>
       <div class="detail_box_item box-2">
         <div class="input number">
           <label for="holding">期</label>
-          <input v-model="holding" type="number" maxlength="4" class="holding" name="holding">
+          <input v-model="holding" type="number" maxlength="4" class="holding" name="holding" />
         </div>
       </div>
       <div class="detail_box_item box-2">
@@ -35,7 +35,7 @@
             autocomplete="off"
             name="acquired"
             @change="onChangeAcquired"
-          >
+          />
         </div>
       </div>
       <div class="detail_box_item box-2">
@@ -50,12 +50,12 @@
             autocomplete="off"
             name="broadcasted"
             @change="onChangeBroadcasted"
-          >
+          />
         </div>
       </div>
       <div class="detail_box_item detail_box_item-buttons box-4">
         <div class="input checkbox">
-          <input name="is_official" value="0" type="hidden">
+          <input name="is_official" value="0" type="hidden" />
           <label class="checkbox-label" for="official">
             <input
               id="official"
@@ -64,12 +64,12 @@
               type="checkbox"
               class="official"
               name="is_official"
-            >
+            />
             <span>公式戦</span>
           </label>
         </div>
         <div class="input checkbox">
-          <input name="newest" value="0" type="hidden">
+          <input name="newest" value="0" type="hidden" />
           <label v-if="!edit" for="newest" class="checkbox-label">
             <input
               v-if="!edit"
@@ -78,17 +78,13 @@
               type="checkbox"
               name="newest"
               checked="checked"
-            >
+            />
             最新として登録
           </label>
         </div>
         <div class="input">
-          <button v-if="edit" type="button" @click="clearData()">
-            編集をやめる
-          </button>
-          <button :disabled="required" type="submit" class="button button-primary">
-            保存
-          </button>
+          <button v-if="edit" type="button" @click="clearData()">編集をやめる</button>
+          <button :disabled="required" type="submit" class="button button-primary">保存</button>
         </div>
       </div>
       <div v-if="isTeamHidden" class="detail_box_item">
@@ -100,15 +96,15 @@
             type="text"
             name="win_group_name"
             maxlength="30"
-          >
+          />
         </div>
       </div>
       <div v-if="!isTeamHidden" class="detail_box_item box-3">
         <div class="input">
           <label>設定棋士名</label>
           <strong v-text="viewName" />
-          <input v-model="playerId" type="hidden" name="player_id">
-          <input v-model="countryId" type="hidden" name="country_id">
+          <input v-model="playerId" type="hidden" name="player_id" />
+          <input v-model="countryId" type="hidden" name="country_id" />
         </div>
       </div>
       <div v-if="!isTeamHidden" class="detail_box_item box-2">
@@ -127,22 +123,18 @@
       <div class="detail_box_item box-7" />
     </li>
     <template v-if="!isTeamHidden">
-      <li class="label-row">
-        棋士検索
-      </li>
+      <li class="label-row">棋士検索</li>
       <li class="detail_box">
         <div class="detail_box_item box-3">
           <div class="input text">
             <label for="name">棋士名</label>
-            <input id="name" v-model="name" type="text" class="name">
+            <input id="name" v-model="name" type="text" class="name" />
           </div>
         </div>
         <div class="detail_box_item box-7" />
         <div class="detail_box_item detail_box_item-buttons box-2">
           <div class="input">
-            <button type="button" class="button button-primary" @click="search()">
-              検索
-            </button>
+            <button type="button" class="button button-primary" @click="search()">検索</button>
           </div>
         </div>
       </li>

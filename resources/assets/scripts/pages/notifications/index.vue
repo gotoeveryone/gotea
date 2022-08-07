@@ -7,7 +7,13 @@
         </div>
       </li>
     </ul>
-    <paginator v-if="items.length" :current-page="currentPage" :per-page="perPage" :total="total" @change-page="onSearch" />
+    <paginator
+      v-if="items.length"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :total="total"
+      @change-page="onSearch"
+    />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -32,10 +38,7 @@ import { defineComponent } from 'vue';
 
 import Paginator from '@/components/Paginator.vue';
 import ListItem from '@/components/notifications/Item.vue';
-import {
-  Notification as Item,
-  NotificationListResponse as Response,
-} from '@/types/notification';
+import { Notification as Item, NotificationListResponse as Response } from '@/types/notification';
 
 export default defineComponent({
   components: {
@@ -64,8 +67,9 @@ export default defineComponent({
   methods: {
     onSearch(page: number) {
       this.currentPage = page;
-      return axios.get<Response>('/api/notifications', { params: { page, limit: this.perPage } })
-        .then(res => res.data)
+      return axios
+        .get<Response>('/api/notifications', { params: { page, limit: this.perPage } })
+        .then((res) => res.data)
         .then(({ response: { total, items } }) => {
           this.total = total;
           this.items = items;

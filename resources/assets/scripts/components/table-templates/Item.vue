@@ -5,11 +5,17 @@
     <span class="table-column table-column_modified" v-text="modified" />
     <span class="table-column table-column_actions">
       <a :href="editPageLink" class="layout-button button-secondary">編集</a>
-      <form :name="formName" method="post" :action="editPageLink" style="display: none;">
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="hidden" name="_csrfToken" autocomplete="off" :value="csrfToken">
+      <form :name="formName" method="post" :action="editPageLink" style="display: none">
+        <input type="hidden" name="_method" value="DELETE" />
+        <input type="hidden" name="_csrfToken" autocomplete="off" :value="csrfToken" />
       </form>
-      <a href="#" :data-confirm-message="confirmMessage" :onclick="`if (confirm(this.dataset.confirmMessage)) { document.${formName}.submit(); } event.returnValue = false; return false;`" class="layout-button button-danger">削除</a>
+      <a
+        href="#"
+        :data-confirm-message="confirmMessage"
+        :onclick="`if (confirm(this.dataset.confirmMessage)) { document.${formName}.submit(); } event.returnValue = false; return false;`"
+        class="layout-button button-danger"
+        >削除</a
+      >
     </span>
   </li>
 </template>

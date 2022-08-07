@@ -45,12 +45,7 @@
           class="ranking_type"
           @change="changeValue($event)"
         >
-          <option
-            v-for="type in types"
-            :key="type.value"
-            :value="type.value"
-            v-text="type.text"
-          />
+          <option v-for="type in types" :key="type.value" :value="type.value" v-text="type.text" />
         </select>
       </div>
     </li>
@@ -67,7 +62,7 @@
           class="ranking_date datepicker"
           autocomplete="off"
           @change="changeValue($event)"
-        >
+        />
         <span class="ranking_date-duration">～</span>
         <input
           v-model="select.to"
@@ -77,7 +72,7 @@
           class="ranking_date datepicker"
           autocomplete="off"
           @change="changeValue($event)"
-        >
+        />
       </div>
     </li>
     <li class="search-row">
@@ -87,9 +82,7 @@
           <span class="lastUpdate" v-text="lastUpdate" />
         </div>
         <div>
-          <button type="button" @click="clearDate()">
-            日付をクリア
-          </button>
+          <button type="button" @click="clearDate()">日付をクリア</button>
           <button v-if="isAdmin" type="button" class="button button-primary" @click="json()">
             JSON出力
           </button>

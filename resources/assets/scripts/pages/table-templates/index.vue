@@ -7,7 +7,13 @@
         </div>
       </li>
     </ul>
-    <paginator v-if="items.length" :current-page="currentPage" :per-page="perPage" :total="total" @change-page="onSearch" />
+    <paginator
+      v-if="items.length"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :total="total"
+      @change-page="onSearch"
+    />
     <div class="search-results">
       <ul class="table-header">
         <li class="table-row">
@@ -62,8 +68,9 @@ export default defineComponent({
   methods: {
     onSearch(page: number) {
       this.currentPage = page;
-      return axios.get<Response>('/api/table-templates', { params: { page, limit: this.perPage } })
-        .then(res => res.data)
+      return axios
+        .get<Response>('/api/table-templates', { params: { page, limit: this.perPage } })
+        .then((res) => res.data)
         .then(({ response: { total, items } }) => {
           this.total = total;
           this.items = items;

@@ -61,7 +61,7 @@ const app = createApp({
           new Pikaday(pikadayOptions(element, element.classList.contains('birthday'))).show();
         }
       },
-      true
+      true,
     );
 
     // タブ押下時
@@ -70,7 +70,11 @@ const app = createApp({
       const tabs = tabWrap.querySelectorAll('.tab');
       // イベントの設定
       Array.prototype.slice.call(tabs, 0).forEach((element: HTMLElement) => {
-        element.addEventListener('click', (event: Event) => changeTab(event.target as HTMLInputElement), false);
+        element.addEventListener(
+          'click',
+          (event: Event) => changeTab(event.target as HTMLInputElement),
+          false,
+        );
       });
 
       // 初期表示タブの指定があればそのタブを表示
@@ -91,7 +95,9 @@ const app = createApp({
     if (checked) {
       // 引退フラグにチェックされていれば引退日の入力欄を設定可能に
       const setChecked = (withClear = false): void => {
-        const target = document.querySelector(`[data-target="${checked.getAttribute('data-checked')}"]`) as HTMLInputElement;
+        const target = document.querySelector(
+          `[data-target="${checked.getAttribute('data-checked')}"]`,
+        ) as HTMLInputElement;
         if (target) {
           if (checked.checked) {
             target.disabled = checked.getAttribute('data-is-check') === 'disabled';
@@ -124,7 +130,7 @@ const app = createApp({
             .replace(new RegExp(/^\r/gm), '')
             .replace(new RegExp(/^\n/gm), '');
         },
-        false
+        false,
       );
     }
 
@@ -145,7 +151,7 @@ const app = createApp({
             event.preventDefault();
           }
         },
-        false
+        false,
       );
     }
 
@@ -158,13 +164,13 @@ const app = createApp({
           const textarea = document.querySelector('#input-queries') as HTMLInputElement;
           textarea.value = '';
         },
-        false
+        false,
       );
     }
 
     // リクエスト
     axios.interceptors.request.use(
-      config => {
+      (config) => {
         config.headers = {
           'Content-Type': 'application/json',
         };
@@ -174,22 +180,22 @@ const app = createApp({
         this.hide = true;
         return config;
       },
-      error => {
+      (error) => {
         this.hide = false;
         return Promise.reject(error);
-      }
+      },
     );
 
     // レスポンス
     axios.interceptors.response.use(
-      response => {
+      (response) => {
         this.hide = false;
         return response;
       },
-      error => {
+      (error) => {
         this.hide = false;
         return Promise.reject(error.response);
-      }
+      },
     );
 
     this.hide = false;

@@ -1,19 +1,22 @@
 <template>
   <div class="pagination">
     <ul class="pagination-item">
-      <li class="result-count">
-        <span v-text="total" />件のレコードが該当しました。
-      </li>
+      <li class="result-count"><span v-text="total" />件のレコードが該当しました。</li>
     </ul>
     <ul class="pagination-item pager">
-      <li class="pager-item prev" :class="{ 'disabled': isFirstPage }">
+      <li class="pager-item prev" :class="{ disabled: isFirstPage }">
         <span v-if="isFirstPage" class="pager-item-link">&lt;</span>
         <a v-else class="pager-item-link" @click="onChangePage(currentPage - 1)">&lt;</a>
       </li>
-      <li v-for="page in pages" :key="page" class="pager-item" :class="{ 'active': currentPage === page }">
+      <li
+        v-for="page in pages"
+        :key="page"
+        class="pager-item"
+        :class="{ active: currentPage === page }"
+      >
         <a class="pager-item-link" @click="onChangePage(page)" v-text="page" />
       </li>
-      <li class="pager-item next" :class="{ 'disabled': isLastPage }">
+      <li class="pager-item next" :class="{ disabled: isLastPage }">
         <span v-if="isLastPage" class="pager-item-link">&gt;</span>
         <a v-else class="pager-item-link" @click="onChangePage(currentPage + 1)">&gt;</a>
       </li>
@@ -87,4 +90,3 @@ export default defineComponent({
   },
 });
 </script>
-
