@@ -14,7 +14,9 @@ export const pikadayOptions = (element: HTMLElement, birthday: boolean): Pikaday
   const nowYear = dayjs().year();
   const startYear = birthday ? 1920 : nowYear - 10;
   const endYear = birthday ? nowYear - 5 : nowYear + 1;
-  const defaultDate = dayjs().set('years', birthday ? endYear : nowYear).toDate();
+  const defaultDate = dayjs()
+    .set('years', birthday ? endYear : nowYear)
+    .toDate();
   const maxDate = dayjs().set('years', endYear).toDate();
   return {
     field: element,
@@ -58,7 +60,9 @@ export const pikadayOptions = (element: HTMLElement, birthday: boolean): Pikaday
 export const changeTab = (element: HTMLInputElement): void => {
   // タブ・コンテンツを非表示
   const tabs = document.querySelectorAll('.tabs .tab');
-  Array.prototype.slice.call(tabs, 0).forEach((ce: HTMLElement) => ce.classList.remove('selectTab'), false);
+  Array.prototype.slice
+    .call(tabs, 0)
+    .forEach((ce: HTMLElement) => ce.classList.remove('selectTab'), false);
   const tabContents = document.querySelectorAll('.tab-contents');
   Array.prototype.slice
     .call(tabContents, 0)

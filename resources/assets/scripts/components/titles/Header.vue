@@ -39,12 +39,8 @@
         </select>
       </div>
       <div v-if="isAdmin" class="search-box search-box-right">
-        <button class="button button-secondary" type="button" @click="add()">
-          行追加
-        </button>
-        <button class="button button-primary" type="button" @click="json()">
-          JSON出力
-        </button>
+        <button class="button button-secondary" type="button" @click="add()">行追加</button>
+        <button class="button button-primary" type="button" @click="json()">JSON出力</button>
       </div>
     </li>
   </ul>

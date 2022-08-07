@@ -15,9 +15,7 @@
           </div>
         </div>
         <div class="dialog-content-footer">
-          <button v-focus class="dialog-content-button" @click="close()">
-            閉じる
-          </button>
+          <button v-focus class="dialog-content-button" @click="close()">閉じる</button>
         </div>
       </div>
     </div>

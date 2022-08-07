@@ -1,10 +1,10 @@
 <template>
   <li :class="rowClass" class="table-row">
     <span class="table-column table-column_name">
-      <input v-model="localItem.name" :disabled="!isAdmin" type="text" @change="save">
+      <input v-model="localItem.name" :disabled="!isAdmin" type="text" @change="save" />
     </span>
     <span class="table-column table-column_name">
-      <input v-model="localItem.nameEnglish" :disabled="!isAdmin" type="text" @change="save">
+      <input v-model="localItem.nameEnglish" :disabled="!isAdmin" type="text" @change="save" />
     </span>
     <span class="table-column table-column_holding">
       <input
@@ -13,7 +13,7 @@
         type="text"
         class="table-column_holding-input"
         @change="save"
-      >
+      />
     </span>
     <span class="table-column table-column_winner" v-text="winnerName" />
     <span class="table-column table-column_order">
@@ -23,13 +23,13 @@
         type="text"
         class="table-column_order-input"
         @change="save"
-      >
+      />
     </span>
     <span class="table-column table-column_team">
-      <input v-model="localItem.isTeam" :disabled="!isAdmin" type="checkbox" @change="save">
+      <input v-model="localItem.isTeam" :disabled="!isAdmin" type="checkbox" @change="save" />
     </span>
     <span class="table-column table-column_filename">
-      <input v-model="localItem.htmlFileName" :disabled="!isAdmin" type="text" @change="save">
+      <input v-model="localItem.htmlFileName" :disabled="!isAdmin" type="text" @change="save" />
     </span>
     <span class="table-column table-column_holding">
       <input
@@ -38,7 +38,7 @@
         type="text"
         class="table-column_holding-input"
         @change="save"
-      >
+      />
     </span>
     <span class="table-column table-column_modified">
       <input
@@ -48,7 +48,7 @@
         class="datepicker table-column_modified-input"
         autocomplete="off"
         @change="saveDatepicker($event)"
-      >
+      />
     </span>
     <span class="table-column table-column_closed">
       <input
@@ -56,13 +56,13 @@
         :disabled="!isAdmin || !isSaved"
         type="checkbox"
         @change="save"
-      >
+      />
     </span>
     <span class="table-column table-column_output">
-      <input v-model="localItem.isOutput" :disabled="!isAdmin" type="checkbox" @change="save">
+      <input v-model="localItem.isOutput" :disabled="!isAdmin" type="checkbox" @change="save" />
     </span>
     <span class="table-column table-column_official">
-      <input v-model="localItem.isOfficial" :disabled="!isAdmin" type="checkbox" @change="save">
+      <input v-model="localItem.isOfficial" :disabled="!isAdmin" type="checkbox" @change="save" />
     </span>
     <span class="table-column table-column_open-detail">
       <a class="view-link" @click="select()" v-text="label" />

@@ -53,9 +53,8 @@ nbproject/*
 # Sass preprocessor
 .sass-cache/
 
-# anyenv
-.php-version
-.node-version
+# asdf
+.tools-versions
 
 # phpunit cache
 .phpunit.result.cache

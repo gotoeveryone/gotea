@@ -1,18 +1,33 @@
 {
-  "plugins": ["stylelint-scss"],
-  "files": ["**/*.scss", "**/*.vue"],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "files": [
+    "**/*.scss",
+    "**/*.vue"
+  ],
   "overrides": [
     {
-      "files": ["*.scss", "**/*.scss"],
+      "files": [
+        "*.scss",
+        "**/*.scss"
+      ],
       "customSyntax": "postcss-scss",
-      "extends": ["stylelint-config-recommended-scss"]
+      "extends": [
+        "stylelint-config-recommended-scss",
+        "stylelint-config-prettier"
+      ]
     },
     {
-      "files": ["*.vue", "**/*.vue"],
+      "files": [
+        "*.vue",
+        "**/*.vue"
+      ],
       "customSyntax": "postcss-html",
       "extends": [
         "stylelint-config-recommended-scss",
-        "stylelint-config-recommended-vue"
+        "stylelint-config-recommended-vue",
+        "stylelint-config-prettier"
       ]
     }
   ],
@@ -21,7 +36,10 @@
     "function-no-unknown": [
       true,
       {
-        "ignoreFunctions": ["color.adjust", "map.get"]
+        "ignoreFunctions": [
+          "color.adjust",
+          "map.get"
+        ]
       }
     ],
     "at-rule-no-unknown": [
