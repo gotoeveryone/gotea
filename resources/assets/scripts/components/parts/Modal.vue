@@ -1,9 +1,9 @@
 <template>
   <transition name="modal">
-    <div v-if="isShow" class="iframe-modal" @click="close()">
+    <div v-if="isShow" class="iframe-modal" @click="close">
       <div :style="{ height: height, width: width }" class="modal-parent">
-        <iframe :src="options.url" class="modal-body" />
-        <div class="modal-close" @click="close()">
+        <iframe :src="(options.url as string)" class="modal-body" />
+        <div class="modal-close" @click="close">
           <span class="modal-close-mark">×</span>
         </div>
       </div>
@@ -11,37 +11,26 @@
   </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import { ModalOption } from '@/types';
 
-export default defineComponent({
-  computed: {
-    options(): ModalOption {
-      return this.$store.getters.modalOptions();
-    },
-    height(): string {
-      return this.options.height ? this.options.height.toString() : '90%';
-    },
-    width(): string {
-      return this.options.width ? this.options.width.toString() : '90%';
-    },
-    isShow(): boolean {
-      return !!this.options.url;
-    },
-  },
-  methods: {
-    close() {
-      const callback = this.options.callback;
-      this.$store.dispatch('closeModal').then(() => {
-        if (typeof callback === 'function') {
-          callback();
-        }
-      });
-    },
-  },
-});
+const store = useStore();
+
+const options = computed(() => store.getters.modalOptions() as ModalOption);
+const height = computed(() => (options.value.height ? options.value.height.toString() : '90%'));
+const width = computed(() => (options.value.width ? options.value.width.toString() : '90%'));
+const isShow = computed(() => !!options.value.url);
+
+const close = () => {
+  const callback = options.value.callback;
+  store.dispatch('closeModal').then(() => {
+    if (typeof callback === 'function') {
+      callback();
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>

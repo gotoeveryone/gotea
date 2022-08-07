@@ -23,4 +23,5 @@ export interface Notification {
   is_draft: boolean;
   published: string;
   is_permanent: boolean;
+  status: string;
 }

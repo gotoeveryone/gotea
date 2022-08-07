@@ -54,7 +54,7 @@ nbproject/*
 .sass-cache/
 
 # asdf
-.tools-versions
+.tool-versions
 
 # phpunit cache
 .phpunit.result.cache
