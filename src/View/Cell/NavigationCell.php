@@ -29,6 +29,7 @@ class NavigationCell extends Cell
         $table = $this->fetchTable('PlayerRanks');
         $recents = $table
             ->findRecentPromoted()
+            ->all()
             ->reject(function ($item) {
                 // 入段日と昇段日が同じ（＝入段時点の段位の）場合は除外
                 return $item->player->joined === $item->promoted->format('Ymd');

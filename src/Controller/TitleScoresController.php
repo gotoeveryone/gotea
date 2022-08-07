@@ -37,8 +37,6 @@ class TitleScoresController extends AppController
         $this->Players = $this->fetchTable('Players');
         $this->Titles = $this->fetchTable('Titles');
         $this->TitleScoreDetails = $this->fetchTable('TitleScoreDetails');
-
-        $this->loadComponent('Paginator');
     }
 
     /**
@@ -65,7 +63,7 @@ class TitleScoresController extends AppController
         // バリデーション
         $data = $this->getRequest()->getQueryParams();
         if (!$form->validate($data)) {
-            return $this->setErrors(400, $form->getErrors())->setAction('index');
+            return $this->setErrors(400, $form->getErrors())->render('index');
         }
 
         // リクエストから値を取得

@@ -200,7 +200,7 @@ class Player extends AppEntity
         $table = TableRegistry::getTableLocator()->get('RetentionHistories');
         $result = $table->findHistoriesByPlayer($this->id);
 
-        return $this->retention_histories = $result;
+        return $this->retention_histories = $result->all();
     }
 
     /**

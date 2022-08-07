@@ -30,7 +30,7 @@ class UserMailer extends Mailer
     public function notification(string $subject, Collection $messages)
     {
         $this->setSubject($subject)
-            ->set(['messages' => $messages]);
+            ->setViewVars('messages', $messages);
 
         Log::info('メールを送信します。');
     }
@@ -45,7 +45,7 @@ class UserMailer extends Mailer
     public function error(string $subject, Exception $exception)
     {
         $this->setSubject($subject)
-            ->set(['messages' => $exception->getMessage()]);
+            ->setViewVars('messages', $exception->getMessage());
 
         Log::error('異常通知メールを送信します。');
     }

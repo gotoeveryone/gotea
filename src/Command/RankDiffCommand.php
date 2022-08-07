@@ -55,8 +55,11 @@ class RankDiffCommand extends Command
         $client = new HttpClient();
         try {
             $countries = $this->Countries->find()->where(['name in' => ['日本', '韓国', '台湾']]);
-            $ranks = $this->Ranks->findProfessional()->combine('name', 'rank_numeric')->toArray();
-            $results = $countries->combine('name', function ($item) use ($client, $ranks) {
+            $ranks = $this->Ranks->findProfessional()
+                ->all()
+                ->combine('name', 'rank_numeric')
+                ->toArray();
+            $results = $countries->all()->combine('name', function ($item) use ($client, $ranks) {
                 Log::info("{$item->name}棋士の差分を抽出します。");
                 $method = 'getPlayersFrom' . Inflector::humanize($item->name_english);
                 $diffs = $this->$method($client, $item, $ranks);
@@ -112,6 +115,7 @@ class RankDiffCommand extends Command
         $organization = $country->code === 'tw' ? $this->Organizations->findByName('台湾棋院')->first() : null;
 
         return $this->Players->findRanksCount($country->id, $organization ? $organization->id : null)
+            ->all()
             ->map(function ($item) use ($results) {
                 $item->web_count = count($results[$item->rank]) ?? 0;
 

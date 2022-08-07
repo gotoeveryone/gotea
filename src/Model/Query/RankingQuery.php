@@ -22,7 +22,7 @@ class RankingQuery extends Query
         $rank = 0;
         $win = 0;
 
-        return $this->each(function ($item, $key) use (&$rank, &$win, $type) {
+        return $this->all()->each(function ($item, $key) use (&$rank, &$win, $type) {
             $currentValue = $type === 'percent' ? $item->win_percent : $item->win_point;
             if ($win !== $currentValue) {
                 $rank = $key + 1;

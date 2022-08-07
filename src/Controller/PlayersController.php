@@ -31,8 +31,6 @@ class PlayersController extends AppController
         $this->Ranks = $this->fetchTable('Ranks');
         $this->Organizations = $this->fetchTable('Organizations');
         $this->TitleScores = $this->fetchTable('TitleScores');
-
-        $this->loadComponent('Paginator');
     }
 
     /**
@@ -71,7 +69,9 @@ class PlayersController extends AppController
         // バリデーション
         $data = $this->getRequest()->getQueryParams();
         if (!$form->validate($data)) {
-            return $this->setErrors(400, $form->getErrors())->setAction('index');
+            return $this->withRanks()
+                ->setErrors(400, $form->getErrors())
+                ->render('index');
         }
 
         // データを取得
@@ -221,7 +221,7 @@ class PlayersController extends AppController
      */
     private function withRanks()
     {
-        $ranks = $this->Ranks->findProfessional()->combine('id', 'name');
+        $ranks = $this->Ranks->findProfessional()->all()->combine('id', 'name');
 
         return $this->set(compact('ranks'));
     }
