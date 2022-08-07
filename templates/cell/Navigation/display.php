@@ -1,3 +1,10 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * @var \Cake\Collection\CollectionInterface $recents
+ */
+?>
 <?php if (!$recents->isEmpty()) : ?>
 <div class="recent-ranks-title">
     <p class="recent-ranks-title-text">最近の昇段者</p>

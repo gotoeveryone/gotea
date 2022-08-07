@@ -223,7 +223,7 @@ class PlayersController extends AppController
      */
     private function withRanks()
     {
-        $ranks = $this->Ranks->findProfessional()->combine('id', 'name');
+        $ranks = $this->Ranks->findProfessional()->all()->combine('id', 'name');
 
         return $this->set(compact('ranks'));
     }

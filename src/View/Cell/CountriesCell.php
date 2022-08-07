@@ -22,6 +22,7 @@ class CountriesCell extends Cell
         /** @var \Gotea\Model\Table\CountriesTable $table */
         $table = $this->fetchTable('Countries');
         $countries = $table->findAllHasCode($hasTitleOnly)
+            ->all()
             ->combine('id', 'name');
         $this->set(compact('countries', 'attributes'));
     }
