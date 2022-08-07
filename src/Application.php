@@ -114,15 +114,18 @@ class Application extends BaseApplication implements
             ->add(new BodyParserMiddleware())
 
             // Add authentication middleware.
-            ->add(new AuthenticationMiddleware($this))
+            ->add(new AuthenticationMiddleware($this, [
+                'unauthenticatedRedirect' => '/',
+                'queryParam' => 'redirect',
+            ]))
 
             // Add authorization middleware.
             ->add(new AuthorizationMiddleware($this, [
                 'requireAuthorizationCheck' => false,
                 'unauthorizedHandler' => [
                     'className' => 'Authorization.Redirect',
-                    'url' => '/players',
-                    'queryParam' => null,
+                    'url' => '/',
+                    'queryParam' => 'redirect',
                     'exceptions' => [
                         AuthorizationRequiredException::class,
                         ForbiddenException::class,
@@ -178,10 +181,7 @@ class Application extends BaseApplication implements
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $service = new AuthenticationService([
-            'unauthenticatedRedirect' => '/',
-            'queryParam' => 'redirect',
-        ]);
+        $service = new AuthenticationService();
 
         $fields = [
             'username' => 'account',
