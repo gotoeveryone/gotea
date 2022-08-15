@@ -669,16 +669,16 @@
         },
         {
             "name": "dereuromark/cakephp-shim",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dereuromark/cakephp-shim.git",
-                "reference": "7b0861607ebe2d25e7e374b7eb440f9de3c523ca"
+                "reference": "e6b751c0e4f4cb3360e67bb47fa9e5962b925035"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/7b0861607ebe2d25e7e374b7eb440f9de3c523ca",
-                "reference": "7b0861607ebe2d25e7e374b7eb440f9de3c523ca",
+                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/e6b751c0e4f4cb3360e67bb47fa9e5962b925035",
+                "reference": "e6b751c0e4f4cb3360e67bb47fa9e5962b925035",
                 "shasum": ""
             },
             "require": {
@@ -720,7 +720,7 @@
                 "issues": "https://github.com/dereuromark/cakephp-shim/issues",
                 "source": "https://github.com/dereuromark/cakephp-shim"
             },
-            "time": "2022-01-13T00:08:55+00:00"
+            "time": "2022-08-05T01:02:42+00:00"
         },
         {
             "name": "fabpot/goutte",
