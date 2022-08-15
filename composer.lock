@@ -204,16 +204,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "4.4.3",
+            "version": "4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "35b1b52d234ad6ec8cf673c8b143c17895796897"
+                "reference": "b053b2d7c457d7a60c67d3e9e6357eb7ef743721"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/35b1b52d234ad6ec8cf673c8b143c17895796897",
-                "reference": "35b1b52d234ad6ec8cf673c8b143c17895796897",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/b053b2d7c457d7a60c67d3e9e6357eb7ef743721",
+                "reference": "b053b2d7c457d7a60c67d3e9e6357eb7ef743721",
                 "shasum": ""
             },
             "require": {
@@ -304,7 +304,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2022-07-27T00:52:07+00:00"
+            "time": "2022-08-08T02:19:21+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -669,16 +669,16 @@
         },
         {
             "name": "dereuromark/cakephp-shim",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dereuromark/cakephp-shim.git",
-                "reference": "7b0861607ebe2d25e7e374b7eb440f9de3c523ca"
+                "reference": "e6b751c0e4f4cb3360e67bb47fa9e5962b925035"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/7b0861607ebe2d25e7e374b7eb440f9de3c523ca",
-                "reference": "7b0861607ebe2d25e7e374b7eb440f9de3c523ca",
+                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/e6b751c0e4f4cb3360e67bb47fa9e5962b925035",
+                "reference": "e6b751c0e4f4cb3360e67bb47fa9e5962b925035",
                 "shasum": ""
             },
             "require": {
@@ -720,7 +720,7 @@
                 "issues": "https://github.com/dereuromark/cakephp-shim/issues",
                 "source": "https://github.com/dereuromark/cakephp-shim"
             },
-            "time": "2022-01-13T00:08:55+00:00"
+            "time": "2022-08-05T01:02:42+00:00"
         },
         {
             "name": "fabpot/goutte",
