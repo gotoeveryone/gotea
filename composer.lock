@@ -204,16 +204,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "4.4.3",
+            "version": "4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "35b1b52d234ad6ec8cf673c8b143c17895796897"
+                "reference": "b053b2d7c457d7a60c67d3e9e6357eb7ef743721"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/35b1b52d234ad6ec8cf673c8b143c17895796897",
-                "reference": "35b1b52d234ad6ec8cf673c8b143c17895796897",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/b053b2d7c457d7a60c67d3e9e6357eb7ef743721",
+                "reference": "b053b2d7c457d7a60c67d3e9e6357eb7ef743721",
                 "shasum": ""
             },
             "require": {
@@ -304,7 +304,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2022-07-27T00:52:07+00:00"
+            "time": "2022-08-08T02:19:21+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -4422,16 +4422,16 @@
         },
         {
             "name": "cakephp/debug_kit",
-            "version": "4.8.1",
+            "version": "4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/debug_kit.git",
-                "reference": "344fd1afe381e1901bda1a279955c1adf69d6b6d"
+                "reference": "cd05c7b0d5600308683dc9911c3ff3e4fbe9d590"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/344fd1afe381e1901bda1a279955c1adf69d6b6d",
-                "reference": "344fd1afe381e1901bda1a279955c1adf69d6b6d",
+                "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/cd05c7b0d5600308683dc9911c3ff3e4fbe9d590",
+                "reference": "cd05c7b0d5600308683dc9911c3ff3e4fbe9d590",
                 "shasum": ""
             },
             "require": {
@@ -4439,7 +4439,7 @@
                 "cakephp/chronos": "^2.0",
                 "composer/composer": "^1.3 | ^2.0",
                 "jdorn/sql-formatter": "^1.2",
-                "php": ">=7.2"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "cakephp/authorization": "^2.0",
@@ -4484,7 +4484,7 @@
                 "issues": "https://github.com/cakephp/debug_kit/issues",
                 "source": "https://github.com/cakephp/debug_kit"
             },
-            "time": "2022-06-07T19:37:09+00:00"
+            "time": "2022-07-17T11:47:08+00:00"
         },
         {
             "name": "cakephp/repl",
