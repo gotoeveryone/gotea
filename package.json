@@ -17,7 +17,7 @@
   "main": "resources/scripts/main.ts",
   "dependencies": {
     "axios": "^0.27.2",
-    "dayjs": "^1.11.4",
+    "dayjs": "^1.11.5",
     "pikaday": "^1.7.0",
     "vue": "^3.2.37",
     "vuex": "^4.0.2"
@@ -46,7 +46,7 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-scss": "^4.3.0",
     "typescript": "^4.7.4",
-    "vite": "^3.0.4",
+    "vite": "^3.0.9",
     "vite-plugin-eslint": "^1.7.0",
     "vite-plugin-stylelint": "^3.0.7",
     "vue-eslint-parser": "^7.11.0"
