@@ -33,15 +33,6 @@
   ],
   "rules": {
     "scss/dollar-variable-colon-space-after": "always",
-    "function-no-unknown": [
-      true,
-      {
-        "ignoreFunctions": [
-          "color.adjust",
-          "map.get"
-        ]
-      }
-    ],
     "at-rule-no-unknown": [
       true,
       {

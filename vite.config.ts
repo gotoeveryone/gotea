@@ -9,6 +9,8 @@ const scriptsDir = resolve(__dirname, 'resources', 'assets', 'scripts');
 
 export default defineConfig({
   build: {
+    sourcemap: true,
+    minify: false,
     outDir: './webroot/',
     emptyOutDir: false,
     rollupOptions: {
@@ -27,9 +29,23 @@ export default defineConfig({
       },
     },
   },
-  plugins: [vue(), eslint(), stylelint({
-    include: ['./resources/assets/styles/**/*.scss', './resources/assets/scripts/**/*.vue'],
-  })],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @import 'resources/assets/styles/base/variables';
+          @import 'resources/assets/styles/base/mixin';
+        `,
+      },
+    },
+  },
+  plugins: [
+    vue(),
+    eslint(),
+    stylelint({
+      include: ['./resources/assets/styles/**/*.scss', './resources/assets/scripts/**/*.vue'],
+    }),
+  ],
   resolve: {
     alias: {
       '@': scriptsDir,

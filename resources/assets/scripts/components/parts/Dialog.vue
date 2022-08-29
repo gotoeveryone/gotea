@@ -23,12 +23,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, onMounted, ref } from 'vue';
+import { computed, defineProps, nextTick, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import type { PropType } from 'vue';
 import { DialogOption } from '@/types';
 
-const closeButtonRef = ref<HTMLButtonElement>();
+const closeButton = ref<HTMLButtonElement>();
 
 const props = defineProps({
   servType: {
@@ -77,16 +77,19 @@ onMounted(() => {
       server: true,
     });
   }
-  closeButtonRef.value?.focus();
+  nextTick(() => closeButton.value?.focus());
 });
 
 const close = () => store.dispatch('closeDialog');
+
+watch(isShow, (newVal, oldVal) => {
+  if (!oldVal && newVal) {
+    nextTick(() => closeButton.value?.focus());
+  }
+});
 </script>
 
 <style lang="scss" scoped>
-@import 'resources/assets/styles/base/variables';
-@import 'resources/assets/styles/base/mixin';
-
 .dialog {
   display: block;
   position: fixed;
