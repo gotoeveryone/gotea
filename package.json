@@ -49,7 +49,7 @@
     "vite": "^3.0.9",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-stylelint": "^3.0.7",
-    "vue-eslint-parser": "^7.11.0"
+    "vue-eslint-parser": "^9.0.3"
   },
   "engines": {
     "node": ">=16.16 <17"
