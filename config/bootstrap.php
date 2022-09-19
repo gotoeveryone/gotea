@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -46,6 +47,8 @@ use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
+use Dotenv\Repository\Adapter\PutenvAdapter;
+use Dotenv\Repository\RepositoryBuilder;
 
 /**
  * Read .env file.
@@ -54,8 +57,12 @@ use Dotenv\Exception\InvalidPathException;
  * variables for configuration when deploying.
  */
 if (!env('CI') && file_exists(ENV)) {
+    $repository = RepositoryBuilder::createWithDefaultAdapters()
+        ->addWriter(PutenvAdapter::class)
+        ->make();
+
     try {
-        (new Dotenv(dirname(ENV)))->overload();
+        Dotenv::create($repository, dirname(ENV))->load();
     } catch (InvalidPathException $e) {
         exit($e->getMessage() . "\n");
     }
