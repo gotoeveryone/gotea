@@ -121,8 +121,6 @@ return static function (RouteBuilder $routes) {
             $routes->get('/search', ['action' => 'search'], 'find_scores');
             $routes->get('/{id}', ['action' => 'view'], 'view_score')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
-            $routes->put('/{id}', ['action' => 'update'], 'update_score')
-                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
             $routes->delete('/{id}', ['action' => 'delete'], 'delete_score')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
@@ -195,6 +193,17 @@ return static function (RouteBuilder $routes) {
 
         $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
             $routes->get('/{id}', ['action' => 'view'], 'api_history')
+                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+        });
+
+        // TODO: 全ての action を実装した段階で resources を使う
+        // $routes->resources('title-scores');
+        $routes->scope('/title-scores', ['controller' => 'TitleScores'], function (RouteBuilder $routes) {
+            $routes->get('/{id}', ['action' => 'view'], 'api_view_score')
+                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+            $routes->put('/{id}', ['action' => 'edit'], 'api_edit_score')
+                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+            $routes->put('/{id}/switch-division', ['action' => 'switchDivision'], 'api_edit_score_division')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
 

@@ -181,4 +181,26 @@ class TitleScore extends AppEntity
 
         return $player->id === (int)$id;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'countryId' => $this->country_id,
+            'titleId' => $this->title_id,
+            'name' => $this->name,
+            'result' => $this->result,
+            'modified' => $this->modified->timestamp,
+            'started' => $this->started->format('Y/m/d'),
+            'ended' => $this->ended->format('Y/m/d'),
+            'isWorld' => $this->is_world,
+            'isOfficial' => $this->is_official,
+            'isSameStarted' => $this->is_same_started,
+            'winner' => $this->winner->toArray(),
+            'loser' => $this->loser->toArray(),
+        ];
+    }
 }

@@ -14,6 +14,7 @@ import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
 import NotificationListPage from '@/pages/notifications/index.vue';
 import TableTemplateListPage from '@/pages/table-templates/index.vue';
+import TitleScoreDetailPage from '@/pages/title-scores/view.vue';
 import { Window } from '@/types';
 import { changeTab, pikadayOptions } from '@/util';
 
@@ -34,6 +35,7 @@ const app = createApp({
     ranks: Ranks,
     NotificationListPage,
     TableTemplateListPage,
+    TitleScoreDetailPage,
   },
   data: () => {
     return {
