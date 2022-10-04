@@ -167,12 +167,6 @@
     flex-direction: column;
     padding: 4px 10px;
 
-    // データの偶数行の背景色を変更する
-    // ただし、同じ要素のヘッダ行があるため指定は奇数行となる
-    // &:nth-of-type(odd) {
-    //   background-color: color.adjust($c_main, $lightness: 12%);
-    // }
-
     &-text {
       width: 100%;
       flex-basis: 100%;

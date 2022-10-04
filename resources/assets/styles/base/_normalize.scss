@@ -109,13 +109,15 @@ select {
   padding: 0.3rem 0.4rem;
   width: 100%;
   max-width: 100%;
-  border: 1px solid $c_gray;
+  border: 1px solid $c_border;
   border-radius: 5px;
-  background-color: color.adjust($c_white, $lightness: -10%);
+  background-color: $c_input;
+  color: $c_text;
+  outline: none;
 
   &:focus {
-    background-color: #def;
-    box-shadow: 0 0 5px 1px $c_gray;
+    background-color: color.adjust($c_input, $lightness: 4%);
+    box-shadow: 0 0 5px 1px $c_border;
   }
 }
 
