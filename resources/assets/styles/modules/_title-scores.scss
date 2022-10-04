@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* -------------------------------------------
    タイトル勝敗検索
  ------------------------------------------- */
@@ -100,7 +102,7 @@
         width: 20%;
 
         .selected {
-          color: #04d;
+          color: color.adjust($c_green, $lightness: 4%);
           font-weight: bold;
         }
       }
