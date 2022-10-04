@@ -129,6 +129,7 @@ watch(isShow, (newVal, oldVal) => {
 
     height: 35px;
     border-radius: 5px 5px 0 0;
+    background-color: $c_modal_header;
   }
 
   &-title {

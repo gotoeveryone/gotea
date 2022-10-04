@@ -25,6 +25,7 @@ $c_warning: $c_info;
 $c_error: color.adjust($c_red, $lightness: 28%);
 $c_female: color.adjust($c_red, $lightness: 32%);
 $c_pager: color.adjust($c_main, $lightness: 16%);
+$c_modal_header: color.adjust($c_header, $lightness: -12%);
 $c_modal: $c_header;
 $c_modal_backdrop: rgba(color.adjust($c_main, $lightness: 16%), 0.6);
 
@@ -38,9 +39,6 @@ $h_nav-sp: 40px;
 
 // タブ
 $h_tab: 40px;
-
-// 表ヘッダ
-$c_table_header: color.adjust($c_green, $blackness: 16%);
 
 // ブレークポイント
 $breakpoint: 728px;
