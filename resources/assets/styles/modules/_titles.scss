@@ -6,7 +6,7 @@
 .titles {
   .table-row {
     &-closed {
-      background-color: color.adjust($c_main, $lightness: 16%);
+      background-color: $c_closed;
     }
   }
 

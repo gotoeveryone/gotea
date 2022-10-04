@@ -126,12 +126,12 @@
   margin: 10px auto 0;
   padding: 5px;
   width: 90%;
-  border: 1px solid $c_black;
+  border: 1px solid $c_border;
   border-radius: 5px 5px 0 0;
-  background-color: rgb(30, 134, 238);
+  background-color: color.adjust($c_blue, $blackness: 16%);
 
   &-text {
-    color: $c_white;
+    color: $c_text;
     font-weight: bold;
   }
 }
@@ -143,10 +143,10 @@
 
   margin: 0 auto 10px;
   width: 90%;
-  border: 1px solid $c_black;
+  border: 1px solid $c_border;
   border-top: none;
   border-radius: 0 0 5px 5px;
-  background-color: $c_white;
+  background-color: color.adjust($c_main, $lightness: 4%);
   max-height: 300px;
   overflow-y: auto;
 
@@ -156,9 +156,9 @@
 
   &-header {
     padding: 5px;
-    border-top: 1px solid $c_gray;
-    border-bottom: 1px solid $c_gray;
-    background-color: #e2d14b;
+    border-top: 1px solid $c_border;
+    border-bottom: 1px solid $c_border;
+    background-color: color.adjust($c_header, $lightness: -12%);
   }
 
   &-row {
@@ -169,9 +169,9 @@
 
     // データの偶数行の背景色を変更する
     // ただし、同じ要素のヘッダ行があるため指定は奇数行となる
-    &:nth-of-type(odd) {
-      background-color: #eee;
-    }
+    // &:nth-of-type(odd) {
+    //   background-color: color.adjust($c_main, $lightness: 12%);
+    // }
 
     &-text {
       width: 100%;

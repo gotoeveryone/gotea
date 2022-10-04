@@ -10,12 +10,11 @@ $c_blue: #00f;
 $c_gray: #ccc;
 $c_green: #080;
 
-$c_header: color.adjust($c_black, $lightness: 32%);
+$c_header: color.adjust($c_black, $lightness: 24%);
 $c_footer: $c_header;
 $c_title: color.adjust($c_white, $lightness: -8%);
 $c_nav: color.adjust($c_black, $lightness: -24%);
 $c_main: color.adjust($c_black, $lightness: 16%);
-$c_unofficial: #ddd;
 $c_text: color.adjust($c_white, $lightness: -16%);
 $c_border: color.adjust($c_main, $lightness: 32%);
 $c_button: color.adjust($c_white, $lightness: -24%);
@@ -28,6 +27,8 @@ $c_pager: color.adjust($c_main, $lightness: 16%);
 $c_modal_header: color.adjust($c_header, $lightness: -12%);
 $c_modal: $c_header;
 $c_modal_backdrop: rgba(color.adjust($c_main, $lightness: 16%), 0.6);
+$c_closed: color.adjust($c_main, $lightness: 12%);
+$c_unofficial: $c_closed;
 
 // ヘッダ・フッタ
 $h_header: 3.5rem;
