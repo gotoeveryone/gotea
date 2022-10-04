@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $minRowHeight: 2.6rem;
 $rowPadding: 0.3rem;
 
@@ -8,12 +10,23 @@ $c_blue: #00f;
 $c_gray: #ccc;
 $c_green: #080;
 
-$c_header: $c_gray;
+$c_header: color.adjust($c_black, $lightness: 32%);
 $c_footer: $c_header;
-$c_title: rgb(73, 58, 9);
-$c_nav: #50330e;
-$c_main: $c_white;
+$c_title: color.adjust($c_white, $lightness: -8%);
+$c_nav: color.adjust($c_black, $lightness: -24%);
+$c_main: color.adjust($c_black, $lightness: 16%);
 $c_unofficial: #ddd;
+$c_text: color.adjust($c_white, $lightness: -16%);
+$c_border: color.adjust($c_main, $lightness: 32%);
+$c_button: color.adjust($c_white, $lightness: -24%);
+$c_anchor: color.adjust($c_white, $lightness: -32%);
+$c_info: color.adjust($c_blue, $lightness: 28%);
+$c_warning: $c_info;
+$c_error: color.adjust($c_red, $lightness: 28%);
+$c_female: color.adjust($c_red, $lightness: 32%);
+$c_pager: color.adjust($c_main, $lightness: 16%);
+$c_modal: $c_header;
+$c_modal_backdrop: rgba(color.adjust($c_main, $lightness: 16%), 0.6);
 
 // ヘッダ・フッタ
 $h_header: 3.5rem;
@@ -27,7 +40,7 @@ $h_nav-sp: 40px;
 $h_tab: 40px;
 
 // 表ヘッダ
-$c_table-header: #ded;
+$c_table_header: color.adjust($c_green, $blackness: 16%);
 
 // ブレークポイント
 $breakpoint: 728px;

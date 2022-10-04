@@ -12,7 +12,7 @@
 .detail {
   margin: 1rem;
   padding: 0;
-  border: 0.1rem solid $c_black;
+  border: 0.1rem solid $c_border;
 
   .checkbox-label {
     @include flex-justify-start();
@@ -43,7 +43,7 @@
     margin: 0 auto;
     height: 2.2rem;
     text-indent: 0.7rem;
-    background-color: $c_gray;
+    background-color: $c_nav;
     font-weight: bold;
   }
 
@@ -92,21 +92,20 @@
 
       padding: 0.4rem 1rem;
       font-size: 1rem;
-      color: $c_white;
+      color: $c_text;
       white-space: nowrap;
-      background-color: $c_black;
-      border: 0.1rem solid $c_black;
+      background-color: $c_main;
+      border: 0.1rem solid $c_main;
       border-bottom: none;
       border-radius: 0.5rem 0.5rem 0 0;
       transition: font-weight 0.3s, color 0.3s, background-color 0.3s;
 
       &.selectTab {
-        color: $c_black;
-        background-color: rgb(188, 233, 218);
+        background-color: color.adjust($c_black, $lightness: 32%);
       }
 
       &:not(.selectTab):hover {
-        background-color: color.adjust($c_black, $lightness: 25%);
+        background-color: color.adjust($c_main, $lightness: 24%);
         cursor: pointer;
       }
     }
@@ -116,7 +115,7 @@
     margin: 0;
     height: calc(100% - #{$h_tab});
     overflow-y: auto;
-    background-color: $c_white;
+    background-color: $c_main;
 
     .tab-contents {
       @include fade(0.5, 'not-select');

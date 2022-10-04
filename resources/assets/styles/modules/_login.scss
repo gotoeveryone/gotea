@@ -5,7 +5,7 @@
   @include flex-center();
 
   .login-content {
-    border: 1px solid $c_black;
+    border: 1px solid $c_border;
     border-radius: 5px;
     width: 300px;
     max-width: 80%;
@@ -13,15 +13,16 @@
 
   .login-title {
     width: 100%;
-    background-color: $c_title;
-    color: $c_white;
+    padding: 0.4rem 0;
+    background-color: $c_header;
+    color: $c_text;
     font-family: 'Maitree', serif;
     font-size: 2rem;
     text-align: center;
   }
 
   .login-main {
-    padding: 0.8rem 1rem;
+    padding: 0.6rem 1.6rem 1.2rem;
   }
 
   .login-row {

@@ -4,7 +4,7 @@
     <span class="table-column table-column_created" v-text="created" />
     <span class="table-column table-column_modified" v-text="modified" />
     <span class="table-column table-column_actions">
-      <a :href="editPageLink" class="layout-button button-secondary">編集</a>
+      <a :href="editPageLink" class="layout-button button-primary">編集</a>
       <form :name="formName" method="post" :action="editPageLink" style="display: none">
         <input type="hidden" name="_method" value="DELETE" />
         <input type="hidden" name="_csrfToken" autocomplete="off" :value="csrfToken" />
