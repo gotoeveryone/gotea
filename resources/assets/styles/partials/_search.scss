@@ -10,9 +10,8 @@
   margin-bottom: 0.5rem;
   padding: $rowPadding;
   flex-wrap: wrap;
-  background-color: $c_white;
-  border: 0.2rem solid #bbb;
-  border-radius: 0.4rem;
+  background-color: $c_main;
+  border: 0.1rem solid $c_border;
 }
 
 .search-row {
@@ -83,7 +82,7 @@
 
   .result-count {
     padding-left: 0.3rem;
-    color: $c_red;
+    color: $c_info;
   }
 }
 
@@ -94,16 +93,16 @@
 
   &-item {
     margin: auto 0.15rem;
-    background-color: $c_gray;
+    background-color: $c_pager;
 
     &-link {
       display: block;
       padding: 0.1rem 0.5rem 0.2rem;
-      color: $c_black;
+      color: $c_text;
       text-decoration: none;
 
       &:hover {
-        background-color: color.adjust($c_gray, $lightness: -10%);
+        background-color: color.adjust($c_pager, $lightness: -10%);
         transition: background-color 0.3s ease-in-out;
       }
     }
@@ -114,7 +113,7 @@
 
     &.active,
     &.disabled {
-      background-color: color.adjust($c_gray, $lightness: -10%);
+      background-color: color.adjust($c_pager, $lightness: -10%);
 
       .pager-item-link {
         cursor: initial;
@@ -140,7 +139,7 @@
   }
 
   margin-bottom: 10px;
-  border: 1px solid $c_black;
+  border: 1px solid $c_border;
 }
 
 .table-header,
@@ -150,7 +149,7 @@
 }
 
 .table-header {
-  background-color: $c_table-header;
+  background-color: $c_table_header;
 }
 
 .table-body {
@@ -164,8 +163,8 @@
   padding: 0.3rem 0.5rem;
 
   .sort {
-    color: $c_blue;
-    text-decoration: none;
+    color: $c_text;
+    text-decoration: underline;
 
     .material-icons {
       @include sp() {

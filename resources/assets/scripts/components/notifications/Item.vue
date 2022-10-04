@@ -8,7 +8,7 @@
     </span>
     <span class="table-column table-column_published" v-text="published" />
     <span class="table-column table-column_actions">
-      <a :href="editPageLink" class="layout-button button-secondary">編集</a>
+      <a :href="editPageLink" class="layout-button button-primary">編集</a>
       <a :href="copyPageLink" class="layout-button button-secondary">コピー</a>
       <form :name="formName" method="post" :action="editPageLink" style="display: none">
         <input type="hidden" name="_method" value="DELETE" />

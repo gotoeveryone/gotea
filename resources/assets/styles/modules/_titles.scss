@@ -1,10 +1,12 @@
+@use 'sass:color';
+
 /* -------------------------------------------
    タイトル情報検索
  ------------------------------------------- */
 .titles {
   .table-row {
     &-closed {
-      background-color: $c_gray;
+      background-color: color.adjust($c_main, $lightness: 16%);
     }
   }
 

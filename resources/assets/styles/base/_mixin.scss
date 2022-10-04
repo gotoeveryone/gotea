@@ -71,11 +71,11 @@
 
 @mixin button($color) {
   background-color: #{$color};
-  border: 1px solid color.adjust($color, $lightness: -20%);
+  border: 1px solid color.adjust($color, $lightness: -10%);
   transition: background-color 0.3s ease-in-out;
 
   &:enabled:hover {
-    background-color: color.adjust($color, $lightness: -15%);
+    background-color: color.adjust($color, $lightness: -5%);
   }
 
   &:disabled {

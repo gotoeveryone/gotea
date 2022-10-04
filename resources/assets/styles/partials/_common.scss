@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* -------------------------------------------
    共通レイアウト
  ------------------------------------------- */
@@ -85,15 +87,15 @@
   height: 50px;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid $c_gray;
-  color: $c_white;
+  border-bottom: 1px solid $c_border;
+  color: $c_text;
   font-size: 120%;
   text-align: center;
   text-decoration: none;
 }
 
 .main-content-modal {
-  padding: 1rem;
+  padding: 1.5rem 2rem;
   height: 100%;
 
   .main {
@@ -107,12 +109,12 @@
 }
 
 .view-link {
-  color: $c_blue;
+  color: $c_anchor;
   text-decoration: underline;
   cursor: pointer;
 
   &.female {
-    color: $c_red;
+    color: $c_female;
   }
 }
 
@@ -194,19 +196,19 @@
   @include button-link(#eee);
 
   &.button-primary {
-    @include button-link(lighten(rgb(22, 22, 190), 10%));
+    @include button-link(color.adjust(color.adjust($c_blue, $whiteness: 16%), $lightness: 8%));
 
     color: $c_white;
   }
 
   &.button-secondary {
-    @include button-link(lighten(rgb(16, 119, 16), 10%));
+    @include button-link(color.adjust($c_green, $whiteness: -8%));
 
     color: $c_white;
   }
 
   &.button-danger {
-    @include button-link(lighten(rgb(197, 13, 13), 10%));
+    @include button-link(color.adjust(color.adjust($c_red, $whiteness: 24%), $lightness: 8%));
 
     color: $c_white;
   }
@@ -214,19 +216,19 @@
 
 .button {
   &-primary {
-    @include button(lighten(rgb(22, 22, 190), 10%));
+    @include button(color.adjust(color.adjust($c_blue, $whiteness: 16%), $lightness: 8%));
 
     color: $c_white;
   }
 
   &-secondary {
-    @include button(lighten(rgb(16, 119, 16), 10%));
+    @include button(color.adjust($c_green, $whiteness: -8%));
 
     color: $c_white;
   }
 
   &-danger {
-    @include button(lighten(rgb(197, 13, 13), 10%));
+    @include button(color.adjust(color.adjust($c_red, $whiteness: 24%), $lightness: 8%));
 
     color: $c_white;
   }

@@ -34,7 +34,8 @@ body {
 
 body {
   overflow-x: hidden;
-  background-color: $c_white;
+  background-color: $c_main;
+  color: $c_text;
 }
 
 main > section {
@@ -110,9 +111,10 @@ select {
   max-width: 100%;
   border: 1px solid $c_gray;
   border-radius: 5px;
+  background-color: color.adjust($c_white, $lightness: -10%);
 
   &:focus {
-    background-color: #ffd;
+    background-color: #def;
     box-shadow: 0 0 5px 1px $c_gray;
   }
 }
@@ -136,9 +138,10 @@ button {
   border: 1px solid color.adjust($c_gray, $lightness: -15%);
   border-radius: 5px;
   cursor: pointer;
+  background-color: $c_button;
 }
 
 a {
-  color: $c_blue;
+  color: $c_anchor;
   cursor: pointer;
 }

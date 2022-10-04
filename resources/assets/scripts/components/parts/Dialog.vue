@@ -44,8 +44,8 @@ const props = defineProps({
 const store = useStore();
 
 const options = computed(() => store.getters.dialogOptions() as DialogOption);
-const modalColor = computed(() => options.value.modalColor || 'rgba(204, 204, 204, 0.6)');
-const headerColor = computed(() => options.value.headerColor || '#4ba');
+const modalColor = computed(() => options.value.modalColor || '');
+const headerColor = computed(() => options.value.headerColor || '');
 const title = computed(() => options.value.title || 'メッセージ');
 const messages = computed(() => {
   const m = options.value.messages;
@@ -100,6 +100,7 @@ watch(isShow, (newVal, oldVal) => {
   left: 0;
   right: 0;
   z-index: 5000;
+  background-color: $c_modal_backdrop;
 
   &.hide {
     display: none;
@@ -119,7 +120,8 @@ watch(isShow, (newVal, oldVal) => {
   left: 0;
   right: 0;
   border-radius: 5px;
-  box-shadow: 3px 3px 5px 3px $c_gray;
+  border: 1px solid $c_border;
+  box-shadow: 3px 3px 5px 3px $c_main;
   z-index: 10;
 
   &-header {
@@ -132,17 +134,16 @@ watch(isShow, (newVal, oldVal) => {
   &-title {
     margin-left: 10px;
     color: $c_white;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
   }
 
   &-body {
     padding: 1rem;
-    height: calc(100% - 30px - 40px);
+    height: calc(100% - 35px - 48px);
     overflow-y: auto;
-    font-size: 15px;
-    background-color: #eee;
-    border-bottom: 1px solid #aaa;
+    font-size: 14px;
+    background-color: $c_modal;
   }
 
   &-text {
@@ -152,13 +153,14 @@ watch(isShow, (newVal, oldVal) => {
   &-footer {
     @include flex-justify-end();
 
-    height: 50px;
-    background-color: #eee;
+    height: 48px;
+    background-color: $c_footer;
     border-radius: 0 0 5px 5px;
   }
 
   &-button {
-    font-size: 15px;
+    margin-right: 0.5rem;
+    font-size: 14px;
     cursor: pointer;
   }
 }
@@ -168,15 +170,15 @@ watch(isShow, (newVal, oldVal) => {
 }
 
 .message-info {
-  color: #000;
+  color: $c_text;
 }
 
 .message-warning {
-  color: #00f;
+  color: $c_warning;
 }
 
 .message-error {
-  color: #f00;
+  color: $c_error;
 }
 
 .dialog-enter-active,
