@@ -23,7 +23,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^16.11.64",
+    "@types/node": "^16.18.0",
     "@types/pikaday": "^1.7.6",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.32.0",
