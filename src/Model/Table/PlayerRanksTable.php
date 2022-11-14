@@ -6,6 +6,7 @@ namespace Gotea\Model\Table;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
@@ -101,7 +102,7 @@ class PlayerRanksTable extends AppTable
      * @param int $playerId 棋士ID
      * @return \Cake\ORM\ResultSet
      */
-    public function findRanks(int $playerId)
+    public function findRanks(int $playerId): ResultSet
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Ranks'])->orderDesc('Ranks.rank_numeric')->all();
@@ -112,7 +113,7 @@ class PlayerRanksTable extends AppTable
      *
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRecentPromoted()
+    public function findRecentPromoted(): Query
     {
         return $this->find()
             ->contain([

@@ -49,7 +49,7 @@ class RankDiffCommand extends Command
      * @param \Cake\Console\ConsoleIo $io 入出力
      * @return int Success or error code.
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): int
     {
         $url = Configure::read('App.slack.notifyUrl');
         $client = new HttpClient();
@@ -109,7 +109,7 @@ class RankDiffCommand extends Command
      * @param array $results 抽出結果
      * @return array
      */
-    private function getDiff($country, $results)
+    private function getDiff(Country $country, array $results): array
     {
         // 台湾の場合は台湾棋院のみを対象とする
         $organization = $country->code === 'tw' ? $this->Organizations->findByName('台湾棋院')->first() : null;
@@ -135,7 +135,7 @@ class RankDiffCommand extends Command
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromJapan(HttpClient $client, Country $country, array $ranks)
+    private function getPlayersFromJapan(HttpClient $client, Country $country, array $ranks): array
     {
         // 日本棋院・関西棋院それぞれから棋士一覧を取得
         $nihonkiin = $this->getPlayersFromNihonKiin($ranks);
@@ -202,7 +202,7 @@ class RankDiffCommand extends Command
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromKorea(HttpClient $client, Country $country, array $ranks)
+    private function getPlayersFromKorea(HttpClient $client, Country $country, array $ranks): array
     {
         $url = Configure::read('App.diffUrl.korea');
 
@@ -228,13 +228,13 @@ class RankDiffCommand extends Command
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    private function getPlayersFromTaiwan(HttpClient $client, Country $country, array $ranks)
+    private function getPlayersFromTaiwan(HttpClient $client, Country $country, array $ranks): array
     {
         $results = [];
         $rank = null;
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.taiwan'));
         $crawler->filter('.post-body.entry-content div:first-child > div')
-            ->each(function (Crawler $node) use (&$results, &$rank, $ranks) {
+            ->each(function (Crawler $node) use (&$results, &$rank, $ranks): void {
                 // テキストが設定されている場合のみ処理する
                 $text = trim($node->text());
                 if ($text) {
@@ -264,7 +264,7 @@ class RankDiffCommand extends Command
      * @return \Symfony\Component\DomCrawler\Crawler
      * @throws \Cake\Http\Exception\HttpException
      */
-    private function getCrawler($url)
+    private function getCrawler(string $url): Crawler
     {
         $client = new Client();
 
@@ -285,7 +285,7 @@ class RankDiffCommand extends Command
      * @param array $ranks 段位一覧
      * @return array 日本棋院の棋士一覧
      */
-    private function getPlayersFromNihonKiin(array $ranks)
+    private function getPlayersFromNihonKiin(array $ranks): array
     {
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.japan'));
 
@@ -307,7 +307,7 @@ class RankDiffCommand extends Command
      * @param array $ranks 段位一覧
      * @return array 関西棋院の棋士一覧
      */
-    private function getPlayersFromKansaiKiin(array $ranks)
+    private function getPlayersFromKansaiKiin(array $ranks): array
     {
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.kansai'));
 

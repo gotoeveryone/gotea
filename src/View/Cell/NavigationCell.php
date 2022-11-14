@@ -11,10 +11,7 @@ use Cake\View\Cell;
 class NavigationCell extends Cell
 {
     /**
-     * List of valid options that can be passed into this
-     * cell's constructor.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected $_validCellOptions = [];
 
@@ -23,7 +20,7 @@ class NavigationCell extends Cell
      *
      * @return void
      */
-    public function display()
+    public function display(): void
     {
         /** @var \Gotea\Model\Table\PlayerRanksTable $table */
         $table = $this->fetchTable('PlayerRanks');

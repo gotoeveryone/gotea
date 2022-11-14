@@ -10,6 +10,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use Gotea\Model\Entity\Player;
 
 /**
  * 棋士
@@ -217,7 +218,7 @@ class PlayersTable extends AppTable
      * @param int|null $organizationId 所属組織ID
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanksCount(int $countryId, ?int $organizationId = null)
+    public function findRanksCount(int $countryId, ?int $organizationId = null): Query
     {
         $query = $this->find();
 
@@ -228,8 +229,9 @@ class PlayersTable extends AppTable
         return $query
             ->contain('Ranks')
             ->where(['country_id' => $countryId])
-            ->where(['is_retired' => false])->select([
-                'rank' => 'Ranks.rank_numeric',
+            ->where(['is_retired' => false])
+            ->select([
+                'rank_numeric' => 'Ranks.rank_numeric',
                 'name' => 'Ranks.name',
                 'count' => $query->func()->count('*'),
             ])
@@ -244,7 +246,7 @@ class PlayersTable extends AppTable
      * @return \Gotea\Model\Entity\Player 棋士と関連データ
      * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
-    public function findByIdWithRelation(int $id)
+    public function findByIdWithRelation(int $id): Player
     {
         return $this->get($id, [
             'contain' => [
@@ -269,7 +271,7 @@ class PlayersTable extends AppTable
      * @return \Gotea\Model\Entity\Player
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function findRankByNamesAndCountries(array $names, int $countryId)
+    public function findRankByNamesAndCountries(array $names, int $countryId): Player
     {
         return $this->find()
             ->contain('Ranks')
@@ -287,7 +289,7 @@ class PlayersTable extends AppTable
      * @param string $input 入力値
      * @return array
      */
-    private function createLikeParams(string $fieldName, string $input)
+    private function createLikeParams(string $fieldName, string $input): array
     {
         return collection(explode(' ', $input))
             ->map(function ($param) use ($fieldName) {

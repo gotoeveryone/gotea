@@ -5,6 +5,7 @@ namespace Gotea\Utility;
 
 use Cake\Core\Configure;
 use Cake\Log\Log;
+use RuntimeException;
 use SplFileObject;
 
 /**
@@ -15,7 +16,7 @@ class FileBuilder
     /**
      * @var string $parentDir
      */
-    private $parentDir = null;
+    private string $parentDir = null;
 
     /**
      * Constructor
@@ -64,7 +65,7 @@ class FileBuilder
      * @param mixed $data 出力するデータ
      * @return bool 出力に成功すれば true
      */
-    public function output(string $filename, $data): bool
+    public function output(string $filename, mixed $data): bool
     {
         try {
             // フォルダ作成
@@ -85,7 +86,7 @@ class FileBuilder
             }
 
             return true;
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             Log::error($e->getMessage());
 
             return false;

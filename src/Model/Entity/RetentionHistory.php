@@ -37,7 +37,7 @@ class RetentionHistory extends AppEntity
      *
      * @return string
      */
-    protected function _getWinnerName()
+    protected function _getWinnerName(): string
     {
         if ($this->is_team) {
             return $this->win_group_name;

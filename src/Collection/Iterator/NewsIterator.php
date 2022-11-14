@@ -17,7 +17,7 @@ class NewsIterator
      * @param int $index インデックス
      * @return array
      */
-    public function __invoke(Title $item, int $index)
+    public function __invoke(Title $item, int $index): array
     {
         return [
             'nameEnglish' => $item->name_english,

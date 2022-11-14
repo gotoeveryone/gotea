@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * タイトル保持履歴コントローラ
@@ -30,7 +31,7 @@ class RetentionHistoriesController extends AppController
      * @param int $id タイトルID
      * @return \Cake\Http\Response|null
      */
-    public function save(int $id)
+    public function save(int $id): ?Response
     {
         // エンティティ取得 or 生成
         $historyId = $this->getRequest()->getData('id', '');

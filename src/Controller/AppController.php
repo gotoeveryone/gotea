@@ -5,6 +5,7 @@ namespace Gotea\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
+use Cake\Http\Response;
 use Gotea\Event\LoggedUser;
 
 /**
@@ -49,7 +50,7 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function renderWith(string $title, $view = null, $layout = null)
+    protected function renderWith(string $title, ?string $view = null, ?string $layout = null): ?Response
     {
         return $this->setTitle($title)->render($view, $layout);
     }
@@ -61,7 +62,7 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function renderWithDialog($view = null, $layout = null)
+    protected function renderWithDialog(?string $view = null, ?string $layout = null): ?Response
     {
         return $this->enableDialogMode()->render($view, $layout);
     }
@@ -76,8 +77,13 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function renderWithErrors(int $code, $errors, $title, $view = null, $layout = null)
-    {
+    protected function renderWithErrors(
+        int $code,
+        array|string $errors,
+        string $title,
+        ?string $view = null,
+        ?string $layout = null
+    ): ?Response {
         return $this->setErrors($code, $errors)->renderWith($title, $view, $layout);
     }
 
@@ -90,8 +96,12 @@ abstract class AppController extends Controller
      * @param string|null $layout Layout to use
      * @return \Cake\Http\Response|null
      */
-    protected function renderWithDialogErrors(int $code, $errors, $view = null, $layout = null)
-    {
+    protected function renderWithDialogErrors(
+        int $code,
+        array|string $errors,
+        ?string $view = null,
+        ?string $layout = null
+    ): ?Response {
         return $this->setErrors($code, $errors)->renderWithDialog($view, $layout);
     }
 
@@ -100,9 +110,9 @@ abstract class AppController extends Controller
      *
      * @param int $code ステータスコード
      * @param array|string $errors エラー
-     * @return \Gotea\Controller\AppController
+     * @return self
      */
-    protected function setErrors(int $code, $errors)
+    protected function setErrors(int $code, array|string $errors): AppController
     {
         $this->setResponse($this->getResponse()->withStatus($code));
 
@@ -114,9 +124,9 @@ abstract class AppController extends Controller
      *
      * @param array|string $messages メッセージ
      * @param string $type メッセージの種類
-     * @return \Gotea\Controller\AppController
+     * @return self
      */
-    protected function setMessages($messages, $type = 'success')
+    protected function setMessages(array|string $messages, string $type = 'success'): AppController
     {
         $this->Flash->$type($messages);
 
@@ -127,9 +137,9 @@ abstract class AppController extends Controller
      * タイトルタグに表示する値を設定します。
      *
      * @param string $title タイトル
-     * @return \Gotea\Controller\AppController
+     * @return self
      */
-    protected function setTitle(string $title)
+    protected function setTitle(string $title): AppController
     {
         return $this->set('pageTitle', $title);
     }
@@ -137,9 +147,9 @@ abstract class AppController extends Controller
     /**
      * ダイアログ表示を設定します。
      *
-     * @return \Gotea\Controller\AppController
+     * @return self
      */
-    protected function enableDialogMode()
+    protected function enableDialogMode(): AppController
     {
         return $this->set('isDialog', true);
     }
@@ -147,9 +157,9 @@ abstract class AppController extends Controller
     /**
      * ログイン済みの場合にリダイレクトする URL を取得する
      *
-     * @return string URL
+     * @return array|string URL
      */
-    protected function getLoginRedirectUrl()
+    protected function getLoginRedirectUrl(): array|string
     {
         return $this->Authentication->getLoginRedirect() ?? [
             '_name' => 'players',

@@ -18,7 +18,7 @@ class TitlesIterator
      * @param int $index インデックス
      * @return array
      */
-    public function __invoke(Title $item, int $index)
+    public function __invoke(Title $item, int $index): array
     {
         return [
             'id' => $item->id,

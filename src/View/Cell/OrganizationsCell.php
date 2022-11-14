@@ -16,7 +16,7 @@ class OrganizationsCell extends Cell
      * @param array $attributes 属性
      * @return void
      */
-    public function display($attributes = [])
+    public function display(array $attributes = []): void
     {
         /** @var \Gotea\Model\Table\OrganizationsTable $table */
         $table = $this->fetchTable('Organizations');

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\Validation\Validator;
 
 /**
@@ -36,7 +37,7 @@ class OrganizationsTable extends AppTable
      *
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findSorted()
+    public function findSorted(): Query
     {
         return $this->find('list')->order(['country_id', 'id']);
     }

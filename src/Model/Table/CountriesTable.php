@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\ORM\Query;
+
 /**
  * 所属国
  */
@@ -22,7 +24,7 @@ class CountriesTable extends AppTable
      * @param bool $hasTitle タイトルを保持しているか
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findAllHasCode($hasTitle = false)
+    public function findAllHasCode(bool $hasTitle = false): Query
     {
         $query = $this->find()->where(['code is not' => null]);
 

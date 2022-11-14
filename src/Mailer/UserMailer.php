@@ -18,7 +18,7 @@ class UserMailer extends Mailer
      *
      * @var string
      */
-    public static $name = 'User';
+    public static string $name = 'User';
 
     /**
      * 通知メール送信情報を設定
@@ -27,7 +27,7 @@ class UserMailer extends Mailer
      * @param \Cake\Collection\Collection $messages 本文を設定したコレクション
      * @return void
      */
-    public function notification(string $subject, Collection $messages)
+    public function notification(string $subject, Collection $messages): void
     {
         $this->setSubject($subject)
             ->setViewVars('messages', $messages);
@@ -42,7 +42,7 @@ class UserMailer extends Mailer
      * @param \Exception $exception 例外
      * @return void
      */
-    public function error(string $subject, Exception $exception)
+    public function error(string $subject, Exception $exception): void
     {
         $this->setSubject($subject)
             ->setViewVars('messages', $exception->getMessage());

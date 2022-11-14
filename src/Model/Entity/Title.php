@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
+use Cake\Collection\Collection;
+
 /**
  * タイトルエンティティ
  *
@@ -40,7 +42,7 @@ class Title extends AppEntity
      *
      * @return \Gotea\Model\Entity\RetentionHistory|null
      */
-    protected function _getNowRetention()
+    protected function _getNowRetention(): ?RetentionHistory
     {
         return collection($this->retention_histories)->filter(function ($item) {
             return $item->holding === $this->holding;
@@ -52,7 +54,7 @@ class Title extends AppEntity
      *
      * @return \Cake\Collection\Collection
      */
-    protected function _getHistories()
+    protected function _getHistories(): Collection
     {
         return collection($this->retention_histories)->filter(function ($item) {
             return $item->holding < $this->holding;
@@ -65,7 +67,7 @@ class Title extends AppEntity
      * @param bool $isJp 日本名を取得するか
      * @return string|null
      */
-    public function getWinnerName($isJp = true)
+    public function getWinnerName(bool $isJp = true): ?string
     {
         $history = $this->now_retention;
         if (!$history) {

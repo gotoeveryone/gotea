@@ -135,7 +135,7 @@ class TitlesTable extends AppTable
      * @return \Gotea\Model\Entity\Title 棋士と関連データ
      * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
-    public function findByIdWithRelation(int $id)
+    public function findByIdWithRelation(int $id): Title
     {
         return $this->get($id, [
             'contain' => [
@@ -153,7 +153,7 @@ class TitlesTable extends AppTable
      *
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findSortedList()
+    public function findSortedList(): Query
     {
         return $this->find('list')->order(['country_id', 'id']);
     }
@@ -164,7 +164,7 @@ class TitlesTable extends AppTable
      * @param array $data パラメータ
      * @return \Cake\ORM\Query 生成したクエリ
      */
-    public function findTitles($data = [])
+    public function findTitles(array $data = []): Query
     {
         $query = $this->find()->contain([
             'Countries',
@@ -204,7 +204,7 @@ class TitlesTable extends AppTable
      * @param array $data パラメータ
      * @return \Gotea\Model\Entity\Title
      */
-    public function createEntity($id = null, $data = []): Title
+    public function createEntity(?int $id = null, array $data = []): Title
     {
         $properties = [];
         foreach ($data as $key => $value) {

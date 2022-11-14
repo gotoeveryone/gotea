@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Collection\CollectionInterface;
+use Cake\Http\Response;
 use Cake\View\JsonView;
 
 /**
@@ -22,10 +24,10 @@ trait JsonResponseTrait
      * エラーレスポンスを生成します。
      *
      * @param int|null $code ステータスコード
-     * @param string|array|null $message メッセージ
+     * @param array|string|null $message メッセージ
      * @return \Cake\Http\Response
      */
-    public function renderError(?int $code = 500, $message = null)
+    public function renderError(?int $code = 500, string|array|null $message = null): Response
     {
         if ($code === 0) {
             $code = 500;
@@ -49,7 +51,7 @@ trait JsonResponseTrait
      * @param array $json JSONデータ
      * @return \Cake\Http\Response
      */
-    public function renderJson($json = [])
+    public function renderJson(array|CollectionInterface $json = []): Response
     {
         return $this->response->withStringBody(json_encode([
             'response' => $json,

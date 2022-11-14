@@ -41,7 +41,7 @@ class TitleScore extends AppEntity
      *
      * @return int|null 勝者の棋士ID
      */
-    protected function _getWinnerId()
+    protected function _getWinnerId(): ?int
     {
         $detail = $this->win_detail;
         if ($detail) {
@@ -56,7 +56,7 @@ class TitleScore extends AppEntity
      *
      * @return int|null 敗者の棋士ID
      */
-    protected function _getLoserId()
+    protected function _getLoserId(): ?int
     {
         $detail = $this->lose_detail;
         if ($detail) {
@@ -71,7 +71,7 @@ class TitleScore extends AppEntity
      *
      * @return string 勝者名
      */
-    protected function _getWinnerName()
+    protected function _getWinnerName(): string
     {
         $detail = $this->win_detail;
         if ($detail) {
@@ -86,7 +86,7 @@ class TitleScore extends AppEntity
      *
      * @return string 敗者名
      */
-    protected function _getLoserName()
+    protected function _getLoserName(): string
     {
         $detail = $this->lose_detail;
         if ($detail) {
@@ -101,7 +101,7 @@ class TitleScore extends AppEntity
      *
      * @return \Gotea\Model\Entity\TitleScoreDetail|null
      */
-    protected function _getWinDetail()
+    protected function _getWinDetail(): ?TitleScoreDetail
     {
         return collection($this->title_score_details)->filter(function ($item) {
             return $item->division === '勝';
@@ -113,7 +113,7 @@ class TitleScore extends AppEntity
      *
      * @return \Gotea\Model\Entity\TitleScoreDetail|null
      */
-    protected function _getLoseDetail()
+    protected function _getLoseDetail(): ?TitleScoreDetail
     {
         return collection($this->title_score_details)->filter(function ($item) {
             return $item->division === '敗';
@@ -125,7 +125,7 @@ class TitleScore extends AppEntity
      *
      * @return \Gotea\Model\Entity\Player|null
      */
-    protected function _getWinner()
+    protected function _getWinner(): ?Player
     {
         return $this->win_detail ? $this->win_detail->player : null;
     }
@@ -135,7 +135,7 @@ class TitleScore extends AppEntity
      *
      * @return \Gotea\Model\Entity\Player|null
      */
-    protected function _getLoser()
+    protected function _getLoser(): ?Player
     {
         return $this->lose_detail ? $this->lose_detail->player : null;
     }
@@ -146,7 +146,7 @@ class TitleScore extends AppEntity
      *
      * @return array
      */
-    protected function _getGameDates()
+    protected function _getGameDates(): array
     {
         $dates = [$this->started];
         if ($this->ended->diffInDays($this->started, false) < 0) {
@@ -161,7 +161,7 @@ class TitleScore extends AppEntity
      *
      * @return bool
      */
-    protected function _getIsSameStarted()
+    protected function _getIsSameStarted(): bool
     {
         return $this->started->diffInDays($this->ended) === 0;
     }
@@ -173,7 +173,7 @@ class TitleScore extends AppEntity
      * @param int|null $id 棋士ID
      * @return bool
      */
-    public function isSelected($player, ?int $id)
+    public function isSelected(?Player $player, ?int $id): bool
     {
         if (!$player || !$id) {
             return false;

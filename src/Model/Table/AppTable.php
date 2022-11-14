@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 use Gotea\Validation\Validator;
 
@@ -19,6 +20,7 @@ class AppTable extends Table
      *
      * @var string
      */
+    // phpcs:ignore
     protected $_validatorClass = Validator::class;
 
     /**
@@ -39,7 +41,7 @@ class AppTable extends Table
      * @param array $options オプション
      * @return \Cake\Datasource\EntityInterface
      */
-    public function findOrNew(array $data, array $options = [])
+    public function findOrNew(array $data, array $options = []): EntityInterface
     {
         $model = $this->find()->where($data)->first();
         if ($model !== null) {

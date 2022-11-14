@@ -17,7 +17,7 @@ class Validation extends BaseValidation
      * @param mixed $check check value
      * @return bool check result
      */
-    public static function password($check)
+    public static function password(mixed $check): bool
     {
         return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-_@]+$/', $check);
     }
@@ -29,7 +29,7 @@ class Validation extends BaseValidation
      * @param mixed $check check value
      * @return bool check result
      */
-    public static function nameEnglish($check)
+    public static function nameEnglish(mixed $check): bool
     {
         return (bool)preg_match('/^[a-zA-Z0-9\(\)\'\-\s]+$/', $check);
     }

@@ -9,6 +9,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Gotea\Model\Entity\Country;
+use Gotea\Model\Entity\TitleScoreDetail;
 use Gotea\Model\Query\RankingQuery;
 
 /**
@@ -82,7 +83,7 @@ class TitleScoreDetailsTable extends AppTable
      * @param \Cake\ORM\Query $query 生成クエリ
      * @return \Cake\ORM\Query
      */
-    public function findScores(Query $query)
+    public function findScores(Query $query): Query
     {
         return $query->contain('TitleScores')->select([
             'player_id' => 'TitleScoreDetails.player_id',
@@ -114,7 +115,7 @@ class TitleScoreDetailsTable extends AppTable
      * @param int $targetYear 年
      * @return \Gotea\Model\Entity\TitleScoreDetail|null
      */
-    public function findByPlayerAtYear(int $playerId, int $targetYear)
+    public function findByPlayerAtYear(int $playerId, int $targetYear): ?TitleScoreDetail
     {
         return $this->findScores($this->query())->where([
             'player_id' => $playerId,
@@ -132,8 +133,13 @@ class TitleScoreDetailsTable extends AppTable
      * @param string $type 種類（何順で表示するか）
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanking(Country $country, int $limit, FrozenDate $started, FrozenDate $ended, $type = 'point')
-    {
+    public function findRanking(
+        Country $country,
+        int $limit,
+        FrozenDate $started,
+        FrozenDate $ended,
+        string $type = 'point'
+    ): Query {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
             /** @var \Gotea\Model\Table\PlayerScoresTable $playerScores */
@@ -241,7 +247,7 @@ class TitleScoreDetailsTable extends AppTable
      * @param \Cake\I18n\FrozenDate $ended 対局日TO
      * @return string|null
      */
-    public function findRecent(Country $country, FrozenDate $started, FrozenDate $ended)
+    public function findRecent(Country $country, FrozenDate $started, FrozenDate $ended): ?string
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
+use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -25,7 +26,7 @@ class Country extends AppEntity
      * @param mixed $value 値
      * @return \Cake\ORM\ResultSet|null 所属組織
      */
-    protected function _getOrganizations($value)
+    protected function _getOrganizations(mixed $value): ?ResultSet
     {
         if ($value) {
             return $value;
@@ -45,7 +46,7 @@ class Country extends AppEntity
      *
      * @return bool 国際棋戦ならtrue
      */
-    public function isWorlds()
+    public function isWorlds(): bool
     {
         return !$this->has_title;
     }

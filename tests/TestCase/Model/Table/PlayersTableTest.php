@@ -6,6 +6,7 @@ namespace Gotea\Test\TestCase\Model\Table;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Exception;
 use Gotea\Model\Table\PlayersTable;
 
 /**
@@ -250,7 +251,7 @@ class PlayersTableTest extends TestCase
     {
         try {
             $this->Players->findByIdWithRelation(99999);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertTrue($e instanceof RecordNotFoundException);
         }
     }
@@ -276,7 +277,7 @@ class PlayersTableTest extends TestCase
     {
         try {
             $this->Players->findRankByNamesAndCountries(['Test', 'Player 555'], 1);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertTrue($e instanceof RecordNotFoundException);
         }
     }

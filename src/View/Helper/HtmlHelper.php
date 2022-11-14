@@ -26,7 +26,7 @@ class HtmlHelper extends BaseHtmlHelper
      * @param array $options オプション
      * @return string|null 出力するスクリプト
      */
-    public function scriptBlock($script, array $options = []): ?string
+    public function scriptBlock(string $script, array $options = []): ?string
     {
         // 開始・終了タグを除去しておく
         $s = preg_replace('{<script([\s\S]*?)>([\s\S]*?)</script>}', '$2', $script);

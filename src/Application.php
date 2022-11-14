@@ -37,6 +37,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use DebugKit\Plugin;
 use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
 use Gotea\Policy\RequestPolicy;
@@ -69,7 +70,7 @@ class Application extends BaseApplication implements
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            $this->addPlugin(\DebugKit\Plugin::class);
+            $this->addPlugin(Plugin::class);
         }
 
         // Load more plugins here
@@ -152,7 +153,7 @@ class Application extends BaseApplication implements
     /**
      * @return void
      */
-    protected function bootstrapCli()
+    protected function bootstrapCli(): void
     {
         try {
             $this->addPlugin('Bake');

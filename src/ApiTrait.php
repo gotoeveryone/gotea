@@ -19,10 +19,15 @@ trait ApiTrait
      * @param array $data データ
      * @param array $headers ヘッダ
      * @param bool $assoc オブジェクト出力するか
-     * @return array|object
+     * @return object|array
      */
-    public function callApi(string $path, $method = 'get', $data = [], $headers = [], $assoc = true)
-    {
+    public function callApi(
+        string $path,
+        string $method = 'get',
+        array $data = [],
+        array $headers = [],
+        bool $assoc = true
+    ): array|object {
         $callMethod = strtolower($method);
         $url = $this->getApiPath($path);
         $data = (count($data) > 0 ? json_encode($data) : $data);
@@ -58,7 +63,7 @@ trait ApiTrait
      * @param string $path パス
      * @return string 対象APIのURL
      */
-    private function getApiPath(string $path)
+    private function getApiPath(string $path): string
     {
         $url = env('API_URL', 'http://localhost/');
         $length = strlen($url);
@@ -74,9 +79,9 @@ trait ApiTrait
      * 認可ヘッダを生成します。
      *
      * @param array $optionHeaders ヘッダに追加設定する情報
-     * @return string ヘッダ情報
+     * @return array ヘッダ情報
      */
-    private function createHeaders($optionHeaders = [])
+    private function createHeaders(array $optionHeaders = []): array
     {
         $headers = [
             'Content-Type' => 'application/json',
