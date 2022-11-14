@@ -13,7 +13,7 @@
   "type": "project",
   "license": "MIT",
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.1",
     "abraham/twitteroauth": "^4.0",
     "cakephp/authentication": "^2.0",
     "cakephp/authorization": "^2.0",
@@ -24,7 +24,7 @@
     "dereuromark/cakephp-shim": "^2.0",
     "fabpot/goutte": "^4.0",
     "mobiledetect/mobiledetectlib": "^2.8",
-    "symfony/http-client": "^5.3",
+    "symfony/http-client": "^6.1",
     "vlucas/phpdotenv": "^5.4"
   },
   "require-dev": {
