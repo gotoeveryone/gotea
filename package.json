@@ -26,7 +26,7 @@
     "@types/node": "^16.18.3",
     "@types/pikaday": "^1.7.6",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
-    "@typescript-eslint/parser": "^5.42.1",
+    "@typescript-eslint/parser": "^5.43.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/compiler-sfc": "^3.2.40",
     "eslint": "^8.28.0",
