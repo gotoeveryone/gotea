@@ -132,7 +132,7 @@ jobs:
         id: node_cache
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-node_modules-build-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: ${{ steps.node_cache.outputs.cache-hit != 'true' }}
         run: npm i --engine-strict
