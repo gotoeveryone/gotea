@@ -111,7 +111,7 @@ jobs:
     container:
       image: node:16.16.0
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v1 # vite のビルドで Permission denied になるため actions/checkout@v3 が使えない
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
