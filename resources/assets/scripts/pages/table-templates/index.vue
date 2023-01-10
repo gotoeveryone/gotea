@@ -40,6 +40,7 @@ import {
   TableTemplate as Item,
   TableTemplateListResponse as Response,
 } from '@/types/table-template';
+import { isPositiveNumber } from '@/util/validator';
 
 export default defineComponent({
   components: {
@@ -56,14 +57,19 @@ export default defineComponent({
     total: 0,
     items: [] as Item[],
     currentPage: 1,
+    perPage: 30,
   }),
-  computed: {
-    perPage(): number {
-      return 20;
-    },
-  },
   mounted() {
-    this.onSearch(1);
+    const url = new URL(location.href);
+    const limit = url.searchParams.get('limit');
+    const page = url.searchParams.get('page');
+    if (isPositiveNumber(limit)) {
+      this.perPage = Number.parseInt(limit as string, 10);
+    }
+    if (isPositiveNumber(page)) {
+      this.currentPage = Number.parseInt(page as string, 10);
+    }
+    this.onSearch(this.currentPage);
   },
   methods: {
     onSearch(page: number) {
@@ -74,6 +80,12 @@ export default defineComponent({
         .then(({ response: { total, items } }) => {
           this.total = total;
           this.items = items;
+          const url = new URL(location.href);
+          url.searchParams.set('limit', this.perPage.toString());
+          url.searchParams.set('page', this.currentPage.toString());
+          if (url.toString() !== location.href) {
+            history.replaceState({ page: this.currentPage, limit: this.perPage }, '', url);
+          }
         });
     },
   },
