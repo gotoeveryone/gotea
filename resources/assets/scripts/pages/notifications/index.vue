@@ -56,7 +56,7 @@ export default defineComponent({
     total: 0,
     items: [] as Item[],
     currentPage: 1,
-    perPage: 20,
+    perPage: 30,
   }),
   mounted() {
     const url = new URL(location.href);
