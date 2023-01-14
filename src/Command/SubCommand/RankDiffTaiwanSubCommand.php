@@ -76,6 +76,6 @@ class RankDiffTaiwanSubCommand implements RankDiffSubCommandInterface
         /** @var \Gotea\Model\Table\PlayersTable $players */
         $players = TableRegistry::getTableLocator()->get('Players');
 
-        return $players->findRanksCount($this->country->id, $organization->id)->all();
+        return $players->findRanksCount($this->country->id, $organization->id, true)->all();
     }
 }
