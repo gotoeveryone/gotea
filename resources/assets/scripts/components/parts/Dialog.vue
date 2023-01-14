@@ -67,10 +67,10 @@ const isShow = computed(
     ((isServ.value && options.value.server) || (!isServ.value && !options.value.server)),
 );
 
-onMounted(() => {
+onMounted(async () => {
   // サーバからのメッセージを保持している場合、それをオプションに設定
   if (isServ.value) {
-    store.dispatch('openDialog', {
+    await store.dispatch('openDialog', {
       title: title.value,
       messages: props.servMessages,
       type: props.servType,
