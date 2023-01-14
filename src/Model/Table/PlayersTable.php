@@ -215,9 +215,10 @@ class PlayersTable extends AppTable
      *
      * @param int $countryId 所属国ID
      * @param int|null $organizationId 所属組織ID
+     * @param bool|null $includeRetired 退役者を検索するか
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findRanksCount(int $countryId, ?int $organizationId = null)
+    public function findRanksCount(int $countryId, ?int $organizationId = null, ?bool $includeRetired = false): Query
     {
         $query = $this->find();
 
@@ -225,15 +226,20 @@ class PlayersTable extends AppTable
             $query->where(['organization_id' => $organizationId]);
         }
 
+        if (!$includeRetired) {
+            $query->where(['is_retired' => false]);
+        }
+
         return $query
             ->contain('Ranks')
             ->where(['country_id' => $countryId])
-            ->where(['is_retired' => false])->select([
+            ->select([
+                'id' => 'Ranks.id',
                 'rank' => 'Ranks.rank_numeric',
                 'name' => 'Ranks.name',
                 'count' => $query->func()->count('*'),
             ])
-            ->group('Ranks.name')
+            ->group(['Ranks.id', 'Ranks.rank_numeric', 'Ranks.name'])
             ->orderDesc('Ranks.rank_numeric');
     }
 
