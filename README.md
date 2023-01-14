@@ -32,17 +32,31 @@ $ docker compose up
 ## Migration
 
 ```console
-$ docker compose exec server ./bin/cake migrations migrate
+$ docker compose exec backend ./bin/cake migrations migrate
+```
+
+## Format check
+
+```console
+$ # backend
+$ docker compose exec backend composer cs-check
+
+$ # frontend
+$ docker compose exec frontend npm run lint
 ```
 
 ## Test
 
 ```console
-$ docker compose exec server ./vendor/bin/phpunit
+$ # backend
+$ docker compose exec backend composer test
+
+$ # frontend
+$ docker compose exec frontend npm test
 ```
 
 ## Repl
 
 ```console
-$ docker compose exec server ./bin/cake console
+$ docker compose exec backend ./bin/cake console
 ```
