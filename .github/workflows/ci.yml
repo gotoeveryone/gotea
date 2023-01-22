@@ -8,9 +8,9 @@ jobs:
     container:
       image: ghcr.io/gotoeveryone/composer-php:8.1
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Cache modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: vendor_cache
         with:
           path: vendor
@@ -26,9 +26,9 @@ jobs:
     container:
       image: node:16.16
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Cache modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: node_cache
         with:
           path: node_modules
@@ -74,7 +74,7 @@ jobs:
             -d \
             -p ${DB_TEST_PORT}:3306 \
             mysql:5.7 mysqld --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_general_ci
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -87,7 +87,7 @@ jobs:
             sleep 1
           done
       - name: Cache modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: vendor_cache
         with:
           path: vendor
@@ -97,6 +97,24 @@ jobs:
         run: composer install
       - name: Execute test
         run: composer test
+
+  test_frontend:
+    runs-on: ubuntu-latest
+    container:
+      image: node:16.16
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache modules
+        uses: actions/cache@v3
+        id: node_cache
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: ${{ steps.node_cache.outputs.cache-hit != 'true' }}
+        run: npm i --engine-strict
+      - name: Execute code check
+        run: npm test
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -108,10 +126,11 @@ jobs:
       - code_check_backend
       - code_check_frontend
       - test_backend
+      - test_frontend
     container:
       image: node:16.16.0
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v1 # vite のビルドで Permission denied になるため actions/checkout@v3 が使えない
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -128,11 +147,11 @@ jobs:
               Port ${{ secrets.SSH_PORT }}
               IdentityFile ~/.ssh/id_rsa-target
       - name: Cache modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: node_cache
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-node_modules-build-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: ${{ steps.node_cache.outputs.cache-hit != 'true' }}
         run: npm i --engine-strict
@@ -147,15 +166,12 @@ jobs:
         run: ssh target "${SHELL_DEST_PATH} ${TAR_NAME} gotea && rm -f ${SHELL_DEST_PATH}"
 
   notify:
-    if: ${{ always() }}
+    if: ${{ always() && !contains(github.ref, 'dependabot/') }}
     needs:
-      - code_check_backend
-      - code_check_frontend
-      - test_backend
       - deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: technote-space/workflow-conclusion-action@v1
+      - uses: technote-space/workflow-conclusion-action@v3
       - name: Notify to Slack
         uses: 8398a7/action-slack@v3
         with:

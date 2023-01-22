@@ -17,11 +17,11 @@ use Gotea\Model\Table\PlayersTable;
 class PlayersTableTest extends TestCase
 {
     /**
-     * 棋士モデル
+     * 棋士テーブルクラス
      *
      * @var \Gotea\Model\Table\PlayersTable
      */
-    public $Players;
+    private $Players;
 
     /**
      * Fixtures
@@ -216,14 +216,41 @@ class PlayersTableTest extends TestCase
      */
     public function testFindRanksCount()
     {
-        $ranks = $this->Players->findRanksCount(1);
+        $ranks = $this->Players->findRanksCount(1)->all();
 
-        $number = 0;
-        $ranks->each(function ($item, $key) use (&$number) {
-            if ($number) {
-                $this->assertLessThanOrEqual($number, $item->rank);
+        // 段位降順で並んでいる
+        $ranksArray = $ranks->toArray();
+        $ranks->each(function ($item, $idx) use ($ranksArray) {
+            if ($idx > 0) {
+                $this->assertLessThanOrEqual(
+                    $ranksArray[$idx - 1]->rank_numeric,
+                    $item->rank_numeric,
+                );
             }
-            $number = $item->rank;
+        });
+
+        // 所属組織で絞り込み
+        $organizations = TableRegistry::getTableLocator()->get('Organizations');
+        $organization = $organizations->findByCountryId(1)->first();
+        $ranks = $this->Players->findRanksCount(1, $organization->id)->all();
+        $ranks->each(function ($item) use ($organization) {
+            $playerCount = $this->Players->find()->where([
+                'rank_id' => $item->id,
+                'country_id' => 1,
+                'organization_id' => $organization->id,
+                'is_retired' => false,
+            ])->count();
+            $this->assertEquals($playerCount, $item->count);
+        });
+
+        // 退役者を含めて集計できる
+        $ranks = $this->Players->findRanksCount(1, null, true)->all();
+        $ranks->each(function ($item) {
+            $playerCount = $this->Players->find()->where([
+                'rank_id' => $item->id,
+                'country_id' => 1,
+            ])->count();
+            $this->assertEquals($playerCount, $item->count);
         });
     }
 
