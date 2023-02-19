@@ -16,7 +16,7 @@ class FileBuilder
     /**
      * @var string $parentDir
      */
-    private string $parentDir = null;
+    private ?string $parentDir = null;
 
     /**
      * Constructor

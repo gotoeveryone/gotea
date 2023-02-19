@@ -32,7 +32,7 @@ class RankingQuery extends Query
             $item->win_rank = $rank;
         })->map(function ($item) use ($isWorlds, $withJa) {
             $row = [
-                'rank' => $item->win_rank,
+                'win_rank' => $item->win_rank,
                 'name' => $item->getRankingName($isWorlds, $withJa),
                 'win' => (int)$item->win_point,
                 'lose' => (int)$item->lose_point,

@@ -236,7 +236,7 @@ class PlayersTable extends AppTable
             ->where(['country_id' => $countryId])
             ->select([
                 'id' => 'Ranks.id',
-                'rank' => 'Ranks.rank_numeric',
+                'rank_numeric' => 'Ranks.rank_numeric',
                 'name' => 'Ranks.name',
                 'count' => $query->func()->count('*'),
             ])
