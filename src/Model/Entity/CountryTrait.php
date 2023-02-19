@@ -14,9 +14,9 @@ trait CountryTrait
      * 所属國を取得します。
      *
      * @param \Gotea\Model\Entity\Country|null $country 所属国オブジェクト
-     * @return \Gotea\Model\Entity\Country
+     * @return \Gotea\Model\Entity\Country|null
      */
-    protected function _getCountry(?Country $country): Country
+    protected function _getCountry(?Country $country): ?Country
     {
         if ($country) {
             return $country;

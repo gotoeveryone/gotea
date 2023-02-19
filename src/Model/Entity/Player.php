@@ -17,14 +17,14 @@ use Cake\Routing\Router;
  * @property int $rank_id
  * @property int $organization_id
  * @property string $name
- * @property string $name_english
- * @property string $name_other
+ * @property string|null $name_english
+ * @property string|null $name_other
  * @property string $sex
  * @property string $joined
- * @property \Cake\I18n\FrozenDate $birthday
- * @property string $remarks
+ * @property \Cake\I18n\FrozenDate|null $birthday
+ * @property string|null $remarks
  * @property bool $is_retired
- * @property \Cake\I18n\FrozenDate $retired
+ * @property \Cake\I18n\FrozenDate|null $retired
  * @property \Cake\I18n\FrozenTime $created
  * @property string $created_by
  * @property \Cake\I18n\FrozenTime $modified
@@ -209,9 +209,9 @@ class Player extends AppEntity
      * 誕生日を設定します。
      *
      * @param mixed $birthday 設定値
-     * @return \Cake\I18n\FrozenDate
+     * @return \Cake\I18n\FrozenDate|null
      */
-    protected function _setBirthday(mixed $birthday): FrozenDate
+    protected function _setBirthday(mixed $birthday): ?FrozenDate
     {
         if ($birthday && !($birthday instanceof FrozenDate)) {
             return FrozenDate::parseDate($birthday, 'yyyy/MM/dd');

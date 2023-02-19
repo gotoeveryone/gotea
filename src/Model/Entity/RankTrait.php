@@ -16,7 +16,7 @@ trait RankTrait
      * @param \Gotea\Model\Entity\Rank|null $rank 段位オブジェクト
      * @return \Gotea\Model\Entity\Rank
      */
-    protected function _getRank(?Rank $rank): Rank
+    protected function _getRank(?Rank $rank): ?Rank
     {
         if ($rank) {
             return $rank;
@@ -28,8 +28,6 @@ trait RankTrait
 
         $result = TableRegistry::getTableLocator()->get('Ranks')->get($this->rank_id);
 
-        $this->rank = $result;
-
-        return $this->rank;
+        return $this->rank = $result;
     }
 }
