@@ -48,7 +48,7 @@ class PlayersController extends ApiController
     {
         $ranks = $this->Players->findRanksCount($countryId);
 
-        return $this->renderJson($ranks->toArray());
+        return $this->renderJson($ranks);
     }
 
     /**

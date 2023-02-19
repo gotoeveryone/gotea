@@ -23,6 +23,6 @@ class CountriesController extends ApiController
 
         $countries = $this->Countries->findAllHasCode($hasTitle);
 
-        return $this->renderJson($countries->toArray());
+        return $this->renderJson($countries);
     }
 }

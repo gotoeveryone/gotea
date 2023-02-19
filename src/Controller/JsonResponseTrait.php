@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
-use Cake\Collection\CollectionInterface;
 use Cake\Http\Response;
 use Cake\View\JsonView;
+use JsonSerializable;
 
 /**
  * JSON形式のレスポンスを制御します。
@@ -51,7 +51,7 @@ trait JsonResponseTrait
      * @param array $json JSONデータ
      * @return \Cake\Http\Response
      */
-    public function renderJson(array|CollectionInterface $json = []): Response
+    public function renderJson(array|JsonSerializable $json = []): Response
     {
         return $this->response->withStringBody(json_encode([
             'response' => $json,
