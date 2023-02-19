@@ -78,7 +78,7 @@ class NativeQueryController extends AppController
      * @return int 更新件数
      * @throws \PDOException
      */
-    private function executeQueries(ConnectionInterface $conn, $queries): int
+    private function executeQueries(ConnectionInterface $conn, array $queries): int
     {
         $counter = 0;
         foreach ($queries as $query) {

@@ -18,7 +18,7 @@ class PlayerScore extends AppEntity
      * @param bool $showJp 日本語で表示するか
      * @return string ランキング表示用の名前
      */
-    public function getRankingName(bool $isWorlds, $showJp = false): string
+    public function getRankingName(bool $isWorlds, bool $showJp = false): string
     {
         // 取得するプロパティ名のサフィックス
         $suffix = ($showJp ? '' : '_english');

@@ -9,6 +9,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
+use Exception;
 use Gotea\Model\Entity\Notification;
 
 /**
@@ -177,7 +178,7 @@ class NotificationsController extends AppController
             $client->post('statuses/update', [
                 'status' => "{$data->title}\n{$informationsUrl}/{$data->id}",
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage());
         }
     }

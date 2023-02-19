@@ -6,6 +6,8 @@ namespace Gotea\Controller\Api;
 use Cake\Http\Response;
 use Cake\I18n\FrozenDate;
 use Cake\Utility\Hash;
+use Gotea\Collection\Iterator\RankingIterator;
+use Gotea\Collection\Iterator\RankIterator;
 use Gotea\Utility\FileBuilder;
 
 /**
@@ -48,7 +50,7 @@ class PlayersController extends ApiController
     {
         $ranks = $this->Players->findRanksCount($countryId);
 
-        return $this->renderJson($ranks);
+        return $this->renderJson($ranks->map(new RankIterator()));
     }
 
     /**
@@ -155,7 +157,7 @@ class PlayersController extends ApiController
         $to = $to ? FrozenDate::parse($to) : FrozenDate::createFromDate($year, 12, 31);
 
         // ランキングデータの取得
-        $ranking = $this->TitleScoreDetails
+        $players = $this->TitleScoreDetails
             ->findRanking($country, $limit, $from, $to, $type)
             ->mapRanking($country->isWorlds(), $withJa, $type);
 
@@ -168,8 +170,8 @@ class PlayersController extends ApiController
             'countryName' => $country->name_english,
             'year' => $year,
             'lastUpdate' => $lastUpdate,
-            'count' => iterator_count($ranking),
-            'ranking' => $ranking,
+            'count' => iterator_count($players),
+            'ranking' => $players->map(new RankingIterator()),
         ];
     }
 }

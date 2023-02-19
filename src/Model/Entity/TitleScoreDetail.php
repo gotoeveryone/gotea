@@ -44,7 +44,7 @@ class TitleScoreDetail extends AppEntity
      * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付
      * @return string 棋士名 段位
      */
-    public function getPlayerNameWithRank(FrozenDate $baseDate)
+    public function getPlayerNameWithRank(FrozenDate $baseDate): string
     {
         return implode(' ', [$this->player_name, $this->player->getRankByDate($baseDate)->name]);
     }
@@ -56,7 +56,7 @@ class TitleScoreDetail extends AppEntity
      * @param bool $showJp 日本語で表示するか
      * @return string ランキング表示用の名前
      */
-    public function getRankingName(bool $isWorlds, $showJp = false): string
+    public function getRankingName(bool $isWorlds, bool $showJp = false): string
     {
         // 取得するプロパティ名のサフィックス
         $suffix = ($showJp ? '' : '_english');

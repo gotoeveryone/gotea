@@ -89,7 +89,9 @@ class TitleScoresController extends AppController
      */
     public function searchByPlayer(int $id, int $year): ?Response
     {
-        $player = $this->Players->get($id);
+        $player = $this->Players->get($id, [
+            'contain' => 'Ranks',
+        ]);
         $titleScores = $this->TitleScores->findMatches([
             'player_id' => $id,
             'target_year' => $year,

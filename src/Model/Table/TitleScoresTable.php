@@ -8,6 +8,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use Gotea\Model\Entity\TitleScore;
 
 /**
  * TitleScores Model
@@ -107,7 +108,7 @@ class TitleScoresTable extends AppTable
      * @return \Gotea\Model\Entity\TitleScore 取得したエンティティ
      * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
-    public function findByIdWithRelation(int $id)
+    public function findByIdWithRelation(int $id): TitleScore
     {
         return $this->get($id, [
             'contain' => [

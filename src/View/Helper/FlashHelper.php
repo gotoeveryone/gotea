@@ -13,10 +13,10 @@ class FlashHelper extends BaseFlashHelper
     /**
      * エラーメッセージ単位に配列形式で取得する。
      *
-     * @param string|array $messages メッセージ一覧
-     * @return array
+     * @param array|string $messages メッセージ一覧
+     * @return array|string
      */
-    public function getMessages($messages)
+    public function getMessages(array|string $messages): array|string
     {
         $out = [];
         if (is_string($messages)) {

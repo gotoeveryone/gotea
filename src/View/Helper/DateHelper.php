@@ -24,7 +24,7 @@ class DateHelper extends Helper
      * @param string $format 指定したフォーマット
      * @return string 整形した日付表記
      */
-    public function format($object, $format = self::FORMAT_DATETIME)
+    public function format(FrozenDate|FrozenTime|null $object, string $format = self::FORMAT_DATETIME): string
     {
         if (empty($object)) {
             return '';
@@ -40,7 +40,7 @@ class DateHelper extends Helper
      * @param \Cake\I18n\FrozenTime|null $timeObj 変換するTime型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDateTime(?FrozenTime $timeObj = null)
+    public function formatToDateTime(?FrozenTime $timeObj = null): string
     {
         return $this->format($timeObj, self::FORMAT_DATETIME);
     }
@@ -52,7 +52,7 @@ class DateHelper extends Helper
      * @param \Cake\I18n\FrozenDate|null $dateObj 変換するDate型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDate(?FrozenDate $dateObj = null)
+    public function formatToDate(?FrozenDate $dateObj = null): string
     {
         return $this->format($dateObj, self::FORMAT_DATE);
     }
@@ -64,7 +64,7 @@ class DateHelper extends Helper
      * @param \Cake\I18n\FrozenTime|null $timeObj 変換するTime型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToTime(?FrozenTime $timeObj = null)
+    public function formatToTime(?FrozenTime $timeObj = null): string
     {
         return $this->format($timeObj, self::FORMAT_TIME);
     }

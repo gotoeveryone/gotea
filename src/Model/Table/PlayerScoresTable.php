@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Gotea\Model\Entity\Country;
 use Gotea\Model\Query\RankingQuery;
 
@@ -42,7 +43,7 @@ class PlayerScoresTable extends AppTable
      * @param int $playerId 棋士ID
      * @return \Cake\ORM\ResultSet
      */
-    public function findDescYears(int $playerId)
+    public function findDescYears(int $playerId): ResultSet
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Ranks'])->orderDesc('target_year')->all();
@@ -58,7 +59,7 @@ class PlayerScoresTable extends AppTable
      * @param string $type 種類（何順で表示するか）
      * @return \Cake\ORM\Query
      */
-    public function findRanking(Country $country, int $targetYear, int $offset, $type = 'point')
+    public function findRanking(Country $country, int $targetYear, int $offset, string $type = 'point'): Query
     {
         $suffix = ($country->has_title ? '' : '_world');
         $winColumn = "PlayerScores.win_point${suffix}";

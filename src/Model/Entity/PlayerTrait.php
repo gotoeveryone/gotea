@@ -16,7 +16,7 @@ trait PlayerTrait
      * @param \Gotea\Model\Entity\Player|null $player 棋士オブジェクト
      * @return \Gotea\Model\Entity\Player
      */
-    protected function _getPlayer($player)
+    protected function _getPlayer(?Player $player): Player
     {
         if ($player) {
             return $player;

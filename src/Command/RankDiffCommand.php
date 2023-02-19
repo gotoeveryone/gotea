@@ -39,7 +39,7 @@ class RankDiffCommand extends Command
     /**
      * @inheritDoc
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): int
     {
         $url = Configure::read('App.slack.notifyUrl');
         $client = new HttpClient();

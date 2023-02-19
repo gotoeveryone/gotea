@@ -217,9 +217,9 @@ class PlayersController extends AppController
     /**
      * 段位一覧に表示する値を設定します。
      *
-     * @return \Gotea\Controller\PlayersController
+     * @return self
      */
-    private function withRanks()
+    private function withRanks(): PlayersController
     {
         $ranks = $this->Ranks->findProfessional()->all()->combine('id', 'name');
 

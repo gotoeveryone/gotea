@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
+use Cake\Http\Response;
+
 /**
  * API・タイトル保持履歴コントローラ
  *
@@ -16,7 +18,7 @@ class RetentionHistoriesController extends ApiController
      * @param int $id ID
      * @return \Cake\Http\Response 所属国一覧
      */
-    public function view(int $id)
+    public function view(int $id): Response
     {
         /** @var \Gotea\Model\Entity\RetentionHistory $history */
         $history = $this->RetentionHistories->get($id, [

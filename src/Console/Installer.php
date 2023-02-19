@@ -16,9 +16,10 @@ declare(strict_types=1);
  */
 namespace Gotea\Console;
 
+use Cake\Codeception\Console\Installer as CodeceptionInstaller;
 use Cake\Utility\Security;
+use Composer\IO\IOInterface;
 use Composer\Script\Event;
-use Exception;
 
 /**
  * Provides installation hooks for when this application is installed via
@@ -47,41 +48,20 @@ class Installer
      * @throws \Exception Exception raised by validator.
      * @return void
      */
-    public static function postInstall(Event $event)
+    public static function postInstall(Event $event): void
     {
         $io = $event->getIO();
 
         $rootDir = dirname(dirname(__DIR__));
 
-        static::createAppConfig($rootDir, $io);
+        static::createAppLocalConfig($rootDir, $io);
         static::createWritableDirectories($rootDir, $io);
 
-        // ask if the permissions should be changed
-        if ($io->isInteractive()) {
-            $validator = function ($arg) {
-                if (in_array($arg, ['Y', 'y', 'N', 'n'])) {
-                    return $arg;
-                }
-                throw new Exception('This is not a valid answer. Please choose Y or n.');
-            };
-            $setFolderPermissions = $io->askAndValidate(
-                '<info>Set Folder Permissions ? (Default to Y)</info> [<comment>Y,n</comment>]? ',
-                $validator,
-                10,
-                'Y'
-            );
-
-            if (in_array($setFolderPermissions, ['Y', 'y'])) {
-                static::setFolderPermissions($rootDir, $io);
-            }
-        } else {
-            static::setFolderPermissions($rootDir, $io);
-        }
-
+        static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
 
-        if (class_exists('\Cake\Codeception\Console\Installer')) {
-            \Cake\Codeception\Console\Installer::customizeCodeceptionBinary($event);
+        if (class_exists(CodeceptionInstaller::class)) {
+            CodeceptionInstaller::customizeCodeceptionBinary($event);
         }
     }
 
@@ -92,7 +72,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function createAppConfig($dir, $io)
+    public static function createAppLocalConfig(string $dir, IOInterface $io): void
     {
         $appLocalConfig = $dir . '/.env';
         $appLocalConfigTemplate = $dir . '/.env.example';
@@ -109,7 +89,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function createWritableDirectories($dir, $io)
+    public static function createWritableDirectories(string $dir, IOInterface $io): void
     {
         foreach (static::WRITABLE_DIRS as $path) {
             $path = $dir . '/' . $path;
@@ -129,10 +109,10 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function setFolderPermissions($dir, $io)
+    public static function setFolderPermissions(string $dir, IOInterface $io): void
     {
         // Change the permissions on a path and output the results.
-        $changePerms = function ($path, $perms, $io) {
+        $changePerms = function ($path, $perms, $io): void {
             // Get permission bits from stat(2) result.
             $currentPerms = fileperms($path) & 0777;
             if (($currentPerms & $perms) == $perms) {
@@ -147,7 +127,7 @@ class Installer
             }
         };
 
-        $walker = function ($dir, $perms, $io) use (&$walker, $changePerms) {
+        $walker = function ($dir, $perms, $io) use (&$walker, $changePerms): void {
             $files = array_diff(scandir($dir), ['.', '..']);
             foreach ($files as $file) {
                 $path = $dir . '/' . $file;
@@ -174,7 +154,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function setSecuritySalt($dir, $io)
+    public static function setSecuritySalt(string $dir, IOInterface $io): void
     {
         $newKey = hash('sha256', Security::randomBytes(64));
         static::setSecuritySaltInFile($dir, $io, $newKey, '.env');
@@ -189,7 +169,7 @@ class Installer
      * @param string $file A path to a file relative to the application's root
      * @return void
      */
-    public static function setSecuritySaltInFile($dir, $io, $newKey, $file)
+    public static function setSecuritySaltInFile(string $dir, IOInterface $io, string $newKey, string $file): void
     {
         $config = $dir . '/' . $file;
         $content = file_get_contents($config);
@@ -220,7 +200,7 @@ class Installer
      * @param string $file A path to a file relative to the application's root
      * @return void
      */
-    public static function setAppNameInFile($dir, $io, $appName, $file)
+    public static function setAppNameInFile(string $dir, IOInterface $io, string $appName, string $file): void
     {
         $config = $dir . '/' . $file;
         $content = file_get_contents($config);

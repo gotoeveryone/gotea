@@ -16,7 +16,7 @@ trait RankTrait
      * @param \Gotea\Model\Entity\Rank|null $rank 段位オブジェクト
      * @return \Gotea\Model\Entity\Rank
      */
-    protected function _getRank($rank)
+    protected function _getRank(?Rank $rank): ?Rank
     {
         if ($rank) {
             return $rank;

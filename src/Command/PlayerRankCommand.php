@@ -58,7 +58,7 @@ class PlayerRankCommand extends Command
      * @param \Cake\Console\ConsoleIo $io 入出力
      * @return int Success or error code.
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): int
     {
         Log::info('昇段情報の取り込みを開始します。');
         $code = $args->getArgumentAt(0);
@@ -110,7 +110,7 @@ class PlayerRankCommand extends Command
      *
      * @return array 段位と棋士の一覧
      */
-    private function getPlayerFromKorea()
+    private function getPlayerFromKorea(): array
     {
         $crawler = $this->getCrawler(env('DIFF_KOREA_URL'));
 
@@ -140,7 +140,7 @@ class PlayerRankCommand extends Command
      * @param \Cake\ORM\Query $ranks 段位一覧
      * @return array|false 保存結果
      */
-    private function savePlayerRanksToKorea(ConsoleIo $io, int $countryId, string $url, Query $ranks)
+    private function savePlayerRanksToKorea(ConsoleIo $io, int $countryId, string $url, Query $ranks): array|false
     {
         $crawler = $this->getCrawler("http://www.baduk.or.kr/info/${url}");
         $name = $crawler->filter('.faceinfo .r strong')->first()->text();
@@ -198,7 +198,7 @@ class PlayerRankCommand extends Command
      * @param string $url URL
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    private function getCrawler($url)
+    private function getCrawler(string $url): Crawler
     {
         $client = new Client();
 

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
+use Cake\Http\Response;
+
 /**
  * TableTemplates Controller
  *
@@ -16,7 +18,7 @@ class TableTemplatesController extends ApiController
      *
      * @return \Cake\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
         $query = $this->TableTemplates->find()->orderAsc('title');
         $tableTemplates = $this->paginate($query);

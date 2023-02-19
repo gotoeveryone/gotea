@@ -21,13 +21,7 @@ namespace Gotea\Model\Entity;
 class Notification extends AppEntity
 {
     /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected $_accessible = [
         'title' => true,
@@ -39,6 +33,9 @@ class Notification extends AppEntity
         'modified' => true,
     ];
 
+    /**
+     * @inheritDoc
+     */
     protected $_virtual = [
         'status',
     ];
@@ -48,7 +45,7 @@ class Notification extends AppEntity
      *
      * @return string
      */
-    protected function _getStatus()
+    protected function _getStatus(): string
     {
         return $this->is_draft ? __('下書き') : __('公開');
     }
@@ -58,7 +55,7 @@ class Notification extends AppEntity
      *
      * @return bool
      */
-    protected function _getIsPublished()
+    protected function _getIsPublished(): bool
     {
         return !$this->is_draft;
     }

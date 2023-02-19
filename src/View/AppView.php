@@ -29,7 +29,7 @@ class AppView extends View
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->Identity->get('is_admin');
     }
@@ -39,7 +39,7 @@ class AppView extends View
      *
      * @return bool
      */
-    public function isDialogMode()
+    public function isDialogMode(): bool
     {
         return !empty($this->get('isDialog', false));
     }
@@ -49,7 +49,7 @@ class AppView extends View
      *
      * @return bool
      */
-    public function hasTitle()
+    public function hasTitle(): bool
     {
         return !empty($this->get('pageTitle', ''));
     }
@@ -59,7 +59,7 @@ class AppView extends View
      *
      * @return array
      */
-    public function joinedYears()
+    public function joinedYears(): array
     {
         $limit = FrozenTime::now()->addYears(1)->year;
 
@@ -76,7 +76,7 @@ class AppView extends View
      *
      * @return array
      */
-    public function joinedMonths()
+    public function joinedMonths(): array
     {
         $options = [];
         for ($i = 1; $i <= 12; $i++) {
@@ -91,7 +91,7 @@ class AppView extends View
      *
      * @return array
      */
-    public function joinedDays()
+    public function joinedDays(): array
     {
         $options = [];
         for ($i = 1; $i <= 31; $i++) {

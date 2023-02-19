@@ -16,5 +16,6 @@ class AppForm extends Form
      *
      * @var string
      */
+    // phpcs:ignore
     protected $_validatorClass = Validator::class;
 }

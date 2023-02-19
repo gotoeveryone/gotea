@@ -38,7 +38,7 @@ class ExternalApiIdentifier extends AbstractIdentifier
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'fields' => [
             self::CREDENTIAL_USERNAME => 'account',
             self::CREDENTIAL_PASSWORD => 'password',

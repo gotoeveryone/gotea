@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
+use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -15,14 +17,14 @@ use Cake\Routing\Router;
  * @property int $rank_id
  * @property int $organization_id
  * @property string $name
- * @property string $name_english
- * @property string $name_other
+ * @property string|null $name_english
+ * @property string|null $name_other
  * @property string $sex
  * @property string $joined
- * @property \Cake\I18n\FrozenDate $birthday
- * @property string $remarks
+ * @property \Cake\I18n\FrozenDate|null $birthday
+ * @property string|null $remarks
  * @property bool $is_retired
- * @property \Cake\I18n\FrozenDate $retired
+ * @property \Cake\I18n\FrozenDate|null $retired
  * @property \Cake\I18n\FrozenTime $created
  * @property string $created_by
  * @property \Cake\I18n\FrozenTime $modified
@@ -55,7 +57,7 @@ class Player extends AppEntity
      * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付
      * @return \Gotea\Model\Entity\Rank
      */
-    public function getRankByDate(FrozenDate $baseDate)
+    public function getRankByDate(FrozenDate $baseDate): Rank
     {
         if (!$this->player_ranks) {
             return $this->rank;
@@ -78,9 +80,9 @@ class Player extends AppEntity
     /**
      * 入力フォーム用の入段日を取得します。
      *
-     * @return array 入力フォーム用の入段日
+     * @return array|string|null 入力フォーム用の入段日
      */
-    protected function _getInputJoined()
+    protected function _getInputJoined(): array|string|null
     {
         $value = $this->joined;
         if ($value === null) {
@@ -108,9 +110,9 @@ class Player extends AppEntity
     /**
      * 入段日を日付フォーマットに変更して取得します。
      *
-     * @return array 入段日
+     * @return string 入段日
      */
-    protected function _getFormatJoined()
+    protected function _getFormatJoined(): string
     {
         $joined = collection($this->input_joined)->reject(function ($item) {
             return $item === '' || $item === null;
@@ -124,7 +126,7 @@ class Player extends AppEntity
      *
      * @return int|null 年齢
      */
-    protected function _getAge()
+    protected function _getAge(): ?int
     {
         return $this->birthday ? $this->birthday->age : null;
     }
@@ -134,7 +136,7 @@ class Player extends AppEntity
      *
      * @return string 年齢のテキスト
      */
-    protected function _getAgeText()
+    protected function _getAgeText(): string
     {
         return is_numeric($this->age) ? sprintf('(%d歳)', $this->age) : '(不明)';
     }
@@ -144,7 +146,7 @@ class Player extends AppEntity
      *
      * @return string 棋士名 (所属国)
      */
-    protected function _getNameWithCountry()
+    protected function _getNameWithCountry(): string
     {
         return "{$this->name} ({$this->country->name})";
     }
@@ -154,7 +156,7 @@ class Player extends AppEntity
      *
      * @return string 棋士名 段位
      */
-    protected function _getNameWithRank()
+    protected function _getNameWithRank(): string
     {
         return "{$this->name} {$this->rank->name}";
     }
@@ -165,7 +167,7 @@ class Player extends AppEntity
      * @param mixed $value 設定値
      * @return \Cake\Collection\CollectionInterface 昇段情報
      */
-    protected function _getOldScores($value)
+    protected function _getOldScores(mixed $value): CollectionInterface
     {
         if ($value) {
             return $value;
@@ -186,7 +188,7 @@ class Player extends AppEntity
      * @param mixed $value 設定値
      * @return \Cake\Collection\CollectionInterface タイトル獲得履歴
      */
-    protected function _getRetentionHistories($value)
+    protected function _getRetentionHistories(mixed $value): CollectionInterface
     {
         if ($value) {
             return $value;
@@ -207,9 +209,9 @@ class Player extends AppEntity
      * 誕生日を設定します。
      *
      * @param mixed $birthday 設定値
-     * @return \Cake\I18n\FrozenDate
+     * @return \Cake\I18n\FrozenDate|null
      */
-    protected function _setBirthday($birthday)
+    protected function _setBirthday(mixed $birthday): ?FrozenDate
     {
         if ($birthday && !($birthday instanceof FrozenDate)) {
             return FrozenDate::parseDate($birthday, 'yyyy/MM/dd');
@@ -224,7 +226,7 @@ class Player extends AppEntity
      * @param mixed $joined 設定値
      * @return string
      */
-    protected function _setInputJoined($joined)
+    protected function _setInputJoined(mixed $joined): string
     {
         if (!is_array($joined)) {
             return $this->joined = $joined;
@@ -249,7 +251,7 @@ class Player extends AppEntity
      *
      * @return string URL
      */
-    public function getSaveUrl()
+    public function getSaveUrl(): string
     {
         if ($this->isNew()) {
             return Router::url(['_name' => 'create_player']);
@@ -263,7 +265,7 @@ class Player extends AppEntity
      *
      * @return \Cake\Collection\Collection
      */
-    public function groupByYearFromHistories()
+    public function groupByYearFromHistories(): Collection
     {
         return $this->retention_histories
             ->groupBy('target_year')
@@ -320,9 +322,9 @@ class Player extends AppEntity
      *
      * @param int|null $year 対象年度
      * @param bool $world 対象が国際棋戦かどうか
-     * @return int|string 勝数
+     * @return string|int 勝数
      */
-    public function win($year = null, $world = false)
+    public function win(?int $year = null, bool $world = false): int|string
     {
         return $this->show('win', $year, $world);
     }
@@ -332,9 +334,9 @@ class Player extends AppEntity
      *
      * @param int|null $year 対象年度
      * @param bool $world 対象が国際棋戦かどうか
-     * @return int|string 敗数
+     * @return string|int 敗数
      */
-    public function lose($year = null, $world = false)
+    public function lose(?int $year = null, bool $world = false): int|string
     {
         return $this->show('lose', $year, $world);
     }
@@ -344,9 +346,9 @@ class Player extends AppEntity
      *
      * @param int|null $year 対象年度
      * @param bool $world 対象が国際棋戦かどうか
-     * @return int|string 引分数
+     * @return string|int 引分数
      */
-    public function draw($year = null, $world = false)
+    public function draw(?int $year = null, bool $world = false): int|string
     {
         return $this->show('draw', $year, $world);
     }
@@ -357,9 +359,9 @@ class Player extends AppEntity
      * @param string $type 取得する成績の分類
      * @param int|null $year 対象年度
      * @param bool $world 対象が国際棋戦かどうか
-     * @return int|string 対象数
+     * @return string|int 対象数
      */
-    private function show($type, $year = null, $world = false)
+    private function show(string $type, ?int $year = null, bool $world = false): int|string
     {
         if ($year === null) {
             $year = FrozenDate::now()->year;

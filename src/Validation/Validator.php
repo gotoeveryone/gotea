@@ -18,7 +18,7 @@ class Validator extends BaseValidator
      *
      * @var array
      */
-    private $_messages = [
+    private array $_messages = [
         'required' => 'field {0} is required',
         'notEmpty' => 'field {0} cannot be left empty',
         'numeric' => 'field {0} is numeric value only',
@@ -75,10 +75,10 @@ class Validator extends BaseValidator
 
             if (isset($property['mode'])) {
                 // $propertyに`mode`があるのは`requirePresence()`利用時
-                $results[$name]['message'] = $this->getMessage('required', __d('model', $name));
+                $results[$name]['message'] = $this->getMessage('required', [__d('model', $name)]);
             } elseif (isset($property['when'])) {
                 // $propertyに`when`があるのは`allowEmpty()`および`notEmpty()`利用時
-                $results[$name]['message'] = $this->getMessage('notEmpty', __d('model', $name));
+                $results[$name]['message'] = $this->getMessage('notEmpty', [__d('model', $name)]);
             }
         }
 
@@ -114,12 +114,12 @@ class Validator extends BaseValidator
      *
      * @param string $field The field you want to apply the rule to.
      * @param string|null $message The error message when the rule fails.
-     * @param string|callable|null $when Either 'create' or 'update' or a callable that returns
+     * @param callable|string|null $when Either 'create' or 'update' or a callable that returns
      *   true when the validation rule should be applied.
      * @see \Gotea\Validation\Validation::nameEnglish()
      * @return $this
      */
-    public function password(string $field, ?string $message = null, $when = null)
+    public function password(string $field, ?string $message = null, string|callable|null $when = null)
     {
         $extra = array_filter(['on' => $when, 'message' => $message]);
 
@@ -133,12 +133,12 @@ class Validator extends BaseValidator
      *
      * @param string $field The field you want to apply the rule to.
      * @param string|null $message The error message when the rule fails.
-     * @param string|callable|null $when Either 'create' or 'update' or a callable that returns
+     * @param callable|string|null $when Either 'create' or 'update' or a callable that returns
      *   true when the validation rule should be applied.
      * @see \Gotea\Validation\Validation::nameEnglish()
      * @return $this
      */
-    public function nameEnglish(string $field, ?string $message = null, $when = null)
+    public function nameEnglish(string $field, ?string $message = null, string|callable|null $when = null)
     {
         $extra = array_filter(['on' => $when, 'message' => $message]);
 
@@ -151,10 +151,10 @@ class Validator extends BaseValidator
      * メッセージのキーを取得します。
      *
      * @param string $key メッセージのキー
-     * @param null|array $args メッセージに設定する値
+     * @param array|null $args メッセージに設定する値
      * @return string|null Translated string.
      */
-    public function getMessage(string $key, ...$args)
+    public function getMessage(string $key, ?array ...$args): ?string
     {
         $message = $this->_messages[$key] ?? null;
         if ($message === null) {

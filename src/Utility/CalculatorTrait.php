@@ -17,7 +17,7 @@ trait CalculatorTrait
      * @param int $lose 敗数
      * @return string 勝率（整数値）
      */
-    public function percent(int $win, int $lose)
+    public function percent(int $win, int $lose): string
     {
         $sum = $win + $lose;
         $calc = $sum === 0 ? 0 : $win / $sum;

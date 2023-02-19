@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
+use Cake\Http\Response;
 use Cake\I18n\FrozenDate;
 
 /**
@@ -15,7 +16,7 @@ class YearsController extends ApiController
      *
      * @return \Cake\Http\Response 年一覧
      */
-    public function index()
+    public function index(): Response
     {
         $nowYear = FrozenDate::now()->year;
         $years = [];

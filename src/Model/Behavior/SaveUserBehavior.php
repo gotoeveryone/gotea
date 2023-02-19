@@ -22,7 +22,7 @@ class SaveUserBehavior extends Behavior
      * @param \ArrayObject $options オプション
      * @return void
      */
-    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options): void
     {
         // ユーザIDを取得
         $userId = $options['account'] ?? null;

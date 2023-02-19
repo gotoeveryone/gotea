@@ -39,7 +39,7 @@ class FormHelper extends BaseFormHelper
      * @param array $attributes 追加属性
      * @return string Formatted SELECT element
      */
-    public function sexes(array $attributes = [])
+    public function sexes(array $attributes = []): string
     {
         return $this->control('sex', [
             'type' => 'select',
@@ -57,7 +57,7 @@ class FormHelper extends BaseFormHelper
      * @param array $attributes 追加属性
      * @return string Formatted SELECT element
      */
-    public function filters(string $name, array $attributes = [])
+    public function filters(string $name, array $attributes = []): string
     {
         return $this->control($name, [
             'type' => 'select',
@@ -75,7 +75,7 @@ class FormHelper extends BaseFormHelper
      * @param array $attributes 属性
      * @return string Formatted SELECT element
      */
-    public function years(string $name, array $attributes = [])
+    public function years(string $name, array $attributes = []): string
     {
         // 年度プルダウン
         $years = [];
@@ -96,7 +96,7 @@ class FormHelper extends BaseFormHelper
      * @param array $attributes オプション
      * @return string Generated set of select boxes for time formats chosen.
      */
-    public function joined(string $name, array $attributes = [])
+    public function joined(string $name, array $attributes = []): string
     {
         return $this->control($name, [
             'type' => 'date',
@@ -126,7 +126,7 @@ class FormHelper extends BaseFormHelper
      * @param array $attributes オプション
      * @return string Generated set of select boxes for time formats chosen.
      */
-    public function datetimeSelect(string $name, array $attributes = [])
+    public function datetimeSelect(string $name, array $attributes = []): string
     {
         return $this->control($name, [
             'type' => 'datetime',

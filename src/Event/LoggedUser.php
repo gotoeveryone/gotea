@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Event;
 
+use ArrayAccess;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
@@ -17,9 +18,9 @@ class LoggedUser implements EventListenerInterface
     /**
      * Constructor
      *
-     * @param array|\Gotea\Event\ArrayAccess $user 認証ユーザ
+     * @param \Gotea\Event\ArrayAccess|array $user 認証ユーザ
      */
-    public function __construct($user)
+    public function __construct(array|ArrayAccess $user)
     {
         $this->_user = $user;
     }
@@ -45,7 +46,7 @@ class LoggedUser implements EventListenerInterface
      * @param \ArrayObject $options オプション
      * @return void
      */
-    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options): void
     {
         $account = Hash::get($this->_user, 'account');
         if ($account) {

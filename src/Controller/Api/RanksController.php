@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Gotea\Controller\Api;
 
+use Cake\Http\Response;
+
 /**
  * API・段位コントローラ
  *
@@ -15,7 +17,7 @@ class RanksController extends ApiController
      *
      * @return \Cake\Http\Response 段位一覧
      */
-    public function index()
+    public function index(): Response
     {
         $ranks = $this->Ranks->findProfessional();
 

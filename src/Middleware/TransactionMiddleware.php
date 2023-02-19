@@ -21,7 +21,7 @@ class TransactionMiddleware implements MiddlewareInterface
      *
      * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * Constructor

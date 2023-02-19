@@ -17,7 +17,7 @@ class CountriesCell extends Cell
      * @param array $attributes 属性
      * @return void
      */
-    public function display($hasTitleOnly = true, $attributes = [])
+    public function display(bool $hasTitleOnly = true, array $attributes = []): void
     {
         /** @var \Gotea\Model\Table\CountriesTable $table */
         $table = $this->fetchTable('Countries');

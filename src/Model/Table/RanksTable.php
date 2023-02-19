@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
+use Cake\ORM\Query;
+use Gotea\Model\Entity\Rank;
+
 /**
  * 段位
  */
@@ -21,7 +24,7 @@ class RanksTable extends AppTable
      *
      * @return \Cake\ORM\Query 生成されたクエリ
      */
-    public function findProfessional()
+    public function findProfessional(): Query
     {
         return $this->find()->whereNotNull('rank_numeric')
             ->orderDesc('rank_numeric')->select(['id', 'name', 'rank_numeric']);
@@ -34,7 +37,7 @@ class RanksTable extends AppTable
      * @return \Gotea\Model\Entity\Rank
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function findByRank($rank = 1)
+    public function findByRank(int $rank = 1): Rank
     {
         return $this->findByRankNumeric($rank)->firstOrFail();
     }
