@@ -56,7 +56,7 @@
     "typescript": "^4.9.5",
     "vite": "^3.2.4",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-stylelint": "^4.1.6",
+    "vite-plugin-stylelint": "^4.2.0",
     "vue-eslint-parser": "^9.1.0"
   },
   "engines": {
