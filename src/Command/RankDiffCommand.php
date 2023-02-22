@@ -124,7 +124,7 @@ class RankDiffCommand extends Command
     {
         return $subCommand->getRankSummary()
             ->map(function ($item) use ($results) {
-                $item->web_count = count($results[$item->rank]) ?? 0;
+                $item->web_count = count($results[$item->rank_numeric]) ?? 0;
 
                 return $item;
             })->filter(function ($item) {
