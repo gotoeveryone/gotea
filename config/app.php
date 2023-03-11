@@ -13,6 +13,8 @@ use Cake\Mailer\Transport\SmtpTransport;
 use Cake\Routing\Exception\MissingRouteException;
 use Gotea\Error\AppExceptionRenderer;
 
+$debug = filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN);
+
 return [
     /**
      * Debug Level:
@@ -23,7 +25,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+    'debug' => $debug,
 
     /**
      * Configure basic information about the application.
@@ -347,7 +349,7 @@ return [
      * Configures logging options
      */
     'Log' => [
-        'debug' => env('DEBUG', true) ? [
+        'debug' => $debug ? [
             'className' => ConsoleLog::class,
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
@@ -361,7 +363,7 @@ return [
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
         ],
-        'error' => env('DEBUG', true) ? [
+        'error' => $debug ? [
             'className' => ConsoleLog::class,
             'scopes' => false,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
@@ -376,7 +378,7 @@ return [
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
         // To enable this dedicated query log, you need set your datasource's log flag to true
-        'queries' => env('DEBUG', true) ? [
+        'queries' => $debug ? [
             'className' => ConsoleLog::class,
             'scopes' => ['queriesLog'],
         ] : [],
