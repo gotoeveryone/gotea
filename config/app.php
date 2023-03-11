@@ -422,7 +422,7 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
-        'timeout' => 30,
+        'timeout' => is_numeric(env('APP_SESSION_TIMEOUT_SECONDS')) ? (int)env('APP_SESSION_TIMEOUT_SECONDS') : 30,
     ],
 
     'Sentry' => [
