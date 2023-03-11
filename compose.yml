@@ -8,6 +8,7 @@ services:
       - '8765:8765'
     depends_on:
       - database
+    tty: true
     working_dir: /src
     command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
   frontend:
@@ -15,6 +16,7 @@ services:
     volumes:
       - ./:/home/node
       - node_modules:/src/node_modules
+    tty: true
     working_dir: /home/node
     command: sh -c 'npm i --engine-strict && npm run dev'
   database:

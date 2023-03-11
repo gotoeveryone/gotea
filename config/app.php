@@ -7,6 +7,7 @@ use Cake\Database\Driver\Mysql;
 use Cake\Http\Exception\MissingControllerException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\FrozenDate;
+use Cake\Log\Engine\ConsoleLog;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\SmtpTransport;
 use Cake\Routing\Exception\MissingRouteException;
@@ -346,7 +347,11 @@ return [
      * Configures logging options
      */
     'Log' => [
-        'debug' => [
+        'debug' => env('DEBUG', true) ? [
+            'className' => ConsoleLog::class,
+            'scopes' => false,
+            'levels' => ['notice', 'info', 'debug'],
+        ] : [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-access_' . FrozenDate::now()->format('Y_m_d'),
@@ -356,7 +361,11 @@ return [
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
         ],
-        'error' => [
+        'error' => env('DEBUG', true) ? [
+            'className' => ConsoleLog::class,
+            'scopes' => false,
+            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+        ] : [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-error_' . FrozenDate::now()->format('Y_m_d'),
@@ -367,15 +376,10 @@ return [
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
         // To enable this dedicated query log, you need set your datasource's log flag to true
-        'queries' => [
-            'className' => FileLog::class,
-            'path' => env('LOG_DIR', LOGS),
-            'file' => 'gotea-query_' . FrozenDate::now()->format('Y_m_d'),
-            'size' => '5MB',
-            'rotate' => 7,
-            'url' => env('LOG_QUERIES_URL', null),
+        'queries' => env('DEBUG', true) ? [
+            'className' => ConsoleLog::class,
             'scopes' => ['queriesLog'],
-        ],
+        ] : [],
     ],
 
     /**
