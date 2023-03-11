@@ -373,7 +373,7 @@ return [
             'rotate' => 7,
             'url' => env('LOG_DEBUG_URL', null),
             'scopes' => false,
-            'levels' => ['notice', 'info', 'debug'],
+            'levels' => ['notice', 'info'],
         ],
         'error' => [
             'className' => FileLog::class,
