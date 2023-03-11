@@ -348,12 +348,24 @@ return [
     /**
      * Configures logging options
      */
-    'Log' => [
-        'debug' => $debug ? [
+    'Log' => $debug ? [
+        'debug' => [
             'className' => ConsoleLog::class,
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
-        ] : [
+        ],
+        'error' => [
+            'className' => ConsoleLog::class,
+            'scopes' => false,
+            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+        ],
+        // To enable this dedicated query log, you need set your datasource's log flag to true
+        'queries' => [
+            'className' => ConsoleLog::class,
+            'scopes' => ['queriesLog'],
+        ],
+    ] : [
+        'debug' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-access_' . FrozenDate::now()->format('Y_m_d'),
@@ -363,11 +375,7 @@ return [
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
         ],
-        'error' => $debug ? [
-            'className' => ConsoleLog::class,
-            'scopes' => false,
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-        ] : [
+        'error' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
             'file' => 'gotea-error_' . FrozenDate::now()->format('Y_m_d'),
@@ -377,11 +385,6 @@ return [
             'scopes' => false,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
-        // To enable this dedicated query log, you need set your datasource's log flag to true
-        'queries' => $debug ? [
-            'className' => ConsoleLog::class,
-            'scopes' => ['queriesLog'],
-        ] : [],
     ],
 
     /**
