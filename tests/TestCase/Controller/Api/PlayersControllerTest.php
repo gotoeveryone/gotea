@@ -149,6 +149,15 @@ class PlayersControllerTest extends ApiTestCase
                 'ranking' => [],
             ],
         ]));
+
+        // 特定のフィールドが含まれる
+        $response = json_decode($this->_getBodyAsString())->response;
+        $this->assertNotEquals($response->ranking, []);
+        foreach ($response->ranking as $item) {
+            $this->assertTrue(property_exists($item, 'id'));
+            $this->assertTrue(property_exists($item, 'sex'));
+            $this->assertTrue(property_exists($item, 'url'));
+        }
     }
 
     /**
@@ -328,6 +337,15 @@ class PlayersControllerTest extends ApiTestCase
                 'ranking' => [],
             ],
         ]));
+
+        // 特定のフィールドが含まれない
+        $response = json_decode($this->_getBodyAsString())->response;
+        $this->assertNotEquals($response->ranking, []);
+        foreach ($response->ranking as $item) {
+            $this->assertFalse(property_exists($item, 'id'));
+            $this->assertFalse(property_exists($item, 'sex'));
+            $this->assertFalse(property_exists($item, 'url'));
+        }
     }
 
     /**
