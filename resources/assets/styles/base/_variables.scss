@@ -28,6 +28,7 @@ $c_modal_header: color.adjust($c_header, $lightness: -12%);
 $c_modal: $c_header;
 $c_modal_backdrop: rgba(color.adjust($c_main, $lightness: 16%), 0.6);
 $c_closed: color.adjust($c_main, $lightness: 12%);
+$c_retired: $c_closed;
 $c_unofficial: $c_closed;
 $c_input: color.adjust($c_main, $lightness: 4%);
 
