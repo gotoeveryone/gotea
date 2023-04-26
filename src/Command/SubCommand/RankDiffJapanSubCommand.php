@@ -5,15 +5,16 @@ namespace Gotea\Command\SubCommand;
 
 use Cake\Core\Configure;
 use Cake\Datasource\ResultSetInterface;
-use Cake\Http\Client as HttpClient;
+use Cake\Http\Client;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use Gotea\Command\CrawlerTrait;
 use Gotea\Model\Entity\Country;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
 {
-    use RankDiffTrait;
+    use CrawlerTrait;
 
     /**
      * @var \Gotea\Model\Entity\Country
@@ -33,7 +34,7 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
     /**
      * @inheritDoc
      */
-    public function getPlayers(HttpClient $client, array $ranks): array
+    public function getPlayers(Client $client, array $ranks): array
     {
         // 日本棋院・関西棋院それぞれから棋士一覧を取得
         $nihonkiin = $this->getPlayersFromNihonKiin($ranks);
