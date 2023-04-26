@@ -5,14 +5,12 @@ namespace Gotea\Command\SubCommand;
 
 use Cake\Core\Configure;
 use Cake\Datasource\ResultSetInterface;
-use Cake\Http\Client as HttpClient;
+use Cake\Http\Client;
 use Cake\ORM\TableRegistry;
 use Gotea\Model\Entity\Country;
 
 class RankDiffKoreaSubCommand implements RankDiffSubCommandInterface
 {
-    use RankDiffTrait;
-
     /**
      * @var \Gotea\Model\Entity\Country
      */
@@ -31,7 +29,7 @@ class RankDiffKoreaSubCommand implements RankDiffSubCommandInterface
     /**
      * @inheritDoc
      */
-    public function getPlayers(HttpClient $client, array $ranks): array
+    public function getPlayers(Client $client, array $ranks): array
     {
         $url = Configure::read('App.diffUrl.korea');
 

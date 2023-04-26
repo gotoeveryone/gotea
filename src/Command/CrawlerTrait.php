@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Gotea\Command\SubCommand;
+namespace Gotea\Command;
 
 use Cake\Http\Exception\HttpException;
-use Goutte\Client;
+use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpClient\HttpClient;
 
-trait RankDiffTrait
+trait CrawlerTrait
 {
     /**
      * URLからCrawlerオブジェクトを返却
@@ -18,13 +19,13 @@ trait RankDiffTrait
      */
     private function getCrawler(string $url): Crawler
     {
-        $client = new Client();
+        $browser = new HttpBrowser(HttpClient::create());
 
-        $crawler = $client->request('GET', $url);
-        if ($client->getInternalResponse()->getStatusCode() >= 400) {
+        $crawler = $browser->request('GET', $url);
+        if ($browser->getInternalResponse()->getStatusCode() >= 400) {
             throw new HttpException(
                 'クロール先のページが意図しないレスポンスを返しました。',
-                $client->getInternalResponse()->getStatusCode()
+                $browser->getInternalResponse()->getStatusCode()
             );
         }
 
