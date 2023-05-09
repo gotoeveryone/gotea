@@ -23,7 +23,7 @@ use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
-return static function (RouteBuilder $routes) {
+return static function (RouteBuilder $routes): void {
     /**
      * The default class to use for all routes
      *
@@ -43,7 +43,7 @@ return static function (RouteBuilder $routes) {
      */
     $routes->setRouteClass(DashedRoute::class);
 
-    $routes->scope('/', function (RouteBuilder $routes) {
+    $routes->scope('/', function (RouteBuilder $routes): void {
         // Register scoped middleware for in scopes.
         $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
             'httponly' => true,
@@ -55,13 +55,13 @@ return static function (RouteBuilder $routes) {
          */
         $routes->applyMiddleware('csrf');
 
-        $routes->scope('/', ['controller' => 'Users'], function (RouteBuilder $routes) {
+        $routes->scope('/', ['controller' => 'Users'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'top');
             $routes->post('/login', ['action' => 'login'], 'login');
             $routes->get('/logout', ['action' => 'logout'], 'logout');
         });
 
-        $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
+        $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'players');
             $routes->get('/search', ['action' => 'search'], 'find_players');
             $routes->get('/new', ['action' => 'new'], 'new_player');
@@ -74,7 +74,7 @@ return static function (RouteBuilder $routes) {
             $routes->get('/ranking', ['action' => 'ranking'], 'ranking');
         });
 
-        $routes->scope('/players', function (RouteBuilder $routes) {
+        $routes->scope('/players', function (RouteBuilder $routes): void {
             $routes->get(
                 '/{id}/scores/{year}',
                 ['controller' => 'TitleScores', 'action' => 'searchByPlayer'],
@@ -96,12 +96,12 @@ return static function (RouteBuilder $routes) {
             ])->setPass(['id', 'rowId']);
         });
 
-        $routes->scope('/ranks', ['controller' => 'PlayerRanks'], function (RouteBuilder $routes) {
+        $routes->scope('/ranks', ['controller' => 'PlayerRanks'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'ranks');
         });
 
         // タイトル
-        $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes) {
+        $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'titles');
             $routes->get('/{id}', ['action' => 'view'], 'view_title')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
@@ -109,16 +109,18 @@ return static function (RouteBuilder $routes) {
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
 
             // タイトル
-            $routes->scope('/{id}/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
+            $routes->scope('/{id}/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes): void {
                 $routes->post('/', ['action' => 'save'], 'save_histories')
                     ->setPass(['id']);
             });
         });
 
         // タイトル成績
-        $routes->scope('/scores', ['controller' => 'TitleScores'], function (RouteBuilder $routes) {
+        $routes->scope('/scores', ['controller' => 'TitleScores'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'scores');
             $routes->get('/search', ['action' => 'search'], 'find_scores');
+            $routes->get('/upload', ['action' => 'upload'], 'upload_scores');
+            $routes->post('/upload', ['action' => 'upload'], 'execute_upload_scores');
             $routes->get('/{id}', ['action' => 'view'], 'view_score')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
             $routes->put('/{id}', ['action' => 'update'], 'update_score')
@@ -127,14 +129,8 @@ return static function (RouteBuilder $routes) {
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
 
-        // クエリ実行
-        $routes->scope('/queries', ['controller' => 'NativeQuery'], function (RouteBuilder $routes) {
-            $routes->get('/', ['action' => 'index'], 'queries');
-            $routes->post('/', ['action' => 'execute'], 'execute_queries');
-        });
-
         // お知らせ
-        $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes) {
+        $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'notifications');
             $routes->get('/new', ['action' => 'new'], 'new_notification');
             $routes->post('/', ['action' => 'create'], 'create_notification');
@@ -147,7 +143,7 @@ return static function (RouteBuilder $routes) {
         });
 
         // 表テンプレート
-        $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes) {
+        $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'table_templates');
             $routes->get('/new', ['action' => 'new'], 'new_table_template');
             $routes->post('/', ['action' => 'create'], 'create_table_template');
@@ -164,7 +160,7 @@ return static function (RouteBuilder $routes) {
     });
 
     // api
-    $routes->prefix('api', function (RouteBuilder $routes) {
+    $routes->prefix('api', function (RouteBuilder $routes): void {
         $routes->setExtensions(['json']);
 
         $routes->get('/years', ['controller' => 'Years', 'action' => 'index'], 'api_years');
@@ -173,7 +169,7 @@ return static function (RouteBuilder $routes) {
 
         $routes->get('/ranks', ['controller' => 'Ranks', 'action' => 'index'], 'api_ranks');
 
-        $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes) {
+        $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes): void {
             $routes->post('/', ['action' => 'search'], 'api_players');
             $routes->get('/ranking/{country}/{year}/{limit}', ['controller' => 'Players', 'action' => 'searchRanking'], 'api_ranking')
                 ->setPatterns(['year' => RouteBuilder::ID, 'limit' => RouteBuilder::ID])
@@ -185,7 +181,7 @@ return static function (RouteBuilder $routes) {
                 ->setPatterns(['country_id' => RouteBuilder::ID])->setPass(['country_id']);
         });
 
-        $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes) {
+        $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'api_titles');
             $routes->post('/', ['action' => 'create'], 'api_create_titles');
             $routes->put('//{id}', ['action' => 'update'], 'api_update_titles')
@@ -193,20 +189,20 @@ return static function (RouteBuilder $routes) {
             $routes->post('/news', ['action' => 'createNews'], 'api_news');
         });
 
-        $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes) {
+        $routes->scope('/histories', ['controller' => 'RetentionHistories'], function (RouteBuilder $routes): void {
             $routes->get('/{id}', ['action' => 'view'], 'api_history')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
         });
 
         // TODO: 全ての action を実装した段階で resources を使う
         // $routes->resources('notifications');
-        $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes) {
+        $routes->scope('/notifications', ['controller' => 'Notifications'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'api_notifications');
         });
 
         // TODO: 全ての action を実装した段階で resources を使う
         // $routes->resources('table-templates');
-        $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes) {
+        $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'api_table_templates');
         });
     });

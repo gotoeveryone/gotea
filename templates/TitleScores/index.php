@@ -57,7 +57,7 @@
                         'autocomplete' => 'off',
                         'value' => $this->getRequest()->getQuery('started'),
                     ]);
-                    echo $this->form->label('ended', '～');
+                    echo $this->Form->label('ended', '～');
                     echo $this->Form->text('ended', [
                         'class' => 'ended datepicker',
                         'autocomplete' => 'off',
@@ -66,6 +66,11 @@
                     ?>
                 </div>
                 <div class="search-box search-box-right">
+                    <?php if ($this->isAdmin()) : ?>
+                    <a class="layout-button button-secondary" @click="openModal('<?= $this->Url->build(['_name' => 'upload_scores']) ?>')">
+                        <?= __('Upload') ?>
+                    </a>
+                    <?php endif ?>
                     <?= $this->Form->button('検索', ['type' => 'submit', 'class' => 'button button-primary']) ?>
                 </div>
             </li>

@@ -32,11 +32,6 @@
 ?>
 <?php if ($this->isAdmin()) : ?>
     <?=
-        $this->Html->link('各種情報クエリ更新', [
-        '_name' => 'queries',
-    ], ['class' => 'nav-menu']);
-    ?>
-    <?=
         $this->Html->link('お知らせ一覧', [
         '_name' => 'notifications',
     ], ['class' => 'nav-menu']);

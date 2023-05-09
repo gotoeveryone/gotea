@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "POT-Creation-Date: 2018-01-02 20:07+0900\n"
-"PO-Revision-Date: 2019-11-01 12:57+0900\n"
+"PO-Revision-Date: 2023-05-09 12:13+0900\n"
 "Last-Translator: Kazuki_Kamizuru <webmaster@k2ss.info>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 3.1.1\n"
 
 msgid "Score Detail"
 msgstr "成績詳細"
@@ -29,18 +29,6 @@ msgstr "勝敗変更"
 
 msgid "Player of GO"
 msgstr "対局者"
-
-#: Controller/ErrorController.php:40 Controller/NativeQueryController.php:48
-msgid "Executing query failed.<br/>Please confirm logfile."
-msgstr "データベースへのクエリ実行に失敗しました<br/>詳細はログを確認してください"
-
-#: Controller/NativeQueryController.php:45
-msgid "Executed {0} queries"
-msgstr "{0}件のクエリを実行しました"
-
-#: Controller/NativeQueryController.php:73
-msgid "Updated record count more than {0}"
-msgstr "{0}件以上のレコードが更新されました"
 
 #: Controller/PlayerRanksController.php:39
 #: Controller/PlayerRanksController.php:64
@@ -150,3 +138,21 @@ msgstr "ログインが必要です。"
 
 msgid "Administrator"
 msgstr "管理者"
+
+msgid "Upload file was not csv"
+msgstr "アップロードされたファイルがCSVではありません"
+
+msgid "Column was insufficient, need: {0}, actual: {1}"
+msgstr "列数が不足しています (必要数: {0}, 実際: {1})"
+
+msgid "Data not exist"
+msgstr "データが見つかりません"
+
+msgid "Has errors in uploaded data"
+msgstr "アップロードされたデータにエラーがあります"
+
+msgid "Uploaded {0} rows"
+msgstr "{0}行アップロードしました"
+
+msgid "Upload"
+msgstr "アップロード"
