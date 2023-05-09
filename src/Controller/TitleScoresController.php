@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\Log\Log;
 use Gotea\Form\TitleScoreForm;
+use SplFileObject;
 
 /**
  * TitleScores Controller
@@ -100,6 +103,111 @@ class TitleScoresController extends AppController
         $this->set(compact('player', 'year', 'titleScores', 'detail'));
 
         return $this->renderWithDialog('player');
+    }
+
+    /**
+     * タイトル成績アップロード処理
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function upload(): ?Response
+    {
+        if ($this->request->getMethod() === 'GET') {
+            return $this->renderWithDialog();
+        }
+
+        // ファイル生成
+        $file = $this->request->getUploadedFile('file');
+        if (!$file || !in_array($file->getClientMediaType(), ['text/csv', 'application/vnd.ms-excel'], true)) {
+            return $this->renderWithDialogErrors(400, __('Upload file was not csv'));
+        }
+
+        $csv = new SplFileObject($file->getClientFilename());
+        $csv->setFlags(
+            SplFileObject::READ_CSV |
+            SplFileObject::SKIP_EMPTY |
+            SplFileObject::DROP_NEW_LINE |
+            SplFileObject::READ_AHEAD
+        );
+
+        $data = [];
+        foreach ($csv as $i => $row) {
+            // 1行目は無視
+            if ($i === 0) {
+                continue;
+            }
+            // 列数を満たしていない場合はエラー
+            if (count($row) < 13) {
+                return $this->renderWithDialogErrors(400, __(
+                    'Column was insufficient, need: {0}, actual: {1}',
+                    13,
+                    count($row)
+                ));
+            }
+            [
+                $countryId,
+                $started,
+                $ended,
+                $name,
+                $result,
+                $isWorld,
+                $isOfficial,
+                $player1Id,
+                $player1Name, // TODO: 今後（アマチュアなど）登録されていない棋士の情報も保存したいので、現状使っていないがカラムとしては用意しておく
+                $player1Division,
+                $player2Id,
+                $player2Name,
+                $player2Division,
+            ] = $row;
+            // 棋士IDが設定されていればそこから棋士名を埋める
+            // TODO: まとめて取得するなどでクエリ発行回数を改善したい
+            $item = [
+                'country_id' => $countryId,
+                'name' => $name,
+                'result' => $result,
+                'started' => $started,
+                'ended' => $ended,
+                'is_world' => $isWorld,
+                'is_official' => $isOfficial,
+                'title_score_details' => [],
+            ];
+            try {
+                if ($player1Id) {
+                    $player = $this->Players->get($player1Id);
+                    $item['title_score_details'][] = [
+                        'player_id' => $player1Id,
+                        'player_name' => $player->name,
+                        'division' => $player1Division,
+                    ];
+                }
+                if ($player2Id) {
+                    $player = $this->Players->get($player2Id);
+                    $item['title_score_details'][] = [
+                        'player_id' => $player2Id,
+                        'player_name' => $player->name,
+                        'division' => $player2Division,
+                    ];
+                }
+            } catch (RecordNotFoundException $e) {
+                Log::error($e->getMessage());
+
+                return $this->renderWithDialogErrors(400, __('Data not exist'));
+            }
+            $data[] = $item;
+        }
+
+        if (!$data) {
+            return $this->renderWithDialogErrors(400, __('Data not exist'));
+        }
+
+        $entities = $this->TitleScores->newEntities($data);
+        if (!$this->TitleScores->saveMany($entities)) {
+            return $this->renderWithDialogErrors(400, __('Has errors in uploaded data'));
+        }
+
+        $this->setMessages(__('Uploaded {0} rows', count($entities)));
+
+        return $this->redirect(['_name' => 'upload_scores']);
     }
 
     /**

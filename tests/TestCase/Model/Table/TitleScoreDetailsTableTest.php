@@ -99,7 +99,6 @@ class TitleScoreDetailsTableTest extends TestCase
     public function testValidationDefault()
     {
         $params = [
-            'title_score_id' => 1,
             'player_id' => 1,
             'division' => 'win',
         ];
@@ -134,12 +133,14 @@ class TitleScoreDetailsTableTest extends TestCase
         }
 
         // allowEmpty
-        // id
-        $data = $params;
-        $data['id'] = '';
-        $exist = $this->TitleScoreDetails->get(1);
-        $result = $this->TitleScoreDetails->patchEntity($exist, $data);
-        $this->assertNotEmpty($result->getErrors());
+        $names = ['id', 'title_score_id', 'player_id'];
+        foreach ($names as $name) {
+            $data = $params;
+            $data[$name] = '';
+            $exist = $this->TitleScoreDetails->get(1);
+            $result = $this->TitleScoreDetails->patchEntity($exist, $data);
+            $this->assertNotEmpty($result->getErrors());
+        }
     }
 
     /**

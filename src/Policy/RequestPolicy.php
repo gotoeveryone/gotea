@@ -22,6 +22,7 @@ class RequestPolicy implements RequestPolicyInterface
         }
 
         $controller = $request->getParam('controller');
+        $action = $request->getParam('action');
 
         // 管理者は許可
         if ($identity->get('is_admin')) {
@@ -30,7 +31,15 @@ class RequestPolicy implements RequestPolicyInterface
 
         // 以下は管理者以外
         // 特定のコントローラはアクセスさせない
-        if (in_array($controller, ['Notifications', 'NativeQuery', 'TableTemplates'])) {
+        if (in_array($controller, ['Notifications', 'TableTemplates'])) {
+            return false;
+        }
+
+        // 特定のコントローラの特定のアクションはアクセスさせない
+        if (
+            in_array($controller, ['TitleScores'])
+            && in_array($action, ['upload', 'update', 'delete', 'switchDivision'])
+        ) {
             return false;
         }
 
