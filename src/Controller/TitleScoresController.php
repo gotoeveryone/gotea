@@ -129,7 +129,6 @@ class TitleScoresController extends AppController
             SplFileObject::DROP_NEW_LINE |
             SplFileObject::READ_AHEAD
         );
-        $csv->setCsvControl("\t");
 
         $data = [];
         foreach ($csv as $i => $row) {
@@ -154,7 +153,7 @@ class TitleScoresController extends AppController
                 $isWorld,
                 $isOfficial,
                 $player1Id,
-                $player1Name,
+                $player1Name, // TODO: 今後（アマチュアなど）登録されていない棋士の情報も保存したいので、現状使っていないがカラムとしては用意しておく
                 $player1Division,
                 $player2Id,
                 $player2Name,

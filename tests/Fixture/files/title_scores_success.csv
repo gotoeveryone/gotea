@@ -1,0 +1,4 @@
+country_id,started,ended,name,result,is_world,is_official,player1_id,player1_name,player1_division,player2_id,player2_name,player2_division
+1,2023/05/01,2023/05/01,"テスト リーグ","白中押勝ち",0,0,1,ユーザ1,勝,2,ユーザ2,敗
+1,2023/05/01,2023/05/01,"テスト 本戦1回線","白３目半勝ち",0,0,3,ユーザ3,勝,4,ユーザ4,敗
+1,2023/05/01,2023/05/01,"テスト 予選1回戦","無勝負",0,0,6,ユーザ6,分,5,ユーザ5,分
