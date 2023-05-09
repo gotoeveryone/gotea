@@ -139,7 +139,11 @@ class TitleScoresController extends AppController
             }
             // 列数を満たしていない場合はエラー
             if (count($row) < 13) {
-                return $this->renderWithDialogErrors(400, __('Column was insufficient, need: {0}, actual: {1}', 13, count($row)));
+                return $this->renderWithDialogErrors(400, __(
+                    'Column was insufficient, need: {0}, actual: {1}',
+                    13,
+                    count($row)
+                ));
             }
             [
                 $countryId,

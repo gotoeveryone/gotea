@@ -36,7 +36,10 @@ class RequestPolicy implements RequestPolicyInterface
         }
 
         // 特定のコントローラの特定のアクションはアクセスさせない
-        if (in_array($controller, ['TitleScores']) && in_array($action, ['upload', 'update', 'delete', 'switchDivision'])) {
+        if (
+            in_array($controller, ['TitleScores'])
+            && in_array($action, ['upload', 'update', 'delete', 'switchDivision'])
+        ) {
             return false;
         }
 
