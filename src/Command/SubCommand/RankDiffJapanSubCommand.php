@@ -121,7 +121,7 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
             $rankText = $node->text();
             $rank = Hash::get($ranks, $rankText);
             $players = $node->nextAll()->filter('.ul_players')->first()
-                ->filter('li')->each(function (Crawler $cell) {
+                ->filter('li a')->each(function (Crawler $cell) {
                     return $cell->text();
                 });
 
