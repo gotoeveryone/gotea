@@ -27,13 +27,6 @@ class TitleScoresControllerTest extends AppTestCase
     public $TitleScoreDetails;
 
     /**
-     * ファイルオブジェクト
-     *
-     * @var \SplFileObject
-     */
-    public $splFileObject;
-
-    /**
      * Fixtures
      *
      * @var array
