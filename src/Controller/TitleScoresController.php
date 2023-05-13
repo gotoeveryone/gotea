@@ -122,7 +122,7 @@ class TitleScoresController extends AppController
             return $this->renderWithDialogErrors(400, __('Upload file was not csv'));
         }
 
-        $csv = new SplFileObject($file->getClientFilename());
+        $csv = new SplFileObject($file->getStream()->getMetadata('uri'));
         $csv->setFlags(
             SplFileObject::READ_CSV |
             SplFileObject::SKIP_EMPTY |
