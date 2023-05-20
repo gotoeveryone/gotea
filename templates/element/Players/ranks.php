@@ -27,8 +27,7 @@ $isAdmin = $this->isAdmin();
             <div class="detail_box_item box-3">
                 <?= $this->Form->control('promoted', [
                     'label' => ['text' => __d('model', 'promoted')],
-                    'type' => 'text',
-                    'class' => 'datepicker',
+                    'type' => 'date',
                     'autocomplete' => 'off',
                 ]) ?>
             </div>
@@ -62,8 +61,7 @@ $isAdmin = $this->isAdmin();
                 <div class="detail_box_item box-3">
                     <?= $this->Form->control('promoted', [
                         'label' => ['text' => __d('model', 'promoted')],
-                        'type' => 'text',
-                        'class' => 'datepicker',
+                        'type' => 'date',
                         'autocomplete' => 'off',
                         'disabled' => !$isAdmin,
                     ]) ?>

@@ -141,7 +141,7 @@ class Title extends AppEntity
             'isTeam' => $this->is_team,
             'htmlFileName' => $this->html_file_name,
             'htmlFileHolding' => $this->html_file_holding,
-            'htmlFileModified' => $this->html_file_modified->format('Y/m/d'),
+            'htmlFileModified' => $this->html_file_modified->format('Y-m-d'),
             'isClosed' => $this->is_closed,
             'isOutput' => $this->is_output,
             'isOfficial' => $this->is_official,

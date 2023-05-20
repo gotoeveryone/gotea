@@ -90,7 +90,7 @@ class TitlesTable extends AppTable
             ]);
 
         $validator
-            ->date('html_file_modified', ['y/m/d'])
+            ->date('html_file_modified', ['y-m-d'])
             ->requirePresence('html_file_modified', 'create')
             ->notEmptyDate('html_file_modified');
 

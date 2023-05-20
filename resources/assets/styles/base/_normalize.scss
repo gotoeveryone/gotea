@@ -119,6 +119,10 @@ select {
     background-color: color.adjust($c_input, $lightness: 4%);
     box-shadow: 0 0 5px 1px $c_border;
   }
+
+  &:disabled {
+    opacity: 0.7;
+  }
 }
 
 input,
@@ -132,6 +136,12 @@ input[type='checkbox'] {
   min-height: 18px;
   width: 18px;
   height: 18px;
+}
+
+input[type='date'] {
+  @include pc() {
+    width: 150px;
+  }
 }
 
 button {

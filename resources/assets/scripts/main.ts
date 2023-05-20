@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import axios from 'axios';
-import Pikaday from 'pikaday';
 
 import store from '@/store';
 
@@ -15,7 +14,7 @@ import Ranks from '@/components/ranks/Index.vue';
 import NotificationListPage from '@/pages/notifications/index.vue';
 import TableTemplateListPage from '@/pages/table-templates/index.vue';
 import { Window } from '@/types';
-import { changeTab, pikadayOptions } from '@/util';
+import { changeTab } from '@/util';
 
 declare let window: Window;
 
@@ -46,23 +45,6 @@ const app = createApp({
   mounted() {
     // APIコールの設定
     window.Cake = window.Cake || {};
-
-    // 日付選択のイベントを登録
-    document.addEventListener(
-      'focus',
-      (event: Event) => {
-        const element = event.target as HTMLInputElement;
-        if (
-          element.classList &&
-          element.classList.contains('datepicker') &&
-          !element.classList.contains('set-event')
-        ) {
-          element.classList.add('set-event');
-          new Pikaday(pikadayOptions(element, element.classList.contains('birthday'))).show();
-        }
-      },
-      true,
-    );
 
     // タブ押下時
     const tabWrap = document.querySelector('.tabs');
@@ -113,67 +95,10 @@ const app = createApp({
       checked.addEventListener('click', () => setChecked(true), false);
     }
 
-    // クエリ整形
-    const inputQueries = document.querySelector('#input-queries');
-    if (inputQueries) {
-      inputQueries.addEventListener(
-        'blur',
-        (event: Event) => {
-          // クエリを整形
-          // 前後の空白をトリムして、空行を削除
-          const target = event.target as HTMLInputElement;
-          target.value = target.value
-            .trim()
-            .replace(/;[\t]/g, ';\n')
-            .replace(/\u3000/g, '')
-            .replace(/[\t]/g, '')
-            .replace(new RegExp(/^\r/gm), '')
-            .replace(new RegExp(/^\n/gm), '');
-        },
-        false,
-      );
-    }
-
-    // クエリ更新
-    const updateQuery = document.querySelector('[data-button-type=execute-queries]');
-    if (updateQuery) {
-      updateQuery.addEventListener(
-        'click',
-        (event: Event) => {
-          const queryText = document.querySelector('#input-queries') as HTMLInputElement;
-          if (!queryText.value) {
-            event.preventDefault();
-            window.App.openDialog(null, ['更新対象が1件も存在しません。'], 'warning');
-            return;
-          }
-
-          if (!confirm('更新します。よろしいですか？')) {
-            event.preventDefault();
-          }
-        },
-        false,
-      );
-    }
-
-    // クエリクリア
-    const clearQuery = document.querySelector('[data-button-type=clear-queries]');
-    if (clearQuery) {
-      clearQuery.addEventListener(
-        'click',
-        () => {
-          const textarea = document.querySelector('#input-queries') as HTMLInputElement;
-          textarea.value = '';
-        },
-        false,
-      );
-    }
-
     // リクエスト
     axios.interceptors.request.use(
       (config) => {
-        config.headers = {
-          'Content-Type': 'application/json',
-        };
+        config.headers['Content-Type'] = 'application/json';
         if (window.Cake.accessUser) {
           config.headers['X-Access-User'] = window.Cake.accessUser;
         }

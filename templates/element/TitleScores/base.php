@@ -14,8 +14,8 @@ $isAdmin = $this->isAdmin();
             <?php
             echo $this->Form->control('started', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
-                'type' => 'text',
-                'class' => 'input-row datepicker',
+                'type' => 'date',
+                'class' => 'input-row',
                 'autocomplete' => 'off',
                 'disabled' => !$isAdmin,
             ]);
@@ -34,9 +34,8 @@ $isAdmin = $this->isAdmin();
                     ]);
                     echo $this->Form->text('ended', [
                         'data-target' => 'ended',
-                        'type' => 'text',
+                        'type' => 'date',
                         'disabled' => true,
-                        'class' => 'datepicker',
                         'autocomplete' => 'off',
                         'disabled' => !$isAdmin,
                     ]);

@@ -156,4 +156,23 @@ class FormHelper extends BaseFormHelper
             ],
         ] + $attributes);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function date(string $fieldName, array $options = []): string
+    {
+        if ($fieldName === 'input_joined') {
+            return parent::date($fieldName, $options);
+        }
+
+        $options += [
+            'value' => null,
+        ];
+
+        $options = $this->_initInputField($fieldName, $options);
+        $options['type'] = 'date';
+
+        return $this->widget('text', $options);
+    }
 }

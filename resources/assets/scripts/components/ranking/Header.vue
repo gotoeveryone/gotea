@@ -57,9 +57,9 @@
         <input
           v-model="select.from"
           :disabled="!useInputDate()"
-          type="text"
+          type="date"
           name="from"
-          class="ranking_date datepicker"
+          class="ranking_date"
           autocomplete="off"
           @change="changeValue($event)"
         />
@@ -67,9 +67,9 @@
         <input
           v-model="select.to"
           :disabled="!useInputDate()"
-          type="text"
+          type="date"
           name="to"
-          class="ranking_date datepicker"
+          class="ranking_date"
           autocomplete="off"
           @change="changeValue($event)"
         />

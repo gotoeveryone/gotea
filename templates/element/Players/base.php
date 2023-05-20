@@ -3,6 +3,9 @@
  * @var \Gotea\View\AppView $this ビューオブジェクト
  * @var \Gotea\Model\Entity\Player $player 棋士データ
  */
+
+use Cake\I18n\FrozenDate;
+
 $isAdmin = $this->isAdmin();
 ?>
 <section data-contentname="player" class="tab-contents">
@@ -45,10 +48,12 @@ $isAdmin = $this->isAdmin();
             <div class="input">
                 <div class="label-row"><?= __d('model', 'birthday') ?></div>
                 <div class="input-row">
-                    <?= $this->Form->text('birthday', [
-                        'class' => 'birthday datepicker',
+                    <?= $this->Form->date('birthday', [
+                        'class' => 'birthday',
                         'autocomplete' => 'off',
                         'disabled' => !$isAdmin,
+                        'min' => '1920-01-01',
+                        'max' => FrozenDate::now()->subYear(10)->endOfYear()->i18nFormat('yyyy-MM-dd'),
                     ]) ?>
                     <span class="age">
                         <?= h($player->age_text) ?>
@@ -127,9 +132,8 @@ $isAdmin = $this->isAdmin();
                         'data-checked' => 'retired',
                         'disabled' => !$isAdmin,
                     ]) ?>
-                    <?= $this->Form->text('retired', [
+                    <?= $this->Form->date('retired', [
                         'data-target' => 'retired',
-                        'class' => 'datepicker',
                         'autocomplete' => 'off',
                         'disabled' => true,
                         'placeholder' => __d('model', 'retired'),

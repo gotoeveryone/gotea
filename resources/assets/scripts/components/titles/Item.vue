@@ -44,10 +44,10 @@
       <input
         v-model="localItem.htmlFileModified"
         :disabled="!isAdmin"
-        type="text"
-        class="datepicker table-column_modified-input"
+        type="date"
+        class="table-column_modified-input"
         autocomplete="off"
-        @change="saveDatepicker($event)"
+        @change="save"
       />
     </span>
     <span class="table-column table-column_closed">
@@ -155,13 +155,6 @@ export default defineComponent({
             type: 'error',
           });
         });
-    },
-    saveDatepicker($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      if (this.localItem.htmlFileModified !== target.value) {
-        this.localItem.htmlFileModified = target.value;
-        this.save();
-      }
     },
   },
 });

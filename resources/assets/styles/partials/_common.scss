@@ -8,12 +8,6 @@
   height: 100%;
 }
 
-.datepicker {
-  @include pc() {
-    width: 150px;
-  }
-}
-
 .header {
   @include flex-justify-between();
 

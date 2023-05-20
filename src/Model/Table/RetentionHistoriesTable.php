@@ -92,7 +92,7 @@ class RetentionHistoriesTable extends AppTable
             ->notEmptyString('is_team');
 
         $validator
-            ->date('acquired', ['y/m/d'])
+            ->date('acquired', ['y-m-d'])
             ->requirePresence('acquired', 'create')
             ->notEmptyDate('acquired');
 
@@ -101,7 +101,7 @@ class RetentionHistoriesTable extends AppTable
             ->notEmptyString('is_official');
 
         $validator
-            ->date('broadcasted', ['y/m/d'])
+            ->date('broadcasted', ['y-m-d'])
             ->allowEmptyDate('broadcasted');
 
         return $validator;

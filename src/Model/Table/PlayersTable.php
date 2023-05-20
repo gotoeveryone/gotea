@@ -77,8 +77,8 @@ class PlayersTable extends AppTable
             ->maxLength('name_english', 40)
             ->maxLength('name_other', 20)
             ->lengthBetween('joined', [4, 8])
-            ->date('birthday', 'y/m/d')
-            ->date('retired', 'y/m/d');
+            ->date('birthday', 'y-m-d')
+            ->date('retired', 'y-m-d');
     }
 
     /**
