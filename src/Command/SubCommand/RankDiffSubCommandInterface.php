@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Command\SubCommand;
 
 use Cake\Datasource\ResultSetInterface;
-use Cake\Http\Client as HttpClient;
+use Cake\Http\Client;
 
 interface RankDiffSubCommandInterface
 {
@@ -15,7 +15,7 @@ interface RankDiffSubCommandInterface
      * @param array $ranks 段位一覧
      * @return array 段位と棋士の一覧
      */
-    public function getPlayers(HttpClient $client, array $ranks): array;
+    public function getPlayers(Client $client, array $ranks): array;
 
     /**
      * 段位ごとの集計結果を取得する

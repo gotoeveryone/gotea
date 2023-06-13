@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Gotea\Test\TestCase\Controller;
 
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
+use Laminas\Diactoros\UploadedFile;
+use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * タイトル成績コントローラのテスト
@@ -12,11 +13,18 @@ use Cake\ORM\TableRegistry;
 class TitleScoresControllerTest extends AppTestCase
 {
     /**
-     * タイトルモデル
+     * タイトル成績
      *
      * @var \Gotea\Model\Table\TitleScoresTable
      */
     public $TitleScores;
+
+    /**
+     * タイトル成績詳細
+     *
+     * @var \Gotea\Model\Table\TitleScoreDetailsTable
+     */
+    public $TitleScoreDetails;
 
     /**
      * Fixtures
@@ -39,7 +47,8 @@ class TitleScoresControllerTest extends AppTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->TitleScores = TableRegistry::getTableLocator()->get('TitleScores');
+        $this->TitleScores = $this->getTableLocator()->get('TitleScores');
+        $this->TitleScoreDetails = $this->getTableLocator()->get('TitleScoreDetails');
         $this->createSession();
     }
 
@@ -131,6 +140,85 @@ class TitleScoresControllerTest extends AppTestCase
     }
 
     /**
+     * アップロード失敗（メディアタイプ不正）
+     *
+     * @return void
+     */
+    public function testUploadGet()
+    {
+        $this->enableCsrfToken();
+        $this->get(['_name' => 'upload_scores']);
+        $this->assertResponseSuccess();
+        $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * アップロード失敗（メディアタイプ不正）
+     *
+     * @return void
+     */
+    public function testUploadFailureForInvalidMediaType()
+    {
+        $uploadedFile = $this->createFile('title_scores_success.csv', 'text/plain');
+
+        $this->enableCsrfToken();
+        $this->post(['_name' => 'execute_upload_scores'], ['file' => $uploadedFile]);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * アップロード失敗（データ無し）
+     *
+     * @return void
+     */
+    public function testUploadFailureForNoData()
+    {
+        $uploadedFile = $this->createFile('title_scores_no_data.csv', 'text/csv');
+
+        $this->enableCsrfToken();
+        $this->post(['_name' => 'execute_upload_scores'], ['file' => $uploadedFile]);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * アップロード失敗（カラム不足）
+     *
+     * @return void
+     */
+    public function testUploadFailureForInsufficient()
+    {
+        $uploadedFile = $this->createFile('title_scores_insufficient.csv', 'text/csv');
+
+        $this->enableCsrfToken();
+        $this->post(['_name' => 'execute_upload_scores'], ['file' => $uploadedFile]);
+        $this->assertResponseCode(400);
+        $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    /**
+     * アップロード成功
+     *
+     * @return void
+     */
+    public function testUploadSuccess()
+    {
+        $uploadedFile = $this->createFile('title_scores_success.csv', 'text/csv');
+
+        $this->enableCsrfToken();
+        $this->post(['_name' => 'execute_upload_scores'], ['file' => $uploadedFile]);
+        $this->assertResponseSuccess();
+        $this->assertResponseNotContains('<nav class="nav">');
+
+        // データが存在すること
+        $titleScores = $this->TitleScores->findByStarted('2023-05-01')->all();
+        $titleScoreIds = $titleScores->extract('id')->toList();
+        $this->assertEquals(3, $titleScores->count());
+        $this->assertEquals(6, $this->TitleScoreDetails->find()->whereInList('title_score_id', $titleScoreIds)->count());
+    }
+
+    /**
      * 更新失敗
      *
      * @return void
@@ -209,5 +297,30 @@ class TitleScoresControllerTest extends AppTestCase
 
         $this->assertRedirect(['_name' => 'find_scores']);
         $this->assertResponseNotContains('<nav class="nav">');
+    }
+
+    private function createFile(string $filename, string $mediaType): UploadedFileInterface
+    {
+        $testFile = TESTS . 'Fixture' . DS . 'files' . DS . $filename;
+        $uploadedFile = new UploadedFile(
+            $testFile,
+            10,
+            UPLOAD_ERR_OK,
+            $testFile,
+            $mediaType
+        );
+        $this->configRequest([
+            'files' => [
+                'file' => [
+                    'error' => $uploadedFile->getError(),
+                    'name' => $uploadedFile->getClientFilename(),
+                    'size' => $uploadedFile->getSize(),
+                    'tmp_name' => $testFile,
+                    'type' => $uploadedFile->getClientMediaType(),
+                ],
+            ],
+        ]);
+
+        return $uploadedFile;
     }
 }
