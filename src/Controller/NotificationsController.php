@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Exception;
+use Gotea\Client\TwitterClient;
 use Gotea\Model\Entity\Notification;
 
 /**
@@ -162,24 +162,18 @@ class NotificationsController extends AppController
      */
     private function postTwitter(Notification $data): void
     {
-        if (Configure::read('debug')) {
-            return;
-        }
-
-        $consumerKey = Configure::read('App.twitter.consumerKey');
-        $consumerSecret = Configure::read('App.twitter.consumerSecret');
-        $accessToken = Configure::read('App.twitter.accessToken');
-        $accessTokenSecret = Configure::read('App.twitter.accessTokenSecret');
-
-        $informationsUrl = rtrim(Configure::read('App.gotoeveryone.informationsUrl'), '/');
+        $informationsUrl = rtrim(Configure::read('App.gotoeveryone.informationsUrl', '/'));
+        $message = "{$data->title}\n{$informationsUrl}/{$data->id}";
 
         try {
-            $client = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
-            $client->post('statuses/update', [
-                'status' => "{$data->title}\n{$informationsUrl}/{$data->id}",
-            ]);
+            $client = new TwitterClient();
+            $response = $client->post($message);
+            // 処理自体は続行させたいので、エラーがあった場合でもログ出力のみ行う
+            if (!empty($response->errors[0]->message)) {
+                Log::warning($response->errors[0]->message);
+            }
         } catch (Exception $e) {
-            Log::error($e->getMessage());
+            Log::warning($e->getMessage());
         }
     }
 }

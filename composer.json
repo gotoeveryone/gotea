@@ -50,6 +50,7 @@
   "scripts": {
     "post-install-cmd": "Gotea\\Console\\Installer::postInstall",
     "post-create-project-cmd": "Gotea\\Console\\Installer::postInstall",
+    "setup": "Gotea\\Console\\Installer::postInstall",
     "check": [
       "@test",
       "@cs-check"

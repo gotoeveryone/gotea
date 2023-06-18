@@ -9,7 +9,7 @@ use Cake\Core\Configure;
 use SplFileObject;
 
 /**
- * APIコールを行うためのトレイト
+ * S3 用クライアント
  */
 class S3Client
 {
