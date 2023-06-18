@@ -308,4 +308,21 @@ class TitleScoresTableTest extends TestCase
         ]);
         $this->assertEquals(0, $scores->count());
     }
+
+    /**
+     * タイトル成績のサマリ取得
+     *
+     * @return void
+     */
+    public function testFindSummaryScores()
+    {
+        $scores = $this->TitleScores->findSummaryScores();
+        $this->assertGreaterThan(0, $scores->count());
+        $scores->each(function ($item) {
+            $this->assertNotNull($item->started_timestamp);
+            $this->assertGreaterThan(0, $item->player1_id);
+            $this->assertGreaterThan(0, $item->player2_id);
+            $this->assertContains($item->winner_player_no, [1, 2]);
+        });
+    }
 }
