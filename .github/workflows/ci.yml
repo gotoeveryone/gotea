@@ -95,6 +95,9 @@ jobs:
       - name: Install dependencies
         if: ${{ steps.vendor_cache.outputs.cache-hit != 'true' }}
         run: composer install
+      - name: Execute setup
+        if: ${{ steps.vendor_cache.outputs.cache-hit == 'true' }}
+        run: composer setup
       - name: Execute test
         run: composer test
 
