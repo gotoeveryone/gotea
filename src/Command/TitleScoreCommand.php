@@ -6,10 +6,9 @@ namespace Gotea\Command;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
-use Gotea\Utility\FileBuilder;
+use Gotea\Client\S3Client;
 use SplFileObject;
 use Throwable;
 
@@ -42,37 +41,33 @@ class TitleScoreCommand extends Command
 
         try {
             $scores = $this->TitleScores->findSummaryScores();
-            $total = $scores->count();
 
             $processDate = FrozenDate::now()->i18nFormat('yyyy-MM-dd');
-            $file = new SplFileObject("{$processDate}.csv", 'wa');
+            $file = new SplFileObject("{$processDate}.csv", 'wr+');
 
-            $limit = 10000;
-            $offset = 0;
+            $scores = $scores->all()->map(function ($score) {
+                return [
+                    $score->started_timestamp,
+                    $score->player1_id,
+                    $score->player2_id,
+                    $score->winner_player_no,
+                ];
+            })->toArray();
+            foreach ($scores as $fields) {
+                if (!$file->fputcsv($fields, ',')) {
+                    Log::error('ファイルへの書き込みに失敗しました。');
 
-            while ($offset < $total) {
-                $tmpScores = $scores->limit($limit)->offset($offset)->map(function ($score) {
-                    return [
-                        $score->started_timestamp,
-                        $score->player1_id,
-                        $score->player2_id,
-                        $score->winner_player_no,
-                    ];
-                });
-                $end = $offset + iterator_count($tmpScores);
-                Log::info("出力対象: {$offset}件目 ~ {$end}件目");
-                foreach ($tmpScores as $fields) {
-                    if (!$file->fputcsv($fields, ',')) {
-                        Log::error('ファイルへの書き込みに失敗しました。');
-
-                        return self::CODE_ERROR;
-                    }
+                    return self::CODE_ERROR;
                 }
-                $offset = $offset + $limit;
             }
+
+            $s3Client = new S3Client();
+            $s3Client->upload($file, 'predict_scores/input.csv', 'text/csv');
 
             return self::CODE_SUCCESS;
         } catch (Throwable $ex) {
+            Log::error($ex->getMessage());
+
             throw $ex;
         } finally {
             Log::info('タイトル成績の出力処理を終了します。');

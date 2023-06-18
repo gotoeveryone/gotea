@@ -348,7 +348,7 @@ return [
     /**
      * Configures logging options
      */
-    'Log' => $debug ? [
+    'Log' => $debug && PHP_SAPI !== 'cli' ? [
         'debug' => [
             'className' => ConsoleLog::class,
             'scopes' => false,
@@ -433,5 +433,14 @@ return [
     'Sentry' => [
         'dsn' => env('SENTRY_DSN'),
         'environment' => env('CAKE_ENV', 'local'),
+    ],
+
+    'Aws' => [
+        'S3' => [
+            'accessKey' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secretKey' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_S3_REGION'),
+            'bucket' => env('AWS_S3_BUCKET'),
+        ],
     ],
 ];
