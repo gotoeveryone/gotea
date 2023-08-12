@@ -26,7 +26,9 @@ const blockClass = computed(() => (props.hide ? 'blocked' : ''));
   background-color: rgba($c_black, 0.5);
   visibility: hidden;
   opacity: 0;
-  transition: visibility, opacity 0.2s ease-in-out;
+  transition:
+    visibility,
+    opacity 0.2s ease-in-out;
 
   &.blocked {
     visibility: visible;
