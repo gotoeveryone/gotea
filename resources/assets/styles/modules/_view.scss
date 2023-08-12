@@ -98,7 +98,10 @@
       border: 0.1rem solid $c_main;
       border-bottom: none;
       border-radius: 0.5rem 0.5rem 0 0;
-      transition: font-weight 0.3s, color 0.3s, background-color 0.3s;
+      transition:
+        font-weight 0.3s,
+        color 0.3s,
+        background-color 0.3s;
 
       &.selectTab {
         background-color: color.adjust($c_black, $lightness: 32%);

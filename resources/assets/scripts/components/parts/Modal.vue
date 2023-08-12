@@ -2,7 +2,7 @@
   <transition name="modal">
     <div v-if="isShow" class="iframe-modal" @click="close">
       <div :style="{ height: height, width: width }" class="modal-parent">
-        <iframe :src="(options.url as string)" class="modal-body" />
+        <iframe v-if="options.url" :src="options.url" class="modal-body" />
         <div class="modal-close" @click="close">
           <span class="modal-close-mark">×</span>
         </div>
