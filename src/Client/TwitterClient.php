@@ -38,8 +38,6 @@ class TwitterClient
             return [];
         }
 
-        $this->client->setApiVersion('2');
-
         return $this->client->post('tweets', [
             'text' => $message,
         ], true);
