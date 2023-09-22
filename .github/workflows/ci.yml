@@ -24,7 +24,7 @@ jobs:
   code_check_frontend:
     runs-on: ubuntu-latest
     container:
-      image: node:16.16
+      image: node:18.16
     steps:
       - uses: actions/checkout@v3
       - name: Cache modules
@@ -104,7 +104,7 @@ jobs:
   test_frontend:
     runs-on: ubuntu-latest
     container:
-      image: node:16.16
+      image: node:18.16
     steps:
       - uses: actions/checkout@v3
       - name: Cache modules
@@ -131,7 +131,7 @@ jobs:
       - test_backend
       - test_frontend
     container:
-      image: node:16.16.0
+      image: node:18.16
     steps:
       - uses: actions/checkout@v1 # vite のビルドで Permission denied になるため actions/checkout@v3 が使えない
       - name: Install SSH Key
