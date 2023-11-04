@@ -5,10 +5,10 @@ namespace Gotea\Model\Query;
 
 use Cake\Collection\Collection;
 use Cake\I18n\Number;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\Routing\Router;
 
-class RankingQuery extends Query
+class RankingQuery extends SelectQuery
 {
     /**
      * ランキングモデルを配列に変換します。

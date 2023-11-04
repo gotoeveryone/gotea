@@ -5,6 +5,7 @@ namespace Gotea\Model\Table;
 
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
@@ -33,6 +34,7 @@ class TitleScoreDetailsTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
+        $this->setDisplayField('division');
 
         $this->belongsTo('TitleScores');
         $this->belongsTo('Players')
@@ -76,7 +78,7 @@ class TitleScoreDetailsTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function query(): Query
+    public function selectQuery(): SelectQuery
     {
         return new RankingQuery($this->getConnection(), $this);
     }
@@ -108,8 +110,9 @@ class TitleScoreDetailsTable extends AppTable
             'lose_point_all' => $query->func()->count("division = '敗' or null"),
             'draw_point_all' => $query->func()->count("division = '分' or null"),
         ])->group([
-            'player_id', 'target_year',
-        ]);
+                    'player_id',
+                    'target_year',
+                ]);
     }
 
     /**
@@ -121,7 +124,7 @@ class TitleScoreDetailsTable extends AppTable
      */
     public function findByPlayerAtYear(int $playerId, int $targetYear): ?TitleScoreDetail
     {
-        return $this->findScores($this->query())->where([
+        return $this->findScores($this->selectQuery())->where([
             'player_id' => $playerId,
             'year(started)' => $targetYear,
         ])->first();
@@ -135,7 +138,7 @@ class TitleScoreDetailsTable extends AppTable
      * @param \Cake\I18n\FrozenDate $started 対局日FROM
      * @param \Cake\I18n\FrozenDate $ended 対局日TO
      * @param string $type 種類（何順で表示するか）
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
     public function findRanking(
         Country $country,
@@ -153,7 +156,7 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         // まずは基準となる値を取得する
-        $standardQuery = $this->findScores($this->query())
+        $standardQuery = $this->findScores($this->selectQuery())
             ->where([
                 'TitleScores.started >= ' => $started,
                 'TitleScores.ended <= ' => $ended,
@@ -167,7 +170,7 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         $selectFields = $type === 'percent' ? 'win_point / (win_point + lose_point)' : 'win_point';
-        $value = $this->query()
+        $value = $this->selectQuery()
             ->from(['TitleScoreDetails' => $standardQuery])
             ->select(['value' => $selectFields])
             ->having(['value >' => 0])
@@ -177,7 +180,7 @@ class TitleScoreDetailsTable extends AppTable
             ->first();
 
         // 取得したしきい値以上のデータを取得する
-        $scoreQuery = $this->findScores($this->query())
+        $scoreQuery = $this->findScores($this->selectQuery())
             ->where([
                 'TitleScores.started >= ' => $started,
                 'TitleScores.ended <= ' => $ended,
@@ -187,7 +190,7 @@ class TitleScoreDetailsTable extends AppTable
             $scoreQuery->where(['TitleScores.is_world' => true]);
         }
 
-        $query = $this->query()
+        $query = $this->selectQuery()
             ->from(['TitleScoreDetails' => $scoreQuery])
             ->contain([
                 'Players',

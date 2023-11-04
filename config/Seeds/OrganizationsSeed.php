@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 use Cake\ORM\TableRegistry;
 use Migrations\AbstractSeed;
 
@@ -17,7 +19,7 @@ class OrganizationsSeed extends AbstractSeed
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $countries = TableRegistry::getTableLocator()->get('Countries');
         $data = [

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\ResultSet;
 use Gotea\Model\Entity\Country;
 use Gotea\Model\Query\RankingQuery;
@@ -32,7 +32,7 @@ class PlayerScoresTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function query(): Query
+    public function selectQuery(): SelectQuery
     {
         return new RankingQuery($this->getConnection(), $this);
     }
@@ -57,9 +57,9 @@ class PlayerScoresTable extends AppTable
      * @param int $targetYear 対象年度
      * @param int $offset 取得開始行
      * @param string $type 種類（何順で表示するか）
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findRanking(Country $country, int $targetYear, int $offset, string $type = 'point'): Query
+    public function findRanking(Country $country, int $targetYear, int $offset, string $type = 'point'): SelectQuery
     {
         $suffix = ($country->has_title ? '' : '_world');
         $winColumn = "PlayerScores.win_point${suffix}";

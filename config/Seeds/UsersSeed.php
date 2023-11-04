@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use Cake\Auth\DefaultPasswordHasher;
 use Migrations\AbstractSeed;
@@ -18,7 +19,7 @@ class UsersSeed extends AbstractSeed
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $h = new DefaultPasswordHasher();
 
