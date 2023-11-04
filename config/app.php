@@ -14,6 +14,7 @@ use Cake\Routing\Exception\MissingRouteException;
 use Gotea\Error\AppExceptionRenderer;
 
 $debug = filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN);
+$environment = env('CAKE_ENV', 'development');
 
 return [
     /**
@@ -70,7 +71,7 @@ return [
             'templates' => [ROOT . DS . 'templates' . DS],
             'locales' => [RESOURCES . 'locales' . DS],
         ],
-        'environment' => env('CAKE_ENV', 'local'),
+        'environment' => $environment,
         'jsonDir' => env('JSON_OUTPUT_DIR', WWW_ROOT),
         'diffUrl' => [
             'japan' => env('DIFF_JAPAN_URL'),
@@ -236,7 +237,7 @@ return [
             'className' => SmtpTransport::class,
             // The following keys are used in SMTP transports
             'host' => env('EMAIL_HOST', 'localhost'),
-            'port' => env('EMAIL_PORT', 25),
+            'port' => env('EMAIL_PORT', '25'),
             'timeout' => 30,
             'username' => env('EMAIL_USERNAME'),
             'password' => env('EMAIL_PASSWORD'),
@@ -291,7 +292,7 @@ return [
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
-            'port' => env('DB_PORT', 3306),
+            'port' => env('DB_PORT', '3306'),
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
             'database' => env('DB_NAME', 'gotea'),
@@ -432,7 +433,7 @@ return [
 
     'Sentry' => [
         'dsn' => env('SENTRY_DSN'),
-        'environment' => env('CAKE_ENV', 'local'),
+        'environment' => $environment,
     ],
 
     'Aws' => [
