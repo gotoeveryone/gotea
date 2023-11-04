@@ -79,7 +79,7 @@ class TitleScoreDetailsTableTest extends TestCase
     {
         $this->TitleScoreDetails->initialize([]);
         $this->assertEquals($this->TitleScoreDetails->getTable(), 'title_score_details');
-        $this->assertEquals($this->TitleScoreDetails->getDisplayField(), 'id');
+        $this->assertEquals($this->TitleScoreDetails->getDisplayField(), 'division');
         $this->assertEquals($this->TitleScoreDetails->getPrimaryKey(), 'id');
 
         // Association
