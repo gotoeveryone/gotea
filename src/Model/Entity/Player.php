@@ -382,7 +382,7 @@ class Player extends AppEntity
             return 0;
         }
 
-        $propertyName = $world ? "${type}_point_world" : "${type}_point";
+        $propertyName = $world ? "{$type}_point_world" : "{$type}_point";
 
         return (int)$score->$propertyName;
     }

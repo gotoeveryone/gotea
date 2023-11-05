@@ -22,11 +22,11 @@ class TraceMiddleware implements MiddlewareInterface
         $url = $request->getRequestTarget();
         $controller = $request->getParam('controller');
         $action = $request->getParam('action');
-        $message = "${url} (${controller}@${action})";
+        $message = "{$url} ({$controller}@{$action})";
 
-        Log::debug("${message} - Start");
+        Log::debug("{$message} - Start");
         $response = $handler->handle($request);
-        Log::debug("${message} - End");
+        Log::debug("{$message} - End");
 
         return $response;
     }

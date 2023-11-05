@@ -60,7 +60,7 @@ class TitleScoreDetail extends AppEntity
     {
         // 取得するプロパティ名のサフィックス
         $suffix = ($showJp ? '' : '_english');
-        $propertyName = "name${suffix}";
+        $propertyName = "name{$suffix}";
 
         // 棋士名
         $name = $this->player->$propertyName;
@@ -69,7 +69,7 @@ class TitleScoreDetail extends AppEntity
         if ($isWorlds) {
             $countryName = $this->player->country->$propertyName;
 
-            return "${name}(${countryName})";
+            return "{$name}({$countryName})";
         }
 
         // 上記以外は段位を表示

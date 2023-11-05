@@ -62,9 +62,9 @@ class PlayerScoresTable extends AppTable
     public function findRanking(Country $country, int $targetYear, int $offset, string $type = 'point'): SelectQuery
     {
         $suffix = ($country->has_title ? '' : '_world');
-        $winColumn = "PlayerScores.win_point${suffix}";
-        $loseColumn = "PlayerScores.lose_point${suffix}";
-        $drawColumn = "PlayerScores.draw_point${suffix}";
+        $winColumn = "PlayerScores.win_point{$suffix}";
+        $loseColumn = "PlayerScores.lose_point{$suffix}";
+        $drawColumn = "PlayerScores.draw_point{$suffix}";
         $isPercent = $type === 'percent';
 
         // サブクエリ

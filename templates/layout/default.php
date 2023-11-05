@@ -16,7 +16,7 @@ use Cake\I18n\FrozenTime;
         <?= $this->Html->charset() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            <?= 'Gotea' . h($this->hasTitle() ? " - ${pageTitle}" : '') ?>
+            <?= 'Gotea' . h($this->hasTitle() ? " - {$pageTitle}" : '') ?>
         </title>
         <?= $this->Html->meta('icon') ?>
         <?= $this->Html->css('main') ?>

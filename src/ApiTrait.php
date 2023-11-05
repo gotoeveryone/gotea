@@ -53,7 +53,7 @@ trait ApiTrait
 
         return [
             'status' => $response->getStatusCode(),
-            'message' => "${method}リクエストに失敗しました。",
+            'message' => "{$method}リクエストに失敗しました。",
         ];
     }
 

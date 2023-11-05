@@ -35,7 +35,7 @@ class SessionAuthenticator extends BaseSessionAuthenticator
         // if ($token) {
         //     // 外部 API の認証も解除しておく
         //     $this->callApi('deauth', 'delete', [], [
-        //         'Authorization' => "Bearer ${token}",
+        //         'Authorization' => "Bearer {$token}",
         //     ]);
         // }
 

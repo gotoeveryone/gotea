@@ -202,9 +202,9 @@ class PlayersTable extends AppTable
         $direction = Hash::get($data, 'direction', 'asc');
         if ($sort && in_array(strtolower($sort), $fields, true)) {
             if (in_array(strtolower($direction), ['asc', 'desc'], true)) {
-                $query->order(["Players.${sort}" => $direction], true);
+                $query->order(["Players.{$sort}" => $direction], true);
             } else {
-                $query->order(["Players.${sort}" => 'asc'], true);
+                $query->order(["Players.{$sort}" => 'asc'], true);
             }
         }
 

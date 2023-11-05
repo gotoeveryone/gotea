@@ -16,7 +16,7 @@ class PlayersControllerTest extends ApiTestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'app.Countries',
         'app.Ranks',
         'app.Organizations',
@@ -210,7 +210,7 @@ class PlayersControllerTest extends ApiTestCase
         $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
 
         $fromValue = $targetFrom->i18nFormat('yyyy-MM-dd');
-        $this->get("/api/players/ranking/jp/2017/20?from=${fromValue}");
+        $this->get("/api/players/ranking/jp/2017/20?from={$fromValue}");
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
@@ -229,7 +229,7 @@ class PlayersControllerTest extends ApiTestCase
         $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
 
         $toValue = $targetTo->i18nFormat('yyyy-MM-dd');
-        $this->get("/api/players/ranking/jp/2017/20?to=${toValue}");
+        $this->get("/api/players/ranking/jp/2017/20?to={$toValue}");
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
@@ -250,7 +250,7 @@ class PlayersControllerTest extends ApiTestCase
 
         $fromValue = $targetFrom->i18nFormat('yyyy-MM-dd');
         $toValue = $targetTo->i18nFormat('yyyy-MM-dd');
-        $this->get("/api/players/ranking/jp/2017/20?from=${fromValue}&to=${toValue}");
+        $this->get("/api/players/ranking/jp/2017/20?from={$fromValue}&to={$toValue}");
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
