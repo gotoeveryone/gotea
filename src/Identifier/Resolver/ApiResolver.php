@@ -52,7 +52,7 @@ class ApiResolver implements ResolverInterface
         // ユーザ取得
         $token = Hash::get($response, 'content.accessToken');
         $response = $this->callApi('users', 'get', [], [
-            'Authorization' => "Bearer ${token}",
+            'Authorization' => "Bearer {$token}",
         ]);
 
         if (Hash::get($response, 'status') !== 200) {

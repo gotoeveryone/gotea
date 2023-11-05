@@ -190,7 +190,7 @@ class TitleScoresTable extends AppTable
 
         $titleName = Hash::get($data, 'title_name');
         if ($titleName) {
-            $query->where(['TitleScores.name like' => "%${titleName}%"]);
+            $query->where(['TitleScores.name like' => "%{$titleName}%"]);
         }
 
         $year = Hash::get($data, 'target_year');
