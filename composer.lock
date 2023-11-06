@@ -1636,16 +1636,16 @@
         },
         {
             "name": "mobiledetect/mobiledetectlib",
-            "version": "3.74.2",
+            "version": "3.74.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/serbanghita/Mobile-Detect.git",
-                "reference": "d1f56f0477efde80ba168f98fd7c0485cf8291bf"
+                "reference": "39582ab62f86b40e4edb698159f895929a29c346"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/d1f56f0477efde80ba168f98fd7c0485cf8291bf",
-                "reference": "d1f56f0477efde80ba168f98fd7c0485cf8291bf",
+                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/39582ab62f86b40e4edb698159f895929a29c346",
+                "reference": "39582ab62f86b40e4edb698159f895929a29c346",
                 "shasum": ""
             },
             "require": {
@@ -1659,8 +1659,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Detection\\": "src/",
-                    "DetectionTests\\": "tests/"
+                    "Detection\\": "src/"
                 },
                 "classmap": [
                     "src/MobileDetect.php"
@@ -1674,7 +1673,7 @@
                 {
                     "name": "Serban Ghita",
                     "email": "serbanghita@gmail.com",
-                    "homepage": "http://mobiledetect.net",
+                    "homepage": "https://mobiledetect.net",
                     "role": "Developer"
                 }
             ],
@@ -1689,7 +1688,7 @@
             ],
             "support": {
                 "issues": "https://github.com/serbanghita/Mobile-Detect/issues",
-                "source": "https://github.com/serbanghita/Mobile-Detect/tree/3.74.2"
+                "source": "https://github.com/serbanghita/Mobile-Detect/tree/3.74.3"
             },
             "funding": [
                 {
@@ -1697,7 +1696,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-17T18:28:47+00:00"
+            "time": "2023-10-27T16:28:04+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
