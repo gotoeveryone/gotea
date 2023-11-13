@@ -287,16 +287,16 @@
         },
         {
             "name": "cakephp/authorization",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/authorization.git",
-                "reference": "b6a05f8b8b39c32e9460c5e61f2c4abeea2f0df3"
+                "reference": "94fadea13efdc624e1da7a5c1c35f962ba78cc98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/authorization/zipball/b6a05f8b8b39c32e9460c5e61f2c4abeea2f0df3",
-                "reference": "b6a05f8b8b39c32e9460c5e61f2c4abeea2f0df3",
+                "url": "https://api.github.com/repos/cakephp/authorization/zipball/94fadea13efdc624e1da7a5c1c35f962ba78cc98",
+                "reference": "94fadea13efdc624e1da7a5c1c35f962ba78cc98",
                 "shasum": ""
             },
             "require": {
@@ -349,7 +349,7 @@
                 "issues": "https://github.com/cakephp/authorization/issues",
                 "source": "https://github.com/cakephp/authorization"
             },
-            "time": "2023-09-04T21:19:41+00:00"
+            "time": "2023-11-10T20:55:18+00:00"
         },
         {
             "name": "cakephp/cakephp",
