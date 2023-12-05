@@ -4,8 +4,8 @@ import { createStore, Store } from 'vuex';
 
 const messages = ['hoge', 'fuga'];
 
-const mockOpenDialog = jest.fn();
-const mockCloseDialog = jest.fn();
+const mockOpenDialog = vi.fn();
+const mockCloseDialog = vi.fn();
 const createStoreMock = (type = 'info') =>
   createStore({
     getters: {
@@ -36,7 +36,7 @@ const createWrapper = (
 
 describe('ダイアログ', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('mounted', () => {

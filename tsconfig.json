@@ -16,7 +16,8 @@
     "removeComments": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": ["vitest/globals"]
   },
   "include": ["./**/*.ts", "./**/*.vue"],
   "exclude": ["node_modules", "typings"],
