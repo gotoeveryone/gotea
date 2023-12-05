@@ -3,8 +3,9 @@ import axios from 'axios';
 import ListItem from '@/components/table-templates/Item.vue';
 import Component from '@/pages/table-templates/index.vue';
 import { TableTemplate as Item } from '@/types/table-template';
+import { MockInstance, SpyInstance } from 'vitest';
 
-jest.mock('axios');
+vi.mock('axios');
 
 const createWrapper = () =>
   shallowMount(Component, {
@@ -28,9 +29,9 @@ const items = [
 
 describe('表テンプレート一覧', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
-    (axios.get as jest.Mock).mockResolvedValue(
+    (axios.get as unknown as MockInstance).mockResolvedValue(
       Promise.resolve({
         data: {
           response: {

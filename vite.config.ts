@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -51,5 +52,12 @@ export default defineConfig({
       '@': scriptsDir,
       vue: 'vue/dist/vue.esm-bundler.js',
     },
+  },
+  test: {
+    globals: true,
+    watch: false,
+    environment: 'jsdom',
+    include: ['./resources/**/*.test.ts'],
+    exclude: ['**/node_modules/**'],
   },
 });
