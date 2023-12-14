@@ -39,7 +39,7 @@ import { defineComponent } from 'vue';
 import Paginator from '@/components/Paginator.vue';
 import ListItem from '@/components/notifications/Item.vue';
 import { Notification as Item, NotificationListResponse as Response } from '@/types/notification';
-import { isPositiveNumber } from '@/util/validator';
+import { isPositiveNumber } from '@/libs/validator';
 
 export default defineComponent({
   components: {

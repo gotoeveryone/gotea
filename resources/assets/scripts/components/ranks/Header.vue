@@ -3,7 +3,7 @@
     <li class="search-row">
       <div class="search-box">
         <label class="search-box_label">対象国</label>
-        <select v-model="select.country" class="country" @change="changeValue($event)">
+        <select v-model="selectedCountry" class="country" @change="changeValue($event)">
           <option
             v-for="(country, idx) in countries"
             :key="idx"
@@ -26,9 +26,7 @@ export default defineComponent({
   data: () => {
     return {
       countries: [] as DropDown[],
-      select: {
-        country: '',
-      },
+      selectedCountry: '',
     };
   },
   mounted() {
@@ -42,20 +40,18 @@ export default defineComponent({
       )
       .then((countries) => {
         this.countries = countries;
-        this.select = {
-          country: this.countries[0].value.toString() || '',
-        };
+        this.selectedCountry = this.countries[0].value.toString() || '';
         this.search();
       });
   },
   methods: {
     changeValue($event: Event) {
       const target = $event.target as HTMLInputElement;
-      this.select[target.name] = target.value;
+      this.selectedCountry = target.value;
       this.search();
     },
     search() {
-      this.$emit('search', this.select);
+      this.$emit('search', { country: this.selectedCountry });
     },
   },
 });

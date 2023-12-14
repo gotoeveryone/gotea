@@ -3,7 +3,7 @@ import axios from 'axios';
 import ListItem from '@/components/table-templates/Item.vue';
 import Component from '@/pages/table-templates/index.vue';
 import { TableTemplate as Item } from '@/types/table-template';
-import { MockInstance, SpyInstance } from 'vitest';
+import { MockInstance } from 'vitest';
 
 vi.mock('axios');
 

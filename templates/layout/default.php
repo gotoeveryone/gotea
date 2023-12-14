@@ -75,13 +75,6 @@ use Cake\I18n\FrozenTime;
             <?= $this->Flash->render() ?>
         </div>
 
-        <?php if ($this->Identity->isLoggedIn()) : ?>
-        <script>
-            window.Cake = {
-                accessUser: '<?= $this->Identity->get('account') ?>',
-            };
-        </script>
-        <?php endif ?>
         <?= $this->Html->script('main', ['type' => 'module']) ?>
         <?= $this->fetch('script') ?>
     </body>

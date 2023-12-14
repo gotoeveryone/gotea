@@ -15,7 +15,7 @@ interface VitestConfigExport extends UserConfig {
 
 export default defineConfig({
   build: {
-    sourcemap: true,
+    sourcemap: false, // https://github.com/vitejs/vite-plugin-vue/issues/35
     minify: false,
     outDir: './webroot/',
     emptyOutDir: false,
