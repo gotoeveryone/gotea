@@ -1,11 +1,3 @@
-import { App } from '@vue/runtime-core';
-
-declare module '@vue/runtime-core' {
-  interface App {
-    openDialog: CallableFunction;
-  }
-}
-
 export interface State {
   dialog: DialogOption;
   modal: ModalOption;

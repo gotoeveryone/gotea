@@ -10,6 +10,9 @@ use Gotea\Event\LoggedUser;
 
 /**
  * API基底コントローラ
+ *
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
+ * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
  */
 abstract class ApiController extends Controller
 {
@@ -30,12 +33,10 @@ abstract class ApiController extends Controller
         $this->loadComponent('Authorization.Authorization');
 
         // 操作ユーザ記録イベントを設定
-        $user = $this->getRequest()->getHeaderLine('X-Access-User');
+        $user = $this->Authentication->getIdentity();
         if ($user) {
             // モデル側のインスタンスイベントより先に実行する必要があるため、グローバルイベントマネージャに登録する
-            EventManager::instance()->on(new LoggedUser([
-                'account' => $user,
-            ]));
+            EventManager::instance()->on(new LoggedUser($user->getOriginalData()));
         }
     }
 }

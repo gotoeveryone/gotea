@@ -40,7 +40,7 @@ import {
   TableTemplate as Item,
   TableTemplateListResponse as Response,
 } from '@/types/table-template';
-import { isPositiveNumber } from '@/util/validator';
+import { isPositiveNumber } from '@/libs/validator';
 
 export default defineComponent({
   components: {

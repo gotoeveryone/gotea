@@ -32,23 +32,6 @@ abstract class ApiTestCase extends AppTestCase
     ];
 
     /**
-     * APIユーザのヘッダを設定します。
-     *
-     * @param string $username ユーザ名
-     * @return \Gotea\Test\TestCase\Controller\Api\ApiTestCase
-     */
-    protected function enableApiUser(string $username = 'test')
-    {
-        $this->configRequest([
-            'headers' => [
-                'X-Access-User' => $username,
-            ],
-        ]);
-
-        return $this;
-    }
-
-    /**
      * 空レスポンスを取得します。
      *
      * @return string

@@ -84,7 +84,6 @@ class TitlesControllerTest extends ApiTestCase
      */
     public function testCreateInvalidParameter()
     {
-        $this->enableApiUser();
         $this->post('/api/titles', [
             'country_id' => 1,
             'name' => 'test',
@@ -100,7 +99,6 @@ class TitlesControllerTest extends ApiTestCase
      */
     public function testCreate()
     {
-        $this->enableApiUser();
         $this->post('/api/titles', [
             'country_id' => 1,
             'name' => 'test',
