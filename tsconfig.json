@@ -14,7 +14,6 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "removeComments": true,
-    "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "types": ["vitest/globals"]

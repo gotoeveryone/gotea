@@ -1,12 +1,17 @@
-/// <reference types="vitest" />
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import type { UserConfig } from 'vite';
+import type { InlineConfig } from 'vitest';
 import vue from '@vitejs/plugin-vue';
 import eslint from 'vite-plugin-eslint';
 import stylelint from 'vite-plugin-stylelint';
 
 const stylesDir = resolve(__dirname, 'resources', 'assets', 'styles');
 const scriptsDir = resolve(__dirname, 'resources', 'assets', 'scripts');
+
+interface VitestConfigExport extends UserConfig {
+  test: InlineConfig;
+}
 
 export default defineConfig({
   build: {
@@ -60,4 +65,4 @@ export default defineConfig({
     include: ['./resources/**/*.test.ts'],
     exclude: ['**/node_modules/**'],
   },
-});
+} as VitestConfigExport);
