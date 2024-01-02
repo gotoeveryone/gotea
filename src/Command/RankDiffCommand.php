@@ -50,14 +50,18 @@ class RankDiffCommand extends Command
                 ->combine('name', 'rank_numeric')
                 ->toArray();
             $results = $countries->all()->combine('name', function ($country) use ($client, $ranks) {
-                Log::info("{$country->name}棋士の差分を抽出します。");
-                $subCommand = $this->getSubCommand($country);
-                $players = $subCommand->getPlayers($client, $ranks);
-                if (!count($players)) {
-                    return [];
-                }
+                try {
+                    Log::info("{$country->name}棋士の差分を抽出します。");
+                    $subCommand = $this->getSubCommand($country);
+                    $players = $subCommand->getPlayers($client, $ranks);
+                    if (!count($players)) {
+                        return [];
+                    }
 
-                return $this->getDiff($subCommand, $players);
+                    return $this->getDiff($subCommand, $players);
+                } catch (Throwable $ex) {
+                    return ['　エラーにより処理できませんでした。'];
+                }
             });
 
             if ($url && !$results->unfold()->isEmpty()) {
