@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fd27a69c89b4ff9d41149228657fc51",
+    "content-hash": "c6d784e779b39769f2ef8d909116e28b",
     "packages": [
         {
             "name": "abraham/twitteroauth",
-            "version": "6.2.0",
+            "version": "7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/abraham/twitteroauth.git",
-                "reference": "e6fc2e0c30371ce68427d547bdeb19725868db30"
+                "reference": "a8622680f954d0c4f54fd80bedebe00c756ed7aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/e6fc2e0c30371ce68427d547bdeb19725868db30",
-                "reference": "e6fc2e0c30371ce68427d547bdeb19725868db30",
+                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/a8622680f954d0c4f54fd80bedebe00c756ed7aa",
+                "reference": "a8622680f954d0c4f54fd80bedebe00c756ed7aa",
                 "shasum": ""
             },
             "require": {
@@ -66,7 +66,7 @@
                 "issues": "https://github.com/abraham/twitteroauth/issues",
                 "source": "https://github.com/abraham/twitteroauth"
             },
-            "time": "2023-10-28T20:17:00+00:00"
+            "time": "2024-02-11T18:58:08+00:00"
         },
         {
             "name": "aws/aws-crt-php",
