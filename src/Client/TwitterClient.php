@@ -40,6 +40,6 @@ class TwitterClient
 
         return $this->client->post('tweets', [
             'text' => $message,
-        ], true);
+        ], ['jsonPayload' => true]);
     }
 }
