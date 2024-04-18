@@ -37,25 +37,26 @@ class RankDiffTaiwanSubCommand implements RankDiffSubCommandInterface
     public function getPlayers(Client $client, array $ranks): array
     {
         $results = [];
-        $rank = null;
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.taiwan'));
-        $crawler->filter('.post-body.entry-content div:first-child > div')
-            ->each(function (Crawler $node) use (&$results, &$rank, $ranks): void {
+        $crawler->filter('.mandatalink li')
+            ->each(function (Crawler $node) use (&$results, $ranks): void {
                 // テキストが設定されている場合のみ処理する
                 $text = trim($node->text());
                 if ($text) {
+                    // テキストから段位を抜き出す
                     $matches = [];
-                    if (preg_match('/(.*段).*\(\d+\)/', $text, $matches)) {
+                    if (preg_match('/\s(.*段)/', $text, $matches)) {
                         $rank = Hash::get($ranks, $matches[1]);
                     } else {
-                        $players = Hash::filter($node->filter('a')->each(function ($node) {
-                            return trim(preg_replace("/\s+/u", '', $node->text()));
-                        }), function ($name) {
-                            return !empty($name);
-                        });
-                        if ($players) {
-                            $results[$rank] = Hash::merge(Hash::get($results, $rank, []), $players);
-                        }
+                        return;
+                    }
+                    $players = Hash::filter($node->filter('a')->each(function ($node) {
+                        return trim(preg_replace("/\s+/u", '', $node->text()));
+                    }), function ($name) {
+                        return !empty($name);
+                    });
+                    if ($players) {
+                        $results[$rank] = Hash::merge(Hash::get($results, $rank, []), $players);
                     }
                 }
             });
