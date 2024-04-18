@@ -8,9 +8,9 @@ jobs:
     container:
       image: ghcr.io/gotoeveryone/composer-php:8.1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Cache modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: vendor_cache
         with:
           path: vendor
@@ -26,9 +26,9 @@ jobs:
     container:
       image: node:18.16
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Cache modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: node_cache
         with:
           path: node_modules
@@ -74,7 +74,7 @@ jobs:
             -d \
             -p ${DB_TEST_PORT}:3306 \
             mysql:5.7 mysqld --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_general_ci
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -87,7 +87,7 @@ jobs:
             sleep 1
           done
       - name: Cache modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: vendor_cache
         with:
           path: vendor
@@ -106,9 +106,9 @@ jobs:
     container:
       image: node:18.16
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Cache modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: node_cache
         with:
           path: node_modules
@@ -133,7 +133,7 @@ jobs:
     container:
       image: node:18.16
     steps:
-      - uses: actions/checkout@v1 # vite のビルドで Permission denied になるため actions/checkout@v3 が使えない
+      - uses: actions/checkout@v4 # vite のビルドで Permission denied になるため actions/checkout@v4 が使えない
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -150,7 +150,7 @@ jobs:
               Port ${{ secrets.SSH_PORT }}
               IdentityFile ~/.ssh/id_rsa-target
       - name: Cache modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: node_cache
         with:
           path: node_modules
