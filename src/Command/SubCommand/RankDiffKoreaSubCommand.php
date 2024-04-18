@@ -7,10 +7,15 @@ use Cake\Core\Configure;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Client;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
+use Gotea\Command\CrawlerTrait;
 use Gotea\Model\Entity\Country;
+use Symfony\Component\DomCrawler\Crawler;
 
 class RankDiffKoreaSubCommand implements RankDiffSubCommandInterface
 {
+    use CrawlerTrait;
+
     /**
      * @var \Gotea\Model\Entity\Country
      */
@@ -31,20 +36,23 @@ class RankDiffKoreaSubCommand implements RankDiffSubCommandInterface
      */
     public function getPlayers(Client $client, array $ranks): array
     {
-        $url = Configure::read('App.diffUrl.korea');
+        $results = [];
+        $crawler = $this->getCrawler(Configure::read('App.diffUrl.korea'));
 
-        return collection(array_reverse(range(1, 9)))->map(function (int $rank) use ($client, $url) {
-            $response = $client->get($url, [
-                'q' => "nation=1,ob_forc={$rank}",
-            ]);
+        $crawler->filter('.lvList')
+            ->each(function (Crawler $node) use (&$results, $ranks): void {
+                $rank = $node->filter('.lv > dl > dt > span')->text();
 
-            return [
-                'rank' => $rank,
-                'players' => array_map(function ($item) {
-                    return $item['prpl_name'];
-                }, $response->getJson()['recordset']),
-            ];
-        })->combine('rank', 'players')->toArray();
+                $players = Hash::filter($node->filter('.players li')->each(function (Crawler $node) {
+                    return trim(preg_replace("/\s+/u", '', $node->text()));
+                }));
+
+                if ($players) {
+                    $results[$rank] = Hash::merge(Hash::get($results, $rank, []), $players);
+                }
+            });
+
+        return $results;
     }
 
     /**
