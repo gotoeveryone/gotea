@@ -69,15 +69,9 @@ class RankDiffTaiwanSubCommand implements RankDiffSubCommandInterface
      */
     public function getRankSummary(): ResultSetInterface
     {
-        /** @var \Gotea\Model\Table\OrganizationsTable $organizations */
-        $organizations = TableRegistry::getTableLocator()->get('Organizations');
-
-        // 台湾の場合は台湾棋院のみを対象とする
-        $organization = $organizations->findByName('台湾棋院')->first();
-
         /** @var \Gotea\Model\Table\PlayersTable $players */
         $players = TableRegistry::getTableLocator()->get('Players');
 
-        return $players->findRanksCount($this->country->id, $organization->id, true)->all();
+        return $players->findRanksCount($this->country->id)->all();
     }
 }
