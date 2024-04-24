@@ -20,7 +20,7 @@
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "pikaday": "^1.8.2",
-    "vue": "^3.3.4",
+    "vue": "^3.4.24",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
