@@ -77,7 +77,7 @@
               :disabled="required"
               type="checkbox"
               name="newest"
-              checked="checked"
+              :checked="true"
             />
             最新として登録
           </label>
@@ -163,6 +163,7 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 
 import { Player } from '@/types/titles';
+import { Country } from '@/types';
 
 export default defineComponent({
   props: {
@@ -177,7 +178,7 @@ export default defineComponent({
   },
   data: () => {
     return {
-      countries: [],
+      countries: [] as Country[],
       edit: false,
       viewName: '',
       year: '' as number | string,
@@ -190,7 +191,7 @@ export default defineComponent({
       countryId: null as number | null,
       teamName: null,
       isTeamHidden: '',
-      players: [],
+      players: [] as Player[],
     };
   },
   computed: {

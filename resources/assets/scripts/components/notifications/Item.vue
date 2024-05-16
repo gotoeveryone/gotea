@@ -1,7 +1,15 @@
 <template>
   <li class="table-row">
-    <span class="table-column table-column_title" :title="item.title" v-text="item.title" />
-    <span class="table-column table-column_content" :title="item.content" v-text="item.content" />
+    <span
+      class="table-column table-column_title"
+      :title="item.title"
+      v-text="item.title"
+    />
+    <span
+      class="table-column table-column_content"
+      :title="item.content"
+      v-text="item.content"
+    />
     <span class="table-column table-column_status" v-text="item.status" />
     <span class="table-column table-column_permanent">
       <span v-if="item.is_permanent">✓</span>
@@ -10,9 +18,19 @@
     <span class="table-column table-column_actions">
       <a :href="editPageLink" class="layout-button button-primary">編集</a>
       <a :href="copyPageLink" class="layout-button button-secondary">コピー</a>
-      <form :name="formName" method="post" :action="editPageLink" style="display: none">
+      <form
+        :name="formName"
+        method="post"
+        :action="editPageLink"
+        style="display: none"
+      >
         <input type="hidden" name="_method" value="DELETE" />
-        <input type="hidden" name="_csrfToken" autocomplete="off" :value="csrfToken" />
+        <input
+          type="hidden"
+          name="_csrfToken"
+          autocomplete="off"
+          :value="csrfToken"
+        />
       </form>
       <a
         href="#"
