@@ -7,7 +7,7 @@
   "scripts": {
     "biome": "biome format ./resources/assets",
     "dev": "vite build --mode development --watch",
-    "lint": "run-p -c lint:* && prettier --check resources/assets",
+    "lint": "run-p -c lint:*",
     "lint:scripts": "npm run biome",
     "lint:styles": "stylelint \"./resources/assets/styles/**/*.scss\" \"./resources/assets/scripts/**/*.vue\"",
     "format": "run-p -c format:*",
