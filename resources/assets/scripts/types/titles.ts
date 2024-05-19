@@ -9,6 +9,7 @@ export interface TitleResultItem {
   countryId: string;
   holding: number;
   name: string;
+  nameEnglish: string;
   sortOrder: number;
   winnerName: string | null;
   htmlFileName: string;
@@ -18,13 +19,17 @@ export interface TitleResultItem {
   isClosed: boolean;
   isOutput: boolean;
   isOfficial: boolean;
+  isTeam: boolean;
 }
 
 export interface Player {
   id: number;
   name: string;
+  nameEnglish: string;
   nameOther: string;
   countryId: number;
+  countryName: string;
   rankId: number;
   rankName: string;
+  sex: string;
 }

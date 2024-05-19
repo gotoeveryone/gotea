@@ -5,12 +5,13 @@
   "description": "gotea front development tools configuration",
   "author": "Kazuki Kamizuru",
   "scripts": {
+    "biome": "biome format ./resources/assets",
     "dev": "vite build --mode development --watch",
-    "lint": "run-p -c lint:* && prettier --check resources/assets",
-    "lint:scripts": "eslint --ext .ts,.vue ./resources/assets/scripts",
+    "lint": "run-p -c lint:*",
+    "lint:scripts": "npm run biome",
     "lint:styles": "stylelint \"./resources/assets/styles/**/*.scss\" \"./resources/assets/scripts/**/*.vue\"",
-    "format": "run-p -c format:* && prettier --write resources/assets",
-    "format:scripts": "npm run lint:scripts -- --fix",
+    "format": "run-p -c format:*",
+    "format:scripts": "npm run lint:scripts -- --write",
     "format:styles": "npm run lint:styles -- --fix",
     "test": "vitest",
     "prod": "vite build"
@@ -20,41 +21,34 @@
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "pikaday": "^1.8.2",
-    "vue": "^3.3.4",
+    "vue": "^3.4.27",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.7.3",
     "@types/node": "^18.17.18",
     "@types/pikaday": "^1.7.9",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "@vitejs/plugin-vue": "^3.2.0",
+    "@vitejs/plugin-vue": "^5.0.4",
     "@vue/test-utils": "^2.4.5",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-typescript": "^3.0.0",
-    "eslint-plugin-vue": "^9.24.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.38",
     "postcss-html": "^1.6.0",
     "postcss-scss": "^4.0.9",
-    "prettier": "^3.2.5",
     "sass": "^1.72.0",
     "stylelint": "^14.16.1",
-    "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended-scss": "^8.0.0",
     "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-scss": "^5.3.2",
     "typescript": "^5.4.5",
-    "vite": "^3.2.10",
-    "vite-plugin-eslint": "^1.8.1",
+    "vite": "^5.2.11",
+    "vite-plugin-biome": "^1.0.9",
     "vite-plugin-stylelint": "^5.3.1",
-    "vitest": "^1.5.0",
-    "vue-eslint-parser": "^9.4.2"
+    "vitest": "^1.5.0"
   },
   "engines": {
     "node": ">=18 <19"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module"
 }

@@ -3,15 +3,6 @@ export interface State {
   modal: ModalOption;
 }
 
-export interface Cake {
-  accessUser: string;
-}
-
-export interface Window {
-  App: App;
-  Cake: Cake;
-}
-
 export interface DropDown {
   value: number;
   text: string;
