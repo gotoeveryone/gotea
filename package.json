@@ -44,7 +44,7 @@
     "vite": "^5.2.11",
     "vite-plugin-biome": "^1.0.9",
     "vite-plugin-stylelint": "^5.3.1",
-    "vitest": "^1.5.0"
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18 <19"
