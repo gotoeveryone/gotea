@@ -24,7 +24,7 @@
     "dereuromark/cakephp-shim": "^2.0",
     "mobiledetect/mobiledetectlib": "^3.74",
     "symfony/browser-kit": "^6.2.7",
-    "symfony/css-selector": "^6.2.7",
+    "symfony/css-selector": "^7.1.1",
     "symfony/http-client": "^6.2.7",
     "vlucas/phpdotenv": "^5.4"
   },
