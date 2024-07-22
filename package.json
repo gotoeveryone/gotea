@@ -19,7 +19,7 @@
   "main": "resources/scripts/main.ts",
   "dependencies": {
     "axios": "^1.7.2",
-    "dayjs": "^1.11.11",
+    "dayjs": "^1.11.12",
     "pikaday": "^1.8.2",
     "vue": "^3.4.33",
     "vuex": "^4.1.0"
