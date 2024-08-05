@@ -22,7 +22,7 @@
     "cakephp/plugin-installer": "^2.0",
     "connehito/cake-sentry": "^4.0",
     "dereuromark/cakephp-shim": "^2.0",
-    "mobiledetect/mobiledetectlib": "^3.74",
+    "mobiledetect/mobiledetectlib": "^4.8",
     "symfony/browser-kit": "^6.2.7",
     "symfony/css-selector": "^6.2.7",
     "symfony/http-client": "^6.2.7",
