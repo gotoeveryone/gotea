@@ -12,12 +12,12 @@ services:
     working_dir: /src
     command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
   frontend:
-    image: node:18.16
+    image: node:20.17
     volumes:
-      - ./:/home/node
+      - ./:/src
       - node_modules:/src/node_modules
     tty: true
-    working_dir: /home/node
+    working_dir: /src
     command: sh -c 'npm i --engine-strict && npm run dev'
   database:
     image: mysql:5.7
