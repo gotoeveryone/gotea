@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/gotoeveryone/composer-php:8.1
+    image: ghcr.io/gotoeveryone/composer-php:8.2
     volumes:
       - ./:/src
       - vendor:/src/vendor
