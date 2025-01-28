@@ -10,7 +10,7 @@ ansible = "~=8.0"
 ansible-lint = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"
 
 [scripts]
 lint = "ansible-lint ./"
