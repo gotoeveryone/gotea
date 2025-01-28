@@ -117,7 +117,7 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
     {
         $crawler = $this->getCrawler(Configure::read('App.diffUrl.japan'));
 
-        return $crawler->filter('#content h2')->each(function (Crawler $node) use ($ranks) {
+        return collection($crawler->filter('#content h2')->each(function (Crawler $node) use ($ranks) {
             $rankText = $node->text();
             $rank = Hash::get($ranks, $rankText);
             $players = $node->nextAll()->filter('.ul_players')->first()
@@ -126,7 +126,10 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
                 });
 
             return compact('rankText', 'rank', 'players');
-        });
+        }))->filter(function ($item) {
+            // タイトル者は含めない
+            return $item['rankText'] !== 'タイトル者';
+        })->toArray();
     }
 
     /**
