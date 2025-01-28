@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- Python 3.9
+- Python 3.12
 - pipenv
 - サーバの秘密鍵を持っており、サーバへ SSH で接続できること
 
