@@ -150,7 +150,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build assets
-        run: npm run prod
+        run: npm run build
       - name: Transfer modules
         run: |
           tar czf ~/${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock
