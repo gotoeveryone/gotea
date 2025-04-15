@@ -35,8 +35,8 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import 'resources/assets/styles/base/variables';
-          @import 'resources/assets/styles/base/mixin';
+          @import "~/base/variables";
+          @import "~/base/mixin";
         `,
       },
     },
@@ -57,6 +57,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": scriptsDir,
+      "~": stylesDir,
       vue: "vue/dist/vue.esm-bundler.js",
     },
   },

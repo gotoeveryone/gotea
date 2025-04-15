@@ -14,7 +14,7 @@
     "format:scripts": "npm run lint:scripts -- --write",
     "format:styles": "npm run lint:styles -- --fix",
     "test": "vitest",
-    "prod": "vite build"
+    "build": "vite build"
   },
   "main": "resources/scripts/main.ts",
   "dependencies": {
@@ -40,9 +40,9 @@
     "stylelint-config-standard": "^29.0.0",
     "stylelint-scss": "^5.3.2",
     "typescript": "^5.8.3",
-    "vite": "^5.4.18",
+    "vite": "^6.2.6",
     "vite-plugin-biome": "^1.0.12",
-    "vite-plugin-stylelint": "^5.3.1",
+    "vite-plugin-stylelint": "^6.0.0",
     "vitest": "^3.1.1"
   },
   "engines": {
