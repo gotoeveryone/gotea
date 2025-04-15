@@ -98,13 +98,13 @@ class TitleScoreDetailsTable extends AppTable
             'lose_point' => $query->func()->count("(division = '敗' and is_official = 1) or null"),
             'draw_point' => $query->func()->count("(division = '分' and is_official = 1) or null"),
             'win_point_world' => $query->func()->count(
-                "(division = '勝' and is_official = 1 and is_world = 1) or null"
+                "(division = '勝' and is_official = 1 and is_world = 1) or null",
             ),
             'lose_point_world' => $query->func()->count(
-                "(division = '敗' and is_official = 1 and is_world = 1) or null"
+                "(division = '敗' and is_official = 1 and is_world = 1) or null",
             ),
             'draw_point_world' => $query->func()->count(
-                "(division = '分' and is_official = 1 and is_world = 1) or null"
+                "(division = '分' and is_official = 1 and is_world = 1) or null",
             ),
             'win_point_all' => $query->func()->count("division = '勝' or null"),
             'lose_point_all' => $query->func()->count("division = '敗' or null"),
@@ -145,7 +145,7 @@ class TitleScoreDetailsTable extends AppTable
         int $limit,
         FrozenDate $started,
         FrozenDate $ended,
-        string $type = 'point'
+        string $type = 'point',
     ): Query {
         // 旧方式
         if ($this->isOldRanking($started->year)) {

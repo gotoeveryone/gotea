@@ -72,7 +72,7 @@ class PlayerRanksTable extends AppTable
 
         $rules->add($rules->isUnique(
             ['player_id', 'rank_id'],
-            '昇段情報がすでに存在します。'
+            '昇段情報がすでに存在します。',
         ));
 
         return $rules;

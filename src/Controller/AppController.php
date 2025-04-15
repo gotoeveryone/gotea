@@ -82,7 +82,7 @@ abstract class AppController extends Controller
         array|string $errors,
         string $title,
         ?string $view = null,
-        ?string $layout = null
+        ?string $layout = null,
     ): ?Response {
         return $this->setErrors($code, $errors)->renderWith($title, $view, $layout);
     }
@@ -100,7 +100,7 @@ abstract class AppController extends Controller
         int $code,
         array|string $errors,
         ?string $view = null,
-        ?string $layout = null
+        ?string $layout = null,
     ): ?Response {
         return $this->setErrors($code, $errors)->renderWithDialog($view, $layout);
     }

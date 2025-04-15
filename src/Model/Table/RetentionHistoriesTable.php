@@ -114,7 +114,7 @@ class RetentionHistoriesTable extends AppTable
     {
         $rules->add($rules->isUnique(
             ['title_id', 'holding'],
-            '該当期の保持履歴がすでに存在します。'
+            '該当期の保持履歴がすでに存在します。',
         ));
 
         $rules->add($rules->existsIn(['title_id'], 'Titles'));

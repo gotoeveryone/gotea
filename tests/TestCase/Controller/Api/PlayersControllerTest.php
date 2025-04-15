@@ -165,18 +165,17 @@ class PlayersControllerTest extends ApiTestCase
      *
      * @return void
      */
-    public function testSearchRankingOrderOfPoint()
+    public function testSearchRankingOrderByPoint()
     {
         $this->get('/api/players/ranking/jp/2017/20?type=point');
         $this->assertResponseCode(200);
         $data = json_decode($this->_getBodyAsString())->response->ranking;
         $this->assertGreaterThan(0, count($data));
-        $tmpPoint = null;
-        collection($data)->each(function ($item) use ($tmpPoint) {
-            if ($tmpPoint != null) {
-                $this->assertGreaterThanOrEqual($item->win, $tmpPoint);
+        collection($data)->each(function ($item, $idx) use ($data) {
+            $beforePoint = $data[$idx - 1]->win ?? null;
+            if ($beforePoint != null) {
+                $this->assertLessThanOrEqual($beforePoint, $item->win);
             }
-            $tmpPoint = $item->win;
         });
     }
 
@@ -185,18 +184,17 @@ class PlayersControllerTest extends ApiTestCase
      *
      * @return void
      */
-    public function testSearchRankingOrderOfPercentage()
+    public function testSearchRankingOrderByPercentage()
     {
         $this->get('/api/players/ranking/jp/2017/20?type=percent');
         $this->assertResponseCode(200);
         $data = json_decode($this->_getBodyAsString())->response->ranking;
         $this->assertGreaterThan(0, count($data));
-        $tmpPercentage = null;
-        collection($data)->each(function ($item) use ($tmpPercentage) {
-            if ($tmpPercentage != null) {
-                $this->assertGreaterThanOrEqual($item->percentage, $tmpPercentage);
+        collection($data)->each(function ($item, $idx) use ($data) {
+            $beforePercentage = $data[$idx - 1]->percentage ?? null;
+            if ($beforePercentage != null) {
+                $this->assertLessThanOrEqual($beforePercentage, $item->percentage);
             }
-            $tmpPercentage = $item->percentage;
         });
     }
 
@@ -214,7 +212,7 @@ class PlayersControllerTest extends ApiTestCase
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
         );
         $this->assertGreaterThanOrEqual($lastUpdate->diffInDays($targetFrom, false), 0);
     }
@@ -233,7 +231,7 @@ class PlayersControllerTest extends ApiTestCase
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
         );
         $this->assertLessThanOrEqual($lastUpdate->diffInDays($targetTo, false), 0);
     }
@@ -254,7 +252,7 @@ class PlayersControllerTest extends ApiTestCase
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
         );
         $this->assertGreaterThanOrEqual($lastUpdate->diffInDays($targetFrom, false), 0);
         $this->assertLessThanOrEqual($lastUpdate->diffInDays($targetTo, false), 0);
@@ -362,7 +360,7 @@ class PlayersControllerTest extends ApiTestCase
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
         );
         $this->assertGreaterThanOrEqual($lastUpdate->diffInDays($targetFrom, false), 0);
     }
@@ -382,7 +380,7 @@ class PlayersControllerTest extends ApiTestCase
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
         );
         $this->assertLessThanOrEqual($lastUpdate->diffInDays($targetTo, false), 0);
     }
@@ -404,7 +402,7 @@ class PlayersControllerTest extends ApiTestCase
         $this->assertResponseCode(200);
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
         );
         $this->assertGreaterThanOrEqual($lastUpdate->diffInDays($targetFrom, false), 0);
         $this->assertLessThanOrEqual($lastUpdate->diffInDays($targetTo, false), 0);

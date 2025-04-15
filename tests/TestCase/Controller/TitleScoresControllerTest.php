@@ -307,7 +307,7 @@ class TitleScoresControllerTest extends AppTestCase
             10,
             UPLOAD_ERR_OK,
             $testFile,
-            $mediaType
+            $mediaType,
         );
         $this->configRequest([
             'files' => [
