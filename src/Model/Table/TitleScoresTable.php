@@ -173,7 +173,7 @@ class TitleScoresTable extends AppTable
                 ],
             ]);
         } elseif ($name1 || $name2) {
-            $name = $name1 ? $name1 : $name2;
+            $name = $name1 ?: $name2;
             $query->where(function (QueryExpression $exp) use ($name) {
                 $q = $this->TitleScoreDetails->find();
 

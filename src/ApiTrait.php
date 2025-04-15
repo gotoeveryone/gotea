@@ -26,7 +26,7 @@ trait ApiTrait
         string $method = 'get',
         array $data = [],
         array $headers = [],
-        bool $assoc = true
+        bool $assoc = true,
     ): array|object {
         $callMethod = strtolower($method);
         $url = $this->getApiPath($path);

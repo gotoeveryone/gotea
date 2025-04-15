@@ -44,8 +44,8 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
         $rankTexts = array_unique(
             Hash::merge(
                 Hash::extract($nihonkiin, '{n}.rankText'),
-                Hash::extract($kansaikiin, '{n}.rankText')
-            )
+                Hash::extract($kansaikiin, '{n}.rankText'),
+            ),
         );
 
         $results = Hash::map($rankTexts, '{n}', function ($rankText) use ($ranks, $nihonkiin, $kansaikiin) {
@@ -66,7 +66,7 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
                         })
                         ->extract('players')
                         ->unfold()
-                        ->toList()
+                        ->toList(),
                 ),
             ];
         });
@@ -80,7 +80,7 @@ class RankDiffJapanSubCommand implements RankDiffSubCommandInterface
                 foreach ($item['players'] as $name) {
                     $player = $players->findRankByNamesAndCountries(
                         [$name, str_replace('　', '', $name)],
-                        $this->country->id
+                        $this->country->id,
                     );
                     foreach ($results as $idx => $data) {
                         if ($data['rank'] === $player->rank->rank_numeric) {

@@ -88,7 +88,7 @@ class PlayersTable extends AppTable
     {
         $rules->add($rules->isUnique(
             ['country_id', 'name', 'birthday'],
-            __('This player already exists')
+            __('This player already exists'),
         ));
 
         return $rules;

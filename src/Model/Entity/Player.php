@@ -74,7 +74,7 @@ class Player extends AppEntity
             })
             ->first();
 
-        return $rank ? $rank : $this->rank;
+        return $rank ?: $this->rank;
     }
 
     /**

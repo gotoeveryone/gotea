@@ -78,24 +78,19 @@ class PlayerScoresTableTest extends TestCase
 
         $this->assertGreaterThan(0, $ranking->count());
 
-        $win = null;
-        $lose = null;
-        $ranking->each(function ($item) use ($win, $lose) {
+        $rankingList = $ranking->toList();
+        $ranking->each(function ($item, $idx) use ($rankingList) {
+            $beforeWin = $idx > 0 ? $rankingList[$idx - 1]->win_point : null;
+            $beforeLose = $idx > 0 ? $rankingList[$idx - 1]->lose_point : null;
             // 0勝は存在しない
             $this->assertNotEquals($item->win_point, 0);
-            if ($win !== null) {
-                $this->assertGreaterThanOrEqual($win, $item->win_point);
+            if ($beforeWin !== null) {
+                $this->assertLessThanOrEqual($beforeWin, $item->win_point);
                 // 勝数が同じ場合、敗数の昇順
-                if ($win === $item->win_point) {
-                    $this->assertLessThanOrEqual($lose, $item->lose_point);
-                    $lose = $item->lose_point;
-                } else {
-                    // 勝数が変わった場合は敗数を0に
-                    $lose = 0;
+                if ($beforeWin === $item->win_point) {
+                    $this->assertGreaterThanOrEqual($beforeLose, $item->lose_point);
                 }
             }
-            $win = $item->win_point;
-            $lose = $item->lose_point;
             $this->assertEquals(2013, $item->target_year);
         });
     }
@@ -112,33 +107,24 @@ class PlayerScoresTableTest extends TestCase
 
         $this->assertGreaterThan(0, $ranking->count());
 
-        $percentage = null;
-        $win = null;
-        $lose = null;
-        $ranking->each(function ($item) use ($percentage, $win, $lose) {
+        $rankingList = $ranking->toList();
+        $ranking->each(function ($item, $idx) use ($rankingList) {
+            $beforeWin = $idx > 0 ? $rankingList[$idx - 1]->win_point : null;
+            $beforeLose = $idx > 0 ? $rankingList[$idx - 1]->lose_point : null;
+            $beforePercentage = $idx > 0 ? $rankingList[$idx - 1]->win_percent : null;
             // 0%は存在しない
             $this->assertNotEquals($item->win_percent, 0);
-            if ($percentage !== null) {
-                $this->assertGreaterThanOrEqual($percentage, $item->win_percent);
+            if ($beforePercentage !== null) {
+                $this->assertLessThanOrEqual($beforePercentage, $item->win_percent);
                 // 勝率が同じ場合、勝数の昇順
-                if ($percentage === $item->win_percent) {
-                    $this->assertGreaterThanOrEqual($win, $item->win_point);
+                if ($beforePercentage === $item->win_percent) {
+                    $this->assertLessThanOrEqual($beforeWin, $item->win_point);
                     // 勝数が同じ場合、敗数の昇順
-                    if ($win === $item->win_point) {
-                        $this->assertLessThanOrEqual($lose, $item->lose_point);
-                        $lose = $item->lose_point;
-                    } else {
-                        // 勝数が変わった場合は敗数を0に
-                        $lose = 0;
+                    if ($beforeWin === $item->win_point) {
+                        $this->assertGreaterThanOrEqual($beforeLose, $item->lose_point);
                     }
-                } else {
-                    // 勝率が変わった場合は勝数をnullに
-                    $win = null;
                 }
             }
-            $percentage = $item->win_percent;
-            $win = $item->win_point;
-            $lose = $item->lose_point;
             $this->assertEquals(2013, $item->target_year);
         });
     }

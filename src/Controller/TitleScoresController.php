@@ -127,7 +127,7 @@ class TitleScoresController extends AppController
             SplFileObject::READ_CSV |
             SplFileObject::SKIP_EMPTY |
             SplFileObject::DROP_NEW_LINE |
-            SplFileObject::READ_AHEAD
+            SplFileObject::READ_AHEAD,
         );
 
         $data = [];
@@ -141,7 +141,7 @@ class TitleScoresController extends AppController
                 return $this->renderWithDialogErrors(400, __(
                     'Column was insufficient, need: {0}, actual: {1}',
                     13,
-                    count($row)
+                    count($row),
                 ));
             }
             [
@@ -153,9 +153,11 @@ class TitleScoresController extends AppController
                 $isWorld,
                 $isOfficial,
                 $player1Id,
+                // @codingStandardsIgnoreLine
                 $player1Name, // TODO: 今後（アマチュアなど）登録されていない棋士の情報も保存したいので、現状使っていないがカラムとしては用意しておく
                 $player1Division,
                 $player2Id,
+                // @codingStandardsIgnoreLine
                 $player2Name,
                 $player2Division,
             ] = $row;

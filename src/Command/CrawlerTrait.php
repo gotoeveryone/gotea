@@ -25,7 +25,7 @@ trait CrawlerTrait
         if ($browser->getInternalResponse()->getStatusCode() >= 400) {
             throw new HttpException(
                 'クロール先のページが意図しないレスポンスを返しました。',
-                $browser->getInternalResponse()->getStatusCode()
+                $browser->getInternalResponse()->getStatusCode(),
             );
         }
 
