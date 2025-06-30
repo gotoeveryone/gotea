@@ -17,6 +17,13 @@ class NotificationsControllerTest extends AppTestCase
     use IntegrationTestTrait;
 
     /**
+     * お知らせモデル
+     *
+     * @var \Gotea\Model\Table\NotificationsTable
+     */
+    public $Notifications;
+
+    /**
      * Fixtures
      *
      * @var array

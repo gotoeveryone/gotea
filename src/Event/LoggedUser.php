@@ -16,11 +16,18 @@ use Cake\Utility\Hash;
 class LoggedUser implements EventListenerInterface
 {
     /**
+     * ログインユーザー
+     *
+     * @var \ArrayAccess|array
+     */
+    private ArrayAccess|array $_user;
+
+    /**
      * Constructor
      *
-     * @param \Gotea\Event\ArrayAccess|array $user 認証ユーザ
+     * @param \ArrayAccess|array $user 認証ユーザ
      */
-    public function __construct(array|ArrayAccess $user)
+    public function __construct(ArrayAccess|array $user)
     {
         $this->_user = $user;
     }
