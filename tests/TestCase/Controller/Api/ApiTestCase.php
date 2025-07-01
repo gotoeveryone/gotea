@@ -15,7 +15,7 @@ abstract class ApiTestCase extends AppTestCase
      *
      * @var array
      */
-    private $emptyResponse = [
+    private array $emptyResponse = [
         'response' => [],
     ];
 
@@ -24,7 +24,7 @@ abstract class ApiTestCase extends AppTestCase
      *
      * @var array
      */
-    private $notFoundResponse = [
+    private array $notFoundResponse = [
         'response' => [
             'code' => 404,
             'message' => 'Not Found',

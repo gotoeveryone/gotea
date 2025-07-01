@@ -18,6 +18,13 @@ class TableTemplatesControllerTest extends AppTestCase
     use IntegrationTestTrait;
 
     /**
+     * 表テンプレートモデル
+     *
+     * @var \Gotea\Model\Table\TableTemplatesTable
+     */
+    public $TableTemplates;
+
+    /**
      * Fixtures
      *
      * @var array

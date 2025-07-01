@@ -17,7 +17,7 @@ class CountriesTableTest extends TestCase
      *
      * @var \Gotea\Model\Table\CountriesTable
      */
-    public $Country;
+    public $Countries;
 
     /**
      * Fixtures
