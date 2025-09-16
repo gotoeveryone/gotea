@@ -5,6 +5,7 @@ namespace Gotea\Policy;
 
 use Authorization\IdentityInterface;
 use Authorization\Policy\RequestPolicyInterface;
+use Authorization\Policy\ResultInterface;
 use Cake\Http\ServerRequest;
 
 /**
@@ -15,7 +16,7 @@ class RequestPolicy implements RequestPolicyInterface
     /**
      * @inheritDoc
      */
-    public function canAccess(?IdentityInterface $identity, ServerRequest $request)
+    public function canAccess(?IdentityInterface $identity, ServerRequest $request): bool|ResultInterface
     {
         if (!$identity) {
             return false;
@@ -25,7 +26,7 @@ class RequestPolicy implements RequestPolicyInterface
         $action = $request->getParam('action');
 
         // 管理者は許可
-        if ($identity->get('is_admin')) {
+        if ($identity->getOriginalData()['is_admin'] ) {
             return true;
         }
 
