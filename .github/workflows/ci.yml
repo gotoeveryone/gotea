@@ -6,7 +6,7 @@ jobs:
   code_check_backend:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gotoeveryone/composer-php:8.2
+      image: ghcr.io/gotoeveryone/composer-php:8.4
     steps:
       - uses: actions/checkout@v4
       - name: Cache modules
@@ -150,7 +150,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build assets
-        run: npm run build
+        run: npm run prod
       - name: Transfer modules
         run: |
           tar czf ~/${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock

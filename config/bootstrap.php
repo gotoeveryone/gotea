@@ -19,7 +19,7 @@ declare(strict_types=1);
  * Configure paths required to find CakePHP + general filepath
  * constants
  */
-require __DIR__ . '/paths.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
 
 /**
  * Bootstrap CakePHP.
@@ -49,6 +49,12 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Dotenv\Repository\Adapter\PutenvAdapter;
 use Dotenv\Repository\RepositoryBuilder;
+use function Cake\Core\env;
+
+/*
+ * Load global functions for collections, translations, debugging etc.
+ */
+require CAKE . 'functions.php';
 
 /**
  * Read .env file.
@@ -125,7 +131,17 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
  * Include the CLI bootstrap overrides.
  */
 if (PHP_SAPI === 'cli') {
-    require __DIR__ . '/bootstrap_cli.php';
+    // Set the fullBaseUrl to allow URLs to be generated in commands.
+    // This is useful when sending email from commands.
+    // Configure::write('App.fullBaseUrl', php_uname('n'));
+
+    // Set logs to different files so they don't have permission conflicts.
+    if (Configure::check('Log.debug')) {
+        Configure::write('Log.debug.file', 'gotea-cli-debug');
+    }
+    if (Configure::check('Log.error')) {
+        Configure::write('Log.error.file', 'gotea-cli-error');
+    }
 }
 
 /**
