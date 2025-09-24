@@ -153,11 +153,11 @@ class TitleScoresController extends AppController
                 $isWorld,
                 $isOfficial,
                 $player1Id,
-                // @codingStandardsIgnoreLine
+                // phpcs:ignore
                 $player1Name, // TODO: 今後（アマチュアなど）登録されていない棋士の情報も保存したいので、現状使っていないがカラムとしては用意しておく
                 $player1Division,
                 $player2Id,
-                // @codingStandardsIgnoreLine
+                // phpcs:ignore
                 $player2Name,
                 $player2Division,
             ] = $row;
