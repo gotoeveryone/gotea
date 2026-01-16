@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\View\Helper;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\I18n\FrozenTime;
 use Cake\View\Helper;
 
@@ -20,11 +20,11 @@ class DateHelper extends Helper
     /**
      * 日付型オブジェクトを特定フォーマットの表記に変換して表示します。
      *
-     * @param \Cake\I18n\FrozenDate|\Cake\I18n\FrozenTime|null $object 変換するDate or Time型オブジェクト
+     * @param \Cake\I18n\Date|\Cake\I18n\FrozenTime|null $object 変換するDate or Time型オブジェクト
      * @param string $format 指定したフォーマット
      * @return string 整形した日付表記
      */
-    public function format(FrozenDate|FrozenTime|null $object, string $format = self::FORMAT_DATETIME): string
+    public function format(Date|FrozenTime|null $object, string $format = self::FORMAT_DATETIME): string
     {
         if (empty($object)) {
             return '';
@@ -49,10 +49,10 @@ class DateHelper extends Helper
      * 日付型オブジェクトを特定フォーマットの表記に変換して表示します。
      * ※yyyy年MM月dd日
      *
-     * @param \Cake\I18n\FrozenDate|null $dateObj 変換するDate型オブジェクト
+     * @param \Cake\I18n\Date|null $dateObj 変換するDate型オブジェクト
      * @return string 整形した日付表記
      */
-    public function formatToDate(?FrozenDate $dateObj = null): string
+    public function formatToDate(?Date $dateObj = null): string
     {
         return $this->format($dateObj, self::FORMAT_DATE);
     }

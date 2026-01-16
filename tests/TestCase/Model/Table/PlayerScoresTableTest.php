@@ -31,7 +31,7 @@ class PlayerScoresTableTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.PlayerScores',
         'app.Players',
         'app.Countries',
@@ -74,7 +74,7 @@ class PlayerScoresTableTest extends TestCase
     public function testFindRankingByPoint()
     {
         $country = $this->Countries->get(1);
-        $ranking = $this->PlayerScores->findRanking($country, 2013, 3, 'point');
+        $ranking = $this->PlayerScores->findRanking($country, 2013, 3, 'point')->all();
 
         $this->assertGreaterThan(0, $ranking->count());
 
@@ -103,7 +103,7 @@ class PlayerScoresTableTest extends TestCase
     public function testFindRankingByPercent()
     {
         $country = $this->Countries->get(1);
-        $ranking = $this->PlayerScores->findRanking($country, 2013, 3, 'percent');
+        $ranking = $this->PlayerScores->findRanking($country, 2013, 3, 'percent')->all();
 
         $this->assertGreaterThan(0, $ranking->count());
 

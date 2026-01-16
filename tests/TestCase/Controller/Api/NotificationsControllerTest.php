@@ -15,7 +15,7 @@ class NotificationsControllerTest extends ApiTestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Notifications',
     ];
 

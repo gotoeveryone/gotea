@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Entity\RetentionHistory;
 
@@ -49,13 +49,13 @@ class RetentionHistoryTest extends TestCase
      */
     public function testIsRecentHasBroadcasted()
     {
-        $this->RetentionHistory->broadcasted = FrozenDate::now();
+        $this->RetentionHistory->broadcasted = Date::now();
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDay(20);
+        $this->RetentionHistory->broadcasted = Date::now()->subDays(20);
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDay(21);
+        $this->RetentionHistory->broadcasted = Date::now()->subDays(21);
         $this->assertFalse($this->RetentionHistory->isRecent());
     }
 
@@ -66,13 +66,13 @@ class RetentionHistoryTest extends TestCase
      */
     public function testIsRecentNoHasBroadcasted()
     {
-        $this->RetentionHistory->acquired = FrozenDate::now();
+        $this->RetentionHistory->acquired = Date::now();
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->acquired = FrozenDate::now()->subDay(20);
+        $this->RetentionHistory->acquired = Date::now()->subDays(20);
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->acquired = FrozenDate::now()->subDay(21);
+        $this->RetentionHistory->acquired = Date::now()->subDays(21);
         $this->assertFalse($this->RetentionHistory->isRecent());
     }
 }

@@ -127,7 +127,7 @@ class RetentionHistoriesTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function save(EntityInterface $entity, $options = [])
+    public function save(EntityInterface $entity, $options = []): EntityInterface|false
     {
         $save = parent::save($entity, $options);
 
@@ -152,7 +152,7 @@ class RetentionHistoriesTable extends AppTable
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Titles.Countries'])
-            ->order([
+            ->orderBy([
                 'RetentionHistories.target_year' => 'DESC',
                 'Titles.country_id' => 'ASC',
                 'RetentionHistories.acquired' => 'ASC',
@@ -169,7 +169,7 @@ class RetentionHistoriesTable extends AppTable
     {
         return $this->findByTitleId($titleId)
             ->contain(['Titles'])
-            ->order([
+            ->orderBy([
                 'RetentionHistories.target_year' => 'DESC',
             ]);
     }

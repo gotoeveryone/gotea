@@ -5,7 +5,7 @@ namespace Gotea\Model\Entity;
 
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
@@ -21,10 +21,10 @@ use Cake\Routing\Router;
  * @property string|null $name_other
  * @property string $sex
  * @property string $joined
- * @property \Cake\I18n\FrozenDate|null $birthday
+ * @property \Cake\I18n\Date|null $birthday
  * @property string|null $remarks
  * @property bool $is_retired
- * @property \Cake\I18n\FrozenDate|null $retired
+ * @property \Cake\I18n\Date|null $retired
  * @property \Cake\I18n\FrozenTime $created
  * @property string $created_by
  * @property \Cake\I18n\FrozenTime $modified
@@ -54,10 +54,10 @@ class Player extends AppEntity
      * 引数の日付時点での段位を取得する
      * player_ranks から段位が取得できなかった場合は棋士情報に設定されている段位を返却する
      *
-     * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付
+     * @param \Cake\I18n\Date $baseDate 基準となる日付
      * @return \Gotea\Model\Entity\Rank
      */
-    public function getRankByDate(FrozenDate $baseDate): Rank
+    public function getRankByDate(Date $baseDate): Rank
     {
         if (!$this->player_ranks) {
             return $this->rank;
@@ -209,12 +209,12 @@ class Player extends AppEntity
      * 誕生日を設定します。
      *
      * @param mixed $birthday 設定値
-     * @return \Cake\I18n\FrozenDate|null
+     * @return \Cake\I18n\Date|null
      */
-    protected function _setBirthday(mixed $birthday): ?FrozenDate
+    protected function _setBirthday(mixed $birthday): ?Date
     {
-        if ($birthday && !($birthday instanceof FrozenDate)) {
-            return FrozenDate::parseDate($birthday, 'yyyy/MM/dd');
+        if ($birthday && !($birthday instanceof Date)) {
+            return Date::parseDate($birthday, 'yyyy/MM/dd');
         }
 
         return $birthday;
@@ -364,7 +364,7 @@ class Player extends AppEntity
     private function show(string $type, ?int $year = null, bool $world = false): int|string
     {
         if ($year === null) {
-            $year = FrozenDate::now()->year;
+            $year = Date::now()->year;
         }
         $scores = collection($this->title_score_details);
         $score = $scores->filter(function ($item) use ($year) {

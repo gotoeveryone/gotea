@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Controller\Api;
 
 use Cake\Http\Response;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\Utility\Hash;
 use Gotea\Collection\Iterator\RankingIterator;
 use Gotea\Collection\Iterator\RankIterator;
@@ -153,8 +153,8 @@ class PlayersController extends ApiController
         $type = Hash::get($params, 'type', 'point');
 
         // 開始日・終了日の補填
-        $from = $from ? FrozenDate::parse($from) : FrozenDate::createFromDate($year, 1, 1);
-        $to = $to ? FrozenDate::parse($to) : FrozenDate::createFromDate($year, 12, 31);
+        $from = $from ? Date::parse($from) : Date::createFromDate($year, 1, 1);
+        $to = $to ? Date::parse($to) : Date::createFromDate($year, 12, 31);
 
         // ランキングデータの取得
         $players = $this->TitleScoreDetails

@@ -13,7 +13,7 @@ class NavigationCell extends Cell
     /**
      * @inheritDoc
      */
-    protected $_validCellOptions = [];
+    protected array $_validCellOptions = [];
 
     /**
      * 直近1ヶ月以内に昇段した棋士の一覧を取得する。

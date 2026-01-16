@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -80,7 +80,7 @@ class TitleScoreDetailsTable extends AppTable
      */
     public function selectQuery(): SelectQuery
     {
-        return new RankingQuery($this->getConnection(), $this);
+        return new RankingQuery($this);
     }
 
     /**
@@ -109,7 +109,7 @@ class TitleScoreDetailsTable extends AppTable
             'win_point_all' => $query->func()->count("division = '勝' or null"),
             'lose_point_all' => $query->func()->count("division = '敗' or null"),
             'draw_point_all' => $query->func()->count("division = '分' or null"),
-        ])->group([
+        ])->groupBy([
                     'player_id',
                     'target_year',
                 ]);
@@ -135,16 +135,16 @@ class TitleScoreDetailsTable extends AppTable
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
      * @param int $limit 取得順位の上限
-     * @param \Cake\I18n\FrozenDate $started 対局日FROM
-     * @param \Cake\I18n\FrozenDate $ended 対局日TO
+     * @param \Cake\I18n\Date $started 対局日FROM
+     * @param \Cake\I18n\Date $ended 対局日TO
      * @param string $type 種類（何順で表示するか）
      * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
     public function findRanking(
         Country $country,
         int $limit,
-        FrozenDate $started,
-        FrozenDate $ended,
+        Date $started,
+        Date $ended,
         string $type = 'point',
     ): Query {
         // 旧方式
@@ -174,7 +174,7 @@ class TitleScoreDetailsTable extends AppTable
             ->from(['TitleScoreDetails' => $standardQuery])
             ->select(['value' => $selectFields])
             ->having(['value >' => 0])
-            ->orderDesc('value')
+            ->orderByDesc('value')
             ->limit(1)
             ->offset($limit - 1)
             ->first();
@@ -205,7 +205,7 @@ class TitleScoreDetailsTable extends AppTable
                 'Players.PlayerRanks' => function ($q) use ($ended) {
                     // 抽出期間TOよりも前の段位を取得
                     return $q->where(['PlayerRanks.promoted <=' => $ended])
-                        ->orderDesc('PlayerRanks.promoted');
+                        ->orderByDesc('PlayerRanks.promoted');
                 },
                 'Players.PlayerRanks.Ranks' => function ($q) {
                     // 昇段情報が不足しているケースがあるため、初段は含めない
@@ -225,7 +225,7 @@ class TitleScoreDetailsTable extends AppTable
             ->select($this->Players->Ranks);
 
         if ($type === 'percent') {
-            $query->orderDesc('win_percent');
+            $query->orderByDesc('win_percent');
             if ($value !== null) {
                 $query->having(['win_percent >=' => $value->value]);
             } else {
@@ -240,21 +240,21 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         return $query
-            ->orderDesc('win_point')
-            ->order(['lose_point'])
-            ->orderDesc('Ranks.rank_numeric')
-            ->order(['Players.joined']);
+            ->orderByDesc('win_point')
+            ->orderBy(['lose_point'])
+            ->orderByDesc('Ranks.rank_numeric')
+            ->orderBy(['Players.joined']);
     }
 
     /**
      * 最新データの対局日を取得します。
      *
      * @param \Gotea\Model\Entity\Country $country 所属国
-     * @param \Cake\I18n\FrozenDate $started 対局日FROM
-     * @param \Cake\I18n\FrozenDate $ended 対局日TO
+     * @param \Cake\I18n\Date $started 対局日FROM
+     * @param \Cake\I18n\Date $ended 対局日TO
      * @return string|null
      */
-    public function findRecent(Country $country, FrozenDate $started, FrozenDate $ended): ?string
+    public function findRecent(Country $country, Date $started, Date $ended): ?string
     {
         // 旧方式
         if ($this->isOldRanking($started->year)) {

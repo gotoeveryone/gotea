@@ -25,7 +25,7 @@ class RetentionHistoriesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.RetentionHistories',
         'app.Titles',
         'app.Countries',

@@ -8,7 +8,7 @@ class CreatePlayerRanks extends AbstractMigration
      *
      * @var boolean
      */
-    public $autoId = false;
+    public bool $autoId = false;
 
     /**
      * {@inheritdoc}

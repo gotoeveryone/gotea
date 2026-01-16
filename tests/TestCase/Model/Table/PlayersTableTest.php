@@ -28,7 +28,7 @@ class PlayersTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.Players',
         'app.Countries',
         'app.Ranks',
@@ -188,7 +188,7 @@ class PlayersTableTest extends TestCase
     {
         $players = $this->Players->findPlayers([
             'sex' => '男性',
-        ]);
+        ])->all();
         $this->assertGreaterThan(0, $players->count());
         $players->each(function ($data) {
             $this->assertEquals('男性', $data->sex);
@@ -198,7 +198,7 @@ class PlayersTableTest extends TestCase
         $players = $this->Players->findPlayers([
             'sort' => 'id',
             'direction' => 'desc',
-        ]);
+        ])->all();
         $this->assertGreaterThan(0, $players->count());
         $tmpId = null;
         $players->each(function ($data) use (&$tmpId) {

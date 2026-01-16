@@ -14,7 +14,7 @@ class RetentionHistoriesFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 1,
             'title_id' => 1,

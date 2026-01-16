@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -97,7 +97,7 @@ class PlayersTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function save(EntityInterface $entity, $options = [])
+    public function save(EntityInterface $entity, $options = []): EntityInterface|false
     {
         // 引退フラグがfalseなら引退日を空欄にする
         if (!$entity->is_retired) {
@@ -109,7 +109,7 @@ class PlayersTable extends AppTable
         // 新規作成時には昇段情報も登録
         if ($save && $new) {
             // 入段日を登録時段位の昇段日として設定
-            $promoted = FrozenDate::parseDate($entity->joined, 'yyyyMMdd');
+            $promoted = Date::parseDate($entity->joined, 'yyyyMMdd');
 
             // 入段日が完全な日付だった場合、棋士昇段情報へ登録
             if ($promoted !== null) {
@@ -134,7 +134,7 @@ class PlayersTable extends AppTable
     public function findPlayers(array $data): Query
     {
         // 棋士情報の取得
-        $query = $this->find()->order([
+        $query = $this->find()->orderBy([
             'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id',
         ])->contain([
             'Ranks', 'Countries', 'Organizations', 'TitleScoreDetails',
@@ -202,9 +202,9 @@ class PlayersTable extends AppTable
         $direction = Hash::get($data, 'direction', 'asc');
         if ($sort && in_array(strtolower($sort), $fields, true)) {
             if (in_array(strtolower($direction), ['asc', 'desc'], true)) {
-                $query->order(["Players.{$sort}" => $direction], true);
+                $query->orderBy(["Players.{$sort}" => $direction], true);
             } else {
-                $query->order(["Players.{$sort}" => 'asc'], true);
+                $query->orderBy(["Players.{$sort}" => 'asc'], true);
             }
         }
 
@@ -240,8 +240,8 @@ class PlayersTable extends AppTable
                 'name' => 'Ranks.name',
                 'count' => $query->func()->count('*'),
             ])
-            ->group(['Ranks.id', 'Ranks.rank_numeric', 'Ranks.name'])
-            ->orderDesc('Ranks.rank_numeric');
+            ->groupBy(['Ranks.id', 'Ranks.rank_numeric', 'Ranks.name'])
+            ->orderByDesc('Ranks.rank_numeric');
     }
 
     /**
@@ -253,18 +253,16 @@ class PlayersTable extends AppTable
      */
     public function findByIdWithRelation(int $id): Player
     {
-        return $this->get($id, [
-            'contain' => [
-                'Countries',
-                'Ranks',
-                'TitleScoreDetails' => function (Query $q) {
-                    return $q->orderDesc('target_year');
-                },
-                'PlayerRanks' => function (Query $q) {
-                    return $q->orderDesc('promoted');
-                },
-                'PlayerRanks.Ranks',
-            ],
+        return $this->get($id, contain:[
+            'Countries',
+            'Ranks',
+            'TitleScoreDetails' => function (Query $q) {
+                return $q->orderByDesc('target_year');
+            },
+            'PlayerRanks' => function (Query $q) {
+                return $q->orderByDesc('promoted');
+            },
+            'PlayerRanks.Ranks',
         ]);
     }
 

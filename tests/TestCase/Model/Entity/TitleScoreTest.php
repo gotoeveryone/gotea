@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Entity\TitleScore;
 use Gotea\Model\Entity\TitleScoreDetail;
@@ -86,16 +86,16 @@ class TitleScoreTest extends TestCase
      */
     public function testIsSameStarted()
     {
-        $this->TitleScore->started = FrozenDate::now();
-        $this->TitleScore->ended = FrozenDate::now()->addDay(1);
+        $this->TitleScore->started = Date::now();
+        $this->TitleScore->ended = Date::now()->addDays(1);
         $this->assertFalse($this->TitleScore->is_same_started);
 
-        $this->TitleScore->started = FrozenDate::now()->addDay(1);
-        $this->TitleScore->ended = FrozenDate::now();
+        $this->TitleScore->started = Date::now()->addDays(1);
+        $this->TitleScore->ended = Date::now();
         $this->assertFalse($this->TitleScore->is_same_started);
 
-        $this->TitleScore->started = FrozenDate::now();
-        $this->TitleScore->ended = FrozenDate::now();
+        $this->TitleScore->started = Date::now();
+        $this->TitleScore->ended = Date::now();
         $this->assertTrue($this->TitleScore->is_same_started);
     }
 }

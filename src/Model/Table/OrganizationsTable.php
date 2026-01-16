@@ -39,6 +39,6 @@ class OrganizationsTable extends AppTable
      */
     public function findSorted(): Query
     {
-        return $this->find('list')->order(['country_id', 'id']);
+        return $this->find('list')->orderBy(['country_id', 'id']);
     }
 }

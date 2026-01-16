@@ -6,7 +6,7 @@ namespace Gotea\Command;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\Log\Log;
 use Gotea\Client\S3Client;
 use SplFileObject;
@@ -42,7 +42,7 @@ class TitleScoreCommand extends Command
         try {
             $scores = $this->TitleScores->findSummaryScores();
 
-            $processDate = FrozenDate::now()->i18nFormat('yyyy-MM-dd');
+            $processDate = Date::now()->i18nFormat('yyyy-MM-dd');
             $file = new SplFileObject("{$processDate}.csv", 'wr+');
 
             $scores = $scores->all()->map(function ($score) {

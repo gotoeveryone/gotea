@@ -10,8 +10,8 @@ namespace Gotea\Model\Entity;
  * @property int $title_id
  * @property string $name
  * @property string|null $result
- * @property \Cake\I18n\FrozenDate $started
- * @property \Cake\I18n\FrozenDate $ended
+ * @property \Cake\I18n\Date $started
+ * @property \Cake\I18n\Date $ended
  * @property bool $is_world
  * @property bool $is_official
  * @property \Cake\I18n\FrozenTime $created

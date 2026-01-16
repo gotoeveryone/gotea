@@ -9,7 +9,7 @@ namespace Gotea\Model\Entity;
  * @property int $id
  * @property int $player_id
  * @property int $rank_id
- * @property \Cake\I18n\FrozenDate $promoted
+ * @property \Cake\I18n\Date $promoted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *

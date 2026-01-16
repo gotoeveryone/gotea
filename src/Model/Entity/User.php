@@ -22,7 +22,7 @@ class User extends Entity
     /**
      * @inheritDoc
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'account' => true,
         'name' => true,
         'password' => true,
@@ -35,7 +35,7 @@ class User extends Entity
     /**
      * @inheritDoc
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'password',
     ];
 }

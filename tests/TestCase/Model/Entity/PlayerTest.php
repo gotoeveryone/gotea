@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Entity\Country;
 use Gotea\Model\Entity\Player;
@@ -56,19 +56,19 @@ class PlayerTest extends TestCase
 
         $this->Player->rank = $rank;
 
-        $this->assertEquals($rank, $this->Player->getRankByDate(FrozenDate::now()));
+        $this->assertEquals($rank, $this->Player->getRankByDate(Date::now()));
 
         $playerRank1 = new PlayerRank();
         $rank1 = new Rank();
-        $playerRank1->promoted = FrozenDate::parseDate('2021-01-01');
+        $playerRank1->promoted = Date::parseDate('2021-01-01');
         $playerRank1->rank = $rank1;
         $rank2 = new Rank();
         $playerRank2 = new PlayerRank();
-        $playerRank2->promoted = FrozenDate::parseDate('2021-02-01');
+        $playerRank2->promoted = Date::parseDate('2021-02-01');
         $playerRank2->rank = $rank2;
         $rank3 = new Rank();
         $playerRank3 = new PlayerRank();
-        $playerRank3->promoted = FrozenDate::parseDate('2021-03-01');
+        $playerRank3->promoted = Date::parseDate('2021-03-01');
         $playerRank3->rank = $rank3;
 
         $this->Player->player_ranks = [
@@ -77,9 +77,9 @@ class PlayerTest extends TestCase
             $playerRank3,
         ];
 
-        $this->assertEquals($rank1, $this->Player->getRankByDate(FrozenDate::parse('2021-01-31')));
-        $this->assertEquals($rank2, $this->Player->getRankByDate(FrozenDate::parse('2021-02-28')));
-        $this->assertEquals($rank3, $this->Player->getRankByDate(FrozenDate::parse('2021-03-01')));
+        $this->assertEquals($rank1, $this->Player->getRankByDate(Date::parse('2021-01-31')));
+        $this->assertEquals($rank2, $this->Player->getRankByDate(Date::parse('2021-02-28')));
+        $this->assertEquals($rank3, $this->Player->getRankByDate(Date::parse('2021-03-01')));
     }
 
     /**
@@ -102,11 +102,11 @@ class PlayerTest extends TestCase
         $this->Player->name_english = 'english name';
         $this->Player->name_other = 'other name';
         $this->Player->sex = '男性';
-        $this->Player->birthday = FrozenDate::parse('1988-01-01');
+        $this->Player->birthday = Date::parse('1988-01-01');
         $this->Player->country = $country;
         $this->Player->rank = $rank;
         $this->Player->is_retired = true;
-        $this->Player->retired = FrozenDate::parse('2020-12-31');
+        $this->Player->retired = Date::parse('2020-12-31');
 
         $result = $this->Player->toArray();
         $this->assertEquals($result['name'], $this->Player->name);

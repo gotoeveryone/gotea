@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use Gotea\Model\Entity\Country;
 use Gotea\Model\Entity\Player;
@@ -60,13 +60,13 @@ class TitleScoreDetailTest extends TestCase
         $player->rank = $rank;
 
         $playerRank = new PlayerRank();
-        $playerRank->promoted = FrozenDate::parseDate('2021-01-01');
+        $playerRank->promoted = Date::parseDate('2021-01-01');
         $playerRank->rank = $rank;
 
         $this->TitleScoreDetail->player = $player;
         $this->TitleScoreDetail->player_name = 'test player';
 
-        $name = $this->TitleScoreDetail->getPlayerNameWithRank(FrozenDate::parseDate('2021-02-01'));
+        $name = $this->TitleScoreDetail->getPlayerNameWithRank(Date::parseDate('2021-02-01'));
         $this->assertStringContainsString($this->TitleScoreDetail->player_name, $name);
         $this->assertStringContainsString($rank->name, $name);
     }

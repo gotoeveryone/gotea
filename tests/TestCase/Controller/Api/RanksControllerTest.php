@@ -17,7 +17,7 @@ class RanksControllerTest extends ApiTestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.Ranks',
     ];
 

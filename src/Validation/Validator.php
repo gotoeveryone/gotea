@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Validation;
 
-use Cake\Validation\RulesProvider;
+use Cake\Validation\ValidationRule;
 use Cake\Validation\Validator as BaseValidator;
 
 /**
@@ -39,13 +39,13 @@ class Validator extends BaseValidator
     {
         parent::__construct();
 
-        $this->setProvider('default', new RulesProvider(Validation::class));
+        $this->setProvider('default', Validation::class);
     }
 
     /**
      * @inheritDoc
      */
-    public function add($field, $name, $rule = [])
+    public function add(string $field, array|string $name, ValidationRule|array $rule = [])
     {
         // メッセージが存在しなければ、ルールに該当するメッセージを定義から取得
         if (empty($rule['message'])) {
@@ -64,8 +64,11 @@ class Validator extends BaseValidator
     /**
      * @inheritDoc
      */
-    protected function _convertValidatorToArray($fieldName, $defaults = [], $settings = []): array
-    {
+    protected function _convertValidatorToArray(
+        string $fieldName,
+        array $defaults = [],
+        array|string|int $settings = [],
+    ): array {
         $results = parent::_convertValidatorToArray($fieldName, $defaults, $settings);
         foreach ($results as $name => $property) {
             // すでにメッセージがあれば何もしない

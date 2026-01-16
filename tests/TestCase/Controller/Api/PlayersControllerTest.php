@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller\Api;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\Utility\Hash;
 
 /**
@@ -16,7 +16,7 @@ class PlayersControllerTest extends ApiTestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Countries',
         'app.Ranks',
         'app.Organizations',
@@ -205,12 +205,12 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testSearchRankingSuccessWithFrom()
     {
-        $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
+        $targetFrom = Date::parseDate('2017-12-01', 'yyyy-MM-dd');
 
         $fromValue = $targetFrom->i18nFormat('yyyy-MM-dd');
         $this->get("/api/players/ranking/jp/2017/20?from={$fromValue}");
         $this->assertResponseCode(200);
-        $lastUpdate = FrozenDate::parseDate(
+        $lastUpdate = Date::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
         );
@@ -224,12 +224,12 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testSearchRankingSuccessWithTo()
     {
-        $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
+        $targetTo = Date::parseDate('2017-12-31', 'yyyy-MM-dd');
 
         $toValue = $targetTo->i18nFormat('yyyy-MM-dd');
         $this->get("/api/players/ranking/jp/2017/20?to={$toValue}");
         $this->assertResponseCode(200);
-        $lastUpdate = FrozenDate::parseDate(
+        $lastUpdate = Date::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
         );
@@ -243,14 +243,14 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testSearchRankingSuccessWithFromTo()
     {
-        $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
-        $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
+        $targetFrom = Date::parseDate('2017-12-01', 'yyyy-MM-dd');
+        $targetTo = Date::parseDate('2017-12-31', 'yyyy-MM-dd');
 
         $fromValue = $targetFrom->i18nFormat('yyyy-MM-dd');
         $toValue = $targetTo->i18nFormat('yyyy-MM-dd');
         $this->get("/api/players/ranking/jp/2017/20?from={$fromValue}&to={$toValue}");
         $this->assertResponseCode(200);
-        $lastUpdate = FrozenDate::parseDate(
+        $lastUpdate = Date::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
         );
@@ -353,12 +353,12 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testCreateRankingSuccessWithFrom()
     {
-        $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
+        $targetFrom = Date::parseDate('2017-12-01', 'yyyy-MM-dd');
         $this->post('/api/players/ranking/jp/2017/20', [
             'from' => $targetFrom->i18nFormat('yyyy-MM-dd'),
         ]);
         $this->assertResponseCode(200);
-        $lastUpdate = FrozenDate::parseDate(
+        $lastUpdate = Date::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
         );
@@ -372,13 +372,13 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testCreateRankingSuccessWithTo()
     {
-        $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
+        $targetTo = Date::parseDate('2017-12-31', 'yyyy-MM-dd');
 
         $this->post('/api/players/ranking/jp/2017/20', [
             'to' => $targetTo->i18nFormat('yyyy-MM-dd'),
         ]);
         $this->assertResponseCode(200);
-        $lastUpdate = FrozenDate::parseDate(
+        $lastUpdate = Date::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
         );
@@ -392,15 +392,15 @@ class PlayersControllerTest extends ApiTestCase
      */
     public function testCreateRankingSuccessWithFromTo()
     {
-        $targetFrom = FrozenDate::parseDate('2017-12-01', 'yyyy-MM-dd');
-        $targetTo = FrozenDate::parseDate('2017-12-31', 'yyyy-MM-dd');
+        $targetFrom = Date::parseDate('2017-12-01', 'yyyy-MM-dd');
+        $targetTo = Date::parseDate('2017-12-31', 'yyyy-MM-dd');
 
         $this->post('/api/players/ranking/jp/2017/20', [
             'from' => $targetFrom->i18nFormat('yyyy-MM-dd'),
             'to' => $targetTo->i18nFormat('yyyy-MM-dd'),
         ]);
         $this->assertResponseCode(200);
-        $lastUpdate = FrozenDate::parseDate(
+        $lastUpdate = Date::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
         );

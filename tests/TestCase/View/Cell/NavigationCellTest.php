@@ -43,7 +43,7 @@ class NavigationCellTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.PlayerRanks',
         'app.Players',
         'app.Countries',

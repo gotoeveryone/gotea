@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Table;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Inflector;
@@ -29,7 +29,7 @@ class TitlesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.Titles',
         'app.RetentionHistories',
         'app.Players',
@@ -264,7 +264,7 @@ class TitlesTableTest extends TestCase
         $this->assertIsArray($titles->toArray());
         $this->assertNotNull($titles);
 
-        $titles->each(function ($value, $key) {
+        $titles->all()->each(function ($value, $key) {
             $this->assertIsInt($key);
             $this->assertIsString($value);
         });
@@ -281,7 +281,7 @@ class TitlesTableTest extends TestCase
             'country_id' => 1,
         ]);
         $this->assertGreaterThan(0, $titles->count());
-        $titles->each(function ($item) {
+        $titles->all()->each(function ($item) {
             $this->assertEquals($item->country_id, 1);
             $this->assertFalse($item->is_closed);
             $this->assertTrue($item->is_output);
@@ -291,7 +291,7 @@ class TitlesTableTest extends TestCase
             'search_closed' => true,
         ]);
         $this->assertGreaterThan(0, $titles->count());
-        $titles->each(function ($item) {
+        $titles->all()->each(function ($item) {
             $this->assertTrue(in_array($item->is_closed, [true, false], true));
         });
 
@@ -299,7 +299,7 @@ class TitlesTableTest extends TestCase
             'search_non_output' => true,
         ]);
         $this->assertGreaterThan(0, $titles->count());
-        $titles->each(function ($item) {
+        $titles->all()->each(function ($item) {
             $this->assertTrue(in_array($item->is_output, [true, false], true));
         });
     }
@@ -329,7 +329,7 @@ class TitlesTableTest extends TestCase
             'CountryId' => 1,
             'Holding' => 1,
             'sort_order' => 1,
-            'htmlFileModified' => FrozenDate::parse('2017-01-04'),
+            'htmlFileModified' => Date::parse('2017-01-04'),
         ];
         /** @var \Gotea\Model\Entity\Title $entity */
         $entity = $this->Titles->createEntity(null, $data);

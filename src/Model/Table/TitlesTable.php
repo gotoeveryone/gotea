@@ -155,7 +155,7 @@ class TitlesTable extends AppTable
      */
     public function findSortedList(): Query
     {
-        return $this->find('list')->order(['country_id', 'id']);
+        return $this->find('list')->orderBy(['country_id', 'id']);
     }
 
     /**
@@ -194,7 +194,7 @@ class TitlesTable extends AppTable
         }
 
         // データを取得
-        return $query->order(['Titles.country_id', 'Titles.is_closed', 'Titles.sort_order']);
+        return $query->orderBy(['Titles.country_id', 'Titles.is_closed', 'Titles.sort_order']);
     }
 
     /**

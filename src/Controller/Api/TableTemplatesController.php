@@ -20,12 +20,12 @@ class TableTemplatesController extends ApiController
      */
     public function index(): Response
     {
-        $query = $this->TableTemplates->find()->orderAsc('title');
+        $query = $this->TableTemplates->find()->orderByAsc('title');
         $tableTemplates = $this->paginate($query);
 
         return $this->renderJson([
             'total' => $query->count(),
-            'items' => $tableTemplates->map(function ($item) {
+            'items' => $tableTemplates->items()->map(function ($item) {
                 return $item->toArray();
             }),
         ]);

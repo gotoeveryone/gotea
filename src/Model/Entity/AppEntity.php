@@ -19,8 +19,7 @@ class AppEntity extends Entity
      *
      * @var array
      */
-    // phpcs:ignore
-    protected $_accessible = [
+    protected array $_accessible = [
         '*' => true,
         'id' => false,
         'created' => false,
@@ -32,8 +31,7 @@ class AppEntity extends Entity
      *
      * @var array
      */
-    // phpcs:ignore
-    protected $_hidden = [
+    protected array $_hidden = [
         'created',
         'created_by',
         'modified',

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 
 /**
  * TitleScoreDetail Entity
@@ -41,10 +41,10 @@ class TitleScoreDetail extends AppEntity
     /**
      * 棋士名と当時の段位を返却します。
      *
-     * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付
+     * @param \Cake\I18n\Date $baseDate 基準となる日付
      * @return string 棋士名 段位
      */
-    public function getPlayerNameWithRank(FrozenDate $baseDate): string
+    public function getPlayerNameWithRank(Date $baseDate): string
     {
         return implode(' ', [$this->player_name, $this->player->getRankByDate($baseDate)->name]);
     }

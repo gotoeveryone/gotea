@@ -29,7 +29,7 @@ class TableTemplatesControllerTest extends AppTestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Countries',
         'app.Ranks',
         'app.Organizations',

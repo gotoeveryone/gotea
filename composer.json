@@ -33,7 +33,7 @@
     "cakephp/cakephp-codesniffer": "^5.0",
     "cakephp/debug_kit": "^5.0.0",
     "cakephp/repl": "^2.0.0",
-    "phpunit/phpunit": "~9.6.3",
+    "phpunit/phpunit": "^10.0",
     "psy/psysh": "@stable"
   },
   "autoload": {

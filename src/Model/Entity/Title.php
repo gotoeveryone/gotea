@@ -16,7 +16,7 @@ use Cake\Collection\Collection;
  * @property int $sort_order
  * @property string $html_file_name
  * @property int|null $html_file_holding
- * @property \Cake\I18n\FrozenDate $html_file_modified
+ * @property \Cake\I18n\Date $html_file_modified
  * @property string $remarks
  * @property bool $is_team
  * @property bool $is_closed

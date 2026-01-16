@@ -1,7 +1,7 @@
 <?php
 namespace Gotea\Test\Fixture;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -14,7 +14,7 @@ class PlayerRanksFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 1,
             'player_id' => 1,
@@ -31,7 +31,7 @@ class PlayerRanksFixture extends TestFixture
     public function init(): void
     {
         // 最近の昇段情報
-        $now = FrozenDate::now();
+        $now = Date::now();
         $this->records[] = [
             'player_id' => 1,
             'rank_id' => 2,

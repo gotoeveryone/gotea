@@ -6,7 +6,7 @@ use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Http\Exception\MissingControllerException;
 use Cake\Http\Exception\NotFoundException;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\Log\Engine\ConsoleLog;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\SmtpTransport;
@@ -133,7 +133,7 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          * If you set 'className' => 'Null' core cache will be disabled.
          */
-        '_cake_core_' => [
+        '_cake_translations_' => [
             'className' => FileEngine::class,
             'prefix' => 'gotea_cake_core_',
             'path' => CACHE . 'persistent/',
@@ -369,7 +369,7 @@ return [
         'debug' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'gotea-access_' . FrozenDate::now()->format('Y_m_d'),
+            'file' => 'gotea-access_' . Date::now()->format('Y_m_d'),
             'size' => '5MB',
             'rotate' => 7,
             'url' => env('LOG_DEBUG_URL', null),
@@ -379,7 +379,7 @@ return [
         'error' => [
             'className' => FileLog::class,
             'path' => env('LOG_DIR', LOGS),
-            'file' => 'gotea-error_' . FrozenDate::now()->format('Y_m_d'),
+            'file' => 'gotea-error_' . Date::now()->format('Y_m_d'),
             'size' => '5MB',
             'rotate' => 7,
             'url' => env('LOG_ERROR_URL', null),

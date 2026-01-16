@@ -110,17 +110,15 @@ class TitleScoresTable extends AppTable
      */
     public function findByIdWithRelation(int $id): TitleScore
     {
-        return $this->get($id, [
-            'contain' => [
-                'Countries',
-                'Titles' => [
-                    'joinType' => 'LEFT',
-                ],
-                'TitleScoreDetails',
-                'TitleScoreDetails.Players',
-                'TitleScoreDetails.Players.Ranks',
-                'TitleScoreDetails.Players.PlayerRanks.Ranks',
+        return $this->get($id, contain:[
+            'Countries',
+            'Titles' => [
+                'joinType' => 'LEFT',
             ],
+            'TitleScoreDetails',
+            'TitleScoreDetails.Players',
+            'TitleScoreDetails.Players.Ranks',
+            'TitleScoreDetails.Players.PlayerRanks.Ranks',
         ]);
     }
 
@@ -140,7 +138,7 @@ class TitleScoresTable extends AppTable
                 'TitleScoreDetails.Players.Ranks',
                 'TitleScoreDetails.Players.PlayerRanks.Ranks',
             ])
-            ->orderDesc('started')->orderDesc('TitleScores.id');
+            ->orderByDesc('started')->orderByDesc('TitleScores.id');
 
         $id = Hash::get($data, 'player_id');
         if ($id) {
@@ -163,7 +161,7 @@ class TitleScoresTable extends AppTable
                         'player_names' => $query->func()->group_concat([
                             'player_name separator \'/\'' => 'identifier',
                         ]),
-                    ])->group('title_score_id')->having([
+                    ])->groupBy(['title_score_id'])->having([
                         'OR' => [
                             ["player_names LIKE '%{$name1}%/%{$name2}%'"],
                             ["player_names LIKE '%{$name2}%/%{$name1}%'"],
@@ -234,7 +232,7 @@ class TitleScoresTable extends AppTable
                 ]),
                 'player_id' => $query->func()->min('player_id'),
             ])
-            ->group(['title_score_id']);
+            ->groupBy(['title_score_id']);
 
         $sq2 = $this->TitleScoreDetails->find()
             ->whereInList('division', ['勝', '敗'])
@@ -245,7 +243,7 @@ class TitleScoresTable extends AppTable
                 ]),
                 'player_id' => $query->func()->max('player_id'),
             ])
-            ->group(['title_score_id']);
+            ->groupBy(['title_score_id']);
 
         return $query
             ->join([

@@ -20,7 +20,7 @@ class NotificationsController extends ApiController
      */
     public function index(): Response
     {
-        $query = $this->Notifications->find()->orderDesc('published');
+        $query = $this->Notifications->find()->orderByDesc('published');
         $notifications = $this->paginate($query);
 
         return $this->renderJson([

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
@@ -81,7 +81,7 @@ class PlayerRanksTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function save(EntityInterface $entity, $options = [])
+    public function save(EntityInterface $entity, $options = []): EntityInterface|false
     {
         $save = parent::save($entity, $options);
 
@@ -105,7 +105,7 @@ class PlayerRanksTable extends AppTable
     public function findRanks(int $playerId): ResultSet
     {
         return $this->findByPlayerId($playerId)
-            ->contain(['Ranks'])->orderDesc('Ranks.rank_numeric')->all();
+            ->contain(['Ranks'])->orderByDesc('Ranks.rank_numeric')->all();
     }
 
     /**
@@ -123,9 +123,9 @@ class PlayerRanksTable extends AppTable
                     return $q->where(['rank_numeric >' => 1]);
                 },
             ])
-            ->where(['PlayerRanks.promoted >=' => FrozenDate::now()->addMonths(-2)])
-            ->orderDesc('PlayerRanks.promoted')
-            ->order('Players.country_id')
-            ->orderDesc('Ranks.rank_numeric');
+            ->where(['PlayerRanks.promoted >=' => Date::now()->addMonths(-2)])
+            ->orderByDesc('PlayerRanks.promoted')
+            ->orderBy('Players.country_id')
+            ->orderByDesc('Ranks.rank_numeric');
     }
 }

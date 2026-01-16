@@ -26,7 +26,7 @@ class TitleScoresTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.TitleScores',
         'app.TitleScoreDetails',
         'app.Players',
@@ -238,7 +238,7 @@ class TitleScoresTableTest extends TestCase
             'target_year' => $year,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) use ($year) {
+        $scores->all()->each(function ($item) use ($year) {
             $this->assertEquals($item->started->year, $year);
             $this->assertEquals($item->ended->year, $year);
         });
@@ -249,7 +249,7 @@ class TitleScoresTableTest extends TestCase
             'name1' => $name1,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) use ($name1) {
+        $scores->all()->each(function ($item) use ($name1) {
             $this->assertTrue(
                 strpos($item->winner_name, $name1) !== false || strpos($item->loser_name, $name1) !== false,
             );
@@ -263,7 +263,7 @@ class TitleScoresTableTest extends TestCase
             'name2' => $name2,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) use ($name1, $name2) {
+        $scores->all()->each(function ($item) use ($name1, $name2) {
             $this->assertTrue(
                 strpos($item->winner_name, $name1) !== false || strpos($item->loser_name, $name1) !== false,
             );
@@ -278,7 +278,7 @@ class TitleScoresTableTest extends TestCase
             'title_name' => $titleName,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) use ($titleName) {
+        $scores->all()->each(function ($item) use ($titleName) {
             $this->assertStringContainsString($titleName, $item->name);
         });
 
@@ -290,7 +290,7 @@ class TitleScoresTableTest extends TestCase
             'ended' => $end,
         ]);
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) use ($start, $end) {
+        $scores->all()->each(function ($item) use ($start, $end) {
             $this->assertGreaterThanOrEqual($start, $item->started->format('Y/m/d'));
             $this->assertLessThanOrEqual($end, $item->started->format('Y/m/d'));
         });
@@ -318,7 +318,7 @@ class TitleScoresTableTest extends TestCase
     {
         $scores = $this->TitleScores->findSummaryScores();
         $this->assertGreaterThan(0, $scores->count());
-        $scores->each(function ($item) {
+        $scores->all()->each(function ($item) {
             $this->assertNotNull($item->started_timestamp);
             $this->assertGreaterThan(0, $item->player1_id);
             $this->assertGreaterThan(0, $item->player2_id);

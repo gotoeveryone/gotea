@@ -13,7 +13,7 @@ class TitleScoreDetailsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'title_score_id' => 1,
             'player_id' => 1,

@@ -28,11 +28,13 @@ use Authorization\Exception\ForbiddenException;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\MapResolver;
 use Cake\Core\Configure;
+use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use CakeSentry\CakeSentryPlugin;
@@ -40,8 +42,6 @@ use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
 use Gotea\Policy\RequestPolicy;
 use Psr\Http\Message\ServerRequestInterface;
-use Cake\Datasource\FactoryLocator;
-use Cake\ORM\Locator\TableLocator;
 
 /**
  * Application setup class.
