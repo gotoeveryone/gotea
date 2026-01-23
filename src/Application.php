@@ -36,6 +36,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use CakeSentry\CakeSentryPlugin;
 use DebugKit\Plugin;
 use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
@@ -78,7 +79,7 @@ class Application extends BaseApplication implements
         $this->addPlugin('Authorization');
 
         if (Configure::read('Sentry.dsn')) {
-            $this->addPlugin('Connehito/CakeSentry');
+            $this->addPlugin(CakeSentryPlugin::class);
         }
     }
 
