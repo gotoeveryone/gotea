@@ -41,10 +41,13 @@ class ApplicationTest extends TestCase
         $this->assertSame('Shim', $plugins->get('Shim')->getName());
         $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
         $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
-        $this->assertFalse($plugins->has('Connehito/CakeSentry'));
+        $this->assertFalse($plugins->has('CakeSentry'));
 
         Configure::write('Sentry.dsn', 'hogefuga');
-        $this->assertSame('Connehito/CakeSentry', $plugins->get('Connehito/CakeSentry')->getName());
+        $app->bootstrap();
+        $plugins = $app->getPlugins();
+        $this->assertCount(8, $plugins);
+        $this->assertTrue($plugins->has('CakeSentry'));
     }
 
     /**
