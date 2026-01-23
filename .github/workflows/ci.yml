@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     # 本来はこの方法でテストを実行したいが、service として立ち上げる MySQL は非 ASCII 文字に対応しておらずエラーになるため一旦断念
     # container:
-    #   image: ghcr.io/gotoeveryone/composer-php:7.4
+    #   image: ghcr.io/gotoeveryone/composer-php:8.2
     # services:
     #   database:
     #     image: mysql:5.7
@@ -53,7 +53,7 @@ jobs:
     #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     env:
       DB_TEST_HOST: '127.0.0.1'
-      DB_TEST_PORT: 33306
+      DB_TEST_PORT: 3306
       DB_TEST_USERNAME: 'root'
       DB_TEST_PASSWORD: ''
       DB_TEST_NAME: 'gotea_test'
@@ -75,7 +75,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: '8.2'
           extensions: zip, intl, pdo_mysql
           ini-values: xdebug.mode="develop"
       - name: Wait for MySQL
