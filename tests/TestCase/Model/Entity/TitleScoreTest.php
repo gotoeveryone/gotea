@@ -87,10 +87,10 @@ class TitleScoreTest extends TestCase
     public function testIsSameStarted()
     {
         $this->TitleScore->started = FrozenDate::now();
-        $this->TitleScore->ended = FrozenDate::now()->addDay(1);
+        $this->TitleScore->ended = FrozenDate::now()->addDays(1);
         $this->assertFalse($this->TitleScore->is_same_started);
 
-        $this->TitleScore->started = FrozenDate::now()->addDay(1);
+        $this->TitleScore->started = FrozenDate::now()->addDays(1);
         $this->TitleScore->ended = FrozenDate::now();
         $this->assertFalse($this->TitleScore->is_same_started);
 

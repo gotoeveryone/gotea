@@ -20,8 +20,7 @@ class AppTable extends Table
      *
      * @var string
      */
-    // phpcs:ignore
-    protected $_validatorClass = Validator::class;
+    protected string $_validatorClass = Validator::class;
 
     /**
      * @inheritDoc

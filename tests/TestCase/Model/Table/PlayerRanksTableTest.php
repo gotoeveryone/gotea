@@ -26,7 +26,7 @@ class PlayerRanksTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.PlayerRanks',
         'app.Players',
         'app.Countries',
@@ -192,7 +192,7 @@ class PlayerRanksTableTest extends TestCase
     public function testFindRecentPromoted()
     {
         $ranks = $this->PlayerRanks->findRecentPromoted();
-        $ranks->each(function ($item) {
+        $ranks->all()->each(function ($item) {
             $this->assertGreaterThan(1, $item->rank->rank_numeric);
         });
     }

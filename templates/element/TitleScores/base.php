@@ -48,7 +48,7 @@ $isAdmin = $this->isAdmin();
             <?php
             echo $this->cell('Countries', [
                 'hasTitleOnly' => false,
-                [
+                'attributes' => [
                     'label' => ['class' => 'label-row', 'text' => __d('model', 'country_id')],
                     'empty' => false,
                     'value' => $score->country_id,

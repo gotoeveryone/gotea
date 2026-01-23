@@ -13,8 +13,9 @@ class TitleScoreDetailsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
+            'id' => 1,
             'title_score_id' => 1,
             'player_id' => 1,
             'player_name' => 'test1',
@@ -24,6 +25,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 2,
             'title_score_id' => 1,
             'player_id' => 2,
             'player_name' => 'test2',
@@ -33,6 +35,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 3,
             'title_score_id' => 2,
             'player_id' => 2,
             'player_name' => 'test2',
@@ -42,6 +45,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 4,
             'title_score_id' => 2,
             'player_id' => 4,
             'player_name' => 'test4',
@@ -51,6 +55,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 5,
             'title_score_id' => 3,
             'player_id' => 3,
             'player_name' => 'test3',
@@ -60,6 +65,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 6,
             'title_score_id' => 3,
             'player_id' => 2,
             'player_name' => 'test2',
@@ -69,6 +75,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 7,
             'title_score_id' => 4,
             'player_id' => 1,
             'player_name' => 'test1',
@@ -78,6 +85,7 @@ class TitleScoreDetailsFixture extends TestFixture
             'modified' => '2017-11-26 15:09:50',
         ],
         [
+            'id' => 8,
             'title_score_id' => 4,
             'player_id' => 4,
             'player_name' => 'test4',

@@ -25,7 +25,7 @@ class RetentionHistoriesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.RetentionHistories',
         'app.Titles',
         'app.Countries',
@@ -69,7 +69,6 @@ class RetentionHistoriesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->RetentionHistories->initialize([]);
         $this->assertEquals($this->RetentionHistories->getTable(), 'retention_histories');
         $this->assertEquals($this->RetentionHistories->getDisplayField(), 'name');
         $this->assertEquals($this->RetentionHistories->getPrimaryKey(), 'id');

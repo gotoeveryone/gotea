@@ -6,6 +6,10 @@ namespace Gotea\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Gotea\Form\PlayerForm;
+use Gotea\Model\Table\CountriesTable;
+use Gotea\Model\Table\OrganizationsTable;
+use Gotea\Model\Table\RanksTable;
+use Gotea\Model\Table\TitleScoresTable;
 
 /**
  * 棋士情報コントローラ
@@ -20,6 +24,11 @@ use Gotea\Form\PlayerForm;
  */
 class PlayersController extends AppController
 {
+    protected CountriesTable $Countries;
+    protected RanksTable $Ranks;
+    protected OrganizationsTable $Organizations;
+    protected TitleScoresTable $TitleScores;
+
     /**
      * @inheritDoc
      */

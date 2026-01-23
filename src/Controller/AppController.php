@@ -6,6 +6,7 @@ namespace Gotea\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
 use Cake\Http\Response;
+use Cake\Utility\Hash;
 use Gotea\Event\LoggedUser;
 
 /**
@@ -128,9 +129,34 @@ abstract class AppController extends Controller
      */
     protected function setMessages(array|string $messages, string $type = 'success'): AppController
     {
-        $this->Flash->$type($messages);
+        $this->Flash->$type($this->normalizeMessages($messages));
 
         return $this;
+    }
+
+    /**
+     * Normalize message payloads for FlashComponent.
+     *
+     * @param array|string $messages Message payloads
+     * @return string Normalized message
+     */
+    protected function normalizeMessages(array|string $messages): string
+    {
+        if (is_string($messages)) {
+            return $messages;
+        }
+
+        $flattened = Hash::flatten($messages);
+        $values = [];
+        foreach ($flattened as $value) {
+            if (is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) {
+                $values[] = (string)$value;
+            }
+        }
+
+        $values = array_values(array_filter($values, static fn(string $value): bool => $value !== ''));
+
+        return $values ? implode("\n", $values) : '';
     }
 
     /**

@@ -14,7 +14,7 @@ class PlayerRanksFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 1,
             'player_id' => 1,

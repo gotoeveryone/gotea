@@ -15,7 +15,6 @@ use Cake\TestSuite\TestCase;
 use Gotea\Application;
 use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
-use InvalidArgumentException;
 
 /**
  * ApplicationTest class
@@ -29,6 +28,7 @@ class ApplicationTest extends TestCase
      */
     public function testBootstrap()
     {
+        Configure::write('Sentry.dsn', '');
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
         $plugins = $app->getPlugins();
@@ -42,33 +42,29 @@ class ApplicationTest extends TestCase
         $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
         $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
         $this->assertFalse($plugins->has('CakeSentry'));
-
-        Configure::write('Sentry.dsn', 'hogefuga');
-        $app->bootstrap();
-        $plugins = $app->getPlugins();
-        $this->assertCount(8, $plugins);
-        $this->assertTrue($plugins->has('CakeSentry'));
     }
 
     /**
-     * testBootstrapPluginWitoutHalt
+     * testBootstrapWithSentry
      *
      * @return void
      */
-    public function testBootstrapPluginWithoutHalt()
+    public function testBootstrapWithSentry()
     {
-        $this->expectException(InvalidArgumentException::class);
-
-        $app = $this->getMockBuilder(Application::class)
-            ->setConstructorArgs([dirname(dirname(__DIR__)) . '/config'])
-            ->onlyMethods(['addPlugin'])
-            ->getMock();
-
-        $app->method('addPlugin')
-            ->will($this->throwException(new InvalidArgumentException('test exception.')));
-
-        /** @var \Gotea\Application $app */
+        Configure::write('Sentry.dsn', 'hogefuga');
+        $app = new Application(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
+        $plugins = $app->getPlugins();
+
+        $this->assertCount(8, $plugins);
+        $this->assertSame('Bake', $plugins->get('Bake')->getName());
+        $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
+        $this->assertSame('Cake/Repl', $plugins->get('Cake/Repl')->getName());
+        $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
+        $this->assertSame('Shim', $plugins->get('Shim')->getName());
+        $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
+        $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
+        $this->assertTrue($plugins->has('CakeSentry'));
     }
 
     /**

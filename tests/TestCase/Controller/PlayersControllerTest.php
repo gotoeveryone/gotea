@@ -25,7 +25,7 @@ class PlayersControllerTest extends AppTestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Countries',
         'app.Ranks',
         'app.Organizations',

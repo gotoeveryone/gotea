@@ -52,10 +52,10 @@ class RetentionHistoryTest extends TestCase
         $this->RetentionHistory->broadcasted = FrozenDate::now();
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDay(20);
+        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDays(20);
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDay(21);
+        $this->RetentionHistory->broadcasted = FrozenDate::now()->subDays(21);
         $this->assertFalse($this->RetentionHistory->isRecent());
     }
 
@@ -69,10 +69,10 @@ class RetentionHistoryTest extends TestCase
         $this->RetentionHistory->acquired = FrozenDate::now();
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->acquired = FrozenDate::now()->subDay(20);
+        $this->RetentionHistory->acquired = FrozenDate::now()->subDays(20);
         $this->assertTrue($this->RetentionHistory->isRecent());
 
-        $this->RetentionHistory->acquired = FrozenDate::now()->subDay(21);
+        $this->RetentionHistory->acquired = FrozenDate::now()->subDays(21);
         $this->assertFalse($this->RetentionHistory->isRecent());
     }
 }

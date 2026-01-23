@@ -35,7 +35,7 @@
                 <div class="search-box">
                     <?= $this->cell('Countries', [
                         'hasTitleOnly' => false,
-                        [
+                        'attributes' => [
                             'label' => ['text' => '棋戦分類'],
                             'value' => $this->getRequest()->getQuery('country_id'),
                         ],

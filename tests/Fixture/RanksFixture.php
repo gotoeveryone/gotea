@@ -61,6 +61,7 @@ class RanksFixture extends TestFixture
                 'name' => '九段',
             ],
             [
+                'id' => 10,
                 'number' => null,
                 'name' => 'アマ',
             ],
@@ -69,6 +70,7 @@ class RanksFixture extends TestFixture
 
         foreach ($ranks as $rank) {
             $this->records[] = [
+                'id' => $rank['id'],
                 'name' => $rank['name'],
                 'rank_numeric' => $rank['number'],
                 'created' => $now,

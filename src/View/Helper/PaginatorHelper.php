@@ -19,8 +19,11 @@ class PaginatorHelper extends BaseHelper
      * @inheritDoc
      */
     // phpcs:disable Generic.Files.LineLength.TooLong
-    protected $_defaultConfig = [
-        'options' => [],
+    protected array $_defaultConfig = [
+        'params' => [],
+        'options' => [
+            'sortFormat' => 'separate',
+        ],
         'templates' => [
             'nextActive' => '<li class="pager-item next"><a class="pager-item-link" rel="next" href="{{url}}">{{text}}</a></li>',
             'nextDisabled' => '<li class="pager-item next disabled"><a class="pager-item-link" href="" onclick="return false;">{{text}}</a></li>',

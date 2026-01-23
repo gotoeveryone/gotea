@@ -24,7 +24,7 @@ class NotificationsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Notifications',
     ];
 
@@ -129,7 +129,7 @@ class NotificationsTableTest extends TestCase
     {
         $notifications = $this->Notifications->findAllNewestArrivals();
         $before = '';
-        $notifications->each(function ($item) use (&$before) {
+        $notifications->all()->each(function ($item) use (&$before) {
             if (!$before) {
                 $before = $item->published->getTimestamp();
             } else {

@@ -19,7 +19,7 @@ class TableTemplate extends AppEntity
     /**
      * @inheritDoc
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'title' => true,
         'content' => true,
         'created',
@@ -29,7 +29,7 @@ class TableTemplate extends AppEntity
     /**
      * @inheritDoc
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'created_by',
         'modified_by',
     ];

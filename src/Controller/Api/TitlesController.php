@@ -25,7 +25,7 @@ class TitlesController extends ApiController
         // 検索
         $titles = $this->Titles->findTitles($this->getRequest()->getQueryParams());
 
-        return $this->renderJson($titles->map(new TitlesIterator()));
+        return $this->renderJson($titles->all()->map(new TitlesIterator()));
     }
 
     /**
@@ -69,7 +69,7 @@ class TitlesController extends ApiController
     public function createNews(): ?Response
     {
         $titles = $this->Titles->findTitles(['search_closed' => true])
-            ->map(new NewsIterator());
+            ->all()->map(new NewsIterator());
 
         // ファイル作成
         $builder = FileBuilder::new();

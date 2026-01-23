@@ -23,7 +23,7 @@ class Notification extends AppEntity
     /**
      * @inheritDoc
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'title' => true,
         'content' => true,
         'is_draft' => true,
@@ -36,7 +36,7 @@ class Notification extends AppEntity
     /**
      * @inheritDoc
      */
-    protected $_virtual = [
+    protected array $_virtual = [
         'status',
     ];
 
