@@ -29,7 +29,7 @@ class TitlesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Titles',
         'app.RetentionHistories',
         'app.Players',
@@ -69,7 +69,6 @@ class TitlesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->Titles->initialize([]);
         $this->assertEquals($this->Titles->getTable(), 'titles');
         $this->assertEquals($this->Titles->getDisplayField(), 'name');
         $this->assertEquals($this->Titles->getPrimaryKey(), 'id');
@@ -264,7 +263,7 @@ class TitlesTableTest extends TestCase
         $this->assertIsArray($titles->toArray());
         $this->assertNotNull($titles);
 
-        $titles->each(function ($value, $key) {
+        $titles->all()->each(function ($value, $key) {
             $this->assertIsInt($key);
             $this->assertIsString($value);
         });
@@ -281,7 +280,7 @@ class TitlesTableTest extends TestCase
             'country_id' => 1,
         ]);
         $this->assertGreaterThan(0, $titles->count());
-        $titles->each(function ($item) {
+        $titles->all()->each(function ($item) {
             $this->assertEquals($item->country_id, 1);
             $this->assertFalse($item->is_closed);
             $this->assertTrue($item->is_output);
@@ -291,7 +290,7 @@ class TitlesTableTest extends TestCase
             'search_closed' => true,
         ]);
         $this->assertGreaterThan(0, $titles->count());
-        $titles->each(function ($item) {
+        $titles->all()->each(function ($item) {
             $this->assertTrue(in_array($item->is_closed, [true, false], true));
         });
 
@@ -299,7 +298,7 @@ class TitlesTableTest extends TestCase
             'search_non_output' => true,
         ]);
         $this->assertGreaterThan(0, $titles->count());
-        $titles->each(function ($item) {
+        $titles->all()->each(function ($item) {
             $this->assertTrue(in_array($item->is_output, [true, false], true));
         });
     }

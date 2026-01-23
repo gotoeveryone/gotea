@@ -13,7 +13,7 @@ class TitlesControllerTest extends ApiTestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Countries',
         'app.Titles',
         'app.Players',

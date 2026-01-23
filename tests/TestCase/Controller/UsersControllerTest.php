@@ -13,7 +13,7 @@ class UsersControllerTest extends AppTestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Users',
     ];
 

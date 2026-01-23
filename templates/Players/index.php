@@ -4,6 +4,7 @@
  * @var \Gotea\Model\Entity\Player[]|\Cake\Collection\CollectionInterface $players 棋士一覧データ
  */
 $isAdmin = $this->isAdmin();
+$hasPlayers = isset($players) && $players instanceof \Cake\Datasource\Paging\PaginatedInterface;
 ?>
 <section class="players">
     <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_players']]) ?>
@@ -35,7 +36,7 @@ $isAdmin = $this->isAdmin();
             <div class="search-box">
                 <?= $this->cell('Countries', [
                     'hasTitleOnly' => true,
-                    [
+                    'attributes' => [
                         'label' => ['text' => __d('model', 'country_id')],
                         'class' => 'country',
                         'empty' => true,
@@ -107,7 +108,7 @@ $isAdmin = $this->isAdmin();
         </li>
     </ul>
 
-    <?php if (!empty($players)) : ?>
+    <?php if ($hasPlayers) : ?>
         <?= $this->element('Paginator/default', ['url' => ['_name' => 'find_players']]) ?>
     <?php endif ?>
 
@@ -115,7 +116,7 @@ $isAdmin = $this->isAdmin();
         <ul class="players table-header">
             <li class="table-row">
                 <span class="table-column table-column_id" title="<?= __d('model', 'id') ?>">
-                    <?= $this->Paginator->sort('id', __d('model', 'id')) ?>
+                    <?= $hasPlayers ? $this->Paginator->sort('id', __d('model', 'id')) : __d('model', 'id') ?>
                 </span>
                 <span class="table-column table-column_name" title="<?= __d('model', 'name') ?>">
                     <?= __d('model', 'name') ?>
@@ -127,16 +128,16 @@ $isAdmin = $this->isAdmin();
                     <?= __d('model', 'name_other') ?>
                 </span>
                 <span class="table-column table-column_joined" title="<?= __d('model', 'joined') ?>">
-                    <?= $this->Paginator->sort('joined', __d('model', 'joined')) ?>
+                    <?= $hasPlayers ? $this->Paginator->sort('joined', __d('model', 'joined')) : __d('model', 'joined') ?>
                 </span>
                 <span class="table-column table-column_country" title="<?= __d('model', 'country_id') ?>">
-                    <?= $this->Paginator->sort('country_id', __d('model', 'country_id')) ?>
+                    <?= $hasPlayers ? $this->Paginator->sort('country_id', __d('model', 'country_id')) : __d('model', 'country_id') ?>
                 </span>
                 <span class="table-column table-column_organization" title="<?= __d('model', 'organization_id') ?>">
-                    <?= $this->Paginator->sort('organization_id', __d('model', 'organization_id')) ?>
+                    <?= $hasPlayers ? $this->Paginator->sort('organization_id', __d('model', 'organization_id')) : __d('model', 'organization_id') ?>
                 </span>
                 <span class="table-column table-column_rank">
-                    <?= $this->Paginator->sort('rank_id', __d('model', 'rank_id')) ?>
+                    <?= $hasPlayers ? $this->Paginator->sort('rank_id', __d('model', 'rank_id')) : __d('model', 'rank_id') ?>
                 </span>
                 <span class="table-column table-column_sex">
                     <?= __d('model', 'sex') ?>
@@ -155,7 +156,7 @@ $isAdmin = $this->isAdmin();
                 </span>
             </li>
         </ul>
-        <?php if (!empty($players)) : ?>
+        <?php if ($hasPlayers) : ?>
             <ul class="players table-body">
                 <?php foreach ($players as $player) : ?>
                     <li class="table-row<?= ($player->is_retired ? ' table-row-retired' : '') ?>">

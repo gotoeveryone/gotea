@@ -97,7 +97,7 @@ class PlayersTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function save(EntityInterface $entity, $options = [])
+    public function save(EntityInterface $entity, $options = []): EntityInterface|false
     {
         // 引退フラグがfalseなら引退日を空欄にする
         if (!$entity->is_retired) {
@@ -253,18 +253,16 @@ class PlayersTable extends AppTable
      */
     public function findByIdWithRelation(int $id): Player
     {
-        return $this->get($id, [
-            'contain' => [
-                'Countries',
-                'Ranks',
-                'TitleScoreDetails' => function (Query $q) {
-                    return $q->orderDesc('target_year');
-                },
-                'PlayerRanks' => function (Query $q) {
-                    return $q->orderDesc('promoted');
-                },
-                'PlayerRanks.Ranks',
-            ],
+        return $this->get($id, contain: [
+            'Countries',
+            'Ranks',
+            'TitleScoreDetails' => function (Query $q) {
+                return $q->orderByDesc('target_year');
+            },
+            'PlayerRanks' => function (Query $q) {
+                return $q->orderByDesc('promoted');
+            },
+            'PlayerRanks.Ranks',
         ]);
     }
 

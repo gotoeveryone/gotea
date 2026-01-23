@@ -24,7 +24,7 @@ class CountriesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Countries',
     ];
 
@@ -60,7 +60,7 @@ class CountriesTableTest extends TestCase
     public function testFindAllHasCode()
     {
         $countries = $this->Countries->findAllHasCode(true);
-        $countries->each(function ($item, $key) {
+        $countries->all()->each(function ($item, $key) {
             $this->assertTrue($item->has_title);
         });
     }
@@ -73,7 +73,7 @@ class CountriesTableTest extends TestCase
     public function testFindAll()
     {
         $countries = $this->Countries->findAllHasCode();
-        $countries->each(function ($item, $key) {
+        $countries->all()->each(function ($item, $key) {
             $this->assertContains($item->has_title, [true, false]);
         });
     }

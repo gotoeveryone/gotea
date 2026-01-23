@@ -34,7 +34,7 @@ class PlayerScoresTable extends AppTable
      */
     public function selectQuery(): SelectQuery
     {
-        return new RankingQuery($this->getConnection(), $this);
+        return new RankingQuery($this);
     }
 
     /**

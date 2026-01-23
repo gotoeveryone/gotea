@@ -15,7 +15,7 @@ class TableTemplatesControllerTest extends ApiTestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.TableTemplates',
     ];
 

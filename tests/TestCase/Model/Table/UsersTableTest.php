@@ -24,7 +24,7 @@ class UsersTableTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Users',
     ];
 
@@ -59,7 +59,6 @@ class UsersTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->Users->initialize([]);
         $this->assertEquals($this->Users->getTable(), 'users');
         $this->assertEquals($this->Users->getDisplayField(), 'name');
         $this->assertEquals($this->Users->getPrimaryKey(), 'id');

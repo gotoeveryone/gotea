@@ -28,16 +28,16 @@ use Authorization\Exception\ForbiddenException;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\MapResolver;
 use Cake\Core\Configure;
-use Cake\Core\Exception\MissingPluginException;
+use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use CakeSentry\CakeSentryPlugin;
-use DebugKit\Plugin;
 use Gotea\Middleware\TraceMiddleware;
 use Gotea\Middleware\TransactionMiddleware;
 use Gotea\Policy\RequestPolicy;
@@ -61,22 +61,10 @@ class Application extends BaseApplication implements
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
-        if (PHP_SAPI === 'cli') {
-            $this->bootstrapCli();
+        if (PHP_SAPI !== 'cli') {
+            // The bake plugin requires fallback table classes to work properly
+            FactoryLocator::add('Table', (new TableLocator())->allowFallbackClass(false));
         }
-
-        /*
-         * Only try to load DebugKit in development mode
-         * Debug Kit should not be installed on a production system
-         */
-        if (Configure::read('debug')) {
-            $this->addPlugin(Plugin::class);
-        }
-
-        // Load more plugins here
-        $this->addPlugin('Shim');
-        $this->addPlugin('Authentication');
-        $this->addPlugin('Authorization');
 
         if (Configure::read('Sentry.dsn')) {
             $this->addPlugin(CakeSentryPlugin::class);
@@ -115,10 +103,7 @@ class Application extends BaseApplication implements
             ->add(new BodyParserMiddleware())
 
             // Add authentication middleware.
-            ->add(new AuthenticationMiddleware($this, [
-                'unauthenticatedRedirect' => '/',
-                'queryParam' => 'redirect',
-            ]))
+            ->add(new AuthenticationMiddleware($this))
 
             // Add authorization middleware.
             ->add(new AuthorizationMiddleware($this, [
@@ -144,30 +129,6 @@ class Application extends BaseApplication implements
     }
 
     /**
-     * @return void
-     */
-    protected function bootstrapCli(): void
-    {
-        try {
-            $this->addPlugin('Bake');
-
-            /*
-             * Only try to load DebugKit in development mode
-             * Debug Kit should not be installed on a production system
-             */
-            if (Configure::read('debug')) {
-                $this->addPlugin('Cake/Repl');
-            }
-        } catch (MissingPluginException $e) {
-            // Do not halt if the plugin is missing
-        }
-
-        $this->addPlugin('Migrations');
-
-        // Load more plugins here
-    }
-
-    /**
      * Returns a authentication service provider instance.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request Request
@@ -175,7 +136,10 @@ class Application extends BaseApplication implements
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $service = new AuthenticationService();
+        $service = new AuthenticationService([
+            'unauthenticatedRedirect' => '/',
+            'queryParam' => 'redirect',
+        ]);
 
         $fields = [
             'username' => 'account',
@@ -183,12 +147,9 @@ class Application extends BaseApplication implements
         ];
 
         // Load identifiers
-        $service->loadIdentifier('Authentication.Password', [
+        $service->identifiers()->load('Authentication.Password', [
             'fields' => $fields,
         ]);
-        // $service->loadIdentifier('Gotea.ExternalApi', [
-        //     'fields' => $fields,
-        // ]);
 
         // Load the authenticators, you want session first
         $service->loadAuthenticator('Gotea.Session');

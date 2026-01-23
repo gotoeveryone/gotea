@@ -17,6 +17,7 @@ class NotificationsFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'title' => 'Test Notification',
                 'content' => 'This is test notification.',
                 'is_draft' => 1,
@@ -25,6 +26,7 @@ class NotificationsFixture extends TestFixture
                 'modified' => '2019-04-06 10:37:11',
             ],
             [
+                'id' => 2,
                 'title' => 'Test Notification',
                 'content' => 'This is test notification.',
                 'is_draft' => 1,
@@ -33,6 +35,7 @@ class NotificationsFixture extends TestFixture
                 'modified' => '2019-04-06 10:37:11',
             ],
             [
+                'id' => 3,
                 'title' => 'Test Notification',
                 'content' => 'This is test notification.',
                 'is_draft' => 1,
@@ -41,6 +44,7 @@ class NotificationsFixture extends TestFixture
                 'modified' => '2019-04-06 10:37:11',
             ],
             [
+                'id' => 4,
                 'title' => 'Test Notification',
                 'content' => 'This is test notification.',
                 'is_draft' => 1,
@@ -49,6 +53,7 @@ class NotificationsFixture extends TestFixture
                 'modified' => '2019-04-06 10:37:11',
             ],
             [
+                'id' => 5,
                 'title' => 'Test Notification',
                 'content' => 'This is test notification.',
                 'is_draft' => 1,

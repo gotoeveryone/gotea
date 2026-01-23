@@ -55,6 +55,7 @@ class CountriesFixture extends TestFixture
 
         foreach ($countries as $country) {
             $this->records[] = [
+                'id' => $country['id'],
                 'code' => $country['code'],
                 'name' => $country['name'],
                 'name_english' => $country['name_english'],

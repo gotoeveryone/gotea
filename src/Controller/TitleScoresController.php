@@ -8,6 +8,9 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\Log\Log;
 use Gotea\Form\TitleScoreForm;
+use Gotea\Model\Table\PlayersTable;
+use Gotea\Model\Table\TitleScoreDetailsTable;
+use Gotea\Model\Table\TitlesTable;
 use SplFileObject;
 
 /**
@@ -20,6 +23,10 @@ use SplFileObject;
  */
 class TitleScoresController extends AppController
 {
+    protected PlayersTable $Players;
+    protected TitlesTable $Titles;
+    protected TitleScoreDetailsTable $TitleScoreDetails;
+
     /**
      * @inheritDoc
      */

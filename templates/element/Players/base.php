@@ -95,7 +95,7 @@ $isAdmin = $this->isAdmin();
             <?php
             echo $this->cell('Countries', [
                 'hasTitleOnly' => true,
-                [
+                'attributes' => [
                     'label' => ['class' => 'label-row', 'text' => __d('model', 'country_id')],
                     'empty' => false,
                     'value' => $player->country_id,

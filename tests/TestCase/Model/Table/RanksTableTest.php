@@ -24,7 +24,7 @@ class RanksTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Ranks',
     ];
 
@@ -60,7 +60,7 @@ class RanksTableTest extends TestCase
     public function testFindProfessional()
     {
         $ranks = $this->Ranks->findProfessional();
-        $ranks->each(function ($item, $key) {
+        $ranks->all()->each(function ($item, $key) {
             $this->assertNotNull($item->rank_numeric);
         });
     }
@@ -75,7 +75,7 @@ class RanksTableTest extends TestCase
         $ranks = $this->Ranks->findProfessional();
 
         $number = 0;
-        $ranks->each(function ($item, $key) use (&$number) {
+        $ranks->all()->each(function ($item, $key) use (&$number) {
             if ($number) {
                 $this->assertLessThanOrEqual($number, $item->rank_numeric);
             }

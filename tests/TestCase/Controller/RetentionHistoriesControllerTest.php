@@ -24,7 +24,7 @@ class RetentionHistoriesControllerTest extends AppTestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Titles',
         'app.RetentionHistories',
         'app.Players',

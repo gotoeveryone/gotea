@@ -8,6 +8,8 @@ use Cake\I18n\FrozenDate;
 use Cake\Utility\Hash;
 use Gotea\Collection\Iterator\RankingIterator;
 use Gotea\Collection\Iterator\RankIterator;
+use Gotea\Model\Table\CountriesTable;
+use Gotea\Model\Table\TitleScoreDetailsTable;
 use Gotea\Utility\FileBuilder;
 
 /**
@@ -19,6 +21,9 @@ use Gotea\Utility\FileBuilder;
  */
 class PlayersController extends ApiController
 {
+    protected CountriesTable $Countries;
+    protected TitleScoreDetailsTable $TitleScoreDetails;
+
     /**
      * 棋士を検索します。
      *
@@ -34,7 +39,7 @@ class PlayersController extends ApiController
 
         return $this->renderJson([
             'count' => $query->count(),
-            'results' => $players->map(function ($item) {
+            'results' => $players->all()->map(function ($item) {
                 return $item->toArray();
             }),
         ]);
@@ -48,7 +53,7 @@ class PlayersController extends ApiController
      */
     public function searchRanks(int $countryId): ?Response
     {
-        $ranks = $this->Players->findRanksCount($countryId);
+        $ranks = $this->Players->findRanksCount($countryId)->all();
 
         return $this->renderJson($ranks->map(new RankIterator()));
     }
@@ -153,8 +158,8 @@ class PlayersController extends ApiController
         $type = Hash::get($params, 'type', 'point');
 
         // 開始日・終了日の補填
-        $from = $from ? FrozenDate::parse($from) : FrozenDate::createFromDate($year, 1, 1);
-        $to = $to ? FrozenDate::parse($to) : FrozenDate::createFromDate($year, 12, 31);
+        $from = $from ? FrozenDate::parse($from) : FrozenDate::create($year, 1, 1);
+        $to = $to ? FrozenDate::parse($to) : FrozenDate::create($year, 12, 31);
 
         // ランキングデータの取得
         $players = $this->TitleScoreDetails

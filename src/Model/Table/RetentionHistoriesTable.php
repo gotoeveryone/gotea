@@ -127,7 +127,7 @@ class RetentionHistoriesTable extends AppTable
     /**
      * @inheritDoc
      */
-    public function save(EntityInterface $entity, $options = [])
+    public function save(EntityInterface $entity, $options = []): EntityInterface|false
     {
         $save = parent::save($entity, $options);
 

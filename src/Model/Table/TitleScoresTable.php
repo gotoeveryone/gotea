@@ -110,17 +110,15 @@ class TitleScoresTable extends AppTable
      */
     public function findByIdWithRelation(int $id): TitleScore
     {
-        return $this->get($id, [
-            'contain' => [
-                'Countries',
-                'Titles' => [
-                    'joinType' => 'LEFT',
-                ],
-                'TitleScoreDetails',
-                'TitleScoreDetails.Players',
-                'TitleScoreDetails.Players.Ranks',
-                'TitleScoreDetails.Players.PlayerRanks.Ranks',
+        return $this->get($id, contain: [
+            'Countries',
+            'Titles' => [
+                'joinType' => 'LEFT',
             ],
+            'TitleScoreDetails',
+            'TitleScoreDetails.Players',
+            'TitleScoreDetails.Players.Ranks',
+            'TitleScoreDetails.Players.PlayerRanks.Ranks',
         ]);
     }
 

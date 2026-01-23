@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\Fixture;
 
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -22,6 +22,7 @@ class UsersFixture extends TestFixture
 
         $this->records = [
             [
+                'id' => 1,
                 'account' => 'testuser',
                 'name' => 'Test User',
                 'password' => $h->hash('password'),
@@ -30,6 +31,7 @@ class UsersFixture extends TestFixture
                 'modified' => '2021-02-03 08:49:55',
             ],
             [
+                'id' => 2,
                 'account' => 'adminuser',
                 'name' => 'Test Admin User',
                 'password' => $h->hash('password'),

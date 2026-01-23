@@ -8,7 +8,7 @@ class CreateNotifications extends AbstractMigration
      *
      * @var boolean
      */
-    public $autoId = false;
+    public bool $autoId = false;
 
     /**
      * Change Method.
