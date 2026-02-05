@@ -46,7 +46,8 @@
     "vitest": "^4.0.18"
   },
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=24 <25",
+    "npm": ">=10"
   },
   "license": "MIT",
   "type": "module"
