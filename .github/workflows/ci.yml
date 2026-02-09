@@ -165,13 +165,12 @@ jobs:
       - deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: technote-space/workflow-conclusion-action@v3
       - name: Notify to Slack
         uses: 8398a7/action-slack@v3
         with:
-          status: ${{ env.WORKFLOW_CONCLUSION }}
+          status: ${{ (contains(needs.*.result, 'failure') && 'failure') || (contains(needs.*.result, 'cancelled') && 'cancelled') || 'success' }}
           author_name: GitHub Actions
-          fields: message,ref
+          fields: repo,message,ref
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
