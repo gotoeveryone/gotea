@@ -27,7 +27,7 @@ $ docker compose up
 
 - ホストから接続するためのポートは以下
   - http: 8765
-  - データベース (MySQL): 3306
+  - データベース (MariaDB): 3306
 
 ## Migration
 

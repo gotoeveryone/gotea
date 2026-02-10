@@ -43,17 +43,17 @@ jobs:
   test_backend:
     timeout-minutes: 3
     runs-on: ubuntu-latest
-    # 本来はこの方法でテストを実行したいが、service として立ち上げる MySQL は非 ASCII 文字に対応しておらずエラーになるため一旦断念
+    # 本来はこの方法でテストを実行したいが、service として立ち上げる MariaDB は非 ASCII 文字に対応しておらずエラーになるため一旦断念
     # container:
     #   image: ghcr.io/gotoeveryone/composer-php:8.4
     # services:
     #   database:
-    #     image: mysql:5.7
+    #     image: mariadb:10.5
     #     ports:
     #       - 3306:3306
     #     env:
-    #       MYSQL_DATABASE: 'gotea_test'
-    #       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    #       MARIADB_DATABASE: 'gotea_test'
+    #       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
     #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     env:
       DB_TEST_HOST: '127.0.0.1'
@@ -67,14 +67,14 @@ jobs:
       TZ: Asia/Tokyo
       SENTRY_DSN: ''
     steps:
-      - name: Set up MySQL
+      - name: Set up MariaDB
         run: >
           docker run \
-            -e MYSQL_DATABASE=${DB_TEST_NAME} \
-            -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+            -e MARIADB_DATABASE=${DB_TEST_NAME} \
+            -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes \
             -d \
             -p ${DB_TEST_PORT}:3306 \
-            mysql:5.7 mysqld --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_general_ci
+            mariadb:10.5 mariadbd --character-set-server=${DB_TEST_ENCODING} --collation-server=${DB_TEST_ENCODING}_general_ci
       - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -82,7 +82,7 @@ jobs:
           php-version: '8.4'
           extensions: zip, intl, pdo_mysql
           ini-values: xdebug.mode="develop"
-      - name: Wait for MySQL
+      - name: Wait for MariaDB
         run: |
           while ! mysqladmin ping --host=${DB_TEST_HOST} --port ${DB_TEST_PORT} --silent; do
             sleep 1
