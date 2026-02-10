@@ -223,50 +223,33 @@ class TitleScoresTable extends AppTable
     {
         $query = $this->find();
 
-        $sq1 = $this->TitleScoreDetails->find()
+        $summary = $this->TitleScoreDetails->find()
             ->whereInList('division', ['勝', '敗'])
             ->select([
                 'title_score_id' => 'title_score_id',
-                'division' => $query->func()->any_value([
-                    'division' => 'identifier',
-                ]),
-                'player_id' => $query->func()->min('player_id'),
+                'player1_id' => $query->func()->min('player_id'),
+                'player2_id' => $query->func()->max('player_id'),
+                'winner_player_id' => $query->expr("MAX(CASE WHEN division = '勝' THEN player_id END)"),
             ])
-            ->group(['title_score_id']);
-
-        $sq2 = $this->TitleScoreDetails->find()
-            ->whereInList('division', ['勝', '敗'])
-            ->select([
-                'title_score_id' => 'title_score_id',
-                'division' => $query->func()->any_value([
-                    'division' => 'identifier',
-                ]),
-                'player_id' => $query->func()->max('player_id'),
-            ])
-            ->group(['title_score_id']);
+            ->groupBy(['title_score_id']);
 
         return $query
             ->join([
-                'tsd1' => [
+                'tsd' => [
                     'type' => 'INNER',
-                    'table' => $sq1,
-                    'conditions' => 'TitleScores.id = tsd1.title_score_id',
-                ],
-                'tsd2' => [
-                    'type' => 'INNER',
-                    'table' => $sq2,
-                    'conditions' => 'TitleScores.id = tsd2.title_score_id',
+                    'table' => $summary,
+                    'conditions' => 'TitleScores.id = tsd.title_score_id',
                 ],
             ])
             ->select([
                 'started_timestamp' => $query->func()->unix_timestamp([
                     'TitleScores.started' => 'identifier',
                 ]),
-                'player1_id' => 'tsd1.player_id',
-                'player2_id' => 'tsd2.player_id',
-                'winner_player_no' => $query->newExpr()->case()->when(
-                    $query->newExpr()->add(['tsd1.division' => '勝']),
-                )->then(1)->else(2),
+                'player1_id' => 'tsd.player1_id',
+                'player2_id' => 'tsd.player2_id',
+                'winner_player_no' => $query->expr(
+                    'CASE WHEN tsd.winner_player_id = tsd.player1_id THEN 1 ELSE 2 END',
+                ),
             ]);
     }
 }

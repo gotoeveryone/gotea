@@ -20,18 +20,18 @@ services:
     working_dir: /src
     command: sh -c 'npm i --engine-strict && npm run dev'
   database:
-    image: mysql:5.7
+    image: mariadb:10.5
     volumes:
       - ./database:/var/lib/mysql
-      - ./tests/setup.sh:/docker-entrypoint-initdb.d/setup.sh
+      - ./tests:/docker-entrypoint-initdb.d:ro
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: 'gotea'
-      MYSQL_TEST_DATABASE: 'gotea_test'
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
+      MARIADB_DATABASE: 'gotea'
+      MARIADB_TEST_DATABASE: 'gotea_test'
       TZ: 'Asia/Tokyo'
     ports:
       - '3306:3306'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    command: mariadbd --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
 
 volumes:
   node_modules:
