@@ -26,13 +26,11 @@ jobs:
           name: id_rsa-target
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
           config: |
-            Host *
-              StrictHostKeyChecking no
-              UserKnownHostsFile=/dev/null
             Host target
               HostName ${{ secrets.SSH_HOST }}
               User ${{ secrets.SSH_USER }}
               Port ${{ secrets.SSH_PORT }}
+              StrictHostKeyChecking yes
               IdentityFile ~/.ssh/id_rsa-target
       - name: Use Node.js
         uses: actions/setup-node@v4
