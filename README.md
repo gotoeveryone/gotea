@@ -1,6 +1,6 @@
 # Gotea (ゴティー)
 
-![Build Status](https://github.com/gotoeveryone/gotea/workflows/Build/badge.svg)
+![CI](https://github.com/gotoeveryone/gotea/workflows/CI/badge.svg)
 ![PHP Version](https://img.shields.io/badge/PHP-8.4-8892bf)
 [![CakePHP Version](https://img.shields.io/badge/cakephp-%5E5-red?logo=cakephp)](https://book.cakephp.org/5/ja/index.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gotoeveryone/gotea/blob/master/LICENSE)
