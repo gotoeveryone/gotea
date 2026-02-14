@@ -1,0 +1,69 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    env:
+      TAR_NAME: 'gotea_${{ github.run_number }}.tar.gz'
+      SHELL_DEST_PATH: '~/deploy_${{ github.run_number }}.sh'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SECRET_KEY }}
+          name: id_rsa-target
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          config: |
+            Host *
+              StrictHostKeyChecking no
+              UserKnownHostsFile=/dev/null
+            Host target
+              HostName ${{ secrets.SSH_HOST }}
+              User ${{ secrets.SSH_USER }}
+              Port ${{ secrets.SSH_PORT }}
+              IdentityFile ~/.ssh/id_rsa-target
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.13"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Build assets
+        run: npm run build
+      - name: Transfer modules
+        run: |
+          tar czf ~/${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock
+          scp -r ~/${TAR_NAME} target:~/
+          scp ./shell/deploy.sh target:${SHELL_DEST_PATH}
+      - name: Deploy modules
+        run: ssh target "${SHELL_DEST_PATH} ${TAR_NAME} gotea && rm -f ${SHELL_DEST_PATH}"
+
+  notify:
+    if: ${{ always() }}
+    needs:
+      - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.deploy.result }}
+          author_name: GitHub Actions
+          fields: repo,message,ref
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
