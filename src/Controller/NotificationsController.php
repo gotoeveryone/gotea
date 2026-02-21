@@ -16,7 +16,7 @@ use Gotea\Model\Entity\Notification;
  * Notifications Controller
  *
  * @property \Gotea\Model\Table\NotificationsTable $Notifications
- * @method \Gotea\Model\Entity\Notification[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \Cake\Datasource\Paging\PaginatedInterface paginate($object = null, array $settings = [])
  */
 class NotificationsController extends AppController
 {
@@ -76,9 +76,7 @@ class NotificationsController extends AppController
      */
     public function edit(int $id): ?Response
     {
-        $notification = $this->Notifications->get($id, [
-            'contain' => [],
-        ]);
+        $notification = $this->Notifications->get($id);
 
         $this->set('notification', $notification);
 

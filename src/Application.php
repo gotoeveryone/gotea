@@ -136,26 +136,32 @@ class Application extends BaseApplication implements
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $service = new AuthenticationService([
-            'unauthenticatedRedirect' => '/',
-            'queryParam' => 'redirect',
-        ]);
-
         $fields = [
             'username' => 'account',
             'password' => 'password',
         ];
+        $identifier = [
+            'Authentication.Password' => [
+                'fields' => $fields,
+            ],
+        ];
 
-        // Load identifiers
-        $service->identifiers()->load('Authentication.Password', [
-            'fields' => $fields,
-        ]);
-
-        // Load the authenticators, you want session first
-        $service->loadAuthenticator('Gotea.Session');
-        $service->loadAuthenticator('Authentication.Form', [
-            'fields' => $fields,
-            'loginUrl' => '/login',
+        $service = new AuthenticationService([
+            'unauthenticatedRedirect' => '/',
+            'queryParam' => 'redirect',
+            'authenticators' => [
+                'Gotea.Session' => [
+                    'fields' => [
+                        'username' => 'account',
+                    ],
+                    'identifier' => $identifier,
+                ],
+                'Authentication.Form' => [
+                    'fields' => $fields,
+                    'loginUrl' => '/login',
+                    'identifier' => $identifier,
+                ],
+            ],
         ]);
 
         return $service;

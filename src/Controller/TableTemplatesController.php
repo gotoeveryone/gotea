@@ -10,7 +10,7 @@ use Cake\Http\Response;
  * Notifications Controller
  *
  * @property \Gotea\Model\Table\TableTemplatesTable $TableTemplates
- * @method \Gotea\Model\Entity\TableTemplate[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \Cake\Datasource\Paging\PaginatedInterface paginate($object = null, array $settings = [])
  */
 class TableTemplatesController extends AppController
 {
@@ -57,9 +57,7 @@ class TableTemplatesController extends AppController
      */
     public function edit(int $id): ?Response
     {
-        $tableTemplate = $this->TableTemplates->get($id, [
-            'contain' => [],
-        ]);
+        $tableTemplate = $this->TableTemplates->get($id);
 
         $this->set('tableTemplate', $tableTemplate);
 

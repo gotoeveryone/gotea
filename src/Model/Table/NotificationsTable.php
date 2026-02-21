@@ -85,6 +85,6 @@ class NotificationsTable extends AppTable
     public function findAllNewestArrivals(): Query
     {
         // 棋士情報の取得
-        return $this->find()->orderDesc('published');
+        return $this->find()->orderByDesc('published');
     }
 }

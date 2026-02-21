@@ -353,12 +353,12 @@ return [
     'Log' => $debug && PHP_SAPI !== 'cli' ? [
         'debug' => [
             'className' => ConsoleLog::class,
-            'scopes' => false,
+            'scopes' => null,
             'levels' => ['notice', 'info', 'debug'],
         ],
         'error' => [
             'className' => ConsoleLog::class,
-            'scopes' => false,
+            'scopes' => null,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
         // To enable this dedicated query log, you need set your datasource's log flag to true
@@ -374,7 +374,7 @@ return [
             'size' => '5MB',
             'rotate' => 7,
             'url' => env('LOG_DEBUG_URL', null),
-            'scopes' => false,
+            'scopes' => null,
             'levels' => ['notice', 'info'],
         ],
         'error' => [
@@ -384,7 +384,7 @@ return [
             'size' => '5MB',
             'rotate' => 7,
             'url' => env('LOG_ERROR_URL', null),
-            'scopes' => false,
+            'scopes' => null,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
     ],

@@ -99,9 +99,7 @@ class TitleScoresController extends AppController
      */
     public function searchByPlayer(int $id, int $year): ?Response
     {
-        $player = $this->Players->get($id, [
-            'contain' => 'Ranks',
-        ]);
+        $player = $this->Players->get($id, contain: ['Ranks']);
         $titleScores = $this->TitleScores->findMatches([
             'player_id' => $id,
             'target_year' => $year,
@@ -280,9 +278,7 @@ class TitleScoresController extends AppController
      */
     public function delete(int $id): ?Response
     {
-        $model = $this->TitleScores->get($id, [
-            'contain' => 'TitleScoreDetails',
-        ]);
+        $model = $this->TitleScores->get($id, contain: ['TitleScoreDetails']);
 
         foreach ($model->title_score_details as $detail) {
             $this->TitleScoreDetails->delete($detail);
@@ -305,9 +301,7 @@ class TitleScoresController extends AppController
      */
     private function switchDivision(int $id): ?Response
     {
-        $score = $this->TitleScores->get($id, [
-            'contain' => 'TitleScoreDetails',
-        ]);
+        $score = $this->TitleScores->get($id, contain: ['TitleScoreDetails']);
 
         $changed = 0;
         foreach ($score->title_score_details as $detail) {

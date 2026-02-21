@@ -137,9 +137,7 @@ class PlayerRanksTableTest extends TestCase
         $this->assertNotEquals(false, $save);
 
         // 棋士情報の段位とは一致しない
-        $saveRank = $this->PlayerRanks->get($save->id, [
-            'contain' => 'Players',
-        ]);
+        $saveRank = $this->PlayerRanks->get($save->id, contain: ['Players']);
         $this->assertNotEquals($saveRank->rank_id, $saveRank->player->rank_id);
 
         // 最新として登録
@@ -156,9 +154,7 @@ class PlayerRanksTableTest extends TestCase
         $this->assertNotEquals(false, $save);
 
         // 棋士情報の段位と一致
-        $saveRank = $this->PlayerRanks->get($save->id, [
-            'contain' => 'Players',
-        ]);
+        $saveRank = $this->PlayerRanks->get($save->id, contain: ['Players']);
         $this->assertEquals($saveRank->rank_id, $saveRank->player->rank_id);
     }
 
