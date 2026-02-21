@@ -53,7 +53,9 @@ trait JsonResponseTrait
      */
     public function renderJson(array|JsonSerializable $json = []): Response
     {
-        return $this->response->withStringBody(json_encode([
+        return $this->getResponse()
+            ->withType('json')
+            ->withStringBody(json_encode([
             'response' => $json,
             // '_serialize' => true,
         ]));

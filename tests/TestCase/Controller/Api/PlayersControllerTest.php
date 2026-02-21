@@ -57,6 +57,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranks/999');
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
         $this->assertResponseEquals($this->getEmptyResponse());
     }
 
@@ -69,6 +70,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranks/1');
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
         $this->assertResponseNotEquals($this->getEmptyResponse());
     }
 
@@ -82,6 +84,7 @@ class PlayersControllerTest extends ApiTestCase
         // 所属国
         $this->get('/api/players/ranking/testtest/2017/20');
         $this->assertResponseCode(404);
+        $this->assertJsonContentType();
         $this->assertResponseEquals($this->getNotFoundResponse());
     }
 
@@ -118,6 +121,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranking/jp/2000/20');
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $this->assertResponseEquals($this->getCompareJsonResponse([
             'response' => [
                 'countryCode' => 'jp',
@@ -139,6 +143,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranking/jp/2017/20');
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $this->assertResponseNotEquals($this->getCompareJsonResponse([
             'response' => [
                 'countryCode' => 'jp',
@@ -169,6 +174,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranking/jp/2017/20?type=point');
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $data = json_decode($this->_getBodyAsString())->response->ranking;
         $this->assertGreaterThan(0, count($data));
         collection($data)->each(function ($item, $idx) use ($data) {
@@ -188,6 +194,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->get('/api/players/ranking/jp/2017/20?type=percent');
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $data = json_decode($this->_getBodyAsString())->response->ranking;
         $this->assertGreaterThan(0, count($data));
         collection($data)->each(function ($item, $idx) use ($data) {
@@ -210,6 +217,7 @@ class PlayersControllerTest extends ApiTestCase
         $fromValue = $targetFrom->i18nFormat('yyyy-MM-dd');
         $this->get("/api/players/ranking/jp/2017/20?from={$fromValue}");
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
@@ -229,6 +237,7 @@ class PlayersControllerTest extends ApiTestCase
         $toValue = $targetTo->i18nFormat('yyyy-MM-dd');
         $this->get("/api/players/ranking/jp/2017/20?to={$toValue}");
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
@@ -250,6 +259,7 @@ class PlayersControllerTest extends ApiTestCase
         $toValue = $targetTo->i18nFormat('yyyy-MM-dd');
         $this->get("/api/players/ranking/jp/2017/20?from={$fromValue}&to={$toValue}");
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
@@ -268,6 +278,7 @@ class PlayersControllerTest extends ApiTestCase
         // 所属国
         $this->post('/api/players/ranking/testtest/2017/20');
         $this->assertResponseCode(404);
+        $this->assertJsonContentType();
         $this->assertResponseEquals($this->getNotFoundResponse());
     }
 
@@ -304,6 +315,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->post('/api/players/ranking/jp/2000/20');
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $this->assertResponseEquals($this->getCompareJsonResponse([
             'response' => [
                 'countryCode' => 'jp',
@@ -325,6 +337,7 @@ class PlayersControllerTest extends ApiTestCase
     {
         $this->post('/api/players/ranking/jp/2017/20');
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $this->assertResponseNotEquals($this->getCompareJsonResponse([
             'response' => [
                 'countryCode' => 'jp',
@@ -358,6 +371,7 @@ class PlayersControllerTest extends ApiTestCase
             'from' => $targetFrom->i18nFormat('yyyy-MM-dd'),
         ]);
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
@@ -378,6 +392,7 @@ class PlayersControllerTest extends ApiTestCase
             'to' => $targetTo->i18nFormat('yyyy-MM-dd'),
         ]);
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
@@ -400,6 +415,7 @@ class PlayersControllerTest extends ApiTestCase
             'to' => $targetTo->i18nFormat('yyyy-MM-dd'),
         ]);
         $this->assertResponseCode(200);
+        $this->assertJsonContentType();
         $lastUpdate = FrozenDate::parseDate(
             Hash::get($this->getResponseArray(), 'response.lastUpdate'),
             'yyyy-MM-dd',
