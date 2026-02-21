@@ -37,6 +37,7 @@ class NotificationsControllerTest extends ApiTestCase
     {
         $this->get('/api/notifications?limit=2');
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
         $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
         $response = json_decode($this->_getBodyAsString())->response;
         $this->assertEquals($response->total, 5);

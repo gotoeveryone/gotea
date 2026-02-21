@@ -39,5 +39,6 @@ class RanksControllerTest extends ApiTestCase
     {
         $this->get(['_name' => 'api_ranks']);
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
     }
 }

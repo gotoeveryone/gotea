@@ -71,4 +71,14 @@ abstract class ApiTestCase extends AppTestCase
     {
         return json_encode($data);
     }
+
+    /**
+     * レスポンスがJSONで返却されることを確認します。
+     *
+     * @return void
+     */
+    protected function assertJsonContentType()
+    {
+        $this->assertContentType('application/json');
+    }
 }

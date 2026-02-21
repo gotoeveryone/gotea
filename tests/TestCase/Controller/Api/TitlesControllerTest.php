@@ -40,6 +40,7 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles?country_id=1');
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
         $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
         collection(json_decode($this->_getBodyAsString())->response)->each(function ($item) {
             $this->assertEquals($item->countryId, 1);
@@ -56,6 +57,7 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles?search_non_output=1');
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
         $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
         collection(json_decode($this->_getBodyAsString())->response)->each(function ($item) {
             $this->assertTrue(in_array($item->isOutput, [true, false], true));
@@ -71,6 +73,7 @@ class TitlesControllerTest extends ApiTestCase
     {
         $this->get('/api/titles?search_closed=1');
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
         $this->assertNotEquals($this->getEmptyResponse(), $this->_getBodyAsString());
         collection(json_decode($this->_getBodyAsString())->response)->each(function ($item) {
             $this->assertTrue(in_array($item->isClosed, [true, false], true));
@@ -90,6 +93,7 @@ class TitlesControllerTest extends ApiTestCase
             'holding' => 1,
         ]);
         $this->assertResponseCode(400);
+        $this->assertJsonContentType();
     }
 
     /**
@@ -109,5 +113,6 @@ class TitlesControllerTest extends ApiTestCase
             'htmlFileModified' => '2018/01/01',
         ]);
         $this->assertResponseSuccess();
+        $this->assertJsonContentType();
     }
 }
