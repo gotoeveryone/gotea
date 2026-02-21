@@ -134,7 +134,7 @@ class PlayersTable extends AppTable
     public function findPlayers(array $data): Query
     {
         // 棋士情報の取得
-        $query = $this->find()->order([
+        $query = $this->find()->orderBy([
             'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id',
         ])->contain([
             'Ranks', 'Countries', 'Organizations', 'TitleScoreDetails',
@@ -202,9 +202,9 @@ class PlayersTable extends AppTable
         $direction = Hash::get($data, 'direction', 'asc');
         if ($sort && in_array(strtolower($sort), $fields, true)) {
             if (in_array(strtolower($direction), ['asc', 'desc'], true)) {
-                $query->order(["Players.{$sort}" => $direction], true);
+                $query->orderBy(["Players.{$sort}" => $direction], true);
             } else {
-                $query->order(["Players.{$sort}" => 'asc'], true);
+                $query->orderBy(["Players.{$sort}" => 'asc'], true);
             }
         }
 
@@ -240,8 +240,8 @@ class PlayersTable extends AppTable
                 'name' => 'Ranks.name',
                 'count' => $query->func()->count('*'),
             ])
-            ->group(['Ranks.id', 'Ranks.rank_numeric', 'Ranks.name'])
-            ->orderDesc('Ranks.rank_numeric');
+            ->groupBy(['Ranks.id', 'Ranks.rank_numeric', 'Ranks.name'])
+            ->orderByDesc('Ranks.rank_numeric');
     }
 
     /**

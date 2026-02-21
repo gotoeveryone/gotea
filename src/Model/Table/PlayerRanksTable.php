@@ -105,7 +105,7 @@ class PlayerRanksTable extends AppTable
     public function findRanks(int $playerId): ResultSet
     {
         return $this->findByPlayerId($playerId)
-            ->contain(['Ranks'])->orderDesc('Ranks.rank_numeric')->all();
+            ->contain(['Ranks'])->orderByDesc('Ranks.rank_numeric')->all();
     }
 
     /**
@@ -124,8 +124,8 @@ class PlayerRanksTable extends AppTable
                 },
             ])
             ->where(['PlayerRanks.promoted >=' => FrozenDate::now()->addMonths(-2)])
-            ->orderDesc('PlayerRanks.promoted')
-            ->order('Players.country_id')
-            ->orderDesc('Ranks.rank_numeric');
+            ->orderByDesc('PlayerRanks.promoted')
+            ->orderBy('Players.country_id')
+            ->orderByDesc('Ranks.rank_numeric');
     }
 }

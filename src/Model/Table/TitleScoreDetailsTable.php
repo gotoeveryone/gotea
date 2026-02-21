@@ -109,7 +109,7 @@ class TitleScoreDetailsTable extends AppTable
             'win_point_all' => $query->func()->count("division = '勝' or null"),
             'lose_point_all' => $query->func()->count("division = '敗' or null"),
             'draw_point_all' => $query->func()->count("division = '分' or null"),
-        ])->group([
+        ])->groupBy([
                     'player_id',
                     'target_year',
                 ]);
@@ -174,7 +174,7 @@ class TitleScoreDetailsTable extends AppTable
             ->from(['TitleScoreDetails' => $standardQuery])
             ->select(['value' => $selectFields])
             ->having(['value >' => 0])
-            ->orderDesc('value')
+            ->orderByDesc('value')
             ->limit(1)
             ->offset($limit - 1)
             ->first();
@@ -205,7 +205,7 @@ class TitleScoreDetailsTable extends AppTable
                 'Players.PlayerRanks' => function ($q) use ($ended) {
                     // 抽出期間TOよりも前の段位を取得
                     return $q->where(['PlayerRanks.promoted <=' => $ended])
-                        ->orderDesc('PlayerRanks.promoted');
+                        ->orderByDesc('PlayerRanks.promoted');
                 },
                 'Players.PlayerRanks.Ranks' => function ($q) {
                     // 昇段情報が不足しているケースがあるため、初段は含めない
@@ -225,7 +225,7 @@ class TitleScoreDetailsTable extends AppTable
             ->select($this->Players->Ranks);
 
         if ($type === 'percent') {
-            $query->orderDesc('win_percent');
+            $query->orderByDesc('win_percent');
             if ($value !== null) {
                 $query->having(['win_percent >=' => $value->value]);
             } else {
@@ -240,10 +240,10 @@ class TitleScoreDetailsTable extends AppTable
         }
 
         return $query
-            ->orderDesc('win_point')
-            ->order(['lose_point'])
-            ->orderDesc('Ranks.rank_numeric')
-            ->order(['Players.joined']);
+            ->orderByDesc('win_point')
+            ->orderBy(['lose_point'])
+            ->orderByDesc('Ranks.rank_numeric')
+            ->orderBy(['Players.joined']);
     }
 
     /**

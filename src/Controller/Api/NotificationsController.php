@@ -9,7 +9,7 @@ use Cake\Http\Response;
  * Notifications Controller
  *
  * @property \Gotea\Model\Table\NotificationsTable $Notifications
- * @method \Gotea\Model\Entity\Notification[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \Cake\Datasource\Paging\PaginatedInterface paginate($object = null, array $settings = [])
  */
 class NotificationsController extends ApiController
 {
@@ -20,14 +20,14 @@ class NotificationsController extends ApiController
      */
     public function index(): Response
     {
-        $query = $this->Notifications->find()->orderDesc('published');
+        $query = $this->Notifications->find()->orderByDesc('published');
         $notifications = $this->paginate($query);
 
         return $this->renderJson([
             'total' => $query->count(),
-            'items' => $notifications->map(function ($item) {
+            'items' => collection($notifications->items())->map(function ($item) {
                 return $item->toArray();
-            }),
+            })->toList(),
         ]);
     }
 
@@ -39,9 +39,7 @@ class NotificationsController extends ApiController
      */
     public function view(int $id): Response
     {
-        $notification = $this->Notifications->get($id, [
-            'contain' => [],
-        ]);
+        $notification = $this->Notifications->get($id);
 
         return $this->renderJson($notification->toArray());
     }

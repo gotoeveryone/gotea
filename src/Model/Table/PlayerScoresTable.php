@@ -46,7 +46,7 @@ class PlayerScoresTable extends AppTable
     public function findDescYears(int $playerId): ResultSet
     {
         return $this->findByPlayerId($playerId)
-            ->contain(['Ranks'])->orderDesc('target_year')->all();
+            ->contain(['Ranks'])->orderByDesc('target_year')->all();
     }
 
     /**
@@ -80,11 +80,11 @@ class PlayerScoresTable extends AppTable
                 ]);
 
         if ($isPercent) {
-            $subQuery->orderDesc('win_percent');
+            $subQuery->orderByDesc('win_percent');
         }
 
-        $subQuery->orderDesc($winColumn)
-            ->order($loseColumn)
+        $subQuery->orderByDesc($winColumn)
+            ->orderBy($loseColumn)
             ->limit(1)->offset($offset - 1);
 
         if ($country->has_title) {
@@ -112,17 +112,17 @@ class PlayerScoresTable extends AppTable
         if ($isPercent) {
             $query->having(function ($exp, $q) use ($subQuery) {
                 return $exp->gte('win_percent', $subQuery);
-            })->orderDesc('win_percent');
+            })->orderByDesc('win_percent');
         } else {
             $query->where(function ($exp, $q) use ($winColumn, $subQuery) {
                 return $exp->gte($winColumn, $subQuery);
             });
         }
 
-        $query->orderDesc($winColumn)
-            ->order($loseColumn)
-            ->orderDesc('Ranks.rank_numeric')
-            ->order('Players.joined');
+        $query->orderByDesc($winColumn)
+            ->orderBy($loseColumn)
+            ->orderByDesc('Ranks.rank_numeric')
+            ->orderBy('Players.joined');
 
         if (!$country->isWorlds()) {
             $query->where(['country_id' => $country->id]);

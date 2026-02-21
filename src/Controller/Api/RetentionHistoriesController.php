@@ -21,9 +21,7 @@ class RetentionHistoriesController extends ApiController
     public function view(int $id): Response
     {
         /** @var \Gotea\Model\Entity\RetentionHistory $history */
-        $history = $this->RetentionHistories->get($id, [
-            'contain' => ['Players', 'Players.PlayerRanks.Ranks'],
-        ]);
+        $history = $this->RetentionHistories->get($id, contain: ['Players', 'Players.PlayerRanks.Ranks']);
 
         return $this->renderJson([
             'id' => $history->id,

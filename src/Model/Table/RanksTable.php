@@ -27,7 +27,7 @@ class RanksTable extends AppTable
     public function findProfessional(): Query
     {
         return $this->find()->whereNotNull('rank_numeric')
-            ->orderDesc('rank_numeric')->select(['id', 'name', 'rank_numeric']);
+            ->orderByDesc('rank_numeric')->select(['id', 'name', 'rank_numeric']);
     }
 
     /**

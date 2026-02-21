@@ -9,7 +9,7 @@ use Cake\Http\Response;
  * TableTemplates Controller
  *
  * @property \Gotea\Model\Table\TableTemplatesTable $TableTemplates
- * @method \Gotea\Model\Entity\TableTemplate[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \Cake\Datasource\Paging\PaginatedInterface paginate($object = null, array $settings = [])
  */
 class TableTemplatesController extends ApiController
 {
@@ -20,14 +20,14 @@ class TableTemplatesController extends ApiController
      */
     public function index(): Response
     {
-        $query = $this->TableTemplates->find()->orderAsc('title');
+        $query = $this->TableTemplates->find()->orderBy('title');
         $tableTemplates = $this->paginate($query);
 
         return $this->renderJson([
             'total' => $query->count(),
-            'items' => $tableTemplates->map(function ($item) {
+            'items' => collection($tableTemplates->items())->map(function ($item) {
                 return $item->toArray();
-            }),
+            })->toList(),
         ]);
     }
 }
