@@ -22,7 +22,7 @@ services:
   database:
     image: mariadb:10.5
     volumes:
-      - ./database:/var/lib/mysql
+      - db:/var/lib/mysql
       - ./tests:/docker-entrypoint-initdb.d:ro
     environment:
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
@@ -36,3 +36,4 @@ services:
 volumes:
   node_modules:
   vendor:
+  db:
