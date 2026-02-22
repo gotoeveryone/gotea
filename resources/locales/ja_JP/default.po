@@ -156,3 +156,6 @@ msgstr "{0}行アップロードしました"
 
 msgid "Upload"
 msgstr "アップロード"
+
+msgid "Month is required when day is selected"
+msgstr "日付が選択された場合、月も必須です"
