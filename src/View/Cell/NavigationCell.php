@@ -29,7 +29,7 @@ class NavigationCell extends Cell
             ->all()
             ->reject(function ($item) {
                 // 入段日と昇段日が同じ（＝入段時点の段位の）場合は除外
-                return $item->player->joined === $item->promoted->format('Ymd');
+                return $item->player->joined_ymd === $item->promoted->format('Ymd');
             })
             ->groupBy(function ($item) {
                 return $item->promoted->format('Y/m/d');

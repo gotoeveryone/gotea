@@ -185,11 +185,9 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'input_joined' => [
-                'year' => $now->year,
-                'month' => $now->month,
-                'day' => $now->day,
-            ],
+            'joined_year' => $now->year,
+            'joined_month' => $now->month,
+            'joined_day' => $now->day,
             'birthday' => '',
         ];
         $this->post(['_name' => 'create_player'], $data);
@@ -217,11 +215,9 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'input_joined' => [
-                'year' => $now->year,
-                'month' => $now->month,
-                'day' => $now->day,
-            ],
+            'joined_year' => $now->year,
+            'joined_month' => $now->month,
+            'joined_day' => $now->day,
             'birthday' => $now->format('Y/m/d'),
         ];
         $this->post(['_name' => 'create_player'], $data);
@@ -249,11 +245,9 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'input_joined' => [
-                'year' => $now->year,
-                'month' => $now->month,
-                'day' => $now->day,
-            ],
+            'joined_year' => $now->year,
+            'joined_month' => $now->month,
+            'joined_day' => $now->day,
             'birthday' => date('Y/m/d'),
             'is_continue' => true,
         ];
@@ -290,11 +284,9 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'input_joined' => [
-                'year' => $now->year,
-                'month' => $now->month,
-                'day' => $now->day,
-            ],
+            'joined_year' => $now->year,
+            'joined_month' => $now->month,
+            'joined_day' => $now->day,
             'birthday' => '',
         ];
         $this->put(['_name' => 'update_player', 1], $data);
@@ -323,11 +315,9 @@ class PlayersControllerTest extends AppTestCase
             'country_id' => 1,
             'organization_id' => 1,
             'sex' => '男性',
-            'input_joined' => [
-                'year' => $now->year,
-                'month' => $now->month,
-                'day' => $now->day,
-            ],
+            'joined_year' => $now->year,
+            'joined_month' => $now->month,
+            'joined_day' => $now->day,
             'birthday' => date('Y/m/d'),
         ];
         $this->put(['_name' => 'update_player', 1], $data);

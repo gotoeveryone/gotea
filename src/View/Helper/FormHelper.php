@@ -533,31 +533,59 @@ class FormHelper extends BaseFormHelper
     }
 
     /**
-     * 入段日を取得します。
+     * 入段年一覧を取得します。
      *
-     * @param string $name フィールド名
-     * @param array $attributes オプション
-     * @return string Generated set of select boxes for time formats chosen.
+     * @param string $name プロパティ名
+     * @param array $attributes 属性
+     * @return string Formatted SELECT element
      */
-    public function joined(string $name, array $attributes = []): string
+    public function joinedYears(string $name = 'joined_year', array $attributes = []): string
     {
-        return $this->control($name, [
-            'type' => 'date',
-            'year' => [
-                'start' => '1920',
-                'end' => FrozenDate::now()->addYears(1)->year,
-                'class' => 'input-row dropdowns',
-                'suffix' => '年',
-            ],
-            'month' => [
-                'class' => 'input-row dropdowns',
-                'suffix' => '月',
-            ],
-            'day' => [
-                'class' => 'input-row dropdowns',
-                'suffix' => '日',
-            ],
-            'monthNames' => false,
+        $years = [];
+        for ($i = FrozenDate::now()->addYears(1)->year; $i >= 1920; $i--) {
+            $years[$i] = $i . '年';
+        }
+
+        return $this->select($name, $years, [
+            'empty' => false,
+        ] + $attributes);
+    }
+
+    /**
+     * 入段月一覧を取得します。
+     *
+     * @param string $name プロパティ名
+     * @param array $attributes 属性
+     * @return string Formatted SELECT element
+     */
+    public function joinedMonths(string $name = 'joined_month', array $attributes = []): string
+    {
+        $months = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $months[$i] = $i . '月';
+        }
+
+        return $this->select($name, $months, [
+            'empty' => ['' => '-'],
+        ] + $attributes);
+    }
+
+    /**
+     * 入段日一覧を取得します。
+     *
+     * @param string $name プロパティ名
+     * @param array $attributes 属性
+     * @return string Formatted SELECT element
+     */
+    public function joinedDays(string $name = 'joined_day', array $attributes = []): string
+    {
+        $days = [];
+        for ($i = 1; $i <= 31; $i++) {
+            $days[$i] = $i . '日';
+        }
+
+        return $this->select($name, $days, [
+            'empty' => ['' => '-'],
         ] + $attributes);
     }
 

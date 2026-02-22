@@ -89,7 +89,7 @@ class NavigationCellTest extends TestCase
         foreach ($recents as $items) {
             foreach ($items as $item) {
                 $this->assertGreaterThan(1, $item->rank->rank_numeric);
-                $this->assertNotEquals($item->player->joined, $item->promoted->format('Ymd'));
+                $this->assertNotEquals($item->player->joined_ymd, $item->promoted->format('Ymd'));
             }
         }
     }

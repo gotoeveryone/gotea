@@ -243,7 +243,11 @@ class TitleScoreDetailsTable extends AppTable
             ->orderByDesc('win_point')
             ->orderBy(['lose_point'])
             ->orderByDesc('Ranks.rank_numeric')
-            ->orderBy(['Players.joined']);
+            ->orderBy([
+                'Players.joined_year',
+                'Players.joined_month',
+                'Players.joined_day',
+            ]);
     }
 
     /**
