@@ -34,7 +34,6 @@ return [
     'Cake/Repl' => ['onlyCli' => true, 'onlyDebug' => true],
 
     // Additional plugins here
-    'Shim',
     'Authentication',
     'Authorization',
 ];

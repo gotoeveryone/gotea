@@ -51,8 +51,10 @@
             </div>
         </li>
         <li class="detail_box_item box-8">
-            <?= $this->Form->datetimeSelect('published', [
+            <?= $this->Form->control('published', [
+                'type' => 'datetime',
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'published')],
+                'class' => 'input-row',
             ]) ?>
         </li>
         <li class="detail_box_item button-row">
