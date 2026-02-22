@@ -157,5 +157,8 @@ msgstr "{0}行アップロードしました"
 msgid "Upload"
 msgstr "アップロード"
 
-msgid "Month is required when day is selected"
-msgstr "日付が選択された場合、月も必須です"
+msgid "Joined month is required when joined day is selected"
+msgstr "入段日（日）が選択された場合、入段日（月）も必須です"
+
+msgid "Joined date is invalid"
+msgstr "実在しない入段日です"

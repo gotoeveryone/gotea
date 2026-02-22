@@ -126,9 +126,17 @@ class PlayersController extends AppController
             $params['sex'] = $sex;
         }
         // 入段日
-        $joined = $this->getRequest()->getQuery('joined');
-        if ($joined) {
-            $params['joined'] = $joined;
+        $joinedYear = $this->getRequest()->getQuery('joined_year');
+        if ($joinedYear) {
+            $params['joined_year'] = $joinedYear;
+        }
+        $joinedMonth = $this->getRequest()->getQuery('joined_month');
+        if ($joinedMonth) {
+            $params['joined_month'] = $joinedMonth;
+        }
+        $joinedDay = $this->getRequest()->getQuery('joined_day');
+        if ($joinedDay) {
+            $params['joined_day'] = $joinedDay;
         }
         $player = $this->Players->newEntity($params, [
             'validate' => false,
@@ -180,7 +188,9 @@ class PlayersController extends AppController
                 '?' => [
                     'country_id' => $player->country_id,
                     'sex' => $player->sex,
-                    'joined' => $player->joined,
+                    'joined_year' => $player->joined_year,
+                    'joined_month' => $player->joined_month,
+                    'joined_day' => $player->joined_day,
                 ],
             ]);
         }

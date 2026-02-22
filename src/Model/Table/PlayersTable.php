@@ -52,7 +52,6 @@ class PlayersTable extends AppTable
         return $validator
             ->allowEmptyString('name_other')
             ->allowEmptyString('birthday')
-            ->allowEmptyString('joined')
             ->allowEmptyString('joined_month')
             ->allowEmptyString('joined_day')
             ->requirePresence('joined_year', 'create')
@@ -84,7 +83,22 @@ class PlayersTable extends AppTable
                 'rule' => function ($value, $context) {
                     return empty($value) || !empty(Hash::get($context, 'data.joined_month'));
                 },
-                'message' => __('Month is required when day is selected'),
+                'message' => __('Joined month is required when joined day is selected'),
+            ])
+            ->add('joined_day', 'validDate', [
+                'rule' => function ($value, $context) {
+                    if (empty($value)) {
+                        return true;
+                    }
+                    $year = Hash::get($context, 'data.joined_year');
+                    $month = Hash::get($context, 'data.joined_month');
+                    if (empty($year) || empty($month)) {
+                        return true;
+                    }
+
+                    return checkdate((int)$month, (int)$value, (int)$year);
+                },
+                'message' => __('Joined date is invalid'),
             ])
             ->date('birthday', 'y/m/d')
             ->date('retired', 'y/m/d');
@@ -112,8 +126,6 @@ class PlayersTable extends AppTable
         if (!$entity->is_retired) {
             $entity->retired = null;
         }
-        // 互換性維持: 分離カラムから joined(yyyymmdd) を同期
-        $entity->joined = $entity->joined_ymd ?? '';
         $new = $entity->isNew();
         $save = parent::save($entity, $options);
 

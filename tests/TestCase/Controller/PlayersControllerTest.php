@@ -257,7 +257,9 @@ class PlayersControllerTest extends AppTestCase
             '?' => [
                 'country_id' => 1,
                 'sex' => '男性',
-                'joined' => $now->format('Ymd'),
+                'joined_year' => $now->year,
+                'joined_month' => $now->month,
+                'joined_day' => $now->day,
             ],
         ]);
         $this->assertResponseNotContains('<nav class="nav">');

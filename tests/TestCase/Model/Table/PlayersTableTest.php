@@ -194,6 +194,22 @@ class PlayersTableTest extends TestCase
         $result = $this->Players->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
+        // joined_date の実在チェック
+        $data = $params;
+        $data['joined_year'] = 2026;
+        $data['joined_month'] = 2;
+        $data['joined_day'] = 31;
+        $result = $this->Players->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // うるう年の日付は許可
+        $data = $params;
+        $data['joined_year'] = 2024;
+        $data['joined_month'] = 2;
+        $data['joined_day'] = 29;
+        $result = $this->Players->newEntity($data);
+        $this->assertEmpty($result->getErrors());
+
         // date
         // birthday
         $data = $params;
