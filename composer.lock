@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5afc916374e06fb4e5a887d216d5f634",
+    "content-hash": "5b38103be5e10b00422afbe346d86410",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -711,61 +711,6 @@
                 }
             ],
             "time": "2025-12-08T15:06:51+00:00"
-        },
-        {
-            "name": "dereuromark/cakephp-shim",
-            "version": "3.8.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dereuromark/cakephp-shim.git",
-                "reference": "57b7de0155a7c915fbd392cd5c67e595fa288c94"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dereuromark/cakephp-shim/zipball/57b7de0155a7c915fbd392cd5c67e595fa288c94",
-                "reference": "57b7de0155a7c915fbd392cd5c67e595fa288c94",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "^5.1.1",
-                "php": ">=8.2"
-            },
-            "require-dev": {
-                "dereuromark/cakephp-ide-helper": "^2.0.0",
-                "fig-r/psr2r-sniffer": "dev-master",
-                "phpunit/phpunit": "^11.5 || ^12.1 || ^13.0"
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "Shim\\": "src/",
-                    "Shim\\Test\\Fixture\\": "tests/Fixture/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mark Scherer",
-                    "homepage": "https://www.dereuromark.de",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "A CakePHP plugin to shim applications between major framework versions.",
-            "homepage": "https://github.com/dereuromark/cakephp-shim",
-            "keywords": [
-                "cakephp",
-                "helpers",
-                "plugin",
-                "shim"
-            ],
-            "support": {
-                "issues": "https://github.com/dereuromark/cakephp-shim/issues",
-                "source": "https://github.com/dereuromark/cakephp-shim"
-            },
-            "time": "2026-02-07T08:43:13+00:00"
         },
         {
             "name": "graham-campbell/result-type",

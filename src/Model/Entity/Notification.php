@@ -12,7 +12,7 @@ namespace Gotea\Model\Entity;
  * @property bool $is_draft
  * @property string $status
  * @property bool $is_permanent
- * @property \Cake\I18n\FrozenTime $published
+ * @property \Cake\I18n\FrozenTime|null $published
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
