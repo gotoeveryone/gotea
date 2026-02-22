@@ -60,6 +60,15 @@ msgstr "性別"
 msgid "joined"
 msgstr "入段日"
 
+msgid "joined_year"
+msgstr "入段日（年）"
+
+msgid "joined_month"
+msgstr "入段日（月）"
+
+msgid "joined_day"
+msgstr "入段日（日）"
+
 msgid "joined_from"
 msgstr "入段年（FROM）"
 

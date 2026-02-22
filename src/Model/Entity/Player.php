@@ -20,7 +20,6 @@ use Cake\Routing\Router;
  * @property string|null $name_english
  * @property string|null $name_other
  * @property string $sex
- * @property string $joined
  * @property int|null $joined_year
  * @property int|null $joined_month
  * @property int|null $joined_day
@@ -88,12 +87,7 @@ class Player extends AppEntity
     protected function _getJoinedYmd(): ?string
     {
         if ($this->joined_year === null) {
-            $value = $this->joined;
-            if (!is_string($value) || !preg_match('/^[0-9]{4,8}$/', $value)) {
-                return null;
-            }
-
-            return $value;
+            return null;
         }
 
         $value = sprintf('%04d', (int)$this->joined_year);
@@ -114,89 +108,21 @@ class Player extends AppEntity
      */
     protected function _getFormatJoined(): string
     {
-        $value = $this->buildInputJoinedFromString($this->joined_ymd);
-        if ($value === null) {
+        if ($this->joined_year === null) {
             return '';
         }
 
-        $joined = collection($value)->reject(function ($item) {
-            return $item === '' || $item === null;
-        })->toArray();
+        $joined = [
+            sprintf('%04d', (int)$this->joined_year),
+        ];
+        if ($this->joined_month !== null) {
+            $joined[] = sprintf('%02d', (int)$this->joined_month);
+        }
+        if ($this->joined_day !== null) {
+            $joined[] = sprintf('%02d', (int)$this->joined_day);
+        }
 
         return implode('/', $joined);
-    }
-
-    /**
-     * 文字列の入段日を設定します。
-     *
-     * @param mixed $joined 設定値
-     * @return string|null
-     */
-    protected function _setJoined(mixed $joined): ?string
-    {
-        $value = is_scalar($joined) ? (string)$joined : null;
-        $input = $this->buildInputJoinedFromString($value);
-
-        if (!is_array($input)) {
-            $this->joined_year = null;
-            $this->joined_month = null;
-            $this->joined_day = null;
-
-            return $value;
-        }
-
-        $this->joined_year = isset($input['year']) ? (int)$input['year'] : null;
-        $this->joined_month = isset($input['month']) ? (int)$input['month'] : null;
-        $this->joined_day = isset($input['day']) ? (int)$input['day'] : null;
-
-        return $this->syncJoinedFromParts();
-    }
-
-    /**
-     * 分離カラムから joined 文字列（yyyymmdd）を再構築します。
-     *
-     * @return string 入段日
-     */
-    private function syncJoinedFromParts(): string
-    {
-        $value = '';
-        if ($this->joined_year !== null) {
-            $value .= sprintf('%04d', (int)$this->joined_year);
-        }
-        if ($this->joined_month !== null && strlen($value) === 4) {
-            $value .= sprintf('%02d', (int)$this->joined_month);
-        }
-        if ($this->joined_day !== null && strlen($value) === 6) {
-            $value .= sprintf('%02d', (int)$this->joined_day);
-        }
-
-        return $value;
-    }
-
-    /**
-     * 文字列から入力フォーム用の入段日を取得します。
-     *
-     * @param mixed $value 入段日
-     * @return array<string, string>|null
-     */
-    private function buildInputJoinedFromString(mixed $value): ?array
-    {
-        if (!is_string($value) || !preg_match('/^[0-9]{4,8}$/', $value)) {
-            return null;
-        }
-
-        $res = [];
-        if (strlen($value) >= 4) {
-            $res['year'] = substr($value, 0, 4);
-        }
-        if (strlen($value) >= 6) {
-            $res['month'] = substr($value, 4, 2);
-        }
-        if (strlen($value) >= 8) {
-            $res['day'] = substr($value, 6, 2);
-        }
-
-        return $res;
     }
 
     /**
