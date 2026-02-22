@@ -52,16 +52,15 @@ class PlayersTable extends AppTable
         return $validator
             ->allowEmptyString('name_other')
             ->allowEmptyString('birthday')
-            ->requirePresence('joined', function ($context) {
-                return empty($context['data']['input_joined']);
-            })
+            ->allowEmptyString('joined')
+            ->allowEmptyString('joined_month')
+            ->allowEmptyString('joined_day')
+            ->requirePresence('joined_year', 'create')
             ->requirePresence([
                 'country_id', 'organization_id', 'rank_id',
                 'name', 'name_english', 'sex',
             ], 'create')
-            ->notEmptyString('joined', null, function ($context) {
-                return empty($context['data']['input_joined']);
-            })
+            ->notEmptyString('joined_year')
             ->notEmptyString('country_id')
             ->notEmptyString('organization_id')
             ->notEmptyString('rank_id')
@@ -71,12 +70,22 @@ class PlayersTable extends AppTable
             ->integer('country_id')
             ->integer('organization_id')
             ->integer('rank_id')
+            ->integer('joined_year')
+            ->integer('joined_month')
+            ->integer('joined_day')
+            ->range('joined_year', [1, 9999])
+            ->range('joined_month', [1, 12])
+            ->range('joined_day', [1, 31])
             ->nameEnglish('name_english')
-            ->naturalNumber('joined')
             ->maxLength('name', 20)
             ->maxLength('name_english', 40)
             ->maxLength('name_other', 20)
-            ->lengthBetween('joined', [4, 8])
+            ->add('joined_day', 'requireMonth', [
+                'rule' => function ($value, $context) {
+                    return empty($value) || !empty(Hash::get($context, 'data.joined_month'));
+                },
+                'message' => __('Month is required when day is selected'),
+            ])
             ->date('birthday', 'y/m/d')
             ->date('retired', 'y/m/d');
     }
@@ -103,13 +112,15 @@ class PlayersTable extends AppTable
         if (!$entity->is_retired) {
             $entity->retired = null;
         }
+        // 互換性維持: 分離カラムから joined(yyyymmdd) を同期
+        $entity->joined = $entity->joined_ymd ?? '';
         $new = $entity->isNew();
         $save = parent::save($entity, $options);
 
         // 新規作成時には昇段情報も登録
         if ($save && $new) {
             // 入段日を登録時段位の昇段日として設定
-            $promoted = FrozenDate::parseDate($entity->joined, 'yyyyMMdd');
+            $promoted = FrozenDate::parseDate($entity->joined_ymd, 'yyyyMMdd');
 
             // 入段日が完全な日付だった場合、棋士昇段情報へ登録
             if ($promoted !== null) {
@@ -135,7 +146,11 @@ class PlayersTable extends AppTable
     {
         // 棋士情報の取得
         $query = $this->find()->orderBy([
-            'Ranks.rank_numeric DESC', 'Players.joined', 'Players.id',
+            'Ranks.rank_numeric DESC',
+            'Players.joined_year',
+            'Players.joined_month',
+            'Players.joined_day',
+            'Players.id',
         ])->contain([
             'Ranks', 'Countries', 'Organizations', 'TitleScoreDetails',
         ]);
@@ -178,12 +193,12 @@ class PlayersTable extends AppTable
 
         $joinedFrom = Hash::get($data, 'joined_from');
         if ($joinedFrom > 0) {
-            $query->where(['SUBSTR(Players.joined, 1, 4) >=' => sprintf('%04d', $joinedFrom)]);
+            $query->where(['Players.joined_year >=' => $joinedFrom]);
         }
 
         $joinedTo = Hash::get($data, 'joined_to');
         if ($joinedTo) {
-            $query->where(['SUBSTR(Players.joined, 1, 4) <=' => sprintf('%04d', $joinedTo)]);
+            $query->where(['Players.joined_year <=' => $joinedTo]);
         }
 
         if (!Hash::get($data, 'is_retired', false)) {
@@ -201,10 +216,15 @@ class PlayersTable extends AppTable
         $sort = Hash::get($data, 'sort');
         $direction = Hash::get($data, 'direction', 'asc');
         if ($sort && in_array(strtolower($sort), $fields, true)) {
-            if (in_array(strtolower($direction), ['asc', 'desc'], true)) {
-                $query->orderBy(["Players.{$sort}" => $direction], true);
+            $direction = in_array(strtolower($direction), ['asc', 'desc'], true) ? $direction : 'asc';
+            if (strtolower($sort) === 'joined') {
+                $query->orderBy([
+                    'Players.joined_year' => $direction,
+                    'Players.joined_month' => $direction,
+                    'Players.joined_day' => $direction,
+                ], true);
             } else {
-                $query->orderBy(["Players.{$sort}" => 'asc'], true);
+                $query->orderBy(["Players.{$sort}" => $direction], true);
             }
         }
 

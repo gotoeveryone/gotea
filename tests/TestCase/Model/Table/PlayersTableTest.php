@@ -79,7 +79,9 @@ class PlayersTableTest extends TestCase
             'name' => '12345678901234567890',
             'name_english' => '1234567890123456789012345678901234567890',
             'sex' => '男性',
-            'joined' => '20180101',
+            'joined_year' => 2018,
+            'joined_month' => 1,
+            'joined_day' => 1,
         ];
 
         // success
@@ -87,7 +89,16 @@ class PlayersTableTest extends TestCase
         $this->assertEmpty($result->getErrors());
 
         // requirePresence
-        foreach ($params as $name => $value) {
+        $requiredNames = [
+            'country_id',
+            'rank_id',
+            'organization_id',
+            'name',
+            'name_english',
+            'sex',
+            'joined_year',
+        ];
+        foreach ($requiredNames as $name) {
             $data = $params;
             unset($data[$name]);
             $result = $this->Players->newEntity($data);
@@ -120,8 +131,8 @@ class PlayersTableTest extends TestCase
             $this->assertNotEmpty($result->getErrors());
         }
 
-        // naturalNumber
-        $names = ['joined'];
+        // integer
+        $names = ['joined_year', 'joined_month', 'joined_day'];
         foreach ($names as $name) {
             $data = $params;
             $data[$name] = 'test';
@@ -148,13 +159,38 @@ class PlayersTableTest extends TestCase
         $result = $this->Players->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 
-        // lengthBetween
-        // joined
+        // range
+        // joined_year
         $data = $params;
-        $data['joined'] = '201';
+        $data['joined_year'] = 0;
         $result = $this->Players->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
-        $data['joined'] = '201801010';
+        $data['joined_year'] = 10000;
+        $result = $this->Players->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // joined_month
+        $data = $params;
+        $data['joined_month'] = 0;
+        $result = $this->Players->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+        $data['joined_month'] = 13;
+        $result = $this->Players->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // joined_day
+        $data = $params;
+        $data['joined_day'] = 0;
+        $result = $this->Players->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+        $data['joined_day'] = 32;
+        $result = $this->Players->newEntity($data);
+        $this->assertNotEmpty($result->getErrors());
+
+        // joined_day には joined_month が必要
+        $data = $params;
+        $data['joined_month'] = null;
+        $data['joined_day'] = 1;
         $result = $this->Players->newEntity($data);
         $this->assertNotEmpty($result->getErrors());
 

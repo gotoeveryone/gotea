@@ -122,7 +122,11 @@ class PlayerScoresTable extends AppTable
         $query->orderByDesc($winColumn)
             ->orderBy($loseColumn)
             ->orderByDesc('Ranks.rank_numeric')
-            ->orderBy('Players.joined');
+            ->orderBy([
+                'Players.joined_year',
+                'Players.joined_month',
+                'Players.joined_day',
+            ]);
 
         if (!$country->isWorlds()) {
             $query->where(['country_id' => $country->id]);

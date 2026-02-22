@@ -78,18 +78,30 @@ $isAdmin = $this->isAdmin();
             ?>
         </li>
         <li class="detail_box_item box-3">
-            <?php
-                echo $this->Form->joined('input_joined', [
-                    'label' => ['class' => 'label-row', 'text' => __d('model', 'joined')],
-                    'class' => 'input-row',
-                    'empty' => [
-                        'year' => false,
-                        'month' => ['' => '-'],
-                        'day' => ['' => '-'],
-                    ],
-                    'disabled' => !$isAdmin,
-                ]);
-                ?>
+            <div class="input">
+                <div class="label-row"><?= __d('model', 'joined') ?></div>
+                <div class="input-row dropdowns">
+                    <?php
+                    echo $this->Form->joinedYears('joined_year', [
+                        'disabled' => !$isAdmin,
+                    ]);
+                    ?>
+                </div>
+                <div class="input-row dropdowns">
+                    <?php
+                    echo $this->Form->joinedMonths('joined_month', [
+                        'disabled' => !$isAdmin,
+                    ]);
+                    ?>
+                </div>
+                <div class="input-row dropdowns">
+                    <?php
+                    echo $this->Form->joinedDays('joined_day', [
+                        'disabled' => !$isAdmin,
+                    ]);
+                    ?>
+                </div>
+            </div>
         </li>
         <li class="detail_box_item box-2">
             <?php
