@@ -22,7 +22,7 @@
     "cakephp/plugin-installer": "^2.0",
     "lordsimal/cakephp-sentry": "^3.0",
     "mobiledetect/mobiledetectlib": "^4.8",
-    "symfony/browser-kit": "^6.2.7",
+    "symfony/browser-kit": "^8.0.4",
     "symfony/css-selector": "^6.2.7",
     "symfony/http-client": "^6.2.7",
     "vlucas/phpdotenv": "^5.4"
