@@ -40,7 +40,11 @@ import {
   TableTemplate as Item,
   TableTemplateListResponse as Response,
 } from '@/types/table-template';
-import { isPositiveNumber } from '@/libs/validator';
+import {
+  listenPaginationPopState,
+  pushPaginationState,
+  readPaginationFromUrl,
+} from '@/libs/pagination-url';
 
 export default defineComponent({
   components: {
@@ -58,18 +62,24 @@ export default defineComponent({
     items: [] as Item[],
     currentPage: 1,
     perPage: 30,
+    cleanupPopStateListener: null as null | (() => void),
   }),
   mounted() {
-    const url = new URL(location.href);
-    const limit = url.searchParams.get('limit');
-    const page = url.searchParams.get('page');
-    if (isPositiveNumber(limit)) {
-      this.perPage = Number.parseInt(limit as string, 10);
-    }
-    if (isPositiveNumber(page)) {
-      this.currentPage = Number.parseInt(page as string, 10);
-    }
+    const { page, limit } = readPaginationFromUrl(this.perPage);
+    this.perPage = limit;
+    this.currentPage = page;
+    this.cleanupPopStateListener = listenPaginationPopState(this.perPage, ({ page, limit }) => {
+      if (this.currentPage === page && this.perPage === limit) {
+        return;
+      }
+      this.perPage = limit;
+      this.onSearch(page);
+    });
     this.onSearch(this.currentPage);
+  },
+  beforeUnmount() {
+    this.cleanupPopStateListener?.();
+    this.cleanupPopStateListener = null;
   },
   methods: {
     onSearch(page: number) {
@@ -80,12 +90,7 @@ export default defineComponent({
         .then(({ response: { total, items } }) => {
           this.total = total;
           this.items = items;
-          const url = new URL(location.href);
-          url.searchParams.set('limit', this.perPage.toString());
-          url.searchParams.set('page', this.currentPage.toString());
-          if (url.toString() !== location.href) {
-            history.replaceState({ page: this.currentPage, limit: this.perPage }, '', url);
-          }
+          pushPaginationState({ page: this.currentPage, limit: this.perPage });
         });
     },
   },
