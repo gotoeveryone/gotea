@@ -7,7 +7,7 @@
 ?>
 <div class="pagination">
     <ul class="pagination-item">
-        <li class="result-count"><?= __('{0}件のレコードが該当しました。', $this->Paginator->param('count')) ?></li>
+        <li class="result-count"><?= __('{0}件のレコードが該当しました。', $this->Paginator->param('totalCount')) ?></li>
     </ul>
     <ul class="pagination-item pager">
         <?php if ($this->Paginator->hasPage(2)) : ?>

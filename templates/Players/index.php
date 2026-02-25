@@ -1,10 +1,10 @@
 <?php
 /**
  * @var \Gotea\View\AppView $this ビューオブジェクト
- * @var \Gotea\Model\Entity\Player[]|\Cake\Collection\CollectionInterface $players 棋士一覧データ
+ * @var ?\Cake\Datasource\Paging\PaginatedInterface $players 棋士一覧データ
  */
 $isAdmin = $this->isAdmin();
-$hasPlayers = isset($players) && $players instanceof \Cake\Datasource\Paging\PaginatedInterface;
+$hasPlayers = !empty($players);
 ?>
 <section class="players">
     <?= $this->Form->create($form, ['class' => 'main-form', 'type' => 'get', 'url' => ['_name' => 'find_players']]) ?>
