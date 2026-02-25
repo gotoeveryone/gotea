@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \Gotea\View\AppView $this
- * @var \Gotea\Model\Entity\TitleScore[]|\Cake\Collection\CollectionInterface $titleScores
+ * @var ?\Cake\Datasource\Paging\PaginatedInterface $titleScores
  */
 ?>
 <section class="title-scores">
