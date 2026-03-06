@@ -18,6 +18,7 @@
   ],
   "rules": {
     "scss/dollar-variable-colon-space-after": "always",
+    "declaration-property-value-no-unknown": null,
     "at-rule-no-unknown": [
       true,
       {
