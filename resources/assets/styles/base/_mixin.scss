@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'variables' as *;
 
 @mixin sp() {
   @media screen and (max-width: ($breakpoint)) {
