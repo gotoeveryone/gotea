@@ -31,7 +31,8 @@
           "if",
           "else",
           "for",
-          "use"
+          "use",
+          "forward"
         ]
       }
     ],

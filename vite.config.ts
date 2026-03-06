@@ -35,8 +35,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import "~/base/variables";
-          @import "~/base/mixin";
+          @use "~/base" as *;
         `,
       },
     },
