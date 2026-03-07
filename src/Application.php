@@ -150,8 +150,12 @@ class Application extends BaseApplication implements
             'fields' => $fields,
             'loginUrl' => '/login',
             'identifier' => [
-                'className' => 'Gotea.ExternalApi',
+                'className' => 'Authentication.Password',
                 'fields' => $fields,
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Users',
+                ],
             ],
         ]);
 
