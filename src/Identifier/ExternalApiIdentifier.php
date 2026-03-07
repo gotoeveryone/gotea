@@ -16,7 +16,9 @@ declare(strict_types=1);
  */
 namespace Gotea\Identifier;
 
+use ArrayAccess;
 use Authentication\Identifier\AbstractIdentifier;
+use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identifier\Resolver\ResolverAwareTrait;
 
 /**
@@ -40,8 +42,8 @@ class ExternalApiIdentifier extends AbstractIdentifier
      */
     protected array $_defaultConfig = [
         'fields' => [
-            self::CREDENTIAL_USERNAME => 'account',
-            self::CREDENTIAL_PASSWORD => 'password',
+            PasswordIdentifier::CREDENTIAL_USERNAME => 'account',
+            PasswordIdentifier::CREDENTIAL_PASSWORD => 'password',
         ],
         'resolver' => 'Gotea.Api',
     ];
@@ -49,18 +51,18 @@ class ExternalApiIdentifier extends AbstractIdentifier
     /**
      * @inheritDoc
      */
-    public function identify(array $data)
+    public function identify(array $credentials): ArrayAccess|array|null
     {
-        if (!isset($data[self::CREDENTIAL_USERNAME])) {
+        if (!isset($credentials[PasswordIdentifier::CREDENTIAL_USERNAME])) {
             return null;
         }
 
-        $usernameKey = $this->getConfig('fields.' . self::CREDENTIAL_USERNAME);
-        $passwordKey = $this->getConfig('fields.' . self::CREDENTIAL_PASSWORD);
+        $usernameKey = $this->getConfig('fields.' . PasswordIdentifier::CREDENTIAL_USERNAME);
+        $passwordKey = $this->getConfig('fields.' . PasswordIdentifier::CREDENTIAL_PASSWORD);
 
         return $this->getResolver()->find([
-            $usernameKey => $data[self::CREDENTIAL_USERNAME],
-            $passwordKey => $data[self::CREDENTIAL_PASSWORD],
+            $usernameKey => $credentials[PasswordIdentifier::CREDENTIAL_USERNAME],
+            $passwordKey => $credentials[PasswordIdentifier::CREDENTIAL_PASSWORD],
         ]);
     }
 }
