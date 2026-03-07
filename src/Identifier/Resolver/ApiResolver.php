@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Identifier\Resolver;
 
+use ArrayAccess;
 use Authentication\Identifier\Resolver\ResolverInterface;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Log\Log;
@@ -40,7 +41,7 @@ class ApiResolver implements ResolverInterface
     /**
      * @inheritDoc
      */
-    public function find(array $conditions, $type = self::TYPE_AND)
+    public function find(array $conditions, string $type = self::TYPE_AND): ArrayAccess|array|null
     {
         // トークン発行
         $response = $this->callApi('auth', 'post', $conditions);
