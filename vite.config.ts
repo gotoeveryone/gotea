@@ -11,6 +11,7 @@ export default defineConfig({
   build: {
     sourcemap: false, // https://github.com/vitejs/vite-plugin-vue/issues/35
     minify: false,
+    manifest: true,
     outDir: "./webroot/",
     emptyOutDir: false,
     rollupOptions: {
@@ -24,10 +25,10 @@ export default defineConfig({
           const directory = /\.css$/i.test(assetInfo.name as string)
             ? "css"
             : "js";
-          return `${directory}/[name][extname]`;
+          return `${directory}/[name]-[hash][extname]`;
         },
-        chunkFileNames: "js/[name].js",
-        entryFileNames: "js/[name].js",
+        chunkFileNames: "js/[name]-[hash].js",
+        entryFileNames: "js/[name]-[hash].js",
       },
     },
   },
