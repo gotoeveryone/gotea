@@ -15,7 +15,7 @@
     "php": ">=8.4",
     "abraham/twitteroauth": "^8.1",
     "aws/aws-sdk-php": "^3.273",
-    "cakephp/authentication": "^3.0",
+    "cakephp/authentication": "^4.0",
     "cakephp/authorization": "^3.0",
     "cakephp/cakephp": "^5.0.0",
     "cakephp/migrations": "^4.0.0",

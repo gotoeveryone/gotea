@@ -19,6 +19,7 @@ namespace Gotea;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
@@ -137,29 +138,23 @@ class Application extends BaseApplication implements
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $fields = [
-            'username' => 'account',
-            'password' => 'password',
+            PasswordIdentifier::CREDENTIAL_USERNAME => 'account',
+            PasswordIdentifier::CREDENTIAL_PASSWORD => 'password',
         ];
-        $identifier = [
-            'Authentication.Password' => [
-                'fields' => $fields,
-            ],
-        ];
-
         $service = new AuthenticationService([
             'unauthenticatedRedirect' => '/',
             'queryParam' => 'redirect',
-            'authenticators' => [
-                'Gotea.Session' => [
-                    'fields' => [
-                        'username' => 'account',
-                    ],
-                    'identifier' => $identifier,
-                ],
-                'Authentication.Form' => [
-                    'fields' => $fields,
-                    'loginUrl' => '/login',
-                    'identifier' => $identifier,
+        ]);
+        $service->loadAuthenticator('Gotea.Session');
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => $fields,
+            'loginUrl' => '/login',
+            'identifier' => [
+                'className' => 'Authentication.Password',
+                'fields' => $fields,
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Users',
                 ],
             ],
         ]);
