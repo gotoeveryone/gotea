@@ -47,10 +47,13 @@ class TitleScoreCommand extends Command
 
             $scores = $scores->all()->map(function ($score) {
                 return [
-                    $score->started_timestamp,
+                    $score->match_id,
+                    $score->game_date,
                     $score->player1_id,
                     $score->player2_id,
-                    $score->winner_player_no,
+                    $score->winner_player_id,
+                    $score->event_id,
+                    $score->event_name,
                 ];
             })->toArray();
             foreach ($scores as $fields) {
