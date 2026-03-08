@@ -241,17 +241,15 @@ class TitleScoresTable extends AppTable
                     'conditions' => 'TitleScores.id = tsd.title_score_id',
                 ],
             ])
-            ->innerJoinWith('Countries')
             ->select([
-                'match_id' => 'TitleScores.id',
-                'game_date' => 'TitleScores.started',
+                'started_timestamp' => $query->func()->unix_timestamp([
+                    'TitleScores.started' => 'identifier',
+                ]),
                 'player1_id' => 'tsd.player1_id',
                 'player2_id' => 'tsd.player2_id',
-                'winner_player_id' => 'tsd.winner_player_id',
-                'event_name' => 'TitleScores.name',
-                'country_id' => 'TitleScores.country_id',
-                'country_name' => 'Countries.name',
-                'is_official' => 'TitleScores.is_official',
+                'winner_player_no' => $query->expr(
+                    'CASE WHEN tsd.winner_player_id = tsd.player1_id THEN 1 ELSE 2 END',
+                ),
             ]);
     }
 }

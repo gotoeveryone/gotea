@@ -51,15 +51,10 @@ class TitleScoreCommand extends Command
 
             foreach ($scores as $score) {
                 $fields = [
-                    $score->match_id,
-                    $score->game_date->format('Y-m-d'),
+                    $score->started_timestamp,
                     $score->player1_id,
                     $score->player2_id,
-                    $score->winner_player_id,
-                    $score->event_name,
-                    $score->country_id,
-                    $score->country_name,
-                    (int)$score->is_official,
+                    $score->winner_player_no,
                 ];
                 if (!$file->fputcsv($fields, ',', '"', '\\')) {
                     Log::error('ファイルへの書き込みに失敗しました。');
