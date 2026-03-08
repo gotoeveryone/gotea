@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\I18n\FrozenDate;
-use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -38,7 +37,7 @@ class TitleScoreDetailsTable extends AppTable
 
         $this->belongsTo('TitleScores');
         $this->belongsTo('Players')
-            ->setJoinType(Query::JOIN_TYPE_INNER);
+            ->setJoinType(SelectQuery::JOIN_TYPE_INNER);
     }
 
     /**
