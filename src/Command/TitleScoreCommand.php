@@ -9,6 +9,7 @@ use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Gotea\Client\S3Client;
+use Gotea\Model\Table\TitleScoresTable;
 use SplFileObject;
 use Throwable;
 
@@ -19,6 +20,8 @@ use Throwable;
  */
 class TitleScoreCommand extends Command
 {
+    protected TitleScoresTable $TitleScores;
+
     /**
      * @inheritDoc
      */
@@ -57,7 +60,7 @@ class TitleScoreCommand extends Command
                 ];
             })->toArray();
             foreach ($scores as $fields) {
-                if (!$file->fputcsv($fields, ',')) {
+                if (!$file->fputcsv($fields, ',', '"', '\\')) {
                     Log::error('ファイルへの書き込みに失敗しました。');
 
                     return self::CODE_ERROR;
