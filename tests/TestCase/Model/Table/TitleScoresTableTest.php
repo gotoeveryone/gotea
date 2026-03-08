@@ -323,8 +323,10 @@ class TitleScoresTableTest extends TestCase
             $this->assertGreaterThan(0, $item->player1_id);
             $this->assertGreaterThan(0, $item->player2_id);
             $this->assertContains($item->winner_player_id, [$item->player1_id, $item->player2_id]);
-            $this->assertGreaterThan(0, $item->event_id);
-            $this->assertNotEmpty($item->event_name);
+            $this->assertArrayHasKey('event_name', $item->toArray());
+            $this->assertGreaterThan(0, $item->country_id);
+            $this->assertNotEmpty($item->country_name);
+            $this->assertContains((int)$item->is_official, [0, 1]);
         });
     }
 }

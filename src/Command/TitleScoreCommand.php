@@ -56,8 +56,10 @@ class TitleScoreCommand extends Command
                     $score->player1_id,
                     $score->player2_id,
                     $score->winner_player_id,
-                    $score->event_id,
                     $score->event_name,
+                    $score->country_id,
+                    $score->country_name,
+                    (int)$score->is_official,
                 ];
                 if (!$file->fputcsv($fields, ',', '"', '\\')) {
                     Log::error('ファイルへの書き込みに失敗しました。');

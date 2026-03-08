@@ -241,15 +241,17 @@ class TitleScoresTable extends AppTable
                     'conditions' => 'TitleScores.id = tsd.title_score_id',
                 ],
             ])
-            ->leftJoinWith('Titles')
+            ->innerJoinWith('Countries')
             ->select([
                 'match_id' => 'TitleScores.id',
                 'game_date' => 'TitleScores.started',
                 'player1_id' => 'tsd.player1_id',
                 'player2_id' => 'tsd.player2_id',
                 'winner_player_id' => 'tsd.winner_player_id',
-                'event_id' => 'TitleScores.title_id',
-                'event_name' => 'Titles.name',
+                'event_name' => 'TitleScores.name',
+                'country_id' => 'TitleScores.country_id',
+                'country_name' => 'Countries.name',
+                'is_official' => 'TitleScores.is_official',
             ]);
     }
 }
