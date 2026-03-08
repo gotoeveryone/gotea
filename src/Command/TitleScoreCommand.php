@@ -43,23 +43,22 @@ class TitleScoreCommand extends Command
         Log::info('タイトル成績の出力処理を開始します。');
 
         try {
-            $scores = $this->TitleScores->findSummaryScores();
+            $scores = $this->TitleScores->findSummaryScores()
+                ->disableBufferedResults();
 
             $processDate = FrozenDate::now()->i18nFormat('yyyy-MM-dd');
             $file = new SplFileObject("{$processDate}.csv", 'wr+');
 
-            $scores = $scores->all()->map(function ($score) {
-                return [
+            foreach ($scores as $score) {
+                $fields = [
                     $score->match_id,
-                    $score->game_date,
+                    $score->game_date->format('Y-m-d'),
                     $score->player1_id,
                     $score->player2_id,
                     $score->winner_player_id,
                     $score->event_id,
                     $score->event_name,
                 ];
-            })->toArray();
-            foreach ($scores as $fields) {
                 if (!$file->fputcsv($fields, ',', '"', '\\')) {
                     Log::error('ファイルへの書き込みに失敗しました。');
 
