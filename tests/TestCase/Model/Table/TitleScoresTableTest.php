@@ -318,10 +318,13 @@ class TitleScoresTableTest extends TestCase
         $scores = $this->TitleScores->findSummaryScores();
         $this->assertGreaterThan(0, $scores->count());
         $scores->all()->each(function ($item) {
-            $this->assertNotNull($item->started_timestamp);
+            $this->assertGreaterThan(0, $item->match_id);
+            $this->assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}$/', $item->game_date->format('Y-m-d'));
             $this->assertGreaterThan(0, $item->player1_id);
             $this->assertGreaterThan(0, $item->player2_id);
-            $this->assertContains($item->winner_player_no, [1, 2]);
+            $this->assertContains($item->winner_player_id, [$item->player1_id, $item->player2_id]);
+            $this->assertGreaterThan(0, $item->event_id);
+            $this->assertNotEmpty($item->event_name);
         });
     }
 }
