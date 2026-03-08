@@ -39,9 +39,6 @@ tar xzf "${TAR_PATH}" -C "${WWW_DIR}"
 # ログディレクトリの設定
 ln -s "${HOME}/release/log/${PROJECT}" "${WWW_DIR}/logs"
 
-# 一時ディレクトリの設定
-ln -s "${HOME}/release/tmp/${PROJECT}" "${WWW_DIR}/tmp"
-
 # .env の設定
 ln -s "${HOME}/release/environment/${PROJECT}/.env" "${WWW_DIR}/.env"
 
@@ -57,9 +54,6 @@ composer install \
 
 # マイグレーション実行
 ./bin/cake migrations migrate
-
-# キャッシュ削除
-./bin/cake cache clear_all
 
 # リンク張り替え（ロールバック可能）
 LINK_PATH="${WWW_DIR}/webroot"
