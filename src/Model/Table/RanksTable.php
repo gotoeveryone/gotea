@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Gotea\Model\Entity\Rank;
 
 /**
@@ -22,9 +22,9 @@ class RanksTable extends AppTable
     /**
      * 段位のID・名前を一覧で取得します。
      *
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findProfessional(): Query
+    public function findProfessional(): SelectQuery
     {
         return $this->find()->whereNotNull('rank_numeric')
             ->orderByDesc('rank_numeric')->select(['id', 'name', 'rank_numeric']);
