@@ -4,11 +4,11 @@ set -euo pipefail
 IFS=$'\n\t'
 
 if [ "$#" -ne 3 ]; then
-  echo "Usage: $0 <tar_name> <project> <public_dir>" >&2
+  echo "Usage: $0 <tar_path> <project> <public_dir>" >&2
   exit 1
 fi
 
-TAR_NAME="$1"
+TAR_PATH="$1"
 PROJECT="$2"
 PUBLIC_DIR="$3"
 
@@ -23,8 +23,18 @@ CURRENT_PATH="${WORK_DIR}/current"
 TARGET_PATH="${PUBLIC_DIR%/}/${PROJECT}"
 mkdir -p "${WWW_DIR}"
 
+# tar パスは絶対パス指定を優先（互換のためファイル名のみ指定にも対応）
+if [[ "${TAR_PATH}" != /* ]]; then
+  TAR_PATH="${HOME}/${TAR_PATH}"
+fi
+
+cleanup_tar() {
+  rm -f -- "${TAR_PATH}"
+}
+trap cleanup_tar EXIT
+
 # tar の解凍
-tar xzf "${HOME}/${TAR_NAME}" -C "${WWW_DIR}"
+tar xzf "${TAR_PATH}" -C "${WWW_DIR}"
 
 # ログディレクトリの設定
 ln -s "${HOME}/release/log/${PROJECT}" "${WWW_DIR}/logs"
@@ -108,6 +118,3 @@ if [ "${#RELEASE_DIRS[@]}" -gt "${DELETE_COUNT}" ]; then
     echo "${OLD_DIR}を削除しました。"
   done
 fi
-
-# 利用した tar の削除
-rm "${HOME}/${TAR_NAME}"
