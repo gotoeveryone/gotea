@@ -14,11 +14,25 @@ jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     env:
-      TAR_NAME: 'gotea_${{ github.run_number }}.tar.gz'
-      SHELL_DEST_PATH: '~/deploy_${{ github.run_number }}.sh'
+      PROJECT: '${{ github.event.repository.name }}'
+      TAR_NAME: '${{ github.event.repository.name }}_${{ github.run_number }}.tar.gz'
+      SHELL_DEST_PATH: '~/deploy_${{ github.event.repository.name }}_${{ github.run_number }}.sh'
+      PUBLIC_DIR: '${{ secrets.PUBLIC_DIR }}'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.13"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Build assets
+        run: npm run build
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -32,23 +46,13 @@ jobs:
               Port ${{ secrets.SSH_PORT }}
               StrictHostKeyChecking yes
               IdentityFile ~/.ssh/id_rsa-target
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24.13"
-          cache: "npm"
-          cache-dependency-path: package-lock.json
-      - name: Install dependencies
-        run: npm ci
-      - name: Build assets
-        run: npm run build
       - name: Transfer modules
         run: |
           tar czf ~/${TAR_NAME} bin/ config/ plugins/ resources/ src/ templates/ webroot/ composer.json composer.lock
           scp -r ~/${TAR_NAME} target:~/
-          scp ./shell/deploy.sh target:${SHELL_DEST_PATH}
+          scp ./scripts/deploy.sh target:${SHELL_DEST_PATH}
       - name: Deploy modules
-        run: ssh target "${SHELL_DEST_PATH} ${TAR_NAME} gotea && rm -f ${SHELL_DEST_PATH}"
+        run: ssh target "${SHELL_DEST_PATH} ${TAR_NAME} ${PROJECT} ${PUBLIC_DIR} && rm -f ${SHELL_DEST_PATH}"
 
   notify:
     if: ${{ always() }}
