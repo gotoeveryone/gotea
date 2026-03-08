@@ -5,7 +5,7 @@ namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\FrozenDate;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -111,15 +111,15 @@ class PlayerRanksTable extends AppTable
     /**
      * 最近の昇段者を取得します。
      *
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findRecentPromoted(): Query
+    public function findRecentPromoted(): SelectQuery
     {
         return $this->find()
             ->contain([
                 'Players',
                 'Players.Countries',
-                'Ranks' => function (Query $q) {
+                'Ranks' => function (SelectQuery $q) {
                     return $q->where(['rank_numeric >' => 1]);
                 },
             ])

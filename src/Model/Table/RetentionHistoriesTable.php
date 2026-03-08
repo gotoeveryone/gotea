@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
@@ -27,7 +27,7 @@ class RetentionHistoriesTable extends AppTable
 
         // タイトルマスタ
         $this->belongsTo('Titles')
-            ->setJoinType(Query::JOIN_TYPE_INNER);
+            ->setJoinType(SelectQuery::JOIN_TYPE_INNER);
         // 棋士
         $this->belongsTo('Players');
         // 出場国
@@ -146,9 +146,9 @@ class RetentionHistoriesTable extends AppTable
      * 指定した棋士のタイトル履歴を取得します。
      *
      * @param int $playerId 棋士ID
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findHistoriesByPlayer(int $playerId): Query
+    public function findHistoriesByPlayer(int $playerId): SelectQuery
     {
         return $this->findByPlayerId($playerId)
             ->contain(['Titles.Countries'])
@@ -163,9 +163,9 @@ class RetentionHistoriesTable extends AppTable
      * 指定したタイトルの履歴を取得します。
      *
      * @param int $titleId タイトルID
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findHistoriesByTitle(int $titleId): Query
+    public function findHistoriesByTitle(int $titleId): SelectQuery
     {
         return $this->findByTitleId($titleId)
             ->contain(['Titles'])

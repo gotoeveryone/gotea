@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validator;
 
 /**
@@ -80,9 +80,9 @@ class NotificationsTable extends AppTable
     /**
      * 公開日の新しい順に全件取得する。
      *
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findAllNewestArrivals(): Query
+    public function findAllNewestArrivals(): SelectQuery
     {
         // 棋士情報の取得
         return $this->find()->orderByDesc('published');
