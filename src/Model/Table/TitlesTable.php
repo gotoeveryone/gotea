@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -149,9 +149,9 @@ class TitlesTable extends AppTable
     /**
      * 有効なタイトルをID・名前のリストで取得します。
      *
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findSortedList(): Query
+    public function findSortedList(): SelectQuery
     {
         return $this->find('list')->orderBy(['country_id', 'id']);
     }
@@ -160,13 +160,13 @@ class TitlesTable extends AppTable
      * タイトル情報を取得します。
      *
      * @param array $data パラメータ
-     * @return \Cake\ORM\Query 生成したクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成したクエリ
      */
-    public function findTitles(array $data = []): Query
+    public function findTitles(array $data = []): SelectQuery
     {
         $query = $this->find()->contain([
             'Countries',
-            'RetentionHistories' => function (Query $q) {
+            'RetentionHistories' => function (SelectQuery $q) {
                 return $q->where(['RetentionHistories.holding = Titles.holding']);
             },
             'RetentionHistories.Titles',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Model\Table;
 
 use Cake\Database\Expression\QueryExpression;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
@@ -126,9 +126,9 @@ class TitleScoresTable extends AppTable
      * タイトル勝敗を検索します。
      *
      * @param array $data パラメータ
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findMatches(array $data): Query
+    public function findMatches(array $data): SelectQuery
     {
         $query = $this->find()
             ->contain([
@@ -142,8 +142,8 @@ class TitleScoresTable extends AppTable
 
         $id = Hash::get($data, 'player_id');
         if ($id) {
-            $query->leftJoinWith('TitleScoreDetails', function (Query $q) use ($id) {
-                return $q->innerJoinWith('Players', function (Query $q) use ($id) {
+            $query->leftJoinWith('TitleScoreDetails', function (SelectQuery $q) use ($id) {
+                return $q->innerJoinWith('Players', function (SelectQuery $q) use ($id) {
                     return $q->where(['TitleScoreDetails.player_id' => $id]);
                 });
             });
@@ -217,9 +217,9 @@ class TitleScoresTable extends AppTable
     /**
      * タイトル成績のサマリを取得します
      *
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findSummaryScores(): Query
+    public function findSummaryScores(): SelectQuery
     {
         $query = $this->find();
 

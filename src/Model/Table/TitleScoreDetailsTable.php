@@ -86,10 +86,10 @@ class TitleScoreDetailsTable extends AppTable
     /**
      * 成績情報のファインダーメソッド。
      *
-     * @param \Cake\ORM\Query $query 生成クエリ
-     * @return \Cake\ORM\Query
+     * @param \Cake\ORM\Query\SelectQuery $query 生成クエリ
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findScores(Query $query): Query
+    public function findScores(SelectQuery $query): SelectQuery
     {
         return $query->contain('TitleScores')->select([
             'player_id' => 'TitleScoreDetails.player_id',
@@ -146,7 +146,7 @@ class TitleScoreDetailsTable extends AppTable
         FrozenDate $started,
         FrozenDate $ended,
         string $type = 'point',
-    ): Query {
+    ): SelectQuery {
         // 旧方式
         if ($this->isOldRanking($started->year)) {
             /** @var \Gotea\Model\Table\PlayerScoresTable $playerScores */

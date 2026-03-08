@@ -5,7 +5,7 @@ namespace Gotea\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\FrozenDate;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -152,9 +152,9 @@ class PlayersTable extends AppTable
      * 指定条件に合致した棋士情報を取得します。
      *
      * @param array $data パラメータ
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findPlayers(array $data): Query
+    public function findPlayers(array $data): SelectQuery
     {
         // 棋士情報の取得
         $query = $this->find()->orderBy([
@@ -249,10 +249,13 @@ class PlayersTable extends AppTable
      * @param int $countryId 所属国ID
      * @param int|null $organizationId 所属組織ID
      * @param bool|null $includeRetired 退役者を検索するか
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findRanksCount(int $countryId, ?int $organizationId = null, ?bool $includeRetired = false): Query
-    {
+    public function findRanksCount(
+        int $countryId,
+        ?int $organizationId = null,
+        ?bool $includeRetired = false,
+    ): SelectQuery {
         $query = $this->find();
 
         if ($organizationId) {
@@ -288,10 +291,10 @@ class PlayersTable extends AppTable
         return $this->get($id, contain: [
             'Countries',
             'Ranks',
-            'TitleScoreDetails' => function (Query $q) {
+            'TitleScoreDetails' => function (SelectQuery $q) {
                 return $q->orderByDesc('target_year');
             },
-            'PlayerRanks' => function (Query $q) {
+            'PlayerRanks' => function (SelectQuery $q) {
                 return $q->orderByDesc('promoted');
             },
             'PlayerRanks.Ranks',

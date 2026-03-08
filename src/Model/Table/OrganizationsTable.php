@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validator;
 
 /**
@@ -35,9 +35,9 @@ class OrganizationsTable extends AppTable
     /**
      * 所属書式をID・名前の一覧で取得します。
      *
-     * @return \Cake\ORM\Query 生成されたクエリ
+     * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ
      */
-    public function findSorted(): Query
+    public function findSorted(): SelectQuery
     {
         return $this->find('list')->orderBy(['country_id', 'id']);
     }
