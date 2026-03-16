@@ -30,7 +30,7 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.6",
     "concurrently": "^9.2.1",
-    "jsdom": "^28.1.0",
+    "jsdom": "^29.0.0",
     "postcss": "^8.5.8",
     "postcss-html": "^1.8.1",
     "postcss-scss": "^4.0.9",
