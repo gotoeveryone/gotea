@@ -155,7 +155,7 @@ watch(isShow, (newVal, oldVal) => {
     @include flex-justify-end();
 
     height: 48px;
-    background-color: $c_footer;
+    background-color: $c_modal;
     border-radius: 0 0 5px 5px;
   }
 
