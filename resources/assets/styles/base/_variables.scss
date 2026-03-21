@@ -11,7 +11,6 @@ $c_gray: #ccc;
 $c_green: #080;
 
 $c_header: color.adjust($c_black, $lightness: 24%);
-$c_footer: $c_header;
 $c_title: color.adjust($c_white, $lightness: -8%);
 $c_nav: color.adjust($c_black, $lightness: -24%);
 $c_main: color.adjust($c_black, $lightness: 16%);
@@ -34,7 +33,6 @@ $c_input: color.adjust($c_main, $lightness: 4%);
 
 // ヘッダ・フッタ
 $h_header: 3.5rem;
-$h_footer: 2.5rem;
 
 // ナビゲーション
 $w_nav: 240px;

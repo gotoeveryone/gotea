@@ -6,9 +6,6 @@ declare(strict_types=1);
  *
  * @var \Gotea\View\AppView $this
  */
-
-use Cake\I18n\FrozenTime;
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,9 +32,9 @@ use Cake\I18n\FrozenTime;
                 <h1 class="page-title"><?= h($this->hasTitle() ? $pageTitle : 'Gotea') ?></h1>
                 <div class="other">
                     <?php if ($this->Identity->isLoggedIn()) : ?>
-                    <span class="username">ユーザ：<?= h($this->Identity->get('name')) ?></span>
+                        <span class="username"><?= h($this->Identity->get('name')) ?>でログイン中</span>
+                        <?= $this->Html->link('ログアウト', ['_name' => 'logout']); ?>
                     <?php endif ?>
-                    <span><?= FrozenTime::now()->format('Y年m月d日 H時i分s秒') ?></span>
                 </div>
             </header>
 
@@ -50,15 +47,6 @@ use Cake\I18n\FrozenTime;
                     <?= $this->fetch('content') ?>
                 </main>
             </div>
-
-            <!-- フッター -->
-            <footer class="footer">
-                <?php if ($this->Identity->isLoggedIn()) : ?>
-                <div>
-                    <?= $this->Html->link('ログアウト', ['_name' => 'logout']); ?>
-                </div>
-                <?php endif ?>
-            </footer>
             <?php else : ?>
             <!-- メインコンテンツ（モーダル表示） -->
             <div class="main-content-modal">
