@@ -28,8 +28,8 @@ use Throwable;
  */
 class RankDiffCommand extends Command
 {
-    private CountriesTable $Countries;
-    private RanksTable $Ranks;
+    protected CountriesTable $Countries;
+    protected RanksTable $Ranks;
 
     /**
      * @inheritDoc
