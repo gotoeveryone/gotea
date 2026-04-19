@@ -15,6 +15,8 @@ use Gotea\Command\SubCommand\RankDiffKoreaSubCommand;
 use Gotea\Command\SubCommand\RankDiffSubCommandInterface;
 use Gotea\Command\SubCommand\RankDiffTaiwanSubCommand;
 use Gotea\Model\Entity\Country;
+use Gotea\Model\Table\CountriesTable;
+use Gotea\Model\Table\RanksTable;
 use LogicException;
 use Throwable;
 
@@ -26,6 +28,9 @@ use Throwable;
  */
 class RankDiffCommand extends Command
 {
+    protected CountriesTable $Countries;
+    protected RanksTable $Ranks;
+
     /**
      * @inheritDoc
      */
