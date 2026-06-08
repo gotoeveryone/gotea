@@ -29,7 +29,7 @@
     "@types/pikaday": "^1.7.10",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.10",
-    "concurrently": "^9.2.1",
+    "concurrently": "^10.0.1",
     "jsdom": "^29.1.1",
     "postcss": "^8.5.15",
     "postcss-html": "^1.8.1",
