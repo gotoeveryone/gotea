@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["dom", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "ignoreDeprecations": "6.0",
     "baseUrl": "resources/assets",
     "paths": {
       "@/*": ["scripts/*"]

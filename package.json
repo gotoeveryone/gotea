@@ -26,8 +26,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@types/node": "^24.13.1",
     "@types/pikaday": "^1.7.10",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.7",
     "@vue/test-utils": "^2.4.10",
     "concurrently": "^10.0.3",
     "jsdom": "^29.1.1",
@@ -40,9 +41,9 @@
     "stylelint-config-recommended-vue": "^1.6.1",
     "stylelint-scss": "^6.12.1",
     "typescript": "^6.0.3",
-    "vite": "^6.4.3",
+    "vite": "^8.0.16",
     "vite-plugin-biome": "^1.2.0",
-    "vite-plugin-stylelint": "^6.0.2",
+    "vite-plugin-stylelint": "^6.1.0",
     "vitest": "^4.1.8"
   },
   "engines": {
