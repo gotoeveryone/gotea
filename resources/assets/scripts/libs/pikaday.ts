@@ -2,10 +2,15 @@ import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
 
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import 'dayjs/locale/ja';
+
+dayjs.extend(customParseFormat);
 
 // ロケールを設定
 dayjs.locale('ja');
+
+const DATE_FORMAT = 'YYYY/MM/DD';
 
 // 日付選択オプション
 export const pikadayOptions = (element: HTMLElement, birthday: boolean): Pikaday.PikadayOptions => {
@@ -44,7 +49,12 @@ export const pikadayOptions = (element: HTMLElement, birthday: boolean): Pikaday
     minDate: dayjs('1920-01-01').toDate(),
     defaultDate,
     maxDate,
-    format: 'YYYY/MM/DD',
+    format: DATE_FORMAT,
+    toString: (date: Date) => dayjs(date).format(DATE_FORMAT),
+    parse: (value: string) => {
+      const parsed = dayjs(value, DATE_FORMAT, true);
+      return parsed.isValid() ? parsed.toDate() : null;
+    },
     firstDay: 0,
     isRTL: false,
     // changeYear: true,
