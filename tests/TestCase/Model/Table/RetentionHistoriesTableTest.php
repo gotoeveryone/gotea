@@ -95,7 +95,7 @@ class RetentionHistoriesTableTest extends TestCase
             'target_year' => 2017,
             'name' => 'test',
             'player_id' => 1,
-            'acquired' => '2019/04/01',
+            'acquired' => '2019-04-01',
         ];
 
         // success
@@ -275,7 +275,7 @@ class RetentionHistoriesTableTest extends TestCase
             'target_year' => 2017,
             'name' => 'test title',
             'is_team' => 0,
-            'acquired' => '2019/04/01',
+            'acquired' => '2019-04-01',
             'player_id' => 1,
         ]);
         $result = $this->RetentionHistories->save($entity, [

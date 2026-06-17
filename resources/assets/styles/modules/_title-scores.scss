@@ -12,12 +12,12 @@
 
     .started {
       margin-right: 0.5rem;
-      width: 120px;
+      width: 150px;
     }
 
     .ended {
       margin-left: 0.5rem;
-      width: 120px;
+      width: 150px;
     }
   }
 
@@ -56,6 +56,7 @@
       @include flex-center();
 
       width: 10%;
+      min-width: 150px;
     }
   }
 

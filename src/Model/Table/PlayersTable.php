@@ -100,8 +100,8 @@ class PlayersTable extends AppTable
                 },
                 'message' => __('Joined date is invalid'),
             ])
-            ->date('birthday', 'y/m/d')
-            ->date('retired', 'y/m/d');
+            ->date('birthday', 'y-m-d')
+            ->date('retired', 'y-m-d');
     }
 
     /**
@@ -140,7 +140,7 @@ class PlayersTable extends AppTable
                 $playerRanks->save($playerRanks->newEntity([
                     'player_id' => $entity->id,
                     'rank_id' => $entity->rank_id,
-                    'promoted' => $promoted->format('Y/m/d'),
+                    'promoted' => $promoted->format('Y-m-d'),
                 ]));
             }
         }

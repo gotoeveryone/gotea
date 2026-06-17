@@ -20,14 +20,12 @@
   "dependencies": {
     "axios": "^1.17.0",
     "dayjs": "^1.11.21",
-    "pikaday": "^1.8.2",
     "vue": "^3.5.35",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^24.13.1",
-    "@types/pikaday": "^1.7.10",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/test-utils": "^2.4.11",
     "concurrently": "^10.0.3",

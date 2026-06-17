@@ -70,12 +70,12 @@ class TitleScoresTable extends AppTable
             ->allowEmptyString('result');
 
         $validator
-            ->date('started', ['y/m/d'])
+            ->date('started', ['y-m-d'])
             ->requirePresence('started', 'create')
             ->notEmptyDate('started');
 
         $validator
-            ->date('ended', ['y/m/d'])
+            ->date('ended', ['y-m-d'])
             ->requirePresence('ended', 'create')
             ->notEmptyDate('ended');
 

@@ -14,9 +14,9 @@ $isAdmin = $this->isAdmin();
             <?php
             echo $this->Form->control('started', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'started')],
-                'type' => 'text',
-                'class' => 'input-row datepicker',
-                'autocomplete' => 'off',
+                'type' => 'date',
+                'class' => 'input-row date-input',
+                'value' => $score->started?->format('Y-m-d'),
                 'disabled' => !$isAdmin,
             ]);
             ?>
@@ -34,10 +34,9 @@ $isAdmin = $this->isAdmin();
                     ]);
                     echo $this->Form->text('ended', [
                         'data-target' => 'ended',
-                        'type' => 'text',
-                        'disabled' => true,
-                        'class' => 'datepicker',
-                        'autocomplete' => 'off',
+                        'type' => 'date',
+                        'class' => 'date-input',
+                        'value' => $score->ended?->format('Y-m-d'),
                         'disabled' => !$isAdmin,
                     ]);
                     ?>

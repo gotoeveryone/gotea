@@ -218,7 +218,7 @@ class Player extends AppEntity
     protected function _setBirthday(mixed $birthday): ?FrozenDate
     {
         if ($birthday && !($birthday instanceof FrozenDate)) {
-            return FrozenDate::parseDate($birthday, 'yyyy/MM/dd');
+            return FrozenDate::parseDate($birthday, 'yyyy-MM-dd');
         }
 
         return $birthday;
@@ -265,7 +265,7 @@ class Player extends AppEntity
             'nameEnglish' => $this->name_english,
             'nameOther' => $this->name_other,
             'sex' => $this->sex,
-            'birthday' => $this->birthday ? $this->birthday->format('Y/m/d') : null,
+            'birthday' => $this->birthday ? $this->birthday->format('Y-m-d') : null,
             'countryId' => $this->country->id,
             'countryName' => $this->country->name,
             'rankId' => $this->rank->id,

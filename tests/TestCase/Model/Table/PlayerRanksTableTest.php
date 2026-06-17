@@ -67,7 +67,7 @@ class PlayerRanksTableTest extends TestCase
         $params = [
             'player_id' => 1,
             'rank_id' => 1,
-            'promoted' => '2018/01/01',
+            'promoted' => '2018-01-01',
         ];
 
         // success
@@ -128,7 +128,7 @@ class PlayerRanksTableTest extends TestCase
         $rank = $this->PlayerRanks->newEntity([
             'player_id' => 3,
             'rank_id' => 3,
-            'promoted' => '2018/01/03',
+            'promoted' => '2018-01-03',
         ]);
 
         $save = $this->PlayerRanks->save($rank, [
@@ -144,7 +144,7 @@ class PlayerRanksTableTest extends TestCase
         $rank = $this->PlayerRanks->newEntity([
             'player_id' => 3,
             'rank_id' => 4,
-            'promoted' => '2018/01/03',
+            'promoted' => '2018-01-03',
             'newest' => true,
         ]);
 

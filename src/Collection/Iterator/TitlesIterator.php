@@ -33,7 +33,7 @@ class TitlesIterator
             'isTeam' => $item->is_team,
             'htmlFileName' => $item->html_file_name,
             'htmlFileHolding' => $item->html_file_holding,
-            'htmlFileModified' => $item->html_file_modified->format('Y/m/d'),
+            'htmlFileModified' => $item->html_file_modified->format('Y-m-d'),
             'isNewHistories' => $item->isNewHistories(),
             'isRecent' => $item->isRecentModified(),
             'isClosed' => $item->is_closed,
