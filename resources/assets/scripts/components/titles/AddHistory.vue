@@ -29,10 +29,8 @@
           <input
             id="acquired"
             v-model="acquired"
-            type="text"
-            maxlength="4"
-            class="acquired datepicker"
-            autocomplete="off"
+            type="date"
+            class="acquired date-input"
             name="acquired"
             @change="onChangeAcquired"
           />
@@ -44,10 +42,8 @@
           <input
             id="broadcasted"
             v-model="broadcasted"
-            type="text"
-            maxlength="4"
-            class="broadcasted datepicker"
-            autocomplete="off"
+            type="date"
+            class="broadcasted date-input"
             name="broadcasted"
             @change="onChangeBroadcasted"
           />

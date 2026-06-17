@@ -218,7 +218,7 @@ class PlayersControllerTest extends AppTestCase
             'joined_year' => $now->year,
             'joined_month' => $now->month,
             'joined_day' => $now->day,
-            'birthday' => $now->format('Y/m/d'),
+            'birthday' => $now->format('Y-m-d'),
         ];
         $this->post(['_name' => 'create_player'], $data);
         $this->assertResponseSuccess();
@@ -248,7 +248,7 @@ class PlayersControllerTest extends AppTestCase
             'joined_year' => $now->year,
             'joined_month' => $now->month,
             'joined_day' => $now->day,
-            'birthday' => date('Y/m/d'),
+            'birthday' => date('Y-m-d'),
             'is_continue' => true,
         ];
         $this->post(['_name' => 'create_player'], $data);
@@ -320,7 +320,7 @@ class PlayersControllerTest extends AppTestCase
             'joined_year' => $now->year,
             'joined_month' => $now->month,
             'joined_day' => $now->day,
-            'birthday' => date('Y/m/d'),
+            'birthday' => date('Y-m-d'),
         ];
         $this->put(['_name' => 'update_player', 1], $data);
         $this->assertRedirect(['_name' => 'view_player', 1]);

@@ -52,8 +52,8 @@ class TitleScoreFormTest extends TestCase
             'name' => '12345678901234567890',
             'country_id' => 1,
             'target_year' => 2017,
-            'started' => '2018/01/01',
-            'started' => '2018/12/31',
+            'started' => '2018-01-01',
+            'ended' => '2018-12-31',
         ];
 
         // success

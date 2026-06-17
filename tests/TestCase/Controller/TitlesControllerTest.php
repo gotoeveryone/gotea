@@ -139,7 +139,7 @@ class TitlesControllerTest extends AppTestCase
             'holding' => 1,
             'sort_order' => 1,
             'html_file_name' => 'test',
-            'html_file_modified' => date('Y/m/d'),
+            'html_file_modified' => date('Y-m-d'),
         ];
         $this->put(['_name' => 'update_title', 1], $data);
         $this->assertRedirect(['_name' => 'view_title', 1]);

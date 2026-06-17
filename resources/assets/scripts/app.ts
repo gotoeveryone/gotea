@@ -1,6 +1,5 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import Pikaday from 'pikaday';
 
 import BlockUI from '@/components/parts/BlockUI.vue';
 import Dialog from '@/components/parts/Dialog.vue';
@@ -10,7 +9,6 @@ import Ranking from '@/components/ranking/Index.vue';
 import Titles from '@/components/titles/Index.vue';
 import AddHistory from '@/components/titles/AddHistory.vue';
 import Ranks from '@/components/ranks/Index.vue';
-import { pikadayOptions } from '@/libs/pikaday';
 import NotificationListPage from '@/pages/notifications/index.vue';
 import TableTemplateListPage from '@/pages/table-templates/index.vue';
 
@@ -56,7 +54,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.setDatepickerEvent();
     this.setTabEvent();
     this.setCheckboxEvent();
     this.setAxiosInterceptor();
@@ -113,24 +110,6 @@ export default defineComponent({
         setChecked();
         checked.addEventListener('click', () => setChecked(true), false);
       }
-    },
-    setDatepickerEvent() {
-      // 日付選択のイベントを登録
-      document.addEventListener(
-        'focus',
-        (event: Event) => {
-          const element = event.target as HTMLElement;
-          if (
-            element.classList &&
-            element.classList.contains('datepicker') &&
-            !element.classList.contains('set-event')
-          ) {
-            element.classList.add('set-event');
-            new Pikaday(pikadayOptions(element, element.classList.contains('birthday'))).show();
-          }
-        },
-        true,
-      );
     },
     setTabEvent() {
       // タブ押下時

@@ -126,9 +126,9 @@ $isAdmin = $this->isAdmin();
             <?php
             echo $this->Form->control('html_file_modified', [
                 'label' => ['class' => 'label-row', 'text' => __d('model', 'html_file_modified')],
-                'type' => 'text',
-                'class' => 'input-row datepicker',
-                'autocomplete' => 'off',
+                'type' => 'date',
+                'class' => 'input-row date-input',
+                'value' => $title->html_file_modified?->format('Y-m-d'),
                 'disabled' => !$isAdmin,
             ]);
             ?>

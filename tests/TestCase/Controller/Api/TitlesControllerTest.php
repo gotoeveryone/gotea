@@ -110,7 +110,7 @@ class TitlesControllerTest extends ApiTestCase
             'holding' => 1,
             'sort_order' => 1,
             'htmlFileName' => 'test',
-            'htmlFileModified' => '2018/01/01',
+            'htmlFileModified' => '2018-01-01',
         ]);
         $this->assertResponseSuccess();
         $this->assertJsonContentType();

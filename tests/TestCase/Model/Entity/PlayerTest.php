@@ -113,7 +113,7 @@ class PlayerTest extends TestCase
         $this->assertEquals($result['nameEnglish'], $this->Player->name_english);
         $this->assertEquals($result['nameOther'], $this->Player->name_other);
         $this->assertEquals($result['sex'], $this->Player->sex);
-        $this->assertEquals($result['birthday'], $this->Player->birthday->format('Y/m/d'));
+        $this->assertEquals($result['birthday'], $this->Player->birthday->format('Y-m-d'));
         $this->assertEquals($result['countryId'], $this->Player->country->id);
         $this->assertEquals($result['countryName'], $this->Player->country->name);
         $this->assertEquals($result['rankId'], $this->Player->rank->id);

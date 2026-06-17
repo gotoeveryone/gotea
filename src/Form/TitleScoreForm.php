@@ -43,7 +43,7 @@ class TitleScoreForm extends AppForm
             ->range('target_year', [1, 9999])
             ->maxLength('name', 20)
             ->maxLength('title_name', 20)
-            ->date('started', ['y/m/d'])
-            ->date('ended', ['y/m/d']);
+            ->date('started', ['y-m-d'])
+            ->date('ended', ['y-m-d']);
     }
 }

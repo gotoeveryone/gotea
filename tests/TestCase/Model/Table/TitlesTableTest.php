@@ -96,7 +96,7 @@ class TitlesTableTest extends TestCase
             'holding' => 1,
             'sort_order' => 1,
             'html_file_name' => 'test-1',
-            'html_file_modified' => '2018/01/01',
+            'html_file_modified' => '2018-01-01',
         ];
 
         // success

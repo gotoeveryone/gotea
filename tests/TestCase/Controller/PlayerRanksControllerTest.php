@@ -70,7 +70,7 @@ class PlayerRanksControllerTest extends AppTestCase
         $this->assertEquals(1, $this->PlayerRanks->find()->where($conditions)->count());
 
         $data = $conditions;
-        $data['promoted'] = '2017/12/10';
+        $data['promoted'] = '2017-12-10';
         $this->post(['_name' => 'create_ranks', 1], $data);
         $this->assertRedirect(['_name' => 'view_player', '?' => ['tab' => 'ranks'], 1]);
 
@@ -94,7 +94,7 @@ class PlayerRanksControllerTest extends AppTestCase
         $this->assertEquals(0, $this->PlayerRanks->find()->where($conditions)->count());
 
         $data = $conditions;
-        $data['promoted'] = '2017/12/10';
+        $data['promoted'] = '2017-12-10';
         $this->post(['_name' => 'create_ranks', 1], $data);
         $this->assertRedirect(['_name' => 'view_player', '?' => ['tab' => 'ranks'], 1]);
         $this->assertResponseNotContains('<nav class="nav">');

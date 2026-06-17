@@ -102,8 +102,8 @@ class TitleScoresControllerTest extends AppTestCase
     public function testSearch()
     {
         $data = [
-            'started' => '2017/01/01',
-            'ended' => '2017/12/31',
+            'started' => '2017-01-01',
+            'ended' => '2017-12-31',
         ];
         $this->get(['_name' => 'find_scores', '?' => $data]);
 

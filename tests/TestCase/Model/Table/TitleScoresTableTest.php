@@ -282,16 +282,16 @@ class TitleScoresTableTest extends TestCase
         });
 
         // 対局日
-        $start = '2017/12/01';
-        $end = '2017/12/31';
+        $start = '2017-12-01';
+        $end = '2017-12-31';
         $scores = $this->TitleScores->findMatches([
             'started' => $start,
             'ended' => $end,
         ]);
         $this->assertGreaterThan(0, $scores->count());
         $scores->all()->each(function ($item) use ($start, $end) {
-            $this->assertGreaterThanOrEqual($start, $item->started->format('Y/m/d'));
-            $this->assertLessThanOrEqual($end, $item->started->format('Y/m/d'));
+            $this->assertGreaterThanOrEqual($start, $item->started->format('Y-m-d'));
+            $this->assertLessThanOrEqual($end, $item->started->format('Y-m-d'));
         });
     }
 

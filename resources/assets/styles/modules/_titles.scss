@@ -44,6 +44,7 @@
 
     &_modified {
       width: 10%;
+      min-width: 150px;
       text-align: center;
 
       &-input {
@@ -52,7 +53,7 @@
     }
 
     &_open-detail {
-      width: 6%;
+      width: 4%;
       text-align: center;
     }
   }

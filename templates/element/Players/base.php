@@ -46,8 +46,11 @@ $isAdmin = $this->isAdmin();
                 <div class="label-row"><?= __d('model', 'birthday') ?></div>
                 <div class="input-row">
                     <?= $this->Form->text('birthday', [
-                        'class' => 'birthday datepicker',
-                        'autocomplete' => 'off',
+                        'type' => 'date',
+                        'class' => 'birthday date-input',
+                        'min' => '1920-01-01',
+                        'max' => date('Y-m-d'),
+                        'value' => $player->birthday?->format('Y-m-d'),
                         'disabled' => !$isAdmin,
                     ]) ?>
                     <span class="age">
@@ -141,9 +144,9 @@ $isAdmin = $this->isAdmin();
                     ]) ?>
                     <?= $this->Form->text('retired', [
                         'data-target' => 'retired',
-                        'class' => 'datepicker',
-                        'autocomplete' => 'off',
-                        'disabled' => true,
+                        'type' => 'date',
+                        'class' => 'date-input',
+                        'value' => $player->retired?->format('Y-m-d'),
                         'placeholder' => __d('model', 'retired'),
                         'disabled' => !$isAdmin,
                     ]) ?>
