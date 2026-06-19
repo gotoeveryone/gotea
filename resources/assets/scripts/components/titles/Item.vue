@@ -46,7 +46,7 @@
         :disabled="!isAdmin"
         type="date"
         class="date-input table-column_modified-input"
-        @change="onChangeHtmlFileModified($event)"
+        @change="onChangeHtmlFileModified()"
       />
     </span>
     <span class="table-column table-column_closed">
@@ -155,12 +155,8 @@ export default defineComponent({
           });
         });
     },
-    onChangeHtmlFileModified($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      if (this.localItem.htmlFileModified !== target.value) {
-        this.localItem.htmlFileModified = target.value;
-        this.save();
-      }
+    onChangeHtmlFileModified() {
+      this.save();
     },
   },
 });

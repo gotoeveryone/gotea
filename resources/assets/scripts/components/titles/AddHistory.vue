@@ -32,7 +32,6 @@
             type="date"
             class="acquired date-input"
             name="acquired"
-            @change="onChangeAcquired"
           />
         </div>
       </div>
@@ -45,7 +44,6 @@
             type="date"
             class="broadcasted date-input"
             name="broadcasted"
-            @change="onChangeBroadcasted"
           />
         </div>
       </div>
@@ -236,18 +234,6 @@ export default defineComponent({
     },
     getTeamHidden(value: boolean) {
       return value ? '1' : '';
-    },
-    onChangeAcquired($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      if (this.acquired !== target.value) {
-        this.acquired = target.value;
-      }
-    },
-    onChangeBroadcasted($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      if (this.broadcasted !== target.value) {
-        this.broadcasted = target.value;
-      }
     },
     search() {
       if (this.name === '') {
