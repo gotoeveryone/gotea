@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
+use Cake\Datasource\Paging\SortField;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Gotea\Form\PlayerForm;
@@ -84,7 +85,19 @@ class PlayersController extends AppController
         }
 
         // データを取得
-        $players = $this->paginate($this->Players->findPlayers($data));
+        $players = $this->paginate($this->Players->findPlayers($data), [
+            'sortableFields' => [
+                'id',
+                'country_id',
+                'organization_id',
+                'rank_id',
+                'joined' => [
+                    SortField::asc('Players.joined_year'),
+                    SortField::asc('Players.joined_month'),
+                    SortField::asc('Players.joined_day'),
+                ],
+            ],
+        ]);
 
         // 件数が0件の場合はメッセージを出力
         if (!$players->count()) {
