@@ -57,17 +57,32 @@ jobs:
         run: ssh target "${SHELL_DEST_PATH} ${TAR_REMOTE_PATH} ${PROJECT} ${PUBLIC_DIR} && rm -f ${SHELL_DEST_PATH}"
 
   notify:
-    if: ${{ always() }}
+    if: ${{ always() && (needs.deploy.result == 'success' || needs.deploy.result == 'failure') }}
     needs:
       - deploy
     runs-on: ubuntu-latest
     steps:
       - name: Notify to Slack
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v3.0.3
         with:
-          status: ${{ needs.deploy.result }}
-          author_name: GitHub Actions
-          fields: repo,message,ref
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "${{ needs.deploy.result == 'success' && ':white_check_mark: Deploy succeeded' || ':x: Deploy failed' }}"
+            blocks:
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "${{ needs.deploy.result == 'success' && ':white_check_mark: *Deploy succeeded*' || ':x: *Deploy failed*' }}"
+              - type: section
+                fields:
+                  - type: mrkdwn
+                    text: "*Repository:*\n<${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>"
+              - type: actions
+                elements:
+                  - type: button
+                    text:
+                      type: plain_text
+                      text: View workflow
+                    url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    action_id: view_workflow
