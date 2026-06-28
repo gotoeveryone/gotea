@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Migrations\AbstractSeed;
 
 /**
