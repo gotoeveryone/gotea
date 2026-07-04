@@ -93,4 +93,14 @@ class ApplicationTest extends TestCase
             $this->assertInstanceOf($target, $middleware->current());
         }
     }
+
+    /**
+     * testDebugKitAuthorization
+     *
+     * @return void
+     */
+    public function testDebugKitAuthorization()
+    {
+        $this->assertTrue(Configure::read('DebugKit.ignoreAuthorization'));
+    }
 }
