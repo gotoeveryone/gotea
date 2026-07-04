@@ -39,10 +39,6 @@ msgstr "昇段情報を保存しました"
 msgid "No matches found"
 msgstr "検索結果が0件でした"
 
-#: Controller/PlayersController.php:67 Controller/TitleScoresController.php:60
-msgid "Matched rows more than {0} ({1} row matched).<br/>Please filtering conditions and reexecute."
-msgstr "検索結果が{0}件を超えています（{1}件）<br/>条件を絞って再検索してください"
-
 #: Controller/PlayersController.php:148;185
 msgid "The player {0} - {1} is saved"
 msgstr "[{0}: {1}] を保存しました"

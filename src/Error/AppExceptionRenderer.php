@@ -26,7 +26,9 @@ class AppExceptionRenderer extends WebExceptionRenderer
 
         if ($this->error instanceof PDOException) {
             $this->controller->log($this->error->getMessage(), LogLevel::ERROR);
-            $this->controller->Flash->error(__('Executing query failed.<br/>Please confirm logfile.'));
+            $this->controller->Flash->error(__(
+                "Executing query failed.\nPlease confirm logfile.",
+            ));
         }
 
         return parent::render();

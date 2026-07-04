@@ -8,9 +8,7 @@
         <div class="dialog-content-body">
           <div class="dialog-content-body-text">
             <ul :class="messageClass">
-              <!-- eslint-disable vue/no-v-html -->
-              <li v-for="(message, idx) in messages" :key="idx" v-html="message" />
-              <!-- eslint-enable vue/no-v-html -->
+              <li v-for="(message, idx) in messages" :key="idx" v-text="message" />
             </ul>
           </div>
         </div>
@@ -168,6 +166,7 @@ watch(isShow, (newVal, oldVal) => {
 
 .message {
   margin: 0;
+  white-space: pre-line;
 }
 
 .message-info {

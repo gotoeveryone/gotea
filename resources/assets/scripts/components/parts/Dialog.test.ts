@@ -6,13 +6,13 @@ const messages = ['hoge', 'fuga'];
 
 const mockOpenDialog = vi.fn();
 const mockCloseDialog = vi.fn();
-const createStoreMock = (type = 'info') =>
+const createStoreMock = (type = 'info', storeMessages = messages) =>
   createStore({
     getters: {
       dialogOptions: () => () => {
         return {
           type,
-          messages,
+          messages: storeMessages,
           modalColor: '#f00',
         };
       },
@@ -43,6 +43,12 @@ describe('ダイアログ', () => {
     test('コンテンツが表示される', () => {
       const wrapper = createWrapper(createStoreMock());
       expect(wrapper.findAll('li')).toHaveLength(messages.length);
+    });
+    test('メッセージはHTMLとして描画されない', () => {
+      const htmlMessage = '<img src=x onerror=alert(1)>タイトル';
+      const wrapper = createWrapper(createStoreMock('info', [htmlMessage]));
+      expect(wrapper.find('li').text()).toBe(htmlMessage);
+      expect(wrapper.find('li').html()).not.toContain('<img');
     });
     test.each(['info', 'warn', 'error'])(
       'メッセージに type: %s を利用したクラスが設定される',
