@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\View\Helper;
 
+use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as BaseHtmlHelper;
 
 /**
@@ -96,6 +97,11 @@ class HtmlHelper extends BaseHtmlHelper
             return $path;
         }
 
+        $pluginAssetPath = $this->resolvePluginAssetPath($path);
+        if ($pluginAssetPath !== null) {
+            return $pluginAssetPath;
+        }
+
         $map = $this->getViteAssetMap();
         if ($map === []) {
             return $path;
@@ -116,6 +122,24 @@ class HtmlHelper extends BaseHtmlHelper
     private function isExternalAsset(string $path): bool
     {
         return preg_match('/^[a-z][a-z0-9+.-]*:/i', $path) === 1;
+    }
+
+    /**
+     * @param string $path アセットパス
+     * @return string|null 解決後のプラグインアセットパス
+     */
+    private function resolvePluginAssetPath(string $path): ?string
+    {
+        if (!preg_match('/^([A-Za-z][A-Za-z0-9_\/-]*)\.\/(.+)$/', $path, $matches)) {
+            return null;
+        }
+
+        $pluginPath = implode('/', array_map(
+            Inflector::underscore(...),
+            explode('/', $matches[1]),
+        ));
+
+        return '/' . $pluginPath . '/' . ltrim($matches[2], '/');
     }
 
     /**
