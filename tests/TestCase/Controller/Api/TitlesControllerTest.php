@@ -3,11 +3,22 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Controller\Api;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Gotea\Controller\Api\TitlesController Test Case
+ *
+ * @property \Gotea\Model\Table\TitlesTable $Titles
  */
 class TitlesControllerTest extends ApiTestCase
 {
+    /**
+     * タイトルモデル
+     *
+     * @var \Gotea\Model\Table\TitlesTable
+     */
+    public $Titles;
+
     /**
      * Fixtures
      *
@@ -28,6 +39,7 @@ class TitlesControllerTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->Titles = TableRegistry::getTableLocator()->get('Titles');
         $this->createSession();
     }
 
@@ -114,5 +126,50 @@ class TitlesControllerTest extends ApiTestCase
         ]);
         $this->assertResponseSuccess();
         $this->assertJsonContentType();
+    }
+
+    /**
+     * データ更新（不正パラメータ）
+     *
+     * @return void
+     */
+    public function testUpdateInvalidParameter()
+    {
+        $this->put('/api/titles/1', [
+            'country_id' => 1,
+            'name' => 'test',
+            'nameEnglish' => '',
+            'holding' => 1,
+            'sort_order' => 1,
+            'htmlFileName' => '',
+            'htmlFileModified' => '',
+        ]);
+        $this->assertResponseCode(400);
+        $this->assertJsonContentType();
+    }
+
+    /**
+     * データ更新（成功）
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $this->put('/api/titles/1', [
+            'country_id' => 1,
+            'name' => 'test update',
+            'name_english' => 'test update',
+            'holding' => 2,
+            'sort_order' => 2,
+            'htmlFileName' => 'test-update',
+            'htmlFileModified' => '2018-01-01',
+        ]);
+        $this->assertResponseSuccess();
+        $this->assertJsonContentType();
+
+        $title = $this->Titles->get(1);
+        $this->assertEquals('test update', $title->name);
+        $this->assertEquals(2, $title->holding);
+        $this->assertEquals('test-update', $title->html_file_name);
     }
 }
