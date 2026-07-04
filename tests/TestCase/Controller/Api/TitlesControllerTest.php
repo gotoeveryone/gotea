@@ -129,6 +129,29 @@ class TitlesControllerTest extends ApiTestCase
     }
 
     /**
+     * データ登録（管理者以外）
+     *
+     * @return void
+     */
+    public function testCreateForbiddenForNonAdmin()
+    {
+        $count = $this->Titles->find()->count();
+        $this->createSession(false);
+
+        $this->post('/api/titles', [
+            'country_id' => 1,
+            'name' => 'test',
+            'name_english' => 'test',
+            'holding' => 1,
+            'sort_order' => 1,
+            'htmlFileName' => 'test',
+            'htmlFileModified' => '2018-01-01',
+        ]);
+        $this->assertResponseCode(302);
+        $this->assertSame($count, $this->Titles->find()->count());
+    }
+
+    /**
      * データ更新（不正パラメータ）
      *
      * @return void
@@ -171,5 +194,30 @@ class TitlesControllerTest extends ApiTestCase
         $this->assertEquals('test update', $title->name);
         $this->assertEquals(2, $title->holding);
         $this->assertEquals('test-update', $title->html_file_name);
+    }
+
+    /**
+     * データ更新（管理者以外）
+     *
+     * @return void
+     */
+    public function testUpdateForbiddenForNonAdmin()
+    {
+        $this->createSession(false);
+
+        $this->put('/api/titles/1', [
+            'country_id' => 1,
+            'name' => 'test update',
+            'name_english' => 'test update',
+            'holding' => 2,
+            'sort_order' => 2,
+            'htmlFileName' => 'test-update',
+            'htmlFileModified' => '2018-01-01',
+        ]);
+        $this->assertResponseCode(302);
+
+        $title = $this->Titles->get(1);
+        $this->assertNotEquals('test update', $title->name);
+        $this->assertNotEquals('test-update', $title->html_file_name);
     }
 }

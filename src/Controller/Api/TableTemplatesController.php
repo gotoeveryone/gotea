@@ -14,6 +14,11 @@ use Cake\Http\Response;
 class TableTemplatesController extends ApiController
 {
     /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['index'];
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response

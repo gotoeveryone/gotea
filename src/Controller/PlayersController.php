@@ -48,7 +48,9 @@ class PlayersController extends AppController
      */
     public function beforeFilter(EventInterface $event)
     {
-        if ($this->request->getParam('action') !== 'index') {
+        if ($this->request->getParam('action') === 'index') {
+            $this->Authorization->skipAuthorization();
+        } else {
             $this->Authorization->authorize($this->request, 'access');
         }
 

@@ -34,14 +34,14 @@ abstract class AppTestCase extends TestCase
      *
      * @return void
      */
-    protected function createSession()
+    protected function createSession(bool $isAdmin = true)
     {
         $this->session([
             'Auth' => [
                 'id' => 1,
                 'account' => 'testuser',
                 'name' => 'テスト',
-                'is_admin' => true,
+                'is_admin' => $isAdmin,
             ],
         ]);
     }

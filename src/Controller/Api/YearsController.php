@@ -12,6 +12,11 @@ use Cake\I18n\FrozenDate;
 class YearsController extends ApiController
 {
     /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['index'];
+
+    /**
      * 管理対象年を取得します。
      *
      * @return \Cake\Http\Response 年一覧
