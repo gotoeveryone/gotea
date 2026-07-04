@@ -184,7 +184,7 @@ return static function (RouteBuilder $routes): void {
         $routes->scope('/titles', ['controller' => 'Titles'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'api_titles');
             $routes->post('/', ['action' => 'create'], 'api_create_titles');
-            $routes->put('//{id}', ['action' => 'update'], 'api_update_titles')
+            $routes->put('/{id}', ['action' => 'update'], 'api_update_titles')
                 ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
             $routes->post('/news', ['action' => 'createNews'], 'api_news');
         });
