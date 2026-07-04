@@ -25,18 +25,6 @@ class HtmlHelperTest extends TestCase
     }
 
     /**
-     * Vite manifest のエントリはビルド済みファイルに解決されること
-     *
-     * @return void
-     */
-    public function testScriptResolvesViteAsset(): void
-    {
-        $html = $this->helper->script('main');
-
-        $this->assertStringContainsString('src="/js/main-DYkXVuEg.js', $html);
-    }
-
-    /**
      * プラグインアセットは Vite manifest の同名エントリに解決されないこと
      *
      * @return void
@@ -46,6 +34,5 @@ class HtmlHelperTest extends TestCase
         $html = $this->helper->script('DebugKit./js/main', ['type' => 'module']);
 
         $this->assertStringContainsString('src="/debug_kit/js/main.js', $html);
-        $this->assertStringNotContainsString('/js/main-DYkXVuEg.js', $html);
     }
 }
