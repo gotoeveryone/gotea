@@ -13,6 +13,11 @@ use Cake\Http\Response;
 class RetentionHistoriesController extends ApiController
 {
     /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['view'];
+
+    /**
      * 履歴を1件取得します。
      *
      * @param int $id ID

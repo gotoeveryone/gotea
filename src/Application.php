@@ -108,7 +108,7 @@ class Application extends BaseApplication implements
 
             // Add authorization middleware.
             ->add(new AuthorizationMiddleware($this, [
-                'requireAuthorizationCheck' => false,
+                'requireAuthorizationCheck' => true,
                 'unauthorizedHandler' => [
                     'className' => 'Authorization.Redirect',
                     'url' => '/',

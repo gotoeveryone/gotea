@@ -21,6 +21,11 @@ use Gotea\Utility\FileBuilder;
  */
 class PlayersController extends ApiController
 {
+    /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['search', 'searchRanks', 'searchRanking'];
+
     protected CountriesTable $Countries;
     protected TitleScoreDetailsTable $TitleScoreDetails;
 

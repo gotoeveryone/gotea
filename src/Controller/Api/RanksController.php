@@ -13,6 +13,11 @@ use Cake\Http\Response;
 class RanksController extends ApiController
 {
     /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['index'];
+
+    /**
      * 段位一覧を取得します。
      *
      * @return \Cake\Http\Response 段位一覧

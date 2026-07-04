@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Gotea\Controller\Api;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Gotea\Controller\JsonResponseTrait;
 use Gotea\Event\LoggedUser;
@@ -17,6 +18,13 @@ use Gotea\Event\LoggedUser;
 abstract class ApiController extends Controller
 {
     use JsonResponseTrait;
+
+    /**
+     * 認証・認可なしで利用できる action
+     *
+     * @var array<string>
+     */
+    protected array $publicActions = [];
 
     /**
      * @inheritDoc
@@ -38,5 +46,23 @@ abstract class ApiController extends Controller
             // モデル側のインスタンスイベントより先に実行する必要があるため、グローバルイベントマネージャに登録する
             EventManager::instance()->on(new LoggedUser($user->getOriginalData()));
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $action = (string)$this->getRequest()->getParam('action');
+        if (in_array($action, $this->publicActions, true)) {
+            $this->Authentication->allowUnauthenticated($this->publicActions);
+            $this->Authorization->skipAuthorization();
+
+            return;
+        }
+
+        $this->Authorization->authorize($this->request, 'access');
     }
 }

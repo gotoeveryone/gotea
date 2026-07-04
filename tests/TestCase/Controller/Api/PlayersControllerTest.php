@@ -360,6 +360,19 @@ class PlayersControllerTest extends ApiTestCase
     }
 
     /**
+     * ランキング作成（管理者以外）
+     *
+     * @return void
+     */
+    public function testCreateRankingForbiddenForNonAdmin()
+    {
+        $this->createSession(false);
+
+        $this->post('/api/players/ranking/jp/2017/20');
+        $this->assertResponseCode(302);
+    }
+
+    /**
      * ランキング作成（データあり・FROM指定）
      *
      * @return void

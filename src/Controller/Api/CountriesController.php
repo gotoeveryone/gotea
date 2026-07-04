@@ -13,6 +13,11 @@ use Cake\Http\Response;
 class CountriesController extends ApiController
 {
     /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['index'];
+
+    /**
      * 所属国一覧を取得します。
      *
      * @return \Cake\Http\Response 所属国一覧

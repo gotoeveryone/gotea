@@ -16,6 +16,11 @@ use Gotea\Utility\FileBuilder;
 class TitlesController extends ApiController
 {
     /**
+     * @inheritDoc
+     */
+    protected array $publicActions = ['index'];
+
+    /**
      * タイトルを検索します。
      *
      * @return \Cake\Http\Response|null
