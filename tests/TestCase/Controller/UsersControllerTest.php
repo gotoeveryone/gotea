@@ -123,7 +123,20 @@ class UsersControllerTest extends AppTestCase
     public function testLogout()
     {
         $this->createSession();
-        $this->get('/logout');
+        $this->enableCsrfToken();
+        $this->post('/logout');
         $this->assertResponseCode(302);
+    }
+
+    /**
+     * ログアウト（GETは許可しない）
+     *
+     * @return void
+     */
+    public function testLogoutGetNotAllowed()
+    {
+        $this->createSession();
+        $this->get('/logout');
+        $this->assertResponseCode(404);
     }
 }
