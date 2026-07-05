@@ -58,7 +58,7 @@ return static function (RouteBuilder $routes): void {
         $routes->scope('/', ['controller' => 'Users'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'top');
             $routes->post('/login', ['action' => 'login'], 'login');
-            $routes->get('/logout', ['action' => 'logout'], 'logout');
+            $routes->post('/logout', ['action' => 'logout'], 'logout');
         });
 
         $routes->scope('/players', ['controller' => 'Players'], function (RouteBuilder $routes): void {

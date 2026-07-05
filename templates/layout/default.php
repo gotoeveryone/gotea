@@ -33,7 +33,7 @@ declare(strict_types=1);
                 <div class="other">
                     <?php if ($this->Identity->isLoggedIn()) : ?>
                         <span class="username"><?= h($this->Identity->get('name')) ?>でログイン中</span>
-                        <?= $this->Html->link('ログアウト', ['_name' => 'logout']); ?>
+                        <?= $this->Form->postLink('ログアウト', ['_name' => 'logout']); ?>
                     <?php endif ?>
                 </div>
             </header>
