@@ -127,7 +127,7 @@ class PlayersController extends ApiController
 
         $filename = strtolower($ranking['countryName']) . $ranking['year'];
         $builder = FileBuilder::new();
-        $builder->setParentDir('ranking' . DS . $ranking['countryCode']);
+        $builder->setParentDirPath('ranking', $ranking['countryCode']);
         if (!$builder->output($filename, $ranking)) {
             return $this->renderError(500, 'JSON出力失敗');
         }
