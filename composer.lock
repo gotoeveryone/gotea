@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "abraham/twitteroauth",
-            "version": "8.1.1",
+            "version": "8.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/abraham/twitteroauth.git",
-                "reference": "95da0d496c4931a7b7e1c816280df953c285648d"
+                "reference": "d7a58e97b5c7aed3ebaa5c63025cd0b361dcd683"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/95da0d496c4931a7b7e1c816280df953c285648d",
-                "reference": "95da0d496c4931a7b7e1c816280df953c285648d",
+                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/d7a58e97b5c7aed3ebaa5c63025cd0b361dcd683",
+                "reference": "d7a58e97b5c7aed3ebaa5c63025cd0b361dcd683",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "issues": "https://github.com/abraham/twitteroauth/issues",
                 "source": "https://github.com/abraham/twitteroauth"
             },
-            "time": "2026-01-18T23:30:08+00:00"
+            "time": "2026-06-24T04:06:02+00:00"
         },
         {
             "name": "aws/aws-crt-php",
