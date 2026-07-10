@@ -71,6 +71,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, toRefs, watch } from 'vue';
+import type { PropType } from 'vue';
 import { useStore } from 'vuex';
 import axios from 'axios';
 
