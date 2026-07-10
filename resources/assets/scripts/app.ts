@@ -1,5 +1,6 @@
-import { defineComponent } from 'vue';
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
+import { useStore } from 'vuex';
 
 import BlockUI from '@/components/parts/BlockUI.vue';
 import Dialog from '@/components/parts/Dialog.vue';
@@ -32,7 +33,7 @@ const changeTab = (element: HTMLElement): void => {
 /**
  * アプリケーションのVueインスタンス
  */
-export default defineComponent({
+export default {
   components: {
     appBlock: BlockUI,
     appModal: Modal,
@@ -45,32 +46,22 @@ export default defineComponent({
     NotificationListPage,
     TableTemplateListPage,
   },
-  data: () => {
-    return {
-      countryId: '',
-      changed: false,
-      historyId: null as number | null,
-      hide: true,
-    };
-  },
-  mounted() {
-    this.setTabEvent();
-    this.setCheckboxEvent();
-    this.setAxiosInterceptor();
-
-    this.hide = false;
-  },
-  methods: {
-    setAxiosInterceptor() {
+  setup() {
+    const store = useStore();
+    const countryId = ref('');
+    const changed = ref(false);
+    const historyId = ref<number | null>(null);
+    const hide = ref(true);
+    const setAxiosInterceptor = () => {
       // リクエスト
       axios.interceptors.request.use(
         (config) => {
           config.headers['Content-Type'] = 'application/json';
-          this.hide = true;
+          hide.value = true;
           return config;
         },
         (error) => {
-          this.hide = false;
+          hide.value = false;
           return Promise.reject(error);
         },
       );
@@ -78,16 +69,16 @@ export default defineComponent({
       // レスポンス
       axios.interceptors.response.use(
         (response) => {
-          this.hide = false;
+          hide.value = false;
           return response;
         },
         (error) => {
-          this.hide = false;
+          hide.value = false;
           return Promise.reject(error.response);
         },
       );
-    },
-    setCheckboxEvent() {
+    };
+    const setCheckboxEvent = () => {
       // チェックボックスと入力項目の連動
       const checked = document.querySelector('[data-checked]') as HTMLInputElement;
       if (checked) {
@@ -110,8 +101,8 @@ export default defineComponent({
         setChecked();
         checked.addEventListener('click', () => setChecked(true), false);
       }
-    },
-    setTabEvent() {
+    };
+    const setTabEvent = () => {
       // タブ押下時
       const tabWrapper = document.querySelector('.tabs');
       if (!tabWrapper) {
@@ -143,33 +134,52 @@ export default defineComponent({
         // 無ければ1つ目
         changeTab(tabs[0] as HTMLInputElement);
       }
-    },
-    changeCountry($event: Event) {
+    };
+    const changeCountry = ($event: Event) => {
       const target = $event.target as HTMLInputElement;
-      this.countryId = target.value;
-      if (!this.changed) {
-        this.changed = true;
+      countryId.value = target.value;
+      if (!changed.value) {
+        changed.value = true;
       }
-    },
-    openModal(url: string, width: string, height: string) {
-      this.$store.dispatch('openModal', {
+    };
+    const openModal = (url: string, width: string, height: string) => {
+      store.dispatch('openModal', {
         url: url,
         width: width,
         height: height,
       });
-    },
-    openDialog(title: string | null, messages: string[], type: string) {
-      this.$store.dispatch('openDialog', {
+    };
+    const openDialog = (title: string | null, messages: string[], type: string) => {
+      store.dispatch('openDialog', {
         title: title,
         messages: messages,
         type: type,
       });
-    },
-    select(historyId: string) {
-      this.historyId = parseInt(historyId, 10);
-    },
-    clearHistory() {
-      this.historyId = 0;
-    },
+    };
+    const select = (value: string) => {
+      historyId.value = parseInt(value, 10);
+    };
+    const clearHistory = () => {
+      historyId.value = 0;
+    };
+
+    onMounted(() => {
+      setTabEvent();
+      setCheckboxEvent();
+      setAxiosInterceptor();
+      hide.value = false;
+    });
+
+    return {
+      changeCountry,
+      clearHistory,
+      hide,
+      historyId,
+      openDialog,
+      openModal,
+      countryId,
+      changed,
+      select,
+    };
   },
-});
+};

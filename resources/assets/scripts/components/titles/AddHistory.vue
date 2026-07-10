@@ -152,156 +152,164 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, reactive, toRefs, watch } from 'vue';
+import { useStore } from 'vuex';
 import axios from 'axios';
 
 import { Player } from '@/types/titles';
 import { Country } from '@/types';
 
-export default defineComponent({
-  props: {
-    isTeam: {
-      type: Boolean,
-      default: false,
-    },
-    historyId: {
-      type: Number,
-      default: null,
-    },
+const props = defineProps({
+  isTeam: {
+    type: Boolean,
+    default: false,
   },
-  data: () => {
-    return {
-      countries: [] as Country[],
-      edit: false,
-      viewName: '',
-      year: '' as number | string,
-      holding: '' as number | string,
-      acquired: '',
-      broadcasted: '',
-      isOfficial: true,
-      name: '',
-      playerId: null as number | null,
-      countryId: null as number | null,
-      teamName: null,
-      isTeamHidden: '',
-      players: [] as Player[],
-    };
-  },
-  computed: {
-    key(): string | number | null {
-      return this.isTeam ? this.teamName : this.playerId;
-    },
-    text(): string {
-      return this.edit ? '編集' : '新規登録';
-    },
-    required(): boolean {
-      return !(!!this.year && !!this.holding && !!this.acquired && !!this.key);
-    },
-    initialViewName(): string {
-      return '（検索エリアから棋士を検索してください。）';
-    },
-  },
-  watch: {
-    historyId(_value: number) {
-      if (_value) {
-        axios.get(`/api/histories/${_value}`).then((res) => {
-          const json = res.data.response;
-          this.isTeamHidden = this.getTeamHidden(json.isTeam);
-          this.playerId = json.playerId;
-          this.holding = json.holding;
-          this.countryId = json.countryId;
-          this.year = json.targetYear;
-          this.acquired = json.acquired;
-          this.isOfficial = json.isOfficial;
-          this.broadcasted = json.broadcasted;
-          this.viewName = json.winPlayerName;
-          this.teamName = json.winGroupName;
-          this.edit = true;
-        });
-      }
-    },
-  },
-  mounted() {
-    this.viewName = this.initialViewName;
-    this.isTeamHidden = this.getTeamHidden(this.isTeam);
-    axios.get('/api/countries/').then((res) => (this.countries = res.data.response));
-  },
-  methods: {
-    changeCountry($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      this.countryId = Number(target.value);
-    },
-    getTeamHidden(value: boolean) {
-      return value ? '1' : '';
-    },
-    search() {
-      if (this.name === '') {
-        this.$store.dispatch('openDialog', {
-          messages: '棋士名は必須です。',
-          type: 'error',
-        });
-        return;
-      }
-
-      axios
-        .post('/api/players', {
-          name: this.name,
-        })
-        .then((res) => {
-          const players = res.data.response.results;
-          switch (players.length) {
-            case 0:
-              this.$store.dispatch('openDialog', {
-                messages: '検索結果が0件でした。',
-                type: 'warning',
-              });
-              break;
-            case 1:
-              this.select(players[0]);
-              break;
-            default:
-              this.players = players;
-              break;
-          }
-        })
-        .catch((res) => {
-          const message = res.data.response.message;
-          this.$store.dispatch('openDialog', {
-            messages: message || '更新に失敗しました…。',
-            type: 'error',
-          });
-        });
-    },
-    getName(player: Player) {
-      if (player.nameOther) {
-        return `${player.name} [${player.nameOther}]`;
-      }
-      return player.name;
-    },
-    select(player: Player) {
-      this.playerId = player.id || null;
-      this.countryId = player.countryId || null;
-      this.viewName = `${player.name} ${player.rankName}`;
-      this.name = '';
-      this.players = [];
-    },
-    clearData() {
-      this.viewName = this.initialViewName;
-      this.isTeamHidden = this.getTeamHidden(this.isTeam);
-      this.year = '';
-      this.holding = '';
-      this.acquired = '';
-      this.isOfficial = true;
-      this.broadcasted = '';
-      this.name = '';
-      this.playerId = null;
-      this.countryId = null;
-      this.teamName = null;
-      this.players = [];
-      this.edit = false;
-      this.$emit('cleared');
-    },
+  historyId: {
+    type: Number,
+    default: null,
   },
 });
+const { isTeam, historyId } = toRefs(props);
+const emit = defineEmits<{ cleared: [] }>();
+const store = useStore();
+const state = reactive({
+  countries: [] as Country[],
+  edit: false,
+  viewName: '',
+  year: '' as number | string,
+  holding: '' as number | string,
+  acquired: '',
+  broadcasted: '',
+  isOfficial: true,
+  name: '',
+  playerId: null as number | null,
+  countryId: null as number | null,
+  teamName: null,
+  isTeamHidden: '',
+  players: [] as Player[],
+});
+const {
+  countries,
+  edit,
+  viewName,
+  year,
+  holding,
+  acquired,
+  broadcasted,
+  isOfficial,
+  name,
+  playerId,
+  countryId,
+  teamName,
+  isTeamHidden,
+  players,
+} = toRefs(state);
+const key = computed(() => (props.isTeam ? state.teamName : state.playerId));
+const text = computed(() => (state.edit ? '編集' : '新規登録'));
+const required = computed(
+  () => !(!!state.year && !!state.holding && !!state.acquired && !!key.value),
+);
+const initialViewName = '（検索エリアから棋士を検索してください。）';
+const getTeamHidden = (value: boolean) => (value ? '1' : '');
+const loadHistory = (value: number | null) => {
+  if (value) {
+    axios.get(`/api/histories/${value}`).then((res) => {
+      const json = res.data.response;
+      Object.assign(state, {
+        isTeamHidden: getTeamHidden(json.isTeam),
+        playerId: json.playerId,
+        holding: json.holding,
+        countryId: json.countryId,
+        year: json.targetYear,
+        acquired: json.acquired,
+        isOfficial: json.isOfficial,
+        broadcasted: json.broadcasted,
+        viewName: json.winPlayerName,
+        teamName: json.winGroupName,
+        edit: true,
+      });
+    });
+  }
+};
+watch(historyId, loadHistory);
+onMounted(() => {
+  state.viewName = initialViewName;
+  state.isTeamHidden = getTeamHidden(props.isTeam);
+  axios.get('/api/countries/').then((res) => (state.countries = res.data.response));
+  loadHistory(props.historyId);
+});
+const changeCountry = ($event: Event) => {
+  const target = $event.target as HTMLInputElement;
+  state.countryId = Number(target.value);
+};
+const search = () => {
+  if (state.name === '') {
+    store.dispatch('openDialog', {
+      messages: '棋士名は必須です。',
+      type: 'error',
+    });
+    return;
+  }
+
+  axios
+    .post('/api/players', {
+      name: state.name,
+    })
+    .then((res) => {
+      const players = res.data.response.results;
+      switch (players.length) {
+        case 0:
+          store.dispatch('openDialog', {
+            messages: '検索結果が0件でした。',
+            type: 'warning',
+          });
+          break;
+        case 1:
+          select(players[0]);
+          break;
+        default:
+          state.players = players;
+          break;
+      }
+    })
+    .catch((res) => {
+      const message = res.data.response.message;
+      store.dispatch('openDialog', {
+        messages: message || '更新に失敗しました…。',
+        type: 'error',
+      });
+    });
+};
+const getName = (player: Player) => {
+  if (player.nameOther) {
+    return `${player.name} [${player.nameOther}]`;
+  }
+  return player.name;
+};
+const select = (player: Player) => {
+  state.playerId = player.id || null;
+  state.countryId = player.countryId || null;
+  state.viewName = `${player.name} ${player.rankName}`;
+  state.name = '';
+  state.players = [];
+};
+const clearData = () => {
+  Object.assign(state, {
+    viewName: initialViewName,
+    isTeamHidden: getTeamHidden(props.isTeam),
+    year: '',
+    holding: '',
+    acquired: '',
+    isOfficial: true,
+    broadcasted: '',
+    name: '',
+    playerId: null,
+    countryId: null,
+    teamName: null,
+    players: [],
+    edit: false,
+  });
+  emit('cleared');
+};
 </script>

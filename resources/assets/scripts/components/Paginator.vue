@@ -24,69 +24,55 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, toRefs } from 'vue';
 
-export default defineComponent({
-  props: {
-    currentPage: {
-      type: Number,
-      default: 1,
-    },
-    perPage: {
-      type: Number,
-      default: 20,
-    },
-    total: {
-      type: Number,
-      default: 1,
-    },
+const props = defineProps({
+  currentPage: {
+    type: Number,
+    default: 1,
   },
-  computed: {
-    isFirstPage(): boolean {
-      return this.currentPage === 1;
-    },
-    isLastPage(): boolean {
-      return this.currentPage === this.lastPage;
-    },
-    pageCount(): number {
-      return Math.min(this.lastPage, 9);
-    },
-    lastPage(): number {
-      return Math.ceil(this.total / this.perPage);
-    },
-    fromPage(): number {
-      if (this.lastPage <= this.pageCount) {
-        return 1;
-      }
-      if (this.currentPage <= 5) {
-        return 1;
-      }
-      // 5ページを起点に足りない後ページ分前ページへ戻す
-      // 現在ページはカウントしないため+1している
-      return 5 - (5 - (this.toPage - this.pageCount + 1));
-    },
-    toPage(): number {
-      if (this.currentPage <= 5) {
-        return this.pageCount;
-      }
-      if (this.currentPage + 4 <= this.lastPage) {
-        return this.currentPage + 4;
-      }
-      return this.lastPage;
-    },
-    pages(): number[] {
-      const pages = [];
-      for (let p = this.fromPage; p <= this.toPage; p++) {
-        pages.push(p);
-      }
-      return pages;
-    },
+  perPage: {
+    type: Number,
+    default: 20,
   },
-  methods: {
-    onChangePage(page: number): void {
-      this.$emit('change-page', page);
-    },
+  total: {
+    type: Number,
+    default: 1,
   },
 });
+const { currentPage, perPage, total } = toRefs(props);
+const emit = defineEmits<{ 'change-page': [page: number] }>();
+const lastPage = computed(() => Math.ceil(total.value / perPage.value));
+const pageCount = computed(() => Math.min(lastPage.value, 9));
+const isFirstPage = computed(() => currentPage.value === 1);
+const isLastPage = computed(() => currentPage.value === lastPage.value);
+const toPage = computed(() => {
+  if (currentPage.value <= 5) {
+    return pageCount.value;
+  }
+  if (currentPage.value + 4 <= lastPage.value) {
+    return currentPage.value + 4;
+  }
+  return lastPage.value;
+});
+const fromPage = computed(() => {
+  if (lastPage.value <= pageCount.value) {
+    return 1;
+  }
+  if (currentPage.value <= 5) {
+    return 1;
+  }
+  // 5ページを起点に足りない後ページ分前ページへ戻す
+  // 現在ページはカウントしないため+1している
+  return 5 - (5 - (toPage.value - pageCount.value + 1));
+});
+const pages = computed(() => {
+  const pages: number[] = [];
+  for (let p = fromPage.value; p <= toPage.value; p++) {
+    pages.push(p);
+  }
+  return pages;
+});
+const onChangePage = (page: number): void => emit('change-page', page);
 </script>

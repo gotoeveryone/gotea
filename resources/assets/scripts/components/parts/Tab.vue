@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import type { PropType } from 'vue';
 
 let selectTab = '';

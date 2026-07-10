@@ -90,103 +90,84 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import axios from 'axios';
 
 import { Country, DropDown, Year } from '@/types';
 
-export default defineComponent({
-  props: {
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    lastUpdate: {
-      type: String,
-      default: '',
-    },
+const props = defineProps({
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
-  data: () => {
-    return {
-      countries: [] as DropDown[],
-      years: [] as DropDown[],
-      select: {
-        year: '',
-        country: '',
-        limit: 0,
-        from: '',
-        to: '',
-        type: 'point',
-      },
-    };
-  },
-  computed: {
-    limits() {
-      const limits = [];
-      for (let l = 20; l <= 50; l = l + 10) {
-        limits.push({
-          value: l,
-          text: `～${l}位`,
-        });
-      }
-      return limits;
-    },
-    types() {
-      return [
-        {
-          value: 'point',
-          text: '勝数',
-        },
-        {
-          value: 'percent',
-          text: '勝率',
-        },
-      ];
-    },
-  },
-  mounted() {
-    // 所属国
-    Promise.all([axios.get('/api/countries'), axios.get('/api/years')])
-      .then((res) => {
-        this.countries = res[0].data.response.map((obj: Country) => ({
-          value: obj.code,
-          text: `${obj.name}棋戦`,
-        }));
-        this.years = res[1].data.response.map((obj: Year) => ({
-          value: obj.year,
-          text: `${obj.year}年度`,
-          old: obj.old,
-        }));
-      })
-      .then(() => {
-        this.select.year = this.years[0].value.toString();
-        this.select.country = this.countries[0].value.toString() || '';
-        this.select.limit = this.limits[0].value;
-        this.search();
-      });
-  },
-  methods: {
-    changeValue($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      this.select[target.name] = target.value;
-      this.search();
-    },
-    search() {
-      this.$emit('search', this.select);
-    },
-    clearDate() {
-      this.select.from = '';
-      this.select.to = '';
-      this.search();
-    },
-    json() {
-      this.$emit('json', this.select);
-    },
-    useInputDate() {
-      const selected = this.years.find((y) => y.value === parseInt(this.select.year, 10));
-      return selected ? !selected.old : false;
-    },
+  lastUpdate: {
+    type: String,
+    default: '',
   },
 });
+const { isAdmin, lastUpdate } = toRefs(props);
+const emit = defineEmits<{ search: [value: typeof select]; json: [value: typeof select] }>();
+const countries = ref<DropDown[]>([]);
+const years = ref<DropDown[]>([]);
+const select = reactive({ year: '', country: '', limit: 0, from: '', to: '', type: 'point' });
+const limits = computed(() => {
+  const values = [];
+  for (let l = 20; l <= 50; l += 10) {
+    values.push({
+      value: l,
+      text: `～${l}位`,
+    });
+  }
+  return values;
+});
+const types = computed(() => {
+  return [
+    {
+      value: 'point',
+      text: '勝数',
+    },
+    {
+      value: 'percent',
+      text: '勝率',
+    },
+  ];
+});
+const search = () => emit('search', select);
+onMounted(() => {
+  // 所属国
+  Promise.all([axios.get('/api/countries'), axios.get('/api/years')])
+    .then((res) => {
+      countries.value = res[0].data.response.map((obj: Country) => ({
+        value: obj.code,
+        text: `${obj.name}棋戦`,
+      }));
+      years.value = res[1].data.response.map((obj: Year) => ({
+        value: obj.year,
+        text: `${obj.year}年度`,
+        old: obj.old,
+      }));
+    })
+    .then(() => {
+      select.year = years.value[0].value.toString();
+      select.country = countries.value[0].value.toString() || '';
+      select.limit = limits.value[0].value;
+      search();
+    });
+});
+const changeValue = ($event: Event) => {
+  const target = $event.target as HTMLInputElement;
+  (select as Record<string, string | number>)[target.name] = target.value;
+  search();
+};
+const clearDate = () => {
+  select.from = '';
+  select.to = '';
+  search();
+};
+const json = () => emit('json', select);
+const useInputDate = () => {
+  const selected = years.value.find((y) => y.value === parseInt(select.year, 10));
+  return selected ? !selected.old : false;
+};
 </script>
