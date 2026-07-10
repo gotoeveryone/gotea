@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import type { PropType } from 'vue';
 import { DialogOption } from '@/types';

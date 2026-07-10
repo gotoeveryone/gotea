@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import type { PropType } from 'vue';
 import { TableTemplate as Item } from '@/types/table-template';
 

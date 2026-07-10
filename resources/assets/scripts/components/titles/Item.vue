@@ -69,95 +69,72 @@
   </li>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, ref, toRefs, watch } from 'vue';
+import { useStore } from 'vuex';
 import axios from 'axios';
 
 import { TitleResultItem } from '@/types/titles';
 
-export default defineComponent({
-  props: {
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    item: {
-      type: Object as PropType<TitleResultItem>,
-      required: true,
-    },
+const props = defineProps({
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
-  data: () => {
-    return {
-      localItem: {} as TitleResultItem,
-    };
-  },
-  computed: {
-    winnerName(): string {
-      return this.localItem.winnerName || '';
-    },
-    rowClass(): string {
-      return this.localItem.isClosed ? 'table-row-closed' : '';
-    },
-    label(): string {
-      return this.isSaved ? '開く' : '登録';
-    },
-    isSaved(): boolean {
-      return this.localItem.id !== null && this.localItem.id !== undefined;
-    },
-  },
-  watch: {
-    item(newVal) {
-      this.localItem = newVal;
-    },
-  },
-  mounted() {
-    this.localItem = this.item;
-  },
-  methods: {
-    save() {
-      // 未登録なら何もしない
-      if (!this.isSaved) {
-        return;
-      }
-      // 更新処理
-      return axios.put(`/api/titles/${this.localItem.id}`, this.item).catch((res) => {
-        const message = res.data.response.message;
-        this.$store.dispatch('openDialog', {
-          messages: message || '更新に失敗しました…。',
-          type: 'error',
-        });
-      });
-    },
-    select() {
-      if (!this.isSaved) {
-        this.add();
-      } else {
-        this.$emit('openModal', {
-          url: this.localItem.url,
-        });
-      }
-    },
-    add() {
-      // 登録処理
-      return axios
-        .post('/api/titles/', this.item)
-        .then(() => {
-          this.$emit('refresh');
-          this.$store.dispatch('openDialog', {
-            messages: `タイトル【${this.localItem.name}】を登録しました。`,
-          });
-        })
-        .catch((res) => {
-          const message = res.data.response.message;
-          this.$store.dispatch('openDialog', {
-            messages: message || '登録に失敗しました…。',
-            type: 'error',
-          });
-        });
-    },
-    onChangeHtmlFileModified() {
-      this.save();
-    },
+  item: {
+    type: Object as PropType<TitleResultItem>,
+    required: true,
   },
 });
+const { isAdmin, item } = toRefs(props);
+const emit = defineEmits<{ openModal: [options: { url: string | null }]; refresh: [] }>();
+const store = useStore();
+const localItem = ref<TitleResultItem>(item.value);
+const winnerName = computed(() => localItem.value.winnerName || '');
+const rowClass = computed(() => (localItem.value.isClosed ? 'table-row-closed' : ''));
+const isSaved = computed(() => localItem.value.id !== null && localItem.value.id !== undefined);
+const label = computed(() => (isSaved.value ? '開く' : '登録'));
+watch(item, (newVal) => (localItem.value = newVal));
+const save = () => {
+  // 未登録なら何もしない
+  if (!isSaved.value) {
+    return;
+  }
+  // 更新処理
+  return axios.put(`/api/titles/${localItem.value.id}`, props.item).catch((res) => {
+    const message = res.data.response.message;
+    store.dispatch('openDialog', {
+      messages: message || '更新に失敗しました…。',
+      type: 'error',
+    });
+  });
+};
+const select = () => {
+  if (!isSaved.value) {
+    add();
+  } else {
+    emit('openModal', {
+      url: localItem.value.url,
+    });
+  }
+};
+const add = () => {
+  // 登録処理
+  return axios
+    .post('/api/titles/', props.item)
+    .then(() => {
+      emit('refresh');
+      store.dispatch('openDialog', {
+        messages: `タイトル【${localItem.value.name}】を登録しました。`,
+      });
+    })
+    .catch((res) => {
+      const message = res.data.response.message;
+      store.dispatch('openDialog', {
+        messages: message || '登録に失敗しました…。',
+        type: 'error',
+      });
+    });
+};
+const onChangeHtmlFileModified = () => save();
 </script>

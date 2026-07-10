@@ -15,22 +15,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script setup lang="ts">
+import { PropType, toRefs } from 'vue';
 
 import { RanksItem } from '@/types/ranks';
 
-export default defineComponent({
-  props: {
-    items: {
-      type: Array as PropType<RanksItem[]>,
-      default: () => [],
-    },
-  },
-  methods: {
-    count(_item: RanksItem) {
-      return `${_item.count}人`;
-    },
+const props = defineProps({
+  items: {
+    type: Array as PropType<RanksItem[]>,
+    default: () => [],
   },
 });
+const { items } = toRefs(props);
+const count = (_item: RanksItem) => `${_item.count}人`;
 </script>

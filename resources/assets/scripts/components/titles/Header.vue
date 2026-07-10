@@ -46,89 +46,72 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import axios from 'axios';
 
 import { Country, DropDown } from '@/types';
 
-export default defineComponent({
-  props: {
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data: () => {
-    return {
-      countries: [] as DropDown[],
-      select: {
-        countryId: '',
-        searchClosed: 0,
-        searchNonOutput: 1,
-      },
-    };
-  },
-  computed: {
-    searchNonOutputOptions() {
-      return [
-        {
-          value: 0,
-          text: '含めない',
-        },
-        {
-          value: 1,
-          text: '含める',
-        },
-      ];
-    },
-    searchClosedOptions() {
-      return [
-        {
-          value: 1,
-          text: '検索する',
-        },
-        {
-          value: 0,
-          text: '検索しない',
-        },
-      ];
-    },
-  },
-  mounted() {
-    axios
-      .get('/api/countries/')
-      .then((res) =>
-        res.data.response.map((obj: Country) => ({
-          value: obj.id,
-          text: `${obj.name}棋戦`,
-        })),
-      )
-      .then((countries) => {
-        this.countries = countries;
-        this.select = {
-          countryId: this.countries[0].value.toString() || '',
-          searchNonOutput: this.searchNonOutputOptions[0].value,
-          searchClosed: this.searchClosedOptions[0].value,
-        };
-        this.search();
-      });
-  },
-  methods: {
-    changeValue($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      this.select[target.name] = target.value;
-      this.search();
-    },
-    search() {
-      this.$emit('search', this.select);
-    },
-    add() {
-      this.$emit('add', this.select);
-    },
-    json() {
-      this.$emit('json', this.select);
-    },
-  },
+const props = defineProps({
+  isAdmin: { type: Boolean, default: false },
 });
+const { isAdmin } = toRefs(props);
+const emit = defineEmits<{
+  search: [value: typeof select];
+  add: [value: typeof select];
+  json: [value: typeof select];
+}>();
+const countries = ref<DropDown[]>([]);
+const select = reactive({ countryId: '', searchClosed: 0, searchNonOutput: 1 });
+const searchNonOutputOptions = computed(() => {
+  return [
+    {
+      value: 0,
+      text: '含めない',
+    },
+    {
+      value: 1,
+      text: '含める',
+    },
+  ];
+});
+const searchClosedOptions = computed(() => {
+  return [
+    {
+      value: 1,
+      text: '検索する',
+    },
+    {
+      value: 0,
+      text: '検索しない',
+    },
+  ];
+});
+onMounted(() => {
+  axios
+    .get('/api/countries/')
+    .then((res) =>
+      res.data.response.map((obj: Country) => ({
+        value: obj.id,
+        text: `${obj.name}棋戦`,
+      })),
+    )
+    .then((countryOptions) => {
+      countries.value = countryOptions;
+      Object.assign(select, {
+        countryId: countries.value[0].value.toString() || '',
+        searchNonOutput: searchNonOutputOptions.value[0].value,
+        searchClosed: searchClosedOptions.value[0].value,
+      });
+      search();
+    });
+});
+const changeValue = ($event: Event) => {
+  const target = $event.target as HTMLInputElement;
+  (select as Record<string, string | number>)[target.name] = target.value;
+  search();
+};
+const search = () => emit('search', select);
+const add = () => emit('add', select);
+const json = () => emit('json', select);
 </script>

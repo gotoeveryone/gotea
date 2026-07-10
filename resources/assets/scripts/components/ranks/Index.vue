@@ -5,30 +5,18 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import axios from 'axios';
 
 import RanksHeader from '@/components/ranks/Header.vue';
 import RanksItems from '@/components/ranks/Items.vue';
 import { RanksCondition } from '@/types/ranks';
 
-export default defineComponent({
-  components: {
-    RanksHeader,
-    RanksItems,
-  },
-  data: () => {
-    return {
-      items: [],
-    };
-  },
-  methods: {
-    onSearch(_params: RanksCondition) {
-      axios
-        .get(`/api/players/ranks/${_params.country}`)
-        .then((res) => (this.items = res.data.response));
-    },
-  },
-});
+const items = ref([]);
+const onSearch = (_params: RanksCondition) => {
+  axios
+    .get(`/api/players/ranks/${_params.country}`)
+    .then((res) => (items.value = res.data.response));
+};
 </script>

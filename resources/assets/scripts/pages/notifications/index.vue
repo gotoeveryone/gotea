@@ -32,9 +32,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import axios from 'axios';
-import { defineComponent } from 'vue';
+import { onMounted, onBeforeUnmount, ref, toRefs } from 'vue';
 
 import Paginator from '@/components/Paginator.vue';
 import ListItem from '@/components/notifications/Item.vue';
@@ -45,53 +45,44 @@ import {
   readPaginationFromUrl,
 } from '@/libs/pagination-url';
 
-export default defineComponent({
-  components: {
-    Paginator,
-    ListItem,
+const props = defineProps({
+  csrfToken: {
+    type: String,
+    default: '',
   },
-  props: {
-    csrfToken: {
-      type: String,
-      default: '',
-    },
-  },
-  data: () => ({
-    total: 0,
-    items: [] as Item[],
-    currentPage: 1,
-    perPage: 30,
-    cleanupPopStateListener: null as null | (() => void),
-  }),
-  mounted() {
-    const { page, limit } = readPaginationFromUrl(this.perPage);
-    this.perPage = limit;
-    this.currentPage = page;
-    this.cleanupPopStateListener = listenPaginationPopState(this.perPage, ({ page, limit }) => {
-      if (this.currentPage === page && this.perPage === limit) {
-        return;
-      }
-      this.perPage = limit;
-      this.onSearch(page);
+});
+const { csrfToken } = toRefs(props);
+const total = ref(0);
+const items = ref<Item[]>([]);
+const currentPage = ref(1);
+const perPage = ref(30);
+let cleanupPopStateListener: null | (() => void) = null;
+const onSearch = (page: number) => {
+  currentPage.value = page;
+  return axios
+    .get<Response>('/api/notifications', { params: { page, limit: perPage.value } })
+    .then((res) => res.data)
+    .then(({ response: result }) => {
+      total.value = result.total;
+      items.value = result.items;
+      pushPaginationState({ page: currentPage.value, limit: perPage.value });
     });
-    this.onSearch(this.currentPage);
-  },
-  beforeUnmount() {
-    this.cleanupPopStateListener?.();
-    this.cleanupPopStateListener = null;
-  },
-  methods: {
-    onSearch(page: number) {
-      this.currentPage = page;
-      return axios
-        .get<Response>('/api/notifications', { params: { page, limit: this.perPage } })
-        .then((res) => res.data)
-        .then(({ response: { total, items } }) => {
-          this.total = total;
-          this.items = items;
-          pushPaginationState({ page: this.currentPage, limit: this.perPage });
-        });
-    },
-  },
+};
+onMounted(() => {
+  const { page, limit } = readPaginationFromUrl(perPage.value);
+  perPage.value = limit;
+  currentPage.value = page;
+  cleanupPopStateListener = listenPaginationPopState(perPage.value, ({ page, limit }) => {
+    if (currentPage.value === page && perPage.value === limit) {
+      return;
+    }
+    perPage.value = limit;
+    onSearch(page);
+  });
+  onSearch(currentPage.value);
+});
+onBeforeUnmount(() => {
+  cleanupPopStateListener?.();
+  cleanupPopStateListener = null;
 });
 </script>

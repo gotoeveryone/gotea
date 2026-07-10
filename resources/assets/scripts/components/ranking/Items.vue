@@ -32,34 +32,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script setup lang="ts">
+import { PropType, toRefs } from 'vue';
+import { useStore } from 'vuex';
 
 import { RankingResultItem } from '@/types/ranking';
 
-export default defineComponent({
-  props: {
-    items: {
-      type: Array as PropType<RankingResultItem[]>,
-      default: () => [],
-    },
-  },
-  methods: {
-    getRank(_idx: number, _row: RankingResultItem) {
-      if (this.items[_idx - 1]) {
-        const beforeRank = this.items[_idx - 1].rank;
-        return _row.rank === beforeRank ? '' : `${_row.rank}`;
-      }
-      return _row.rank;
-    },
-    getSexClass(_row: RankingResultItem) {
-      return _row.sex === '女性' ? 'female' : 'male';
-    },
-    select(_row: RankingResultItem) {
-      this.$store.dispatch('openModal', {
-        url: _row.url,
-      });
-    },
+const props = defineProps({
+  items: {
+    type: Array as PropType<RankingResultItem[]>,
+    default: () => [],
   },
 });
+const { items } = toRefs(props);
+const store = useStore();
+const getRank = (_idx: number, _row: RankingResultItem) => {
+  if (props.items[_idx - 1]) {
+    const beforeRank = props.items[_idx - 1].rank;
+    return _row.rank === beforeRank ? '' : `${_row.rank}`;
+  }
+  return _row.rank;
+};
+const getSexClass = (_row: RankingResultItem) => (_row.sex === '女性' ? 'female' : 'male');
+const select = (_row: RankingResultItem) => {
+  store.dispatch('openModal', {
+    url: _row.url,
+  });
+};
 </script>

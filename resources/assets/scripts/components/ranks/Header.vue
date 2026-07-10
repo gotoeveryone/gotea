@@ -16,43 +16,34 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
 
 import { Country, DropDown } from '@/types';
 
-export default defineComponent({
-  data: () => {
-    return {
-      countries: [] as DropDown[],
-      selectedCountry: '',
-    };
-  },
-  mounted() {
-    axios
-      .get('/api/countries/?has_title=1')
-      .then((res) =>
-        res.data.response.map((obj: Country) => ({
-          value: obj.id,
-          text: obj.name,
-        })),
-      )
-      .then((countries) => {
-        this.countries = countries;
-        this.selectedCountry = this.countries[0].value.toString() || '';
-        this.search();
-      });
-  },
-  methods: {
-    changeValue($event: Event) {
-      const target = $event.target as HTMLInputElement;
-      this.selectedCountry = target.value;
-      this.search();
-    },
-    search() {
-      this.$emit('search', { country: this.selectedCountry });
-    },
-  },
+const emit = defineEmits<{ search: [params: { country: string }] }>();
+const countries = ref<DropDown[]>([]);
+const selectedCountry = ref('');
+const search = () => emit('search', { country: selectedCountry.value });
+onMounted(() => {
+  axios
+    .get('/api/countries/?has_title=1')
+    .then((res) =>
+      res.data.response.map((obj: Country) => ({
+        value: obj.id,
+        text: obj.name,
+      })),
+    )
+    .then((countryOptions) => {
+      countries.value = countryOptions;
+      selectedCountry.value = countries.value[0].value.toString() || '';
+      search();
+    });
 });
+const changeValue = ($event: Event) => {
+  const target = $event.target as HTMLInputElement;
+  selectedCountry.value = target.value;
+  search();
+};
 </script>

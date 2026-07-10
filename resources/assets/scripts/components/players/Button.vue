@@ -4,42 +4,30 @@
   </button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
-export default defineComponent({
-  props: {
-    url: {
-      type: String,
-      required: true,
-    },
-    countryId: {
-      type: String,
-      required: true,
-    },
-    paramId: {
-      type: String,
-      required: true,
-    },
-    changed: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  url: {
+    type: String,
+    required: true,
   },
-  computed: {
-    targetId(): string {
-      if (!this.changed) {
-        return this.paramId;
-      }
-      return this.countryId;
-    },
+  countryId: {
+    type: String,
+    required: true,
   },
-  methods: {
-    newPlayer() {
-      this.$store.dispatch('openModal', {
-        url: `${this.url}?country_id=${this.targetId}`,
-      });
-    },
+  paramId: {
+    type: String,
+    required: true,
+  },
+  changed: {
+    type: Boolean,
+    default: false,
   },
 });
+const store = useStore();
+const targetId = computed(() => (props.changed ? props.countryId : props.paramId));
+const newPlayer = () =>
+  store.dispatch('openModal', { url: `${props.url}?country_id=${targetId.value}` });
 </script>
