@@ -219,6 +219,30 @@ class TitleScoresControllerTest extends AppTestCase
     }
 
     /**
+     * アップロード成功（棋士IDの表記揺れ）
+     *
+     * @return void
+     */
+    public function testUploadSuccessForNormalizedPlayerIds()
+    {
+        $uploadedFile = $this->createFile('title_scores_normalized_ids.csv', 'text/csv');
+
+        $this->enableCsrfToken();
+        $this->post(['_name' => 'execute_upload_scores'], ['file' => $uploadedFile]);
+        $this->assertResponseSuccess();
+
+        $titleScore = $this->TitleScores->findByStarted('2023-06-01')->first();
+        $this->assertNotNull($titleScore);
+        $playerIds = $this->TitleScoreDetails->find()
+            ->where(['title_score_id' => $titleScore->id])
+            ->orderByAsc('player_id')
+            ->all()
+            ->extract('player_id')
+            ->toList();
+        $this->assertEquals([1, 2], $playerIds);
+    }
+
+    /**
      * 更新失敗
      *
      * @return void
