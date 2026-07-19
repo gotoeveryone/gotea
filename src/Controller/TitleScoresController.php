@@ -167,6 +167,14 @@ class TitleScoresController extends AppController
                 $player2Name,
                 $player2Division,
             ] = $row;
+            $player1Id = trim($player1Id);
+            $player2Id = trim($player2Id);
+            if (ctype_digit($player1Id)) {
+                $player1Id = (int)$player1Id;
+            }
+            if (ctype_digit($player2Id)) {
+                $player2Id = (int)$player2Id;
+            }
             $rows[] = [
                 'country_id' => $countryId,
                 'name' => $name,
@@ -200,7 +208,7 @@ class TitleScoresController extends AppController
                     ->whereInList('Players.id', array_unique($playerIds))
                     ->all() as $player
             ) {
-                $players[$player->id] = $player;
+                $players[(int)$player->id] = $player;
             }
         }
 

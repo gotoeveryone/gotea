@@ -1,0 +1,2 @@
+country_id,started,ended,name,result,is_world,is_official,player1_id,player1_name,player1_division,player2_id,player2_name,player2_division
+1,2023/06/01,2023/06/01,"テスト ID 正規化","白中押勝ち",0,0,001,ユーザ1,勝, 2 ,ユーザ2,敗
