@@ -1,4 +1,5 @@
-- hosts: web
+- name: Setup application server
+  hosts: web
   roles:
     - setup_dir
     - transfer_env
