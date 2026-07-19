@@ -12,6 +12,26 @@ class PlayerScore extends AppEntity
     use RankTrait;
 
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'player_id' => true,
+        'rank_id' => true,
+        'target_year' => true,
+        'win_point' => true,
+        'lose_point' => true,
+        'draw_point' => true,
+        'win_point_world' => true,
+        'lose_point_world' => true,
+        'draw_point_world' => true,
+        'created' => false,
+        'created_by' => false,
+        'modified' => false,
+        'modified_by' => false,
+    ];
+
+    /**
      * ランキング表示用の名前を取得します。
      *
      * @param bool $isWorlds 国際棋戦かどうか

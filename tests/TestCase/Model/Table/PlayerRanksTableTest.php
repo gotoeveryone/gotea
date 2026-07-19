@@ -145,8 +145,8 @@ class PlayerRanksTableTest extends TestCase
             'player_id' => 3,
             'rank_id' => 4,
             'promoted' => '2018-01-03',
-            'newest' => true,
         ]);
+        $rank->newest = true;
 
         $save = $this->PlayerRanks->save($rank, [
             'account' => 'testuser',

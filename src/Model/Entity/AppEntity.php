@@ -20,7 +20,7 @@ class AppEntity extends Entity
      * @var array
      */
     protected array $_accessible = [
-        '*' => true,
+        '*' => false,
         'id' => false,
         'created' => false,
         'modified' => false,

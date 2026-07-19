@@ -38,6 +38,30 @@ class Title extends AppEntity
     use CountryTrait;
 
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'country_id' => true,
+        'name' => true,
+        'name_english' => true,
+        'holding' => true,
+        'sort_order' => true,
+        'html_file_name' => true,
+        'html_file_holding' => true,
+        'html_file_modified' => true,
+        'remarks' => true,
+        'is_team' => true,
+        'is_closed' => true,
+        'is_output' => true,
+        'is_official' => true,
+        'created' => false,
+        'created_by' => false,
+        'modified' => false,
+        'modified_by' => false,
+    ];
+
+    /**
      * 現在の保持情報を取得します。
      *
      * @return \Gotea\Model\Entity\RetentionHistory|null

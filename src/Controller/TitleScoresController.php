@@ -268,7 +268,13 @@ class TitleScoresController extends AppController
             $data[] = $item;
         }
 
-        $entities = $this->TitleScores->newEntities($data);
+        if (!$data) {
+            return $this->renderWithDialogErrors(400, __('Data not exist'));
+        }
+
+        $entities = $this->TitleScores->newEntities($data, [
+            'accessibleFields' => ['title_score_details' => true],
+        ]);
         if (!$this->TitleScores->saveMany($entities)) {
             return $this->renderWithDialogErrors(400, __('Has errors in uploaded data'));
         }

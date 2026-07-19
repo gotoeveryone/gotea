@@ -20,10 +20,11 @@ class TableTemplate extends AppEntity
      * @inheritDoc
      */
     protected array $_accessible = [
+        'id' => false,
         'title' => true,
         'content' => true,
-        'created',
-        'modified' => true,
+        'created' => false,
+        'modified' => false,
     ];
 
     /**

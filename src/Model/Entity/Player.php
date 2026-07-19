@@ -52,6 +52,31 @@ class Player extends AppEntity
     use RankTrait;
 
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'country_id' => true,
+        'rank_id' => true,
+        'organization_id' => true,
+        'name' => true,
+        'name_english' => true,
+        'name_other' => true,
+        'sex' => true,
+        'joined_year' => true,
+        'joined_month' => true,
+        'joined_day' => true,
+        'birthday' => true,
+        'remarks' => true,
+        'is_retired' => true,
+        'retired' => true,
+        'created' => false,
+        'created_by' => false,
+        'modified' => false,
+        'modified_by' => false,
+    ];
+
+    /**
      * 引数の日付時点での段位を取得する
      * player_ranks から段位が取得できなかった場合は棋士情報に設定されている段位を返却する
      *

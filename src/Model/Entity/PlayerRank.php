@@ -20,4 +20,16 @@ class PlayerRank extends AppEntity
 {
     use PlayerTrait;
     use RankTrait;
+
+    /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'player_id' => true,
+        'rank_id' => true,
+        'promoted' => true,
+        'created' => false,
+        'modified' => false,
+    ];
 }

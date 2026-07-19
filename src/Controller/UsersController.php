@@ -78,7 +78,8 @@ class UsersController extends AppController
         if ($result->isValid()) {
             // 最終ログイン日時を更新
             /** @var \Gotea\Model\Entity\User $user */
-            $user = $this->Users->patchEntity($result->getData(), ['last_logged' => FrozenTime::now()]);
+            $user = $result->getData();
+            $user->last_logged = FrozenTime::now();
             if (!$this->Users->save($user)) {
                 // 仮に保存に失敗してもログ出力のみ行う
                 Log::warning('Update failed: last_logged');

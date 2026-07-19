@@ -9,4 +9,15 @@ namespace Gotea\Model\Entity;
 class Organization extends AppEntity
 {
     use CountryTrait;
+
+    /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'country_id' => true,
+        'name' => true,
+        'created' => false,
+        'modified' => false,
+    ];
 }
