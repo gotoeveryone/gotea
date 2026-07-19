@@ -135,7 +135,8 @@ class TitleScoresController extends AppController
             SplFileObject::READ_AHEAD,
         );
 
-        $data = [];
+        $rows = [];
+        $playerIds = [];
         foreach ($csv as $i => $row) {
             // 1行目は無視
             if ($i === 0) {
@@ -166,9 +167,7 @@ class TitleScoresController extends AppController
                 $player2Name,
                 $player2Division,
             ] = $row;
-            // 棋士IDが設定されていればそこから棋士名を埋める
-            // TODO: まとめて取得するなどでクエリ発行回数を改善したい
-            $item = [
+            $rows[] = [
                 'country_id' => $countryId,
                 'name' => $name,
                 'result' => $result,
@@ -176,23 +175,81 @@ class TitleScoresController extends AppController
                 'ended' => str_replace('/', '-', $ended),
                 'is_world' => $isWorld,
                 'is_official' => $isOfficial,
+                'player1_id' => $player1Id,
+                'player1_division' => $player1Division,
+                'player2_id' => $player2Id,
+                'player2_division' => $player2Division,
+            ];
+            if ($player1Id) {
+                $playerIds[] = $player1Id;
+            }
+            if ($player2Id) {
+                $playerIds[] = $player2Id;
+            }
+        }
+
+        if (!$rows) {
+            return $this->renderWithDialogErrors(400, __('Data not exist'));
+        }
+
+        // CSVに含まれる棋士を一括取得し、行処理ではDBへ問い合わせない
+        $players = [];
+        if ($playerIds) {
+            foreach (
+                $this->Players->find()
+                    ->whereInList('Players.id', array_unique($playerIds))
+                    ->all() as $player
+            ) {
+                $players[$player->id] = $player;
+            }
+        }
+
+        $data = [];
+        foreach ($rows as $row) {
+            [
+                'country_id' => $countryId,
+                'name' => $name,
+                'result' => $result,
+                'started' => $started,
+                'ended' => $ended,
+                'is_world' => $isWorld,
+                'is_official' => $isOfficial,
+                'player1_id' => $player1Id,
+                'player1_division' => $player1Division,
+                'player2_id' => $player2Id,
+                'player2_division' => $player2Division,
+            ] = $row;
+
+            $item = [
+                'country_id' => $countryId,
+                'name' => $name,
+                'result' => $result,
+                'started' => $started,
+                'ended' => $ended,
+                'is_world' => $isWorld,
+                'is_official' => $isOfficial,
                 'title_score_details' => [],
             ];
             try {
-                if ($player1Id) {
-                    $player = $this->Players->get($player1Id);
+                foreach (
+                    [
+                        [$player1Id, $player1Division],
+                        [$player2Id, $player2Division],
+                    ] as [$playerId, $division]
+                ) {
+                    if (!$playerId) {
+                        continue;
+                    }
+                    if (!isset($players[$playerId])) {
+                        throw new RecordNotFoundException(sprintf(
+                            'Record not found in table `%s`.',
+                            $this->Players->getTable(),
+                        ));
+                    }
                     $item['title_score_details'][] = [
-                        'player_id' => $player1Id,
-                        'player_name' => $player->name,
-                        'division' => $player1Division,
-                    ];
-                }
-                if ($player2Id) {
-                    $player = $this->Players->get($player2Id);
-                    $item['title_score_details'][] = [
-                        'player_id' => $player2Id,
-                        'player_name' => $player->name,
-                        'division' => $player2Division,
+                        'player_id' => $playerId,
+                        'player_name' => $players[$playerId]->name,
+                        'division' => $division,
                     ];
                 }
             } catch (RecordNotFoundException $e) {
@@ -201,10 +258,6 @@ class TitleScoresController extends AppController
                 return $this->renderWithDialogErrors(400, __('Data not exist'));
             }
             $data[] = $item;
-        }
-
-        if (!$data) {
-            return $this->renderWithDialogErrors(400, __('Data not exist'));
         }
 
         $entities = $this->TitleScores->newEntities($data);
