@@ -104,6 +104,26 @@ class PlayerRanksControllerTest extends AppTestCase
     }
 
     /**
+     * Test create method with newest flag
+     *
+     * @return void
+     */
+    public function testCreateWithNewest()
+    {
+        $this->enableCsrfToken();
+        $data = [
+            'rank_id' => 4,
+            'promoted' => '2017-12-10',
+            'newest' => '1',
+        ];
+        $this->post(['_name' => 'create_ranks', 1], $data);
+        $this->assertRedirect(['_name' => 'view_player', '?' => ['tab' => 'ranks'], 1]);
+
+        $player = TableRegistry::getTableLocator()->get('Players')->get(1);
+        $this->assertSame(4, $player->rank_id);
+    }
+
+    /**
      * Test update method
      *
      * @return void

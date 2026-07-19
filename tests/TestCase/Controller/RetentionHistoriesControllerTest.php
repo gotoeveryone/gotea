@@ -81,6 +81,31 @@ class RetentionHistoriesControllerTest extends AppTestCase
     }
 
     /**
+     * 保存（最新として登録）
+     *
+     * @return void
+     */
+    public function testSaveWithNewest()
+    {
+        $this->enableCsrfToken();
+        $data = [
+            'player_id' => 1,
+            'title_id' => 1,
+            'name' => 'Test Title',
+            'is_team' => false,
+            'acquired' => '2019-04-01',
+            'holding' => 3,
+            'target_year' => 2017,
+            'newest' => '1',
+        ];
+        $this->post(['_name' => 'save_histories', 1], $data);
+        $this->assertRedirect(['_name' => 'view_title', '?' => ['tab' => 'retention_histories'], 1]);
+
+        $title = TableRegistry::getTableLocator()->get('Titles')->get(1);
+        $this->assertSame(3, $title->holding);
+    }
+
+    /**
      * 保存（更新）
      *
      * @return void

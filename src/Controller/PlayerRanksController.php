@@ -45,6 +45,8 @@ class PlayerRanksController extends AppController
     {
         $data = $this->getRequest()->withData('player_id', $playerId)->getParsedBody();
         $rank = $this->PlayerRanks->newEntity($data);
+        $newest = $data['newest'] ?? false;
+        $rank->newest = is_scalar($newest) && filter_var($newest, FILTER_VALIDATE_BOOLEAN);
 
         // 保存
         if (!$this->PlayerRanks->save($rank)) {

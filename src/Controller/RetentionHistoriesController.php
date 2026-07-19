@@ -35,9 +35,12 @@ class RetentionHistoriesController extends AppController
     {
         // エンティティ取得 or 生成
         $historyId = $this->getRequest()->getData('id', '');
+        $data = $this->getRequest()->getParsedBody();
         $history = $this->RetentionHistories->findOrNew(['id' => $historyId]);
-        $this->RetentionHistories->patchEntity($history, $this->getRequest()->getParsedBody());
+        $this->RetentionHistories->patchEntity($history, $data);
         $history->title_id = $id;
+        $newest = $data['newest'] ?? false;
+        $history->newest = is_scalar($newest) && filter_var($newest, FILTER_VALIDATE_BOOLEAN);
 
         // 保存
         if (!$this->RetentionHistories->save($history)) {
