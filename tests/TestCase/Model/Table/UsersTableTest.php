@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Gotea\Test\TestCase\Model\Table;
 
+use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use Gotea\Model\Table\UsersTable;
@@ -144,5 +145,31 @@ class UsersTableTest extends TestCase
         $result = $this->Users->newEntity($params);
         $this->Users->save($result);
         $this->assertNotEmpty($result->getErrors());
+    }
+
+    /**
+     * 管理フラグ・監査項目・最終ログイン日時は mass assignment できない
+     *
+     * @return void
+     */
+    public function testProtectedFieldsAreNotMassAssigned(): void
+    {
+        $entity = $this->Users->newEntity([
+            'account' => 'testuser2',
+            'name' => 'TestUser2',
+            'password' => 'testpassword',
+            'id' => 999,
+            'is_admin' => true,
+            'last_logged' => FrozenTime::now(),
+            'created' => FrozenTime::now(),
+            'modified' => FrozenTime::now(),
+        ]);
+
+        $this->assertSame('testuser2', $entity->account);
+        $this->assertFalse($entity->hasValue('id'));
+        $this->assertFalse($entity->hasValue('is_admin'));
+        $this->assertFalse($entity->hasValue('last_logged'));
+        $this->assertFalse($entity->hasValue('created'));
+        $this->assertFalse($entity->hasValue('modified'));
     }
 }

@@ -13,4 +13,14 @@ namespace Gotea\Model\Entity;
  */
 class Rank extends AppEntity
 {
+    /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'name' => true,
+        'rank_numeric' => true,
+        'created' => false,
+        'modified' => false,
+    ];
 }

@@ -39,6 +39,19 @@ class TitleScoreDetail extends AppEntity
     use RankTrait;
 
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'title_score_id' => true,
+        'player_id' => true,
+        'player_name' => true,
+        'division' => true,
+        'created' => false,
+        'modified' => false,
+    ];
+
+    /**
      * 棋士名と当時の段位を返却します。
      *
      * @param \Cake\I18n\FrozenDate $baseDate 基準となる日付

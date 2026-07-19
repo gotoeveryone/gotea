@@ -23,13 +23,14 @@ class User extends Entity
      * @inheritDoc
      */
     protected array $_accessible = [
+        'id' => false,
         'account' => true,
         'name' => true,
         'password' => true,
-        'is_admin' => true,
-        'last_logged' => true,
-        'created' => true,
-        'modified' => true,
+        'is_admin' => false,
+        'last_logged' => false,
+        'created' => false,
+        'modified' => false,
     ];
 
     /**

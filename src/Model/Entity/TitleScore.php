@@ -37,6 +37,24 @@ class TitleScore extends AppEntity
     use CountryTrait;
 
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'country_id' => true,
+        'title_id' => true,
+        'name' => true,
+        'result' => true,
+        'started' => true,
+        'ended' => true,
+        'is_world' => true,
+        'is_official' => true,
+        'title_score_details' => false,
+        'created' => false,
+        'modified' => false,
+    ];
+
+    /**
      * 勝者の棋士IDを取得します。
      *
      * @return int|null 勝者の棋士ID

@@ -21,6 +21,19 @@ use Cake\ORM\TableRegistry;
 class Country extends AppEntity
 {
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'code' => true,
+        'name' => true,
+        'name_english' => true,
+        'has_title' => true,
+        'created' => false,
+        'modified' => false,
+    ];
+
+    /**
      * 棋士の所属組織を取得します。
      *
      * @param mixed $value 値

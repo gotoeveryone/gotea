@@ -24,13 +24,14 @@ class Notification extends AppEntity
      * @inheritDoc
      */
     protected array $_accessible = [
+        'id' => false,
         'title' => true,
         'content' => true,
         'is_draft' => true,
         'published' => true,
         'is_permanent' => true,
-        'created' => true,
-        'modified' => true,
+        'created' => false,
+        'modified' => false,
     ];
 
     /**

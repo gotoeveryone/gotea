@@ -33,6 +33,26 @@ class RetentionHistory extends AppEntity
     use RankTrait;
 
     /**
+     * @inheritDoc
+     */
+    protected array $_accessible = [
+        'id' => false,
+        'title_id' => true,
+        'player_id' => true,
+        'country_id' => true,
+        'holding' => true,
+        'target_year' => true,
+        'name' => true,
+        'win_group_name' => true,
+        'is_team' => true,
+        'acquired' => true,
+        'is_official' => true,
+        'broadcasted' => true,
+        'created' => false,
+        'modified' => false,
+    ];
+
+    /**
      * タイトル保持者を取得します。
      *
      * @return string
