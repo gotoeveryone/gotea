@@ -30,7 +30,7 @@
     "@vue/test-utils": "^2.4.11",
     "concurrently": "^10.0.3",
     "jsdom": "^29.1.1",
-    "postcss": "^8.5.16",
+    "postcss": "^8.5.18",
     "postcss-html": "^1.8.1",
     "postcss-scss": "^4.0.9",
     "sass": "^1.101.0",
