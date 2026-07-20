@@ -3982,16 +3982,16 @@
         },
         {
             "name": "cakephp/cakephp-codesniffer",
-            "version": "5.3.0",
+            "version": "5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp-codesniffer.git",
-                "reference": "8c9481165b0f2819ac58894c9a7e5599a55ad678"
+                "reference": "c29688b302b1c8e06e82261f99288603f4e821ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/8c9481165b0f2819ac58894c9a7e5599a55ad678",
-                "reference": "8c9481165b0f2819ac58894c9a7e5599a55ad678",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/c29688b302b1c8e06e82261f99288603f4e821ca",
+                "reference": "c29688b302b1c8e06e82261f99288603f4e821ca",
                 "shasum": ""
             },
             "require": {
@@ -4032,7 +4032,7 @@
                 "issues": "https://github.com/cakephp/cakephp-codesniffer/issues",
                 "source": "https://github.com/cakephp/cakephp-codesniffer"
             },
-            "time": "2025-09-19T15:47:28+00:00"
+            "time": "2026-07-08T12:40:38+00:00"
         },
         {
             "name": "cakephp/debug_kit",
@@ -4766,16 +4766,16 @@
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/composer-installer.git",
-                "reference": "845eb62303d2ca9b289ef216356568ccc075ffd1"
+                "reference": "963f0c67bffde0eac41b56be71ac0e8ba132f0bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/composer-installer/zipball/845eb62303d2ca9b289ef216356568ccc075ffd1",
-                "reference": "845eb62303d2ca9b289ef216356568ccc075ffd1",
+                "url": "https://api.github.com/repos/PHPCSStandards/composer-installer/zipball/963f0c67bffde0eac41b56be71ac0e8ba132f0bd",
+                "reference": "963f0c67bffde0eac41b56be71ac0e8ba132f0bd",
                 "shasum": ""
             },
             "require": {
@@ -4858,7 +4858,7 @@
                     "type": "thanks_dev"
                 }
             ],
-            "time": "2025-11-11T04:32:07+00:00"
+            "time": "2026-05-06T08:26:05+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
@@ -5366,16 +5366,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.1",
+            "version": "2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374"
+                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
-                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
+                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
                 "shasum": ""
             },
             "require": {
@@ -5407,9 +5407,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.3"
             },
-            "time": "2026-01-12T11:33:04+00:00"
+            "time": "2026-07-08T07:01:06+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -7121,32 +7121,32 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.26.0",
+            "version": "8.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "d247cdc04b91956bdcfaa0b1313c01960b189d3c"
+                "reference": "70a3b2150600122f87c59cae1c1b5902ba73798b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/d247cdc04b91956bdcfaa0b1313c01960b189d3c",
-                "reference": "d247cdc04b91956bdcfaa0b1313c01960b189d3c",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/70a3b2150600122f87c59cae1c1b5902ba73798b",
+                "reference": "70a3b2150600122f87c59cae1c1b5902ba73798b",
                 "shasum": ""
             },
             "require": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7 || ^1.2.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7 || ^1.2.1",
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpdoc-parser": "^2.3.0",
+                "phpstan/phpdoc-parser": "^2.3.2",
                 "squizlabs/php_codesniffer": "^4.0.1"
             },
             "require-dev": {
-                "phing/phing": "3.0.1|3.1.0",
+                "phing/phing": "3.0.1|3.1.2",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpstan/phpstan": "2.1.33",
-                "phpstan/phpstan-deprecation-rules": "2.0.3",
-                "phpstan/phpstan-phpunit": "2.0.11",
-                "phpstan/phpstan-strict-rules": "2.0.7",
-                "phpunit/phpunit": "9.6.31|10.5.60|11.4.4|11.5.46|12.5.4"
+                "phpstan/phpstan": "2.2.2",
+                "phpstan/phpstan-deprecation-rules": "2.0.4",
+                "phpstan/phpstan-phpunit": "2.0.16",
+                "phpstan/phpstan-strict-rules": "2.0.11",
+                "phpunit/phpunit": "9.6.34|10.5.63|11.4.4|11.5.55|12.5.30"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
@@ -7170,7 +7170,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.26.0"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.30.1"
             },
             "funding": [
                 {
@@ -7182,7 +7182,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-21T18:01:15+00:00"
+            "time": "2026-06-27T11:26:35+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
