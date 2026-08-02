@@ -133,10 +133,16 @@ class TitleScoresTable extends AppTable
         $query = $this->find()
             ->contain([
                 'Countries',
-                'TitleScoreDetails',
-                'TitleScoreDetails.Players',
-                'TitleScoreDetails.Players.Ranks',
-                'TitleScoreDetails.Players.PlayerRanks.Ranks',
+                'TitleScoreDetails' => [
+                    'strategy' => 'select',
+                    'Players' => [
+                        'Ranks',
+                        'PlayerRanks' => [
+                            'strategy' => 'select',
+                            'Ranks',
+                        ],
+                    ],
+                ],
             ])
             ->orderByDesc('started')->orderByDesc('TitleScores.id');
 
