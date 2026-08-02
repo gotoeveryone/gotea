@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddHtmlFileHoldingToTitles extends AbstractMigration
+class AddHtmlFileHoldingToTitles extends BaseMigration
 {
     /**
      * Change Method.

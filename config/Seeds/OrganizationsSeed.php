@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 use Cake\ORM\TableRegistry;
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Organizations seed.
  */
-class OrganizationsSeed extends AbstractSeed
+class OrganizationsSeed extends BaseSeed
 {
     /**
      * Run Method.

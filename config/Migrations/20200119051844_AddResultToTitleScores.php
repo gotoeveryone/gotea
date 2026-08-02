@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddResultToTitleScores extends AbstractMigration
+class AddResultToTitleScores extends BaseMigration
 {
     /**
      * Change Method.

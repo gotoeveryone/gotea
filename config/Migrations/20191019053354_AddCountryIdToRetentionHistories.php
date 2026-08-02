@@ -1,8 +1,8 @@
 <?php
 use Cake\ORM\TableRegistry;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddCountryIdToRetentionHistories extends AbstractMigration
+class AddCountryIdToRetentionHistories extends BaseMigration
 {
     /**
      * Change Method.

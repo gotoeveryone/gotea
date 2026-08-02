@@ -1,8 +1,8 @@
 <?php
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class ChangeColumnToTitles extends AbstractMigration
+class ChangeColumnToTitles extends BaseMigration
 {
     /**
      * Up Method.

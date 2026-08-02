@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class CreatePlayerRanks extends AbstractMigration
+class CreatePlayerRanks extends BaseMigration
 {
     /**
      * 自動で主キーカラムを生成しない

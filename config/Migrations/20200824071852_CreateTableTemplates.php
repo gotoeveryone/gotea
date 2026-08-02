@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class CreateTableTemplates extends AbstractMigration
+class CreateTableTemplates extends BaseMigration
 {
     /**
      * 自動で主キーカラムを生成しない

@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddIsOfficialToRetentionHistories extends AbstractMigration
+class AddIsOfficialToRetentionHistories extends BaseMigration
 {
     /**
      * Change Method.

@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddIndexTitleScores extends AbstractMigration
+class AddIndexTitleScores extends BaseMigration
 {
     /**
      * Change Method.

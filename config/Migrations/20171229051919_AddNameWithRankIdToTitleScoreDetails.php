@@ -3,12 +3,12 @@
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
 /**
  * タイトル成績詳細へカラム追加（棋士名・タイトルID）
  */
-class AddNameWithRankIdToTitleScoreDetails extends AbstractMigration
+class AddNameWithRankIdToTitleScoreDetails extends BaseMigration
 {
     /**
      * Change Method.

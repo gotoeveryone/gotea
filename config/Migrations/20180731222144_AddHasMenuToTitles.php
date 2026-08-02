@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddHasMenuToTitles extends AbstractMigration
+class AddHasMenuToTitles extends BaseMigration
 {
     /**
      * Change Method.

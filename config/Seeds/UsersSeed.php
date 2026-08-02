@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Users seed.
  */
-class UsersSeed extends AbstractSeed
+class UsersSeed extends BaseSeed
 {
     /**
      * Run Method.

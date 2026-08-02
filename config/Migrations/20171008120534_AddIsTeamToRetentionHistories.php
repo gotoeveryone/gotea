@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddIsTeamToRetentionHistories extends AbstractMigration
+class AddIsTeamToRetentionHistories extends BaseMigration
 {
     /**
      * Change Method.
