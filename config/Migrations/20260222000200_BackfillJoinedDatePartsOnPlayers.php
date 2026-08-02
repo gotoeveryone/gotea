@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class BackfillJoinedDatePartsOnPlayers extends AbstractMigration
+class BackfillJoinedDatePartsOnPlayers extends BaseMigration
 {
     /**
      * @return void

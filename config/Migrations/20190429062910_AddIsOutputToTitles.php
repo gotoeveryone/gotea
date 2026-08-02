@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddIsOutputToTitles extends AbstractMigration
+class AddIsOutputToTitles extends BaseMigration
 {
     /**
      * Change Method.

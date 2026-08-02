@@ -1,9 +1,9 @@
 <?php
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class RemoveRankIdFromTitleScoreDetails extends AbstractMigration
+class RemoveRankIdFromTitleScoreDetails extends BaseMigration
 {
     /**
      * Up Method.

@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AlterPlayers extends AbstractMigration
+class AlterPlayers extends BaseMigration
 {
     /**
      * Change Method.

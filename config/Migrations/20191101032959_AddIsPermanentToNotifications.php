@@ -1,8 +1,8 @@
 <?php
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddIsPermanentToNotifications extends AbstractMigration
+class AddIsPermanentToNotifications extends BaseMigration
 {
     /**
      * Change Method.
