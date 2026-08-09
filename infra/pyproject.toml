@@ -1,0 +1,15 @@
+[project]
+name = "gotea-infra"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ansible~=14.2",
+]
+
+[dependency-groups]
+dev = [
+    "ansible-lint",
+]
+
+[tool.uv]
+package = false
