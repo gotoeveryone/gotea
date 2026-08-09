@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - infra/**
+      - .github/workflows/ansible.yml
 
 jobs:
   ansible_lint:
