@@ -250,6 +250,39 @@ class TitleScoreDetailsTable extends AppTable
     }
 
     /**
+     * ランキング取得に必要なデータを生成します。
+     *
+     * @param array<string, mixed> $params パラメータ
+     * @return array<string, mixed> ランキング取得データ。国が存在しない場合は空配列
+     */
+    public function findRankingData(array $params): array
+    {
+        $countryCode = $params['country'] ?? null;
+        $countries = TableRegistry::getTableLocator()->get('Countries');
+        $country = $countries->findByCode($countryCode)->first();
+        if (!$country) {
+            return [];
+        }
+
+        $year = (int)($params['year'] ?? 0);
+        $limit = (int)($params['limit'] ?? 0);
+        $from = $params['from'] ?? null;
+        $to = $params['to'] ?? null;
+        $type = $params['type'] ?? 'point';
+
+        $from = $from ? FrozenDate::parse($from) : FrozenDate::create($year, 1, 1);
+        $to = $to ? FrozenDate::parse($to) : FrozenDate::create($year, 12, 31);
+
+        return [
+            'country' => $country,
+            'year' => $year,
+            'type' => $type,
+            'players' => $this->findRanking($country, $limit, $from, $to, $type),
+            'lastUpdate' => $this->findRecent($country, $from, $to),
+        ];
+    }
+
+    /**
      * 最新データの対局日を取得します。
      *
      * @param \Gotea\Model\Entity\Country $country 所属国

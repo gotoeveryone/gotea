@@ -147,6 +147,29 @@ class TitlesTable extends AppTable
     }
 
     /**
+     * 公開対象のタイトルを関連データ付きで取得します。
+     *
+     * @param int $id タイトル ID
+     * @return \Gotea\Model\Entity\Title|null タイトル
+     */
+    public function findPublicByIdWithRelation(int $id): ?Title
+    {
+        return $this->find()
+            ->where([
+                'Titles.id' => $id,
+                'Titles.is_output' => true,
+            ])
+            ->contain([
+                'Countries',
+                'RetentionHistories',
+                'RetentionHistories.Players.Ranks',
+                'RetentionHistories.Players.PlayerRanks.Ranks',
+                'RetentionHistories.Countries',
+            ])
+            ->first();
+    }
+
+    /**
      * 有効なタイトルをID・名前のリストで取得します。
      *
      * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ

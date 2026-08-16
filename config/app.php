@@ -89,6 +89,9 @@ return [
         'gotoeveryone' => [
             'informationsUrl' => env('GOTOEVERYONE_INFORMATION_URL'),
         ],
+        'publicApi' => [
+            'key' => env('PUBLIC_API_KEY'),
+        ],
         'slack' => [
             'notifyUrl' => env('NOTIFY_SLACK_URL'),
         ],
