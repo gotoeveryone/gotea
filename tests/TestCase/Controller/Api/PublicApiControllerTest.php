@@ -100,7 +100,7 @@ class PublicApiControllerTest extends ApiTestCase
      */
     public function testTitle(): void
     {
-        $this->get('/api/public/titles/jp/Lorem%20ip');
+        $this->get('/api/public/titles/jp/test-title');
 
         $this->assertResponseSuccess();
         $this->assertJsonContentType();
@@ -117,7 +117,7 @@ class PublicApiControllerTest extends ApiTestCase
      */
     public function testTitleNotFoundForNonOutputTitle(): void
     {
-        $this->get('/api/public/titles/cn/Lorem%20ip');
+        $this->get('/api/public/titles/cn/closed-title');
 
         $this->assertResponseCode(404);
         $this->assertJsonContentType();

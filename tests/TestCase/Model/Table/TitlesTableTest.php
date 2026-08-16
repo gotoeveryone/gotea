@@ -323,14 +323,14 @@ class TitlesTableTest extends TestCase
      */
     public function testFindPublicByPathWithRelation(): void
     {
-        $title = $this->Titles->findPublicByPathWithRelation('jp', 'Lorem ip');
+        $title = $this->Titles->findPublicByPathWithRelation('jp', 'test-title');
 
         $this->assertNotNull($title);
         $this->assertSame(1, $title->id);
         $this->assertSame('jp', $title->country->code);
         $this->assertNotEmpty($title->retention_histories);
 
-        $this->assertNull($this->Titles->findPublicByPathWithRelation('cn', 'Lorem ip'));
+        $this->assertNull($this->Titles->findPublicByPathWithRelation('cn', 'closed-title'));
         $this->assertNull($this->Titles->findPublicByPathWithRelation('jp', 'missing'));
     }
 
