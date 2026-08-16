@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace Gotea\Controller\Api;
 
 use Cake\Http\Response;
-use Cake\I18n\FrozenDate;
 use Cake\Utility\Hash;
 use Gotea\Collection\Iterator\RankingIterator;
 use Gotea\Collection\Iterator\RankIterator;
-use Gotea\Model\Table\CountriesTable;
-use Gotea\Model\Table\TitleScoreDetailsTable;
 use Gotea\Utility\FileBuilder;
 
 /**
@@ -25,9 +22,6 @@ class PlayersController extends ApiController
      * @inheritDoc
      */
     protected array $publicActions = ['search', 'searchRanks', 'searchRanking'];
-
-    protected CountriesTable $Countries;
-    protected TitleScoreDetailsTable $TitleScoreDetails;
 
     /**
      * 棋士を検索します。
@@ -143,43 +137,22 @@ class PlayersController extends ApiController
      */
     private function getRankingData(array $params): array
     {
-        // テーブルクラスのロード
-        $this->Countries = $this->fetchTable('Countries');
-        $this->TitleScoreDetails = $this->fetchTable('TitleScoreDetails');
-
-        // 集計対象国の取得
-        $countryCode = Hash::get($params, 'country');
-        $country = $this->Countries->findByCode($countryCode)->first();
-        if (!$country) {
+        $data = $this->fetchTable('TitleScoreDetails')->findRankingData($params);
+        if (!$data) {
             return [];
         }
 
-        // パラメータ取得
-        $year = Hash::get($params, 'year');
-        $limit = Hash::get($params, 'limit');
-        $from = Hash::get($params, 'from');
-        $to = Hash::get($params, 'to');
-        $withJa = Hash::get($params, 'ja', false);
-        $type = Hash::get($params, 'type', 'point');
+        $players = $data['players']->mapRanking(
+            $data['country']->isWorlds(),
+            (bool)Hash::get($params, 'ja', false),
+            $data['type'],
+        );
 
-        // 開始日・終了日の補填
-        $from = $from ? FrozenDate::parse($from) : FrozenDate::create($year, 1, 1);
-        $to = $to ? FrozenDate::parse($to) : FrozenDate::create($year, 12, 31);
-
-        // ランキングデータの取得
-        $players = $this->TitleScoreDetails
-            ->findRanking($country, $limit, $from, $to, $type)
-            ->mapRanking($country->isWorlds(), $withJa, $type);
-
-        // 最終更新日の取得
-        $lastUpdate = $this->TitleScoreDetails->findRecent($country, $from, $to);
-
-        // JSON生成
         return [
-            'countryCode' => $country->code,
-            'countryName' => $country->name_english,
-            'year' => $year,
-            'lastUpdate' => $lastUpdate,
+            'countryCode' => $data['country']->code,
+            'countryName' => $data['country']->name_english,
+            'year' => $data['year'],
+            'lastUpdate' => $data['lastUpdate'],
             'count' => iterator_count($players),
             'ranking' => $players->map(new RankingIterator()),
         ];

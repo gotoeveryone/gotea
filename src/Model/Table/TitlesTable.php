@@ -147,6 +147,31 @@ class TitlesTable extends AppTable
     }
 
     /**
+     * 公開対象のタイトルを国コード・ファイル名で関連データ付きで取得します。
+     *
+     * @param string $countryCode 所属国コード
+     * @param string $htmlFileName タイトルページのファイル名
+     * @return \Gotea\Model\Entity\Title|null タイトル
+     */
+    public function findPublicByPathWithRelation(string $countryCode, string $htmlFileName): ?Title
+    {
+        return $this->find()
+            ->where([
+                'Countries.code' => $countryCode,
+                'Titles.html_file_name' => $htmlFileName,
+                'Titles.is_output' => true,
+            ])
+            ->contain([
+                'Countries',
+                'RetentionHistories',
+                'RetentionHistories.Players.Ranks',
+                'RetentionHistories.Players.PlayerRanks.Ranks',
+                'RetentionHistories.Countries',
+            ])
+            ->first();
+    }
+
+    /**
      * 有効なタイトルをID・名前のリストで取得します。
      *
      * @return \Cake\ORM\Query\SelectQuery 生成されたクエリ

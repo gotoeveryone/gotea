@@ -282,6 +282,47 @@ class TitleScoreDetailsTableTest extends TestCase
     }
 
     /**
+     * ランキング取得データを生成します。
+     *
+     * @return void
+     */
+    public function testFindRankingData()
+    {
+        $data = $this->TitleScoreDetails->findRankingData([
+            'country' => 'jp',
+            'year' => 2017,
+            'limit' => 20,
+            'from' => '2017-01-01',
+            'to' => '2017-12-31',
+            'type' => 'point',
+        ]);
+
+        $this->assertSame('jp', $data['country']->code);
+        $this->assertSame(2017, $data['year']);
+        $this->assertSame('point', $data['type']);
+        $this->assertNotEmpty($data['players']->all());
+        $this->assertNotSame('', $data['lastUpdate']);
+        $this->assertArrayNotHasKey('ranking', $data);
+        $this->assertArrayNotHasKey('count', $data);
+    }
+
+    /**
+     * 存在しない国のランキング取得データは空になります。
+     *
+     * @return void
+     */
+    public function testFindRankingDataWithUnknownCountry()
+    {
+        $data = $this->TitleScoreDetails->findRankingData([
+            'country' => 'unknown',
+            'year' => 2017,
+            'limit' => 20,
+        ]);
+
+        $this->assertSame([], $data);
+    }
+
+    /**
      * 最新の対局日検索（データ有り）
      *
      * @return void

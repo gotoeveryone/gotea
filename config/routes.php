@@ -205,5 +205,15 @@ return static function (RouteBuilder $routes): void {
         $routes->scope('/table-templates', ['controller' => 'TableTemplates'], function (RouteBuilder $routes): void {
             $routes->get('/', ['action' => 'index'], 'api_table_templates');
         });
+
+        $routes->scope('/public', ['controller' => 'PublicApi'], function (RouteBuilder $routes): void {
+            $routes->get('/titles', ['action' => 'titles'], 'api_public_titles');
+            $routes->get('/titles/{country}/{name}', ['action' => 'title'], 'api_public_title')
+                ->setPass(['country', 'name']);
+            $routes->get('/notifications', ['action' => 'notifications'], 'api_public_notifications');
+            $routes->get('/rankings/{country}/{year}/{limit}', ['action' => 'ranking'], 'api_public_ranking')
+                ->setPatterns(['year' => RouteBuilder::ID, 'limit' => RouteBuilder::ID])
+                ->setPass(['country', 'year', 'limit']);
+        });
     });
 };
