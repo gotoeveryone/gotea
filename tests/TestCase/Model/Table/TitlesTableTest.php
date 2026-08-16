@@ -317,6 +317,24 @@ class TitlesTableTest extends TestCase
     }
 
     /**
+     * 公開対象のタイトルを国コード・ファイル名で取得します。
+     *
+     * @return void
+     */
+    public function testFindPublicByPathWithRelation(): void
+    {
+        $title = $this->Titles->findPublicByPathWithRelation('jp', 'Lorem ip');
+
+        $this->assertNotNull($title);
+        $this->assertSame(1, $title->id);
+        $this->assertSame('jp', $title->country->code);
+        $this->assertNotEmpty($title->retention_histories);
+
+        $this->assertNull($this->Titles->findPublicByPathWithRelation('cn', 'Lorem ip'));
+        $this->assertNull($this->Titles->findPublicByPathWithRelation('jp', 'missing'));
+    }
+
+    /**
      * エンティティの生成
      *
      * @return void

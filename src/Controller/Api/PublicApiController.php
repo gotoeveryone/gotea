@@ -8,12 +8,12 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
+use DateMalformedStringException;
 use Gotea\Collection\Iterator\NewsIterator;
 use Gotea\Collection\Iterator\PublicTitleIterator;
 use Gotea\Collection\Iterator\RankingIterator;
 use Gotea\Model\Table\NotificationsTable;
 use Gotea\Model\Table\TitlesTable;
-use Throwable;
 
 /**
  * Go to Everyone! 公開 API コントローラ。
@@ -80,12 +80,13 @@ class PublicApiController extends ApiController
     /**
      * タイトル詳細を取得します。
      *
-     * @param int $id タイトル ID
+     * @param string $country 所属国コード
+     * @param string $name タイトルページのファイル名
      * @return \Cake\Http\Response
      */
-    public function title(int $id): Response
+    public function title(string $country, string $name): Response
     {
-        $title = $this->Titles->findPublicByIdWithRelation($id);
+        $title = $this->Titles->findPublicByPathWithRelation($country, $name);
         if (!$title) {
             return $this->renderError(404);
         }
@@ -94,35 +95,63 @@ class PublicApiController extends ApiController
     }
 
     /**
-     * 公開済みのお知らせを新しい順に5件取得します。
+     * 公開済みのお知らせを取得します。
+     *
+     * `permanent=true` は常時表示のお知らせをすべて返し、
+     * `permanent=false` は通常のお知らせを新しい順に5件返します。
+     * パラメータ未指定時は両方を返します。
      *
      * @return \Cake\Http\Response
      */
     public function notifications(): Response
     {
-        $notifications = $this->Notifications->find()
-            ->where([
-                'Notifications.is_draft' => false,
-                'Notifications.published <=' => FrozenTime::now(),
-            ])
-            ->orderBy([
-                'Notifications.published' => 'DESC',
-                'Notifications.id' => 'DESC',
-            ])
-            ->limit(5)
-            ->all()
-            ->map(function ($item): array {
-                return [
-                    'id' => $item->id,
-                    'title' => $item->title,
-                    'content' => $item->content,
-                    'published' => $item->published?->format('Y-m-d H:i:s'),
-                    'isPermanent' => $item->is_permanent,
-                ];
-            })
-            ->toList();
+        $permanent = $this->getRequest()->getQuery('permanent');
+        if ($permanent !== null && !in_array($permanent, ['0', '1', 'false', 'true'], true)) {
+            return $this->renderError(400, 'Invalid notification parameters');
+        }
 
-        return $this->renderJson($notifications);
+        $conditions = [
+            'Notifications.is_draft' => false,
+            'Notifications.published <=' => FrozenTime::now(),
+        ];
+        $queries = [];
+        if ($permanent === null || $permanent === '1' || $permanent === 'true') {
+            $queries[] = $this->Notifications->find()
+                ->where($conditions + ['Notifications.is_permanent' => true])
+                ->orderBy([
+                    'Notifications.published' => 'DESC',
+                    'Notifications.id' => 'DESC',
+                ]);
+        }
+        if ($permanent === null || $permanent === '0' || $permanent === 'false') {
+            $queries[] = $this->Notifications->find()
+                ->where($conditions + ['Notifications.is_permanent' => false])
+                ->orderBy([
+                    'Notifications.published' => 'DESC',
+                    'Notifications.id' => 'DESC',
+                ])
+                ->limit(5);
+        }
+
+        $items = [];
+        foreach ($queries as $query) {
+            $items = [...$items, ...$query->all()->toList()];
+        }
+        usort($items, static function ($left, $right): int {
+            $published = $right->published <=> $left->published;
+
+            return $published ?: $right->id <=> $left->id;
+        });
+
+        return $this->renderJson(array_map(static function ($item): array {
+            return [
+                'id' => $item->id,
+                'title' => $item->title,
+                'content' => $item->content,
+                'published' => $item->published?->format('Y-m-d H:i:s'),
+                'isPermanent' => $item->is_permanent,
+            ];
+        }, $items));
     }
 
     /**
@@ -149,18 +178,14 @@ class PublicApiController extends ApiController
             return $this->renderError(400, 'Invalid ranking parameters');
         }
 
-        try {
-            $data = $this->fetchTable('TitleScoreDetails')->findRankingData([
-                'country' => $country,
-                'year' => $year,
-                'limit' => $limit,
-                'from' => $from,
-                'to' => $to,
-                'type' => $type,
-            ]);
-        } catch (Throwable) {
-            return $this->renderError(400, 'Invalid ranking parameters');
-        }
+        $data = $this->fetchTable('TitleScoreDetails')->findRankingData([
+            'country' => $country,
+            'year' => $year,
+            'limit' => $limit,
+            'from' => $from,
+            'to' => $to,
+            'type' => $type,
+        ]);
 
         if (!$data) {
             return $this->renderError(404);
@@ -226,7 +251,7 @@ class PublicApiController extends ApiController
         try {
             $fromDate = $from ? FrozenDate::parse($from) : FrozenDate::create($year, 1, 1);
             $toDate = $to ? FrozenDate::parse($to) : FrozenDate::create($year, 12, 31);
-        } catch (Throwable) {
+        } catch (DateMalformedStringException) {
             return false;
         }
 

@@ -208,8 +208,8 @@ return static function (RouteBuilder $routes): void {
 
         $routes->scope('/public', ['controller' => 'PublicApi'], function (RouteBuilder $routes): void {
             $routes->get('/titles', ['action' => 'titles'], 'api_public_titles');
-            $routes->get('/titles/{id}', ['action' => 'title'], 'api_public_title')
-                ->setPatterns(['id' => RouteBuilder::ID])->setPass(['id']);
+            $routes->get('/titles/{country}/{name}', ['action' => 'title'], 'api_public_title')
+                ->setPass(['country', 'name']);
             $routes->get('/notifications', ['action' => 'notifications'], 'api_public_notifications');
             $routes->get('/rankings/{country}/{year}/{limit}', ['action' => 'ranking'], 'api_public_ranking')
                 ->setPatterns(['year' => RouteBuilder::ID, 'limit' => RouteBuilder::ID])

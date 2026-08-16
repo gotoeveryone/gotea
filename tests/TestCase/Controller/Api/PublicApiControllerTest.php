@@ -100,7 +100,7 @@ class PublicApiControllerTest extends ApiTestCase
      */
     public function testTitle(): void
     {
-        $this->get('/api/public/titles/1');
+        $this->get('/api/public/titles/jp/Lorem%20ip');
 
         $this->assertResponseSuccess();
         $this->assertJsonContentType();
@@ -117,7 +117,7 @@ class PublicApiControllerTest extends ApiTestCase
      */
     public function testTitleNotFoundForNonOutputTitle(): void
     {
-        $this->get('/api/public/titles/3');
+        $this->get('/api/public/titles/cn/Lorem%20ip');
 
         $this->assertResponseCode(404);
         $this->assertJsonContentType();
@@ -150,6 +150,49 @@ class PublicApiControllerTest extends ApiTestCase
             static fn($notification): bool => $notification->isPermanent,
             $notifications,
         ));
+    }
+
+    /**
+     * お知らせの常時表示・通常表示を切り替えられます。
+     *
+     * @return void
+     */
+    public function testNotificationsByPermanent(): void
+    {
+        $notificationsTable = TableRegistry::getTableLocator()->get('Notifications');
+        $notificationsTable->updateAll(['is_draft' => false], []);
+        $notificationsTable->updateAll(['is_permanent' => true], ['id' => 1]);
+
+        $this->get('/api/public/notifications?permanent=true');
+        $permanent = json_decode($this->_getBodyAsString())->response;
+        $this->assertCount(1, $permanent);
+        $this->assertTrue($permanent[0]->isPermanent);
+
+        $this->configRequest([
+            'headers' => [
+                'Authorization' => 'Bearer test-public-key',
+            ],
+        ]);
+        $this->get('/api/public/notifications?permanent=false');
+        $regular = json_decode($this->_getBodyAsString())->response;
+        $this->assertCount(4, $regular);
+        $this->assertNotContains(true, array_map(
+            static fn($notification): bool => $notification->isPermanent,
+            $regular,
+        ));
+    }
+
+    /**
+     * お知らせの常時表示指定が不正な場合は拒否します。
+     *
+     * @return void
+     */
+    public function testNotificationsInvalidPermanent(): void
+    {
+        $this->get('/api/public/notifications?permanent=invalid');
+
+        $this->assertResponseCode(400);
+        $this->assertJsonContentType();
     }
 
     /**

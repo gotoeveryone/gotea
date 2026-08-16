@@ -147,16 +147,18 @@ class TitlesTable extends AppTable
     }
 
     /**
-     * 公開対象のタイトルを関連データ付きで取得します。
+     * 公開対象のタイトルを国コード・ファイル名で関連データ付きで取得します。
      *
-     * @param int $id タイトル ID
+     * @param string $countryCode 所属国コード
+     * @param string $htmlFileName タイトルページのファイル名
      * @return \Gotea\Model\Entity\Title|null タイトル
      */
-    public function findPublicByIdWithRelation(int $id): ?Title
+    public function findPublicByPathWithRelation(string $countryCode, string $htmlFileName): ?Title
     {
         return $this->find()
             ->where([
-                'Titles.id' => $id,
+                'Countries.code' => $countryCode,
+                'Titles.html_file_name' => $htmlFileName,
                 'Titles.is_output' => true,
             ])
             ->contain([
