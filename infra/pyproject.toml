@@ -3,7 +3,7 @@ name = "gotea-infra"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ansible~=14.2",
+    "ansible~=14.3",
 ]
 
 [dependency-groups]
