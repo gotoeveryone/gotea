@@ -27,7 +27,7 @@
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^24.13.3",
     "@vitejs/plugin-vue": "^6.0.7",
-    "@vue/test-utils": "^2.4.11",
+    "@vue/test-utils": "^2.5.0",
     "concurrently": "^10.0.5",
     "jsdom": "^30.0.1",
     "postcss": "^8.5.26",
