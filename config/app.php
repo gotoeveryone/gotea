@@ -80,15 +80,6 @@ return [
             'korea' => env('DIFF_KOREA_URL'),
             'taiwan' => env('DIFF_TAIWAN_URL'),
         ],
-        'twitter' => [
-            'consumerKey' => env('TWITTER_CONSUMER_KEY'),
-            'consumerSecret' => env('TWITTER_CONSUMER_SECRET'),
-            'accessToken' => env('TWITTER_ACCESS_TOKEN'),
-            'accessTokenSecret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
-        ],
-        'gotoeveryone' => [
-            'informationsUrl' => env('GOTOEVERYONE_INFORMATION_URL'),
-        ],
         'publicApi' => [
             'key' => env('PUBLIC_API_KEY'),
         ],
