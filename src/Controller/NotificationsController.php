@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace Gotea\Controller;
 
-use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
-use Cake\Log\Log;
-use Exception;
-use Gotea\Client\TwitterClient;
-use Gotea\Model\Entity\Notification;
 
 /**
  * Notifications Controller
@@ -97,10 +92,6 @@ class NotificationsController extends AppController
             return $this->renderWithErrors(400, $notification->getErrors(), 'お知らせ追加', 'new');
         }
 
-        if ($notification->is_published) {
-            $this->postTwitter($notification);
-        }
-
         $this->Flash->success(__('The notification has been saved.'));
 
         return $this->redirect(['_name' => 'notifications']);
@@ -116,16 +107,11 @@ class NotificationsController extends AppController
     public function update(int $id): ?Response
     {
         $notification = $this->Notifications->get($id);
-        $isPublished = $notification->is_published;
         $notification = $this->Notifications->patchEntity($notification, $this->getRequest()->getData());
         if (!$this->Notifications->save($notification)) {
             $this->set(compact('notification'));
 
             return $this->renderWithErrors(400, $notification->getErrors(), 'お知らせ編集', 'edit');
-        }
-
-        if (!$isPublished && $notification->is_published) {
-            $this->postTwitter($notification);
         }
 
         $this->Flash->success(__('The notification has been saved.'));
@@ -150,28 +136,5 @@ class NotificationsController extends AppController
         }
 
         return $this->redirect(['_name' => 'notifications']);
-    }
-
-    /**
-     * Twitter へ投稿する
-     *
-     * @param \Gotea\Model\Entity\Notification $data お知らせ
-     * @return void
-     */
-    private function postTwitter(Notification $data): void
-    {
-        $informationsUrl = rtrim(Configure::read('App.gotoeveryone.informationsUrl', '/'));
-        $message = "{$data->title}\n{$informationsUrl}/{$data->id}";
-
-        try {
-            $client = new TwitterClient();
-            $response = $client->post($message);
-            // 処理自体は続行させたいので、エラーがあった場合でもログ出力のみ行う
-            if (!empty($response->errors[0]->message)) {
-                Log::warning($response->errors[0]->message);
-            }
-        } catch (Exception $e) {
-            Log::warning($e->getMessage());
-        }
     }
 }
