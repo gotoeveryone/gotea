@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/gotoeveryone/composer-php:8.4
+    image: ghcr.io/gotoeveryone/composer-php:8.4.27
     volumes:
       - ./:/src
       - vendor:/src/vendor
@@ -12,7 +12,7 @@ services:
     working_dir: /src
     command: sh -c 'composer install -n && ./bin/cake server --host 0.0.0.0'
   frontend:
-    image: node:24.16
+    image: node:24.22.1
     volumes:
       - ./:/src
       - node_modules:/src/node_modules
